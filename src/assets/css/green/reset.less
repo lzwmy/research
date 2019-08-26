@@ -1,0 +1,407 @@
+body.theme-green {
+  /* dispaly style */
+  .zdis_none {
+    display: none;
+  }
+  .zdis_show {
+    visibility: visible;
+  }
+  .zdis_inline {
+    display: inline;
+  }
+  .zdis_block {
+    display: block;
+  }
+  .zdis_inlineBlock {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+  }
+
+  /* float & position style */
+  .zfl {
+    float: left;
+  }
+  .zfr {
+    float: right;
+  }
+  .zclear {
+    clear: both;
+  }
+  .zcf:after,
+  .zcf:before {
+    content: '';
+    display: table;
+  }
+  .zcf:after {
+    clear: both;
+  }
+  .zcf {
+    zoom: 1;
+  }
+  .zpo_re {
+    position: relative;
+  }
+  .zpo_ab {
+    position: absolute;
+  }
+  .zpo_st {
+    position: static;
+  }
+  .zpo_fix {
+    position: fixed;
+  }
+
+  /*文字大小*/
+
+  .zfs-12 {
+    font-size: 12px;
+  }
+  .zfs-13 {
+    font-size: 13px;
+  }
+  .zfs-14 {
+    font-size: 14px;
+  }
+  .zfs-16 {
+    font-size: 16px;
+  }
+  .zfs-18 {
+    font-size: 18px;
+  }
+  .zfs-20 {
+    font-size: 20px;
+  }
+
+  /*a添加下划线*/
+  .zunderline:hover {
+    text-decoration: underline;
+    color: #1bd0a1;
+  }
+  .zunderline {
+    color: #1bd0a1;
+  }
+
+  /* font style */
+  .zred {
+    color: #ff0000;
+  }
+  .zborderred {
+    border-color: #ff0000;
+  }
+  .zbgred {
+    background: #ff0000;
+  }
+  .zfontGray {
+    color: #969696;
+  }
+  .zgreen1Font {
+    color: #1bd0a1;
+  }
+  .zbordergreen1 {
+    border-color: #1bd0a1;
+  }
+  .zgreen2Font {
+    color: #549c00;
+  }
+  .zbordergreen2 {
+    border-color: #549c00;
+  }
+
+  .zgreen3, .zgreen3 a {
+    color: #09bc8a;
+  }
+  .zbordergreen3 {
+    border-color: #09bc8a;
+  }
+  .zbggreen3 {
+    background: #09bc8a;
+  }
+
+  .zwarning, .zwarning a {
+    color: #ec6f1b;
+  }
+  .zborderwarning {
+    border-color: #ec6f1b;
+  }
+  .zbgwarning {
+    background: #ec6f1b;
+  }
+
+  .zyellow, .zyellow a {
+    color: #f0c808;
+  }
+  .zborderyellow {
+    border-color: #f0c808;
+  }
+  .zbgyellow {
+    background: #f0c808;
+  }
+
+  .zblue1, .zblue1 a {
+    color: #07a0c3;
+  }
+  .zborderblue1 {
+    border-color: #07a0c3;
+  }
+  .zbgblue1 {
+    background: #07a0c3;
+  }
+
+  .zblue2, .zblue2 a {
+    color: #4284aa;
+  }
+  .zborderblue2 {
+    border-color: #4284aa;
+  }
+  .zbgblue2 {
+    background: #4284aa;
+  }
+
+  .zblue3, .zblue3 a {
+    color: #1bbfbf;
+  }
+  .zborderblue3 {
+    border-color: #1bbfbf;
+  }
+  .zbgblue3 {
+    background: #1bbfbf;
+  }
+
+  .zboldFont {
+    font-weight: bold;
+  }
+  .znormalFont {
+    font-weight: normal;
+  }
+  .zlh20 {
+    line-height: 20px;
+  }
+
+  /* text align style */
+  .zal_right {
+    text-align: right;
+  }
+  .zal_center {
+    text-align: center;
+  }
+  .zal_left {
+    text-align: left;
+  }
+  .zval_top {
+    vertical-align: top;
+  }
+  .zval_mid {
+    vertical-align: middle;
+  }
+  .zval_btm {
+    vertical-align: bottom;
+  }
+
+  /*文字两端对齐*/
+  .zjustify {
+    text-align: justify;
+    display: inline-block;
+    width: 100%;
+  }
+  .zjustify > span {
+    display: inline-block /* Opera */;
+    padding-left: 100%;
+  }
+
+  /*width:100%,height:100%*/
+  .zwhauto {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .zwauto {
+    width: 100% !important;
+  }
+
+  /* Module & padding & width style */
+  .zpl_5 {
+    padding-left: 5px;
+  }
+  .zpl_10 {
+    padding-left: 10px;
+  }
+  .zpl_20 {
+    padding-left: 20px;
+  }
+  .zpl_30 {
+    padding-left: 30px;
+  }
+  .zpr_5 {
+    padding-right: 5px;
+  }
+  .zpr_10 {
+    padding-right: 10px;
+  }
+  .zpr_20 {
+    padding-right: 20px;
+  }
+  .zpr_30 {
+    padding-right: 30px;
+  }
+  .zpt_5 {
+    padding-top: 5px;
+  }
+  .zpt_10 {
+    padding-top: 10px;
+  }
+  .zpt_20 {
+    padding-top: 20px;
+  }
+  .zpt_30 {
+    padding-top: 30px;
+  }
+  .zpb_5 {
+    padding-bottom: 5px;
+  }
+  .zpb_10 {
+    padding-bottom: 10px;
+  }
+  .zpb_20 {
+    padding-bottom: 20px;
+  }
+  .zpb_30 {
+    padding-bottom: 30px;
+  }
+  .zpb_50 {
+    padding-bottom: 50px;
+  }
+  .zm_auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .zml_5 {
+    margin-left: 5px;
+  }
+  .zml_10 {
+    margin-left: 10px;
+  }
+  .zml_16 {
+    margin-left: 16px;
+  }
+  .zml_20 {
+    margin-left: 20px;
+  }
+  .zml_25 {
+    margin-left: 25px;
+  }
+  .zml_30 {
+    margin-left: 30px;
+  }
+  .zml_40 {
+    margin-left: 40px;
+  }
+  .zml_75 {
+    margin-left: 75px;
+  }
+  .zmr_5 {
+    margin-right: 5px;
+  }
+  .zmr_3 {
+    margin-right: 3px;
+  }
+  .zmr_10 {
+    margin-right: 10px;
+  }
+  .zmr_20 {
+    margin-right: 20px;
+  }
+  .zmr_30 {
+    margin-right: 30px;
+  }
+  .zmb_5 {
+    margin-bottom: 5px;
+  }
+  .zmb_10 {
+    margin-bottom: 10px;
+  }
+  .zmb_15 {
+    margin-bottom: 15px;
+  }
+  .zmb_20 {
+    margin-bottom: 20px;
+  }
+  .zmb_30 {
+    margin-bottom: 30px;
+  }
+  .zmb_40 {
+    margin-bottom: 40px;
+  }
+  .zmb_80 {
+    margin-bottom: 80px;
+  }
+  .zmt_5 {
+    margin-top: 5px;
+  }
+  .zmt_10 {
+    margin-top: 10px;
+  }
+  .zmt_15 {
+    margin-top: 15px;
+  }
+  .zmt_20 {
+    margin-top: 20px;
+  }
+  .zmt_30 {
+    margin-top: 30px;
+  }
+  .zmt_40 {
+    margin-top: 40px;
+  }
+  .zmt_50 {
+    margin-top: 50px;
+  }
+  .zmt_100 {
+    margin-top: 100px;
+  }
+  .zprl_5 {
+    padding: 0px 5px;
+  }
+  .zprl_10 {
+    padding: 0px 10px;
+  }
+  .zprl_20 {
+    padding: 0px 20px;
+  }
+
+  .zw_58 {
+    width: 58px;
+  }
+  .zw_80 {
+    width: 80px;
+  }
+  .zw_95 {
+    width: 95px;
+  }
+  .zw_100 {
+    width: 100px;
+  }
+  .zw_110 {
+    width: 110px;
+  }
+  .zw_115 {
+    width: 115px;
+  }
+  .zw_120 {
+    width: 120px;
+  }
+  .zw_125 {
+    width: 125px;
+  }
+  .zw_130 {
+    width: 130px;
+  }
+  .zw_160 {
+    width: 160px;
+  }
+  .zw_215 {
+    width: 215px;
+  }
+  .zw_auto {
+    width: auto !important;
+  }
+}

@@ -1,0 +1,266 @@
+.diseaseSetContent {
+  position: relative;
+  padding-left: 180px;
+  margin-top: 10px;
+}
+
+.profile {
+  width: 180px;
+  text-align: center;
+  display: inline-block;
+  padding: 0 15px 0 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.profile .disease-name {
+  font-size: 20px;
+  padding: 5px 0 5px 0;
+  border-bottom: 1px solid #e9eaec;
+}
+
+.profile .profile-inner .button-item{
+  position: relative;
+  width: 50%;
+  height:35px;
+  border-right:1px solid #e9eaec;
+  float: left;
+}
+.profile .profile-inner .button-item .icon{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.profile .profile-inner .button-item:last-child{
+  border-right:none;
+}
+
+.common-table th {
+  padding: 10px 5px 10px 15px;
+  text-align: left;
+  background: #f9f9f9;
+  border-bottom: 1px solid #e9eaec;
+  color: #585858;
+  font-size: 16px;
+}
+
+.common-table td {
+  padding: 5px 0 5px 0;
+  border: 1px solid #e9eaec;
+}
+
+.common-table td:first-child {
+  padding: 5px 0 5px 15px;
+}
+
+.common-table .subjectTitle{
+  display: inline-block;
+  float: left;
+  padding: 5px 5px;
+}
+
+.common-table .subjectButtonGroup{
+  display: inline-block;
+  float: right;
+  margin-right: 20px;
+  padding: 5px 5px;
+}
+
+.diseaseSet .lab-group-row {
+  padding: 10px 0;
+  border-top: 1px solid #e9eaec;
+}
+
+.diseaseSet .lab-group-row:first-child {
+  border-top: none;
+}
+
+.diseaseSet .lab-group-row > div {
+  padding: 0 0 0 15px;
+  float: left;
+}
+
+.logo-section .logo-option {
+  width: 85px;
+  height: 85px;
+  display: inline-block;
+  margin: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.logo-section .logo-option.select:before {
+  content: ' ';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  display: block;
+  background: url('./images/select.png') no-repeat center;
+}
+
+.logo-option img {
+  width: 100%;
+  height: 100%;
+  background-color: #1dd2a3;
+}
+
+.disease-logo {
+  width: 145px;
+  height: 100px;
+  background-color: #1dd2a3;
+}
+
+.el-tag {
+  margin: 0 10px 5px 0;
+}
+
+img[class$='_bgColor'] {
+  background-color: #1dd2a3;
+}
+
+.bladder_bgColor{
+  background-color: #7ac1fd!important;
+}
+.cerebrum_bgColor{
+  background-color: #5edbd5!important;
+}
+.ear_bgColor{
+  background-color: #7ac1fd!important;
+}
+.eye_bgColor{
+  background-color: #ffce75!important;
+}
+.female_bgColor{
+  background-color: #8dd8eb!important;
+}
+.gallbladder_bgColor{
+  background-color: #90bfff!important;
+}
+.heart_bgColor{
+  background-color: #8dd8eb!important;
+}
+.kidneys_bgColor{
+  background-color: #5edbd5!important;
+}
+.large_intestine_bgColor{
+  background-color: #7ac1fd!important;
+}
+.liver_bgColor{
+  background-color: #8dd8eb!important;
+}
+.lungs_bgColor{
+  background-color: #ffce75!important;
+}
+.male_bgColor{
+  background-color: #5edbd5!important;
+}
+.nose_bgColor{
+   background-color: #ffce75!important;
+}
+.pancreas_bgColor{
+  background-color: #5edbd5!important;
+}
+.small_intestine_bgColor{
+  background-color: #90bfff!important;
+}
+.spleen_bgColor{
+  background-color: #7ac1fd!important;
+}
+.stomach_bgColor{
+  background-color: #ffce75!important;
+}
+.stomatology_bgColor{
+  background-color: #5edbd5!important;
+}
+.uterus_bgColor{
+  background-color: #90bfff!important;
+}
+
+.disease-title {
+  font-size: 20px;
+  font-weight: bold;
+  float: left;
+  margin-left: 15px;
+}
+
+.block-head-title {
+  float: left;
+}
+
+.labGroup-section {
+  position: relative;
+  height: 28px;
+  line-height: 28px;
+  border: 1px solid #d8dce5;
+  display: inline-block;
+  border-radius: 5px;
+  min-width: 447px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.selectLabSubjectGroupName {
+  height: 100%;
+  line-height: 28px;
+  padding: 0 15px;
+  text-align: center;
+  min-width: 100px;
+  max-width: 380px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.labGroup-dropmenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 500px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  box-shadow: 1px 1px 10px 0px #d8dce5;
+  z-index: 50;
+  overflow: auto;
+}
+
+.labGroup-section:hover > .labGroup-dropmenu {
+  display: block;
+}
+
+.labGroup-section.dropmenuHide > .labGroup-dropmenu {
+  display: none;
+}
+
+.dropmenu-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dropmenu-table tr td {
+  vertical-align: top;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.dropmenu-table tr td:first-child {
+  text-align: right;
+}
+
+.dropmenu-table tr td:first-child:after {
+  content: '\E60E';
+  font-family: element-icons !important;
+}
+
+.labGroup-btn.all {
+  margin: 10px auto 0 auto;
+  display: inline-block;
+}
+

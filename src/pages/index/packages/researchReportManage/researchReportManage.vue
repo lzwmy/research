@@ -1,0 +1,251 @@
+<template>
+    <div class="cloud-component researchReportManage">
+        <!-- 搜索区域 -->
+        <div class="cloud-search el-form-item-small">
+            <el-form :inline="true" :model="form">
+                <disease-subjectgroup style="display: inline-block;" @select="changeDiseaseSubjectGroup" width="70px" ref="diseaseSubjectGroup"></disease-subjectgroup>
+                <el-form-item label="时间范围：">
+                    <el-date-picker
+                        v-model="form.time"
+                        type="daterange"
+                        size="mini"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="状态:">
+                    <el-select v-model="form.state" size="mini">
+                        <el-option label="全部" value=""></el-option>
+                        <el-option label="未填写" value="0"></el-option>
+                        <el-option label="已填写" value="1"></el-option>
+                    </el-select>
+                </el-form-item>
+                    
+                <el-form-item>
+                <el-button type="primary" size="mini" @click="getDataList()">查 询</el-button>
+                <el-button @click="reset" size="mini">清 空</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <!--搜索结果-->
+        <div class="cloud-search-list">
+        <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+            <el-table
+            :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
+            :data="dataList.content" style="width: 100%" v-loading="loading"
+            :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe
+            @row-dblclick='toReportFill'>
+                <el-table-column type="index" label="序号" width="60px"></el-table-column>
+                <el-table-column prop="visitDate" label="就诊时间" width="180"></el-table-column>
+                <el-table-column prop="reportName" label="报告名称"></el-table-column>
+                <el-table-column prop="patientName" label="姓名"></el-table-column>
+                <el-table-column prop="genderName" label="性别"></el-table-column>
+                <el-table-column prop="author" label="创建者"></el-table-column>
+                <el-table-column prop="updator" label="更新者"></el-table-column>
+                <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
+                <el-table-column prop="diseaseName" label="病种"></el-table-column>
+                <el-table-column prop="groupName" label="课题组"></el-table-column>
+                <el-table-column label="报告状态" width="120px">
+                    <template slot-scope="scope">
+                        {{scope.row.status==0?'未填写':'已填写'}}
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!-- 分页 -->
+            <pagination :data="dataList" @change="getDataList"></pagination>
+        </echarts-contain>
+        </div>
+    </div>
+</template>
+
+<script>
+import echartsContain from 'components/packages/echartsContain/echartsContain';
+import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
+import pagination from 'components/packages/pagination/pagination';
+import mixins from 'components/mixins';
+import utils from 'components/utils/index';
+import diseaseSubjectgroup from 'components/packages/linkage/diseaseSubjectgroup';
+import 'assets/css/common.less';
+
+export default {
+    name: 'researchReportManage',
+    mixins: [mixins],
+    data () {
+        return {
+        form: {
+            diseaseSubjectGroup: {},
+            time:[],
+            state:""
+        },
+        dataList: {
+            content: []
+        },
+        loading: false,
+        identify:"",
+        paging: {
+                pageNo: 1,
+                pageSize: 10,
+                currentPageNo: '',
+                currentPageSize: '',
+            },
+        emptyText: '',
+        elementLoadingText: ''  
+        };
+    },
+    watch: {},
+    computed: {},
+    created () {
+        let date = new Date().getTime();
+        this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
+        this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
+        this.initPage();
+    },
+     mounted () {
+        this.addEventListenervisibilityChange();
+    },
+    destoryed() {
+        document.removeEventListener(this.visibilityChange)
+    },
+    components: {
+        pagination,
+        echartsContain,
+        diseaseSubjectgroup
+    },
+    methods: {
+        addEventListenervisibilityChange() {
+            let hidden = "";
+            this.visibilityChange = "";
+            if (typeof document.hidden !== "undefined") {
+                hidden = "hidden";
+                this.visibilityChange = "visibilitychange";
+            } else if (typeof document.mozHidden !== "undefined") {
+                hidden = "mozHidden";
+                this.visibilityChange = "mozvisibilitychange";
+            } else if (typeof document.msHidden !== "undefined") {
+                hidden = "msHidden";
+                this.visibilityChange = "msvisibilitychange";
+            } else if (typeof document.webkitHidden !== "undefined") {
+                hidden = "webkitHidden";
+                this.visibilityChange = "webkitvisibilitychange";
+            }
+            document.addEventListener(this.visibilityChange,()=>{
+                if(!document[hidden]) {
+                    this.getDataList();
+                }
+            }, false);
+        },
+        initPage () {
+            this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
+            this.getDataList();
+        }, 
+        async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+            let that = this;
+            that.loading = true;
+            that.paging.currentPageNo = pageNo;
+            that.paging.currentPageSize = pageSize;
+            that.dataList.content = [];
+            let formData = {
+                offset: pageNo,
+                limit: pageSize,
+                args: {
+                    diseaseId: this.form.diseaseSubjectGroup.disease || '',
+                    subjectId: this.form.diseaseSubjectGroup.subject || '',
+                    groupId: this.form.diseaseSubjectGroup.group || '',
+                    crfId: "",
+                    patientName: "",
+                    startTime: this.form.time?this.form.time[0].split("-").join(''):null,
+                    endTime: this.form.time?this.form.time[1].split("-").join(''):null,
+                    status: this.form.state
+                }
+            };
+            try {
+                let res = await that.$http.RRMgetDataList(formData);
+                if (res.code == '0') {
+                    let obj = {};
+                    obj.content = res.data.args;
+                    obj.pageNo = pageNo;
+                    obj.pageSize = pageSize;
+                    obj.totalCount = parseInt(res.data.totalElements);
+                    obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
+                    that.dataList = obj;
+                }else {
+                    this.$mes('error', res.msg);
+                }
+                that.loading = false;
+            } catch (err) {
+                that.loading = false;
+                console.log(err)
+            }
+        },
+        changeDiseaseSubjectGroup (data) {
+            this.form.diseaseSubjectGroup = data;
+        },
+        reset () {
+            this.form = {
+                diseaseSubjectGroup: {},
+                time:[],
+                state:""
+            }
+            let date = new Date().getTime();
+            this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
+            this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
+            this.$refs.diseaseSubjectGroup.ruleForm.disease = '';
+        },
+        toReportFill(row) {
+          this.getIdentify(row.patientId)
+          .then( ()=>{
+            let that = this;
+            let urlParameter={
+                cacheData: false,
+                formId: row.crfId || "",
+                reportId: row.id || '',
+                groupId: row.groupId || "",
+                subjectId: row.subjectId || "",
+                diseaseId: row.diseaseId || "",
+                patientName: row.patientName || "",
+                patientId: row.patientId || "",
+                identify: this.identify || "",
+                from: "caseManage",
+                diseaseName: row.diseaseName || "",
+                subjectName: row.subjectName || "",
+                groupName: row.groupName || "",
+                title: row.reportName,
+                isModify:"displayShow"
+            }
+            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+            window.open('./patientForm.html');
+          })
+        },
+        //获取身份证号
+        async getIdentify(patientId) {
+          let formData = {
+            patientId: patientId
+          }
+            try {
+                let res = await this.$http.casesSearchPatient(formData);
+                if (res.code == 0) {
+                    this.identify = res.data.identitycardno || "";
+                }else {
+                    this.$mes('error', "获取基本信息失败!");
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+    },
+    beforeRouteEnter (to, from, next) {
+        next();
+    },
+    beforeRouteLeave (to, from, next) {
+        next();
+    }
+};
+</script>
+
+<style lang="less">
+    
+</style>
+
+

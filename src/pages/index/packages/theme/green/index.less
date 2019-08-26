@@ -1,0 +1,1143 @@
+body.theme-green {
+  ::selection {
+    background: #00b385;
+    color: #fff;
+  }
+
+  ::-moz-selection {
+    background: #00b385;
+    color: #fff;
+  }
+
+  ::-webkit-selection {
+    background: #00b385;
+    color: #fff;
+  }
+
+  /*scrollbar滚动轴修改*/
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.3);
+    border-radius: 10px;
+    background-color: #f5f5f5;
+  }
+
+  ::-webkit-scrollbar {
+    height: 9px;
+    width: 8px;
+    background-color: #f5f5f5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .cloud-search {
+    position: relative;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #d8dde3;
+  }
+
+  .dataReport-search {
+    position: relative;
+    border-right: 1px solid #d8dde3;
+    border-bottom: 1px solid #d8dde3;
+  }
+
+  .dataReport-detail {
+    position: relative;
+    overflow: hidden;
+    /*border:1px solid #d8dde3;*/
+    /*border-top:none;*/
+  }
+
+  .dataReport-search .el-form-item, .dataReport-detail .el-form-item {
+    margin-bottom: 0px;
+  }
+
+  .dataReport-search .el-form-item.lastFormItem {
+    border-right: 1px solid #d8dde3;
+  }
+
+  .dataReport-search .el-form-item__label, .dataReport-detail .el-form-item__label {
+    text-align: center;
+    border-left: 1px solid #d8dde3;
+    border-right: 1px solid #d8dde3;
+    /*width:130px!important;*/
+    background-color: #eff3f6;
+  }
+
+  .dataReport-detail .el-form-item:nth-child(3n+1) .el-form-item__label {
+    border-left: none !important;
+  }
+
+  .dataReport-search .el-form-item__content, .dataReport-detail .el-form-item__content {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .dataReport-search .el-form--inline .el-form-item {
+    margin-right: 0px;
+  }
+
+  .dataReport-search .buttonGroup {
+    margin-left: 50px;
+  }
+
+  .dataReport-list .bigContain {
+    margin-bottom: 0px !important;
+    border-top: none !important;
+    border-bottom: none !important;
+  }
+
+  .cloud-search-list {
+    padding: 10px 0 0;
+  }
+
+  .cloud-pagination {
+    background: #eff3f6;
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #d8dde3;
+    border-top: none;
+  }
+
+  .cloud-pagination__page {
+    /*float: left;*/
+    display: inline-block;
+    line-height: 32px;
+    padding-left: 20px;
+    color: #48576a
+  }
+
+  .el-button--add {
+    position: absolute;
+    right: 0;
+    bottom: 3px
+  }
+
+  .form-line {
+    border: 1px solid #d8dde3;
+    border-top: none;
+  }
+
+  .form-item-33 .el-form-item {
+    width: 33%;
+    margin-right: 0;
+  }
+
+  .cloud-section .el-form {
+    /*padding-left: 9%;*/
+    width: 69%
+  }
+
+  .cloud-section .el-form.form-item-33 {
+    width: 100%;
+  }
+
+  .cloud-section .el-form.form-item-100 {
+    padding-right: 9%;
+    width: 100%;
+  }
+
+  .cloud-section .el-form-item.form-item-100 {
+    padding-right: 9%;
+    width: 100%;
+  }
+
+  .cloud-search .el-form-item.form-item-100 {
+    padding-right: 9%;
+    width: 100%;
+  }
+
+  .form-item-50 .el-form-item {
+    width: 50%;
+    margin-right: 0;
+    float: left
+  }
+
+  .form-item-50 .el-form-item:nth-child(2) {
+    float: right;
+  }
+
+  .form-item-50 .form-width-auto {
+    width: auto;
+    float: none;
+  }
+
+  .form-item-50 .form-width-100 {
+    width: 100%
+  }
+
+  .form-item-50 .form-width-100 .el-form-item__content {
+    width: 80%
+  }
+
+  .form-item-area .el-form-item:last-child {
+    width: 100%
+  }
+
+  .form-item-100 .el-form-item {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .cloud-title h3 {
+    font-size: 14px;
+    font-weight: normal;
+    padding: 0 0 7px 20px;
+    display: inline-block;
+  }
+
+  .cloud-section-title {
+    border-top: 1px solid #e5e8ec;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+
+  .cloud-section-title > i {
+    background: #eafcf7;
+    color: #1bd0a1;
+    line-height: 31px;
+    display: inline-block;
+    padding: 0 30px 0 20px;
+  }
+
+  .cloud-submit {
+    text-align: center;
+    margin: auto;
+    width: 100% !important;
+    margin-top: 10px;
+  }
+
+  .cloud-submit .el-button + .el-button {
+    margin-left: 50px
+  }
+
+  .cloud-detail {
+    padding: 10px 15px;
+  }
+
+  .cloud-detail-box {
+    position: relative;
+  }
+
+  .cloud-component {
+    padding: 10px 15px;
+    position: relative;
+  }
+
+  .el-table .view {
+    color: #1bd0a1;
+    cursor: pointer;
+  }
+
+  .cloud-section {
+    padding-bottom: 5px;
+    position: relative;
+  }
+
+  .cloud-section-pic {
+    position: absolute;
+    right: 20%;
+    top: 47px;
+    width: 103px;
+    height: 103px
+  }
+
+  .el-area.el-form--inline .el-form-item {
+    margin-right: 10px;
+  }
+
+  .cloud-component .combination {
+    position: fixed;
+    bottom: 0;
+    top: 166px;
+    width: 200px;
+    overflow: auto;
+    z-index: 10
+  }
+
+  .region-org {
+    text-align: center;
+    width: 276px;
+  }
+
+  .combination-img {
+    position: absolute;
+    top: 45px;
+    left: 70%;
+  }
+
+  .region-org .el-upload-list--picture-card .el-icon-delete2,
+  .region-org .el-upload-list--picture-card .el-upload-list__item-status-label {
+    display: none
+  }
+
+  .region-org .el-upload-list--picture-card .el-upload-list__item:last-child {
+    display: block;
+  }
+
+  .region-org .el-upload-list__item.is-success .el-upload-list__item-status-label,
+  .region-org .el-upload-list__item.is-success .el-upload-list__item-preview,
+  .region-org .el-upload-list__item.is-success .el-upload-list__item-delete {
+    display: none !important
+  }
+
+  .region-org .el-upload-list--picture-card .el-upload-list__item {
+    width: 240px;
+    height: 185px;
+    border: 1px #d8dce5 dashed;
+  }
+
+  .region-org .el-upload--picture-card {
+    display: block !important;
+    border: none;
+    width: auto;
+    height: auto;
+    line-height: normal;
+  }
+
+  .region-org .el-upload-list--picture-card {
+    width: 240px;
+    height: 185px;
+    overflow: hidden;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .region-org .el-upload--picture-card .el-button {
+    margin: 0 auto;
+  }
+
+  .region-org .el-upload__tip {
+    margin-top: 4px
+  }
+
+  .region-org .el-upload-list--picture-card .el-upload-list__item-actions:hover {
+    opacity: 0;
+    display: none;
+  }
+
+  .el-form-item__content_text {
+    position: absolute;
+    left: 193px;
+    top: 1px;
+    display: block;
+    width: 120px;
+  }
+
+  .el-date-editor .el-input__icon {
+    position: absolute;
+    width: 25px;
+    height: 100%;
+    right: 5px;
+    top: 0;
+    text-align: center;
+    color: #d8dde3;
+    transition: all .3s;
+  }
+
+  .el-input__icon.el-icon-circle-close {
+    right: 5px !important;
+  }
+
+  .el-input.is-disabled .el-input__icon.el-icon-circle-close {
+    display: none;
+  }
+
+  .el-date-editor .el-input__inner {
+    z-index: 2;
+    position: relative;
+    background-color: transparent !important;
+  }
+
+  .el-input__suffix-inner .el-icon-circle-close:before {
+    position: relative;
+    z-index: 3;
+  }
+
+  .el-icon-date {
+    position: absolute;
+    width: 25px;
+    height: 100%;
+    right: -22px !important;
+    top: 0;
+    text-align: center;
+    color: #d8dde3;
+    transition: all .3s;
+  }
+
+  .el-icon-time {
+    position: absolute;
+    width: 25px;
+    height: 100%;
+    right: -22px !important;
+    top: 0;
+    text-align: center;
+    color: #d8dde3;
+    transition: all .3s;
+  }
+
+  .el-dropdown-menu {
+    overflow-y: auto;
+    max-height: 550px;
+  }
+
+  .detail-table {
+    border: 1px solid #d8dde3;
+    color: #595959;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .nodata .el-table__body-wrapper.is-scroll-left {
+    overflow: hidden;
+  }
+
+  /*ie的element表格有数据的时候横向有滚动轴*/
+  //.el-table__body-wrapper {
+  //  overflow-x: hidden;
+  //}
+
+  .el-form .el-form-item .el-input {
+    width: 140px;
+  }
+
+  .el-form .el-form-item .el-input.el-date-editor--date {
+    width: 130px;
+  }
+
+  .cloud-detail .el-form .el-form-item .el-input {
+    width: 145px;
+  }
+
+  [class^='icon-'], [class^=' icon-'] {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+  }
+
+  .icon {cursor:pointer};
+
+  .icon-jinyong {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-jinyong.png) no-repeat center center;
+  }
+
+  .icon-jinyong:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-jinyong2.png) no-repeat center center;
+  }
+
+  .icon-stop {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-stop.png) no-repeat center center;
+  }
+
+  .icon-stop:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-stop2.png) no-repeat center center;
+  }
+
+  .icon-delete {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-delete.png) no-repeat center center;
+  }
+
+  .icon-delete:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-delete2.png) no-repeat center center;
+  }
+
+  .icon-check {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-check.png) no-repeat center center;
+  }
+
+  .icon-check:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-check2.png) no-repeat center center;
+  }
+
+  .icon-huishou {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-huishou.png) no-repeat center center;
+  }
+
+  .icon-huishou:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-huishou2.png) no-repeat center center;
+  }
+
+  .icon-chongzhimima {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-chongzhimima.png) no-repeat center center;
+  }
+
+  .icon-chongzhimima:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-chongzhimima2.png) no-repeat center center;
+  }
+
+  .icon-weizhi {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-weizhi.png) no-repeat center center;
+  }
+
+  .icon-weizhi:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-weizhi2.png) no-repeat center center;
+  }
+
+  .icon-fabu {
+    background: url(../../../images/icon-fabu.png) no-repeat center center;
+  }
+
+  .icon-fabu:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-fabu.png) no-repeat center center;
+  }
+
+  .icon-xiazai {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-xiazai.png) no-repeat center center;
+  }
+
+  .icon-xiazai:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-xiazai2.png) no-repeat center center;
+  }
+
+  .icon-liebiao {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-liebiao.png) no-repeat center center;
+  }
+
+  .icon-liebiao:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-liebiao2.png) no-repeat center center;
+  }
+
+  .icon-cuo {
+    background-image: url(../../../images/icon-cuo.png) !important;
+    background-repeat: no-repeat !important;
+    cursor: pointer;
+  }
+
+  .icon-cuo:hover {
+    background-image: url(../../../images/icon-cuo2.png) !important;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+
+  .icon-qiyong {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-qiyong.png) no-repeat center center;
+  }
+
+  .icon-qiyong:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-qiyong2.png) no-repeat center center;
+  }
+
+  .icon-member {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-member.png) no-repeat center center;
+  }
+
+  .icon-member:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-member2.png) no-repeat center center;
+  }
+
+  .icon-editCard {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/editCard.png) no-repeat center center;
+  }
+
+  .icon-editCard:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/editCard2.png) no-repeat center center;
+  }
+
+  .icon-zhuye {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/zhuye.png) no-repeat center center;
+  }
+
+  .icon-zhuye:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/zhuye2.png) no-repeat center center;
+  }
+
+  .icon-zhuyekaiqi {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/zhuye.png) no-repeat center center;
+  }
+
+  .icon-zhuyekaiqi:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/zhuye2.png) no-repeat center center;
+  }
+
+  .icon-zhuyeguanbi {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/zhuye2.png) no-repeat center center;
+  }
+
+  .icon-zhuyeguanbi:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/zhuye.png) no-repeat center center;
+  }
+
+  .icon-bangding {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-bangding.png) no-repeat center center;
+  }
+
+  .icon-bangding:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/icon-bangding2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-fenpeiquanxian {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background-size: contain;
+    background: url(../../../images/icon-fenpeiquanxian.png) no-repeat center center;
+  }
+
+  .icon-fenpeiquanxian:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/icon-fenpeiquanxian2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-edit {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/icon-edit.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-edit:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/icon-edit2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-chexiao {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/icon-chexiao.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-chexiao:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/icon-chexiao2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-add {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/add.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-add:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/add2.png) no-repeat center center;
+    background-size: contain;
+
+  }
+
+  .icon-addWhile {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/whileList.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-addWhile:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/whileList2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-addBlack {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/blackList.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-addBlack:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/blackList2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-save {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/save.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-save:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/save2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-openaccess {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/openaccess.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-openaccess:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/openaccess2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-unaccess {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/unaccess.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-unaccess:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/unaccess2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-view {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/view.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-view:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/view2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-open {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/open.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-open:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/open2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-close {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/close.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .icon-close:hover {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: url(../../../images/close2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .el-icon-back:before {
+    content: '';
+    width: 14px;
+    height: 15px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    background: url(../../../images/icon-back.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .el-button:hover .el-icon-back:before {
+    background: url(../../../images/icon-back2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .el-icon-zhedie:before {
+    content: '';
+    width: 14px;
+    height: 15px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    background: url(../../../images/zhedie.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .el-button:hover .el-icon-zhedie:before {
+    background: url(../../../images/zhedie2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .el-icon-zhankai:before {
+    content: '';
+    width: 14px;
+    height: 15px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    background: url(../../../images/zhankai.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .el-button:hover .el-icon-zhankai:before {
+    background: url(../../../images/zhankai2.png) no-repeat center center;
+    background-size: contain;
+  }
+
+  .el-tree .el-tree-node {
+    margin-bottom: 6px;
+  }
+
+  .cloud-section-title .el-button:focus, .cloud-section-title .el-button:hover {
+    background-color: #ffffff;
+  }
+
+  .cloud-section-title .el-button span:focus {
+    color: #5a5e66 !important;
+  }
+
+  .cloud-section-title .el-button--text:focus {
+    color: #5a5e66;
+  }
+
+  .cloud-section-title .el-button--text:hover {
+    color: #1bd0a1;
+  }
+
+  .el-form-item__error {
+    min-width: 140%;
+  }
+
+  .el-table .el-button--small, .el-button--small.is-round {
+    padding: 0px 0px;
+  }
+
+  .el-table td, .el-table th {
+    height: 43px;
+  }
+
+  /*.el-table tr td:last-child .cell{*/
+  /*overflow: visible;*/
+  /*}*/
+  /*.el-table [class*=" el-icon-"], [class^=el-icon-]{*/
+  /*position: relative;*/
+  /*}*/
+  /*.el-table [class*=" el-icon-"], [class^=el-icon-]:hover::after {*/
+  /*!*取到data-title属性的值*!*/
+  /*content: attr(data-title);*/
+  /*display: inline-block;*/
+  /*padding: 5px;*/
+  /*border: 1px solid #d8dce5;*/
+  /*border-radius: 3px;*/
+  /*position: absolute;*/
+  /*top: 32px;*/
+  /*left:-4px;*/
+  /*z-index: 1;*/
+  /*background: #fff;*/
+  /*font-size: 12px;*/
+  /*visibility: visible;*/
+  /*}*/
+
+  /*dialog样式修改*/
+  .el-dialog__header {
+    background-color: #1bd0a1;
+  }
+
+  .el-dialog__title {
+    color: #fff;
+    font-size: 15px;
+  }
+
+  .el-dialog__headerbtn .el-dialog__close {
+    color: #fff;
+  }
+
+  .el-dialog__headerbtn .el-dialog__close:hover {
+    color: #fff;
+  }
+
+  /*修改数据为空显示颜色*/
+  .el-table__empty-text, .el-tree__empty-text {
+    color: #f92 !important;
+  }
+
+  /*重置菜单背景颜色*/
+  .el-menu-box .el-menu {
+    background-color: transparent !important;
+  }
+
+  .el-menu-box .el-submenu__title {
+    background: transparent !important;
+  }
+
+  .el-menu-box .el-menu-item-group > ul {
+    background: transparent !important;
+  }
+
+  .errorColor {
+    color: #f92
+  }
+
+  /*将message-box的z-index为最顶层*/
+  .el-message-box__wrapper {
+    z-index: 100000 !important;
+  }
+  .el-message-box .el-message-box__input{
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  /*将message的notice的z-index为最顶层*/
+  .el-message.el-message--info {
+    z-index: 100000 !important;
+  }
+
+  .block-head {
+    width: 100%;
+    border-left: 4px solid #1bd0a1;
+    padding-left: 10px;
+    height: 25px;
+    line-height: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .block-head-title {
+    color: #444444;
+    font-size: 16px;
+    margin-right: 20px;
+  }
+
+  .el-dialog {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    -webkit-transform: translate(-50%, -50%) !important;
+    -moz-transform: translate(-50%, -50%) !important;
+    -o-transform: translate(-50%, -50%) !important;
+    -ms-transform: translate(-50%, -50%) !important;
+  }
+  .table-title {
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    background: #f5f7fa;
+    border: 1px solid #e6ebf5;
+    border-bottom: none;
+    border-top: 2px solid #1bd0a1;
+  }
+  .common-table {
+    width: 100%;
+    font-size: 15px;
+    border-collapse: collapse;
+    border: 1px solid #e9eaec;
+    border-top:2px solid #00d1a0;
+  }
+
+  .common-table th {
+    padding: 10px 5px 10px 15px;
+    text-align: left;
+    background: #f9f9f9;
+    color: #585858;
+    font-size: 16px;
+  }
+
+  .table-thead table {
+    border-bottom: none !important;
+  }
+  .table-thead th {
+    border-bottom: 1px solid #e9eaec;
+  }
+
+  .table-thead,.table-tbody {
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .table-tbody .common-table {
+    border-top: none !important;
+  }
+  .table-tbody .common-table tbody tr:first-child td {
+    border-top: none !important;
+  }
+
+  // 修改tab页的选中和没选中的状态背景颜色
+  .el-tabs__item{
+    height: 35px;
+    line-height: 35px;
+    background: #f0f2f5;
+  }
+  .el-tabs__item.is-active{
+    background: #fff;
+  }
+
+  // 修改.el-tooltip__popper的最大宽度和换行
+  .el-tooltip__popper{
+    max-width: 95%;
+    word-wrap: break-word;
+  }
+}

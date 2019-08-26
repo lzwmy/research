@@ -1,0 +1,384 @@
+@charset "utf-8";
+/*报告*/
+.report_view_container{
+  background-color: #F7F8FC;
+}
+.report_view_container .report_container .report_title{
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #63666E;
+}
+/*单页*/
+.displayPage_container .display_title{
+  font-size: 18px;
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  //background-color: #ddd;
+  margin: 5px 0;
+  padding-left: 15px;
+  text-align: center;
+}
+.displayPage_container .displayPage_box{
+  //margin-left: 45px;
+}
+/*小节*/
+.displayPortion_container{
+
+}
+
+.displayPortion_container .displayPortion_title{
+  width: 100%;
+  font-size: 14px;
+  height: 30px;
+  line-height: 30px;
+  background-color: #ddd;
+  padding-left: 15px;
+}
+.displayPortion_container .displayPortion_box{
+  margin-left: 30px;
+}
+.displayPortion_container .displayPortion_box .view_container{
+  padding: 10px 15px 10px 0;
+}
+
+
+/*集合表格左右排列隐藏*/
+.displayPortion_box .view_container .view_container_tlr .table_label{
+  .SINGLE_COMBOX .SINGLE_COMBOX_title{
+    display: none;
+  }
+  .SINGLE_INPUT .SINGLE_INPUT_title{
+    display: none;
+  }
+  .DATE .DATE_title{
+    display: none;
+  }
+}
+.displayPortion_box .view_container .view_container_tlr{
+  //margin-left: 60px;
+}
+
+/*表格左右隐藏*/
+.view_container_tlr .table_label{
+  vertical-align: middle;
+  font-size:14px;
+  .LABEL_view_box{
+    width: 188px;
+  }
+  .DATE .DATE_title{
+    display:none;
+  }
+  .LABEL .LABEL_title{
+    display: none;
+  }
+}
+/*表格上下*/
+.view_container_tud .view_box{
+  .RADIO_BUTTON_box{
+   min-width: 165px !important;
+  }
+  .RADIO_BUTTON_box .el-radio-group{
+    min-width: 165px !important;
+  }
+  .CHECKBOX_box{
+   min-width: 164px !important;
+  }
+  .CHECKBOX_box .el-checkbox-group{
+    min-width: 164px !important;
+  }
+}
+
+/*集合左右*/
+.gather_column{
+  .CHECKBOX_box{
+    width: 164px !important;
+  }
+  .RADIO_BUTTON_box{
+    width: 164px !important;
+  }
+}
+/*条目*/
+//gatherColumn css
+.gather_column{
+  display: table-cell;
+}
+//checkBox css
+.CHECKBOX {
+}
+.CHECKBOX .CHECKBOX_title {
+  width: 188px;
+  display: table-cell;
+  vertical-align: middle;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.CHECKBOX .CHECKBOX_box {
+  min-width: 164px;
+  max-width: 800px;
+  display: table-cell;
+}
+.CHECKBOX .CHECKBOX_box .el-checkbox-group {
+  min-width: 164px;
+  max-width: 800px;
+}
+.CHECKBOX .CHECKBOX_box .el-checkbox-group .el-checkbox {
+  margin-right: 10px;
+  margin-left: 0;
+}
+.CHECKBOX .CHECKBOX_empty {
+  min-width: 24px;
+  display: table-cell;
+  color: #3c81f0;
+  cursor: pointer;
+  vertical-align: middle;
+}
+//comBox css
+.SINGLE_COMBOX {
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_title {
+  width: 188px;
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_box {
+  width: 188px;
+  display: table-cell;
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_box .el-input {
+  width: 188px;
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_box .el-input .el-input__inner {
+  width: 188px;
+}
+//Date css
+.DATE {
+}
+.DATE .DATE_title {
+  width: 188px;
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.DATE .DATE_box {
+  width: 188px;
+  display: table-cell;
+}
+.DATE .DATE_box .el-input .el-input__inner {
+  width: 188px;
+}
+//DateTime css
+.DATE_TIME {
+}
+.DATE_TIME .DATE_TIME_title {
+  display: table-cell;
+  width: 188px;
+  font-size: 14px;
+  /*padding-left: 1%;*/
+}
+.DATE_TIME .DATE_TIME_box {
+  width: 188px;
+  display: table-cell;
+}
+.DATE_TIME .DATE_TIME_box .el-input .el-input__inner {
+  width: 188px;
+}
+//gather
+.iconGray{
+  color:gray
+}
+.GATHER_bg_color{
+  background-color: rgb(247, 248, 252);
+}
+//input css
+.SINGLE_INPUT {
+}
+.SINGLE_INPUT .SINGLE_INPUT_title {
+  width: 188px;
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+  /*vertical-align: middle;*/
+}
+.SINGLE_INPUT .SINGLE_INPUT_box {
+  /* width: 188px; */
+  display: table-cell;
+  /*vertical-align: middle;*/
+}
+.SINGLE_INPUT .SINGLE_INPUT_box .el-input {
+   min-width: 188px;
+}
+.SINGLE_INPUT .SINGLE_INPUT_box .el-input .el-input__inner {
+  /* width: 188px; */
+}
+//label css
+.LABEL_view_box{
+  min-height: 22px;
+}
+.LABEL{
+
+}
+.LABEL .LABEL_title{
+  width: 200px;
+  display:table-cell;
+  /*padding-left: 1%;*/
+  vertical-align: middle;
+  font-size: 14px;
+}
+.LABEL .LABEL_box{
+  width: 188px;
+  display:table-cell;
+}
+.LABEL .LABEL_Image_box{
+  display: table-cell;
+  vertical-align: top;
+}
+//mutiCombox css
+.MULTI_COMBOX {
+}
+.MULTI_COMBOX .MULTI_COMBOX_title {
+  width: 188px;
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.MULTI_COMBOX .MULTI_COMBOX_box {
+  width: 188px;
+  display: table-cell;
+}
+.MULTI_COMBOX .MULTI_COMBOX_box .el-input .el-input__inner {
+  width: 188px;
+}
+//mutiInput
+.MULTI_INPUT {
+}
+.MULTI_INPUT .MULTI_INPUT_title {
+  width: 188px;
+  display: table-cell;
+  vertical-align: middle;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.MULTI_INPUT .MULTI_INPUT_box {
+  display: table-cell;
+}
+//radio css
+.RADIO_BUTTON {
+}
+.RADIO_BUTTON .RADIO_BUTTON_title {
+  width: 188px;
+  display: table-cell;
+  font-size: 14px;
+  vertical-align: middle;
+  /*padding-left: 1%;*/
+}
+.RADIO_BUTTON .RADIO_BUTTON_box {
+  min-width: 164px;
+  max-width: 800px;
+  display: table-cell;
+}
+.RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group {
+  min-width: 164px;
+  max-width: 800px;
+}
+.RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group .el-radio {
+  margin-right: 10px;
+  margin-left: 0;
+}
+.RADIO_BUTTON .RADIO_BUTTON_empty {
+  min-width: 24px;
+  display: table-cell;
+  color: #3c81f0;
+  cursor: pointer;
+  vertical-align: middle;
+}
+//tableRow css
+.table_label {
+  background-color: #f7f8fc;
+  margin-bottom: 2px;
+  min-height: 38px;
+  border: 1px solid #dee2e5;
+  display: table-cell;
+  width: 190px;
+}
+.arrangement_lr .table_label{
+  border:none;
+  padding: 1px 0;
+}
+//tableRow2 css
+.view_container_tud .table_label {
+  background-color: #f7f8fc;
+  margin-bottom: 2px;
+  min-height: 38px;
+  border: 1px solid #dee2e5;
+  display: table-cell;
+  width: 190px;
+}
+//numberInput css
+.NUMBER_INPUT{
+
+}
+.NUMBER_INPUT .NUMBER_INPUT_title{
+  width: 188px;
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box{
+  min-width: 188px;
+  display: table-cell;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_number{
+  width: 84px;
+  display: table-cell;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_unitName{
+  display: table-cell;
+  padding-left: 1%;
+  min-width: 104px;
+  font-size: 13px;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_select{
+  width: 104px;
+  display: table-cell;
+  padding-left: 1%;
+}
+
+
+/*公共 || 替换*/
+body.theme-blue .el-radio__label{
+  font-size:14px;
+}
+.line_blockDate{
+  display: inline !important;
+}
+.line_blockDate .el-form-item__label{
+  min-width: 100px !important;
+}
+.show_column .el-select__tags{
+  max-width: 100% !important;
+}
+.dialogHeightSet .el-dialog__body{
+  height: 474px;
+}
+body.theme-blue .research_body_container .tree_style .el-tree{
+  display: inline-block;
+  width: auto;
+}
+body.theme-blue .research_body_container .tree_style .el-tree__empty-text{
+ width: 50px;
+  left: 0;
+  transform: translate(100%,-50%);
+}
+body.theme-blue .patient_form_container .binding-box{
+  top: 0;
+}
+body.theme-blue .slider_box .el-slider__runway .el-slider__marks .el-slider__marks-text{
+  margin-top: 6px;
+}
+body.theme-blue .slider_box .el-slider__runway .el-slider__marks .el-slider__marks-text:last-child{
+  width: 15%;
+}

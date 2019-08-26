@@ -1,0 +1,21 @@
+{
+  "presets": [
+     ["es2015", { "modules": false }],
+     "stage-2"
+  ],
+  "plugins": ["transform-runtime","transform-vue-jsx",["component", [
+    {
+      "libraryName": "element-ui",
+      "styleLibraryName": ""
+    }
+  ]]],
+  "comments": false,
+  "env": {
+    "test": {
+      "presets": ["env", "stage-2"],
+      "plugins": [ "istanbul" ]
+    }
+  }
+}
+
+

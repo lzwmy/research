@@ -1,0 +1,342 @@
+[
+  {
+    "ICO": "",
+    "MENU_LEVEL": "1",
+    "SUPERIOR_MENU": "00",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "标准化管理平台",
+    "MENU_ORDER": "1",
+    "MENU_PATH": "",
+    "MENU_CODE": "01"
+  },
+  {
+    "ICO": "regionManager",
+    "MENU_LEVEL": "2",
+    "SUPERIOR_MENU": "01",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "行政区划",
+    "MENU_ORDER": "1",
+    "MENU_PATH": "",
+    "MENU_CODE": "0101"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0101",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "版本管理",
+    "MENU_ORDER": "1",
+    "MENU_PATH": "/tb_admindivisionVersion",
+    "MENU_CODE": "010101"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0101",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "行政区域",
+    "MENU_ORDER": "2",
+    "MENU_PATH": "/tb_admindivision",
+    "MENU_CODE": "010102"
+  },
+  {
+    "ICO": "standardization",
+    "MENU_LEVEL": "2",
+    "SUPERIOR_MENU": "01",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "通用标准",
+    "MENU_ORDER": "2",
+    "MENU_PATH": "",
+    "MENU_CODE": "0102"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "通用标准管理",
+    "MENU_ORDER": "1",
+    "MENU_PATH": "/generalStandard",
+    "MENU_CODE": "010201"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "值域版本管理",
+    "MENU_ORDER": "2",
+    "MENU_PATH": "/rangeCodeVersion",
+    "MENU_CODE": "010202"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "值域管理",
+    "MENU_ORDER": "3",
+    "MENU_PATH": "/rangeCode",
+    "MENU_CODE": "010203"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "数据元版本管理",
+    "MENU_ORDER": "4",
+    "MENU_PATH": "/metadataVersion",
+    "MENU_CODE": "010204"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "数据元管理",
+    "MENU_ORDER": "5",
+    "MENU_PATH": "/metadata",
+    "MENU_CODE": "010205"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "数据集版本管理",
+    "MENU_ORDER": "6",
+    "MENU_PATH": "/dataSetVersion",
+    "MENU_CODE": "010206"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "数据集管理",
+    "MENU_ORDER": "7",
+    "MENU_PATH": "/dataSet",
+    "MENU_CODE": "010207"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "卫生术语管理",
+    "MENU_ORDER": "8",
+    "MENU_PATH": "/healthTerm",
+    "MENU_CODE": "010208"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0102",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "接口规范管理",
+    "MENU_ORDER": "9",
+    "MENU_PATH": "/interfaceSpecification",
+    "MENU_CODE": "010209"
+  },
+  {
+    "ICO": "catalogManager",
+    "MENU_LEVEL": "2",
+    "SUPERIOR_MENU": "01",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "医疗资源",
+    "MENU_ORDER": "3",
+    "MENU_PATH": "",
+    "MENU_CODE": "0103"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "药品字典",
+    "MENU_ORDER": "1",
+    "MENU_PATH": "/medication",
+    "MENU_CODE": "010301"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "药品字典对照",
+    "MENU_ORDER": "2",
+    "MENU_PATH": "/medicationContrast",
+    "MENU_CODE": "010302"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "材料字典",
+    "MENU_ORDER": "3",
+    "MENU_PATH": "/material",
+    "MENU_CODE": "010303"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "材料字典对照",
+    "MENU_ORDER": "4",
+    "MENU_PATH": "/materialsContrast",
+    "MENU_CODE": "010304"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "诊断知识库",
+    "MENU_ORDER": "5",
+    "MENU_PATH": "/diagnosticDirectory",
+    "MENU_CODE": "010305"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "诊断知识库对照",
+    "MENU_ORDER": "6",
+    "MENU_PATH": "/diagnosesContrast",
+    "MENU_CODE": "010306"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "手术知识库",
+    "MENU_ORDER": "7",
+    "MENU_PATH": "/operation",
+    "MENU_CODE": "010307"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "手术知识库对照",
+    "MENU_ORDER": "8",
+    "MENU_PATH": "/operationContrast",
+    "MENU_CODE": "010308"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "检查项目字典",
+    "MENU_ORDER": "9",
+    "MENU_PATH": "/inspection",
+    "MENU_CODE": "010309"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "检查项目字典对照",
+    "MENU_ORDER": "10",
+    "MENU_PATH": "/inspectionContrast",
+    "MENU_CODE": "010310"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "检验项目字典",
+    "MENU_ORDER": "11",
+    "MENU_PATH": "/examination",
+    "MENU_CODE": "010311"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "检验项目字典对照",
+    "MENU_ORDER": "12",
+    "MENU_PATH": "/examinationContrast",
+    "MENU_CODE": "010312"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "科室字典",
+    "MENU_ORDER": "13",
+    "MENU_PATH": "/centerDepartment",
+    "MENU_CODE": "010313"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "科室字典对照",
+    "MENU_ORDER": "14",
+    "MENU_PATH": "/departmentContrast",
+    "MENU_CODE": "010314"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "通用字典",
+    "MENU_ORDER": "15",
+    "MENU_PATH": "/generalDictionary",
+    "MENU_CODE": "010315"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "通用字典对照",
+    "MENU_ORDER": "16",
+    "MENU_PATH": "/generalDictionaryContrast",
+    "MENU_CODE": "010316"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0103",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "对照管理",
+    "MENU_ORDER": "17",
+    "MENU_PATH": "/contrastManagement",
+    "MENU_CODE": "010317"
+  },
+  {
+    "ICO": "recycleBin",
+    "MENU_LEVEL": "2",
+    "SUPERIOR_MENU": "01",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "回收站",
+    "MENU_ORDER": "5",
+    "MENU_PATH": "",
+    "MENU_CODE": "0105"
+  },
+  {
+    "ICO": "",
+    "MENU_LEVEL": "3",
+    "SUPERIOR_MENU": "0105",
+    "OPEN_MODE": "0",
+    "MENU_NAME": "停用标准",
+    "MENU_ORDER": "1",
+    "MENU_PATH": "/disableStandard",
+    "MENU_CODE": "010501"
+  },
+]

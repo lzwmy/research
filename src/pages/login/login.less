@@ -1,0 +1,419 @@
+/*scrollbar滚动轴修改*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.clearb {
+  clear: both;
+}
+
+.clearfix:after {
+  display: block;
+  content: '';
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.clearfix {
+  display: block;
+  *zoom: 1;
+}
+
+.loginmain {
+  float: left;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.loginmaincon {
+  margin: 0 auto;
+  width: 80%;
+  height: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+}
+
+.loginmainbox {
+  background: #fff;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  padding-bottom: 2%;
+  padding: 25px;
+  width: 360px;
+  box-sizing: border-box;
+  float: right;
+}
+
+.logintitle {
+  width: 100%;
+  color: #fff;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  position: relative;
+}
+
+.logintitle h1 {
+  color: #434343;
+  margin: 0;
+  padding: 2% 0 0 0;
+  width: 100%;
+  font: 18px "Microsoft YaHei";
+  margin-bottom: 25px;
+}
+
+.logintitle em {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #ff9c00;
+  height: 2px;
+  width: 40px;
+}
+
+.logincon {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.loginname {
+  float: left;
+  font: 135%/3.2 "Microsoft YaHei";
+  color: #444;
+  width: 45px;
+  height: 32px;
+  position: absolute;
+  left: 0;
+  top: 14px;
+  border-right: 1px dotted #aaaaaa;
+  z-index: 2
+}
+
+.loginname.letp {
+  letter-spacing: 5px;
+}
+
+.loginname.user {
+  background: url("./images/icon-user.png") no-repeat center center;
+}
+
+.loginname.password {
+  background: url("./images/icon-password.png") no-repeat center center;
+}
+
+.logininput {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  color: #111;
+  height: 45px;
+  padding: 0 2%;
+  border: 1px solid #b1dfee;
+  font: 15px/2.6 "Microsoft YaHei";
+  background: #fff;
+  z-index: 1;
+  margin: 7.5px 0;
+  position: relative;
+  padding-left: 50px;
+}
+
+.logininput:hover {
+  border: 2px solid #b7eee9;
+  outline: #b7eee9;
+}
+
+.logininput.trueno {
+  float: left;
+  width: 160px !important;
+  padding: 0 5px
+}
+
+/*.dashed{  background:url("../images/dashed.gif") repeat-x; height:1px; clear:both;}*/
+
+.lg_tip {
+  color: #ff503e;
+  background: #ffe4e4;
+  height: 28px;
+  padding: 5px 20px;
+  margin: 10px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lg_btns {
+  padding-top: 20px;
+  padding-bottom: 30px;
+  text-align: center;
+  border-top: 1px dashed #cbcbcb
+}
+
+.lg_btn {
+  height: 32px;
+}
+
+.lg_btn1 {
+  width: 100%;
+}
+
+/*===========================*/
+/*header---*/
+/*===========================*/
+header {
+  width: 1300px;
+  margin: 0 auto;
+}
+
+header img {
+  vertical-align: middle;
+  float: left;
+  margin-top: 3px;
+}
+
+header h1 {
+  width: 100%;
+  float: left;
+  font: 2.8em/3.5 "Microsoft YaHei", Arial, "", "Segoe UI", sans-serif;
+  color: #fff;
+  letter-spacing: .1em;
+  margin-bottom: 3px;
+}
+
+header h1.center {
+  text-align: center;
+}
+
+header .logocon em {
+  display: inline-block;
+  background: #fff;
+  width: 1px;
+  height: 20px;
+  float: left;
+  margin: 7px 10px 0 14px;
+}
+
+header .logocon {
+  margin-top: 20px;
+}
+
+header .logotitle {
+  font-size: 20px;
+  color: #fff;
+  display: inline-block;
+  line-height: 35px;
+  height: 35px;
+}
+
+.l {
+  float: left;
+}
+
+.r {
+  float: right;
+}
+
+.imageCode {
+  margin: 6px 0 0 26px;
+  float: left;
+}
+
+.imageCode img {
+  width: 110px;
+  height: 40px;
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle
+}
+
+/*===========================*/
+/*兼容样式  --  首页  ---*/
+/*===========================*/
+@media screen and (min-width: 800px) and (max-width: 1280px) {
+  header {
+    width: 750px;
+    margin: 0 auto;
+  }
+
+  header h1 {
+    width: 100%;
+    float: left;
+    font: 2.8em/3.5 "Microsoft YaHei", Arial, "", "Segoe UI", sans-serif;
+    color: #fff;
+    letter-spacing: .1em;
+    margin-bottom: 3px;
+  }
+
+  header h1.center {
+    text-align: center;
+    font: 2.5em/2.8 "Microsoft YaHei";
+    margin-top: 10px;
+  }
+
+  header h1.login {
+    margin: 8% 0 3% 0;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1600px) {
+  header {
+    width: 980px;
+    margin: 0 auto;
+  }
+
+  header h1 {
+    width: 100%;
+    float: left;
+    font: 2.8em/3.5 "Microsoft YaHei", Arial, "", "Segoe UI", sans-serif;
+    color: #fff;
+    letter-spacing: .1em;
+    margin-bottom: 3px;
+  }
+
+  header h1.center {
+    text-align: center;
+    font: 2.5em/2.8 "Microsoft YaHei";
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  header {
+    width: 700px;
+    margin: 0 auto;
+  }
+
+  header h1 {
+    width: 100%;
+    float: left;
+    font: 2.8em/3.5 "Microsoft YaHei", Arial, "", "Segoe UI", sans-serif;
+    color: #fff;
+    letter-spacing: .1em;
+    margin-bottom: 3px;
+  }
+
+  header h1.center {
+    text-align: center;
+    font: 2em/2.8 "Microsoft YaHei";
+    margin-top: 10px;
+  }
+
+  header h1.login {
+    margin: 8% 0 3% 0;
+  }
+}
+
+input:-ms-input-placeholder {
+  color: #999;
+}
+
+input:-moz-placeholder {
+  color: #999;
+}
+
+body .loginlongbg .el-input__inner {
+  border: none !important;
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+body.theme-green {
+  ::selection {
+    background: #00b385;
+    color: #fff;
+  }
+
+  ::-moz-selection {
+    background: #00b385;
+    color: #fff;
+  }
+
+  ::-webkit-selection {
+    background: #00b385;
+    color: #fff;
+  }
+  margin: 0;
+  font-size: 12px;
+  background: url("./images/login-bg.png") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: auto;
+  .lg_btn1 span {
+    width: 100%;
+    height: 45px;
+    display: inline-block;
+    color: #fff;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 45px;
+    border-radius: 4px;
+    background: -webkit-linear-gradient(left, #1bd0a1, #0fc8b5); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #1bd0a1, #0fc8b5); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #1bd0a1, #0fc8b5); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #1bd0a1, #0fc8b5); /* 标准的语法 */
+  }
+}
+
+body.theme-blue {
+  ::selection {
+    background: #0f70d6;
+    color: #fff;
+  }
+
+  ::-moz-selection {
+    background: #0f70d6;
+    color: #fff;
+  }
+
+  ::-webkit-selection {
+    background: #0f70d6;
+    color: #fff;
+  }
+  margin: 0;
+  font-size: 12px;
+  background: url("./images/login-bg-blue.png") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: auto;
+  .lg_btn1 span {
+    width: 100%;
+    height: 45px;
+    display: inline-block;
+    background: #047db9;
+    color: #fff;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 45px;
+    border-radius: 4px;
+    background: #2d8cf0;
+  }
+
+}
+
