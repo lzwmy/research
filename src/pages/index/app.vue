@@ -2,27 +2,21 @@
   <div id="app" :class="insideView?'insideView':''">
     <app-header></app-header>
     <navbar></navbar>
-    <app-view id="main"></app-view>
-    <app-footer></app-footer>
+    <app-view id="main" :class="isIndex?'isIndex':''"></app-view>
+    <app-footer v-show="!insideView"></app-footer>
   </div>
 </template>
 
 <script>
-import header from 'components/packages/header/header';
-import navbar from 'components/packages/navbar/navbar'
-import view from 'components/packages/view/view2';
-import footer from 'components/packages/footer/footer';
+import header from 'components/common/header/header';
+import navbar from 'components/common/navbar/navbar'
+import view from 'components/common/view/view';
+import footer from 'components/common/footer/footer';
 
 import 'element-ui/lib/theme-chalk/index.css';
 import 'assets/css/normalize.less';
 import 'assets/css/common.less';
-// import 'assets/css/green/base.less';
-// import 'assets/css/green/reset.less';
-// import 'assets/css/blue/base.less';
-// import 'assets/css/blue/reset.less';
-// import './packages/theme/green/index.less';
-// import './packages/theme/blue/index.less';
-// import 'assets/css/crfStyle.less'
+import 'assets/css/crfStyle.less'
 export default {
   name: 'app',
   components: {
@@ -35,77 +29,95 @@ export default {
   data () {
     return {
       //是否为内页主页
-      insideView: false
+      insideView: false,
+      isIndex: true
     };
   },
   computed: {
-    // 分别代表两种风格:green,blue
-    // ccstyle () {
-    //   let ccstyle = this.$store.state.user.ccstyle || localStorage.getItem('research_ccstyle') || 'theme-blue';
-    //   return ccstyle;
-    // }
   },
   watch: {
-    // ccstyle () {
-    //   // console.log(this.ccstyle);
-    //   if (this.ccstyle == 'theme-green' || this.ccstyle == 'theme-blue') {
-    //     document.querySelector('body').className = this.ccstyle;
-    //     this.$store.commit({
-    //       type: 'changeTheme',
-    //       ccstyle: this.ccstyle
-    //     });
-    //   } else {
-    //     document.querySelector('body').className = 'theme-blue';
-    //     this.$store.commit({
-    //       type: 'changeTheme',
-    //       ccstyle: 'theme-blue'
-    //     });
-    //   }
-    // },
     $route () {
-      if (this.$route.path === '/insideView') {
+      if (this.$route.meta.openMode === 2) {
         this.insideView = true;
       }else {
         this.insideView = false;
       }
+      if(this.$route.path === '/' || this.$route.path === '/index') {
+        this.isIndex = true;
+      }else {
+        this.isIndex = false;
+      }
     },
   },
   mounted () {
-    // if (this.ccstyle == 'theme-green' || this.ccstyle == 'theme-blue') {
-    //   document.querySelector('body').className = this.ccstyle;
-    //   this.$store.commit({
-    //     type: 'changeTheme',
-    //     ccstyle: this.ccstyle
-    //   });
-    // } else {
-    //   document.querySelector('body').className = 'theme-blue';
-    //   this.$store.commit({
-    //     type: 'changeTheme',
-    //     ccstyle: 'theme-blue'
-    //   });
-    // }
+    window.onresize = this.initView();
+    this.initView();
   },
-  methods: {}
+  methods: {
+    initView() {
+      let h = $('body').height() - $('#main_header').outerHeight() -　$('#navbar').outerHeight() - $('#app > .footer').outerHeight() - parseInt($("#main").css('marginTop'))*2;
+      $('#main').css({'min-height': h +'px'})
+    }
+  }
 };
 </script>
 <style lang="less">
-  html, body, #app {
+  html, body {
     height: 100%;
+  }
+  #app {
+    background-color: #f0f2f7;
   }
   #app.insideView {
     #main_header,
     #navbar {
-      display: none;
+      position: absolute;
+      top: -300px;
     }
     #main {
-      padding:0;
+      margin:0 !important;
+      .inside_cloud-container{ 
+        padding: 0;
+      }
     }
   }
   #main {
-    padding: 50px 100px;
-    background-color: #fff;
+    margin: 30px 100px 20px;
+    background: #fff;
     .cloud-component{
       height: 100%;
+      padding: 15px;
     }
   }
+  @media (max-width: 1023px){
+    #navbar, #main_header { padding: 0 10px !important;}
+  } 
+  @media (min-width: 1024px){
+    #navbar, #main_header { padding: 0 10px !important;}
+  } 
+  @media (min-width: 1280px) {
+    #main { margin-left: 30px !important; margin-right: 30px !important;}
+    #navbar, #main_header { padding: 0 30px !important;}
+  }
+
+  @media (min-width: 1366px) {
+    #main { margin-left: 80px !important; margin-right: 80px !important;}
+    #navbar, #main_header { padding: 0 80px !important;}
+  }  
+
+  @media (min-width: 1440px) {
+    #main { margin-left: 100px !important; margin-right: 100px !important;}
+    #navbar, #main_header { padding: 0 100px !important;}
+  } 
+
+  @media (min-width: 1680px) {
+    #main { margin-left: 160px !important; margin-right: 160px !important;}
+    #navbar, #main_header { padding: 0 160px !important;}
+  } 
+  @media (min-width: 1920px) {
+    #main { margin-left: 180px !important; margin-right: 180px !important;}
+    #navbar, #main_header { padding: 0 180px !important;}
+  } 
 </style>
+
+

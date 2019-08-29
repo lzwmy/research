@@ -18,7 +18,8 @@ const routes = [
       isKeepAlive: false,
       txt: '专病科研',
       flag: 'SDResearch',
-      belongToGroup: 'SDResearch'
+      belongToGroup: 'SDResearch',
+      openMode: 1
     },
     component: SDResearch
   },
@@ -30,7 +31,8 @@ const routes = [
       isKeepAlive: true,
       txt: '病例管理',
       flag: 'caseManage',
-      belongToGroup: 'SDResearch'
+      belongToGroup: 'SDResearch',
+      openMode: 2
     },
     component: caseManage
   },
@@ -42,7 +44,8 @@ const routes = [
       isKeepAlive: true,
       txt: '专病科研',
       flag: 'SDResearch',
-      belongToGroup: 'SDResearch'
+      belongToGroup: 'SDResearch',
+      openMode: 2
     },
     component: diseaseSet
   },
@@ -54,7 +57,8 @@ const routes = [
       isKeepAlive: true,
       txt: '入组管理',
       flag: 'enterGroupManager',
-      belongToGroup: 'enterGroupManager'
+      belongToGroup: 'enterGroupManager',
+      openMode: 2
     },
     component: enterGroupManager
   }

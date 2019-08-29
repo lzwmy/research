@@ -23,11 +23,12 @@
       </el-form>
     </div>
     <!--搜索结果-->
-    <div class="cloud-search-list">
-      <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+    <div class="cloud-search-list" style="height: 1000px;">
+      <!-- <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1"> -->
+      <echarts-contain containType="big" :parentHeight="1000" :heightRatio="1">
         <el-table
           :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
-          :data="dataList.content" style="width: 100%" v-loading="loading"
+          :data="dataList.content" style="width: 100%;height: 1000px;" v-loading="loading"
           :empty-text="emptyText" :element-loading-text="elementLoadingText" stripe highlight-current-row ref="roleTable">
           <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>
           <el-table-column prop="roleName" label="角色名称" min-width="10%" show-overflow-tooltip>
@@ -47,17 +48,17 @@
           <el-table-column label="操作" width="200px">
             <template slot-scope="scope" v-if="scope.row.roleType!=='0'">
               <el-button type="text" size="small" @click="assign(scope.row)" style="margin-left: 8px">
-                <i class="icon-bangding" title="分配菜单权限"></i>
+                <i style="font-size:24px;" class="icon-bangding" title="分配菜单权限"></i>
               </el-button>
               <el-button type="text" size="small" @click="edit(scope.row)" style="margin-left: 8px">
                 <i class="icon-edit" title="编辑"></i>
               </el-button>
               <el-button @click="updateStatus(scope.row)" type="text" size="small">
-                <i class="icon-unaccess" title="禁用" v-if="scope.row.status == '0'"></i>
-                <i class="icon-openaccess" title="启用" v-if="scope.row.status == '1'"></i>
+                <i style="font-size:24px;" class="icon-unaccess" title="禁用" v-if="scope.row.status == '0'"></i>
+                <i style="font-size:24px;" class="icon-openaccess" title="启用" v-if="scope.row.status == '1'"></i>
               </el-button>
               <el-button type="text" size="small" @click="deleteItem(scope.row)">
-                <i class="icon-delete" title="删除"></i>
+                <i style="font-size:24px;" class="icon-delete icon iconfont iconshanchu" title="删除"></i>
               </el-button>
             </template>
           </el-table-column>

@@ -14,7 +14,8 @@ const routes = [
       isKeepAlive: true,
       txt: '角色管理',
       flag: 'roleManage',
-      belongToGroup: 'systemManage'
+      belongToGroup: 'systemManage',
+      openMode: 2
     },
     component: roleManage
   },
@@ -26,7 +27,8 @@ const routes = [
       isKeepAlive: true,
       txt: '用户管理',
       flag: 'userManage',
-      belongToGroup: 'systemManage'
+      belongToGroup: 'systemManage',
+      openMode: 2
     },
     component: userManage
   }

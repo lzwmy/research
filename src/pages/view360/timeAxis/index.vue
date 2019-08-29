@@ -47,7 +47,7 @@
             </div>
             
             <div class="li" v-for="(item, index) in examList" :key="'exam'+index">
-                <echartsLine 
+                <chartsLine 
                     :title="item.examClass" 
                     ref="charts" 
                     :domId="'echartExam'+index" 
@@ -55,7 +55,7 @@
                     :list="item.serverData" 
                     :startTime="timeSpanStartTime" 
                     :endTime="timeSpanEndTime">
-                </echartsLine>
+                </chartsLine>
             </div> 
 
             <div class="row flex-around-center">
@@ -65,7 +65,7 @@
             </div>  
             <div v-loading="loadingLab">
                 <div class="li" v-for="(item, index) in labList" :key="'lab'+index" :id="'lab'+index">
-                    <echartsLine 
+                    <chartsLine 
                         :title="item.itemEnName" 
                         ref="charts" 
                         :domId="'echartLab'+index" 
@@ -75,7 +75,7 @@
                         @getIndicatorData='handldUpdate' 
                         :startTime="timeSpanStartTime" 
                         :endTime="timeSpanEndTime">
-                    </echartsLine>
+                    </chartsLine>
                 </div>  
             </div>
 
@@ -144,8 +144,7 @@
 import utils from 'components/utils/index';
 import 'assets/css/common.less';
 import timeSpan from './timeSpan'
-import echartsLine from './echartsLine'
-
+import chartsLine from './chartsLine'
 
 export default {
     name: 'timeAxis',
@@ -171,95 +170,6 @@ export default {
                 targetList: [],
                 loading: false,
                 name: ""
-            },
-            // tableData: [{
-            //     a: "右半结肠",
-            //     b: "腺癌",
-            //     c: "256",
-            //     d: "141",
-            //     e: "NA",
-            //     f: "NA",
-            // }],
-            echartsOption: {
-                color: ['#9cd362'],
-                backgroundColor: "#f5f5f4",
-                tooltip: {
-                    triggerOn: 'mousemove',
-                    show : true,
-                    trigger: 'item',
-                    formatter : function(params){
-                        // console.log(params)
-                        return params.seriesName+': '+params.data;
-                    },
-                },
-                grid: {
-                    left: 50,
-                    right: 20,
-                },
-                xAxis: {
-                    min: 0,
-                    max: 100,
-                    type: 'value',
-                    splitLine: {
-                        show: false
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    max: 50,
-                    type: 'value',
-                    splitLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        formatter: '{value} °C'
-                    },
-                },
-                series: [
-                    {
-                        name: 'title',
-                        type: 'line',
-                        smooth: false,
-                        symbolSize: 12,
-                        data: [[10, 10], [20, 10], [30, 40], [40, 10], [90, 40]]
-                    }
-                ]
-            },
-            echartsLineOption: {
-                color: ['#5ed9cb'],
-                backgroundColor: "#f5f5f4",
-                tooltip: {
-                    triggerOn: 'none',
-                },
-                legend: {
-                    borderColor: 'red'
-                },
-                grid: {
-                    left: 50,
-                    right: 20,
-                },
-                xAxis: {
-                    show: false,
-                    min: 0,
-                    max: 100,
-                    type: 'value',
-                    axisLine: {onZero: false}
-                },
-                yAxis: {
-                    show: false,
-                    min: 0,
-                    max: 50,
-                    type: 'value',
-                    axisLine: {onZero: false}
-                },
-                series: [
-                    {
-                        type: 'line',
-                        smooth: true,
-                        symbolSize: 12,
-                        data: [[0, 10], [20, 10], [30, 10], [40, 10], [90, 10]]
-                    }
-                ]
             }
         };
     },
@@ -276,7 +186,7 @@ export default {
     },
     components: {
         timeSpan,
-        echartsLine
+        chartsLine
     },
     methods: {
         //获取诊疗事件数据

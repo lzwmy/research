@@ -8,10 +8,11 @@ const routes = [
     name: 'modelManage',
     meta: {
       requireAuth: true,
-      isKeepAlive: false,
+      isKeepAlive: true,
       txt: '科研建模',
       flag: 'modelManage',
-      belongToGroup: 'modelManage'
+      belongToGroup: 'modelManage',
+      openMode: 2
     },
     component: modelAside
   }

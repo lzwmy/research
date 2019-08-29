@@ -144,7 +144,6 @@ export default {
         treeObj.expandNode(node, true);
       });
       that.treeTableList = utils.deepClone(nodesSys);
-      console.log(nodesSys);
     },
     async handleNodeClick (treeNode, right = false) {
       let that = this;

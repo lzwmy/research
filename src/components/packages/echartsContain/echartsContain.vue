@@ -1,11 +1,11 @@
 <template>
   <div class="echartsContain">
     <div class="leftContain" v-if="containType==='left'" v-loading="loading" element-loading-text="拼命加载中"  element-loading-background="rgba(0, 0, 0, 0.1)"
-         :style="{ height: parentHeight*heightRatio + 'px',width:widthRatio*100+'%' }">
+        :style="{ height: parentHeight*heightRatio + 'px',width:widthRatio*100+'%' }">
       <slot></slot>
     </div>
     <div class="rightContain" v-if="containType==='right'" v-loading="loading" element-loading-text="拼命加载中"  element-loading-background="rgba(0, 0, 0, 0.1)"
-         :style="{ height: parentHeight*heightRatio + 'px',width:'calc('+widthRatio*100+'% - '+15+'px)' }">
+        :style="{ height: parentHeight*heightRatio + 'px',width:'calc('+widthRatio*100+'% - '+15+'px)' }">
       <slot></slot>
     </div>
     <div class="bigContain" v-if="containType==='big'" v-loading="loading" element-loading-text="拼命加载中"  element-loading-background="rgba(0, 0, 0, 0.1)" :style="{ height: parentHeight*heightRatio + 'px'}">

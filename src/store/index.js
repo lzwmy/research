@@ -108,6 +108,17 @@ const user = {
   actions: {}
 };
 
+const menu = {
+  state: {
+    activeMenuIndex: '0',
+  },
+  mutations: {
+    setActiveMenuIndex: function(state, index) {
+      state.activeMenuIndex = String(index);
+    }
+  }
+}
+
 const crf = {
   state: {
     crfCurrentControl: {},
@@ -193,6 +204,7 @@ var store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // 在非生产环境下，使用严格模式
   modules: {
     user,
+    menu,
     crf,
     researchModel
   },

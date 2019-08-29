@@ -7,28 +7,16 @@ import { Loading, MessageBox,Message } from 'element-ui';
 
 import 'element-ui/lib/theme-chalk/index.css';
 import 'assets/fonticon/iconfont.css';
-import 'assets/css/green/base.less';
-import 'assets/css/green/reset.less';
-import 'assets/css/blue/base.less';
-import 'assets/css/blue/reset.less';
+// import 'assets/css/green/base.less';
+// import 'assets/css/green/reset.less';
+// import 'assets/css/blue/base.less';
+// import 'assets/css/blue/reset.less';
 import 'assets/css/common.less';
 
 
-
-// 按需引入echarts，引入 ECharts 主模块
-let echarts = require('echarts/lib/echarts');
-require('echarts/lib/chart/line');
-require('echarts/lib/component/tooltip');
-require('echarts/lib/component/axisPointer');
-require('echarts/lib/component/title');
-require('echarts/lib/component/dataZoom');
-require('echarts/lib/component/markPoint');
-require('echarts/lib/component/toolbox');
-Vue.prototype.$echarts = echarts;
-
 let Highcharts = require('highcharts');
-// import Highcharts from 'highcharts/highstock';
 Vue.prototype.$Highcharts = Highcharts;
+
 
 Vue.prototype.$mes = function (type, message) {
   Message({

@@ -7,7 +7,7 @@
       </div>
       <!-- :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}"> -->
       <router-link v-else tag="a" class="sd-title-wrapper" v-for="item in dataList" :key="item.id"
-                  :to="{ name: 'insideView',query:{id:item.id,cacheData:false}}">
+                  :to="getMenu()">
         <div class="sd-thumbnail">
           <div class="sd-thumbnail-content">
             <img :class="'sd-thumbnail-img ' + item.logo + '_bgColor'"
@@ -93,6 +93,28 @@ export default {
         }
       } catch (error) {
         console.log(error);
+      }
+    },
+    getMenu() {
+      let list = [];
+      let menuPath = '/';
+      let title = "";
+      this.$store.state.user.menuList.forEach((item)=>{
+        if(item.menuName == '专病科研') {
+          title = item.menuName;
+          menuPath = item.menuPath;
+          list = item.children;
+        }
+      })
+      let params = {
+        title: title,
+        menuPath: menuPath,
+        menuList: list
+      }
+      sessionStorage.setItem('insideMenuData',JSON.stringify(params))
+      return {
+          name: list[0].menuPath.slice(1),
+          params: params
       }
     }
   },

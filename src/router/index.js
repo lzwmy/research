@@ -16,7 +16,7 @@ const index = r => require.ensure([], () => r(require('packages/index/index')), 
 // 404
 const notFind = r => require.ensure([], () => r(require('packages/index/not-find')), 'notFind');
 
-const insideView = r => require.ensure([], () => r(require('components/packages/insideView/view')), 'insideView');
+const insideView = r => require.ensure([], () => r(require('components/common/insideView/view')), 'insideView');
 
 const routes = [
   {
@@ -37,11 +37,12 @@ const routes = [
     meta: {
       requireAuth: true,
       isKeepAlive: false,
-      txt: '专病',
+      txt: '专病科研',
       flag: 'insideView',
-      belongToGroup: ''
+      belongToGroup: '',
     },
-    component: insideView
+    component: insideView,
+    children: []
   },
   {
     path: '/',
@@ -67,8 +68,17 @@ const routes = [
       belongToGroup: ''
     },
     component: notFind
-  }];
+  }
+];
 
 const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, eventPlan,researchModel);
-
+route.forEach(item=>{
+  if(item.name == 'insideView'){
+    route.forEach(li=>{
+      if(li.meta.openMode == 2 && li.name != 'insideView') {
+        item.children.push(li)
+      }
+    })
+  }
+})
 export default route;

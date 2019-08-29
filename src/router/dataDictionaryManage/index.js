@@ -18,7 +18,8 @@ const routes = [
       isKeepAlive: true,
       txt: '医学代码集',
       flag: 'dataDictionary',
-      belongToGroup: 'dataDictionaryManage'
+      belongToGroup: 'dataDictionaryManage',
+      openMode: 2
     },
     component: dataDictionary
   },
@@ -30,7 +31,8 @@ const routes = [
       isKeepAlive: true,
       txt: '医学代码',
       flag: 'medicalCode',
-      belongToGroup: 'dataDictionaryManage'
+      belongToGroup: 'dataDictionaryManage',
+      openMode: 2
     },
     component: medicalCode
   },
@@ -42,7 +44,8 @@ const routes = [
       isKeepAlive: true,
       txt: '医学代码分类',
       flag: 'medicalCodeClass',
-      belongToGroup: 'dataDictionaryManage'
+      belongToGroup: 'dataDictionaryManage',
+      openMode: 2
     },
     component: medicalCodeClass
   },
@@ -54,7 +57,8 @@ const routes = [
       isKeepAlive: true,
       txt: '数据字典',
       flag: 'dataDictionaryTest',
-      belongToGroup: 'dataDictionaryManage'
+      belongToGroup: 'dataDictionaryManage',
+      openMode: 2
     },
     component: dataDictionaryTest
   }

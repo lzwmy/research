@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import store from '../../store';
-import { MessageBox } from 'element-ui';
+import { MessageBox, Menu } from 'element-ui';
 
 const vm = new Vue();
 
@@ -301,8 +301,8 @@ const getFirstAndLastDate = function () {
 const handleMenuList = (menuList) => {
   let handleAfrerMenuList = [];
   menuList.forEach((menuItem1) => {
-    if (menuItem1.menuLevel == '2') {
-      menuItem1.children = [];
+    menuItem1.children = [];
+    if (menuItem1.menuLevel == 2) {
       menuList.forEach((menuItem2) => {
         if (menuItem1.menuCode === menuItem2.superiorMenu) {
           menuItem1.children.push(menuItem2);
@@ -312,8 +312,24 @@ const handleMenuList = (menuList) => {
       handleAfrerMenuList.push(menuItem1);
     }
   });
+  menuLevel3(menuList,handleAfrerMenuList);
   handleAfrerMenuList.sort(compareAscending('menuOrder'));
+  console.log(handleAfrerMenuList)
   return handleAfrerMenuList;
+};
+
+const menuLevel3 = function(menuList,arr) {
+  arr.forEach(leve1=>{
+    leve1.children.forEach(leve2=>{
+      leve2.children = [];
+      menuList.forEach(item=>{
+        if(item.menuLevel == 4 && leve2.menuCode == item.superiorMenu){
+          leve2.children.push(item)
+        }
+      })
+    })
+  })
+
 };
 
 // 获取菜单列表
@@ -323,118 +339,6 @@ const loadMenuInfo = () => {
       let data = response;
       if (data.code == 0) {
         let menuList = data.data.menus;
-        // menuList = [
-        //   {
-        //     'ico': '',
-        //     'menuLevel': '1',
-        //     'superiorMenu': '00',
-        //     'openMode': '0',
-        //     'menuName': '临床科研平台',
-        //     'menuOrder': '1',
-        //     'menuPath': '',
-        //     'menuCode': '01'
-        //   },
-        //   {
-        //     'ico': 'index',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'openMode': '0',
-        //     'menuName': '首页',
-        //     'menuOrder': '1',
-        //     'menuPath': '/index',
-        //     'menuCode': '0101'
-        //   },
-        //   {
-        //     'ico': 'SDResearch',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'openMode': '0',
-        //     'menuName': '专病科研',
-        //     'menuOrder': '2',
-        //     'menuPath': '/SDResearch',
-        //     'menuCode': '0102'
-        //   },
-        //   {
-        //     'ico': 'fullTextSearch',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'openMode': '0',
-        //     'menuName': '全文检索',
-        //     'menuOrder': '3',
-        //     'menuPath': '/fullTextSearch',
-        //     'menuCode': '0103'
-        //   },
-        //   {
-        //     'ico': 'staticInfo',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'openMode': '0',
-        //     'menuName': '统计信息',
-        //     'menuOrder': '4',
-        //     'menuPath': '/staticInfo',
-        //     'menuCode': '0104'
-        //   },
-        //   {
-        //     'ico': 'crfConfig',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'openMode': '0',
-        //     'menuName': 'CRF配置',
-        //     'menuOrder': '5',
-        //     'menuPath': '/crfConfig',
-        //     'menuCode': '0105'
-        //   },
-        //   {
-        //     'ico': 'dataDictionary',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'OPEN_MODE': '0',
-        //     'menuName': '数据字典',
-        //     'menuOrder': '6',
-        //     'menuPath': '/dataDictionary',
-        //     'menuCode': '0106'
-        //   },
-        //   {
-        //     'ico': 'systemManage',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'openMode': '0',
-        //     'menuName': '系统管理',
-        //     'menuOrder': '7',
-        //     'menuPath': '',
-        //     'menuCode': '0107'
-        //   },
-        //   {
-        //     'ico': '',
-        //     'MENU_LEVEL': '3',
-        //     'superiorMenu': '0107',
-        //     'openMode': '0',
-        //     'menuName': '角色管理',
-        //     'menuOrder': '1',
-        //     'menuPath': '/roleManage',
-        //     'menuCode': '010701'
-        //   },
-        //   {
-        //     'ico': '',
-        //     'menuLevel': '3',
-        //     'superiorMenu': '0107',
-        //     'OPEN_MODE': '0',
-        //     'menuName': '用户管理',
-        //     'menuOrder': '2',
-        //     'menuPath': '/userManage',
-        //     'menuCode': '010703'
-        //   },
-        //   {
-        //     'ico': 'openEHRIntroduction',
-        //     'menuLevel': '2',
-        //     'superiorMenu': '01',
-        //     'openMode': '0',
-        //     'menuName': 'openEHR说明',
-        //     'menuOrder': '8',
-        //     'menuPath': '/openEHRIntroduction',
-        //     'menuCode': '0108'
-        //   }
-        // ];
         if (menuList.length > 0) {
           let handleAfrerMenuList = handleMenuList(menuList);
           store.commit({
