@@ -1,5 +1,5 @@
 <template>
-    <div class="chartContent" style="width: 49%;">
+    <div class="chartContent" >
         <!--<div :id="domId" class="chart"></div>-->
     </div>
 </template>
@@ -64,7 +64,7 @@ export default {
 
 <style lang='less' scoped>
     .chartContent {
-        width: 49%;
+        width: 48.8%;
         margin-bottom: 25px;
         box-shadow: 0 2px 16px -11px rgba(0, 0, 0, 0.5);
         border-radius: 1px;

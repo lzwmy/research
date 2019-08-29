@@ -623,6 +623,12 @@ export default {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      div{
+        margin-right: 0;
+        &:nth-child(2n-1) {
+          margin-right: 25px;
+        }
+      }
     }
   }
 
