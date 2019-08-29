@@ -134,7 +134,8 @@
       },
       methods:{
         resize () {
-          let height = $('#main').height();
+          // let height = $('#main').height();
+          let height = $('#insideContainer').height()-60;
           let width = $('.cloud-component').width()-$('.crf-left-menu').width()-1;
           $('.crf-left-menu .menu-panel-content').height(height - 149);
           $('.crf-right-menu').height(height - 55);
@@ -146,9 +147,10 @@
           /*this.$nextTick(() => {
             $('.crf-main').eq(0).find('.colwidth-1').width(($('.crf-main').width() - 150) / 2);
           });*/
-          $('.crf-main-box').css({
+          // 暂时取消
+          /*$('.crf-main-box').css({
             width:width
-          })
+          })*/
         },
         getFormDetailCall(item) {
           this.selectFormId = item.modelId;
@@ -161,6 +163,7 @@
         //表单 编辑 按钮
         formRename(item) {
           console.log('表单编辑' ,item);
+          this.selectFormId = item.modelId;
           this.title = item.modelName;
           this.modelData = {
             obj:item,

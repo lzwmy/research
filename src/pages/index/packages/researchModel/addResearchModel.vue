@@ -113,9 +113,10 @@
         resize () {
           let height = $('#main').height();
           let width = $('.cloud-component').width()-$('.crf-left-menu').width();
-          $('.crf-main-box').css({
+          //暂时取消
+          /*$('.crf-main-box').css({
             width:width
-          })
+          })*/
           $('.crf-left-menu .menu-panel-content').height(height - 149);
           $('.crf-right-menu').height(height - 55);
           // $('.crf-main').eq(0).height(height - 115);

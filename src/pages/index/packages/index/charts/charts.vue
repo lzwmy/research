@@ -1,5 +1,5 @@
 <template>
-    <div class="chartContent">
+    <div class="chartContent" style="width: 49%;">
         <!--<div :id="domId" class="chart"></div>-->
     </div>
 </template>
@@ -29,10 +29,15 @@ export default {
         }
     },
     watch: {
+      "option":function (value) {
+        this.data = value;
+        this.initHighcharts();
+      }
     },
     data () {       
         return {
-            chart: null
+          chart: null,
+          data:this.option
         };
     },
     mounted() {
@@ -43,7 +48,7 @@ export default {
     methods: {
         initHighcharts() {
           // console.log(this.$el)
-            this.chart = this.$Highcharts.chart(this.$el, this.option);
+            this.chart = this.$Highcharts.chart(this.$el, this.data);
             // this.setChartsSeries();
         },
         setChartsSeries() {
@@ -62,6 +67,7 @@ export default {
         width: 49%;
         margin-bottom: 25px;
         box-shadow: 0 2px 16px -11px rgba(0, 0, 0, 0.5);
+        border-radius: 1px;
         .chart {
             width: 100%;
             min-height: 350px;

@@ -9,7 +9,7 @@ const routes = [
     name: 'fullTextSearch',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '全文检索',
       flag: 'fullTextSearch',
       belongToGroup: 'fullTextSearch'
