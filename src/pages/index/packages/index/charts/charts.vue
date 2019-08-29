@@ -1,6 +1,6 @@
 <template>
     <div class="chartContent">
-        <div :id="domId" class="chart"></div>
+        <!--<div :id="domId" class="chart"></div>-->
     </div>
 </template>
 
@@ -42,7 +42,8 @@ export default {
     },
     methods: {
         initHighcharts() {
-            this.chart = this.$Highcharts.chart(this.domId, this.option);
+          // console.log(this.$el)
+            this.chart = this.$Highcharts.chart(this.$el, this.option);
             // this.setChartsSeries();
         },
         setChartsSeries() {

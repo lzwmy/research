@@ -4,35 +4,35 @@
       <li>
         <div class="cart_text flex-between-center">
           <p>99</p>
-          <img src="http://via.placeholder.com/40x40" alt="病种数">
+          <i class="iconfont iconzujian4"></i>
         </div>
         <p>病种数</p>
       </li>
       <li>
         <div class="cart_text flex-between-center">
           <p>99</p>
-          <img src="http://via.placeholder.com/40x40" alt="病种数">
+          <i class="iconfont iconzujian2"></i>
         </div>
-        <p>病种数</p>
+        <p>课题数</p>
       </li>
       <li>
         <div class="cart_text flex-between-center">
           <p>99</p>
-          <img src="http://via.placeholder.com/40x40" alt="病种数">
+          <i class="iconfont iconzujian3"></i>
         </div>
-        <p>病种数</p>
+        <p>人员数</p>
       </li>
       <li>
         <div class="cart_text flex-between-center">
           <p>99</p>
-          <img src="http://via.placeholder.com/40x40" alt="病种数">
+          <i class="iconfont iconzujian5"></i>
         </div>
-        <p>病种数</p>
+        <p>病例数</p>
       </li>
     </ul>
     <div class="charts">
       <charts :domId="'id1'" :option="option"></charts>
-      <charts :domId="'id2'" :option="option"></charts>
+      <charts :domId="'id2'" :option="pieOption"></charts>
       <charts :domId="'id3'" :option="option"></charts>
       <charts :domId="'id4'" :option="option"></charts>
     </div>
@@ -48,6 +48,7 @@ export default {
   data () {
     return {
       loading: true,
+      //柱状图
       option: {
           chart: {
               type: 'column',
@@ -58,13 +59,6 @@ export default {
           },
           tooltip: {
               borderColor: null,
-              // formatter: function () {
-              //     let desc = this.point.desCode=='H'?'偏高':(this.point.desCode=='L'?'偏低':'正常');
-              //     let content =  `<b>${this.point.name}</b><br/>
-              //                     日期:${utils.formateDate(this.point.x)}<br/>
-              //                     值:${this.point.y} ${this.point.unit} (${desc})`;
-              //     return content;
-              // }
           },
           legend: {
               enabled: true
@@ -85,10 +79,14 @@ export default {
               title: {
                   text: ''
               },
-              gridLineWidth: 0,
+              gridLineWidth: 1,
               labels: {
-                  reserveSpace: false
-              } 
+                  reserveSpace: true
+              },
+            lineWidth: 1,
+            minorGridLineWidth: 0,
+            minorTickInterval: 'auto',
+            minorTickWidth: 0
           },
           series: [{
             name:"aaa",
@@ -97,6 +95,64 @@ export default {
           credits: {
               enabled:false
           }
+      },
+      //饼状图
+      pieOption:{
+        chart:{
+          type:'pie'
+        },
+        title:{
+          text:'各种病占比'
+        },
+        credits:{
+          enabled:false
+        },
+        legend:{
+          enabled:true
+        },
+        tooltip: {
+          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              /*style: {
+                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+              }*/
+            },
+            showInLegend: true
+          }
+        },
+        series: [{
+          name: '各种病占比',
+          data: [{
+            name: '白癜风',
+            y: 61.41,
+          }, {
+            name: '银屑病',
+            y: 11.84
+          }, {
+            name: '面部皮炎',
+            y: 10.85
+          }, {
+            name: '神经内科',
+            y: 4.67
+          }]
+        }]
+      },
+      //折线图
+      lineOption:{
+        chart:{
+          type: 'line',
+          zoomType: 'x'
+        },
+        credits:{
+          enabled:false
+        },
       }
     };
   },
@@ -149,6 +205,10 @@ export default {
             font-weight: bolder;
             color: #090E3E;
             font-family: "Open Sans", sans-serif;
+          }
+          i{
+            font-size: 44px;
+            color: #439AFF;
           }
         }
         p{
