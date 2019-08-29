@@ -16,7 +16,7 @@ export default {
         return {
             loading: true,
             menuList: [],
-            activeMenuIndex: '0'
+            activeMenuIndex: '/index'
         };
     },
     computed: {
@@ -114,13 +114,23 @@ export default {
             .el-tabs__nav-wrap::after {
                 background-color: transparent;
             }
+            .el-tabs__nav-scroll {
+                width: 100%;
+            }
             .el-tabs__item {
                 height: 100%;
                 line-height: 60px;
+                padding: 0 40px;
                 &.is-active{
                     .icon, span {
                         color: #439AFF;
                     }
+                }
+                &:nth-child(2){
+                    padding-left: 0;
+                }
+                &:last-child{
+                    padding-right: 0;
                 }
                 .icon {
                     vertical-align: middle;

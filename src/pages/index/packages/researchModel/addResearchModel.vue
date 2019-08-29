@@ -230,8 +230,12 @@
         async modelTreeList(value) {
           let that = this;
           this.$refs.researchBox.loadingTree = true;
-            this.$refs.researchBox.$refs.showItem.loading = true;
+          if(this.$refs.researchBox.$refs.exportItem) {
             this.$refs.researchBox.$refs.exportItem.loading = true;
+          }
+          if(this.$refs.researchBox.$refs.showItem) {
+            this.$refs.researchBox.$refs.showItem.loading = true;
+          }
           let formData = {
             "crfIds": value
           };
@@ -246,8 +250,12 @@
             that.$notice('结构树获取失败')
           }
           this.$refs.researchBox.loadingTree = false;
-          this.$refs.researchBox.$refs.exportItem.loading = false;
-          this.$refs.researchBox.$refs.showItem.loading = false;
+          if(this.$refs.researchBox.$refs.exportItem) {
+            this.$refs.researchBox.$refs.exportItem.loading = false;
+          }
+          if(this.$refs.researchBox.$refs.showItem) {
+            this.$refs.researchBox.$refs.showItem.loading = false;
+          }
         },
         //保存 --新增
         async modelResearchSave() {

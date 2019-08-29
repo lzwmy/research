@@ -24,19 +24,19 @@
             </div>
         </div>
         <div class="ment_list">
-            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" :collapse="!openMenuView" :default-openeds="['1']">
+            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" :collapse="!openMenuView" :unique-opened="true">
                 <span v-for="(item, index) in menuList" :key="index">
-                    <el-menu-item :index="String(index+1)" @click="routerLink(item)" v-if="item.children.length == 0">
+                    <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="item.children.length == 0">
                         <i class="icon iconfont" :class="'icon'+item.ico"></i>
                         <span slot="title">{{item.menuName}}</span>
                     </el-menu-item>
-                    <el-submenu :index="String(index+1)" v-if="item.children.length != 0">
+                    <el-submenu :index="item.menuCode" v-if="item.children.length != 0">
                         <template slot="title">
                             <i class="icon iconfont" :class="'icon'+item.ico"></i>
                             <span slot="title">{{item.menuName}}</span>
                         </template>
                         <el-menu-item-group v-for="(li, indexli) in item.children" :key="indexli">
-                            <el-menu-item :index="(index+1) + '-' + (indexli+1)"  @click="routerLink(li)">{{li.menuName}}</el-menu-item>
+                            <el-menu-item :index="li.menuPath"  @click="routerLink(li)">{{li.menuName}}</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                 </span>
@@ -54,10 +54,6 @@ export default {
             type: Boolean,
             default: true
         },
-        activeMenuIndex: {
-            type: String,
-            default: "0"
-        },
         title: {
             type: String,
             default: ""
@@ -73,33 +69,33 @@ export default {
     },
     data () {
         return {
-            defaultActive: '1'
+            defaultActive: ''
         };
     },
     watch: {
+        $route(to,from) {
+            this.$nextTick(()=>{
+                this.defaultActive = this.$route.path;
+            })
+        }
     },
     created () {
         if(this.menuList[0] && this.menuList[0].children && this.menuList[0].children.length == 0) {
-            this.defaultActive = '1';
+            this.defaultActive = this.menuList[0].menuPath;
         }else {
-            this.defaultActive = '1-1';
+            this.defaultActive = this.menuList[0].children[0].menuPath;
         }
     },
     mounted () {
-    },
-    watch: {
-        
     },
     methods: {
         routerLink(item) {
             this.$router.push(item.menuPath)
         },
         onBack() {
+            console.log(this.menuPath)
             this.$router.replace({
-                name: this.menuPath.slice(1),
-                params:{
-                    activeMenuIndex: this.activeMenuIndex
-                }
+                name: this.menuPath.slice(1)
             })
             sessionStorage.removeItem('insideData');
         }
@@ -188,6 +184,9 @@ export default {
                     color: #fff;
                     &:hover {
                         background-color: #090E40;
+                    }
+                    &:focus {
+                        background-color: transparent;
                     }
                     &.is-active {
                         background-color: #090E40;

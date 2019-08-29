@@ -79,8 +79,8 @@ export default {
                         arrayErgodic(item, this.changeContent)
                     }
                 })
+                this.$emit('treeData',this.treesData);
             }
-            this.$emit('treeData',this.treesData);
         },
         'dataTreeEdit': function(newVal) {
             if(newVal.length == 0) {

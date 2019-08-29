@@ -1,5 +1,5 @@
 <template>
-    <div class="inside_cloud-container">
+    <div class="inside_cloud-container" v-loading="loading"  element-loading-background="#eee">
         <insideHeader @menuViewChange="handleMenuView" :menuPath="menuPath"></insideHeader>
         <insideMenu :title="title" :openMenuView="openMenuView" :menuList="menuList" :menuPath="menuPath"></insideMenu>
         <div id="insideContainer" :class="openMenuView?'open':'close'">
@@ -24,6 +24,7 @@ export default {
     data () {
         return {
             openMenuView: true,
+            loading: false,
             title: "",
             menuPath: '/',
             menuList: []
@@ -35,11 +36,15 @@ export default {
         'app-footer': footer,
     },
     created () {
+        // this.loading = true;
         this.getMenuList();
     },
     mounted () {
         this.initView();
         window.onresize = this.initView;
+        // setTimeout(()=>{
+        //     this.loading = false;
+        // },800)
     },
     methods: {
         initView() {
@@ -133,5 +138,9 @@ export default {
             left: 200px;
             right: 0;
         }
+        // .el-loading-mask {
+        //     background-color: #dcdcdc;
+        // }
     }
-</style>    
+</style> 
+

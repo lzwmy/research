@@ -50,18 +50,12 @@ export default {
     },
   },
   mounted () {
-    window.onresize = this.initView();
     this.initView();
+    window.onresize = this.initView;
   },
   methods: {
     initView() {
       let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom'))
-      console.log($('#main_header').outerHeight())
-      console.log($('#navbar').outerHeight())
-      console.log($('#app > .footer').outerHeight())
-      console.log(parseInt($("#main").css('marginTop')))
-      console.log(parseInt($("#main").css('marginBottom')))
-      console.log($('body').height() - otherHeihgt)
       $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
     }
   }

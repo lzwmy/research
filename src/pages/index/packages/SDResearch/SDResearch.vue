@@ -1,12 +1,12 @@
 <template>
   <div class="cloud-component SDResearch">
-    <div class="sd-main-wrapper" v-loading="loading">
+    <div class="sd-main-wrapper flex-start-center" v-loading="loading">
       <div class="nodata zwarning" v-if="dataList.length === 0">
         您暂未授权任何病种的权限
         <router-link tag="a" style="color: #2d8cf0;" :to="{ name: 'userManage'}" v-if="isHasUserManageAuth"> 去授权&gt;</router-link>
       </div>
       <!-- :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}"> -->
-      <router-link v-else tag="a" class="sd-title-wrapper" v-for="item in dataList" :key="item.id"
+      <router-link v-else tag="a" class="sd-title-wrapper flex-start-center" v-for="item in dataList" :key="item.id"
                   :to="getMenu()">
         <div class="sd-thumbnail">
           <div class="sd-thumbnail-content">
@@ -130,15 +130,15 @@ export default {
 <style scoped lang="less">
   .SDResearch .sd-main-wrapper {
     width: 100%;
-    padding: 5px 1.5% 15px;
+    flex-wrap: wrap;
     position: relative;
   }
 
   .sd-title-wrapper {
     display: inline-block;
     position: relative;
-    width: 200px;
-    margin: 10px;
+    width: 15%;
+    margin: .8%;
     cursor: pointer;
     box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, .1);
   }

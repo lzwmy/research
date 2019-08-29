@@ -24,7 +24,7 @@ const routes = [
     name: 'index',
     meta: {
       requireAuth: true,
-      isKeepAlive: false,
+      isKeepAlive: true,
       txt: '首页',
       flag: 'index',
       belongToGroup: ''
