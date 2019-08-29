@@ -24,7 +24,6 @@ export default {
     'app-view': view,
     'app-footer': footer,
     navbar
-
   },
   data () {
     return {

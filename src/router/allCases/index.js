@@ -9,7 +9,7 @@ const routes = [
     name: 'allCases',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '全部病例',
       flag: 'allCases',
       belongToGroup: 'allCases'

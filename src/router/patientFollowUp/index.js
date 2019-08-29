@@ -6,7 +6,7 @@ const routes = [
     name: 'patientFollowUp',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '患者随访',
       flag: 'patientFollowUp',
       belongToGroup: 'patientFollowUp'
