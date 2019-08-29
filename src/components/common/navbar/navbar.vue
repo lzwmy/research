@@ -24,9 +24,8 @@ export default {
     },
     watch: {
         $route(to,from) {
-            // console.log(this.activeMenuIndex)
             this.$nextTick(()=>{
-                this.activeMenuIndex = this.$store.state.menu.activeMenuIndex;
+                this.activeMenuIndex = this.$route.path;
             })
         }
     },
@@ -64,7 +63,6 @@ export default {
                 })
                 return;
             }
-            this.$store.commit('setActiveMenuIndex', item.menuPath);
             this.$router.push(item.menuPath)
         }
     }
@@ -106,12 +104,13 @@ export default {
     #navbar {
         height: 60px;
         background: #fff;
-        padding: 0 100px;
         position: relative;
         z-index: 10;
         box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
         .el-tabs {
             height: 100%;
+            margin: 0 auto;
+            width: 1200px;
             .el-tabs__nav-wrap::after {
                 background-color: transparent;
             }

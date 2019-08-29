@@ -110,12 +110,8 @@ const user = {
 
 const menu = {
   state: {
-    activeMenuIndex: '0',
   },
   mutations: {
-    setActiveMenuIndex: function(state, index) {
-      state.activeMenuIndex = String(index);
-    }
   }
 }
 

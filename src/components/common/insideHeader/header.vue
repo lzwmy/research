@@ -73,13 +73,17 @@ export default {
     .inside_header {
         .el-select {
             .el-input {
-                background-color: #D3D5DE;
                 height: 100%;
                 line-height: 60px;
+                transition: all 300ms;
+                &:hover {
+                    background-color: #D3D5DE;
+                }
                 .el-input__inner {
                     border:none;
                     background-color: transparent;
                     width: 120px;
+                    text-align: center;
                 }
                 input::-webkit-input-placeholder {
                     color: #999;

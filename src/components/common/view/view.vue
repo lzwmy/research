@@ -35,9 +35,9 @@ export default {
         handlePageHeight () { // 高度自适应处理
             setTimeout(() => {
                 this.$nextTick(() => {
-                    let routerViewHeight = document.querySelector('#main').clientHeight;
-                    let otherViewHeight = $("#main_header").height() + $("#navbar").height() + 50 + $(".cloud-search").height() + ($("#main").innerHeight() - $("#main").height())/2;
-                    let searchHeight = document.querySelector('#main').clientHeight;
+                    let routerViewHeight = $("body").height();
+                    let otherViewHeight = $("#main_header").outerHeight() + $("#navbar").outerHeight()+ $(".cloud-component").outerHeight() +
+                                            parseInt($("#main").css("marginTop")) + parseInt($("#main").css("marginBottom")) + 30;
                     if (this.$refs.routercomponent && this.$refs.routercomponent.routerViewHeight) {
                         if (this.$route.name == 'index' || this.$route.name == '/') {
                             this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight;

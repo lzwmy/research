@@ -55,8 +55,14 @@ export default {
   },
   methods: {
     initView() {
-      let h = $('body').height() - $('#main_header').outerHeight() -　$('#navbar').outerHeight() - $('#app > .footer').outerHeight() - parseInt($("#main").css('marginTop'))*2;
-      $('#main').css({'min-height': h +'px'})
+      let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom'))
+      console.log($('#main_header').outerHeight())
+      console.log($('#navbar').outerHeight())
+      console.log($('#app > .footer').outerHeight())
+      console.log(parseInt($("#main").css('marginTop')))
+      console.log(parseInt($("#main").css('marginBottom')))
+      console.log($('body').height() - otherHeihgt)
+      $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
     }
   }
 };
@@ -71,53 +77,30 @@ export default {
   #app.insideView {
     #main_header,
     #navbar {
-      position: absolute;
-      top: -300px;
+      display: none;
     }
     #main {
-      margin:0 !important;
-      .inside_cloud-container{ 
+      width: 100% !important;
+      margin: 0 !important;
+      .inside_cloud-container,
+      .cloud-component{ 
         padding: 0;
       }
     }
   }
   #main {
-    margin: 30px 100px 20px;
+    margin: 30px auto 20px;
+    width: 1200px;
     background: #fff;
     .cloud-component{
-      height: 100%;
       padding: 15px;
     }
   }
-  @media (max-width: 1023px){
-    #navbar, #main_header { padding: 0 10px !important;}
-  } 
-  @media (min-width: 1024px){
-    #navbar, #main_header { padding: 0 10px !important;}
-  } 
-  @media (min-width: 1280px) {
-    #main { margin-left: 30px !important; margin-right: 30px !important;}
-    #navbar, #main_header { padding: 0 30px !important;}
+  @media screen and (min-width: 350px) and (max-width: 1240px) {
+    #navbar .el-tabs, #main_header .header_box, #main { width: 98% !important;}
   }
 
-  @media (min-width: 1366px) {
-    #main { margin-left: 80px !important; margin-right: 80px !important;}
-    #navbar, #main_header { padding: 0 80px !important;}
-  }  
 
-  @media (min-width: 1440px) {
-    #main { margin-left: 100px !important; margin-right: 100px !important;}
-    #navbar, #main_header { padding: 0 100px !important;}
-  } 
-
-  @media (min-width: 1680px) {
-    #main { margin-left: 160px !important; margin-right: 160px !important;}
-    #navbar, #main_header { padding: 0 160px !important;}
-  } 
-  @media (min-width: 1920px) {
-    #main { margin-left: 180px !important; margin-right: 180px !important;}
-    #navbar, #main_header { padding: 0 180px !important;}
-  } 
 </style>
 
 

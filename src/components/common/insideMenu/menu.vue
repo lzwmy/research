@@ -27,12 +27,12 @@
             <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" :collapse="!openMenuView" :default-openeds="['1']">
                 <span v-for="(item, index) in menuList" :key="index">
                     <el-menu-item :index="String(index+1)" @click="routerLink(item)" v-if="item.children.length == 0">
-                        <img :src="'../../../../static/img/'+ item.ico +'.png'">
+                        <i class="icon iconfont" :class="'icon'+item.ico"></i>
                         <span slot="title">{{item.menuName}}</span>
                     </el-menu-item>
                     <el-submenu :index="String(index+1)" v-if="item.children.length != 0">
                         <template slot="title">
-                            <img :src="'../../../../static/img/'+ item.ico +'.png'">
+                            <i class="icon iconfont" :class="'icon'+item.ico"></i>
                             <span slot="title">{{item.menuName}}</span>
                         </template>
                         <el-menu-item-group v-for="(li, indexli) in item.children" :key="indexli">
@@ -77,9 +77,6 @@ export default {
         };
     },
     watch: {
-        // openMenuView: function(newVal) {
-        //     openMenuView = newVal
-        // }
     },
     created () {
         if(this.menuList[0] && this.menuList[0].children && this.menuList[0].children.length == 0) {
@@ -87,7 +84,6 @@ export default {
         }else {
             this.defaultActive = '1-1';
         }
-        console.log(this.defaultActive)
     },
     mounted () {
     },

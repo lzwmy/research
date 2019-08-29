@@ -55,9 +55,8 @@ export default {
         handlePageHeight () { // 高度自适应处理
             setTimeout(() => {
                 this.$nextTick(() => {
-                    let routerViewHeight = document.querySelector('#main').clientHeight;
-                    let otherViewHeight = $("#main_header").height() + $("#navbar").height() + 50 + $(".cloud-search").height() + ($("#main").innerHeight() - $("#main").height())/2;
-                    let searchHeight = document.querySelector('#main').clientHeight;
+                    let routerViewHeight = $("body").height();
+                    let otherViewHeight = $(".inside_header").outerHeight() + $("#insideContainer .title").outerHeight() + $(".cloud-search").outerHeight() + 15;
                     if (this.$refs.routercomponent2 && this.$refs.routercomponent2.routerViewHeight) {
                         if (this.$route.name == 'index' || this.$route.name == '/') {
                             this.$refs.routercomponent2.routerViewHeight = routerViewHeight - otherViewHeight;
@@ -67,7 +66,7 @@ export default {
                                 }
                             });
                         } else {
-                            this.$refs.routercomponent2.routerViewHeight = routerViewHeight -170;
+                            this.$refs.routercomponent2.routerViewHeight = routerViewHeight - otherViewHeight;
                             this.$nextTick(() => {
                                 if (this.$refs.routercomponent2.resize) {
                                     this.$refs.routercomponent2.resize();
@@ -96,7 +95,6 @@ export default {
             top: 60px;
             right: 0;
             bottom: 0;
-            overflow: auto;
             background: #F6F9FC;
             transition: left 300ms;
             z-index: 10;
@@ -115,9 +113,18 @@ export default {
                 font-size: 20px;
                 border-top: 1px solid #f2f2f2;
                 border-bottom: 1px solid #e8e8e8;
+                position: absolute;
+                top: 0px;
+                left:0;
+                right: 0;
             }
             .cloud-component {
-                padding: 15px;
+                position: absolute;
+                top: 75px;
+                left: 15px;
+                right: 15px;
+                bottom: 0px;
+                overflow: auto;
             }
         }
         .insideFooter {

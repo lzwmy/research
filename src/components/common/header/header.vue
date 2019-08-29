@@ -1,64 +1,64 @@
 <template>
-  <div id="main_header" class="header flex-between-center" :class="{'onclick':isDislpayArrow}">
+  <div id="main_header" class="header" :class="{'onclick':isDislpayArrow}">
+    <div class="header_box flex-between-center">
+      <router-link :to="{ name: 'index'}" class="header-logo flex-start-center">
+        <img :src="'../../../../static/img/logo/'+this.logo" alt="卫健智能">
+        <span class="head-title">{{title}}</span>
+      </router-link>
 
-    <router-link :to="{ name: 'index'}" class="header-logo flex-start-center">
-      <img :src="'../../../../static/img/logo/'+this.logo" alt="卫健智能">
-      <span class="head-title">{{title}}</span>
-    </router-link>
+      <div class="header-info flex-end-center">
+          <el-dropdown class="li set">
+            <div class="setText">设置皮肤</div>
+            <el-dropdown-menu slot="dropdown" class="setdropdown">
+              <el-dropdown-item :class="{on:$parent.ccstyle=='theme-blue'}"><span @click="changeThemeColor('theme-blue')">蓝色</span>
+              </el-dropdown-item>
+              <el-dropdown-item :class="{on:$parent.ccstyle=='theme-green'}"><span
+                @click="changeThemeColor('theme-green')">绿色</span></el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
 
-    <div class="header-info flex-end-center">
-        <el-dropdown class="li set">
-          <div class="setText">设置皮肤</div>
-          <el-dropdown-menu slot="dropdown" class="setdropdown">
-            <el-dropdown-item :class="{on:$parent.ccstyle=='theme-blue'}"><span @click="changeThemeColor('theme-blue')">蓝色</span>
-            </el-dropdown-item>
-            <el-dropdown-item :class="{on:$parent.ccstyle=='theme-green'}"><span
-              @click="changeThemeColor('theme-green')">绿色</span></el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+          <div class="li logout" @click="logout">退出</div>
 
-        <div class="li logout" @click="logout">退出</div>
-
-        <el-dropdown class="li systemSet">
-          <div class="welcomeText flex-between-center" title="系统设置">
-            <div class="img_head">
-              <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像">
+          <el-dropdown class="li systemSet">
+            <div class="welcomeText flex-between-center" title="系统设置">
+              <div class="img_head">
+                <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像">
+              </div>
+              <p>{{username.length > 15 ? username.substring(0, 15)+ '...' : username}}</p>
+              <span class="el-icon-arrow-down"></span>
             </div>
-            <p>{{username.length > 15 ? username.substring(0, 15)+ '...' : username}}</p>
-            <span class="el-icon-arrow-down"></span>
-          </div>
-          <el-dropdown-menu slot="dropdown" class="setdropdown">
-            <el-dropdown-item><span @click="dialogFormVisible=true">修改密码</span>
-            </el-dropdown-item>
-            <el-dropdown-item>
-              <router-link :to="{name:'openEHRIntroduction'}">关于我们</router-link>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+            <el-dropdown-menu slot="dropdown" class="setdropdown">
+              <el-dropdown-item><span @click="dialogFormVisible=true">修改密码</span>
+              </el-dropdown-item>
+              <el-dropdown-item>
+                <router-link :to="{name:'openEHRIntroduction'}">关于我们</router-link>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
 
-        <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
-          <el-form :model="ruleForm" :rules="rules" label-width="90px" style="padding-right:20px " ref="ruleForm"
-                  class="el-dialog--center" v-loading="loading">
-            <el-form-item label="旧密码：" prop="oldPassword">
-              <el-input v-model.trim="ruleForm.oldPassword" placeholder="请输入旧密码" type="password" :maxlength="20"
-                        auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="新密码：" prop="newPassword">
-              <el-input v-model.trim="ruleForm.newPassword" placeholder="请输入新密码" type="password" :maxlength="20"
-                        auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="确认密码：" prop="confirmPassword">
-              <el-input v-model.trim="ruleForm.confirmPassword" placeholder="请输入确认密码" type="password" :maxlength="20"
-                        auto-complete="off"></el-input>
-            </el-form-item>
-          </el-form>
-          <div slot="footer" class="dialog-footer el-dialog--center">
-            <el-button @click="cancelSubmit">取消</el-button>
-            <el-button type="primary" @click="submit" :disabled="loading">确定</el-button>
-          </div>
-        </el-dialog>
+          <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
+            <el-form :model="ruleForm" :rules="rules" label-width="90px" style="padding-right:20px " ref="ruleForm"
+                    class="el-dialog--center" v-loading="loading">
+              <el-form-item label="旧密码：" prop="oldPassword">
+                <el-input v-model.trim="ruleForm.oldPassword" placeholder="请输入旧密码" type="password" :maxlength="20"
+                          auto-complete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="新密码：" prop="newPassword">
+                <el-input v-model.trim="ruleForm.newPassword" placeholder="请输入新密码" type="password" :maxlength="20"
+                          auto-complete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="确认密码：" prop="confirmPassword">
+                <el-input v-model.trim="ruleForm.confirmPassword" placeholder="请输入确认密码" type="password" :maxlength="20"
+                          auto-complete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer el-dialog--center">
+              <el-button @click="cancelSubmit">取消</el-button>
+              <el-button type="primary" @click="submit" :disabled="loading">确定</el-button>
+            </div>
+          </el-dialog>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -241,11 +241,16 @@ export default {
   }
 };
 </script>
+
 <style lang="less" scoped>
     .header {
-        padding:0 100px;
         background-color: #090e40;
         height: 60px;
+        .header_box {
+          margin: 0 auto;
+          height: 100%;
+          width: 1200px;
+        }
         .header-logo {
           color: #fff;
           font-size: 18px;

@@ -10,7 +10,7 @@
         <el-form-item label="状态：" prop="status">
           <el-select v-model.trim="ruleForm.status" size="mini" placeholder="请选择" clearable>
             <el-option v-for="item in userstatus" :key="item.code" :value="item.code"
-                       :label="item.desc"></el-option>
+                      :label="item.desc"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item class="ml30">
@@ -23,9 +23,8 @@
       </el-form>
     </div>
     <!--搜索结果-->
-    <div class="cloud-search-list" style="height: 1000px;">
-      <!-- <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1"> -->
-      <echarts-contain containType="big" :parentHeight="1000" :heightRatio="1">
+    <div class="cloud-search-list">
+      <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
           :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
           :data="dataList.content" style="width: 100%;height: 1000px;" v-loading="loading"
