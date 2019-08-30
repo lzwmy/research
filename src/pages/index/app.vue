@@ -82,7 +82,7 @@ export default {
     }
   }
   #main {
-    margin: 30px auto 20px;
+    margin: 24px auto 20px;
     width: 1200px;
     background: #fff;
     .cloud-component{

@@ -64,8 +64,9 @@ export default {
 
 <style lang='less' scoped>
     .chartContent {
-        width: 48.8%;
-        margin-bottom: 25px;
+        /*width: 48.8%;*/
+        width: 49.4%;
+        margin-bottom: 12px;
         box-shadow: 0 2px 16px -11px rgba(0, 0, 0, 0.5);
         border-radius: 1px;
         .chart {
