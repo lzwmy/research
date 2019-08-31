@@ -23,7 +23,7 @@
                         class="sd-cog-btn">
               <span class="name">病例管理</span>
             </router-link>-->
-            <router-link tag="a" :to="{ name: 'diseaseChart',query:{id:item.id,cacheData:false}}" title="病例管理"
+            <router-link tag="a" :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}" title="病例管理"
                          class="sd-cog-btn">
               <span class="name">病例管理</span>
             </router-link>
@@ -111,7 +111,7 @@ export default {
         }
       })
       let params = {
-        path: '/caseManage',
+        path: list[0].menuPath,
         id: item.id,
         title: title,
         menuPath: menuPath,
@@ -119,7 +119,7 @@ export default {
       }
       sessionStorage.setItem('insideMenuData',JSON.stringify(params))
       return {
-          path: '/caseManage',
+          path: list[0].menuPath,
           query: {
             id: item.id
           }
