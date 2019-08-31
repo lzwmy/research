@@ -1,8 +1,8 @@
 <template>
     <div class="mask_layer_container">
-      <div class="mask_layer_title">
-        <span>专病概览</span>
-        <i class="iconfont iconguanbi"></i>
+      <div class="component_head flex-between-center">
+        <p>{{$route.meta.txt}}</p>
+        <div class="head_content"><i class="iconfont iconguanbi"></i></div>
       </div>
       <div class="mask_layer_body">
         <div class="mask_layer_left">

@@ -82,7 +82,6 @@ export default {
                 this.loading = false;
                 if(res.code == '0') {
                     this.dataList = res.data.diseaseSpecieses;
-                    console.log(this.dataList)
                 }else {
                     this.$mes('error', "获取病种列表失败");
                 }

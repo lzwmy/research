@@ -99,7 +99,6 @@ export default {
             });
         },
         onBack() {
-            console.log(this.menuPath)
             this.$router.replace({
                 name: this.menuPath.slice(1)
             })

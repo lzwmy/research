@@ -10,7 +10,7 @@ const routes = [
       isKeepAlive: true,
       txt: '病种概览',
       flag: 'diseaseChart',
-      belongToGroup: 'diseaseChart',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: diseaseChart
@@ -23,7 +23,7 @@ const routes = [
       isKeepAlive: true,
       txt: '病种概览',
       flag: 'diseaseChart',
-      belongToGroup: 'diseaseChart',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component:chartConfig

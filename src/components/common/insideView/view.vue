@@ -6,11 +6,11 @@
             <p class="title">{{$route.meta.txt}}</p>
             <transition name="el-fade-in-linear" mode="out-in">
                 <keep-alive>
-                    <router-view v-if="$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent2"></router-view>
+                    <router-view v-if="$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent2" class="insideContainer"></router-view>
                 </keep-alive>
             </transition>
             <transition name="el-fade-in-linear" mode="out-in">
-                <router-view v-if="!$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent2"></router-view>
+                <router-view v-if="!$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent2" class="insideContainer"></router-view>
             </transition>
         </div>
     </div>
@@ -27,7 +27,8 @@ export default {
             loading: false,
             title: "",
             menuPath: '/',
-            menuList: []
+            menuList: [],
+            diseaseId: ''
         };
     },
     components: {
@@ -39,12 +40,23 @@ export default {
         // this.loading = true;
         this.getMenuList();
     },
+    watch: {
+        $route: function(newVal) {
+            if(newVal.meta.belongToGroup == 'insideView') {
+                newVal.query.id = this.diseaseId;
+                console.log(this.diseaseId)
+            }
+        }
+    },
     mounted () {
         this.initView();
         window.onresize = this.initView;
         // setTimeout(()=>{
         //     this.loading = false;
         // },800)
+    },
+    beforeDestroy() {
+        console.log("==============")
     },
     methods: {
         initView() {
@@ -126,7 +138,8 @@ export default {
                 left: -15px;
                 right: 0;
             }
-            .cloud-component {
+            .cloud-component,
+            .insideContainer {
                 position: absolute;
                 top: 0px;
                 left: 0;
