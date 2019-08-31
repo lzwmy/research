@@ -13,7 +13,7 @@ const routes = [
       openMode: 2
     },
     component: researchReportManage
-  }
+  },
 ];
 
 export default routes;

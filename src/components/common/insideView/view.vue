@@ -52,7 +52,7 @@ export default {
             $('.inside_cloud-container').css({'min-height':$('body').height()+'px'})
         },
         getMenuList() {
-            let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))
+            let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'));
             this.menuPath = insideData.menuPath;
             this.title = insideData.title;
             this.menuList = insideData.menuList;

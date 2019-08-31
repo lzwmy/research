@@ -90,6 +90,7 @@ export default {
     },
     methods: {
         routerLink(item) {
+          console.log(item);
             this.$router.push(item.menuPath)
         },
         onBack() {
