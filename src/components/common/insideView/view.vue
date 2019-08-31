@@ -53,6 +53,7 @@ export default {
         },
         getMenuList() {
             let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))
+            console.log(insideData)
             this.menuPath = insideData.menuPath;
             this.title = insideData.title;
             this.menuList = insideData.menuList;

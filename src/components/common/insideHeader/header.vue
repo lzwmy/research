@@ -12,7 +12,7 @@
             v-model="popoverVisible"
             trigger="hover">
             <ul class="disease_content flex-start-center">
-                <li v-for="(item,index) in dataList" :key="index" @click="handleSelect(item)">
+                <li v-for="(item,index) in dataList" :key="index" @click="handleSelect(item)"> 
                     <div class="disease_img" :class="'thumbnail-img ' + item.logo + '_bgColor'">
                         <img :src="'./static/img/disease-logo/' + item.logo+ '.svg'">
                     </div>
