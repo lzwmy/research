@@ -53,7 +53,6 @@ export default {
         },
         getMenuList() {
             let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))
-            console.log(insideData)
             this.menuPath = insideData.menuPath;
             this.title = insideData.title;
             this.menuList = insideData.menuList;
@@ -62,7 +61,8 @@ export default {
             setTimeout(() => {
                 this.$nextTick(() => {
                     let routerViewHeight = $("body").height();
-                    let otherViewHeight = $(".inside_header").outerHeight() + $("#insideContainer .title").outerHeight() + $(".cloud-search").outerHeight() + 15;
+                    let otherViewHeight = $(".inside_header").outerHeight() + $(".cloud-search").outerHeight()+ 
+                                            parseInt($('.cloud-component').css('paddingTop')) + parseInt($('.cloud-component').css('paddingBottom'));
                     if (this.$refs.routercomponent2 && this.$refs.routercomponent2.routerViewHeight) {
                         if (this.$route.name == 'index' || this.$route.name == '/') {
                             this.$refs.routercomponent2.routerViewHeight = routerViewHeight - otherViewHeight;
@@ -104,16 +104,17 @@ export default {
             background: #F6F9FC;
             transition: left 300ms;
             z-index: 10;
+            overflow: auto;
             &.open {
                 left: 200px;
             }
             &.close {
                 left: 64px;
             }
-            & > .title {
+            &  > .title {
                 height: 60px;
                 line-height: 60px;
-                text-indent: 1em;
+                text-indent: 15px;
                 background-color: #fff;
                 color: #333;
                 font-size: 20px;
@@ -121,15 +122,19 @@ export default {
                 border-bottom: 1px solid #e8e8e8;
                 position: absolute;
                 top: 0px;
-                left:0;
+                padding: 0 15px;
+                left: -15px;
                 right: 0;
             }
             .cloud-component {
                 position: absolute;
-                top: 75px;
-                left: 15px;
-                right: 15px;
+                top: 0px;
+                left: 0;
+                right: 0;
                 bottom: 0px;
+                padding: 15px;
+                padding-top: 75px !important;
+                padding-bottom: 10px;
                 overflow: auto;
             }
         }
@@ -139,9 +144,6 @@ export default {
             left: 200px;
             right: 0;
         }
-        // .el-loading-mask {
-        //     background-color: #dcdcdc;
-        // }
     }
 </style> 
 

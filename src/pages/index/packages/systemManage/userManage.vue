@@ -1,5 +1,9 @@
 <template>
   <div class="cloud-component userManage">
+    <div class="component_head flex-between-center">
+      <p>{{$route.meta.txt}}</p>
+      <div class="head_content"></div>
+    </div>
     <!-- 搜索区域 -->
     <div class="cloud-search  el-form-item-small">
       <el-form :inline="true" :model="ruleForm" ref="ruleForm" label-width="70px">
@@ -12,7 +16,7 @@
         <el-form-item label="状态：">
           <el-select v-model.trim="ruleForm.status" placeholder="请选择" size="mini" clearable>
             <el-option v-for="item in userstatus" :key="item.code" :value="item.code"
-                       :label="item.desc"></el-option>
+                      :label="item.desc"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -52,27 +56,27 @@
           </el-table-column>
           <el-table-column label="更新时间" min-width="6%" prop="updateTime" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" width="220px">
+          <el-table-column label="操作" width="240px">
             <template slot-scope="scope"
                       v-if="(scope.row.roleList[0] && scope.row.roleList[0].roleType &&  scope.row.roleList[0].roleType != '0') || scope.row.roleList.length ==0">
               <el-button type="text" size="small" @click="assignRole(scope.row)" style="margin-left: 8px">
-                <i class="icon-bangding" title="分配角色"></i>
+                <i class="el-icon-setting" title="分配角色"></i>
               </el-button>
               <el-button type="text" size="small" @click="assignGroup(scope.row)" style="margin-left: 8px">
-                <i class="icon-fenpeiquanxian" title="分配实验组"></i>
+                <i class="el-icon-s-tools" title="分配实验组"></i>
               </el-button>
               <el-button type="text" size="small" @click="userResetPwd(scope.row.id)">
-                <i class="icon-chongzhimima" title="重置密码"></i>
+                <i class="el-icon-refresh-left" title="重置密码"></i>
               </el-button>
               <el-button type="text" size="small" @click="edit(scope.row)" style="margin-left: 8px">
-                <i class="icon-edit" title="编辑"></i>
+                <i class="el-icon-edit-outline" title="编辑"></i>
               </el-button>
               <el-button @click="updateStatus(scope.row)" type="text" size="small">
-                <i class="icon-unaccess" title="禁用" v-if="scope.row.status == '0'"></i>
-                <i class="icon-openaccess" title="启用" v-if="scope.row.status == '1'"></i>
+                <i class="el-icon-error" title="禁用" v-if="scope.row.status == '0'"></i>
+                <i class="el-icon-success" title="启用" v-if="scope.row.status == '1'"></i>
               </el-button>
               <el-button type="text" size="small" @click="deleteItem(scope.row)">
-                <i class="icon-delete" title="删除"></i>
+                <i class="el-icon-delete" title="删除"></i>
               </el-button>
             </template>
           </el-table-column>
@@ -82,9 +86,9 @@
     </div>
     <!--新增/编辑用户弹框-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="400px"
-               @close="closeUserDialog" class="userManageDialog">
+              @close="closeUserDialog" class="userManageDialog">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="90px"
-               class="el-dialog--center" @submit.native.prevent v-loading="ruleFormDialogLoading">
+              class="el-dialog--center" @submit.native.prevent v-loading="ruleFormDialogLoading">
         <el-form-item label="账号：" prop="account">
           <el-input v-model.trim="ruleFormDialog.account" placeholder="请输入账号" :disabled="userOption=='edit'"
                     size="mini"
@@ -770,6 +774,17 @@ export default {
       min-height: 300px;
       max-height: 500px;
       overflow: auto;
+    }
+  }
+</style>
+
+<style lang="less" scoped>
+  .el-table {
+    .el-button {
+      padding: 0;
+      i {
+        font-size: 20px;
+      }
     }
   }
 </style>

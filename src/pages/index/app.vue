@@ -75,14 +75,13 @@ export default {
     #main {
       width: 100% !important;
       margin: 0 !important;
-      .inside_cloud-container,
-      .cloud-component{ 
+      .inside_cloud-container{ 
         padding: 0;
       }
     }
   }
   #main {
-    margin: 30px auto 20px;
+    margin: 24px auto 20px;
     width: 1200px;
     background: #fff;
     .cloud-component{
