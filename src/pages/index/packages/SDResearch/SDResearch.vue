@@ -23,7 +23,7 @@
                         class="sd-cog-btn">
               <span class="name">病例管理</span>
             </router-link>-->
-            <router-link tag="a" :to="{ name: 'patientListModule',query:{id:item.id,cacheData:false}}" title="病例管理"
+            <router-link tag="a" :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}" title="病例管理"
                          class="sd-cog-btn">
               <span class="name">病例管理</span>
             </router-link>

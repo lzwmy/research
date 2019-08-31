@@ -160,7 +160,7 @@ img[class$='_bgColor'] {
   background-color: #5edbd5!important;
 }
 .nose_bgColor{
-   background-color: #ffce75!important;
+  background-color: #ffce75!important;
 }
 .pancreas_bgColor{
   background-color: #5edbd5!important;
@@ -194,11 +194,12 @@ img[class$='_bgColor'] {
 
 .labGroup-section {
   position: relative;
-  height: 28px;
-  line-height: 28px;
+  height: 36px;
+  line-height: 36px;
   border: 1px solid #d8dce5;
   display: inline-block;
-  border-radius: 5px;
+  /*border-radius: 5px;*/
+  border-radius: 1px;
   min-width: 447px;
   text-align: center;
   cursor: pointer;
@@ -206,7 +207,7 @@ img[class$='_bgColor'] {
 
 .selectLabSubjectGroupName {
   height: 100%;
-  line-height: 28px;
+  /*line-height: 28px;*/
   padding: 0 15px;
   text-align: center;
   min-width: 100px;
@@ -216,6 +217,8 @@ img[class$='_bgColor'] {
   text-overflow: ellipsis;
   display: inline-block;
   cursor: pointer;
+  font-size: 14px;
+  color: #666666;
 }
 
 .labGroup-dropmenu {
@@ -223,7 +226,8 @@ img[class$='_bgColor'] {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 500px;
+  /*width: 500px;*/
+  width: 447px;
   background-color: #fff;
   border: 1px solid #eee;
   box-shadow: 1px 1px 10px 0px #d8dce5;
@@ -255,8 +259,25 @@ img[class$='_bgColor'] {
 }
 
 .dropmenu-table tr td:first-child:after {
-  content: '\E60E';
-  font-family: element-icons !important;
+  /*content: '\E60E';
+  font-family: element-icons !important;*/
+  content: "";
+  width: 0;
+  height: 0;
+  border: 5px solid;
+  border-color: transparent transparent transparent #444;
+  position: absolute;
+  transform: translate(5px,125%);
+}
+.dropmenu-table tr:hover{
+  background-color: #ecf5ff;
+  color: #66b1ff;
+}
+.dropmenu-table tr:hover td:first-child:after{
+  border-color: transparent transparent transparent #66b1ff;
+}
+.all:hover {
+  color: #66b1ff;
 }
 
 .labGroup-btn.all {
