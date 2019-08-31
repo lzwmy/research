@@ -75,8 +75,7 @@ export default {
     #main {
       width: 100% !important;
       margin: 0 !important;
-      .inside_cloud-container,
-      .cloud-component{ 
+      .inside_cloud-container{ 
         padding: 0;
       }
     }

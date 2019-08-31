@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="ment_list">
-            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" :collapse="!openMenuView" :unique-opened="true">
+            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" ref="menu" :collapse="!openMenuView" :unique-opened="true">
                 <span v-for="(item, index) in menuList" :key="index">
                     <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="item.children.length == 0">
                         <i class="icon iconfont" :class="'icon'+item.ico"></i>
@@ -64,7 +64,7 @@ export default {
         },
         menuPath: {
             type: String,
-            default: ""
+            default: "/"
         },
     },
     data () {
@@ -75,7 +75,7 @@ export default {
     watch: {
         $route(to,from) {
             this.$nextTick(()=>{
-                this.defaultActive = this.$route.path;
+                this.defaultActive = '/' + to.meta.flag;
             })
         }
     },
@@ -90,8 +90,13 @@ export default {
     },
     methods: {
         routerLink(item) {
-          console.log(item);
             this.$router.push(item.menuPath)
+            //关闭其它展开项
+            this.menuList.forEach(item => {
+                if(item.children.length != 0) {
+                    this.$refs.menu.close(item.menuCode);
+                }
+            });
         },
         onBack() {
             console.log(this.menuPath)
@@ -113,7 +118,7 @@ export default {
         overflow-x: hidden;
         transition: all 290ms;
         width: 200px;
-        background-color: #4D5474;
+        background-color: #394263;
         &.close {
             .cont {
                 padding-left: 10px;
@@ -132,7 +137,7 @@ export default {
         }
         .top {
             height: 60px;
-            background-color: #313755;
+            background-color: #313854;
             color: #F8F8F8;
             cursor: pointer;
             .el-button span {
@@ -147,6 +152,7 @@ export default {
             padding: 10px 20px;
             transition: all 300ms;
             height: 110px;
+            background-color: #4d5573;
             .userInfo {
                 height: 50px;
                 margin-bottom: 15px;
@@ -172,7 +178,7 @@ export default {
             }
         }
         .ment_list {
-            padding: 5px 0;
+            padding: 0;
             .el-menu {
                 border: none;
                 transition: all 200ms;
@@ -183,15 +189,23 @@ export default {
                     padding-left: 15px;
                     border-width: 0px;
                     color: #fff;
+                    border-left: 4px solid transparent;
                     &:hover {
-                        background-color: #090E40;
+                        background: rgba(0, 0, 0, 0.15);
+                        i {
+                            color:#fff;
+                        }
+                        span {
+                            color: #fff;
+                        }
                     }
                     &:focus {
                         background-color: transparent;
                     }
                     &.is-active {
-                        background-color: #090E40;
-                    }
+                        background-color: #282e45;
+                        border-color: #1bbae1;
+                    } 
                     span {
                         color: #f8f8f8;
                     }
@@ -205,7 +219,7 @@ export default {
     body {
         .insideMenu {
             .el-menu {
-                background-color: #4D5474;
+                background-color: #394263;
             }
             .el-menu-item-group__title {
                 display: none;
@@ -216,13 +230,35 @@ export default {
                 padding-left: 15px;
                 border-width: 0px;
             }
-            .el-submenu__title {
-                color: #f8f8f8;
+            .el-submenu {
                 &:hover {
-                    background-color: transparent;
+                    background: rgba(0, 0, 0, 0.15);
+                    i {
+                        color:#fff;
+                    }
+                    span {
+                        color: #fff;
+                    }
                 }
-                .el-submenu__icon-arrow {
+                &.is-active {
+                    background: rgba(0, 0, 0, 0.15);
+                }
+                .el-submenu__title {
                     color: #f8f8f8;
+                    line-height: 48px;
+                    height:  48px;
+                    &:hover {
+                        background-color: transparent;
+                    }
+                    .el-submenu__icon-arrow {
+                        color: #f8f8f8;
+                    }
+                }
+                .el-menu-item.is-active{
+                    background-color: #1c2030 !important;
+                }
+                .el-menu--inline {
+                    background-color: #282e45;
                 }
             }
             &.close .el-submenu__icon-arrow {
