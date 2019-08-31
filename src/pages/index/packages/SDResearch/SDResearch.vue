@@ -7,7 +7,7 @@
       </div>
       <!-- :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}"> -->
       <router-link v-else tag="a" class="sd-title-wrapper flex-start-center" v-for="item in dataList" :key="item.id"
-                  :to="getMenu()">
+                  :to="getMenu(item)">
         <div class="sd-thumbnail">
           <div class="sd-thumbnail-content">
             <img :class="'sd-thumbnail-img ' + item.logo + '_bgColor'"
@@ -19,8 +19,12 @@
         </div>
         <div class="sd-title-tools">
           <div>
-            <router-link tag="a" :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}" title="病例管理"
+            <!--<router-link tag="a" :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}" title="病例管理"
                         class="sd-cog-btn">
+              <span class="name">病例管理</span>
+            </router-link>-->
+            <router-link tag="a" :to="{ name: 'patientListModule',query:{id:item.id,cacheData:false}}" title="病例管理"
+                         class="sd-cog-btn">
               <span class="name">病例管理</span>
             </router-link>
           </div>
@@ -95,9 +99,9 @@ export default {
         console.log(error);
       }
     },
-    getMenu() {
+    getMenu(item) {
       let list = [];
-      let menuPath = '/';
+      let menuPath = '/index';
       let title = "";
       this.$store.state.user.menuList.forEach((item)=>{
         if(item.menuName == '专病科研') {
@@ -107,14 +111,18 @@ export default {
         }
       })
       let params = {
+        path: list[0].menuPath,
+        id: item.id,
         title: title,
         menuPath: menuPath,
         menuList: list
       }
       sessionStorage.setItem('insideMenuData',JSON.stringify(params))
       return {
-          name: list[0].menuPath.slice(1),
-          params: params
+          path: list[0].menuPath,
+          query: {
+            id: item.id
+          }
       }
     }
   },

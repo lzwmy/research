@@ -575,9 +575,11 @@ export default {
     height: 100%;
     background-color: #f0f2f7;
     .card {
-      margin-bottom: 25px;
-      height: 135px;
+      /*margin-bottom: 25px;*/
+      margin-bottom: 12px;
+      height: 133px;
       box-shadow: 0 2px 16px -11px rgba(0, 0, 0, 0.5);
+      border-radius: 1px;
       li {
         height: 100%;
         border: none;
@@ -601,9 +603,11 @@ export default {
             border-radius: 50%;
           }
           p{
-            margin-bottom: 15px;
+            /*margin-bottom: 15px;*/
+            margin-bottom: 5px;
             font-size: 40px;
-            font-weight: bolder;
+            /*font-weight: bolder;*/
+            font-weight: 600;
             color: #090E3E;
             font-family: "Open Sans", sans-serif;
           }
@@ -615,7 +619,8 @@ export default {
         p{
             color: #959595;
             font-weight: normal;
-            font-size: 16px;
+            font-family: "Open Sans", sans-serif;
+            font-size: 14px;
           }
       }
     }
@@ -623,6 +628,12 @@ export default {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      div{
+        margin-right: 0;
+        &:nth-child(2n-1) {
+          margin-right: 12px;
+        }
+      }
     }
   }
 

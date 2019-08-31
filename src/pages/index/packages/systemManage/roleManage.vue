@@ -1,5 +1,9 @@
 <template>
   <div class="cloud-component roleManage">
+    <div class="component_head flex-between-center">
+      <p>{{$route.meta.txt}}</p>
+      <div class="head_content"></div>
+    </div>
     <!-- 搜索区域 -->
     <div class="cloud-search el-form-item-small">
       <el-form :inline="true" :model="ruleForm" ref="ruleForm" @submit.native.prevent>
@@ -47,17 +51,17 @@
           <el-table-column label="操作" width="200px">
             <template slot-scope="scope" v-if="scope.row.roleType!=='0'">
               <el-button type="text" size="small" @click="assign(scope.row)" style="margin-left: 8px">
-                <i style="font-size:24px;" class="icon-bangding" title="分配菜单权限"></i>
+                <i class="el-icon-setting" title="分配菜单权限"></i>
               </el-button>
               <el-button type="text" size="small" @click="edit(scope.row)" style="margin-left: 8px">
-                <i class="icon-edit" title="编辑"></i>
+                <i class="el-icon-edit-outline" title="编辑"></i>
               </el-button>
               <el-button @click="updateStatus(scope.row)" type="text" size="small">
-                <i style="font-size:24px;" class="icon-unaccess" title="禁用" v-if="scope.row.status == '0'"></i>
-                <i style="font-size:24px;" class="icon-openaccess" title="启用" v-if="scope.row.status == '1'"></i>
+                <i class="el-icon-error" title="禁用" v-if="scope.row.status == '0'"></i>
+                <i class="el-icon-success" title="启用" v-if="scope.row.status == '1'"></i>
               </el-button>
               <el-button type="text" size="small" @click="deleteItem(scope.row)">
-                <i style="font-size:24px;" class="icon-delete icon iconfont iconshanchu" title="删除"></i>
+                <i class="icon-delete icon iconfont iconshanchu" title="删除"></i>
               </el-button>
             </template>
           </el-table-column>
@@ -534,6 +538,20 @@ export default {
       min-height: 300px;
       max-height: 500px;
       overflow: auto;
+      .el-tree-node__label {
+        margin-left: 10px;
+      }
+    }
+  }
+</style>
+
+<style lang="less" scoped>
+  .el-table {
+    .el-button {
+      padding: 0;
+      i {
+        font-size: 20px;
+      }
     }
   }
 </style>

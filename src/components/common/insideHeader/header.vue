@@ -6,10 +6,11 @@
         <el-popover
             placement="top-start"
             title=""
-            popper-class="popover_disease"
+            :popper-class="'popover_disease ' + openMenuView"
             class="popover_disease"
             width="100%"
             v-model="popoverVisible"
+            :visible-arrow="false"
             trigger="hover">
             <ul class="disease_content flex-start-center">
                 <li v-for="(item,index) in dataList" :key="index" @click="handleSelect(item)"> 
@@ -45,26 +46,27 @@ export default {
     computed: {
     },
     created () {
-        this.getDataList();
+        this.getDataList()
+        .then(()=>{
+            this.dataList.forEach(item => { 
+                if(this.$route.query.id == item.id) {
+                    this.disease = item.name;
+                }
+            });
+        })
+
     },
     watch: {   
-        // openMenuView: function(newVal) {
-        //     this.initPopover()
-        // },
-        // popoverVisible: function(newVal) {
-        //     if(newVal) {
-        //         this.initPopover()
-        //     }
-        // },
+        $route: function(newVal) {
+            this.disease + "";
+            this.dataList.forEach(item => { 
+                if(this.$route.query.id == item.id) {
+                    this.disease = item.name;
+                }
+            });
+        },
     },
     methods: {
-        initPopover() {
-            if(!this.openMenuView) {
-                $('body > .popover_disease').css({'left':'65px'})
-            }else {
-                $('body > .popover_disease').css({'left':'200px'})
-            }
-        },
         handleMenuView() {
             this.openMenuView = !this.openMenuView;
             this.$emit('menuViewChange', this.openMenuView)
@@ -80,6 +82,7 @@ export default {
                 this.loading = false;
                 if(res.code == '0') {
                     this.dataList = res.data.diseaseSpecieses;
+                    console.log(this.dataList)
                 }else {
                     this.$mes('error', "获取病种列表失败");
                 }
@@ -115,14 +118,6 @@ export default {
             left: 64px;
         }
     }
-    .dropdown_disease {
-        right: 0;
-        left: 200px;
-        &.big {
-            left: 65px;
-        }
-    }
-
 </style>    
 <style lang="less">
     body {
@@ -150,9 +145,13 @@ export default {
             }
         }
         .popover_disease {
-            left: 200px;
+            left: 200px !important;
             right: 0;
+            margin-top: 0 !important;
             animation: move 300ms;
+            &.false {
+                left:64px !important;
+            }
             .disease_content {
                 padding: 15px 20px;
                 li {
