@@ -340,9 +340,9 @@
               </el-form>
             </el-dialog>
             <!-- 病例入库-查找病例 -->
-            <el-dialog title="病例入库" :visible.sync="caseStorageDialogVisible" :append-to-body="true" width="400px"
+            <el-dialog title="病例入库" :visible.sync="caseStorageDialogVisible" :append-to-body="true"
                        @close="closeCaseStorageDialog" class="caseStorageDialog">
-              <el-form :model="caseStorageRuleForm" label-width="120px" @submit.native.prevent :rules="caseStorageRules"
+              <el-form :model="caseStorageRuleForm" label-width="140px" @submit.native.prevent :rules="caseStorageRules"
                        ref="caseStorageRuleForm">
                 <el-form-item label="姓名（必填）：" prop="patientName">
                   <el-input v-model.trim="caseStorageRuleForm.patientName" size="mini" placeholder="请输入姓名"></el-input>

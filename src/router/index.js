@@ -13,6 +13,8 @@ import eventPlan from './eventPlan';
 import researchModel from './researchModel';
 //病人列表
 import patientListModule from './patientListModule';
+//病种概览
+import diseaseChart from './diseaseChart';
 // 首页
 const index = r => require.ensure([], () => r(require('packages/index/index')), 'index');
 // 404
@@ -73,7 +75,7 @@ const routes = [
   }
 ];
 
-const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, eventPlan,researchModel,patientListModule);
+const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, eventPlan,researchModel,patientListModule,diseaseChart);
 route.forEach(item=>{
   if(item.name == 'insideView'){
     route.forEach(li=>{
