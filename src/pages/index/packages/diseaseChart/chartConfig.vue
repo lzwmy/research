@@ -1220,14 +1220,13 @@
               overflow: hidden;
               text-overflow:ellipsis;
               white-space: nowrap;
-
             }
           }
           .item_modify{
             display: none;
             position: absolute;
             top: 50%;
-            right: 0;
+            right: 10px;
             transform: translate(0,-50%);
             span{
               color: #979BAA;
