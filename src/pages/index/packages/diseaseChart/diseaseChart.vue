@@ -2,7 +2,7 @@
   <div class="disease_chart_container">
     <div class="component_head flex-between-center">
       <p>{{$route.meta.txt}}</p>
-      <div class="head_content flex-start-center">
+      <div class=" cur_pointer head_content flex-start-center">
         <img src="./images/disease_set_chart.png" alt="" @click="displayMaskLayer">
       </div>
     </div>
@@ -73,12 +73,12 @@
       <!--<div class="disease_chart_box" v-loading="false"></div>
       <div class="disease_chart_box" v-loading="false"></div>-->
     </div>
-    <mask-layer :maskShow="maskShow" @displayShow="displayShow" @refresh="refresh"></mask-layer>
+<!--    <mask-layer :maskShow="maskShow" @displayShow="displayShow" @refresh="refresh"></mask-layer>-->
   </div>
 </template>
 
 <script>
-  import maskLayer from './chart/maskLayer';
+  // import maskLayer from './chart/maskLayer';
   import pieChart from './chart/piechart';
   import histogramChart from './chart/histogram';
   import polygonalChart from './chart/polygonalChart';
@@ -86,7 +86,6 @@
   import threeDimensional from './chart/3D';
   export default {
     components:{
-      maskLayer,
       pieChart,
       histogramChart,
       polygonalChart,
@@ -528,7 +527,7 @@
               colorByPoint: true,
               data:data.data.data
             };
-            copyOption.series[0] = obj;
+            copyOption.series = data.data.series;
             /*that.histogramOption = copyOption;*/
             that.chartList[index].loading = false;
             that.chartList[index].option = copyOption;

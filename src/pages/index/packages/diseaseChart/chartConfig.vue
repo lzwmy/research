@@ -2,14 +2,10 @@
     <div class="mask_layer_container">
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
-        <div class="head_content">
-            <i class="iconfont iconguanbi"></i>
+        <div class="head_content cur_pointer">
+          <i class="iconfont iconguanbi" @click="close"></i>
         </div>
       </div>
-<!--      <div class="mask_layer_title">-->
-<!--        <span>专病概览</span>-->
-<!--        -->
-<!--      </div>-->
       <div class="mask_layer_body">
         <div class="mask_layer_left">
           <div class="statistical_analysis_model">统计分析模板</div>
@@ -18,20 +14,22 @@
                  :class="{'add_bg':bgColor == item.chartId}"
                  v-for="(item,index) in modelList"
                  @click="changeBGColor(item)">
+              <div class="active_column" :class="{'display_show':bgColor == item.chartId}"></div>
               <div class="item_display">
-                <div class="checkbox">
-                  <!--<el-checkbox>指标统计</el-checkbox>-->
-                </div>
-                <span>{{item.chartName}}</span>
+                <span :title="item.chartName">{{item.chartName}}</span>
               </div>
               <div class="item_modify" :class="{'display_show':bgColor == item.chartId}">
-                <span>编辑</span>
-                <span @click.stop="deleteModel(item)">删除</span>
+                <span @click.stop="deleteModel(item)">
+                  <i class="iconfont iconshanchu"></i>
+                </span>
               </div>
             </div>
           </div>
           <div class="statistical_analysis_Add">
-            <div class="add_content" @click="addModelFromChart">添加</div>
+            <div class="add_content" @click="addModelFromChart">
+              <i class="iconfont icontianjia"></i>
+              新增
+            </div>
           </div>
         </div>
         <div class="mask_layer_right">
@@ -39,7 +37,7 @@
           <div class="model_window_box" v-loading="loading" element-loading-text="加载中">
             <div class="model_from_set">
               <div class="from_name">图表名称</div>
-              <el-input v-model="chartName" placeholder="请输入模板名称"></el-input>
+              <el-input v-model="chartName" size="small" placeholder="请输入模板名称"></el-input>
               <div class="from_name">图表类型</div>
               <div class="from_chart_type">
                 <el-radio v-model="chartType" label="PIE" @change="changeChartType('PIE')">饼状图</el-radio>
@@ -58,7 +56,7 @@
                 </el-option>
               </el-select>
               <div class="from_name">统计指标</div>
-              <el-select v-model="mutStatistics" multiple v-if="chartType=='BAR'" v-loading="checkLoading">
+              <el-select v-model="statistics" v-loading="checkLoading">
                 <el-option
                   v-for="item in statisticsList"
                   :key="item.formItemId"
@@ -66,9 +64,10 @@
                   :value="item.formItemId">
                 </el-option>
               </el-select>
-              <el-select v-model="statistics" v-loading="checkLoading"   v-else>
+              <div class="from_name" v-show="chartType=='BAR'">对比指标</div>
+              <el-select v-model="compareFormItemId"  v-show="chartType=='BAR'" v-loading="checkLoading">
                 <el-option
-                  v-for="item in statisticsList"
+                  v-for="item in compareFormItemList"
                   :key="item.formItemId"
                   :label="item.formItemName"
                   :value="item.formItemId">
@@ -150,6 +149,8 @@
         chartLoading:false,
         checkLoading:false,
         bgColor:'',
+        compareFormItemId:"",
+        compareFormItemList:[],
         mutStatistics:[], // 柱状图 统计指标
         chartName:"",
         chartType:"PIE",
@@ -459,6 +460,11 @@
         this.mutStatistics = [];
         this.statisticsList = [] ;
         this.chartType = "PIE";
+        this.compareFormItemId = "";
+        this.compareFormItemList = [];
+      },
+      close() {
+        window.history.go(-1);
       },
       changeBGColor(data) {
         this.bgColor = data.chartId;
@@ -482,6 +488,8 @@
         this.xaxis = "";
         this.yaxis = "";
         this.zaxis = "";
+        this.compareFormItemId = "";
+        this.compareFormItemList = [];
         //清除值
         /*switch (value) {
           case "PIE":
@@ -510,7 +518,8 @@
       changeCRFFrom(value) {
         console.log(value);
         this.checkLoading = true;
-        this.statisticalIndicators(value)
+        this.statisticalIndicators(value);
+        this.xyz(value);
       },
       // 预览
       clickPreviewChart() {
@@ -579,20 +588,42 @@
       //统计分析
       async statisticalIndicators(value) {
         let that = this;
-        let flag = false;
+        /*let flag = false;
         if(this.chartType=='PIE'||this.chartType=='BAR'||this.chartType == 'LINE'){
           flag = false;
         }else{
           flag = true;
-        };
+        };*/
         let fromData = {
           crfId:value,
-          scatterFlag:flag
+          scatterFlag:false
         };
         try{
           let data = await that.$http.statisticalIndicatorsQ(fromData);
           if(data.code == 0) {
             that.statisticsList = data.data;
+            that.compareFormItemList = data.data;
+            /*that.xaxisList = data.data;
+            that.yaxisList = data.data;
+            that.zaxisList = data.data;*/
+          }
+          this.loading = false;
+          that.checkLoading = false;
+        }catch (error) {
+          console.log(error);
+          this.loading = false;
+        }
+      },
+      //xyz 轴
+      async xyz(value) {
+        let that = this;
+        let fromData = {
+          crfId:value,
+          scatterFlag:true
+        };
+        try{
+          let data = await that.$http.statisticalIndicatorsQ(fromData);
+          if(data.code == 0) {
             that.xaxisList = data.data;
             that.yaxisList = data.data;
             that.zaxisList = data.data;
@@ -611,7 +642,7 @@
         if(this.chartType == 'PIE'||this.chartType == 'LINE'||this.chartType == '2D_SCATTER'||this.chartType == '3D_SCATTER'){
           fromItemList.push(that.statistics)
         }else if(this.chartType=='BAR'){
-          fromItemList = that.mutStatistics
+          fromItemList.push(that.statistics)
         }
         let fromData = {
           "xaxis": that.xaxis || "",
@@ -623,7 +654,8 @@
           "crfId": that.crf || "",
           "diseaseId": that.$route.query.id || "",
           "formItemIds":fromItemList || [],
-          "charts": []
+          "charts": [],
+          "compareFormItemId":that.compareFormItemId || ""
         };
         try {
           let data = await that.$http.saveCustomChart(fromData);
@@ -648,7 +680,7 @@
         if(this.chartType == 'PIE'||this.chartType == 'LINE'||this.chartType == '2D_SCATTER'||this.chartType == '3D_SCATTER'){
           fromItemList.push(that.statistics)
         }else if(this.chartType=='BAR'){
-          fromItemList = that.mutStatistics
+          fromItemList.push(that.statistics)
         }
         let fromData = {
           "xaxis": that.xaxis || "",
@@ -660,11 +692,12 @@
           "crfId": that.crf || "",
           "diseaseId": that.$route.query.id || "",
           "formItemIds":fromItemList || [],
-          "charts": []
+          "charts": [],
+          "compareFormItemId":that.compareFormItemId || ""
         };
         try {
           let data = await that.$http.saveCustomChart(fromData);
-          console.log(data)
+          console.log(data);
           if(data.code == 0) {
             this.dialogVisible  = false;
             that.$message({
@@ -701,7 +734,8 @@
                 break;
               case "BAR":
                 that.getBarData(value);
-                that.mutStatistics = data.data.formItemIds;
+                that.statistics = data.data.formItemIds[0];
+                that.compareFormItemId = data.data.compareFormItemId;
                 break;
               case "LINE":
                 that.getLineData(value);
@@ -785,12 +819,12 @@
             copyOption.title.text = data.data.chartName;
             copyOption.xAxis.categories = data.data.xaxis;
             copyOption.yAxis.title = "";
-            let obj = {
+            /*let obj = {
               name: 'Brands',
               colorByPoint: true,
               data:data.data.data
-            };
-            copyOption.series[0] = obj;
+            };*/
+            copyOption.series = data.data.series;
             that.histogramOption = copyOption;
           }
         }catch (error) {
@@ -935,8 +969,8 @@
       async previewBar() {
         let that = this;
         let formItemIds = [];
-        if(that.mutStatistics.length!==0){
-          formItemIds = that.mutStatistics
+        if(that.statistics!==""){
+          formItemIds.push(that.statistics)
         }else{
           formItemIds = []
         }
@@ -944,21 +978,23 @@
           "chartName":that.chartName || "" ,
           "chartType": that.chartType || "",
           "crfId": that.crf || "",
-          "formItemIds": formItemIds
+          "formItemIds": formItemIds,
+          "compareFormItemId":that.compareFormItemId|| ""
         };
         try {
           let data = await that.$http.previewBar(fromData);
+          console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.histogramOption)));
             copyOption.title.text = data.data.chartName;
             copyOption.xAxis.categories = data.data.xaxis;
             copyOption.yAxis.title = "";
-            let obj = {
+            /*let obj = {
               name: 'Brands',
               colorByPoint: true,
               data:data.data.data
-            };
-            copyOption.series[0] = obj;
+            };*/
+            copyOption.series = data.data.series;
             that.histogramOption = copyOption;
           }
           that.chartLoading = false;
@@ -1102,6 +1138,9 @@
       }
     },
     mounted() {
+      this.init();
+      this.getChartListModel();
+      this.modelCRFFromList();
     }
   }
 </script>
@@ -1140,14 +1179,14 @@
     height: 100%;
     padding: 0 30px;
     box-sizing: border-box;
-    margin-top: 90px;
+    /*margin-top: 30px;*/
     .mask_layer_left{
       width: 15%;
       /*border:1px solid #D8DCE4;*/
       .statistical_analysis_model{
         line-height: 40px;
-        font-size: 16px;
-        color:#63666E ;
+        font-size: 14px;
+        color:#666666 ;
         text-align: center;
         /*border-bottom: 1px solid #D8DCE4;*/
         border:1px solid rgba(229,235,236,1);
@@ -1156,69 +1195,112 @@
       .statistical_analysis_content{
         display: flex;
         flex-direction: column;
+        min-height: 120px;
+        background-color: #ffffff;
+        border-left: 1px solid #e5ebec;
+        border-right: 1px solid #e5ebec;
+        border-bottom: 1px solid #e5ebec;
         .statistical_analysis_item{
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-start;
           width: 100%;
-          padding: 5px 10px;
+          /*padding: 5px 10px;*/
+          height: 40px;
           box-sizing: border-box;
           cursor: pointer;
+          align-items: center;
+          position: relative;
           .item_display{
             display: flex;
+            cursor: pointer;
             span{
-              padding: 0 5px;
+              padding-left: 15px;
+              display: inline-block;
+              width: 168px;
+              overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
+
             }
           }
           .item_modify{
             display: none;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translate(0,-50%);
             span{
-              color: #409eff;
+              color: #979BAA;
               padding: 0 5px;
             }
+          }
+          .active_column{
+            display: none;
+            width: 3px;
+            height: 100%;
+            background-color: #04B8DD;
+            position: absolute;
+            top: 0;
+            left: 0;
           }
           .display_show{
             display:flex;
           }
         }
         .add_bg{
-          background-color: #F3F3F3;
+          background-color: #F5F7FA;
         }
       }
       .statistical_analysis_Add{
         display: flex;
         width: 100%;
         cursor:pointer;
+        margin-top: 20px;
         .add_content{
-          width: 85%;
+          width: 100%;
           text-align: center;
-          line-height: 30px;
-          border: 1px dashed #D8DCE4;
+          line-height: 40px;
+          /*border: 1px dashed #D8DCE4;*/
           margin: 0 auto;
+          background:rgba(4,184,221,1);
+          border-radius:2px;
+          box-shadow:0 2px 2px 0 rgba(4,184,221,0.55);
+          font-size: 14px;
+          color: #ffffff;
+          i{
+            font-size: 14px;
+            padding-right: 10px;
+          }
         }
         :hover{
-          background-color: #F3F3F3;
+          /*background-color: #F3F3F3;*/
+
         }
       }
     }
     .mask_layer_right{
       flex: 1;
       margin-left: 30px;
-      border:1px solid #D8DCE4;
+      border:1px solid #E5EBEC;
       height: 100%;
+      background-color: #ffffff;
+      padding: 0 5px;
+      box-sizing: border-box;
       overflow: hidden;
       .model_set{
         line-height: 40px;
-        font-size: 16px;
-        color:#63666E ;
-        text-align: center;
-        border-bottom: 1px solid #D8DCE4;
+        font-size: 14px;
+        color:#666666 ;
+        text-align: left;
+        border-bottom: 1px solid #E5EBEC;
+        padding-left: 20px;
       }
       .model_window_box{
         display: flex;
         width: 100%;
         flex-direction: row;
         box-sizing: border-box;
-        padding: 15px;
+        padding: 20px 15px;
         height: 100%;
         .model_from_set{
           width: 50%;
@@ -1227,14 +1309,29 @@
           flex-direction: column;
           padding: 0 15px 0 15px;
           height: 90%;
-          justify-content: space-between;
+          justify-content: flex-start;
+          color: #666666;
           .from_name{
             font-size: 14px;
-            padding: 5px 0;
+            padding: 15px 0;
+            font-family:MicrosoftYaHei;
           }
           .from_chart_type{
             display: flex;
             justify-content: space-between;
+          }
+          .submit_btn{
+            margin-top: 30px;
+            .el-button{
+              border-radius:2px;
+              font-size: 14px;
+              height: 30px;
+            }
+            .el-button--primary{
+              color: #ffffff;
+              background-color: #1BBAE1;
+              border: none;
+            }
           }
         }
         .model_view{
@@ -1252,6 +1349,16 @@
             width: 90%;
             margin-top: 10px;
             text-align: right;
+            .el-button{
+              border-radius:2px;
+              font-size: 14px;
+              height: 30px;
+            }
+            .el-button--primary{
+              color: #ffffff;
+              background-color: #1BBAE1;
+              border: none;
+            }
           }
         }
       }
@@ -1260,8 +1367,11 @@
   .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item:hover .item_modify{
     display: flex ;
   }
+  .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item:hover .active_column{
+    display: inline-block ;
+  }
   .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item:hover {
-    background-color: #F3F3F3;
+    background-color: #F5F7FA;
   }
 </style>
 <style>
@@ -1275,5 +1385,12 @@
     .mask_layer_container .el-dialog__body{
       height: 560px;
     }
+  }
+  .from_chart_type .el-radio__input.is-checked .el-radio__inner{
+    border-color: #04B8DD;
+    background: #04B8DD;
+  }
+  .from_chart_type .el-radio__input.is-checked+.el-radio__label{
+    color: #666666;
   }
 </style>
