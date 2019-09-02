@@ -18,13 +18,16 @@ import VueQuillEditor from 'vue-quill-editor';
 import install from 'components/utils/install';
 import filters from 'components/filters/index';
 
+import 'element-ui/lib/theme-chalk/index.css';
+import 'assets/css/normalize.less';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
 import 'quill/dist/quill.bubble.css';
-import 'assets/css/common.less';
 import 'assets/css/crf.less';
 import 'assets/css/crfStyle.less';
 import 'assets/fonticon/iconfont.css';
+import 'assets/css/common.less';
+
 
 
 Vue.use(VueQuillEditor)

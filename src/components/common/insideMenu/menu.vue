@@ -1,9 +1,7 @@
 <template>
     <div class="insideMenu" :class="openMenuView?'open':'close'">
         <div class="top flex-start-center" @click="onBack">
-            <el-button type="text">
-                <span class="el-icon-s-home"></span>
-            </el-button>
+            <span class="el-icon-s-home"></span>
             <p v-show="openMenuView">{{title}}</p>
         </div>
         <div class="cont">
@@ -17,10 +15,10 @@
                 </div>
             </div>
             <div class="iconMenu flex-between-center">
-                <span class="el-icon-monitor"></span>
-                <span class="el-icon-files"></span>
-                <span class="el-icon-chat-line-square"></span>
+                <span class="el-icon-user-solid"></span>
                 <span class="el-icon-message"></span>
+                <span class="el-icon-s-tools"></span>
+                <span class="el-icon-switch-button"></span>
             </div>
         </div>
         <div class="ment_list">
@@ -107,7 +105,7 @@ export default {
             });
         },
         onBack() {
-            this.$router.replace({
+            this.$router.push({
                 path: this.menuPath
             })
             sessionStorage.removeItem('insideData');
@@ -147,16 +145,17 @@ export default {
             background-color: #313854;
             color: #F8F8F8;
             cursor: pointer;
-            .el-button span {
+            span {
                 color: #F8F8F8;
                 font-size: 22px;
+                margin: 20px;
             }
             p {
                 font-size: 16px;
             }
         }
         .cont {
-            padding: 10px 20px;
+            padding: 10px 24px;
             transition: all 300ms;
             height: 110px;
             background-color: #4d5573;
@@ -167,20 +166,22 @@ export default {
                     height: 40px;
                     width: 40px;
                     border-radius: 50%;
-                    margin-right: 10px;
+                    margin-right: 20px;
                 }
                 p {
-                    font-size: 14px;
+                    font-size: 12px;
                     color: #f8f8f8;
                     &:first-child {
                         margin-bottom: 5px;
+                        font-size: 16px;
                     }
                 }
             }
             .iconMenu {
                 color: #f8f8f8;
                 span {
-                    font-size: 24px;
+                    font-size: 20px;
+                    color: #82889d;
                 }
             }
         }
@@ -215,6 +216,7 @@ export default {
                     } 
                     span {
                         color: #f8f8f8;
+                        cursor: pointer;
                     }
                 }
             }

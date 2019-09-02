@@ -31,12 +31,12 @@
       </li>
     </ul>
     <div class="charts">
-      <charts :domId="'id1'" :option="option"></charts>
-      <charts :domId="'id2'" :option="pieOption"></charts>
-      <charts :domId="'id3'" :option="lineOption"></charts>
-      <charts :domId="'id4'" :option="visitOption"></charts>
-      <charts :domId="'id5'" :option="subjectOption"></charts>
-      <charts :domId="'id6'" :option="doctorOption"></charts>
+      <charts :option="option"></charts>
+      <charts :option="pieOption"></charts>
+      <charts :option="lineOption"></charts>
+      <charts :option="visitOption"></charts>
+      <charts :option="subjectOption"></charts>
+      <charts :option="doctorOption"></charts>
     </div>
   </div>
 </template>

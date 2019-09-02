@@ -9,14 +9,6 @@ import utils from 'components/utils/index';
 export default {
     name: 'charts',
     props: {
-        title: {
-            type: String,
-            default: ""
-        },
-        domId: {
-            type: String,
-            default: ""
-        },
         //图表配置
         option: {
             type: Object,
@@ -29,15 +21,15 @@ export default {
         }
     },
     watch: {
-      "option":function (value) {
-        this.data = value;
-        this.initHighcharts();
-      }
+        "option":function (value) {
+            this.data = value;
+            this.initHighcharts();
+        }
     },
     data () {       
         return {
-          chart: null,
-          data:this.option
+            chart: null,
+            data:this.option
         };
     },
     mounted() {
@@ -47,14 +39,7 @@ export default {
     },
     methods: {
         initHighcharts() {
-          // console.log(this.$el)
             this.chart = this.$Highcharts.chart(this.$el, this.data);
-            // this.setChartsSeries();
-        },
-        setChartsSeries() {
-            this.chart.series[0].update({
-                data: this.list
-            });
         }
     },
         
@@ -64,7 +49,6 @@ export default {
 
 <style lang='less' scoped>
     .chartContent {
-        /*width: 48.8%;*/
         width: 49.4%;
         margin-bottom: 12px;
         box-shadow: 0 2px 16px -11px rgba(0, 0, 0, 0.5);

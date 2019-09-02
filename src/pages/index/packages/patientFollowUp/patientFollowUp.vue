@@ -2,10 +2,7 @@
     <div class="cloud-component patientFollowUp">
         <!-- 搜索区域 -->
         <div class="cloud-search el-form-item-small">
-            <el-form :inline="true" :model="form">
-                <disease-subjectgroup style="display: inline-block;" @select="changeDiseaseSubjectGroup" width="70px" ref="diseaseSubjectGroup"></disease-subjectgroup>
-            </el-form>
-            <el-form :inline="true" :model="form">
+            <el-form :inline="true" :model="form" class="flex-start-center">
                 <el-form-item label="时间范围：">
                     <el-date-picker
                         v-model="form.time"
@@ -24,9 +21,9 @@
                     </el-select>
                 </el-form-item>
                     
-                <el-form-item>
-                <el-button type="primary" @click="getDataList()">查 询</el-button>
-                <el-button @click="reset">清 空</el-button>
+                <el-form-item class="flex-right">
+                    <el-button type="primary" @click="getDataList()">查 询</el-button>
+                    <el-button @click="reset">清 空</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -186,9 +183,6 @@ export default {
                 that.loading = false;
                 console.log(err)
             }
-        },
-        changeDiseaseSubjectGroup (data) {
-            this.form.diseaseSubjectGroup = data;
         },
         reset () {
             this.form = {

@@ -2,8 +2,8 @@
     <div class="cloud-component researchReportManage">
         <!-- 搜索区域 -->
         <div class="cloud-search el-form-item-small">
-            <el-form :inline="true" :model="form">
-                <disease-subjectgroup style="display: inline-block;" @select="changeDiseaseSubjectGroup" width="70px" ref="diseaseSubjectGroup"></disease-subjectgroup>
+            <el-form :inline="true" :model="form" class="flex-start-center">
+                <!-- <disease-subjectgroup style="display: inline-block;" @select="changeDiseaseSubjectGroup" width="70px" ref="diseaseSubjectGroup"></disease-subjectgroup>
                 <el-form-item label="时间范围：">
                     <el-date-picker
                         v-model="form.time"
@@ -26,36 +26,55 @@
                 <el-form-item>
                 <el-button type="primary" size="mini" @click="getDataList()">查 询</el-button>
                 <el-button @click="reset" size="mini">清 空</el-button>
+                </el-form-item> -->
+                <el-form-item label="" label-width=''>
+                    <el-input
+                        placeholder="专病报告"
+                        suffix-icon="el-input__icon el-icon-search"
+                        v-model="form.report"
+                        style="width:280px;">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="状态:">
+                    <el-select v-model="form.state" size="mini">
+                        <el-option label="全部" value=""></el-option>
+                        <el-option label="未填写" value="0"></el-option>
+                        <el-option label="已填写" value="1"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="" label-width='' class="flex-right">
+                    <el-button icon="el-icon-upload2" type="primary">提交</el-button>
+                    <el-button icon="el-icon-document-checked" type="primary">核查</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <!--搜索结果-->
         <div class="cloud-search-list">
-        <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
-            <el-table
-            :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
-            :data="dataList.content" style="width: 100%" v-loading="loading"
-            :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe
-            @row-dblclick='toReportFill'>
-                <el-table-column type="index" label="序号" width="60px"></el-table-column>
-                <el-table-column prop="visitDate" label="就诊时间" width="180"></el-table-column>
-                <el-table-column prop="reportName" label="报告名称"></el-table-column>
-                <el-table-column prop="patientName" label="姓名"></el-table-column>
-                <el-table-column prop="genderName" label="性别"></el-table-column>
-                <el-table-column prop="author" label="创建者"></el-table-column>
-                <el-table-column prop="updator" label="更新者"></el-table-column>
-                <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
-                <el-table-column prop="diseaseName" label="病种"></el-table-column>
-                <el-table-column prop="groupName" label="课题组"></el-table-column>
-                <el-table-column label="报告状态" width="120px">
-                    <template slot-scope="scope">
-                        {{scope.row.status==0?'未填写':'已填写'}}
-                    </template>
-                </el-table-column>
-            </el-table>
-            <!-- 分页 -->
-            <pagination :data="dataList" @change="getDataList"></pagination>
-        </echarts-contain>
+            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+                <el-table
+                :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
+                :data="dataList.content" style="width: 100%" v-loading="loading"
+                :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe
+                @row-dblclick='toReportFill'>
+                    <el-table-column type="index" label="序号" width="60px"></el-table-column>
+                    <el-table-column prop="visitDate" label="就诊时间" width="180"></el-table-column>
+                    <el-table-column prop="reportName" label="报告名称"></el-table-column>
+                    <el-table-column prop="patientName" label="姓名"></el-table-column>
+                    <el-table-column prop="genderName" label="性别"></el-table-column>
+                    <el-table-column prop="author" label="创建者"></el-table-column>
+                    <el-table-column prop="updator" label="更新者"></el-table-column>
+                    <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
+                    <el-table-column prop="diseaseName" label="病种"></el-table-column>
+                    <el-table-column prop="groupName" label="课题组"></el-table-column>
+                    <el-table-column label="报告状态" width="120px">
+                        <template slot-scope="scope">
+                            {{scope.row.status==0?'未填写':'已填写'}}
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!-- 分页 -->
+                <pagination :data="dataList" @change="getDataList"></pagination>
+            </echarts-contain>
         </div>
     </div>
 </template>
@@ -74,24 +93,25 @@ export default {
     mixins: [mixins],
     data () {
         return {
-        form: {
-            diseaseSubjectGroup: {},
-            time:[],
-            state:""
-        },
-        dataList: {
-            content: []
-        },
-        loading: false,
-        identify:"",
-        paging: {
-                pageNo: 1,
-                pageSize: 10,
-                currentPageNo: '',
-                currentPageSize: '',
+            form: {
+                diseaseSubjectGroup: {},
+                time:[],
+                state:"",
+                report: ""
             },
-        emptyText: '',
-        elementLoadingText: ''  
+            dataList: {
+                content: []
+            },
+            loading: false,
+            identify:"",
+            paging: {
+                    pageNo: 1,
+                    pageSize: 10,
+                    currentPageNo: '',
+                    currentPageSize: '',
+                },
+            emptyText: '',
+            elementLoadingText: ''  
         };
     },
     watch: {},
@@ -102,7 +122,7 @@ export default {
         this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
         this.initPage();
     },
-     mounted () {
+    mounted () {
         this.addEventListenervisibilityChange();
     },
     destoryed() {
@@ -194,35 +214,35 @@ export default {
             this.$refs.diseaseSubjectGroup.ruleForm.disease = '';
         },
         toReportFill(row) {
-          this.getIdentify(row.patientId)
-          .then( ()=>{
-            let that = this;
-            let urlParameter={
-                cacheData: false,
-                formId: row.crfId || "",
-                reportId: row.id || '',
-                groupId: row.groupId || "",
-                subjectId: row.subjectId || "",
-                diseaseId: row.diseaseId || "",
-                patientName: row.patientName || "",
-                patientId: row.patientId || "",
-                identify: this.identify || "",
-                from: "caseManage",
-                diseaseName: row.diseaseName || "",
-                subjectName: row.subjectName || "",
-                groupName: row.groupName || "",
-                title: row.reportName,
-                isModify:"displayShow"
-            }
-            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
-            window.open('./patientForm.html');
-          })
+            this.getIdentify(row.patientId)
+            .then( ()=>{
+                let that = this;
+                let urlParameter={
+                    cacheData: false,
+                    formId: row.crfId || "",
+                    reportId: row.id || '',
+                    groupId: row.groupId || "",
+                    subjectId: row.subjectId || "",
+                    diseaseId: row.diseaseId || "",
+                    patientName: row.patientName || "",
+                    patientId: row.patientId || "",
+                    identify: this.identify || "",
+                    from: "caseManage",
+                    diseaseName: row.diseaseName || "",
+                    subjectName: row.subjectName || "",
+                    groupName: row.groupName || "",
+                    title: row.reportName,
+                    isModify:"displayShow"
+                }
+                sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+                window.open('./patientForm.html');
+            })
         },
         //获取身份证号
         async getIdentify(patientId) {
-          let formData = {
-            patientId: patientId
-          }
+            let formData = {
+                patientId: patientId
+            }
             try {
                 let res = await this.$http.casesSearchPatient(formData);
                 if (res.code == 0) {
@@ -244,7 +264,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     
 </style>
 

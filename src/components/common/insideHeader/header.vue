@@ -26,8 +26,6 @@
     </div>
 </template>
 <script>
-
-
 export default {
     name: 'insideHeader',
     props: {
@@ -75,6 +73,8 @@ export default {
         handleSelect(item) {
             this.disease = item.name;
             this.popoverVisible = false;
+            console.log(this.$route)
+            this.$route.query.id = 123
         },
         async getDataList () {
             this.loading = true;
@@ -169,7 +169,7 @@ export default {
                         height: 100px;   
                         overflow: hidden;
                         &.thumbnail-img {
-                            background-color: #1dd2a3;
+                            background-color: #439AFF;
                         }
                         img {
                             border: 5px solid #fff;

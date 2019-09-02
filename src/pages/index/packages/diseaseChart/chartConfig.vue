@@ -2,13 +2,9 @@
     <div class="mask_layer_container">
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
-<<<<<<< HEAD
         <div class="head_content">
-           <i class="iconfont iconguanbi"></i>
+            <i class="iconfont iconguanbi"></i>
         </div>
-=======
-        <div class="head_content"><i class="iconfont iconguanbi"></i></div>
->>>>>>> c8ece1e088d192f33056a17ef54f48fca338a89a
       </div>
 <!--      <div class="mask_layer_title">-->
 <!--        <span>专病概览</span>-->

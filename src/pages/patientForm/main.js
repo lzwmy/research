@@ -5,10 +5,6 @@ import utils from 'components/utils';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'assets/fonticon/iconfont.css';
-import 'assets/css/green/base.less';
-import 'assets/css/green/reset.less';
-import 'assets/css/blue/base.less';
-import 'assets/css/blue/reset.less';
 import 'assets/css/crf.less';
 import 'assets/css/crfStyle.less';
 

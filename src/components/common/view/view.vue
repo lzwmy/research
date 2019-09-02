@@ -22,7 +22,11 @@ export default {
     created () {
     },
     mounted () {
-        window.onresize = this.handlePageHeight; // 高度自适应处理
+        this.$nextTick(() => {
+            $(window).resize(()=>{
+                this.handlePageHeight();
+            })
+        });
     },
     watch: {
         $route (to, from) {
@@ -33,7 +37,7 @@ export default {
     },
     methods: {
         handlePageHeight () { // 高度自适应处理
-            setTimeout(() => {
+            // setTimeout(() => {
                 this.$nextTick(() => {
                     let routerViewHeight = $("body").height();
                     let otherViewHeight = $("#main_header").outerHeight() + $("#navbar").outerHeight()+ $(".cloud-component").outerHeight() +
@@ -56,7 +60,7 @@ export default {
                         }
                     }
                 });
-            }, 300);
+            // }, 300);
         },
     }
 };
