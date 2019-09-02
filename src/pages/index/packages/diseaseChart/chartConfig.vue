@@ -2,8 +2,18 @@
     <div class="mask_layer_container">
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
+<<<<<<< HEAD
+        <div class="head_content">
+           <i class="iconfont iconguanbi"></i>
+        </div>
+=======
         <div class="head_content"><i class="iconfont iconguanbi"></i></div>
+>>>>>>> c8ece1e088d192f33056a17ef54f48fca338a89a
       </div>
+<!--      <div class="mask_layer_title">-->
+<!--        <span>专病概览</span>-->
+<!--        -->
+<!--      </div>-->
       <div class="mask_layer_body">
         <div class="mask_layer_left">
           <div class="statistical_analysis_model">统计分析模板</div>
@@ -1134,15 +1144,18 @@
     height: 100%;
     padding: 0 30px;
     box-sizing: border-box;
+    margin-top: 90px;
     .mask_layer_left{
       width: 15%;
-      border:1px solid #D8DCE4;
+      /*border:1px solid #D8DCE4;*/
       .statistical_analysis_model{
         line-height: 40px;
         font-size: 16px;
         color:#63666E ;
         text-align: center;
-        border-bottom: 1px solid #D8DCE4;
+        /*border-bottom: 1px solid #D8DCE4;*/
+        border:1px solid rgba(229,235,236,1);
+        background-color: #ffffff;
       }
       .statistical_analysis_content{
         display: flex;
