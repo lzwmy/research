@@ -1,8 +1,10 @@
 <template>
   <div class="disease_chart_container">
-    <div class="disease_set_icon">
-      <div class="disease_title">专病概览</div>
-      <img src="./images/disease_set_chart.png" alt="" @click="displayMaskLayer">
+    <div class="component_head flex-between-center">
+      <p>{{$route.meta.txt}}</p>
+      <div class="head_content flex-start-center">
+        <img src="./images/disease_set_chart.png" alt="" @click="displayMaskLayer">
+      </div>
     </div>
     <div class="disease_header">
       <div class="disease_all">

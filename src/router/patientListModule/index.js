@@ -10,10 +10,10 @@ const routes = [
       isKeepAlive: true,
       txt: '病人列表',
       flag: 'patientListModule',
-      belongToGroup: 'patientListModule',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: patientListModule
   }
 ];
- export default routes;
+export default routes;
