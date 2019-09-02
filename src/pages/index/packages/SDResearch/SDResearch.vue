@@ -10,7 +10,8 @@
           <el-input
             placeholder="专病报告"
             suffix-icon="el-input__icon el-icon-search"
-            v-model="report">
+            v-model="report"
+            clearable>
           </el-input>
           <el-button icon="el-icon-plus" type="primary">新建病种</el-button>
         </div>
@@ -27,12 +28,6 @@
               </div>
             </div>
             <div class="sd-title-tools">
-              <div>
-                <router-link tag="a" :to="{ name: 'caseManage',query:{id:item.id,cacheData:false}}" title="病例管理"
-                            class="sd-cog-btn">
-                  <span class="name">病例管理</span>
-                </router-link>
-              </div>
               <div>
                 <router-link tag="a" :to="{ name: 'diseaseSet',query:{id:item.id}}" title="病种设置" class="sd-cog-btn">
                   <span class="name">病种管理</span>

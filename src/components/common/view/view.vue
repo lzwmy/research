@@ -37,30 +37,28 @@ export default {
     },
     methods: {
         handlePageHeight () { // 高度自适应处理
-            // setTimeout(() => {
-                this.$nextTick(() => {
-                    let routerViewHeight = $("body").height();
-                    let otherViewHeight = $("#main_header").outerHeight() + $("#navbar").outerHeight()+ $(".cloud-component").outerHeight() +
-                                            parseInt($("#main").css("marginTop")) + parseInt($("#main").css("marginBottom")) + 30;
-                    if (this.$refs.routercomponent && this.$refs.routercomponent.routerViewHeight) {
-                        if (this.$route.name == 'index' || this.$route.name == '/') {
-                            this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight;
-                            this.$nextTick(() => {
-                                if (this.$refs.routercomponent.resize) {
+            this.$nextTick(() => {
+                let routerViewHeight = $("body").height();
+                let otherViewHeight = $("#main_header").outerHeight() + $("#navbar").outerHeight()+ $(".cloud-component").outerHeight() +
+                                        parseInt($("#main").css("marginTop")) + parseInt($("#main").css("marginBottom"));
+                if (this.$refs.routercomponent && this.$refs.routercomponent.routerViewHeight) {
+                    if (this.$route.name == 'index' || this.$route.name == '/') {
+                        this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight;
+                        this.$nextTick(() => {
+                            if (this.$refs.routercomponent.resize) {
+                            this.$refs.routercomponent.resize();
+                            }
+                        });
+                    } else {
+                        this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight;
+                        this.$nextTick(() => {
+                            if (this.$refs.routercomponent.resize) {
                                 this.$refs.routercomponent.resize();
-                                }
-                            });
-                        } else {
-                            this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight;
-                            this.$nextTick(() => {
-                                if (this.$refs.routercomponent.resize) {
-                                    this.$refs.routercomponent.resize();
-                                }
-                            });
-                        }
+                            }
+                        });
                     }
-                });
-            // }, 300);
+                }
+            });
         },
     }
 };

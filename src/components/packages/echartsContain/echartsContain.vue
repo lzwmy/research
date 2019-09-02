@@ -87,6 +87,8 @@ export default {
     width: 100%;
     float: left;
     overflow: hidden;
+    /* box-shadow:0px 5px 10px rgba(78,91,105,0.2); */
+    border-radius: 4px;
   }
 
   .clear:after {

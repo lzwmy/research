@@ -32,6 +32,7 @@
                         placeholder="专病报告"
                         suffix-icon="el-input__icon el-icon-search"
                         v-model="form.report"
+                        clearable
                         style="width:280px;">
                     </el-input>
                 </el-form-item>
@@ -52,12 +53,26 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
-                :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
-                :data="dataList.content" style="width: 100%" v-loading="loading"
-                :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe
-                @row-dblclick='toReportFill'>
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
+                    :data="dataList.content" style="width: 100%" v-loading="loading"
+                    :empty-text="emptyText" :element-loading-text="elementLoadingText" fit @row-dblclick='toReportFill'>
+                    <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <el-timeline>
+                                <el-timeline-item
+                                    v-for="(item, index) in 5"
+                                    :key="index"
+                                    :hide-timestamp="true">
+                                    <div class="content">
+                                        <i class="el-icon-edit"></i>
+                                        <p><span>2019-8-20 16:10:20</span><span>张医生填写报告</span></p>
+                                    </div>
+                                </el-timeline-item>
+                            </el-timeline>
+                        </template>
+                    </el-table-column>
                     <el-table-column type="index" label="序号" width="60px"></el-table-column>
-                    <el-table-column prop="visitDate" label="就诊时间" width="180"></el-table-column>
+                    <el-table-column prop="visitDate" label="就诊时间" width="110px"></el-table-column>
                     <el-table-column prop="reportName" label="报告名称"></el-table-column>
                     <el-table-column prop="patientName" label="姓名"></el-table-column>
                     <el-table-column prop="genderName" label="性别"></el-table-column>
@@ -264,8 +279,45 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-    
+<style lang="less">
+    .researchReportManage {
+        .el-table__expanded-cell {
+            background-color: #F9F9FB;
+            &:hover {
+                background-color: #F9F9FB !important;
+            }
+            .el-timeline-item__node {
+                background-color: #fff;
+                border:1px solid #ccc;
+                width: 8px;
+                height: 8px;
+            }
+            .el-timeline-item__tail {
+                border-left: 1px solid #ccc;
+                left: 2px;
+            }
+            .el-timeline-item__wrapper {
+                padding-left: 18px;
+            }
+            .el-timeline-item:last-child {
+                padding-bottom: 0;
+            }
+            .el-timeline-item__content {
+                &:hover p {
+                    color: #333;
+                }
+                p {
+                    display: inline-block;
+                    margin-left: 8px;
+                    font-size: 13px;
+                    color: #999;
+                    span {
+                        padding-right: 10px;
+                    }
+                }
+            }
+        }
+    }
 </style>
 
 

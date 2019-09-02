@@ -15,10 +15,10 @@
                 </div>
             </div>
             <div class="iconMenu flex-between-center">
-                <span class="el-icon-user-solid"></span>
-                <span class="el-icon-message"></span>
-                <span class="el-icon-s-tools"></span>
-                <span class="el-icon-switch-button"></span>
+                <span class="el-icon-user-solid cur_pointer"></span>
+                <span class="el-icon-message cur_pointer"></span>
+                <span class="el-icon-s-tools cur_pointer"></span>
+                <span class="el-icon-switch-button cur_pointer"></span>
             </div>
         </div>
         <div class="ment_list">
@@ -182,6 +182,9 @@ export default {
                 span {
                     font-size: 20px;
                     color: #82889d;
+                    &:hover {
+                        color: #fff;
+                    }
                 }
             }
         }

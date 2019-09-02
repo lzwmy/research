@@ -164,10 +164,9 @@ export default {
 
 <style lang="less" scoped>
   .cloud-pagination {
-    background: #eff3f6;
+    background: #fff;
     height: 35px;
     line-height: 35px;
-    border: 1px solid #d8dde3;
     border-top: none;
     font-size: 12px;
     color:  #48576a;

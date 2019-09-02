@@ -98,8 +98,6 @@
         bottom: 0;
     }
 }
-/* 搜索框style*/
-
 
 /* 表格样式 */
 .el-table {
@@ -110,6 +108,24 @@
             font-weight: bold;
         }
     }
+    tbody {
+        .cell {
+            font-size: 13px;
+        }
+        .el-button {
+            padding: 0 6px;
+            line-height: 20px;
+            i {
+                font-size: 20px;
+            }
+        }
+        .el-table__row .iconshanchu.del {
+            color: #f0433c;
+        }
+        .el-table__row .iconbianji {
+            color:#409eff;
+        }
+    }
     .el-table__row.current-row{
         .el-button:hover{
             color: #5a5e66;
@@ -118,18 +134,6 @@
             color: #fff;
         }
     } 
-    .el-table__row .iconshanchu.del {
-        color: #f0433c;
-    }
-    .el-table__row .iconbianji {
-        color:#409eff;
-    }
-    .el-button {
-        padding: 0;
-        i {
-            font-size: 20px;
-        }
-    }
 }
 
 

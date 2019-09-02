@@ -3,7 +3,7 @@
     <app-header></app-header>
     <navbar></navbar>
     <app-view id="main" :class="isIndex?'isIndex':''"></app-view>
-    <app-footer v-show="!insideView"></app-footer>
+    <!-- <app-footer v-show="!insideView"></app-footer> -->
   </div>
 </template>
 

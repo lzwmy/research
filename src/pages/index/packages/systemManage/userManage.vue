@@ -56,7 +56,7 @@
           </el-table-column>
           <el-table-column label="更新时间" min-width="6%" prop="updateTime" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="操作" width="240px">
+          <el-table-column label="操作" width="260">
             <template slot-scope="scope"
                       v-if="(scope.row.roleList[0] && scope.row.roleList[0].roleType &&  scope.row.roleList[0].roleType != '0') || scope.row.roleList.length ==0">
               <el-button type="text" size="small" @click="assignRole(scope.row)" style="margin-left: 8px">
@@ -779,5 +779,9 @@ export default {
 </style>
 
 <style lang="less" scoped>
-  
+  .el-table {
+    .el-button {
+      padding: 0;
+    }
+  }
 </style>

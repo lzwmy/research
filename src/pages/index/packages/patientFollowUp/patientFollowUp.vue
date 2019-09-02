@@ -31,17 +31,16 @@
         <div class="cloud-search-list">
         <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
             <el-table
-            :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
-            :data="dataList.content" style="width: 100%" v-loading="loading"
-            :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe
-            @row-dblclick="toReportFill">
-                <el-table-column type="index" label="序号" width="100px"></el-table-column>
-                <el-table-column prop="visitDate" label="随访时间" width="180px"></el-table-column>
-                <el-table-column prop="reportName" label="报告名称"></el-table-column>
+                :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
+                :data="dataList.content" style="width: 100%" v-loading="loading"
+                :empty-text="emptyText" :element-loading-text="elementLoadingText" fit @row-dblclick="toReportFill">
+                <el-table-column type="index" label="序号" width="50"></el-table-column>
+                <el-table-column prop="visitDate" label="随访时间" width="110"></el-table-column>
+                <el-table-column prop="reportName" label="报告名称" min-width="130"></el-table-column>
                 <el-table-column prop="patientName" label="姓名"></el-table-column>
-                <el-table-column prop="genderName" label="性别"></el-table-column>
-                <el-table-column prop="age" label="年龄"></el-table-column>
-                <el-table-column prop="phoneNumber" label="联系电话"></el-table-column>
+                <el-table-column prop="genderName" label="性别" width="60"></el-table-column>
+                <el-table-column prop="age" label="年龄" width="80"></el-table-column>
+                <el-table-column prop="phoneNumber" label="联系电话" width="120"></el-table-column>
                 <el-table-column prop="diseaseName" label="病种"></el-table-column>
                 <el-table-column prop="groupName" label="课题组"></el-table-column>
                 <el-table-column prop="updator" label="记录人"></el-table-column>
