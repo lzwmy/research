@@ -24,6 +24,9 @@
                 </span>
               </div>
             </div>
+            <div class="blank_img" v-show="modelList.length==0">
+              <img src="./images/blank_page.png" alt="">
+            </div>
           </div>
           <div class="statistical_analysis_Add">
             <div class="add_content" @click="addModelFromChart">
@@ -34,8 +37,8 @@
         </div>
         <div class="mask_layer_right">
           <div class="model_set">模板配置</div>
-          <div class="model_window_box" v-loading="loading" element-loading-text="加载中">
-            <div class="model_from_set">
+          <div class="model_window_box" v-show="blankImg==true" v-loading="loading" element-loading-text="加载中">
+            <div class="model_from_set" >
               <div class="from_name">图表名称</div>
               <el-input v-model="chartName" size="small" placeholder="请输入模板名称"></el-input>
               <div class="from_name">图表类型</div>
@@ -117,6 +120,10 @@
               </div>
             </div>
           </div>
+          <div class="blank_img" v-show="blankImg==false">
+            <img src="./images/blank_page.png" alt="">
+            <p>请新增统计分析模板</p>
+          </div>
         </div>
       </div>
     </div>
@@ -146,6 +153,7 @@
       return {
         dialogVisible:false,
         loading:false,
+        blankImg:false,
         chartLoading:false,
         checkLoading:false,
         bgColor:'',
@@ -450,6 +458,7 @@
       //初始化
       init() {
         console.log('初始化');
+        this.blankImg = false;
         this.chartName = "";
         this.crf = "";
         this.statistics = "";
@@ -464,16 +473,19 @@
         this.compareFormItemList = [];
       },
       close() {
+        this.init();
         window.history.go(-1);
       },
       changeBGColor(data) {
         this.bgColor = data.chartId;
+        this.blankImg = true;
         this.loading = true;
         this.simpleChartPreview(data.chartId);
       },
       //添加模板配置
       addModelFromChart() {
         this.init();
+        this.blankImg = true;
       },
       //删除
       deleteModel(data) {
@@ -1200,6 +1212,7 @@
         border-left: 1px solid #e5ebec;
         border-right: 1px solid #e5ebec;
         border-bottom: 1px solid #e5ebec;
+        position: relative;
         .statistical_analysis_item{
           display: flex;
           justify-content: flex-start;
@@ -1249,6 +1262,19 @@
         .add_bg{
           background-color: #F5F7FA;
         }
+        .blank_img{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          img{
+            height: 40px;
+          }
+          p{
+            color: #666666;
+            font-size: 14px;
+          }
+        }
       }
       .statistical_analysis_Add{
         display: flex;
@@ -1286,6 +1312,7 @@
       padding: 0 5px;
       box-sizing: border-box;
       overflow: hidden;
+      position: relative;
       .model_set{
         line-height: 40px;
         font-size: 14px;
@@ -1361,6 +1388,22 @@
           }
         }
       }
+      .blank_img{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(0,-50%);
+        img{
+          height: 100px;
+
+        }
+        p{
+          font-size: 14px;
+          color: #666666;
+          padding-top: 10px;
+        }
+      }
+
     }
   }
   .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item:hover .item_modify{

@@ -203,6 +203,7 @@ img[class$='_bgColor'] {
   min-width: 447px;
   text-align: center;
   cursor: pointer;
+  margin-top: 7px;
 }
 
 .selectLabSubjectGroupName {
