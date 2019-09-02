@@ -40,7 +40,7 @@
                     </div>
                   </div>
                 </el-form-item>
-                <!--<el-form-item label="视图列表：">
+                <el-form-item label="视图列表：">
                   <multipleCheckBoxSelect ref="multipleCheckBoxSelect" @change="viewChangeHandle" placeholderText="选择视图"
                                           :dataList="viewsList"
                                           :isFilterable="true"></multipleCheckBoxSelect>
@@ -65,7 +65,7 @@
                     <i class="icon-save" title="保存筛选"></i>
                   </el-button>
 
-                </el-form-item>-->
+                </el-form-item>
                 <el-form-item class="fuzzyQuery rf">
                   <el-input v-model.trim="fuzzyQuery" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
                             prefix-icon="el-icon-search"
