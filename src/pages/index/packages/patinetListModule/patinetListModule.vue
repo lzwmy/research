@@ -1,9 +1,15 @@
 <template>
     <div class="patient_list_module">
+      <!--<div class="component_head flex-between-center">
+        <p>{{$route.meta.txt}}</p>
+        <div class=" cur_pointer head_content flex-start-center">
+          &lt;!&ndash;<img src="./images/disease_set_chart.png" alt="" @click="displayMaskLayer">&ndash;&gt;
+        </div>
+      </div>-->
       <div class="list_module_content">
         <div v-if="!showReportFollowiUp">
           <!-- 病例管理 cloud-component-->
-          <div class=" caseManage">
+          <div class="cloud-component caseManage">
             <!-- 搜索区域 -->
             <div class="cloud-search el-form-item-small">
               <!--<div class="block-head clearfix">
@@ -40,13 +46,13 @@
                     </div>
                   </div>
                 </el-form-item>
-                <el-form-item label="视图列表：">
+                <el-form-item label="视图列表：" class="change_height">
                   <multipleCheckBoxSelect ref="multipleCheckBoxSelect" @change="viewChangeHandle" placeholderText="选择视图"
                                           :dataList="viewsList"
                                           :isFilterable="true"></multipleCheckBoxSelect>
                 </el-form-item>
-                <el-form-item label="我的筛选：">
-                  <el-select v-model.trim="currentSelectMySaveConditionId" clearable filterable placeholder="选择我的筛选" size="mini"
+                <el-form-item label="我的筛选：" class="change_height">
+                  <el-select v-model.trim="currentSelectMySaveConditionId" class="move_top" clearable filterable placeholder="选择我的筛选" size="mini"
                              @change="changeCurrentSelectMySaveCondition" @visible-change="getMySaveCondition">
                     <el-option
                       v-for="item in mySaveConditionViewList"
@@ -71,7 +77,7 @@
                             prefix-icon="el-icon-search"
                             placeholder="请输入搜索内容"></el-input>
                 </el-form-item>
-                <el-form-item class="fuzzyQuery">
+                <el-form-item class="fuzzyQuery rf">
                   <el-dropdown class="caseManageDropdown" style="margin-right: 6px;" @command="handleCommand" trigger="hover"
                                size="medium">
                   <span class="el-dropdown-link">操作
@@ -96,8 +102,8 @@
                   </el-dropdown>
                 </el-form-item>
 
-                <!--<br>
-                <el-form-item label prop>
+                <br>
+                <el-form-item label prop class="change_height">
                   <el-select v-model.trim="conditionSet.column" clearable filterable placeholder="选择列名" size="mini">
                     <el-option
                       v-for="item in conditionViewList"
@@ -107,7 +113,7 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label prop>
+                <el-form-item label prop class="change_height">
                   <el-select v-model.trim="conditionSet.operator" clearable filterable placeholder="选择运算符" size="mini"
                              @change="changeOperator">
                     <el-option
@@ -117,7 +123,7 @@
                       :value="item.name"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label prop>
+                <el-form-item label prop class="change_height">
                   <el-date-picker v-if="currentColumnsdataType === 'DATE'  || currentColumnsdataType.indexOf('TIMESTAMP')!=-1"
                                   v-model="conditionSet.param"
                                   :disabled="conditionSet.operator =='Null' || conditionSet.operator =='NotNull'"
@@ -166,7 +172,7 @@
                 </el-form-item>
                 <el-form-item class="fuzzyQuery" label>
                   <el-button type="primary" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
-                </el-form-item>-->
+                </el-form-item>
               </el-form>
               <div class="conditiaoContain">
                 <el-tag v-for="(item,index) in conditionList" :key="index" closable @close="conditionDelete(item,index)">
@@ -189,7 +195,7 @@
               </div>
             </div>
             <div class="cloud-search-list">
-              <!--<echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+              <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-tabs v-model="viewName" type="card" closable @tab-click="changeViewName" @tab-remove="removeViewName">
                   <el-tab-pane
                     v-for="(item) in currentSelectViewsList"
@@ -215,19 +221,19 @@
                       </el-table-column>
                       <el-table-column :prop="column.name" :label="column.label" sortable v-for="column in conditionViewList" v-if="column.name != 'PATIENT_NAME'"
                                        :key="column.name" show-overflow-tooltip></el-table-column>
-                      &lt;!&ndash; <el-table-column label="操作" width="100">
+                      <!-- <el-table-column label="操作" width="100">
                         <template slot-scope="scope">
                           <el-button type="text" @click=""><i class="iconfont iconbianji"></i></el-button>
                           <el-button type="text" @click=""><i class="iconfont iconshanchu del"></i></el-button>
                         </template>
-                      </el-table-column> &ndash;&gt;
+                      </el-table-column> -->
                     </el-table>
-                    &lt;!&ndash; 分页 &ndash;&gt;
+                    <!-- 分页 -->
                     <pagination :data="item.dataList" @change="getDataList" :id="item.name" :key="item.name"></pagination>
                   </el-tab-pane>
                 </el-tabs>
-              </echarts-contain>-->
-              <div v-for="(item) in currentSelectViewsList">
+              </echarts-contain>
+              <!--<div v-for="(item) in currentSelectViewsList">
                 <el-table style="width:100%;" :ref="item.name"
                           :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-40):(routerViewHeight*1-38-40)"
                           :data="item.dataList.content" @row-dblclick="dblclickHandle"
@@ -247,16 +253,16 @@
                   </el-table-column>
                   <el-table-column :prop="column.name" :label="column.label" sortable v-for="column in conditionViewList" v-if="column.name != 'PATIENT_NAME'"
                                    :key="column.name" show-overflow-tooltip></el-table-column>
-                  <!-- <el-table-column label="操作" width="100">
+                  &lt;!&ndash; <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                       <el-button type="text" @click=""><i class="iconfont iconbianji"></i></el-button>
                       <el-button type="text" @click=""><i class="iconfont iconshanchu del"></i></el-button>
                     </template>
-                  </el-table-column> -->
+                  </el-table-column> &ndash;&gt;
                 </el-table>
-                <!-- 分页 -->
+                &lt;!&ndash; 分页 &ndash;&gt;
                 <pagination :data="item.dataList" @change="getDataList" :id="item.name" :key="item.name"></pagination>
-              </div>
+              </div>-->
             </div>
             <!-- 入组弹窗 -->
             <el-dialog
@@ -483,797 +489,354 @@
   import utils from 'components/utils/index';
   import validation from 'components/utils/validation';
   import reportFollowup from "./reportFollowUp/index";
-    export default {
-      components:{
-        pagination,
-        echartsContain,
-        multipleCheckBoxSelect,
-        reportFollowup
-      },
-      data () {
-        return {
-          routerViewHeight:400,
-          loading: false,
-          pageNo: '',
-          pageSize: '',
-          emptyText: '',
-          elementLoadingText: '',
-          conditionSet: {
-            viewName: '',
-            column: '',
-            operator: '',
-            param: '',
-            param2: ''
-          },
-          showReportFollowiUp: false,  //报告随访组件
-          reportFollowiUpData: {},  //报告随访组件数据
-          reportFollowiUpInfo: {},  //报告随访组件个人信息
-          reportFillData:{},   //报告随访参数
-          conditionList: [],
-          params_conditionList: [], // 过度的筛选条件列表，只有点击了search才会把筛选条件赋值给它
-          mySaveConditionViewList: [], // 历史保存过的筛选
-          currentSelectMySaveCondition: {}, // 当前我选择的常用筛选条件；
-          currentSelectMySaveConditionId: '', // 当前我选择的筛选条件的Id
-          MySaveConditionDialogVisible: false,
-          mySaveConditionRuleForm: {name: ''},
-          mySaveConditionRules: {
-            name: [{required: true, validator: this.validateConditionName, trigger: 'blur'}]
-          },
-          currentColumnsdataType: '', // 当前选择列的dataType
-          viewName: 'BASIC_INFO', // tab页当前的视图的名称，如果是基线信息视图，则传空字符串；
-          view: '', // tab页当前视图对象
-          viewsList: [], // 所有视图列表
-          currentSelectViewsNameList: ['BASIC_INFO'], // 当前勾选的视图的id列表
-          currentSelectViewsList: [], // 当前勾选的视图列表
-          conditionOperatorList: [],
-          conditionViewList: [], // 当前的视图拥有的列
-          conditionViewTemp: [], // 创建人和修改人两个列
-          currentDiseaseId: '',
-          fuzzyQuery: '',
-          fuzzyQueryStatus: false,
-          selectRow: [],
-          enterGroupDialogVisible: false,
-          enterGroupRuleForm: {
-            subject: '',
-            labGroup: ''
-          },
-          diseaseDetail: {},
-          subjectDataList: [],
-          labGroupDatalist: [],
-          moveGroupDialogVisible: false,
-          moveGroupRuleForm: {
-            subject: '',
-            labGroup: ''
-          },
-          selectLabSubjectGroupName: '', // 选中课题+实验组名称(默认值为 全部病例)
-          selectLabGroupId: '', // 选中实验组ID
-          selectLabGroupFormId: '', // 选中实验组关联的crf表单ID
-          selectLabGroupName: '', // 选中实验组名字
-          selectLabSubjectId: '', // 选中的课题ID
-          dropmenuHide: false,
-          genderList: [],
-          caseStorageRuleForm: {
-            patientName: '',
-            identify: '',
-            gender: '',
-            birthday: '',
-            cardNo: '',
-            remarks: ''
-          },
-          caseStorageRules: {
-            patientName: [
-              {required: true, message: '姓名不能为空', trigger: 'blur'}
-            ],
-            identify: [
-              {required: true, message: '身份证不能为空', trigger: 'blur'}
-            ]
-          },
-          caseStorageDialogVisible: false,
-          caseList: [],
-          caseListDialogVisible: false,
-          selectCaseList: [],
-          patientDialogVisible: false,
-          patientDialogTitle: '',
-          patientRuleForm: {
-            name:'',
-            patientCode:'',
-            sex:'0',
-            birthday:'',
-            IDCard:'',
-            tel:'',
-            address:'',
-          },
-          patientRuleFormRules : {
-            name: [
-              {required: true, message: '姓名不能为空', trigger: 'blur'}
-            ],
-            patientCode: [
-              {required: true, message: '病案号不能为空', trigger: 'blur'}
-            ],
-            birthday: [
-              {required: true, message: '出生日期不能为空', trigger: 'blur'}
-            ],
-            tel: [
-              {required: true, message: '手机号不能为空', trigger: 'blur'}
-            ],
-          }
-        };
-      },
-      methods: {
-        async initPage () {
-          this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
-          this.pageNo = pageNo;
-          this.pageSize = pageSize;
-          this.emptyText = emptyText;
-          this.elementLoadingText = elementLoadingText;
-          this.currentDiseaseId = this.$route.query.id;
-          this.genderList = dictionary.options('GENDER');
-          this.getMySaveCondition();
-          await this.getFindViews();
-          // 初始化的时候勾选的视图应该是基线病例
-          this.currentSelectViewsList = this.viewsList.filter(item => {
-            return item.name === 'BASIC_INFO';
-          });
-          // 初始化的时候列应该是基线病例的列
-          this.conditionViewList = this.currentSelectViewsList[0].subOptions;
-          this.viewName = 'BASIC_INFO';
-          this.view = this.currentSelectViewsList[0];
-          this.conditionSet.viewName = this.viewName;
-          this.getOperators();
-          this.getDiseaseDetail();
-          this.getSubjectDataList();
-          this.getDataList();
+  export default {
+    mixins: [mixins],
+    data () {
+      return {
+        loading: false,
+        pageNo: '',
+        pageSize: '',
+        emptyText: '',
+        elementLoadingText: '',
+        conditionSet: {
+          viewName: '',
+          column: '',
+          operator: '',
+          param: '',
+          param2: ''
         },
-        async getFindViews () {
-          let that = this;
-          try {
-            let data = await that.$http.casesFindViews();
-            if (data && data.code == '0') {
-              that.viewsList = data.data;
-              // 处理基线信息视图下列的创建人、修改人、填写人的显示问题
-              // 增加视图上dataList的key
-              that.viewsList.forEach(view => {
-                if (view.name === 'BASIC_INFO') {
-                  that.conditionViewTemp = view.subOptions.filter(item => {
-                    return item.name === 'creator' || item.name === 'updator' || item.name === 'fill';
-                  });
-                }
-                view.subOptions = view.subOptions.filter(item => {
-                  return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
+        showReportFollowiUp: false,  //报告随访组件
+        reportFollowiUpData: {},  //报告随访组件数据
+        reportFollowiUpInfo: {},  //报告随访组件个人信息
+        reportFillData:{},   //报告随访参数
+        conditionList: [],
+        params_conditionList: [], // 过度的筛选条件列表，只有点击了search才会把筛选条件赋值给它
+        mySaveConditionViewList: [], // 历史保存过的筛选
+        currentSelectMySaveCondition: {}, // 当前我选择的常用筛选条件；
+        currentSelectMySaveConditionId: '', // 当前我选择的筛选条件的Id
+        MySaveConditionDialogVisible: false,
+        mySaveConditionRuleForm: {name: ''},
+        mySaveConditionRules: {
+          name: [{required: true, validator: this.validateConditionName, trigger: 'blur'}]
+        },
+        currentColumnsdataType: '', // 当前选择列的dataType
+        viewName: 'BASIC_INFO', // tab页当前的视图的名称，如果是基线信息视图，则传空字符串；
+        view: '', // tab页当前视图对象
+        viewsList: [], // 所有视图列表
+        currentSelectViewsNameList: ['BASIC_INFO'], // 当前勾选的视图的id列表
+        currentSelectViewsList: [], // 当前勾选的视图列表
+        conditionOperatorList: [],
+        conditionViewList: [], // 当前的视图拥有的列
+        conditionViewTemp: [], // 创建人和修改人两个列
+        currentDiseaseId: '',
+        fuzzyQuery: '',
+        fuzzyQueryStatus: false,
+        selectRow: [],
+        enterGroupDialogVisible: false,
+        enterGroupRuleForm: {
+          subject: '',
+          labGroup: ''
+        },
+        diseaseDetail: {},
+        subjectDataList: [],
+        labGroupDatalist: [],
+        moveGroupDialogVisible: false,
+        moveGroupRuleForm: {
+          subject: '',
+          labGroup: ''
+        },
+        selectLabSubjectGroupName: '', // 选中课题+实验组名称(默认值为 全部病例)
+        selectLabGroupId: '', // 选中实验组ID
+        selectLabGroupFormId: '', // 选中实验组关联的crf表单ID
+        selectLabGroupName: '', // 选中实验组名字
+        selectLabSubjectId: '', // 选中的课题ID
+        dropmenuHide: false,
+        genderList: [],
+        caseStorageRuleForm: {
+          patientName: '',
+          identify: '',
+          gender: '',
+          birthday: '',
+          cardNo: '',
+          remarks: ''
+        },
+        caseStorageRules: {
+          patientName: [
+            {required: true, message: '姓名不能为空', trigger: 'blur'}
+          ],
+          identify: [
+            {required: true, message: '身份证不能为空', trigger: 'blur'}
+          ]
+        },
+        caseStorageDialogVisible: false,
+        caseList: [],
+        caseListDialogVisible: false,
+        selectCaseList: [],
+        patientDialogVisible: false,
+        patientDialogTitle: '',
+        patientRuleForm: {
+          name:'',
+          patientCode:'',
+          sex:'0',
+          birthday:'',
+          IDCard:'',
+          tel:'',
+          address:'',
+        },
+        patientRuleFormRules : {
+          name: [
+            {required: true, message: '姓名不能为空', trigger: 'blur'}
+          ],
+          patientCode: [
+            {required: true, message: '病案号不能为空', trigger: 'blur'}
+          ],
+          birthday: [
+            {required: true, message: '出生日期不能为空', trigger: 'blur'}
+          ],
+          tel: [
+            {required: true, message: '手机号不能为空', trigger: 'blur'}
+          ],
+        }
+      };
+    },
+    components: {
+      pagination,
+      echartsContain,
+      multipleCheckBoxSelect,
+      reportFollowup
+    },
+    watch: {
+      selectLabGroupId (val) {
+        if (val) {
+          this.conditionViewList = this.conditionViewList.filter(item => {
+            return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
+          });
+          this.conditionViewList = this.conditionViewList.concat(this.conditionViewTemp);
+        } else {
+          this.conditionViewList = this.conditionViewList.filter(item => {
+            return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
+          });
+        }
+      },
+      'conditionSet.column' () {
+        this.getCurrentColumnsdataType();
+        this.conditionSet.operator = '';
+        this.conditionSet.param = '';
+        this.conditionSet.param2 = '';
+      },
+      async viewName (val) {
+        // 给上一个当前视图添加选择行
+        this.$set(this.view, 'selectRow', utils.deepClone(this.selectRow));
+        // 处理当前的视图
+        this.selectRow = [];
+        this.conditionSet.viewName = val;
+        this.viewsList.forEach(item => {
+          if (item.name === val) {
+            this.view = item;
+            this.loading = true;
+            this.view.dataList = {content: []};
+            this.conditionViewList = item.subOptions;
+            // 拉取当前视图下的对应页数的列表
+            this.getDataList(this.view.pagination.page, this.view.pagination.size);
+          }
+        });
+        this.conditionSet.column = '';
+        this.conditionSet.operator = '';
+        this.conditionSet.param = '';
+        this.conditionSet.param2 = '';
+        // 当前列的处理
+        if (this.selectLabGroupId) {
+          this.conditionViewList = this.conditionViewList.filter(item => {
+            return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
+          });
+          this.conditionViewList = this.conditionViewList.concat(this.conditionViewTemp);
+        } else {
+          this.conditionViewList = this.conditionViewList.filter(item => {
+            return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
+          });
+        }
+      }
+    },
+    computed: {},
+    created () {
+
+    },
+    mounted () {
+      this.initPage();
+    },
+    methods: {
+      async initPage () {
+        this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
+        this.pageNo = pageNo;
+        this.pageSize = pageSize;
+        this.emptyText = emptyText;
+        this.elementLoadingText = elementLoadingText;
+        this.currentDiseaseId = this.$route.query.id;
+        this.genderList = dictionary.options('GENDER');
+        this.getMySaveCondition();
+        await this.getFindViews();
+        // 初始化的时候勾选的视图应该是基线病例
+        this.currentSelectViewsList = this.viewsList.filter(item => {
+          return item.name === 'BASIC_INFO';
+        });
+        // 初始化的时候列应该是基线病例的列
+        this.conditionViewList = this.currentSelectViewsList[0].subOptions;
+        this.viewName = 'BASIC_INFO';
+        this.view = this.currentSelectViewsList[0];
+        this.conditionSet.viewName = this.viewName;
+        this.getOperators();
+        this.getDiseaseDetail();
+        this.getSubjectDataList();
+        this.getDataList();
+      },
+      async getFindViews () {
+        let that = this;
+        try {
+          let data = await that.$http.casesFindViews();
+          if (data && data.code == '0') {
+            that.viewsList = data.data;
+            // 处理基线信息视图下列的创建人、修改人、填写人的显示问题
+            // 增加视图上dataList的key
+            that.viewsList.forEach(view => {
+              if (view.name === 'BASIC_INFO') {
+                that.conditionViewTemp = view.subOptions.filter(item => {
+                  return item.name === 'creator' || item.name === 'updator' || item.name === 'fill';
                 });
-                that.$set(view, 'dataList', {content: []});
-                that.$set(view, 'pagination', {page: that.pageNo, size: that.pageSize});
+              }
+              view.subOptions = view.subOptions.filter(item => {
+                return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
               });
-            }
-          } catch (error) {
-            that.$notice('获取视图列表失败');
-            console.log(error);
-          }
-        },
-        viewChangeHandle (value) {
-          // console.log(value);
-          this.currentSelectViewsNameList = value;
-          this.currentSelectViewsList = [];
-          this.viewsList.forEach(item1 => {
-            value.forEach(item2 => {
-              if (item1.name === item2) {
-                this.currentSelectViewsList.push(item1);
-              }
+              that.$set(view, 'dataList', {content: []});
+              that.$set(view, 'pagination', {page: that.pageNo, size: that.pageSize});
             });
-          });
-        },
-        changeViewName (tab, event) {
-          // console.log(tab, event);
-          this.viewName = tab.name;
-        },
-        removeViewName (name) {
-          // console.log(name);
-          if (name === 'BASIC_INFO') return false;
-          this.currentSelectViewsList.forEach((item, index) => {
-            if (item.name === name) {
-              this.viewName = this.currentSelectViewsNameList[index - 1];
+          }
+        } catch (error) {
+          that.$notice('获取视图列表失败');
+          console.log(error);
+        }
+      },
+      viewChangeHandle (value) {
+        // console.log(value);
+        this.currentSelectViewsNameList = value;
+        this.currentSelectViewsList = [];
+        this.viewsList.forEach(item1 => {
+          value.forEach(item2 => {
+            if (item1.name === item2) {
+              this.currentSelectViewsList.push(item1);
             }
           });
-          this.currentSelectViewsList = this.currentSelectViewsList.filter((item, index) => {
-            return item.name !== name;
-          });
-          this.currentSelectViewsNameList = [];
-          this.currentSelectViewsList.forEach(item => {
-            this.currentSelectViewsNameList.push(item.name);
-          });
-          this.$refs.multipleCheckBoxSelect.checkList = this.currentSelectViewsNameList;
-        },
-        async getOperators () {
-          let that = this;
-          try {
-            let data = await that.$http.casesFindOperators();
-            if (data && data.code == '0') {
-              that.conditionOperatorList = data.data;
-            }
-          } catch (error) {
-            that.$notice('获取运算符失败');
-            console.log(error);
+        });
+      },
+      changeViewName (tab, event) {
+        // console.log(tab, event);
+        this.viewName = tab.name;
+      },
+      removeViewName (name) {
+        // console.log(name);
+        if (name === 'BASIC_INFO') return false;
+        this.currentSelectViewsList.forEach((item, index) => {
+          if (item.name === name) {
+            this.viewName = this.currentSelectViewsNameList[index - 1];
           }
-        },
-        async getDiseaseDetail () {
-          let that = this;
-          try {
-            let data = await that.$http.findDiseaseSpeciesDetail(
-              that.removeNullKey({
-                diseaseId: that.currentDiseaseId
-              })
-            );
-            if (data && data.code == '0') {
-              that.diseaseDetail = data.data.diseaseSpecies;
-              that.selectLabSubjectGroupName = that.diseaseDetail.name + '-全部病例';
-            }
-          } catch (error) {
-            that.$notice('获取病种详情失败');
-            console.log(error);
+        });
+        this.currentSelectViewsList = this.currentSelectViewsList.filter((item, index) => {
+          return item.name !== name;
+        });
+        this.currentSelectViewsNameList = [];
+        this.currentSelectViewsList.forEach(item => {
+          this.currentSelectViewsNameList.push(item.name);
+        });
+        this.$refs.multipleCheckBoxSelect.checkList = this.currentSelectViewsNameList;
+      },
+      async getOperators () {
+        let that = this;
+        try {
+          let data = await that.$http.casesFindOperators();
+          if (data && data.code == '0') {
+            that.conditionOperatorList = data.data;
           }
-        },
-        async getSubjectDataList () {
-          let that = this;
-          try {
-            let data = await that.$http.findSubjectStudies(
-              that.removeNullKey({
-                diseaseId: that.currentDiseaseId
-              })
-            );
-            if (data && data.code == '0') {
-              that.subjectDataList = data.data.subjectStudies;
-            }
-          } catch (error) {
-            that.$notice('获取课题及实验组失败');
-            console.log(error);
+        } catch (error) {
+          that.$notice('获取运算符失败');
+          console.log(error);
+        }
+      },
+      async getDiseaseDetail () {
+        let that = this;
+        try {
+          let data = await that.$http.findDiseaseSpeciesDetail(
+            that.removeNullKey({
+              diseaseId: that.currentDiseaseId
+            })
+          );
+          if (data && data.code == '0') {
+            that.diseaseDetail = data.data.diseaseSpecies;
+            that.selectLabSubjectGroupName = that.diseaseDetail.name + '-全部病例';
           }
-        },
-        search () {
-          this.params_conditionList = utils.deepClone(this.conditionList);
-          this.fuzzyQueryStatus = false;// 将模糊搜索的状态取消
-          this.getDataList();
-        },
-        async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
-          let that = this;
-          // 存储当前视图的页码page及每页多少条size
-          if (this.view) {
-            this.view.pagination = {
-              page: pageNo,
-              size: pageSize
-            };
+        } catch (error) {
+          that.$notice('获取病种详情失败');
+          console.log(error);
+        }
+      },
+      async getSubjectDataList () {
+        let that = this;
+        try {
+          let data = await that.$http.findSubjectStudies(
+            that.removeNullKey({
+              diseaseId: that.currentDiseaseId
+            })
+          );
+          if (data && data.code == '0') {
+            that.subjectDataList = data.data.subjectStudies;
           }
-          that.loading = true;
-          if (that.fuzzyQueryStatus) { // 模糊搜索状态
-            that.fuzzyQueryGetDataList(pageNo, pageSize);
-          } else {
-            // 保存的筛选条件被使用后，可能勾选的视图少于这个筛选条件的视图，所以要打开新的视图，
-            that.addViewTabAndSelect();
-            let isFillFlag = false;
-            that.conditionList.forEach(item => {
-              if (item.column === 'fill' && that.selectLabGroupId == '') {
-                that.$notice('筛选条件中添加了状态是否填写，请先选择实验组，再进行查询');
-                isFillFlag = true;
-                return false;
-              }
-            });
-            if (isFillFlag) {
-              that.loading = false;
+        } catch (error) {
+          that.$notice('获取课题及实验组失败');
+          console.log(error);
+        }
+      },
+      search () {
+        this.params_conditionList = utils.deepClone(this.conditionList);
+        this.fuzzyQueryStatus = false;// 将模糊搜索的状态取消
+        this.getDataList();
+      },
+      async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
+        let that = this;
+        // 存储当前视图的页码page及每页多少条size
+        if (this.view) {
+          this.view.pagination = {
+            page: pageNo,
+            size: pageSize
+          };
+        }
+        that.loading = true;
+        if (that.fuzzyQueryStatus) { // 模糊搜索状态
+          that.fuzzyQueryGetDataList(pageNo, pageSize);
+        } else {
+          // 保存的筛选条件被使用后，可能勾选的视图少于这个筛选条件的视图，所以要打开新的视图，
+          that.addViewTabAndSelect();
+          let isFillFlag = false;
+          that.conditionList.forEach(item => {
+            if (item.column === 'fill' && that.selectLabGroupId == '') {
+              that.$notice('筛选条件中添加了状态是否填写，请先选择实验组，再进行查询');
+              isFillFlag = true;
               return false;
             }
-            let formData = {
-              criterias: that.params_conditionList,
-              diseaseId: that.currentDiseaseId,
-              experimentId: that.selectLabGroupId,
-              subjectId: that.selectLabSubjectId,
-              // viewName: that.currentSelectViewsNameList,
-              viewName: [that.viewName],
-              page: pageNo - 1,
-              size: pageSize
-            };
-            try {
-              let data = await that.$http.casesFindCases(that.$format(formData));
-              that.loading = false;
-              if (data && data.code == '0') {
-                let result = data.data;
-                result.forEach(item => {
-                  let obj = {};
-                  obj.content = item.list;
-                  obj.content.forEach((item, index) => {
-                    item.index = (pageNo - 1) * pageSize + index + 1;
-                  });
-                  obj.pageNo = pageNo;
-                  obj.pageSize = pageSize;
-                  obj.totalCount = parseInt(item.total);
-                  obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
-                  that.viewsList.forEach(item2 => {
-                    if (item2.name === item.viewName) {
-                      item2.dataList = obj;
-                      // console.log(item2.dataList);
-                      that.$nextTick(() => {
-                        // console.warn(that.view.selectRow);
-                        // 通过undersc的isEqual判断两各行相等，然后勾选上
-                        that.view.selectRow && that.view.selectRow.forEach(row => {
-                          item.list.forEach(itemRow => {
-                            if (that.underscore.isEqual(itemRow, row)) {
-                              this.$refs[this.view.name][0].toggleRowSelection(itemRow, true);
-                            }
-                          });
-                        });
-                      });
-                      setTimeout(() => {
-                        that.$refs[that.viewName][0].doLayout();
-                      }, 200);
-                    }
-                  });
-                });
-              }
-            } catch (error) {
-              that.loading = false;
-              that.$notice('获取病例列表失败');
-              console.log(error);
-            }
-          }
-        },
-        handleSelectionChange (val) {
-          // console.log('val:', val);
-          this.selectRow = val;
-        },
-        changeOperator (val) {
-          if (val == 'Null' || val == 'NotNull') {
-            this.conditionSet.param = '';
-            this.conditionSet.param2 = '';
-          }
-        },
-        conditionAdd () {
-          if (this.conditionSet.operator != 'Null' && this.conditionSet.operator != 'NotNull') {
-            for (let key in this.conditionSet) {
-              if (!this.conditionSet[key] && key != 'param2') {
-                this.$notice('请输入完整的筛选条件');
-                return false;
-              }
-            }
-          }
-          // console.log(this.conditionList);
-          // console.log(this.conditionSet);
-          let isHased = this.conditionList.findIndex(ele => {
-            return (
-              ele.viewName === this.viewName &&
-              ele.column === this.conditionSet.column &&
-              ele.operator === this.conditionSet.operator &&
-              ele.param === this.conditionSet.param &&
-              (ele.param2 ? ele.param2 : '') === this.conditionSet.param2
-            );
           });
-          if (isHased !== -1) {
-            this.$notice('此筛选条件已经存在');
+          if (isFillFlag) {
+            that.loading = false;
             return false;
           }
-          this.conditionList.push({
-            viewName: this.viewName,
-            viewLabel: this.viewsList[this.viewsList.findIndex(view => {
-              return (
-                view.name === this.viewName
-              );
-            })].label,
-            column: this.conditionSet.column,
-            columnName: this.conditionViewList[this.conditionViewList.findIndex(ele => {
-              return (
-                ele.name === this.conditionSet.column
-              );
-            })].label,
-            operator: this.conditionSet.operator,
-            operatorName: this.conditionOperatorList[this.conditionOperatorList.findIndex(ele => {
-              return (
-                ele.name === this.conditionSet.operator
-              );
-            })].label,
-            param: this.conditionSet.param,
-            param2: this.conditionSet.param2
-          });
-        },
-        conditionDelete (condition, index) {
-          // console.log(condition);
-          //  console.log(index);
-          this.conditionList.splice(index, 1);
-        },
-        handleCommand (command) {
-          let that = this;
-          if (that.selectRow && that.selectRow.length == 1 && command == 'crfFill') {
-            that.$router.push({
-              name: 'reportFill',
-              query: {
-                cacheData: false,
-                formId: that.selectLabGroupFormId,
-                groupId: that.selectLabGroupId,
-                subjectId: that.selectLabSubjectId,
-                diseaseId: that.currentDiseaseId,
-                patientName: that.selectRow[0].PATIENT_NAME || '',
-                patientId: that.selectRow[0].PATIENT_ID || '',
-                identify: that.selectRow[0].IDENTIFY || ''
-              }
-            });
-          } else if (that.selectRow && that.selectRow.length != 1 && command == 'crfFill') {
-            this.$notice('请勾选一行进行CRF表单填写');
-          } else if (that.selectRow && that.selectRow.length === 1 && command == 'enterGroupManager') {
-            that.$router.push({
-              name: 'enterGroupManager',
-              query: {
-                cacheData: false,
-                patientName: that.selectRow[0].PATIENT_NAME || '',
-                patientId: that.selectRow[0].PATIENT_ID || '',
-                identify: that.selectRow[0].IDENTIFY || ''
-              }
-            });
-          } else if (that.selectRow.length !== 0 || command == 'caseStorage' || command == 'exportAll') {
-            switch (command) {
-              case 'enterGroup':
-                that.openEnterGroupDialog();
-                break;
-              case 'outGroup':
-                that.$confirm('已选择 ' + this.selectRow.length + ' 行数据，确定要将此 ' + that.selectRow.length + ' 行数据退出 ' + that.selectLabGroupName + ' 吗？', '提示',
-                  {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                  })
-                  .then(async () => {
-                    try {
-                      let formData = {
-                        experimentId: that.selectLabGroupId,
-                        patientIds: that.selectRow.map((item) => {
-                          return item.PATIENT_ID;
-                        })
-                      };
-                      let data = await this.$http.casesOutGroup(formData);
-                      if (data && data.code == '0') {
-                        that.getDataList(that.view.pagination.page, that.view.pagination.size);
-                        that.$notice(data.msg);
-                      }
-                    } catch (error) {
-                      this.$notice('出组操作失败');
-                      console.log(error);
-                    }
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
-                break;
-              case 'moveGroup':
-                this.openMoveGroupDialog();
-                break;
-              case 'caseStorage':
-                this.openCaseStorageDialog();
-                break;
-              case 'export':
-                if (!that.selectLabSubjectId && !that.selectLabGroupId) { // 全部病例情况下
-                  this.$confirm('确定要将这' + this.selectRow.length + '条病例记录导出吗？', '提示',
-                    {
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      type: 'warning'
-                    })
-                    .then(async () => {
-                      try {
-                        let formData = {
-                          patientId: that.selectRow.map((item) => {
-                            return item.PATIENT_ID;
-                          }),
-                          viewName: that.viewName
-                        };
-                        let data = await this.$http.casesExportCases(formData);
-                        let blob = new Blob([data.data], {type: 'application/ms-excel;charset=UTF-8'});
-                        let fileNmae = data.headers['content-disposition'].split('filename=')[1];
-                        that.$download(fileNmae, blob);
-                        this.$notice('导出成功');
-                      } catch (error) {
-                        that.$notice('导出失败');
-                        console.log(error);
-                      }
-                    })
-                    .catch(error => {
-                      console.log(error);
-                    });
-                } else { // 选择了实验组的情况下
-                  this.$confirm('确定要将这' + this.selectRow.length + '条病例的CRF表单导出吗？', '提示',
-                    {
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      type: 'warning'
-                    })
-                    .then(async () => {
-                      try {
-                        let formData = {
-                          groupId: that.selectLabGroupId,
-                          patientIds: that.selectRow.map((item) => {
-                            return item.PATIENT_ID;
-                          })
-                        };
-                        let data = await this.$http.crfdataExpCrfData(formData);
-                        let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
-                        let fileNmae = data.headers['content-disposition'].split('filename=')[1];
-                        that.$download(fileNmae, blob);
-                        this.$notice('导出成功');
-                      } catch (error) {
-                        that.$notice('导出失败');
-                        console.log(error);
-                      }
-                    })
-                    .catch(error => {
-                      console.log(error);
-                    });
-                }
-                break;
-              case 'exportAll':
-                this.$confirm('确定要将该实验组下所有病例的CRF表单导出吗？', '提示',
-                  {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                  })
-                  .then(async () => {
-                    try {
-                      let formData = {
-                        groupId: that.selectLabGroupId
-                      };
-                      let data = await this.$http.crfdataExpCrfData(formData);
-                      let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
-                      let fileNmae = data.headers['content-disposition'].split('filename=')[1];
-                      that.$download(fileNmae, blob);
-                      this.$notice('导出成功');
-                    } catch (error) {
-                      that.$notice('导出失败');
-                      console.log(error);
-                    }
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
-                break;
-              case 'edit':
-                that.searchPatientInfo(that.selectRow[0])
-                  .then((res)=>{
-                    if(res.sysExport == 0) {
-                      this.$notice('导入数据不可编辑');
-                    }else {
-                      that.showaddPatientDialog('编辑患者', Object.assign({},that.selectRow[0], {phoneNumber:res.phoneNumber,address:res.address}));
-                    }
-                  })
-                break;
-              case 'delete':
-                this.$confirm('确定要将这' + that.selectRow.length + '条病例记录删除吗？', '提示',
-                  {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                  })
-                  .then( () => {
-                    this.casesDeletePatient(that.selectRow[0]);
-                  })
-                  .catch(error => {
-                    console.log(error);
-                  });
-                break;
-              default:
-                console.warn('操作类型失去匹配');
-                break;
-            }
-          } else {
-            this.$notice('请至少勾选一行');
-          }
-        },
-        openEnterGroupDialog () {
-          this.enterGroupDialogVisible = true;
-        },
-        closeEnterGroupDialog () {
-          this.enterGroupDialogVisible = false;
-          for (let key in this.enterGroupRuleForm) {
-            this.enterGroupRuleForm[key] = '';
-          }
-        },
-        async saveEnterGroupDialog () {
-          let that = this;
-          let selectGroupName = that.labGroupDatalist[that.labGroupDatalist.findIndex(ele => {
-            return (
-              ele.id === this.enterGroupRuleForm.labGroup
-            );
-          })].name;
-          that.$confirm('已选择 ' + this.selectRow.length + ' 行数据，确定要将其入组到 ' + selectGroupName + ' 吗？', '提示',
-            {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            })
-            .then(async () => {
-              let formData = {
-                experimentId: this.enterGroupRuleForm.labGroup,
-                subjectId: this.enterGroupRuleForm.subject,
-                patientIds: that.selectRow.map((item) => {
-                  return item.PATIENT_ID;
-                })
-              };
-              try {
-                let data = await that.$http.casesEnterGroup(formData);
-                if (data && data.code == '0') {
-                  that.closeEnterGroupDialog();
-                  that.getDataList(that.view.pagination.page, that.view.pagination.size);
-                  that.$notice(data.msg);
-                }
-              } catch (error) {
-                that.$notice('入组操作失败');
-                console.log(error);
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        },
-        subjectChange (val) {
-          this.enterGroupRuleForm.labGroup = '';
-          this.subjectDataList.map(subject => {
-            if (subject.id === val) {
-              this.labGroupDatalist = subject.experimentGroups;
-            }
-          });
-        },
-        // 通过检查表单是否完成，已决定按钮是否可用
-        checkDisable (form) {
-          let flag = true;
-          for (let key in form) {
-            if (form[key] === '') {
-              flag = false;
-            }
-          }
-          return !flag;
-        },
-        openMoveGroupDialog () {
-          this.moveGroupDialogVisible = true;
-        },
-        closeMoveGroupDialog () {
-          this.moveGroupDialogVisible = false;
-          for (let key in this.moveGroupRuleForm) {
-            this.moveGroupRuleForm[key] = '';
-          }
-        },
-        async saveMoveGroupDialog () {
-          let that = this;
           let formData = {
-            subjectId: that.moveGroupRuleForm.subject,
-            experimentId: that.moveGroupRuleForm.labGroup,
-            oldGroupId: that.selectLabGroupId,
-            patientIds: that.selectRow.map((item) => {
-              return item.PATIENT_ID;
-            })
-          };
-
-          try {
-            let data = await that.$http.casesMoveGroup(formData);
-            if (data && data.code == '0') {
-              that.closeMoveGroupDialog();
-              that.getDataList(that.view.pagination.page, that.view.pagination.size);
-              that.$notice(data.msg);
-            }
-          } catch (error) {
-            that.$notice('迁组操作失败');
-            console.log(error);
-          }
-        },
-        openCaseStorageDialog () {
-          if (this.$refs.caseStorageRuleForm) {
-            this.$refs.caseStorageRuleForm.clearValidate();
-          }
-          this.caseStorageDialogVisible = true;
-        },
-        closeCaseStorageDialog () {
-          this.$refs.caseStorageRuleForm.clearValidate();
-          this.caseStorageDialogVisible = false;
-          this.clearCaseStorageDialog();
-        },
-        clearCaseStorageDialog () {
-          for (let key in this.caseStorageRuleForm) {
-            this.caseStorageRuleForm[key] = '';
-          }
-        },
-        openCaseListDialog () {
-          this.caseListDialogVisible = true;
-        },
-        closeCaseListDialog () {
-          // this.closeCaseStorageDialog();
-          this.caseListDialogVisible = false;
-          this.selectCaseList = [];
-        },
-        handleSelectionCaseList (val) {
-          this.selectCaseList = val;
-        },
-        async casesFindPatients () {
-          let that = this;
-          that.$refs.caseStorageRuleForm.validate(async (valid) => {
-            if (!valid) {
-              return false;
-            }
-            let formData = {
-              patientName: that.caseStorageRuleForm.patientName,
-              identify: that.caseStorageRuleForm.identify,
-              gender: that.caseStorageRuleForm.gender,
-              birthday: utils.formateDate(that.caseStorageRuleForm.birthday),
-              cardNo: that.caseStorageRuleForm.cardNo,
-              remarks: that.caseStorageRuleForm.remarks
-            };
-            try {
-              let data = await that.$http.casesFindPatients(that.$format(formData));
-              if (data && data.code == '0') {
-                that.caseList = data.data;
-                that.openCaseListDialog();
-              }
-            } catch (error) {
-              that.$notice('病例查找失败');
-              console.log(error);
-            }
-          });
-        },
-        async saveCaseListDialog () {
-          let that = this;
-          let formData = {
-            diseaseId: that.currentDiseaseId,
-            patientIds: that.selectCaseList.map((item) => {
-              return item.patientId;
-            })
-          };
-          try {
-            let data = await that.$http.casesSavePatients(that.$format(formData));
-            if (data && data.code == '0') {
-              that.closeCaseListDialog();
-              that.$notice(data.msg);
-              if (!that.selectLabSubjectId && !that.selectLabGroupId) {
-                that.getDataList();
-              }
-            }
-          } catch (error) {
-            that.$notice('病例入库失败');
-            console.log(error);
-          }
-        },
-        labGroupSelect (labGroup, subject) {
-          this.dropmenuHide = true;
-          console.warn(labGroup);
-          this.selectLabSubjectId = labGroup.subjectId ? labGroup.subjectId : '';
-          this.selectLabGroupFormId = labGroup.formId;
-          this.selectLabSubjectGroupName = (subject ? subject.name + ' / ' : '') + labGroup.name;
-          this.selectLabGroupId = labGroup.id;
-          this.selectLabGroupName = labGroup.name;
-          console.log('this.selectLabSubjectGroupName', this.selectLabSubjectGroupName);
-          console.log('this.selectLabGroupName', this.selectLabGroupName);
-          console.log('this.selectLabSubjectId', this.selectLabSubjectId);
-          console.log('this.selectLabGroupId', this.selectLabGroupId);
-          // 触发查询当前病例
-          this.conditionSet = {
-            viewName: this.viewName,
-            column: '',
-            operator: '',
-            param: '',
-            param2: ''
-          };
-          // this.conditionList = [];
-          this.selectRow = [];
-          this.getDataList();
-        },
-        async fuzzyQueryHandle () {
-          this.fuzzyQueryStatus = true;// 开启模糊搜索状态
-          this.fuzzyQueryGetDataList();
-        },
-        async fuzzyQueryGetDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
-          let that = this;
-          let formData = {
+            criterias: that.params_conditionList,
             diseaseId: that.currentDiseaseId,
             experimentId: that.selectLabGroupId,
             subjectId: that.selectLabSubjectId,
-            param: that.fuzzyQuery,
             // viewName: that.currentSelectViewsNameList,
             viewName: [that.viewName],
             page: pageNo - 1,
             size: pageSize
           };
           try {
-            let data = await that.$http.casesAsynFindCases(that.$format(formData));
+            let data = await that.$http.casesFindCases(that.$format(formData));
             that.loading = false;
             if (data && data.code == '0') {
               let result = data.data;
@@ -1290,6 +853,21 @@
                 that.viewsList.forEach(item2 => {
                   if (item2.name === item.viewName) {
                     item2.dataList = obj;
+                    // console.log(item2.dataList);
+                    that.$nextTick(() => {
+                      // console.warn(that.view.selectRow);
+                      // 通过undersc的isEqual判断两各行相等，然后勾选上
+                      that.view.selectRow && that.view.selectRow.forEach(row => {
+                        item.list.forEach(itemRow => {
+                          if (that.underscore.isEqual(itemRow, row)) {
+                            this.$refs[this.view.name][0].toggleRowSelection(itemRow, true);
+                          }
+                        });
+                      });
+                    });
+                    setTimeout(() => {
+                      that.$refs[that.viewName][0].doLayout();
+                    }, 200);
                   }
                 });
               });
@@ -1299,307 +877,794 @@
             that.$notice('获取病例列表失败');
             console.log(error);
           }
-        },
-        //销毁报告组件
-        hideReportFollowiUp(){
-          this.showReportFollowiUp = false;
-        },
-        dblclickHandle (row, event) {
-          let subjectName = this.subjectDataList.map( item =>{
-            if(item.id== this.selectLabSubjectId) {
-              return item.name;
+        }
+      },
+      handleSelectionChange (val) {
+        // console.log('val:', val);
+        this.selectRow = val;
+      },
+      changeOperator (val) {
+        if (val == 'Null' || val == 'NotNull') {
+          this.conditionSet.param = '';
+          this.conditionSet.param2 = '';
+        }
+      },
+      conditionAdd () {
+        if (this.conditionSet.operator != 'Null' && this.conditionSet.operator != 'NotNull') {
+          for (let key in this.conditionSet) {
+            if (!this.conditionSet[key] && key != 'param2') {
+              this.$notice('请输入完整的筛选条件');
+              return false;
             }
-          })
-          let that = this;
-          that.reportFollowiUpData = {
-            patientId: row.PATIENT_ID || '',
-            diseaseId: that.currentDiseaseId,
-            subjectId: that.selectLabSubjectId,
-            groupId: that.selectLabGroupId,
-            diseaseName: this.diseaseDetail.name,
-            subjectName: subjectName.join(),
-            groupName: this.selectLabGroupName,
-
           }
-          console.log(row)
-          that.reportFollowiUpInfo = row;
-          sessionStorage.setItem('caseManage',JSON.stringify(this.$route.query));
-          that.reportFillData = {
-            cacheData: false,
-            formId: that.selectLabGroupFormId,
-            groupId: that.selectLabGroupId,
-            subjectId: that.selectLabSubjectId,
-            diseaseId: that.currentDiseaseId,
-            patientName: row.PATIENT_NAME || '',
-            patientId: row.PATIENT_ID || '',
-            identify: row.IDENTIFY || '',
-            from: that.$route.name,
-            isModify:"displayShow"
-          }
-          that.showReportFollowiUp = true;
-          return;
-          if (that.selectLabGroupId) {
-            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
-            window.open('./patientForm.html');
-          }
-        },
-        getCurrentColumnsdataType () {
-          this.conditionViewList.forEach(item => {
-            if (item.name === this.conditionSet.column) {
-              this.currentColumnsdataType = item.dataType;
+        }
+        // console.log(this.conditionList);
+        // console.log(this.conditionSet);
+        let isHased = this.conditionList.findIndex(ele => {
+          return (
+            ele.viewName === this.viewName &&
+            ele.column === this.conditionSet.column &&
+            ele.operator === this.conditionSet.operator &&
+            ele.param === this.conditionSet.param &&
+            (ele.param2 ? ele.param2 : '') === this.conditionSet.param2
+          );
+        });
+        if (isHased !== -1) {
+          this.$notice('此筛选条件已经存在');
+          return false;
+        }
+        this.conditionList.push({
+          viewName: this.viewName,
+          viewLabel: this.viewsList[this.viewsList.findIndex(view => {
+            return (
+              view.name === this.viewName
+            );
+          })].label,
+          column: this.conditionSet.column,
+          columnName: this.conditionViewList[this.conditionViewList.findIndex(ele => {
+            return (
+              ele.name === this.conditionSet.column
+            );
+          })].label,
+          operator: this.conditionSet.operator,
+          operatorName: this.conditionOperatorList[this.conditionOperatorList.findIndex(ele => {
+            return (
+              ele.name === this.conditionSet.operator
+            );
+          })].label,
+          param: this.conditionSet.param,
+          param2: this.conditionSet.param2
+        });
+      },
+      conditionDelete (condition, index) {
+        // console.log(condition);
+        //  console.log(index);
+        this.conditionList.splice(index, 1);
+      },
+      handleCommand (command) {
+        let that = this;
+        if (that.selectRow && that.selectRow.length == 1 && command == 'crfFill') {
+          that.$router.push({
+            name: 'reportFill',
+            query: {
+              cacheData: false,
+              formId: that.selectLabGroupFormId,
+              groupId: that.selectLabGroupId,
+              subjectId: that.selectLabSubjectId,
+              diseaseId: that.currentDiseaseId,
+              patientName: that.selectRow[0].PATIENT_NAME || '',
+              patientId: that.selectRow[0].PATIENT_ID || '',
+              identify: that.selectRow[0].IDENTIFY || ''
             }
           });
-        },
-        changeCurrentSelectMySaveCondition (val) {
-          // console.log(val);
-          this.currentSelectMySaveCondition = this.mySaveConditionViewList.filter(item => {
-            return item.id === val;
-          })[0];
-          // console.log(this.currentSelectMySaveCondition.criterias);
-          // console.log(this.currentSelectViewsList);
-          this.conditionList = utils.deepClone(this.currentSelectMySaveCondition.criterias);
-        },
-        addViewTabAndSelect () {
-          // 保存的筛选条件被使用后，可能勾选的视图少于这个筛选条件的视图，所以要打开新的视图，
-          this.conditionList.forEach(item => {
-            let result = this.currentSelectViewsList.findIndex(ele => {
-              return (
-                ele.name === item.viewName
-              );
-            });
-            if (result === -1) {
-              this.viewsList.forEach(view => {
-                if (view.name === item.viewName) {
-                  // 给表格加视图tab页
-                  this.currentSelectViewsList.push(view);
-                  // 给下拉多选矿加勾选
-                  this.$refs.multipleCheckBoxSelect.checkList.push(item.viewName);
-                }
-              });
+        } else if (that.selectRow && that.selectRow.length != 1 && command == 'crfFill') {
+          this.$notice('请勾选一行进行CRF表单填写');
+        } else if (that.selectRow && that.selectRow.length === 1 && command == 'enterGroupManager') {
+          that.$router.push({
+            name: 'enterGroupManager',
+            query: {
+              cacheData: false,
+              patientName: that.selectRow[0].PATIENT_NAME || '',
+              patientId: that.selectRow[0].PATIENT_ID || '',
+              identify: that.selectRow[0].IDENTIFY || ''
             }
           });
-        },
-        async getMySaveCondition () {
-          let that = this;
-          try {
-            let data = await that.$http.casesFindCondition();
-            if (data && data.code == '0') {
-              that.mySaveConditionViewList = data.data;
-            }
-          } catch (error) {
-            that.$notice('获取筛选条件列表失败');
-            console.log(error);
-          }
-        },
-        openSaveConditionDialog () {
-          if (this.conditionList.length === 0) {
-            this.$notice('请添加筛查条件再进行保存');
-            return false;
-          }
-          this.MySaveConditionDialogVisible = true;
-          if (this.$refs.mySaveConditionRuleForm) {
-            this.$refs.mySaveConditionRuleForm.clearValidate();
-          }
-        },
-        closeMySaveConditionDialog () {
-          this.MySaveConditionDialogVisible = false;
-          this.mySaveConditionRuleForm = {name: ''};
-          this.$refs.mySaveConditionRuleForm.clearValidate();
-        },
-        async saveCondition () {
-          let that = this;
-          that.$refs.mySaveConditionRuleForm.validate(async (valid) => {
-            if (!valid) return false;
-            try {
-              let formData = {
-                name: that.mySaveConditionRuleForm.name.trim(),
-                criterias: that.conditionList
-              };
-              let data = await that.$http.casesSaveCondition(formData);
-              if (data && data.code == '0') {
-                that.getMySaveCondition();
-                that.closeMySaveConditionDialog();
-                that.$notice(data.msg);
+        } else if (that.selectRow.length !== 0 || command == 'caseStorage' || command == 'exportAll') {
+          switch (command) {
+            case 'enterGroup':
+              that.openEnterGroupDialog();
+              break;
+            case 'outGroup':
+              that.$confirm('已选择 ' + this.selectRow.length + ' 行数据，确定要将此 ' + that.selectRow.length + ' 行数据退出 ' + that.selectLabGroupName + ' 吗？', '提示',
+                {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                })
+                .then(async () => {
+                  try {
+                    let formData = {
+                      experimentId: that.selectLabGroupId,
+                      patientIds: that.selectRow.map((item) => {
+                        return item.PATIENT_ID;
+                      })
+                    };
+                    let data = await this.$http.casesOutGroup(formData);
+                    if (data && data.code == '0') {
+                      that.getDataList(that.view.pagination.page, that.view.pagination.size);
+                      that.$notice(data.msg);
+                    }
+                  } catch (error) {
+                    this.$notice('出组操作失败');
+                    console.log(error);
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              break;
+            case 'moveGroup':
+              this.openMoveGroupDialog();
+              break;
+            case 'caseStorage':
+              this.openCaseStorageDialog();
+              break;
+            case 'export':
+              if (!that.selectLabSubjectId && !that.selectLabGroupId) { // 全部病例情况下
+                this.$confirm('确定要将这' + this.selectRow.length + '条病例记录导出吗？', '提示',
+                  {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  })
+                  .then(async () => {
+                    try {
+                      let formData = {
+                        patientId: that.selectRow.map((item) => {
+                          return item.PATIENT_ID;
+                        }),
+                        viewName: that.viewName
+                      };
+                      let data = await this.$http.casesExportCases(formData);
+                      let blob = new Blob([data.data], {type: 'application/ms-excel;charset=UTF-8'});
+                      let fileNmae = data.headers['content-disposition'].split('filename=')[1];
+                      that.$download(fileNmae, blob);
+                      this.$notice('导出成功');
+                    } catch (error) {
+                      that.$notice('导出失败');
+                      console.log(error);
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
+              } else { // 选择了实验组的情况下
+                this.$confirm('确定要将这' + this.selectRow.length + '条病例的CRF表单导出吗？', '提示',
+                  {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  })
+                  .then(async () => {
+                    try {
+                      let formData = {
+                        groupId: that.selectLabGroupId,
+                        patientIds: that.selectRow.map((item) => {
+                          return item.PATIENT_ID;
+                        })
+                      };
+                      let data = await this.$http.crfdataExpCrfData(formData);
+                      let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
+                      let fileNmae = data.headers['content-disposition'].split('filename=')[1];
+                      that.$download(fileNmae, blob);
+                      this.$notice('导出成功');
+                    } catch (error) {
+                      that.$notice('导出失败');
+                      console.log(error);
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                  });
               }
-            } catch (error) {
-              that.$notice('保存筛选条件失败');
-              console.log(error);
-            }
-          });
-        },
-        deleteMySaveCondition (item) {
-          console.log(item);
-          let that = this;
-          this.$confirm('是否要删除' + item.name + '此筛选条件', '提示', {
+              break;
+            case 'exportAll':
+              this.$confirm('确定要将该实验组下所有病例的CRF表单导出吗？', '提示',
+                {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                })
+                .then(async () => {
+                  try {
+                    let formData = {
+                      groupId: that.selectLabGroupId
+                    };
+                    let data = await this.$http.crfdataExpCrfData(formData);
+                    let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
+                    let fileNmae = data.headers['content-disposition'].split('filename=')[1];
+                    that.$download(fileNmae, blob);
+                    this.$notice('导出成功');
+                  } catch (error) {
+                    that.$notice('导出失败');
+                    console.log(error);
+                  }
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              break;
+            case 'edit':
+              that.searchPatientInfo(that.selectRow[0])
+                .then((res)=>{
+                  if(res.sysExport == 0) {
+                    this.$notice('导入数据不可编辑');
+                  }else {
+                    that.showaddPatientDialog('编辑患者', Object.assign({},that.selectRow[0], {phoneNumber:res.phoneNumber,address:res.address}));
+                  }
+                })
+              break;
+            case 'delete':
+              this.$confirm('确定要将这' + that.selectRow.length + '条病例记录删除吗？', '提示',
+                {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                })
+                .then( () => {
+                  this.casesDeletePatient(that.selectRow[0]);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+              break;
+            default:
+              console.warn('操作类型失去匹配');
+              break;
+          }
+        } else {
+          this.$notice('请至少勾选一行');
+        }
+      },
+      openEnterGroupDialog () {
+        this.enterGroupDialogVisible = true;
+      },
+      closeEnterGroupDialog () {
+        this.enterGroupDialogVisible = false;
+        for (let key in this.enterGroupRuleForm) {
+          this.enterGroupRuleForm[key] = '';
+        }
+      },
+      async saveEnterGroupDialog () {
+        let that = this;
+        let selectGroupName = that.labGroupDatalist[that.labGroupDatalist.findIndex(ele => {
+          return (
+            ele.id === this.enterGroupRuleForm.labGroup
+          );
+        })].name;
+        that.$confirm('已选择 ' + this.selectRow.length + ' 行数据，确定要将其入组到 ' + selectGroupName + ' 吗？', '提示',
+          {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
-          }).then(async () => {
+          })
+          .then(async () => {
+            let formData = {
+              experimentId: this.enterGroupRuleForm.labGroup,
+              subjectId: this.enterGroupRuleForm.subject,
+              patientIds: that.selectRow.map((item) => {
+                return item.PATIENT_ID;
+              })
+            };
             try {
-              let data = await that.$http.casesDeleteCondition({id: item.id});
+              let data = await that.$http.casesEnterGroup(formData);
               if (data && data.code == '0') {
-                that.getMySaveCondition();
-                this.currentSelectMySaveConditionId = '';
+                that.closeEnterGroupDialog();
+                that.getDataList(that.view.pagination.page, that.view.pagination.size);
                 that.$notice(data.msg);
               }
             } catch (error) {
-              that.$notice('删除筛选条件失败');
+              that.$notice('入组操作失败');
               console.log(error);
             }
-          }).catch((error) => {
+          })
+          .catch(error => {
             console.log(error);
           });
-        },
-        async validateConditionName (rule, value, callback) {
-          let that = this;
-          if (validation.checkNull(value)) {
-            callback(new Error('筛选条件名称不能为空'));
-            return false;
-          }
-          let data = await that.$http.casesExistConditionName({name: value});
-          if (data.code == 0 && data.data) {
-            callback(new Error('筛选条件名称已经存在'));
-            return false;
-          }
-          callback();
-        },
-        reset () {
-          Object.assign(this.$data, this.$options.data());
-          this.$data.mySaveConditionRules = {
-            name: [{required: true, validator: this.validateConditionName, trigger: 'blur'}]
-          };
-          this.$refs.multipleCheckBoxSelect.checkList = ['BASIC_INFO'];
-          this.initPage();
-        },
-        //跳转到306视图页面
-        onLinkView360(row) {
-          let obj = {
-            orgCode: row.orgCode,
-            patientId: row.PATIENT_ID,
-            diseaseId: this.currentDiseaseId,
-          };
-          sessionStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
-          window.open('./view360.html?patientId='+row.PATIENT_ID, '_blank');
-        },
-        //显示添加患者弹框
-        showaddPatientDialog(title, data) {
-          this.patientDialogTitle = title;
-          this.patientDialogVisible = true;
-          if(data) {
-            this.patientRuleForm = {
-              name: data.PATIENT_NAME,
-              patientCode: data.PATIENT_ID,
-              sex: data.GENDER_NAME=='男'?'1':'0',
-              birthday: data.BIRTHDATE,
-              IDCard: data.IDENTIFY,
-              tel: data.phoneNumber,
-              address: data.address,
-            }
-          }else {
-            this.patientRuleForm = {
-              name:'',
-              patientCode:'',
-              sex:'1',
-              birthday:'',
-              IDCard:'',
-              tel:'',
-              address:'',
-            }
-          }
-        },
-        //关闭患者弹框
-        onClosePatient(patientRuleForm) {
-          this.patientDialogVisible = false;
-          this.$refs[patientRuleForm].resetFields();
-        },
-        //保存患者信息按钮
-        onSavePatient(dialogFrom) {
-          this.$refs[dialogFrom].validate(async (valid) => {
-            if (valid) {
-              let subjectName = this.subjectDataList.map( item =>{
-                if(item.id== this.selectLabSubjectId) {
-                  return item.name;
-                }
-              })
-              let res,
-                formData = {
-                  patientName: this.patientRuleForm.name,
-                  birthdate: this.patientRuleForm.birthday,
-                  phoneNumber: this.patientRuleForm.tel,
-                  genderCode: this.patientRuleForm.sex,
-                  idCardNo: this.patientRuleForm.IDCard,
-                  address: this.patientRuleForm.address,
-                  groupId: this.selectLabGroupId,
-                  patientId: this.patientRuleForm.patientCode || "",
-                  diseaseId: this.currentDiseaseId,
-                  subjectId: this.selectLabSubjectId,
-                  diseaseName: this.diseaseDetail.name || '',
-                  subjectName: subjectName.join() || '',
-                  groupName: this.selectLabGroupName || '',
-                }
-
-              if(this.patientDialogTitle == '添加患者') {
-                res = await this.$http.casesAddPatient(formData);
-              }else {
-                res = await this.$http.casesEditPatient(formData);
-              }
-              try {
-                if (res.code == 0) {
-                  this.$mes('success', this.patientDialogTitle+"成功!");
-                  this.patientDialogVisible = false;
-                  this.getDataList();
-                }else {
-                  this.$mes('error', this.patientDialogTitle+"失败!");
-                }
-              } catch (err) {
-                console.log(err)
-              }
-            } else {
-              return false;
-            }
-          });
-        },
-        //删除患者
-        async casesDeletePatient (row) {
-          let formData = {
-            patientId: row.PATIENT_ID
-          }
-          let res = await this.$http.casesDeletePatient(formData);
-          if (res.code == 0) {
-            this.$mes('success', "删除患者成功!");
-            this.getDataList();
-          }else {
-            this.$mes('error', res.msg);
-          }
-        },
-        //查询患者信息
-        async searchPatientInfo (row) {
-          let formData = {
-            patientId: row.PATIENT_ID
-          }
-          let res = await this.$http.casesSearchPatient(formData);
-          return new Promise((resolve, reject)=>{
-            if (res.code == 0) {
-              resolve(res.data);
-            }else {
-              reject();
-              this.$mes('error', "查询患者信息失败!");
-            }
-          })
-
-        },
       },
-      created() {
+      subjectChange (val) {
+        this.enterGroupRuleForm.labGroup = '';
+        this.subjectDataList.map(subject => {
+          if (subject.id === val) {
+            this.labGroupDatalist = subject.experimentGroups;
+          }
+        });
+      },
+      // 通过检查表单是否完成，已决定按钮是否可用
+      checkDisable (form) {
+        let flag = true;
+        for (let key in form) {
+          if (form[key] === '') {
+            flag = false;
+          }
+        }
+        return !flag;
+      },
+      openMoveGroupDialog () {
+        this.moveGroupDialogVisible = true;
+      },
+      closeMoveGroupDialog () {
+        this.moveGroupDialogVisible = false;
+        for (let key in this.moveGroupRuleForm) {
+          this.moveGroupRuleForm[key] = '';
+        }
+      },
+      async saveMoveGroupDialog () {
+        let that = this;
+        let formData = {
+          subjectId: that.moveGroupRuleForm.subject,
+          experimentId: that.moveGroupRuleForm.labGroup,
+          oldGroupId: that.selectLabGroupId,
+          patientIds: that.selectRow.map((item) => {
+            return item.PATIENT_ID;
+          })
+        };
+
+        try {
+          let data = await that.$http.casesMoveGroup(formData);
+          if (data && data.code == '0') {
+            that.closeMoveGroupDialog();
+            that.getDataList(that.view.pagination.page, that.view.pagination.size);
+            that.$notice(data.msg);
+          }
+        } catch (error) {
+          that.$notice('迁组操作失败');
+          console.log(error);
+        }
+      },
+      openCaseStorageDialog () {
+        if (this.$refs.caseStorageRuleForm) {
+          this.$refs.caseStorageRuleForm.clearValidate();
+        }
+        this.caseStorageDialogVisible = true;
+      },
+      closeCaseStorageDialog () {
+        this.$refs.caseStorageRuleForm.clearValidate();
+        this.caseStorageDialogVisible = false;
+        this.clearCaseStorageDialog();
+      },
+      clearCaseStorageDialog () {
+        for (let key in this.caseStorageRuleForm) {
+          this.caseStorageRuleForm[key] = '';
+        }
+      },
+      openCaseListDialog () {
+        this.caseListDialogVisible = true;
+      },
+      closeCaseListDialog () {
+        // this.closeCaseStorageDialog();
+        this.caseListDialogVisible = false;
+        this.selectCaseList = [];
+      },
+      handleSelectionCaseList (val) {
+        this.selectCaseList = val;
+      },
+      async casesFindPatients () {
+        let that = this;
+        that.$refs.caseStorageRuleForm.validate(async (valid) => {
+          if (!valid) {
+            return false;
+          }
+          let formData = {
+            patientName: that.caseStorageRuleForm.patientName,
+            identify: that.caseStorageRuleForm.identify,
+            gender: that.caseStorageRuleForm.gender,
+            birthday: utils.formateDate(that.caseStorageRuleForm.birthday),
+            cardNo: that.caseStorageRuleForm.cardNo,
+            remarks: that.caseStorageRuleForm.remarks
+          };
+          try {
+            let data = await that.$http.casesFindPatients(that.$format(formData));
+            if (data && data.code == '0') {
+              that.caseList = data.data;
+              that.openCaseListDialog();
+            }
+          } catch (error) {
+            that.$notice('病例查找失败');
+            console.log(error);
+          }
+        });
+      },
+      async saveCaseListDialog () {
+        let that = this;
+        let formData = {
+          diseaseId: that.currentDiseaseId,
+          patientIds: that.selectCaseList.map((item) => {
+            return item.patientId;
+          })
+        };
+        try {
+          let data = await that.$http.casesSavePatients(that.$format(formData));
+          if (data && data.code == '0') {
+            that.closeCaseListDialog();
+            that.$notice(data.msg);
+            if (!that.selectLabSubjectId && !that.selectLabGroupId) {
+              that.getDataList();
+            }
+          }
+        } catch (error) {
+          that.$notice('病例入库失败');
+          console.log(error);
+        }
+      },
+      labGroupSelect (labGroup, subject) {
+        this.dropmenuHide = true;
+        console.warn(labGroup);
+        this.selectLabSubjectId = labGroup.subjectId ? labGroup.subjectId : '';
+        this.selectLabGroupFormId = labGroup.formId;
+        this.selectLabSubjectGroupName = (subject ? subject.name + ' / ' : '') + labGroup.name;
+        this.selectLabGroupId = labGroup.id;
+        this.selectLabGroupName = labGroup.name;
+        console.log('this.selectLabSubjectGroupName', this.selectLabSubjectGroupName);
+        console.log('this.selectLabGroupName', this.selectLabGroupName);
+        console.log('this.selectLabSubjectId', this.selectLabSubjectId);
+        console.log('this.selectLabGroupId', this.selectLabGroupId);
+        // 触发查询当前病例
+        this.conditionSet = {
+          viewName: this.viewName,
+          column: '',
+          operator: '',
+          param: '',
+          param2: ''
+        };
+        // this.conditionList = [];
+        this.selectRow = [];
+        this.getDataList();
+      },
+      async fuzzyQueryHandle () {
+        this.fuzzyQueryStatus = true;// 开启模糊搜索状态
+        this.fuzzyQueryGetDataList();
+      },
+      async fuzzyQueryGetDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
+        let that = this;
+        let formData = {
+          diseaseId: that.currentDiseaseId,
+          experimentId: that.selectLabGroupId,
+          subjectId: that.selectLabSubjectId,
+          param: that.fuzzyQuery,
+          // viewName: that.currentSelectViewsNameList,
+          viewName: [that.viewName],
+          page: pageNo - 1,
+          size: pageSize
+        };
+        try {
+          let data = await that.$http.casesAsynFindCases(that.$format(formData));
+          that.loading = false;
+          if (data && data.code == '0') {
+            let result = data.data;
+            result.forEach(item => {
+              let obj = {};
+              obj.content = item.list;
+              obj.content.forEach((item, index) => {
+                item.index = (pageNo - 1) * pageSize + index + 1;
+              });
+              obj.pageNo = pageNo;
+              obj.pageSize = pageSize;
+              obj.totalCount = parseInt(item.total);
+              obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
+              that.viewsList.forEach(item2 => {
+                if (item2.name === item.viewName) {
+                  item2.dataList = obj;
+                }
+              });
+            });
+          }
+        } catch (error) {
+          that.loading = false;
+          that.$notice('获取病例列表失败');
+          console.log(error);
+        }
+      },
+      //销毁报告组件
+      hideReportFollowiUp(){
+        this.showReportFollowiUp = false;
+      },
+      dblclickHandle (row, event) {
+        let subjectName = this.subjectDataList.map( item =>{
+          if(item.id== this.selectLabSubjectId) {
+            return item.name;
+          }
+        })
+        let that = this;
+        that.reportFollowiUpData = {
+          patientId: row.PATIENT_ID || '',
+          diseaseId: that.currentDiseaseId,
+          subjectId: that.selectLabSubjectId,
+          groupId: that.selectLabGroupId,
+          diseaseName: this.diseaseDetail.name,
+          subjectName: subjectName.join(),
+          groupName: this.selectLabGroupName,
+
+        }
+        console.log(row)
+        that.reportFollowiUpInfo = row;
+        sessionStorage.setItem('caseManage',JSON.stringify(this.$route.query));
+        that.reportFillData = {
+          cacheData: false,
+          formId: that.selectLabGroupFormId,
+          groupId: that.selectLabGroupId,
+          subjectId: that.selectLabSubjectId,
+          diseaseId: that.currentDiseaseId,
+          patientName: row.PATIENT_NAME || '',
+          patientId: row.PATIENT_ID || '',
+          identify: row.IDENTIFY || '',
+          from: that.$route.name,
+          isModify:"displayShow"
+        }
+        that.showReportFollowiUp = true;
+        return;
+        if (that.selectLabGroupId) {
+          sessionStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
+          window.open('./patientForm.html');
+        }
+      },
+      getCurrentColumnsdataType () {
+        this.conditionViewList.forEach(item => {
+          if (item.name === this.conditionSet.column) {
+            this.currentColumnsdataType = item.dataType;
+          }
+        });
+      },
+      changeCurrentSelectMySaveCondition (val) {
+        // console.log(val);
+        this.currentSelectMySaveCondition = this.mySaveConditionViewList.filter(item => {
+          return item.id === val;
+        })[0];
+        // console.log(this.currentSelectMySaveCondition.criterias);
+        // console.log(this.currentSelectViewsList);
+        this.conditionList = utils.deepClone(this.currentSelectMySaveCondition.criterias);
+      },
+      addViewTabAndSelect () {
+        // 保存的筛选条件被使用后，可能勾选的视图少于这个筛选条件的视图，所以要打开新的视图，
+        this.conditionList.forEach(item => {
+          let result = this.currentSelectViewsList.findIndex(ele => {
+            return (
+              ele.name === item.viewName
+            );
+          });
+          if (result === -1) {
+            this.viewsList.forEach(view => {
+              if (view.name === item.viewName) {
+                // 给表格加视图tab页
+                this.currentSelectViewsList.push(view);
+                // 给下拉多选矿加勾选
+                this.$refs.multipleCheckBoxSelect.checkList.push(item.viewName);
+              }
+            });
+          }
+        });
+      },
+      async getMySaveCondition () {
+        let that = this;
+        try {
+          let data = await that.$http.casesFindCondition();
+          if (data && data.code == '0') {
+            that.mySaveConditionViewList = data.data;
+          }
+        } catch (error) {
+          that.$notice('获取筛选条件列表失败');
+          console.log(error);
+        }
+      },
+      openSaveConditionDialog () {
+        if (this.conditionList.length === 0) {
+          this.$notice('请添加筛查条件再进行保存');
+          return false;
+        }
+        this.MySaveConditionDialogVisible = true;
+        if (this.$refs.mySaveConditionRuleForm) {
+          this.$refs.mySaveConditionRuleForm.clearValidate();
+        }
+      },
+      closeMySaveConditionDialog () {
+        this.MySaveConditionDialogVisible = false;
+        this.mySaveConditionRuleForm = {name: ''};
+        this.$refs.mySaveConditionRuleForm.clearValidate();
+      },
+      async saveCondition () {
+        let that = this;
+        that.$refs.mySaveConditionRuleForm.validate(async (valid) => {
+          if (!valid) return false;
+          try {
+            let formData = {
+              name: that.mySaveConditionRuleForm.name.trim(),
+              criterias: that.conditionList
+            };
+            let data = await that.$http.casesSaveCondition(formData);
+            if (data && data.code == '0') {
+              that.getMySaveCondition();
+              that.closeMySaveConditionDialog();
+              that.$notice(data.msg);
+            }
+          } catch (error) {
+            that.$notice('保存筛选条件失败');
+            console.log(error);
+          }
+        });
+      },
+      deleteMySaveCondition (item) {
+        console.log(item);
+        let that = this;
+        this.$confirm('是否要删除' + item.name + '此筛选条件', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          try {
+            let data = await that.$http.casesDeleteCondition({id: item.id});
+            if (data && data.code == '0') {
+              that.getMySaveCondition();
+              this.currentSelectMySaveConditionId = '';
+              that.$notice(data.msg);
+            }
+          } catch (error) {
+            that.$notice('删除筛选条件失败');
+            console.log(error);
+          }
+        }).catch((error) => {
+          console.log(error);
+        });
+      },
+      async validateConditionName (rule, value, callback) {
+        let that = this;
+        if (validation.checkNull(value)) {
+          callback(new Error('筛选条件名称不能为空'));
+          return false;
+        }
+        let data = await that.$http.casesExistConditionName({name: value});
+        if (data.code == 0 && data.data) {
+          callback(new Error('筛选条件名称已经存在'));
+          return false;
+        }
+        callback();
+      },
+      reset () {
+        Object.assign(this.$data, this.$options.data());
+        this.$data.mySaveConditionRules = {
+          name: [{required: true, validator: this.validateConditionName, trigger: 'blur'}]
+        };
+        this.$refs.multipleCheckBoxSelect.checkList = ['BASIC_INFO'];
         this.initPage();
       },
-      mounted() {
-      }
+      //跳转到306视图页面
+      onLinkView360(row) {
+        let obj = {
+          orgCode: row.orgCode,
+          patientId: row.PATIENT_ID,
+          diseaseId: this.currentDiseaseId,
+        };
+        sessionStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
+        window.open('./view360.html?patientId='+row.PATIENT_ID, '_blank');
+      },
+      //显示添加患者弹框
+      showaddPatientDialog(title, data) {
+        this.patientDialogTitle = title;
+        this.patientDialogVisible = true;
+        if(data) {
+          this.patientRuleForm = {
+            name: data.PATIENT_NAME,
+            patientCode: data.PATIENT_ID,
+            sex: data.GENDER_NAME=='男'?'1':'0',
+            birthday: data.BIRTHDATE,
+            IDCard: data.IDENTIFY,
+            tel: data.phoneNumber,
+            address: data.address,
+          }
+        }else {
+          this.patientRuleForm = {
+            name:'',
+            patientCode:'',
+            sex:'1',
+            birthday:'',
+            IDCard:'',
+            tel:'',
+            address:'',
+          }
+        }
+      },
+      //关闭患者弹框
+      onClosePatient(patientRuleForm) {
+        this.patientDialogVisible = false;
+        this.$refs[patientRuleForm].resetFields();
+      },
+      //保存患者信息按钮
+      onSavePatient(dialogFrom) {
+        this.$refs[dialogFrom].validate(async (valid) => {
+          if (valid) {
+            let subjectName = this.subjectDataList.map( item =>{
+              if(item.id== this.selectLabSubjectId) {
+                return item.name;
+              }
+            })
+            let res,
+              formData = {
+                patientName: this.patientRuleForm.name,
+                birthdate: this.patientRuleForm.birthday,
+                phoneNumber: this.patientRuleForm.tel,
+                genderCode: this.patientRuleForm.sex,
+                idCardNo: this.patientRuleForm.IDCard,
+                address: this.patientRuleForm.address,
+                groupId: this.selectLabGroupId,
+                patientId: this.patientRuleForm.patientCode || "",
+                diseaseId: this.currentDiseaseId,
+                subjectId: this.selectLabSubjectId,
+                diseaseName: this.diseaseDetail.name || '',
+                subjectName: subjectName.join() || '',
+                groupName: this.selectLabGroupName || '',
+              }
+
+            if(this.patientDialogTitle == '添加患者') {
+              res = await this.$http.casesAddPatient(formData);
+            }else {
+              res = await this.$http.casesEditPatient(formData);
+            }
+            try {
+              if (res.code == 0) {
+                this.$mes('success', this.patientDialogTitle+"成功!");
+                this.patientDialogVisible = false;
+                this.getDataList();
+              }else {
+                this.$mes('error', this.patientDialogTitle+"失败!");
+              }
+            } catch (err) {
+              console.log(err)
+            }
+          } else {
+            return false;
+          }
+        });
+      },
+      //删除患者
+      async casesDeletePatient (row) {
+        let formData = {
+          patientId: row.PATIENT_ID
+        }
+        let res = await this.$http.casesDeletePatient(formData);
+        if (res.code == 0) {
+          this.$mes('success', "删除患者成功!");
+          this.getDataList();
+        }else {
+          this.$mes('error', res.msg);
+        }
+      },
+      //查询患者信息
+      async searchPatientInfo (row) {
+        let formData = {
+          patientId: row.PATIENT_ID
+        }
+        let res = await this.$http.casesSearchPatient(formData);
+        return new Promise((resolve, reject)=>{
+          if (res.code == 0) {
+            resolve(res.data);
+          }else {
+            reject();
+            this.$mes('error', "查询患者信息失败!");
+          }
+        })
+
+      },
+    },
+    beforeRouteEnter (to, from, next) {
+      next();
+    },
+    beforeRouteLeave (to, from, next) {
+      next();
     }
+  };
 </script>
 
 <style lang="less" scoped>
 .patient_list_module{
-  margin-top: 60px;
   display: flex;
   height: 100%;
   flex: 1;
@@ -1652,6 +1717,9 @@
         .el-input__inner{
           height: 36px;
           border-radius: 1px;
+        }
+        .el-input__prefix{
+          height: 36px;
         }
       }
     }
@@ -1725,6 +1793,34 @@
 
   .MySaveConditionDialog .el-dialog .el-input {
     width: 250px !important;
+  }
+  .change_height .el-form-item__content .el-select .el-input .el-input__inner,.change_height .el-input__inner{
+    height: 36px;
+    line-height: 36px;
+  }
+  .change_height .el-select__tags{
+    top: 60%;
+  }
+  .change_height .el-select__caret{
+    margin-top: 5px;
+  }
+  .el-form-item__content .el-button{
+    height: 33px;
+  }
+  .change_height .move_top .el-input__inner{
+    transform: translate(0,-6px);
+  }
+  .change_height .move_top .el-input__suffix{
+    margin-top: 0;
+    top: -3px;
+  }
+  .cloud-search-list .bigContain{
+    padding: 0 20px;
+  }
+  .cloud-search {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 20px;
   }
 </style>
 
