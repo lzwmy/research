@@ -27,7 +27,7 @@ const routes = [
       isKeepAlive: true,
       txt: 'CRF配置',
       flag: 'crfConfig',
-      belongToGroup: 'crfManage',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: CDRFromConfig
@@ -40,7 +40,7 @@ const routes = [
       isKeepAlive: false,
       txt: '预览',
       flag: 'crfFill',
-      belongToGroup: 'crfManage',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: CDFPreviewPage
@@ -53,7 +53,7 @@ const routes = [
       isKeepAlive: false,
       txt: '小节预览',
       flag: 'sectionPreview',
-      belongToGroup: 'crfManage',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: CDFSectionPreviewPage
@@ -66,7 +66,7 @@ const routes = [
       isKeepAlive: false,
       txt: '单页预览',
       flag: 'singlePreview',
-      belongToGroup: 'crfManage',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: CDFSinglePagePreview
@@ -79,7 +79,7 @@ const routes = [
       isKeepAlive: false,
       txt: '报告预览',
       flag: 'reportPreview',
-      belongToGroup: 'crfManage',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: CDFReportPagePreview
@@ -92,7 +92,7 @@ const routes = [
       isKeepAlive: false,
       txt: '报告编辑',
       flag: 'reportFill',
-      belongToGroup: 'crfManage',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: reportFill

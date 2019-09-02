@@ -1,3 +1,70 @@
+
+#app {
+    .text_center {
+        text-align: center;
+    }
+    .inline {
+        display: inline;
+    }
+    .block {
+        display: block;
+    }
+    .flex-center-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .flex-center-around {
+        display: flex;
+        justify-content: center;
+        align-content: space-around;
+    }
+    .flex-center-between {
+        display: flex;
+        justify-content: center;
+        align-content: space-between;
+    }
+    .flex-start-center {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .flex-end-center {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .flex-around-center {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .flex-between-center {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .flex-start-start {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+    .text-center {
+        text-align: center;
+    }
+    .flex-right {
+        display: flex;
+        flex-grow: 1;
+        justify-content: flex-end;
+    }
+}
+
+
+
+/*
+* element-ui组件样式部分   
+*/
+
 /* 弹框style*/
 .el-dialog {
     min-height: 300px;
@@ -37,6 +104,13 @@
 
 /* 表格样式 */
 .el-table {
+    padding: 0 15px 10px;
+    thead {
+        .cell {
+            color: #1E1A38;
+            font-weight: bold;
+        }
+    }
     .el-table__row.current-row{
         .el-button:hover{
             color: #5a5e66;
@@ -60,8 +134,6 @@
 }
 
 
-
-
 /* 日期选择器样式*/
 .el-range-editor.el-input__inner {
     line-height: 28px;
@@ -74,10 +146,14 @@
     }
 }
 
+
 /* 按钮样式*/
 .el-button {
-    padding: 7px 15px;
+    padding: 0 15px;
+    line-height: 28px;
+    border-radius: 2px;
 } 
+
 
 /* 输入框样式*/ 
 .el-input {
@@ -87,7 +163,12 @@
         height: 28px;
         line-height: 28px;
     }
+    .el-input__icon {
+        line-height: 28px;
+    }
 }
+
+
 .el-form {
     .el-form-item__content {
         display: inline-block;
@@ -140,62 +221,15 @@
     z-index: 20;
 }
 
-
-.text_center {
-    text-align: center;
-}
-
-.inline {
-    display: inline;
-}
-.block {
-    display: block;
-}
-
-.flex-center-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.flex-center-around {
-    display: flex;
-    justify-content: center;
-    align-content: space-around;
-}
-.flex-center-between {
-    display: flex;
-    justify-content: center;
-    align-content: space-between;
-}
-.flex-start-center {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-.flex-end-center {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-.flex-around-center {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-.flex-between-center {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.flex-start-start {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+/* 搜索区域 */
+.search_content {
+    margin-bottom: 10px;
 }
 .text-center {
     text-align: center;
 }
 //第二层 页面添加 cursor
 .cur_pointer{
-  cursor: pointer;
+    cursor: pointer;
 }
+

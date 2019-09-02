@@ -153,306 +153,8 @@ export default {
   data () {
     return {
       step: 'init',
-      // step: 'result',
       keyword: '',
-      // data: {
-      //   content: []
-      // },
-      dataContent:  [
-          /*{
-            name: '王五',
-            desc: '茶话会由中共中央政治局常委、全国政协主席汪洋主持。他指出，习近平总书记发表的重要讲话，回顾总结了2018年中共中央团结带领全国各族人民坚持和发展中国特色社会主义事业取得的新成就，对做好2019年党和国家工作提出了明确要求，对政协工作也提出了殷切希望。我们一定要认真学习领会，更加紧密地团结在以习近平同志为核心的中共中央周围，高举中国特色社会主义伟大旗帜，同心同德、群策群力，努力做好新时代人民政协各项工作，切实把中共中央对人民政协工作的要求落实下去、把海内外中华儿女实现中华民族伟大复兴中国梦的智慧和力量凝聚起来，以优异成绩迎接新中国成立70周年。'
-          },
-          {
-            name: '王五',
-            desc: '茶话会由中共中央政治局常委、全国政协主席汪洋主持。他指出，习近平总书记发表的重要讲话，回顾总结了2018年中共中央团结带领全国各族人民坚持和发展中国特色社会主义事业取得的新成就，对做好2019年党和国家工作提出了明确要求，对政协工作也提出了殷切希望。我们一定要认真学习领会，更加紧密地团结在以习近平同志为核心的中共中央周围，高举中国特色社会主义伟大旗帜，同心同德、群策群力，努力做好新时代人民政协各项工作，切实把中共中央对人民政协工作的要求落实下去、把海内外中华儿女实现中华民族伟大复兴中国梦的智慧和力量凝聚起来，以优异成绩迎接新中国成立70周年。'
-          },
-          {
-            name: '王五',
-            desc: '茶话会由中共中央政治局常委、全国政协主席汪洋主持。他指出，习近平总书记发表的重要讲话，回顾总结了2018年中共中央团结带领全国各族人民坚持和发展中国特色社会主义事业取得的新成就，对做好2019年党和国家工作提出了明确要求，对政协工作也提出了殷切希望。我们一定要认真学习领会，更加紧密地团结在以习近平同志为核心的中共中央周围，高举中国特色社会主义伟大旗帜，同心同德、群策群力，努力做好新时代人民政协各项工作，切实把中共中央对人民政协工作的要求落实下去、把海内外中华儿女实现中华民族伟大复兴中国梦的智慧和力量凝聚起来，以优异成绩迎接新中国成立70周年。'
-          },
-          {
-            name: '王五',
-            desc: '茶话会由中共中央政治局常委、全国政协主席汪洋主持。他指出，习近平总书记发表的重要讲话，回顾总结了2018年中共中央团结带领全国各族人民坚持和发展中国特色社会主义事业取得的新成就，对做好2019年党和国家工作提出了明确要求，对政协工作也提出了殷切希望。我们一定要认真学习领会，更加紧密地团结在以习近平同志为核心的中共中央周围，高举中国特色社会主义伟大旗帜，同心同德、群策群力，努力做好新时代人民政协各项工作，切实把中共中央对人民政协工作的要求落实下去、把海内外中华儿女实现中华民族伟大复兴中国梦的智慧和力量凝聚起来，以优异成绩迎接新中国成立70周年。'
-          },
-          {
-            name: '王五',
-            desc: '茶话会由中共中央政治局常委、全国政协主席汪洋主持。他指出，习近平总书记发表的重要讲话，回顾总结了2018年中共中央团结带领全国各族人民坚持和发展中国特色社会主义事业取得的新成就，对做好2019年党和国家工作提出了明确要求，对政协工作也提出了殷切希望。我们一定要认真学习领会，更加紧密地团结在以习近平同志为核心的中共中央周围，高举中国特色社会主义伟大旗帜，同心同德、群策群力，努力做好新时代人民政协各项工作，切实把中共中央对人民政协工作的要求落实下去、把海内外中华儿女实现中华民族伟大复兴中国梦的智慧和力量凝聚起来，以优异成绩迎接新中国成立70周年。'
-          }*/
-          /*{
-            "patientName": "罗秋华",
-            "sex": "女",
-            "birthday": "1974-01-10 08:00:00",
-            "createTime": null,
-            "reportName": "癫痫报告",
-            "author": null,
-            "highlights": [
-              "<span style='color:green'>罗</span><span style='color:green'>秋</span><span style='color:green'>华</span>",
-              "<span style='color:green'>罗</span><span style='color:green'>秋</span><span style='color:green'>华</span>",
-              "<span style='color:green'>罗</span><span style='color:green'>秋</span><span style='color:green'>华</span>",
-              "深圳市龙<span style='color:green'>华</span>区中心医院",
-              "<span style='color:green'>罗</span><span style='color:green'>秋</span><span style='color:green'>华</span>",
-              "深圳市龙<span style='color:green'>华</span>区中心医院"
-            ],
-            "report": {
-              "id": null,
-              "groupId": "2c9780826b990e70016b9bb13f5e0006",
-              "reportName": "癫痫报告",
-              "crfId": "2c9780826b9eee71016ba12383460072",
-              "patientId": "440311004901030",
-              "pages": [
-                {
-                  "pageName": "癫痫页",
-                  "portions": [
-                    {
-                      "portionName": "癫痫小节",
-                      "items": [
-                        {
-                          "name": "癫痫发作表现",
-                          "value": "",
-                          "children": [
-                            {
-                              "name": "先兆",
-                              "value": "",
-                              "children": [
-                                {
-                                  "name": "具体描述",
-                                  "value": "1111",
-                                  "children": []
-                                }
-                              ]
-                            },
-                            {
-                              "name": "发作特点",
-                              "value": "",
-                              "children": [
-                                {
-                                  "name": "row",
-                                  "value": "",
-                                  "children": [
-                                    {
-                                      "name": "部位",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "形式",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识障碍",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "持续时间",
-                                      "value": "111111",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "发作伴发热",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "体温",
-                                      "value": "",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "row",
-                                  "value": "",
-                                  "children": [
-                                    {
-                                      "name": "部位",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "形式",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识障碍",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "持续时间",
-                                      "value": "罗秋华",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "发作伴发热",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "体温",
-                                      "value": "2222",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "row",
-                                  "value": "",
-                                  "children": [
-                                    {
-                                      "name": "部位",
-                                      "value": "440311004901030",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "形式",
-                                      "value": "罗秋华",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识障碍",
-                                      "value": "深圳市龙华区中心医院",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "持续时间",
-                                      "value": "罗秋华",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "发作伴发热",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "体温",
-                                      "value": "深圳市龙华区中心医院",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "row",
-                                  "value": "",
-                                  "children": [
-                                    {
-                                      "name": "部位",
-                                      "value": "440311004901030",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "形式",
-                                      "value": "罗秋华",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识障碍",
-                                      "value": "深圳市龙华区中心医院",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "持续时间",
-                                      "value": "罗秋华",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "发作伴发热",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "体温",
-                                      "value": "深圳市龙华区中心医院",
-                                      "children": []
-                                    }
-                                  ]
-                                },
-                                {
-                                  "name": "row",
-                                  "value": "",
-                                  "children": [
-                                    {
-                                      "name": "部位",
-                                      "value": "440311004901030",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "形式",
-                                      "value": "罗秋华",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "意识障碍",
-                                      "value": "深圳市龙华区中心医院",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "持续时间",
-                                      "value": "罗秋华",
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "发作伴发热",
-                                      "value": null,
-                                      "children": []
-                                    },
-                                    {
-                                      "name": "体温",
-                                      "value": "深圳市龙华区中心医院",
-                                      "children": []
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "name": "发作后表现",
-                              "value": "罗秋华",
-                              "children": []
-                            },
-                            {
-                              "name": "现病史（原始病案）",
-                              "value": "",
-                              "children": []
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          }*/
-        ],
+      dataContent:  [],
       // 筛选条件
       filterCondition: {
         type: 0,
@@ -504,26 +206,20 @@ export default {
 
   },
   mounted () {
-
+    this.initPage();
   },
   methods: {
-    resize() {
-      let height = $('.bigContain').height();
-      $('.tableHeight .el-table__body').eq(0).height(height - 230);
-      $('.bigContain').css({
-        marginBottom:0
-      })
-    },
+    // resize() {
+    //   let height = $('.bigContain').height();
+    //   $('.tableHeight .el-table__body').eq(0).height(height - 230);
+    //   $('.bigContain').css({
+    //     marginBottom:0
+    //   })
+    // },
     initPage () {
       this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
-
     },
     search () {
-      /*if (!this.keyword) {
-        this.$notice('请输入关键字');
-      } else {
-        this.step = 'result';
-      }*/
       if(this.keyword!=="" ){
         this.step = 'result';
         this.reportSearchMatch();
@@ -540,7 +236,6 @@ export default {
     },
     //全选
     queryAll() {
-      // this.multipleSelection = this.dataContent;
       this.multipleSelection.push(...this.dataContent);
       this.multipleSelection.forEach(item=>{
         this.$refs.multipleTable.toggleRowSelection(item)

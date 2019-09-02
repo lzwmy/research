@@ -11,7 +11,7 @@ const routes = [
       isKeepAlive: true,
       txt: '科研建模',
       flag: 'modelManage',
-      belongToGroup: 'modelManage',
+      belongToGroup: 'insideView',
       openMode: 2
     },
     component: modelAside

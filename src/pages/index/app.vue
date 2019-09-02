@@ -12,11 +12,6 @@ import header from 'components/common/header/header';
 import navbar from 'components/common/navbar/navbar'
 import view from 'components/common/view/view';
 import footer from 'components/common/footer/footer';
-
-import 'element-ui/lib/theme-chalk/index.css';
-import 'assets/css/normalize.less';
-import 'assets/css/common.less';
-import 'assets/css/crfStyle.less'
 export default {
   name: 'app',
   components: {
@@ -50,12 +45,16 @@ export default {
   },
   mounted () {
     this.initView();
-    window.onresize = this.initView;
+    $(window).resize(()=>{
+      this.initView();
+    })
   },
   methods: {
     initView() {
-      let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom'))
-      $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
+      this.$nextTick(() => {
+        let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom'))
+        $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
+      });
     }
   }
 };
@@ -84,9 +83,8 @@ export default {
   #main {
     margin: 24px auto 20px;
     width: 1200px;
-    background: #fff;
     .cloud-component{
-      padding: 15px;
+      padding: 0;
     }
   }
   @media screen and (min-width: 350px) and (max-width: 1200px) {

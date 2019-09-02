@@ -3,7 +3,7 @@
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
         <div class="head_content cur_pointer">
-           <i class="iconfont iconguanbi" @click="close"></i>
+          <i class="iconfont iconguanbi" @click="close"></i>
         </div>
       </div>
       <div class="mask_layer_body">
