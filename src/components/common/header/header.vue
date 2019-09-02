@@ -250,6 +250,7 @@ export default {
           margin: 0 auto;
           height: 100%;
           width: 1200px;
+          overflow: auto;
         }
         .header-logo {
           color: #fff;

@@ -208,6 +208,7 @@ export default {
   .SDResearch .nodata {
     padding: 15px 0;
     height: 350px;
+    width: 100%;
     line-height: 350px;
     text-align: center;
     font-size: 15px;

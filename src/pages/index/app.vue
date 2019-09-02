@@ -66,6 +66,7 @@ export default {
   }
   #app {
     background-color: #f0f2f7;
+    min-height: 100%;
   }
   #app.insideView {
     #main_header,
@@ -88,8 +89,17 @@ export default {
       padding: 15px;
     }
   }
-  @media screen and (min-width: 350px) and (max-width: 1240px) {
-    #navbar .el-tabs, #main_header .header_box, #main { width: 98% !important;}
+  @media screen and (min-width: 350px) and (max-width: 1200px) {
+    #app {
+      width: 1200px !important;
+      overflow: scroll;
+    }
+    #navbar .el-tabs, 
+    #main_header .header_box {
+      padding: 0 20px;
+      width: 1200px !important;
+      margin: 0;
+    }
   }
 
 

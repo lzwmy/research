@@ -779,12 +779,5 @@ export default {
 </style>
 
 <style lang="less" scoped>
-  .el-table {
-    .el-button {
-      padding: 0;
-      i {
-        font-size: 20px;
-      }
-    }
-  }
+  
 </style>

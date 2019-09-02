@@ -64,22 +64,27 @@ export default {
         },
         menuPath: {
             type: String,
-            default: "/"
+            default: "/index"
         },
     },
     data () {
         return {
-            defaultActive: ''
+            defaultActive: '',
+            diseaseId: ''
         };
     },
     watch: {
-        $route(to,from) {
+        $route(to, from) {
+            if(to.meta.belongToGroup == 'insideView') {
+                this.diseaseId = from.query.id;
+            }
             this.$nextTick(()=>{
                 this.defaultActive = '/' + to.meta.flag;
             })
         }
     },
     created () {
+        this.diseaseId =  this.$route.query.id;
         if(this.menuList[0] && this.menuList[0].children && this.menuList[0].children.length == 0) {
             this.defaultActive = this.menuList[0].menuPath;
         }else {
@@ -90,7 +95,10 @@ export default {
     },
     methods: {
         routerLink(item) {
-            this.$router.push(item.menuPath)
+            this.$router.push({
+                path: item.menuPath,
+                query: {id: this.diseaseId}
+            })
             //关闭其它展开项
             this.menuList.forEach(item => {
                 if(item.children.length != 0) {
@@ -100,7 +108,7 @@ export default {
         },
         onBack() {
             this.$router.replace({
-                name: this.menuPath.slice(1)
+                path: this.menuPath
             })
             sessionStorage.removeItem('insideData');
         }

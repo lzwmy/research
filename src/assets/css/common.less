@@ -36,24 +36,31 @@
 
 
 /* 表格样式 */
-.el-table__row.current-row{
-    .el-button:hover{
-        color: #5a5e66;
+.el-table {
+    .el-table__row.current-row{
+        .el-button:hover{
+            color: #5a5e66;
+        }
+        .el-button, .el-button:focus {
+            color: #fff;
+        }
+    } 
+    .el-table__row .iconshanchu.del {
+        color: #f0433c;
     }
-    .el-button, .el-button:focus {
-        color: #fff;
+    .el-table__row .iconbianji {
+        color:#409eff;
     }
-} 
-.el-table__row .iconshanchu.del {
-    color: #f0433c;
-}
-.el-table__row .iconbianji {
-    color:#409eff;
+    .el-button {
+        padding: 0;
+        i {
+            font-size: 20px;
+        }
+    }
 }
 
-.com_text_align {
-    text-align: center;
-}
+
+
 
 /* 日期选择器样式*/
 .el-range-editor.el-input__inner {
@@ -130,7 +137,12 @@
     padding: 0 20px 0 15px;
     left: -15px;
     right: 0;
-    z-index: 10;
+    z-index: 20;
+}
+
+
+.text_center {
+    text-align: center;
 }
 
 .inline {

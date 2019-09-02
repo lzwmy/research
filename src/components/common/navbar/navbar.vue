@@ -144,6 +144,10 @@ export default {
                     color: #333;
                 }
             }
+            .el-tabs__nav-next, .el-tabs__nav-prev {
+                line-height: 60px;
+                font-size: 16px;
+            }
         }
     }
 </style>

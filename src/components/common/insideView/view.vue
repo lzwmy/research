@@ -26,9 +26,8 @@ export default {
             openMenuView: true,
             loading: false,
             title: "",
-            menuPath: '/',
+            menuPath: '/index',
             menuList: [],
-            diseaseId: ''
         };
     },
     components: {
@@ -41,12 +40,7 @@ export default {
         this.getMenuList();
     },
     watch: {
-        $route: function(newVal) {
-            if(newVal.meta.belongToGroup == 'insideView') {
-                newVal.query.id = this.diseaseId;
-                console.log(this.diseaseId)
-            }
-        }
+        
     },
     mounted () {
         this.initView();
@@ -54,9 +48,6 @@ export default {
         // setTimeout(()=>{
         //     this.loading = false;
         // },800)
-    },
-    beforeDestroy() {
-        console.log("==============")
     },
     methods: {
         initView() {
@@ -137,6 +128,7 @@ export default {
                 padding: 0 15px;
                 left: -15px;
                 right: 0;
+                z-index: 10;
             }
             .cloud-component,
             .insideContainer {

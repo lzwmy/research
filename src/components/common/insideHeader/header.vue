@@ -4,6 +4,7 @@
             <span class="menuBtn" :class="openMenuView?'el-icon-s-fold':'el-icon-s-unfold'"></span>
         </el-button>
         <el-popover
+            v-show="$route.meta.belongToGroup == 'insideView'"
             placement="top-start"
             title=""
             :popper-class="'popover_disease ' + openMenuView"
@@ -147,7 +148,7 @@ export default {
             left: 200px !important;
             right: 0;
             margin-top: 0 !important;
-            animation: move 300ms;
+            animation: move 200ms;
             &.false {
                 left:64px !important;
             }
@@ -168,7 +169,7 @@ export default {
                         height: 100px;   
                         overflow: hidden;
                         &.thumbnail-img {
-                            background-color: #7ED320;
+                            background-color: #1dd2a3;
                         }
                         img {
                             border: 5px solid #fff;
@@ -186,7 +187,7 @@ export default {
     }
 
     @keyframes move {
-        0%{transform: translateY(-30px)}
-        100%{transform: translateY(0)}
+        0%{transform: scaleY(0)}
+        100%{transform: scaleY(1)}
     }
 </style>
