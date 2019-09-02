@@ -1,11 +1,5 @@
 <template>
     <div class="patient_list_module">
-      <!--<div class="component_head flex-between-center">
-        <p>{{$route.meta.txt}}</p>
-        <div class=" cur_pointer head_content flex-start-center">
-          &lt;!&ndash;<img src="./images/disease_set_chart.png" alt="" @click="displayMaskLayer">&ndash;&gt;
-        </div>
-      </div>-->
       <div class="list_module_content">
         <div v-if="!showReportFollowiUp">
           <!-- 病例管理 cloud-component-->
@@ -72,12 +66,12 @@
                   </el-button>
 
                 </el-form-item>
-                <el-form-item class="fuzzyQuery rf">
+                <el-form-item class="fuzzyQuery rf mt">
                   <el-input v-model.trim="fuzzyQuery" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
                             prefix-icon="el-icon-search"
                             placeholder="请输入搜索内容"></el-input>
                 </el-form-item>
-                <el-form-item class="fuzzyQuery rf">
+                <el-form-item class="fuzzyQuery rf mt">
                   <el-dropdown class="caseManageDropdown" style="margin-right: 6px;" @command="handleCommand" trigger="hover"
                                size="medium">
                   <span class="el-dropdown-link">操作
@@ -170,7 +164,7 @@
                   <el-button type="primary" @click="search">查询</el-button>
                   <el-button @click="reset">重置</el-button>
                 </el-form-item>
-                <el-form-item class="fuzzyQuery" label>
+                <el-form-item class="fuzzyQuery rf" label>
                   <el-button type="primary" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
                 </el-form-item>
               </el-form>
@@ -1704,7 +1698,7 @@
       /*height: 28px;*/
       /*line-height: 28px;*/
       text-align: center;
-      padding: 10px 20px;
+      padding: 5px 20px;
     }
     .caseManage .fuzzyQuery {
       /*float: right;*/
@@ -1713,7 +1707,7 @@
     }
     .caseManage .rf {
       float: right;
-      .el-input{
+      /*.el-input{
         .el-input__inner{
           height: 36px;
           border-radius: 1px;
@@ -1721,7 +1715,11 @@
         .el-input__prefix{
           height: 36px;
         }
-      }
+      }*/
+    }
+    .caseManage .mt{
+     position: relative;
+      top: 7px;
     }
     .caseManage .fuzzyQuery .el-input {
       width: 240px !important;
@@ -1794,32 +1792,22 @@
   .MySaveConditionDialog .el-dialog .el-input {
     width: 250px !important;
   }
-  .change_height .el-form-item__content .el-select .el-input .el-input__inner,.change_height .el-input__inner{
-    height: 36px;
-    line-height: 36px;
+ .change_height .el-form-item__content .el-select .el-input .el-input__inner,.change_height .el-input__inner{
+    height: 28px;
+    line-height: 28px;
   }
-  .change_height .el-select__tags{
-    top: 60%;
-  }
-  .change_height .el-select__caret{
-    margin-top: 5px;
+  .change_height .move_top{
+    top: -4px;
   }
   .el-form-item__content .el-button{
-    height: 33px;
-  }
-  .change_height .move_top .el-input__inner{
-    transform: translate(0,-6px);
-  }
-  .change_height .move_top .el-input__suffix{
-    margin-top: 0;
-    top: -3px;
+    height: 28px;
   }
   .cloud-search-list .bigContain{
     padding: 0 20px;
   }
   .cloud-search {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
     padding-top: 20px;
   }
 </style>
