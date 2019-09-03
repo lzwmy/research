@@ -573,7 +573,7 @@
         try {
           let data = await that.$http.get2DScatter(fromData);
           console.log(data)
-          if(data.code == 0) {
+          if(data.code == 0&& (data.data!==null&&data.data!=='null')) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.planeOption)));6
             copyOption.title.text = data.data.chartName;
             copyOption.xAxis.title.text = "";
