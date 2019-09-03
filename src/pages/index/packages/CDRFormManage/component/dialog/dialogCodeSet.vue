@@ -417,7 +417,7 @@
 
 
 <style lang="less">
-  .el-icon-search {
+  .dialogHeightSet .el-icon-search {
     font-size: 20px;
     color: #3C81F0;
     position: relative;

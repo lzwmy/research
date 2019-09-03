@@ -11,6 +11,17 @@ const getQuery = function (name) {
   if (r != null) return unescape(r[2]);
   return null;
 };
+// 获取url参数
+const getQueryString = function(name) {  
+  if(window.location.href.indexOf(name) == -1) {
+      return null;
+  }
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");  
+  var params = window.location.href.split('?')[1];
+  var r = params.match(reg);  
+  if (r != null) return unescape(r[2]);  
+  return null;  
+};
 
 // 时间格式转化
 // 2014-12-03T03:01:00.000Z => 2014-12-03 03:01:00   或时间戳=> 2014-12-03 03:01:00
@@ -742,6 +753,7 @@ const deepCopy = function(o) {
 
 export default {
   getQuery,
+  getQueryString,
   dateTimeConvert,
   formateDate,
   getCookie,

@@ -70,33 +70,12 @@ export default {
 </script>
 <style scoped lang="less">
     #navbar {
-        
         &.fixed {
             position: fixed;
             top:0;
             left:0;
             right: 0;
             z-index: 99;
-        }
-        .el-menu-item{
-            padding: 0;
-            &:nth-child(n+2) {
-                margin-left: 50px;
-            }
-            &.is-active {
-                .icon, span {
-                    color: #439AFF;
-                }
-            }
-            .icon {
-                font-size: 18px;
-                font-weight: bold;
-                color: #333;
-                margin-right: 5px;
-            }
-            span {
-                color: #333;
-            }
         }
     }
 </style>
@@ -111,26 +90,48 @@ export default {
             height: 100%;
             margin: 0 auto;
             width: 1200px;
-            .el-tabs__nav-wrap::after {
-                background-color: transparent;
+            .el-tabs__nav {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            .el-tabs__nav-wrap {
+                padding: 0px;
+                &::after {
+                    background-color: transparent;
+                }
+                .el-tabs__nav-prev {
+                    display: none;
+                }
             }
             .el-tabs__nav-scroll {
                 width: 100%;
             }
             .el-tabs__item {
                 height: 100%;
+                flex: 1;
+                padding: 0;
                 line-height: 60px;
-                padding: 0 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 &.is-active{
                     .icon, span {
                         color: #439AFF;
                     }
                 }
                 &:nth-child(2){
-                    padding-left: 0;
+                    width: 120px;
+                    flex-grow: 0;
+                    padding-right: 30px;
+                    justify-content: flex-start;
                 }
                 &:last-child{
-                    padding-right: 0;
+                    justify-content: flex-end;
+                    width: 120px;
+                    flex-grow: 0;
+                    padding-left: 30px;
                 }
                 .icon {
                     vertical-align: middle;

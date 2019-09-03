@@ -4,7 +4,7 @@
             <span class="el-icon-s-home"></span>
             <p v-show="openMenuView">{{title}}</p>
         </div>
-        <div class="cont">
+        <div class="cont" v-if="$route.meta.belongToGroup == 'insideView'">
             <div class="userInfo flex-center-center">
                 <div class="img">
                     <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像">
@@ -43,8 +43,7 @@
     </div>
 </template>
 <script>
-
-
+import utils from 'components/utils/index'
 export default {
     name: 'insideMenu',
     props: {
@@ -74,7 +73,7 @@ export default {
     watch: {
         $route(to, from) {
             if(to.meta.belongToGroup == 'insideView') {
-                this.diseaseId = from.query.id;
+                this.diseaseId = utils.getQueryString('id');
             }
             this.$nextTick(()=>{
                 this.defaultActive = '/' + to.meta.flag;
@@ -93,6 +92,7 @@ export default {
     },
     methods: {
         routerLink(item) {
+            this.$emit('changeLoadding',true);
             this.$router.push({
                 path: item.menuPath,
                 query: {id: this.diseaseId}

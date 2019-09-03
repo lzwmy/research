@@ -44,8 +44,9 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="" label-width='' class="flex-right">
-                    <el-button icon="el-icon-upload2" type="primary">提交</el-button>
-                    <el-button icon="el-icon-document-checked" type="primary">核查</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
+                    <el-button icon="icon iconfont iconzujian12" type="primary">提交</el-button>
+                    <el-button icon="icon iconfont iconzujian16" type="primary">核查</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -53,9 +54,10 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
-                    :data="dataList.content" style="width: 100%" v-loading="loading"
-                    :empty-text="emptyText" :element-loading-text="elementLoadingText" fit @row-dblclick='toReportFill'>
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1)"
+                    :data="dataList.content" v-loading="loading" ref="refTable"
+                    :empty-text="emptyText" :element-loading-text="elementLoadingText" fit @row-dblclick='toReportFill'
+                    @row-click="handleClick">
                     <el-table-column type="expand">
                         <template slot-scope="props">
                             <el-timeline>
@@ -72,7 +74,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column type="index" label="序号" width="60px"></el-table-column>
-                    <el-table-column prop="visitDate" label="就诊时间" width="110px"></el-table-column>
+                    <el-table-column prop="visitDate" label="就诊时间" width="110"></el-table-column>
                     <el-table-column prop="reportName" label="报告名称"></el-table-column>
                     <el-table-column prop="patientName" label="姓名"></el-table-column>
                     <el-table-column prop="genderName" label="性别"></el-table-column>
@@ -269,6 +271,10 @@ export default {
                 console.log(err)
             }
         },
+        //表格内容展开
+        handleClick(row) {
+            this.$refs.refTable.toggleRowExpansion(row)
+        }
     },
     beforeRouteEnter (to, from, next) {
         next();
@@ -281,6 +287,10 @@ export default {
 
 <style lang="less">
     .researchReportManage {
+        .el-table__expand-column .cell{
+            // width: 10px;
+            // overflow: hidden;
+        }
         .el-table__expanded-cell {
             background-color: #F9F9FB;
             &:hover {
@@ -316,6 +326,9 @@ export default {
                     }
                 }
             }
+        }
+        .bigContain {
+            box-shadow:0px 5px 10px rgba(78,91,105,0.2);
         }
     }
 </style>

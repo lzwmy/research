@@ -73,8 +73,8 @@ export default {
         handleSelect(item) {
             this.disease = item.name;
             this.popoverVisible = false;
-            console.log(this.$route)
-            this.$route.query.id = 123
+            this.replaceParamVal("id",item.id)
+            this.$emit('changeDisease')
         },
         async getDataList () {
             this.loading = true;
@@ -90,6 +90,14 @@ export default {
                 console.log(error);
             }
         },
+        //替换指定传入参数的值,paramName为参数,replaceWith为新值
+        replaceParamVal(paramName,replaceWith) {
+            var oUrl = window.location.href.toString();
+            var re=eval('/('+ paramName+'=)([^&]*)/gi');
+            var nUrl = oUrl.replace(re,paramName+'='+replaceWith);
+            window.location = nUrl;
+        　　window.location.href = nUrl
+        }
     }
 };
 </script>

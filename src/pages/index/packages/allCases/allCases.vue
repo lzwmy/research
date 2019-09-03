@@ -26,7 +26,7 @@
             </el-option>
           </el-select>
           <el-button type="text" size="small" @click="openSaveConditionDialog" style="margin-left: 5px;">
-            <i class="icon-save" title="保存筛选"></i>
+            <i class="icon iconfont iconbaocun" title="保存筛选" style="font-size: 26px;vertical-align: middle;"></i>
           </el-button>
 
         </el-form-item>
@@ -60,7 +60,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label prop>
+        <el-form-item label="" prop>
           <el-select v-model.trim="conditionSet.operator" clearable filterable placeholder="选择运算符"
                      @change="changeOperator">
             <el-option
@@ -145,13 +145,12 @@
             :label="item.label"
             :name="item.name">
             <el-table :ref="item.name" style="width:100%;"
-              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-40):(routerViewHeight*1-38-40)"
+              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-50):(routerViewHeight*1-38-50)"
               :data="item.dataList.content" @row-dblclick="dblclickHandle"
               v-loading="loading"
               :border="false"
               :empty-text="emptyText"
               :element-loading-text="elementLoadingText"
-              stripe
               :default-sort="{prop: 'date', order: 'descending'}"
               @selection-change="handleSelectionChange">
               <el-table-column type="selection"></el-table-column>
@@ -1057,8 +1056,8 @@ export default {
     .allCases .allCasesDropdown {
       border-radius: 4px;
       border: 1px solid #d8dce5;
-      height: 28px;
-      line-height: 28px;
+      height: 32px;
+      line-height: 32px;
       text-align: center;
     }
     .allCases .fuzzyQuery {
@@ -1076,23 +1075,7 @@ export default {
       }
     } 
   }
-
-  body.theme-green {
-    .allCases .el-dropdown-link {
-      cursor: pointer;
-      color: #1ab497;
-      display: inline-block;
-      padding: 0 20px 0 20px;
-    }
-    .labGroup-btn {
-      color: #1ab497;
-      margin: 2px 18px 2px 0;
-      cursor: pointer;
-      text-align: left;
-    }
-  }
-
-  body.theme-blue {
+  body {
     .allCases .el-dropdown-link {
       cursor: pointer;
       color: #2d8cf0;
@@ -1134,6 +1117,11 @@ export default {
 
   .MySaveConditionDialog .el-dialog .el-input {
     width: 250px !important;
+  }
+  .allCases {
+    .bigContain {
+      box-shadow:0px 5px 10px rgba(78,91,105,0.2);
+    }
   }
 </style>
 

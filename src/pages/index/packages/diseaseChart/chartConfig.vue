@@ -448,7 +448,7 @@
       'maskShow':function (value) {
         this.dialogVisible = value;
         if(value){
-          this.init();
+          this.initPage();
           this.getChartListModel();
           this.modelCRFFromList();
         }
@@ -456,7 +456,7 @@
     },
     methods:{
       //初始化
-      init() {
+      initPage() {
         console.log('初始化');
         this.blankImg = false;
         this.chartName = "";
@@ -473,7 +473,7 @@
         this.compareFormItemList = [];
       },
       close() {
-        this.init();
+        this.initPage();
         window.history.go(-1);
       },
       changeBGColor(data) {
@@ -484,13 +484,13 @@
       },
       //添加模板配置
       addModelFromChart() {
-        this.init();
+        this.initPage();
         this.blankImg = true;
       },
       //删除
       deleteModel(data) {
         this.customChartDelete(data.chartId);
-        this.init();
+        this.initPage();
       },
       //表类型切换
       changeChartType(value) {
@@ -1150,7 +1150,7 @@
       }
     },
     mounted() {
-      this.init();
+      this.initPage();
       this.getChartListModel();
       this.modelCRFFromList();
     }

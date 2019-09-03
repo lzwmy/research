@@ -8,7 +8,7 @@
         :style="{ height: parentHeight*heightRatio + 'px',width:'calc('+widthRatio*100+'% - '+15+'px)' }">
       <slot></slot>
     </div>
-    <div class="bigContain" v-if="containType==='big'" v-loading="loading" element-loading-text="拼命加载中"  element-loading-background="rgba(0, 0, 0, 0.1)" :style="{ height: parentHeight*heightRatio + 'px'}">
+    <div class="bigContain" v-if="containType==='big'" v-loading="loading" element-loading-text="拼命加载中"  element-loading-background="rgba(0, 0, 0, 0.1)" :style="{ height: parentHeight*heightRatio +'px'}">
       <slot></slot>
     </div>
   </div>
