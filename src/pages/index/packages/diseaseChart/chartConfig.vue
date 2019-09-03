@@ -471,6 +471,7 @@
         this.chartType = "PIE";
         this.compareFormItemId = "";
         this.compareFormItemList = [];
+        this.$emit('changeLoadding',false);
       },
       close() {
         this.initPage();
@@ -495,6 +496,7 @@
       //表类型切换
       changeChartType(value) {
         this.chartType = value;
+        this.crf = "";
         this.statistics = "";
         this.mutStatistics = [];
         this.xaxis = "";
@@ -561,6 +563,7 @@
         console.log('保存 按钮');
 
         if(this.bgColor==""){ //保存方法
+
           this.saveCustomChart();
         }else{ // 编辑保存
           this.modifyCustomChart();
@@ -650,6 +653,7 @@
       //保存
       async saveCustomChart() {
         let that = this;
+        that.loading = true;
         let fromItemList = [];
         if(this.chartType == 'PIE'||this.chartType == 'LINE'||this.chartType == '2D_SCATTER'||this.chartType == '3D_SCATTER'){
           fromItemList.push(that.statistics)
@@ -671,19 +675,21 @@
         };
         try {
           let data = await that.$http.saveCustomChart(fromData);
-          console.log(data)
+          console.log(data);
           if(data.code == 0) {
             this.dialogVisible  = false;
             that.$message({
               type:'success',
               message:data.msg
-            })
-
-            that.$emit('refresh',{refresh:true})
+            });
+            that.init();
+            that.modelCRFFromList();
+            this.loading = false;
           }
         }catch (error) {
           console.log(error)
         }
+        this.loading = false;
       },
       //编辑保存
       async modifyCustomChart() {

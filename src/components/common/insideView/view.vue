@@ -2,14 +2,13 @@
     <div class="inside_cloud-container" v-loading="loading"  element-loading-background="#eee" element-loading-text="拼命加载中">
         <insideHeader @changeDisease="handleDisease" @menuViewChange="handleMenuView" :menuPath="menuPath"></insideHeader>
         <insideMenu :title="title" @changeLoadding="handleLoadding" :openMenuView="openMenuView" :menuList="menuList" :menuPath="menuPath"></insideMenu>
-        <div id="insideContainer" :class="openMenuView?'open':'close'">
+        <div id="insideContainer" :class="openMenuView?'open':'close'" v-loading="viewLoading"  
+                        element-loading-background="#fff"
+                        element-loading-text="拼命加载中">
             <p class="title">{{$route.meta.txt}}</p>
             <transition name="el-fade-in-linear" mode="out-in">
                 <keep-alive>
                     <router-view 
-                        v-loading="viewLoading"  
-                        element-loading-background="#fff"
-                        element-loading-text="拼命加载中"
                         v-if="$route.meta.isKeepAlive" 
                         @handlePageHeight="handlePageHeight" 
                         ref="routercomponent2" 
@@ -20,9 +19,6 @@
             </transition>
             <transition name="el-fade-in-linear" mode="out-in">
                 <router-view 
-                    v-loading="viewLoading"  
-                    element-loading-background="#fff"
-                    element-loading-text="拼命加载中"
                     v-if="!$route.meta.isKeepAlive"
                     @handlePageHeight="handlePageHeight" 
                     ref="routercomponent2" 
@@ -59,7 +55,8 @@ export default {
         this.getMenuList();
     },
     watch: {
-        $route: function() {
+        $route: function(newVal) {
+            console.log(newVal)
             this.handleLoadding(false);
         }
     },
@@ -119,14 +116,13 @@ export default {
             }
         },
         handleLoadding(state) {
-            console.log(state)
             if(state) {
                 this.viewLoading = state;
                 return;
             }
             setTimeout(()=>{
                 this.viewLoading = state;
-            },3000)
+            },300)
         }
     }
 };
@@ -168,6 +164,9 @@ export default {
                 right: 0;
                 z-index: 10;
             }
+            & > .el-loading-mask {
+                top: 60px;
+            }
             .cloud-component,
             .insideContainer {
                 position: absolute;
@@ -187,9 +186,6 @@ export default {
             bottom: 0;
             left: 200px;
             right: 0;
-        }
-        .insideContainer > .el-loading-mask {
-            top: 60px;
         }
     }
 </style> 
