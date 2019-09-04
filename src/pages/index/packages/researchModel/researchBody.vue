@@ -457,6 +457,7 @@
     float: left;
     margin-top: 2px;
     border: 1px solid rgba(216,216,216,1);
+    overflow: auto;
     .tree_style{
       width: 16%;
       height: 100%;

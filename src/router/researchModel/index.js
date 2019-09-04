@@ -2,6 +2,9 @@
 
 const modelAside = r => require.ensure([], () => r(require('packages/researchModel/modelAside')), 'modelAside');
 
+//科研建模 2.0
+const createModel = r => require.ensure([], () => r(require('packages/researchModel/createModel/createModel')), 'createModel');
+
 const routes = [
   {
     path: '/modelManage',
@@ -14,7 +17,7 @@ const routes = [
       belongToGroup: 'insideView',
       openMode: 2
     },
-    component: modelAside
+    component: createModel
   }
 ];
 export default routes;

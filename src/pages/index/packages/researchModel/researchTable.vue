@@ -239,7 +239,9 @@
     line-height: 50px;
     font-size: 16px;
     color: #63666E;
-    background-color: #EEEEEE;
+    /*background-color: #EEEEEE;*/
+    background-color: #E5EBEC;
+    border: 1px solid #E5EBEC;
     padding-left: 3%;
     i{
       color: #3C81F0;
