@@ -394,7 +394,7 @@
               width="730px"
               class="addPatientDialog"
               @close="onClosePatient('patientRuleForm')">
-              <el-form :model="patientRuleForm" ref="patientRuleForm" :rules="patientRuleFormRules" label-width="90px" @submit.native.prevent>
+              <el-form :model="patientRuleForm" ref="patientRuleForm" :rules="patientRuleFormRules" label-width="100px" @submit.native.prevent>
                 <el-form-item label="姓名：" prop="name">
                   <el-input v-model.trim="patientRuleForm.name" maxlength='8'></el-input>
                 </el-form-item>

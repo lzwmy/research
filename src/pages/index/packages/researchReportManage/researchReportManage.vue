@@ -58,7 +58,7 @@
                     :data="dataList.content" v-loading="loading" ref="refTable"
                     :empty-text="emptyText" :element-loading-text="elementLoadingText" fit @row-dblclick='toReportFill'
                     @row-click="handleClick">
-                    <el-table-column type="expand">
+                    <el-table-column type="expand" width="10">
                         <template slot-scope="props">
                             <el-timeline>
                                 <el-timeline-item
@@ -73,7 +73,7 @@
                             </el-timeline>
                         </template>
                     </el-table-column>
-                    <el-table-column type="index" label="序号" width="60px"></el-table-column>
+                    <el-table-column type="index" label="序号" width="0"></el-table-column>
                     <el-table-column prop="visitDate" label="就诊时间" width="110"></el-table-column>
                     <el-table-column prop="reportName" label="报告名称"></el-table-column>
                     <el-table-column prop="patientName" label="姓名"></el-table-column>
@@ -287,9 +287,8 @@ export default {
 
 <style lang="less">
     .researchReportManage {
-        .el-table__expand-column .cell{
-            // width: 10px;
-            // overflow: hidden;
+        .el-table__expand-column{
+            font-size: 0;
         }
         .el-table__expanded-cell {
             background-color: #F9F9FB;

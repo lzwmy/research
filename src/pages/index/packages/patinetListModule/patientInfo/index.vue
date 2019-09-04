@@ -125,12 +125,13 @@
             title="添加报告" 
             :visible.sync="dialogReportForm.visible" 
             width="450px"
+            :append-to-body="true"
             @close="onClose('dialogReportForm')">
             <el-form 
                 :model="dialogReportForm" 
                 ref="dialogReportForm" 
                 :rules="dialogReportRules" 
-                label-width="90px" 
+                label-width="100px" 
                 @submit.native.prevent 
                 v-loading="dialogReportForm.loading" 
                 label-position="left">
@@ -152,7 +153,7 @@
                     </el-date-picker>
                 </el-form-item>
             </el-form>
-            <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="el-dialog__footer">
                 <el-button type="primary" @click="onSave('dialogReportForm')" size="mini" :disabled="dialogReportForm.loading">保 存</el-button>
                 <el-button @click="onClose('dialogReportForm')" size="mini">关 闭</el-button>
             </span>
@@ -472,7 +473,8 @@ export default {
         .content {
             position: relative;
             .timeline {
-                width: 70%;
+                width: 60%;
+                margin-top: 33px;
                 .el-timeline-item__node {
                     background-color: #fff;
                     .diagnosis {

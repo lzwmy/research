@@ -178,6 +178,42 @@ export default {
             left: 0;
             right:0;
         }
+        .el-table__expanded-cell {
+            background-color: #F9F9FB;
+            &:hover {
+                background-color: #F9F9FB !important;
+            }
+            .el-timeline-item__node {
+                background-color: #fff;
+                border:1px solid #ccc;
+                width: 8px;
+                height: 8px;
+            }
+            .el-timeline-item__tail {
+                border-left: 1px solid #ccc;
+                left: 2px;
+            }
+            .el-timeline-item__wrapper {
+                padding-left: 18px;
+            }
+            .el-timeline-item:last-child {
+                padding-bottom: 0;
+            }
+            .el-timeline-item__content {
+                &:hover p {
+                    color: #333;
+                }
+                p {
+                    display: inline-block;
+                    margin-left: 8px;
+                    font-size: 13px;
+                    color: #999;
+                    span {
+                        padding-right: 10px;
+                    }
+                }
+            }
+        }
     }
 </style>
 
