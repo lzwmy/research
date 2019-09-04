@@ -44,6 +44,16 @@
         justify-content: space-between;
         align-items: center;
     }
+    .flex-between-start {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .flex-between-end {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
     .flex-start-start {
         display: flex;
         justify-content: flex-start;
@@ -159,6 +169,13 @@
     line-height: 32px;
     border-radius: 2px;
     border-width: 0;
+    &.el-button--default {
+        border-width: 1px;
+    }
+    .icon {
+        font-size: 14px;
+        margin-right: 4px;
+    }
 } 
 
 
@@ -178,7 +195,7 @@
 
 .el-form {
     .el-form-item__content {
-        display: inline-block;
+        // display: inline-block;
         line-height: 32px;
         vertical-align: middle;
     }

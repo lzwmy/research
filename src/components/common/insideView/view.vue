@@ -56,7 +56,6 @@ export default {
     },
     watch: {
         $route: function(newVal) {
-            console.log(newVal)
             this.handleLoadding(false);
         }
     },

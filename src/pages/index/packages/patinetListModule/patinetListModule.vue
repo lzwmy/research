@@ -1640,7 +1640,6 @@
     width: 100%;
     background-color: #FFFFFF;
     border: 1px solid #E5EBEC;
-    padding: 30px 30px 0 30px;
     box-sizing: border-box;
   }
 }
@@ -1699,22 +1698,7 @@
     }
   }
 
-  body.theme-green {
-    .caseManage .el-dropdown-link {
-      cursor: pointer;
-      color: #1ab497;
-      display: inline-block;
-      padding: 0 20px 0 20px;
-    }
-    .labGroup-btn {
-      color: #1ab497;
-      margin: 2px 18px 2px 0;
-      cursor: pointer;
-      text-align: left;
-    }
-  }
-
-  body.theme-blue {
+  body {
     .caseManage .el-dropdown-link {
       cursor: pointer;
       color: #2d8cf0;
