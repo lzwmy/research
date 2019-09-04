@@ -23,8 +23,10 @@ export default {
     },
     mounted () {
         this.$nextTick(() => {
+            this.initView();
             $(window).resize(()=>{
                 this.handlePageHeight();
+                this.initView();
             })
         });
     },
@@ -36,14 +38,16 @@ export default {
         }
     },
     methods: {
-        handlePageHeight () { // 高度自适应处理
+        // 高度自适应处理
+        handlePageHeight () { 
             this.$nextTick(() => {
                 let routerViewHeight = $("body").height();
-                let otherViewHeight = $("#main_header").outerHeight() + $("#navbar").outerHeight()+ $(".cloud-component").outerHeight() +
-                                        parseInt($("#main").css("marginTop")) + parseInt($("#main").css("marginBottom"));
+                let otherViewHeight = $("#main_header").outerHeight(true) + $("#navbar").outerHeight(true)+ $(".cloud-component").outerHeight(true) +
+                                        parseInt($("#main").css("marginTop")) + parseInt($("#main").css("marginBottom")) + ($("#main").outerHeight()- $("#main").height());
+                                        // $("#pagination").outerHeight(true);
                 if (this.$refs.routercomponent && this.$refs.routercomponent.routerViewHeight) {
                     if (this.$route.name == 'index' || this.$route.name == '/') {
-                        this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight;
+                        this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight ;
                         this.$nextTick(() => {
                             if (this.$refs.routercomponent.resize) {
                             this.$refs.routercomponent.resize();
@@ -60,10 +64,12 @@ export default {
                 }
             });
         },
+        initView() {
+            this.$nextTick(() => {
+                let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom'))
+                $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
+            });
+        }
     }
 };
-</script>
-
-<style lang="less">
-    
-</style>    
+</script>   

@@ -44,18 +44,10 @@ export default {
     },
   },
   mounted () {
-    this.initView();
-    $(window).resize(()=>{
-      this.initView();
-    })
+    
   },
   methods: {
-    initView() {
-      this.$nextTick(() => {
-        let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom'))
-        $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
-      });
-    }
+    
   }
 };
 </script>
@@ -66,6 +58,17 @@ export default {
   #app {
     background-color: #f0f2f7;
     min-height: 100%;
+    &:not(.insideView) .el-loading-mask {
+      position: fixed;
+      top: 121px;
+    }
+  }
+  #main {
+    margin: 24px auto 35px;
+    width: 1200px;
+    .cloud-component{
+      padding: 0;
+    }
   }
   #app.insideView {
     #main_header,
@@ -75,18 +78,14 @@ export default {
     #main {
       width: 100% !important;
       margin: 0 !important;
+      padding: 0 !important;
       .inside_cloud-container{ 
         padding: 0;
       }
     }
   }
-  #main {
-    margin: 24px auto 20px;
-    width: 1200px;
-    .cloud-component{
-      padding: 0;
-    }
-  }
+
+
   @media screen and (min-width: 350px) and (max-width: 1200px) {
     #app {
       width: 1200px !important;

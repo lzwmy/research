@@ -30,7 +30,7 @@
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
-          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
+          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
           :data="dataList.content" style="width: 100%;height: 1000px;" v-loading="loading"
           :empty-text="emptyText" :element-loading-text="elementLoadingText" stripe highlight-current-row ref="roleTable">
           <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>

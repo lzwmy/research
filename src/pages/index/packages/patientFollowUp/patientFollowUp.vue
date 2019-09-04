@@ -22,54 +22,36 @@
                 </el-form-item>
                     
                 <el-form-item class="flex-right">
-                    <el-button type="primary" @click="getDataList()">查 询</el-button>
-                    <el-button @click="reset">清 空</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
+                    <el-button @click="reset" icon="el-icon-circle-close">清 空</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <!--搜索结果-->
-        <div class="cloud-search-list">
-        <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
-            <el-table
-                :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
-                :data="dataList.content" style="width: 100%" v-loading="loading"
-                :empty-text="emptyText" :element-loading-text="elementLoadingText" fit @row-dblclick="toReportFill">
-                <el-table-column type="index" label="序号" width="50"></el-table-column>
-                <el-table-column prop="visitDate" label="随访时间" width="110"></el-table-column>
-                <el-table-column prop="reportName" label="报告名称" min-width="130"></el-table-column>
-                <el-table-column prop="patientName" label="姓名"></el-table-column>
-                <el-table-column prop="genderName" label="性别" width="60"></el-table-column>
-                <el-table-column prop="age" label="年龄" width="80"></el-table-column>
-                <el-table-column prop="phoneNumber" label="联系电话" width="120"></el-table-column>
-                <el-table-column prop="diseaseName" label="病种"></el-table-column>
-                <el-table-column prop="groupName" label="课题组"></el-table-column>
-                <el-table-column prop="updator" label="记录人"></el-table-column>
-                <el-table-column prop="createTime" label="记录时间" width="180px"></el-table-column>
-                <el-table-column label="报告状态" width="100px">
-                    <template slot-scope="scope">
-                        {{scope.row.status==0?'未填写':'已填写'}}
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" >
-                    <template slot-scope="scope">
-                        <el-button type="primary" size="mini" @click="pushAssociate(scope.row)">推送</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <!-- 分页 -->
-            <pagination :data="dataList" @change="getDataList"></pagination>
-        </echarts-contain>
+        <div class="cloud-search-list" v-loading="loading">
+            <ul class="flex-start-center">
+                <li v-for="(item,index) in dataList" :key="index" class="box flex-start-center">
+                    <div class="box_left">
+                        <h3>{{item.patientName}}</h3>
+                        <p>{{item.genderName}}/{{item.age}}</p>
+                    </div>
+                    <div class="box_right flex-center-end">
+                        <div class="box_tag"><span>已联系</span></div>
+                        <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber}}</p>
+                        <div class="box_btn_group flex-start-center">
+                            <span class="flex-center-center"><i class="icon iconfont iconzujian9"></i>短信随访</span>
+                            <span class="flex-center-center"><i class="icon iconfont iconzujian11"></i>微信随访</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
 
 <script>
-import echartsContain from 'components/packages/echartsContain/echartsContain';
-import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
-import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
 import utils from 'components/utils/index';
-import diseaseSubjectgroup from 'components/packages/linkage/diseaseSubjectgroup';
 import 'assets/css/common.less';
 
 export default {
@@ -78,23 +60,12 @@ export default {
     data () {
         return {
         form: {
-            diseaseSubjectGroup: {},
             time:[],
             state:""
         },
-        dataList: {
-            content: []
-        },
+        dataList: [],
         loading: false,
         identify: "",
-        paging: {
-                pageNo: 1,
-                pageSize: 10,
-                currentPageNo: '',
-                currentPageSize: '',
-            },
-        emptyText: '',
-        elementLoadingText: ''  
         };
     },
     watch: {},
@@ -106,16 +77,10 @@ export default {
         this.initPage();
     },
     mounted () {
-        console.log(this.routerViewHeight)
         this.addEventListenervisibilityChange();
     },
     destoryed() {
         document.removeEventListener(this.visibilityChange)
-    },
-    components: {
-        pagination,
-        echartsContain,
-        diseaseSubjectgroup
     },
     methods: {
         addEventListenervisibilityChange() {
@@ -144,19 +109,16 @@ export default {
             this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
             this.getDataList();
         }, 
-        async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+        async getDataList() {
             let that = this;
             that.loading = true;
-            that.paging.currentPageNo = pageNo;
-            that.paging.currentPageSize = pageSize;
-            that.dataList.content = [];
             let formData = {
-                offset: pageNo,
-                limit: pageSize,
+                offset: 1,
+                limit: 99,
                 args: {
-                    diseaseId: this.form.diseaseSubjectGroup.disease || '',
-                    subjectId: this.form.diseaseSubjectGroup.subject || '',
-                    groupId: this.form.diseaseSubjectGroup.group || '',
+                    diseaseId:'',
+                    subjectId: '',
+                    groupId: '',
                     crfId: "",
                     patientName: "",
                     startTime: this.form.time?this.form.time[0].split("-").join(''):null,
@@ -167,13 +129,7 @@ export default {
             try {
                 let res = await that.$http.PFUPgetDataList(formData);
                 if (res.code == '0') {
-                    let obj = {};
-                    obj.content = res.data.args;
-                    obj.pageNo = pageNo;
-                    obj.pageSize = pageSize;
-                    obj.totalCount = parseInt(res.data.totalElements);
-                    obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
-                    that.dataList = obj;
+                    this.dataList = res.data.args;
                 }else {
                     this.$mes('error', res.msg);
                 }
@@ -185,13 +141,9 @@ export default {
         },
         reset () {
             this.form = {
-                diseaseSubjectGroup: {},
                 time:[],
                 state:""
             }
-            this.name = "yjdfdf"
-            console.log(this.name)
-            console.log(this)
             let date = new Date().getTime();
             this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
             this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
@@ -263,3 +215,96 @@ export default {
     }
 };
 </script>
+
+
+<style lang="less" scoped>
+    ul {
+        flex-wrap: wrap;
+        li {
+            height: 120px;
+            border-radius: 4px;
+            padding: 15px;
+            background:rgba(255,255,255,1);
+            box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
+            width: 386px;
+            margin: 0 21px 21px 0;
+            transition: all 300ms;
+            &:nth-child(3n) {
+                margin-right: 0;
+            }
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow:0px 4px 10px rgba(0,0,0,0.3); 
+            }
+            .box_left {
+                width: 105px;
+                height: 100%;
+                padding: 15px 0 0 15px;
+                border-right: 1px solid #eee;
+                h3 {
+                    font-size: 20px;
+                    font-weight: normal;
+                    line-height: 38px;
+                    color: #090E3E;
+                }
+                p {
+                    color: #9BABB8;
+                    line-height: 30px;
+                }
+            }
+            .box_right {
+                flex: 1;
+                flex-wrap: wrap;
+                flex-direction: column;
+                height: 100%;
+                padding-left: 30px;
+                .box_tag {
+                    display: flex;
+                    justify-content: flex-end;
+                    span {
+                        width: 58px;
+                        height: 24px;
+                        line-height: 24px;
+                        color: #439AFF;
+                        background-color: rgba(83, 163, 255, 0.1);
+                        text-align: center;
+                        font-size: 12px;
+                    }
+                }
+                .box_tel {
+                    width: 100%;
+                    color: rgba(0, 0, 0, 1);
+                    font-size: 14px;
+                    margin-bottom: 16px;
+                    i {
+                        padding-right: 4px;
+                        font-size: 16px;
+                    }
+                }
+                .box_btn_group {
+                    span {
+                        cursor: pointer;
+                        background:rgba(242, 242, 242, 1);
+                        width: 90px;
+                        margin-left: 10px;
+                        height: 32px;
+                        color: rgba(127, 139, 159, 1);
+                        transition: all 300ms;
+                        &:first-child {
+                            margin-left: 0;
+                        }
+                        .icon {
+                            font-size: 18px;
+                            vertical-align: middle;
+                            padding-right: 6px;
+                        }
+                        &:hover {
+                            background:rgba(229, 229, 229, 1);
+                            color: rgba(93, 113, 145, 1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

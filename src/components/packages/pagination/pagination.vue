@@ -1,33 +1,22 @@
 <template>
-  <div ref="cloudPagination" class="cloud-pagination clearfix" style="width:100%" v-show="data[listName] && data[listName].length > 0">
-    <div class="flex-end-center" style="float:right;position: relative;">
-      <div class="cloud-pagination__page">
-        显示{{(data[pageNoName] - 1) * data[pageSizeName] + 1}}到{{data[pageSizeName] * data[pageNoName] > data[totalNumName] ? data[totalNumName] : data[pageSizeName] * data[pageNoName]}},共{{data[totalNumName]}}记录
-      </div>
-      <el-pagination ref="pagination" @size-change="sizeChange"
-                     @current-change="currentChange"
-                     :current-page.sync="currentPage"
-                     :page-sizes="pageSizesConfig"
-                     :page-size.sync="currentSize"
-                     :layout="config"
-                     :total="data[totalNumName]"
-                     prev-text=" "
-                     next-text=" ">
+  <div ref="cloudPagination" id="pagination" class="cloud-pagination" v-show="data[listName] && data[listName].length > 0">
+    <div class="flex-end-center">
+      <el-pagination 
+        ref="pagination" 
+        @size-change="sizeChange"
+        background
+        @current-change="currentChange"
+        :current-page.sync="currentPage"
+        :page-sizes="pageSizesConfig"
+        :page-size.sync="currentSize"
+        :layout="config"
+        :total="data[totalNumName]">
       </el-pagination>
-      <el-button @click="currentChange(currentPage)" size="mini" class="pagination-button">
-      </el-button>
-      <el-button type="text" class="btn-first btn-custom" @click="firstOrLastPage(1)"
-                 :class="{'disabled': data[pageNoName] === 1}"></el-button>
-      <el-button type="text" class="btn-last btn-custom" @click="firstOrLastPage(data[totalPageName])"
-                 :class="{'disabled': data[pageNoName] === data[totalPageName]}"></el-button>
-      <el-button type="text" class="btn-refresh btn-custom" @click="currentChange(currentPage)"></el-button>
     </div>
   </div>
 </template>
 <script>
 import { on } from 'components/utils/dom';
-import './theme/green/pagination.less';
-import './theme/blue/pagination.less';
 
 export default {
   name: 'pagination',
@@ -62,7 +51,7 @@ export default {
     },
     config: {
       type: String,
-      default: 'sizes,prev, pager, next, jumper'
+      default: 'total, sizes , prev, pager, next, jumper'
     },
     pageSizesConfig: {// Props with type Object/Array must use a factory function to return the default value.
       type: Array,
@@ -80,7 +69,6 @@ export default {
   computed: {
     pageNo () {
       if (this.data[this.pageNoName] === undefined) return false;
-      //      console.log(this.data[this.pageNoName])
       return this.data[this.pageNoName];
     },
     pageSizeInit () {
@@ -101,7 +89,6 @@ export default {
   created () {},
   updated () {
     let that = this;
-    // console.log(this.$refs.cloudPagination.querySelector('.el-pagination__editor .el-input__inner'));
     let el;
     that.$nextTick(() => { // 修改页码输入框输入不符合规则的数字
       el = this.$refs.cloudPagination.querySelector('.el-pagination__editor .el-input__inner');
@@ -143,17 +130,6 @@ export default {
       }
       this.$emit('change', page, this.currentSize);
     },
-    firstOrLastPage (page) {
-           console.log(page);
-      //      debugger;
-      if (this.$refs.pagination.internalCurrentPage === page && page === 1) {
-        return false;
-      }
-      if (this.$refs.pagination.internalCurrentPage === this.data[this.totalPageName] && page === this.$refs.pagination.internalCurrentPage) {
-        return false;
-      }
-      this.currentPage = page;
-    }
   },
   mounted () {
 
@@ -162,16 +138,63 @@ export default {
 </script>
 
 
-<style lang="less" scoped>
-  .cloud-pagination {
+<style lang="less">
+  #pagination {
     background: #fff;
-    height: 35px;
-    line-height: 35px;
+    padding: 9px 10px 9px;
     border-top: none;
-    font-size: 12px;
+    font-size: 13px;
     color:  #48576a;
-    .pagination-button {
-      right: 40px;
+    .el-pagination {
+      .padding-button {
+        right: 40px;
+      }
+      .btn-prev, .btn-next{
+        border: 1px solid #f2f2f2;
+        margin: 0;
+        color: #409EFF;
+        background-color: #fff;
+      }
+      .btn-prev {
+        border-right: none;
+        &:hover {
+            border: none;
+            color: #fff;
+            background-color: #409EFF;
+        }
+      }
+      .btn-next {
+        border-left: none;
+        &:hover {
+            border: none;
+            color: #fff;
+            background-color: #409EFF;
+        }
+      }
+      .el-pager {
+        li {
+          margin: 0;
+          border-radius: 0;
+          padding: 0;
+          color: #409EFF;
+          font-weight: normal;
+          border: 1px solid #f2f2f2;
+          background-color: #fff;
+          border-left: 1px solid transparent;
+          &:first-child {
+            border-left: 1px solid #f2f2f2;
+          }
+          &.active, &:hover{
+            border: none;
+            color: #fff;
+            background-color: #409EFF;
+          }
+        }
+      }
+      .el-input .el-input__inner, .el-input, .el-pagination__editor {
+        height: 26px;
+        line-height: 26px;
+      }
     }
   }
 </style>

@@ -15,6 +15,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.iconbaocun:before {
+  content: "\e6b2";
+}
+
 .iconweixin:before {
   content: "\e64f";
 }
@@ -341,5 +345,29 @@
 
 .iconshuju:before {
   content: "\e685";
+}
+
+.iconzujian12:before {
+  content: "\e66d";
+}
+
+.iconzujian13:before {
+  content: "\e66e";
+}
+
+.iconzujian14:before {
+  content: "\e66f";
+}
+
+.iconzujian15:before {
+  content: "\e670";
+}
+
+.iconzujian16:before {
+  content: "\e671";
+}
+
+.iconzujian17:before {
+  content: "\e672";
 }
 

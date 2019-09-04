@@ -197,7 +197,7 @@
                     :label="item.label"
                     :name="item.name">
                     <el-table style="width:100%;" :ref="item.name"
-                              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-40):(routerViewHeight*1-38-40)"
+                              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-50):(routerViewHeight*1-38-50)"
                               :data="item.dataList.content" @row-dblclick="dblclickHandle"
                               v-loading="loading"
                               :border="false"
@@ -484,6 +484,7 @@
   import validation from 'components/utils/validation';
   import reportFollowup from "./reportFollowUp/index";
   export default {
+    name:'patinetListModule',
     mixins: [mixins],
     data () {
       return {
@@ -681,7 +682,10 @@
         this.getOperators();
         this.getDiseaseDetail();
         this.getSubjectDataList();
-        this.getDataList();
+        this.getDataList()
+        .then(()=>{
+          this.$emit('changeLoadding',false);
+        })
       },
       async getFindViews () {
         let that = this;
@@ -1801,9 +1805,6 @@
   }
   .el-form-item__content .el-button{
     height: 28px;
-  }
-  .cloud-search-list .bigContain{
-    padding: 0 20px;
   }
   .cloud-search {
     padding-left: 20px;

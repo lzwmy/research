@@ -1,16 +1,34 @@
 <template>
-    <div class="inside_cloud-container" v-loading="loading"  element-loading-background="#eee">
-        <insideHeader @menuViewChange="handleMenuView" :menuPath="menuPath"></insideHeader>
-        <insideMenu :title="title" :openMenuView="openMenuView" :menuList="menuList" :menuPath="menuPath"></insideMenu>
+    <div class="inside_cloud-container" v-loading="loading"  element-loading-background="#eee" element-loading-text="拼命加载中">
+        <insideHeader @changeDisease="handleDisease" @menuViewChange="handleMenuView" :menuPath="menuPath"></insideHeader>
+        <insideMenu :title="title" @changeLoadding="handleLoadding" :openMenuView="openMenuView" :menuList="menuList" :menuPath="menuPath"></insideMenu>
         <div id="insideContainer" :class="openMenuView?'open':'close'">
             <p class="title">{{$route.meta.txt}}</p>
             <transition name="el-fade-in-linear" mode="out-in">
                 <keep-alive>
-                    <router-view v-if="$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent2" class="insideContainer"></router-view>
+                    <router-view 
+                        v-loading="viewLoading"  
+                        element-loading-background="#fff"
+                        element-loading-text="拼命加载中"
+                        v-if="$route.meta.isKeepAlive" 
+                        @handlePageHeight="handlePageHeight" 
+                        ref="routercomponent2" 
+                        class="insideContainer"
+                        @changeLoadding="handleLoadding">
+                    </router-view>
                 </keep-alive>
             </transition>
             <transition name="el-fade-in-linear" mode="out-in">
-                <router-view v-if="!$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent2" class="insideContainer"></router-view>
+                <router-view 
+                    v-loading="viewLoading"  
+                    element-loading-background="#fff"
+                    element-loading-text="拼命加载中"
+                    v-if="!$route.meta.isKeepAlive"
+                    @handlePageHeight="handlePageHeight" 
+                    ref="routercomponent2" 
+                    class="insideContainer"
+                    @changeLoadding="handleLoadding">
+                </router-view>
             </transition>
         </div>
     </div>
@@ -28,6 +46,7 @@ export default {
             title: "",
             menuPath: '/index',
             menuList: [],
+            viewLoading: false
         };
     },
     components: {
@@ -40,7 +59,9 @@ export default {
         this.getMenuList();
     },
     watch: {
-        
+        $route: function() {
+            this.handleLoadding(false);
+        }
     },
     mounted () {
         this.initView();
@@ -89,6 +110,23 @@ export default {
         //展开折叠切换
         handleMenuView(val) {
             this.openMenuView = val
+        },
+        //切换病种
+        handleDisease() {
+            this.viewLoading = true;
+            if( typeof(this.$refs.routercomponent2.initPage) == 'function') {
+                this.$refs.routercomponent2.initPage();
+            }
+        },
+        handleLoadding(state) {
+            console.log(state)
+            if(state) {
+                this.viewLoading = state;
+                return;
+            }
+            setTimeout(()=>{
+                this.viewLoading = state;
+            },3000)
         }
     }
 };
@@ -142,12 +180,16 @@ export default {
                 padding-bottom: 10px;
                 overflow: auto;
             }
+
         }
         .insideFooter {
             position: absolute;
             bottom: 0;
             left: 200px;
             right: 0;
+        }
+        .insideContainer > .el-loading-mask {
+            top: 60px;
         }
     }
 </style> 

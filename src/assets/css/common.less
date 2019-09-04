@@ -102,6 +102,9 @@
 /* 表格样式 */
 .el-table {
     padding: 0 15px 10px;
+    &::before {
+        display: none;
+    }
     thead {
         .cell {
             color: #1E1A38;
@@ -139,13 +142,13 @@
 
 /* 日期选择器样式*/
 .el-range-editor.el-input__inner {
-    line-height: 28px;
-    height: 28px;
+    line-height: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     .el-input__icon,
     .el-range-separator{
-        line-height: 22px;
+        line-height: 24px;
     }
 }
 
@@ -153,21 +156,22 @@
 /* 按钮样式*/
 .el-button {
     padding: 0 15px;
-    line-height: 28px;
+    line-height: 32px;
     border-radius: 2px;
+    border-width: 0;
 } 
 
 
 /* 输入框样式*/ 
 .el-input {
-    height: 28px;
-    line-height: 28px;
+    height: 32px;
+    line-height: 32px;
     .el-input__inner {
-        height: 28px;
-        line-height: 28px;
+        height: 32px;
+        line-height: 32px;
     }
     .el-input__icon {
-        line-height: 28px;
+        line-height: 32px;
     }
 }
 
@@ -176,6 +180,9 @@
     .el-form-item__content {
         display: inline-block;
         vertical-align: middle;
+    }
+    .el-form-item__label {
+        line-height: 32px;
     }
 }
 

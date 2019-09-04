@@ -423,10 +423,15 @@
         this.maskShow = value;
       },
       refresh(data) {
-        console.log(data)
         if(data.refresh) {
           this.chartListData()
         }
+      },
+      initPage() {
+        this.chartListData()
+        .then(()=>{
+          this.$emit('changeLoadding',false);
+        })
       },
       //图表 数据
       async chartListData() {
