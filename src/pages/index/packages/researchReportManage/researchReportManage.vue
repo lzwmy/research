@@ -103,7 +103,7 @@ import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
 import utils from 'components/utils/index';
 import diseaseSubjectgroup from 'components/packages/linkage/diseaseSubjectgroup';
-import 'assets/css/common.less';
+
 
 export default {
     name: 'researchReportManage',
@@ -122,11 +122,11 @@ export default {
             loading: false,
             identify:"",
             paging: {
-                    pageNo: 1,
-                    pageSize: 10,
-                    currentPageNo: '',
-                    currentPageSize: '',
-                },
+                pageNo: 1,
+                pageSize: 10,
+                currentPageNo: '',
+                currentPageSize: '',
+            },
             emptyText: '',
             elementLoadingText: ''  
         };

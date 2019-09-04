@@ -23,27 +23,12 @@
         </div>
 
         <div class="container flex-between-center">
-            <div class="content flex-between-start">
-                <el-timeline>
-                    <el-timeline-item 
-                        v-for="(item, index) in reportDataList" 
-                        :key="index" 
-                        :timestamp="item.visitDate" 
-                        placement="top" 
-                        :icon="item.reportType==1?'icon iconfont iconshijianzhoubeifen diagnosis':'icon iconfont iconzujian20 followUp'"
-                        size="18">
-                        <el-card>
-                            <div class="flex-between-center">
-                                <p>{{item.author}}  {{item.createTime}}</p>
-                                <el-button>已审核</el-button>
-                            </div>
-                            <h4>{{item.reportType==1?'初诊':'随访'}}</h4>
-                        </el-card>
-                    </el-timeline-item>
-                </el-timeline>
+            <div class="content">
+                <patientInfoDetail v-if="!showReportComponent" class="timeline" :dataInfo="dataInfo"></patientInfoDetail>
+                <report-list v-if="showReportComponent" class="reportList" :reportFillData="reportFillData"></report-list>
                 <div class="group_btn">
-                    <el-button type="primary" icon="icon iconfont iconzujian19" class="active"></el-button>
-                    <el-button type="primary" icon="icon iconfont iconzujian18"></el-button>
+                    <el-button type="primary" icon="icon iconfont iconzujian19" :class="!showReportComponent?'active':''" @click="handleComponent(false)"></el-button>
+                    <el-button type="primary" icon="icon iconfont iconzujian18" :class="showReportComponent?'active':''" @click="handleComponent(true)"></el-button>
                 </div>
             </div>
             <div class="aside">
@@ -72,7 +57,7 @@
                     </h3>
                     <el-timeline>
                         <el-timeline-item 
-                            v-for="(item, index) in reportDataList" 
+                            v-for="(item, index) in []" 
                             :key="index" 
                             :timestamp="item.visitDate" 
                             placement="top">
@@ -177,6 +162,8 @@
 
 <script>
 import { quillEditor } from 'vue-quill-editor'
+import patientInfoDetail from './patientInfo'
+import reportList from './report'
 import utils from 'components/utils/index';
 export default {
     name: 'patientInfo',
@@ -184,8 +171,7 @@ export default {
     data () {
         return {
             activeName: "first",
-            reportDataList: [],
-            loading: false,
+            showReportComponent: false,
             activeSelect: false,
             openId:"",
             treatmentStatus:"",//治疗状态
@@ -243,7 +229,6 @@ export default {
         }
     },
     created () {
-        this.getDataList();
         this.getReportSelectList();
         this.getPatientSearch();
     },
@@ -255,34 +240,16 @@ export default {
         this.queryTreatmentInfo()
     },
     components: {
-        quillEditor
+        quillEditor,
+        patientInfoDetail,
+        reportList
     },
     methods: {
         resize() {
             let height = $('.el-drawer__body').height();
             $('.quill_style').height(height-330)
         },
-        async getDataList () {
-            let that = this;
-            that.loading = true;
-            let formData = {
-                offset: 1,
-                limit: 99,
-                args: this.dataInfo
-            };
-            try {
-                let res = await that.$http.PFUGetReportDataList(formData);
-                if (res.code == '0') {
-                    this.reportDataList = res.data.args;
-                }else {
-                    this.$mes('error', res.msg);
-                }
-                that.loading = false;
-            } catch (err) {
-                that.loading = false;
-                console.log(err)
-            }
-        },
+        
         openTreatmentDrawer() {
             this.drawer = true;
             this.$nextTick(function () {
@@ -456,6 +423,9 @@ export default {
                 console.log(err)
             }
         },
+        handleComponent(val) {
+            this.showReportComponent = val;
+        }
     }
 };
 </script>
@@ -500,7 +470,8 @@ export default {
     }
     .patientInfo {
         .content {
-            .el-timeline {
+            position: relative;
+            .timeline {
                 width: 70%;
                 .el-timeline-item__node {
                     background-color: #fff;
@@ -538,8 +509,19 @@ export default {
                     }
                 }
             }
+            .reportList {
+                position: absolute;
+                top: 55px;
+                right: 20px;
+                bottom: 0;
+                left: 20px;
+            }
             .group_btn {
                 font-size: 0;
+                width: 130px;
+                position: absolute;
+                top: 20px;
+                right: 20px;
                 .el-button {
                     width:64px;
                     height:35px;
@@ -566,6 +548,7 @@ export default {
         }
     }
 </style>
+
 <style lang="less" scoped>
     .patientInfo {
         height: 100%;
@@ -638,7 +621,7 @@ export default {
         .container {
             background-color: #f6f9fc;
             height: 100%;
-            padding-right: 10px;
+            // padding-right: 10px;
             .content {
                 background-color: #fff;
                 height: 100%;
@@ -648,7 +631,7 @@ export default {
             .aside {
                 background-color: #f6f9fc;
                 width: 420px;
-                margin-left: 30px;
+                margin-left: 17px;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
