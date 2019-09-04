@@ -18,6 +18,31 @@
             个人
           </div>
           <div class="personal_content">
+            <div class="personal_card" @click="jumpDetailPage">
+              <div class="text_model">
+                <p>100/99</p>
+                <p>专病科研模型</p>
+              </div>
+              <div class="img_model">
+                <i class="iconfont iconshuju"></i>
+              </div>
+              <div class="modify_model">
+                <!--<i class="iconfont iconbianjibeifen"></i>
+                <div class="modify_mask">
+                  <i class="arrow_bottom"></i>
+                  <div class="modify_text">编辑</div>
+                  <div class="delete_tet">删除</div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
+              </div>
+            </div>
+            <!--以下为复制-->
             <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
@@ -27,22 +52,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <!--以下为复制-->
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -51,21 +76,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -74,21 +100,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -97,21 +124,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -120,21 +148,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -143,42 +172,20 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
-            </div>
-            <div class="personal_card">
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>
-              </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
           </div>
         </div>
@@ -189,7 +196,7 @@
             公共
           </div>
           <div class="personal_content">
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -198,22 +205,23 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                <el-popover
+                  placement="bottom"
+                  trigger="click">
+                  <p>编辑</p>
+                  <p>删除</p>
+                  <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
             <!--以下为复制-->
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -222,21 +230,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -245,21 +254,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -268,21 +278,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -291,21 +302,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -314,21 +326,22 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
-            <div class="personal_card">
+            <div class="personal_card" >
               <div class="text_model">
                 <p>100/99</p>
                 <p>专病科研模型</p>
@@ -337,19 +350,20 @@
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
-                <i class="iconfont iconbianjibeifen"></i>
+                <!--<i class="iconfont iconbianjibeifen"></i>
                 <div class="modify_mask">
                   <i class="arrow_bottom"></i>
                   <div class="modify_text">编辑</div>
                   <div class="delete_tet">删除</div>
-                </div>
+                </div>-->
+                  <el-popover
+                    placement="bottom"
+                    trigger="click">
+                    <p>编辑</p>
+                    <p>删除</p>
+                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
+                  </el-popover>
               </div>
-              <!--<div class="mask_layer">
-                <div class="mask_top"></div>
-                <div class="modify_text">编辑</div>
-                <div class="delete_text">删除</div>
-              </div>-->
-
             </div>
           </div>
         </div>
@@ -366,7 +380,10 @@
         }
       },
       methods:{
+        //跳转到详细页面
+        jumpDetailPage() {
 
+        },
       },
       mounted() {
       }
@@ -427,6 +444,8 @@
         width: 100%;
         margin-top: 15px;
         flex-wrap: wrap;
+        min-height: 250px;
+        box-sizing: border-box;
         .personal_card{
           width: 235px;
           height: 100px;
