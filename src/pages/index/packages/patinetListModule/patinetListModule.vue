@@ -1,7 +1,7 @@
 <template>
-    <div class="patient_list_module">
+    <div class="patient_list_module SDResearch">
       <div class="list_module_content">
-        <div v-if="!showReportFollowiUp">
+        <div v-if="!showPatientInfo">
           <!-- 病例管理 cloud-component-->
           <div class="cloud-component caseManage">
             <!-- 搜索区域 -->
@@ -161,11 +161,11 @@
                 </el-form-item>
                 <el-form-item label prop>
                   <el-button type="primary" @click="conditionAdd">添加</el-button>
-                  <el-button type="primary" @click="search">查询</el-button>
+                  <el-button type="primary"  @click="search">查询</el-button>
                   <el-button @click="reset">重置</el-button>
                 </el-form-item>
                 <el-form-item class="fuzzyQuery rf" label>
-                  <el-button type="primary" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
+                  <el-button type="primary"  icon="el-icon-plus" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
                 </el-form-item>
               </el-form>
               <div class="conditiaoContain">
@@ -215,48 +215,12 @@
                       </el-table-column>
                       <el-table-column :prop="column.name" :label="column.label" sortable v-for="column in conditionViewList" v-if="column.name != 'PATIENT_NAME'"
                                        :key="column.name" show-overflow-tooltip></el-table-column>
-                      <!-- <el-table-column label="操作" width="100">
-                        <template slot-scope="scope">
-                          <el-button type="text" @click=""><i class="iconfont iconbianji"></i></el-button>
-                          <el-button type="text" @click=""><i class="iconfont iconshanchu del"></i></el-button>
-                        </template>
-                      </el-table-column> -->
                     </el-table>
                     <!-- 分页 -->
                     <pagination :data="item.dataList" @change="getDataList" :id="item.name" :key="item.name"></pagination>
                   </el-tab-pane>
                 </el-tabs>
               </echarts-contain>
-              <!--<div v-for="(item) in currentSelectViewsList">
-                <el-table style="width:100%;" :ref="item.name"
-                          :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-40):(routerViewHeight*1-38-40)"
-                          :data="item.dataList.content" @row-dblclick="dblclickHandle"
-                          v-loading="loading"
-                          :border="false"
-                          :empty-text="emptyText"
-                          :element-loading-text="elementLoadingText"
-                          stripe
-                          :default-sort="{prop: 'date', order: 'descending'}"
-                          @selection-change="handleSelectionChange"
-                >
-                  <el-table-column type="selection"></el-table-column>
-                  <el-table-column label="病人姓名" sortable width="150">
-                    <template slot-scope="scope">
-                      <el-button type="text" size="mini" @click="onLinkView360(scope.row)">{{scope.row.PATIENT_NAME}}</el-button>
-                    </template>
-                  </el-table-column>
-                  <el-table-column :prop="column.name" :label="column.label" sortable v-for="column in conditionViewList" v-if="column.name != 'PATIENT_NAME'"
-                                   :key="column.name" show-overflow-tooltip></el-table-column>
-                  &lt;!&ndash; <el-table-column label="操作" width="100">
-                    <template slot-scope="scope">
-                      <el-button type="text" @click=""><i class="iconfont iconbianji"></i></el-button>
-                      <el-button type="text" @click=""><i class="iconfont iconshanchu del"></i></el-button>
-                    </template>
-                  </el-table-column> &ndash;&gt;
-                </el-table>
-                &lt;!&ndash; 分页 &ndash;&gt;
-                <pagination :data="item.dataList" @change="getDataList" :id="item.name" :key="item.name"></pagination>
-              </div>-->
             </div>
             <!-- 入组弹窗 -->
             <el-dialog
@@ -468,12 +432,15 @@
             </el-dialog>
           </div>
         </div>
+        <patientInfo v-else @back="hideReportFollowiUp" :dataInfo="reportFollowiUpData" :personalInfo="reportFollowiUpInfo" :reportFillData="reportFillData"></patientInfo>
       </div>
     </div>
 </template>
 
 <script type="text/javascript">
   import './patientListModule.css';
+  import '../SDResearch/SDResearch.less';
+  import '../SDResearch/card_bgColor.less'
   import echartsContain from 'components/packages/echartsContain/echartsContain';
   import multipleCheckBoxSelect from 'components/packages/multipleCheckBoxSelect/multipleCheckBoxSelect';
   import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
@@ -482,7 +449,7 @@
   import mixins from 'components/mixins';
   import utils from 'components/utils/index';
   import validation from 'components/utils/validation';
-  import reportFollowup from "./reportFollowUp/index";
+  import patientInfo from "./patientInfo/index";
   export default {
     name:'patinetListModule',
     mixins: [mixins],
@@ -500,7 +467,7 @@
           param: '',
           param2: ''
         },
-        showReportFollowiUp: false,  //报告随访组件
+        showPatientInfo: false,  //报告随访组件
         reportFollowiUpData: {},  //报告随访组件数据
         reportFollowiUpInfo: {},  //报告随访组件个人信息
         reportFillData:{},   //报告随访参数
@@ -598,7 +565,7 @@
       pagination,
       echartsContain,
       multipleCheckBoxSelect,
-      reportFollowup
+      patientInfo
     },
     watch: {
       selectLabGroupId (val) {
@@ -1365,7 +1332,7 @@
       },
       //销毁报告组件
       hideReportFollowiUp(){
-        this.showReportFollowiUp = false;
+        this.showPatientInfo = false;
       },
       dblclickHandle (row, event) {
         let subjectName = this.subjectDataList.map( item =>{
@@ -1399,7 +1366,7 @@
           from: that.$route.name,
           isModify:"displayShow"
         }
-        that.showReportFollowiUp = true;
+        that.showPatientInfo = true;
         return;
         if (that.selectLabGroupId) {
           sessionStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
@@ -1672,9 +1639,7 @@
   .list_module_content{
     width: 100%;
     background-color: #FFFFFF;
-    border-left: 1px solid #E5EBEC;
-    border-right: 1px solid #E5EBEC;
-    border-top: 1px solid #E5EBEC;
+    border: 1px solid #E5EBEC;
     padding: 30px 30px 0 30px;
     box-sizing: border-box;
   }
@@ -1699,10 +1664,10 @@
     .caseManage .caseManageDropdown {
       border-radius: 1px;
       border: 1px solid #d8dce5;
-      /*height: 28px;*/
-      /*line-height: 28px;*/
       text-align: center;
-      padding: 5px 20px;
+      padding: 0 20px;
+      height: 32px;
+      line-height: 32px;
     }
     .caseManage .fuzzyQuery {
       /*float: right;*/
@@ -1720,10 +1685,6 @@
           height: 36px;
         }
       }*/
-    }
-    .caseManage .mt{
-     position: relative;
-      top: 7px;
     }
     .caseManage .fuzzyQuery .el-input {
       width: 240px !important;
@@ -1795,16 +1756,6 @@
 
   .MySaveConditionDialog .el-dialog .el-input {
     width: 250px !important;
-  }
- .change_height .el-form-item__content .el-select .el-input .el-input__inner,.change_height .el-input__inner{
-    height: 28px;
-    line-height: 28px;
-  }
-  .change_height .move_top{
-    top: -4px;
-  }
-  .el-form-item__content .el-button{
-    height: 28px;
   }
   .cloud-search {
     padding-left: 20px;

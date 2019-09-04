@@ -206,7 +206,7 @@
 </template>
 
 <script type="text/javascript">
-import './SDResearch.css';
+import './SDResearch.less';
 import mixins from 'components/mixins';
 import echartsContain from 'components/packages/echartsContain/echartsContain';
 

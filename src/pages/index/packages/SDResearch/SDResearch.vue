@@ -42,7 +42,8 @@
 </template>
 
 <script type="text/javascript">
-import './SDResearch.css';
+import './SDResearch.less';
+import './card_bgColor.less'
 import mixins from 'components/mixins';
 
 export default {

@@ -179,6 +179,7 @@
 .el-form {
     .el-form-item__content {
         display: inline-block;
+        line-height: 32px;
         vertical-align: middle;
     }
     .el-form-item__label {
@@ -214,21 +215,28 @@
 }
 
 /* 顶部标题*/
-.component_head {
-    height: 60px;
-    line-height: 60px;
-    text-indent: 15px;
-    background-color: #fff;
-    color: #333;
-    font-size: 20px;
-    border-top: 1px solid #f2f2f2;
-    border-bottom: 1px solid #e8e8e8;
-    position: fixed;
-    top: 60px;
-    padding: 0 20px 0 15px;
-    left: 215px;
-    right: 0;
-    z-index: 20;
+#insideContainer {
+    .component_head {
+        height: 60px;
+        line-height: 60px;
+        background-color: #fff;
+        color: #333;
+        font-size: 20px;
+        border-top: 1px solid #f2f2f2;
+        border-bottom: 1px solid #e8e8e8;
+        position: fixed;
+        top: 60px;
+        padding: 0 20px 0 15px;
+        right: 0;
+        z-index: 20;
+        transition: left 300ms;
+    }
+    &.open .component_head{
+        left: 200px;
+    }
+    &.close .component_head{
+        left: 64px;
+    }
 }
 
 /* 搜索区域 */
@@ -245,13 +253,13 @@
 
 /*popover 提示框*/
 .el-popover{
-  min-width: 96px;
-  p{
-    font-size: 14px;
-    color: #666666;
-    &:hover{
-      color: #04B8DD;
-      cursor: pointer;
+    min-width: 96px;
+    p{
+        font-size: 14px;
+        color: #666666;
+        &:hover{
+        color: #04B8DD;
+        cursor: pointer;
+        }
     }
-  }
 }
