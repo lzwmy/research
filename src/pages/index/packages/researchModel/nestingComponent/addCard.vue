@@ -15,7 +15,7 @@
           <span>规则</span>
           <el-button type="primary" @click.stop="addInsideComponent(item)">增加内组件</el-button>
           <el-button type="primary" @click.stop="addOuterComponent(item)">增加外组件</el-button>
-          <i class="el-icon-remove-outline" title="删除"
+          <i class="iconfont iconfuhao4" title="删除"
              v-if="delShow"
              @click="delComponentData(pItem,Index)"></i>
           <add-line-info v-for="(it,index) in item.nodeList" :item="it" :Index="index" :PItem="item.nodeList"></add-line-info>
@@ -209,12 +209,12 @@
           padding: 0 5px;
         }
         i{
-          color: #ffffff;
-          background-color: #F0433C;
-          border-radius: 50%;
-          font-size: 16px;
-          vertical-align: middle;
-          margin-left: 1%;
+          color: #F0433C;
+          /*background-color: #F0433C;*/
+          /*border-radius: 50%;*/
+          /*font-size: 16px;*/
+          /*vertical-align: middle;*/
+          /*margin-left: 1%;*/
         }
       }
       .active{
