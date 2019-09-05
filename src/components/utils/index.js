@@ -325,7 +325,6 @@ const handleMenuList = (menuList) => {
   });
   menuLevel3(menuList,handleAfrerMenuList);
   handleAfrerMenuList.sort(compareAscending('menuOrder'));
-  console.log(handleAfrerMenuList)
   return handleAfrerMenuList;
 };
 

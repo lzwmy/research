@@ -9,6 +9,7 @@ import staticInfo from './staticInfo';
 import allCases from './allCases';
 import patientFollowUp from './patientFollowUp';
 import researchReportManage from './researchReportManage';
+import reportList from './reportList';
 import eventPlan from './eventPlan';
 import researchModel from './researchModel';
 import researchTask from './researchTask';
@@ -76,7 +77,7 @@ const routes = [
   }
 ];
 
-const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, eventPlan,researchModel,patientListModule,diseaseChart, researchTask);
+const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, reportList, eventPlan,researchModel,patientListModule,diseaseChart, researchTask);
 route.forEach(item=>{
   if(item.name == 'insideView'){
     route.forEach(li=>{
