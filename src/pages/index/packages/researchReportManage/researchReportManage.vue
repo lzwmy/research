@@ -56,9 +56,9 @@
                 <el-table
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1)"
                     :data="dataList.content" v-loading="loading" ref="refTable"
-                    :empty-text="emptyText" :element-loading-text="elementLoadingText" fit @row-dblclick='toReportFill'
+                    :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
                     @row-click="handleClick">
-                    <el-table-column type="expand" width="10">
+                    <el-table-column type="expand" width="20">
                         <template slot-scope="props">
                             <el-timeline>
                                 <el-timeline-item
@@ -73,9 +73,9 @@
                             </el-timeline>
                         </template>
                     </el-table-column>
-                    <el-table-column type="index" label="序号" width="0"></el-table-column>
+                    <el-table-column type="index" label="序号" width="60"></el-table-column>
                     <el-table-column prop="visitDate" label="就诊时间" width="110"></el-table-column>
-                    <el-table-column prop="reportName" label="报告名称"></el-table-column>
+                    <el-table-column prop="reportName" label="报告名称" width="140"></el-table-column>
                     <el-table-column prop="patientName" label="姓名"></el-table-column>
                     <el-table-column prop="genderName" label="性别"></el-table-column>
                     <el-table-column prop="author" label="创建者"></el-table-column>
@@ -86,6 +86,11 @@
                     <el-table-column label="报告状态" width="120px">
                         <template slot-scope="scope">
                             {{scope.row.status==0?'未填写':'已填写'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="80">
+                        <template slot-scope="scope">
+                            <el-button size="mini" @click="toReportFill"><i class="icon iconfont iconbianji"></i></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -287,9 +292,9 @@ export default {
 
 <style lang="less">
     .researchReportManage {
-        .el-table__expand-column{
-            font-size: 0;
-        }
+        // .el-table__expand-column{
+        //     display: none;
+        // }
         .el-table__expanded-cell {
             background-color: #F9F9FB;
             &:hover {

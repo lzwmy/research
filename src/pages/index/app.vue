@@ -1,9 +1,8 @@
 <template>
   <div id="app" :class="insideView?'insideView':''">
-    <app-header></app-header>
-    <navbar></navbar>
-    <app-view id="main" :class="isIndex?'isIndex':''"></app-view>
-    <!-- <app-footer v-show="!insideView"></app-footer> -->
+    <app-header v-show="!insideView"></app-header>
+    <app-navbar v-show="!insideView"></app-navbar>
+    <app-view id="main"></app-view>
   </div>
 </template>
 
@@ -11,20 +10,18 @@
 import header from 'components/common/header/header';
 import navbar from 'components/common/navbar/navbar'
 import view from 'components/common/view/view';
-import footer from 'components/common/footer/footer';
 export default {
   name: 'app',
   components: {
     'app-header': header,
     'app-view': view,
-    'app-footer': footer,
-    navbar
+    'app-navbar': navbar,
+    
   },
   data () {
     return {
       //是否为内页主页
-      insideView: false,
-      isIndex: true
+      insideView: true,
     };
   },
   computed: {
@@ -35,11 +32,6 @@ export default {
         this.insideView = true;
       }else {
         this.insideView = false;
-      }
-      if(this.$route.path === '/' || this.$route.path === '/index') {
-        this.isIndex = true;
-      }else {
-        this.isIndex = false;
       }
     },
   },
@@ -64,17 +56,14 @@ export default {
     }
   }
   #main {
-    margin: 24px auto 35px;
+    margin: 24px auto 0;
+    padding-bottom: 40px;
     width: 1200px;
     .cloud-component{
       padding: 0;
     }
   }
   #app.insideView {
-    #main_header,
-    #navbar {
-      display: none;
-    }
     #main {
       width: 100% !important;
       margin: 0 !important;

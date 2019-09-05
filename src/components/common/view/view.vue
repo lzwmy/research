@@ -66,7 +66,7 @@ export default {
         },
         initView() {
             this.$nextTick(() => {
-                let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom'))
+                let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom')) + parseInt($("#main").css('paddingTop')) + parseInt($("#main").css('paddingBottom'));
                 $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
             });
         }

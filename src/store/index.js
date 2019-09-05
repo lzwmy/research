@@ -37,14 +37,6 @@ const user = {
       state.menuList = payload.params;
     },
     addRoute(state, routeObj) {
-      // if (routeObj.route.name === 'residentInfoDetail') {
-      //   state.routeArr.forEach((item, index) => {
-      //     if (item.route.name === 'residentInfoDetail') {
-      //       item.route = routeObj.route
-      //     }
-      //   })
-      // }
-
       for (var i = 0; i < state.routeArr.length; i++) {
         if (state.routeArr[i].route.meta.txt === routeObj.route.meta.txt) {
           break;
@@ -52,49 +44,13 @@ const user = {
       }
       // 记录新增路由
       if (i === state.routeArr.length || state.routeArr.length === 0) {
-        // debugger
         let myroute = {};
         myroute.historyPath = [routeObj.route];
         myroute.route = routeObj.route;
         state.routeArr.push(myroute);
-        // console.log(state.routeArr)
       } else {
         // 新增historyPath
         state.routeArr[i].historyPath.unshift(routeObj.route);
-      }
-    },
-    reduceRoute(state, payload) {
-      if (state.routeArr.length === 1 && (state.routeArr[0].route.fullPath === '/index' || state.routeArr[0].route.fullPath === '/')) {
-        return false;
-      }
-      let deleteRoute = state.routeArr.splice(payload.paras.index, 1);// 删除路由并返回被删除路由
-      // console.log(deleteRoute)
-      if (state.routeArr.length > 0) {
-        if (deleteRoute[0].route.meta.txt === payload.paras.vueParent.$route.meta.txt) { // 删除的是当前路由的话，跳转最右边路由
-          payload.paras.vueParent.$router.push({ path: state.routeArr[state.routeArr.length - 1].route.fullPath });
-        } else { // 删除的不是当前路由的话，保持当前路由,不做任何处理
-          // payload.paras.vueParent.$router.push({path: payload.paras.vueParent.$route.fullPath})
-        }
-      } else {
-        payload.paras.vueParent.$router.push({ name: 'index' });
-      }
-      // console.log(state.routeArr)
-    },
-    forceReduceRoute(state, payload) {
-      state.routeArr.splice(payload.paras.index, 1);// 删除路由并返回被删除路由
-    },
-    closeAllRoute(state, payload) {
-      if (state.routeArr.length === 1) {
-        return false;
-      } else {
-        state.routeArr = [];
-      }
-      payload.paras.vueParent.$router.push({ name: 'index' });
-      if (payload.paras.vueParent.$route.name == 'index' || payload.paras.vueParent.$route.name == '/') {
-        payload.paras.vueParent.$store.commit({// 当关闭所有时，当前路由是index，由于routeArr清空了，所以需要把当前路由加进去
-          type: 'addRoute',
-          route: payload.paras.vueParent.$route
-        });
       }
     },
     saveSession_isDislpayArrow(state, payload) {
@@ -107,13 +63,6 @@ const user = {
   },
   actions: {}
 };
-
-const menu = {
-  state: {
-  },
-  mutations: {
-  }
-}
 
 const crf = {
   state: {
@@ -151,14 +100,7 @@ const researchModel = {
       "operator":"", //操作
       "value1":"",
       "value2":"",
-      "itemTree":[
-        // {
-        //     "name":"首页"
-        // },
-        // {
-        //     "name":"首页"
-        // }
-      ]
+      "itemTree":[]
     },
   },
   mutations:{
@@ -200,23 +142,10 @@ var store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // 在非生产环境下，使用严格模式
   modules: {
     user,
-    menu,
     crf,
     researchModel
   },
   getters
 });
-
-// 读取./src/子路由配置
-// import config  from '../../../../src/config/config'
-
-// if (config.childStore) {
-//      var child = require('../../../../src/config/store');
-//     if (Array.isArray(child)) {
-//         for (let i = 0; i < child.length; i++) {
-//             store.registerModule(child[i].name, child[i].value)
-//         }
-//     }
-// }
 
 export default store;

@@ -1,7 +1,7 @@
 <template>
     <div class="insideMenu" :class="openMenuView?'open':'close'">
         <div class="top flex-start-center" @click="onBack">
-            <span class="el-icon-s-home"></span>
+            <span class="icon iconfont iconfanhuishouye"></span>
             <p v-show="openMenuView">{{title}}</p>
         </div>
         <div class="cont" v-if="$route.meta.belongToGroup == 'insideView'">
@@ -92,17 +92,18 @@ export default {
     },
     methods: {
         routerLink(item) {
-            this.$emit('changeLoadding',true);
             this.$router.push({
                 path: item.menuPath,
                 query: {id: this.diseaseId}
             })
             //关闭其它展开项
-            this.menuList.forEach(item => {
-                if(item.children.length != 0) {
-                    this.$refs.menu.close(item.menuCode);
-                }
-            });
+            if(item.menuLevel == 3) {
+                this.menuList.forEach(item => {
+                    if(item.children.length != 0) {
+                        this.$refs.menu.close(item.menuCode);
+                    }
+                });
+            }
         },
         onBack() {
             this.$router.push({
@@ -193,6 +194,9 @@ export default {
             .el-menu {
                 border: none;
                 transition: all 200ms;
+                .el-submenu {
+                    border-left: 4px solid transparent;
+                }
                 .el-menu-item {
                     height: 48px;
                     width: 100%;
