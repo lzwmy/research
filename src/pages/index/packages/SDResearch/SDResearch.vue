@@ -97,6 +97,7 @@ export default {
         that.loading = false;
         if (data.code == '0') {
           that.dataList = data.data.diseaseSpecieses;
+          sessionStorage.setItem('researchList',JSON.stringify(that.dataList));
         }
       } catch (error) {
         console.log(error);

@@ -36,7 +36,7 @@
 
 <style lang="less" scoped>
   .patient_form_container{
-    padding: 5px;
+    /*padding: 5px;*/
     box-sizing: border-box;
   }
 

@@ -29,7 +29,7 @@ const url = {
 
 const http = {
     modelManageGetDataList (params) {
-        return vm.$get(url.modelManageGetDataList, params, false);
+        return vm.$post(url.modelManageGetDataList, params, true);
     },
     modelManageGetPreviewDataList (params) {
         return vm.$get(url.modelManageGetPreviewDataList, params, false);

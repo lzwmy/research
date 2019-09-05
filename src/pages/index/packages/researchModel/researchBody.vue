@@ -201,9 +201,9 @@
         }
       },
       created() {
-        if(this.modelData.type == 'modify'){
+        /*if(this.modelData.type == 'modify'){
           this.getDataList(this.modelData.obj.modelId);
-        }
+        }*/
       },
       mounted() {
         this.$nextTick(()=>{
