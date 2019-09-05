@@ -3,14 +3,14 @@
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
         <div class=" cur_pointer head_content flex-start-center">
-          <div class="create_model_btn">
+          <div class="create_model_btn" @click="createModel">
             <i class="iconfont icontianjia"></i>
             <span>新建建模</span>
           </div>
         </div>
       </div>
       <!--主体内容-->
-      <div class="create_model_content">
+      <div class="create_model_content" v-loading="loading">
         <!--个人-->
         <div class="personal_model ml_30">
           <div class="personal_title">
@@ -18,10 +18,11 @@
             个人
           </div>
           <div class="personal_content">
-            <div class="personal_card" @click="jumpDetailPage">
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
+            <!--@click.stop="jumpDetailPage(item)"-->
+            <div class="personal_card"  v-for="(item,index) in personalList" :key="index">
+              <div class="text_model" @click.stop="jumpDetailPage(item)">
+                <p>{{item.patientCount }}/{{item.crfSum}}</p>
+                <p>{{item.modelName}}</p>
               </div>
               <div class="img_model">
                 <i class="iconfont iconshuju"></i>
@@ -36,152 +37,7 @@
                   <el-popover
                     placement="bottom"
                     trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <!--以下为复制-->
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
+                    <p v-show="item.editable">编辑</p>
                     <p>删除</p>
                     <i slot="reference" class="iconfont iconbianjibeifen"></i>
                   </el-popover>
@@ -192,14 +48,14 @@
         <!--公共-->
         <div class="personal_model mt_30">
           <div class="personal_title">
-            <i class="tab_left"></i>
+            <i class="tab_left common_color"></i>
             公共
           </div>
           <div class="personal_content">
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
+            <div class="personal_card"  v-for="(item,index) in commonList" :key="index">
+              <div class="text_model" @click.stop="jumpDetailPage(item)">
+                <p>{{item.patientCount }}/{{item.crfSum}}</p>
+                <p>{{item.modelName}}</p>
               </div>
               <div class="img_model">
                 <i class="iconfont iconshuju"></i>
@@ -214,155 +70,10 @@
                 <el-popover
                   placement="bottom"
                   trigger="click">
-                  <p>编辑</p>
+                  <p v-show="item.editable">编辑</p>
                   <p>删除</p>
                   <i slot="reference" class="iconfont iconbianjibeifen"></i>
                 </el-popover>
-              </div>
-            </div>
-            <!--以下为复制-->
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
-              </div>
-            </div>
-            <div class="personal_card" >
-              <div class="text_model">
-                <p>100/99</p>
-                <p>专病科研模型</p>
-              </div>
-              <div class="img_model">
-                <i class="iconfont iconshuju"></i>
-              </div>
-              <div class="modify_model">
-                <!--<i class="iconfont iconbianjibeifen"></i>
-                <div class="modify_mask">
-                  <i class="arrow_bottom"></i>
-                  <div class="modify_text">编辑</div>
-                  <div class="delete_tet">删除</div>
-                </div>-->
-                  <el-popover
-                    placement="bottom"
-                    trigger="click">
-                    <p>编辑</p>
-                    <p>删除</p>
-                    <i slot="reference" class="iconfont iconbianjibeifen"></i>
-                  </el-popover>
               </div>
             </div>
           </div>
@@ -376,17 +87,70 @@
       name: "createModel",
       data() {
         return {
-
+          commonList:[],
+          personalList:[],
+          loading:false
         }
       },
       methods:{
-        //跳转到详细页面
-        jumpDetailPage() {
-
+        resize() {
+          let height = $('#insideContainer').height()-60;
         },
+        //新建模型
+        createModel() {
+          let diseaseId = this.$route.query.id;
+          let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
+            return item.id == diseaseId;
+          });;
+          console.log(dataList[0]);
+          this.$router.push({
+            path:"/modelManage/configModel",
+            query:{
+              diseaseId:diseaseId,
+              type:"add",
+              modelId:"none",
+              modelName:dataList[0].name,
+            }
+          })
+        },
+        //跳转到详细页面
+        jumpDetailPage(data) {
+          console.log(data);
+          let diseaseId = this.$route.query.id;
+          this.$router.push({
+            path:'/modelManage/detailPage',
+            query:{
+              diseaseId:diseaseId,
+              name:data.modelName,
+              modelId:data.modelId
+            }
+          })
+        },
+        async modelManageGetDataList() {
+          let that = this;
+          let formData = {
+            diseaseId:this.$route.query.id
+          };
+          try {
+            let data = await that.$http.modelManageGetDataList(formData);
+            console.log(data);
+            if(data.code ==0) {
+              that.commonList = data.data.common.modelList;
+              that.personalList = data.data.personal.modelList;
+            }
+          }catch (error) {
+            console.log(error)
+          }
+          that.loading = false;
+        }
+      },
+      deactivated() {
+        this.$destroy()
       },
       mounted() {
-      }
+        this.loading = true;
+        this.modelManageGetDataList()
+      },
     }
 </script>
 
@@ -437,6 +201,9 @@
           background-color:#8CC561;
           margin-right: 8px;
         }
+        .common_color{
+          background-color: #D95555;
+        }
       }
       .personal_content{
         display: flex;
@@ -474,10 +241,17 @@
               padding-bottom: 8px;
             }
             :last-child{
+              display: inline-block;
+              width: 140px;
               font-size: 12px;
               font-weight: 400;
               color: #666666;
-
+              display: -webkit-box;
+              /* autoprefixer: off */
+              -webkit-box-orient: vertical;
+              /* autoprefixer: on */
+              -webkit-line-clamp: 2;
+              overflow: hidden;
             }
           }
           .img_model{
@@ -590,7 +364,7 @@
             }
           }
           &:hover {
-            /*transform: translate(0,-2px);*/
+            transform: translate(0,-2px);
           }
           &:hover .modify_model{
             display: inline;
@@ -627,4 +401,18 @@
     }
   }
 }
+</style>
+<style lang="less">
+  /*popover 提示框*/
+  .el-popover{
+    min-width: 96px;
+    p{
+      font-size: 14px;
+      color: #666666;
+      &:hover{
+        color: #04B8DD;
+        cursor: pointer;
+      }
+    }
+  }
 </style>

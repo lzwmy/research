@@ -259,15 +259,19 @@ export default {
     height: 100%;
     color: #777;
     font-size: 12px;
+    position: relative;
+    top: 5px;
     .head_fixed {
-      height: 85px;
+      /*height: 85px;*/
       // height: 60px;
+      height: 55px;
       position: absolute;
       top: 10px;
       right: 10px;
       left: 10px;
       padding: 15px 0;
       border-bottom: 1px solid #ccc;
+      background-color: #ffffff;
       &.shadow {
         box-shadow: 0px 0px 3px #333;
       }
