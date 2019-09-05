@@ -412,29 +412,35 @@
       float: left;
       padding: 11px 40px;
       /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
-      border-radius:1px;
+      /*border-radius:1px;*/
       border:1px solid #E5EBEC;
       border-bottom-color: transparent;
       cursor: pointer;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
     }
     .exprot_tab{
       float: left;
       padding: 11px 40px;
       margin: 0 4px;
       /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
-      border-radius:1px;
+      /*border-radius:1px;*/
       border:1px solid #E5EBEC;
       border-bottom-color: transparent;
       cursor: pointer;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
     }
     .show_tab{
       float: left;
       padding: 11px 40px;
       /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
-      border-radius:1px;
+      /*border-radius:1px;*/
       border:1px solid #E5EBEC;
       border-bottom-color: transparent;
       cursor: pointer;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
     }
   }
   .active{
@@ -449,8 +455,8 @@
     border-left: 1px solid #00BAE3 !important;
     border-top: 1px solid #00BAE3 !important;
     border-right: 1px solid #00BAE3 !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 2px !important;
+    border-top-right-radius: 2px !important;
   }
   .show_search_tab,.show_exprot_tab,.show_tab_line{
     // position: absolute;

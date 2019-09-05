@@ -210,7 +210,7 @@
                 enabled: true,
                 format: '<b>{point.name}</b>: {point.percentage:.1f} %',
               },
-              showInLegend: true
+              showInLegend: true,
             }
           },
           series: [
@@ -253,15 +253,13 @@
             enabled:false
           },
           title: {
-            text: '饼状图'
+            text: '柱状图'
           },
           legend:{
             enabled:false
           },
           xAxis: {
-            categories: [
-              '一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'
-            ],
+            categories: ['苹果', '橘子', '梨', '葡萄', '香蕉'],
             crosshair: true
           },
           yAxis: {
@@ -286,12 +284,23 @@
           plotOptions: {
             column: {
               borderWidth: 0
+            },
+            series: {
+              stacking: 'normal'
             }
           },
-          series: [{
-            name: '中国',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-          }]
+          series: [
+            {
+              name: '小张',
+              data: [5, 3, 4, 7, 2]
+            }, {
+              name: '小彭',
+              data: [2, 2, 3, 2, 1]
+            }, {
+              name: '小潘',
+              data: [3, 4, 4, 2, 5]
+            }
+          ]
         },
         //折线图
         lineOption:{
@@ -738,7 +747,9 @@
             that.chartName = data.data.chartName;
             that.chartType = data.data.chartType;
             //统计分析 列表
+            that. xyz(data.data.crfId);
             that.statisticalIndicators(data.data.crfId);
+
             that.crf = data.data.crfId;
 
             //图形渲染数据
@@ -759,10 +770,15 @@
               case "2D_SCATTER":
                 that.get2DScatter(value);
                 that.statistics = data.data.formItemIds[0];
+                that.xaxis = data.data.xaxis;
+                that.yaxis = data.data.yaxis;
                 break;
               case "3D_SCATTER":
                 that.get3DScatter(value);
                 that.statistics = data.data.formItemIds[0];
+                that.xaxis = data.data.xaxis;
+                that.yaxis = data.data.yaxis;
+                that.zaxis = data.data.zaxis;
                 break;
               default:
                 break;
