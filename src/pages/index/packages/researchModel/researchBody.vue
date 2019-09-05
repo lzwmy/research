@@ -6,7 +6,7 @@
         <div class="show_tab" :class="{'active':active==3}" @click="exportTab">导出项</div>
       </div>
       <div class="show_search_tab" v-if="active==1">
-        <div class="tree_style left">
+        <div class="tree_style left" v-loading="loadingTree">
           <!-- <el-tree ref="rootTree" node-key="id" :data="searchTreeList" :props="defaultProps" :expand-on-click-node="true" v-loading="loadingTree">
             <span class="custom-tree-node" slot-scope="{ node, data }">
               <span @dblclick="searchTreeQuery(data)">{{node.label}}</span>
@@ -217,8 +217,9 @@
           this.tabLoading = false;
         },
         resize() {
-          let height = $('.crf-main-box').height();
-          $('.research_box').height(height - 115);
+          let height = $('.config_model_container').height();
+          $('.research_box').height(height - 210);
+          $('.research_body_container').height(height-184);
         },
         //查询项
         searchTab() {
@@ -406,29 +407,33 @@
     // position: absolute;
     top: 0;
     left: 0;
+    font-size: 14px;
     .search_tab{
       float: left;
-      padding: 8px 40px;
-      background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);
-      border-radius:4px;
-      border:1px solid rgba(230,234,238,1);
+      padding: 11px 40px;
+      /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
+      border-radius:1px;
+      border:1px solid #E5EBEC;
+      border-bottom-color: transparent;
       cursor: pointer;
     }
     .exprot_tab{
       float: left;
-      padding: 8px 40px;
+      padding: 11px 40px;
       margin: 0 4px;
-      background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);
-      border-radius:4px;
-      border:1px solid rgba(230,234,238,1);
+      /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
+      border-radius:1px;
+      border:1px solid #E5EBEC;
+      border-bottom-color: transparent;
       cursor: pointer;
     }
     .show_tab{
       float: left;
-      padding: 8px 40px;
-      background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);
-      border-radius:4px;
-      border:1px solid rgba(230,234,238,1);
+      padding: 11px 40px;
+      /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
+      border-radius:1px;
+      border:1px solid #E5EBEC;
+      border-bottom-color: transparent;
       cursor: pointer;
     }
   }
@@ -438,10 +443,12 @@
     position: relative;
     z-index: 1;
     height: 41px;
-    background: #fff !important;
-    border-left: 1px solid rgba(216,216,216,1) !important;
-    border-top: 1px solid rgba(216,216,216,1) !important;
-    border-right: 1px solid rgba(216,216,216,1) !important;
+    /*background: #fff !important;*/
+    background: #00BAE3 !important;
+    color: #ffffff;
+    border-left: 1px solid #00BAE3 !important;
+    border-top: 1px solid #00BAE3 !important;
+    border-right: 1px solid #00BAE3 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
@@ -450,7 +457,7 @@
     top: 38px;
     width: 100%;
     // min-height: 420px;
-    padding: 30px 10px 10px;
+    padding: 16px 16px 16px 16px;
     position: absolute;
     bottom: 50px;
     left: 0;
@@ -479,15 +486,16 @@
       margin-left: 5px;
       .search_tab_name{
         display: inline-block;
-        min-width: 70px;
-        height: 30px;
-        line-height: 30px;
+        min-width: 118px;
+        height: 38px;
+        line-height: 38px;
         text-align: center;
-        padding: 0px 8px;
-        background-color: #4D84FF;
+        padding: 0 8px;
+        background-color: #00BAE3;
         color: white;
-        border: 1px solid rgba(0,0,0,0.06);
-        border-radius: 8px 8px 0 0;
+        border: 1px solid #00BAE3;
+        border-radius: 2px 2px 0 0;
+        font-size: 14px;
       }
     }
   }

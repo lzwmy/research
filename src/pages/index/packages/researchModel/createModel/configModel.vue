@@ -1,12 +1,25 @@
 <template>
     <div class="config_model_container">
+      <div class="component_head flex-between-center">
+        <p>
+          <span class="break_box" v-show="$route.query.type=='modify'" @click="breakDetailPage">
+            <i class="iconfont iconfanhui"></i>
+            <span>返回</span>
+            <i class="partition_line"></i>
+          </span>
+          <span class="title">{{$route.query.modelName}}</span>
+        </p>
+        <div class=" cur_pointer head_content flex-start-center">
+          <i class="iconfont iconguanbi" @click="closePage"></i>
+        </div>
+      </div>
       <div class="config_model_box">
         <div class="add_research_model_container" v-loading="loading">
-          <div class="research_model_header" @click="crfLeftToggle" :class="{'crf-left-btn': true,'onclick': crfLeftBtnStatus}">
-            <!--<i class="iconfont iconshousuo" id="modifyKeepAside" title="收缩"></i>
-            <i class="iconfont iconzhankai" id="modifyShowAside" title="展开" style="display: none"></i>-->
-            {{title}}
-          </div>
+          <!--<div class="research_model_header" @click="crfLeftToggle" :class="{'crf-left-btn': true,'onclick': crfLeftBtnStatus}">
+            &lt;!&ndash;<i class="iconfont iconshousuo" id="modifyKeepAside" title="收缩"></i>
+            <i class="iconfont iconzhankai" id="modifyShowAside" title="展开" style="display: none"></i>&ndash;&gt;
+            {{$route.query.modelName}}
+          </div>-->
           <div class="research_content_box">
             <el-row>
               <el-col :span="8" class="model_name">
@@ -53,8 +66,11 @@
                 </el-select>
               </el-col>
               <el-col :span="8">
-                <el-button type="primary" @click="modelSave">保存</el-button>
-                <el-button @click="breakModel">返回</el-button>
+                <el-button class="color_change" type="primary" @click="modelSave">
+                  <i class="iconfont iconbaocun"></i>
+                  保存
+                </el-button>
+                <!--<el-button @click="breakModel">返回</el-button>-->
               </el-col>
             </el-row>
             <div class="segmentation_line"></div>
@@ -72,14 +88,6 @@
   import researchBody from './../researchBody';
   export default {
     props:{
-      title:{
-        type:String,
-        default:null
-      },
-      modelData:{
-        type:Object,
-        default:null
-      }
     },
     data() {
       return {
@@ -111,34 +119,52 @@
         modelName:"",
         modelDesc:"",
         ModifyData:{},
-        crfLeftBtnStatus:false
+        crfLeftBtnStatus:false,
+        modelData:{
+          obj:{},
+          type:"add"
+        }
       }
     },
     methods:{
       resize () {
-        let height = $('#main').height();
-        let width = $('.cloud-component').width()-$('.crf-left-menu').width();
-        //暂时取消
-        /*$('.crf-main-box').css({
-          width:width
-        })*/
-        $('.crf-left-menu .menu-panel-content').height(height - 149);
-        $('.crf-right-menu').height(height - 55);
-        // $('.crf-main').eq(0).height(height - 115);
-        $('.crf-main-box').eq(0).height(height-55);
-        $('.menu_table_box .el-table').eq(0).height(height - 230)
-        /*this.$nextTick(() => {
-          $('.crf-main').eq(0).find('.colwidth-1').width(($('.crf-main').width() - 150) / 2);
-        });*/
+        let height = $('.config_model_container').height();
+        $('.research_box').height(height - 177);
 
+      },
+      // 关闭 按钮
+      closePage() {
+        let diseaseId = this.$route.query.id;
+        this.$router.push({
+          path:"/modelManage",
+          query:{
+            id:diseaseId
+          }
+        })
+      },
+      //返回到 详细页
+      breakDetailPage() {
+        let diseaseId = this.$route.query.id;
+        let name = this.$route.query.modelName;
+        let modelId = this.$route.query.modelId;
+        console.log(diseaseId,name,modelId);
+        /*this.$router.push({
+          path:"/modelManage/detailPage",
+          query:{
+            id:diseaseId,
+            name:name,
+            modelId:modelId
+          }
+        })*/
+        window.history.go(-1);
       },
       breakModel() {
         this.$emit('backModel',{type:'break'})
       },
       modelSave() {
-        if(this.modelData.type == 'add'){
+        if(this.$route.query.type == 'add'){
           this.modelResearchSave();
-        }else if(this.modelData.type=='modify') {
+        }else if(this.$route.query.type=='modify') {
           this.modelModifySave();
         }
       },
@@ -220,7 +246,7 @@
         let that = this;
         let formData = {
           "crfIsAvailable": 1,
-          "diseaseId": that.modelData.obj.diseaseId
+          "diseaseId": that.$route.query.id
         };
         try{
           let data = await that.$http.modelQuerySearchCrf(formData);
@@ -266,7 +292,7 @@
       //保存 --新增
       async modelResearchSave() {
         let exportItem, displayItem;
-        if(this.modelData.type == 'add'){
+        if(this.$route.query.type == 'add'){
           exportItem = this.$refs.researchBox.exportTreeListAdd || [];
           displayItem = this.$refs.researchBox.showTreeListAdd || [];
         }else {
@@ -280,7 +306,7 @@
           "modelDesc": that.modelDesc || "",
           "modelType": that.shareType || "",
           "formRelation": that.relationFrom || "",
-          "diseaseId": that.modelData.obj.diseaseId,
+          "diseaseId": that.$route.query.id,
           "crfList": that.searchTerm||[],
           "queryItem":that.treeData||[],
           "filter":that.$refs.researchBox.searchList||[],
@@ -293,8 +319,15 @@
             that.$message({
               type:"success",
               message:data.msg
+            });
+            // that.$emit('backModel',{type:'add'});
+            //返回 列表页
+            that.$router.push({
+              path:'/modelManage',
+              query:{
+                id:that.$route.query.id
+              }
             })
-            that.$emit('backModel',{type:'add'});
           }
         }catch (error) {
           that.$notice("保存失败")
@@ -303,7 +336,7 @@
       // 保存 -- 编辑
       async modelModifySave() {
         let exportItem, displayItem;
-        if(this.modelData.type == 'add'){
+        if(this.$route.query.type == 'add'){
           exportItem = this.$refs.researchBox.exportTreeListAdd || [];
           displayItem = this.$refs.researchBox.showTreeListAdd || [];
         }else {
@@ -315,12 +348,12 @@
         // return;
         let that = this;
         let fromData ={
-          "modelId": that.ModifyData.modelId || "",
+          "modelId": that.$route.query.modelId || "",
           "modelName": that.modelName || "",
           "modelDesc": that.modelDesc || "",
           "modelType": that.shareType || "",
           "formRelation": that.relationFrom || "",
-          "diseaseId": that.ModifyData.diseaseId || "",
+          "diseaseId": that.$route.query.id || "",
           "crfList": that.searchTerm||[],
           "queryItem":that.$refs.researchBox.searchTreeList||[],
           "filter":that.$refs.researchBox.searchList||[],
@@ -335,7 +368,14 @@
               type:"success",
               message: data.msg
             })
-            that.$emit('backModel',{type:'modify'});
+            that.$router.push({
+              path:"/modelManage/detailPage",
+              query:{
+                id:that.$route.query.id,
+                name:that.$route.query.modelName,
+                modelId:that.$route.query.modelId
+              }
+            })
           }
         }catch (error) {
           that.$notice('保存失败')
@@ -344,11 +384,18 @@
     },
     mounted() {
       this.loading = true;
-      this.resize ();
+      this.$nextTick(()=>{
+        this.resize ();
+      });
       this.modelQuerySearchCrf();
-      /*if(this.modelData.type=='add') {
+      if(this.$route.query.type=='add') {
         this.init();
-      }*/
+      }else if(this.$route.query.type == 'modify') {
+        this.modelData.type = this.$route.query.type;
+        this.$nextTick(function() {
+          this.$refs.researchBox.getDataList(this.$route.query.modelId);
+        })
+      }
       $('#modifyKeepAside').on('click',function() {
         $('.crf-left-menu').hide();
         $(this).hide();
@@ -365,17 +412,56 @@
           width:"80%"
         })
       })
-    }
+    },
+    deactivated() {
+      this.$destroy()
+    },
   }
 </script>
 
 <style lang="less" scoped>
 .config_model_container{
+  .component_head{
+    p{
+      .break_box{
+        font-size: 14px;
+        color: #394263;
+        font-weight: 400;
+        cursor: pointer;
+        .iconfont{
+          font-size: 13px;
+          color: #979BAA;
+          padding-right: 5px;
+        }
+        .partition_line{
+          width: 1px;
+          height: 16px;
+          background-color: #979BAA;
+          display: inline-block;
+          margin: 0 20px;
+          position: relative;
+          top: 2px;
+        }
+      }
+      .title{
+        font-size:18px;
+        font-weight:bold;
+        color: #394263;
+      }
+    }
+  }
   .config_model_box{
     display: flex;
     height: 100%;
     width: 100%;
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
+  }
+  .color_change{
+    background-color: #1BBAE1;
+    color: #ffffff;
+    .iconfont{
+      font-size: 14px;
+    }
   }
 }
 </style>
@@ -399,13 +485,17 @@
     }
     .research_content_box{
       margin: 20px 0;
+      padding: 20px;
+      background-color: #ffffff;
+      border:1px solid #E5EBEC;
+      box-sizing: border-box;
       .model_name{
         text-align: left;
         .el-input{
           width: 60%;
         }
         span{
-          margin-right: 7%;
+          margin-right: 6.5%;
         }
       }
       .description_info{
@@ -414,7 +504,7 @@
           width: 60%;
         }
         span{
-          margin-right: 7%;
+          margin-right: 6.2%;
         }
       }
       .share_type{
@@ -429,7 +519,8 @@
         width: 100%;
         height: 1px;
         /*background-color: #999999;*/
-        border-bottom: 1px dashed #d8dce5;
+        /*border-bottom: 1px dashed #d8dce5;*/
+        /*border-bottom: 1px dashed #d8dce5;*/
       }
       .fromSearch{
         width: 60%;
@@ -438,6 +529,12 @@
     }
     .crf-left-btn{
       background-position: 1% 48%;
+    }
+    .research_box{
+      background-color: #ffffff;
+      padding: 20px;
+      border:1px solid #E5EBEC;
+      box-sizing: border-box;
     }
   }
 </style>

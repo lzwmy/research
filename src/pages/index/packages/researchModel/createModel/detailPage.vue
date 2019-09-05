@@ -9,7 +9,13 @@
           </span>
           <span class="title">{{$route.query.name}}</span>
         </p>
-        <div class=" cur_pointer head_content flex-start-center"></div>
+        <div class=" cur_pointer head_content flex-start-center">
+          <div class="create_model_btn" @click="modifyModel">
+            <!--<i class="iconfont iconbianji1"></i>
+            <span>编辑</span>-->
+            <img src="./images/disease_set_chart.png" alt="">
+          </div>
+        </div>
       </div>
       <div class="detail_page_body" v-loading="loading" element-loading-text="加载中">
         <div class="relation_form_title">
@@ -95,7 +101,28 @@
         },
         //返回上一页
         breakGo() {
-          window.history.go(-1);
+          // window.history.go(-1);
+          let diseaseId = this.$route.query.id;
+          this.$router.push({
+            path:'/modelManage',
+            query:{
+              id:diseaseId
+            }
+          })
+        },
+        modifyModel() {
+          let diseaseId = this.$route.query.id;
+          let modelName = this.$route.query.name;
+          let modelId = this.$route.query.modelId
+          this.$router.push({
+            path:'/modelManage/configModel',
+            query:{
+              id:diseaseId,
+              type:"modify",
+              modelId:modelId,
+              modelName:modelName,
+            }
+          })
         },
         //导出excel
         modelExportExcel() {
@@ -192,6 +219,9 @@
 <style lang="less" scoped>
 .detail_page_container{
   padding: 13px 15px 0 15px !important;
+  .create_model_btn{
+    height: 36px;
+  }
   .component_head{
     p{
       .break_box{
@@ -213,6 +243,11 @@
           position: relative;
           top: 2px;
         }
+      }
+      .title{
+        font-size:18px;
+        font-weight:bold;
+        color: #394263;
       }
     }
   }
