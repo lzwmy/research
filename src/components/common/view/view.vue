@@ -44,7 +44,6 @@ export default {
                 let routerViewHeight = $("body").height();
                 let otherViewHeight = $("#main_header").outerHeight(true) + $("#navbar").outerHeight(true)+ $(".cloud-component").outerHeight(true) +
                                         parseInt($("#main").css("marginTop")) + parseInt($("#main").css("marginBottom")) + ($("#main").outerHeight()- $("#main").height());
-                                        // $("#pagination").outerHeight(true);
                 if (this.$refs.routercomponent && this.$refs.routercomponent.routerViewHeight) {
                     if (this.$route.name == 'index' || this.$route.name == '/') {
                         this.$refs.routercomponent.routerViewHeight = routerViewHeight - otherViewHeight ;
@@ -66,7 +65,7 @@ export default {
         },
         initView() {
             this.$nextTick(() => {
-                let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + $('#app > .footer').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom')) + parseInt($("#main").css('paddingTop')) + parseInt($("#main").css('paddingBottom'));
+                let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom')) + parseInt($("#main").css('paddingTop')) + parseInt($("#main").css('paddingBottom'));
                 $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
             });
         }
