@@ -153,7 +153,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(()=>{
-            console.log('确定删除')
+            console.log('确定删除');
             this.modelManageDelete(data.modelId)
           }).catch(()=>{
             this.$notice("已取消删除");
