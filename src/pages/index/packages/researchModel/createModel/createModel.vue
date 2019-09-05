@@ -37,8 +37,8 @@
                   <el-popover
                     placement="bottom"
                     trigger="click">
-                    <p v-show="item.editable">编辑</p>
-                    <p>删除</p>
+                    <p v-show="item.editable" @click="modifyModel(item)">编辑</p>
+                    <p @click="delModel(item)">删除</p>
                     <i slot="reference" class="iconfont iconbianjibeifen"></i>
                   </el-popover>
               </div>
@@ -70,8 +70,8 @@
                 <el-popover
                   placement="bottom"
                   trigger="click">
-                  <p v-show="item.editable">编辑</p>
-                  <p>删除</p>
+                  <p v-show="item.editable" @click="modifyModel(item)">编辑</p>
+                  <p @click="delModel(item)">删除</p>
                   <i slot="reference" class="iconfont iconbianjibeifen"></i>
                 </el-popover>
               </div>
@@ -95,18 +95,21 @@
       methods:{
         resize() {
           let height = $('#insideContainer').height()-60;
+          $('.research_box').eq(0).css({
+            "height":height+'px !important'
+          })
         },
         //新建模型
         createModel() {
           let diseaseId = this.$route.query.id;
           let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
             return item.id == diseaseId;
-          });;
+          });
           console.log(dataList[0]);
           this.$router.push({
             path:"/modelManage/configModel",
             query:{
-              diseaseId:diseaseId,
+              id:diseaseId,
               type:"add",
               modelId:"none",
               modelName:dataList[0].name,
@@ -120,10 +123,40 @@
           this.$router.push({
             path:'/modelManage/detailPage',
             query:{
-              diseaseId:diseaseId,
+              id:diseaseId,
               name:data.modelName,
               modelId:data.modelId
             }
+          })
+        },
+        //跳转到编辑页面
+        modifyModel(data) {
+          let diseaseId = this.$route.query.id;
+          let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
+            return item.id == diseaseId;
+          });
+          console.log(dataList[0]);
+          this.$router.push({
+            path:"/modelManage/configModel",
+            query:{
+              id:diseaseId,
+              type:"modify",
+              modelId:data.modelId,
+              modelName:data.modelName,
+            }
+          })
+        },
+        //删除
+        delModel(data) {
+          this.$confirm('是否确定删除','提示',{
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(()=>{
+            console.log('确定删除');
+            this.modelManageDelete(data.modelId)
+          }).catch(()=>{
+            this.$notice("已取消删除");
           })
         },
         async modelManageGetDataList() {
@@ -142,7 +175,24 @@
             console.log(error)
           }
           that.loading = false;
-        }
+        },
+        //删除模板
+        async modelManageDelete(value) {
+          let that = this;
+          let formData = {
+            modelId:value
+          };
+          try {
+            let data = await that.$http.modelManageDelete(that.$format(formData));
+            if(data.code==0) {
+              this.$mes('success', data.msg);
+            }
+          }catch (error) {
+            this.$notice("删除失败")
+            console.log(error)
+          }
+          that.modelManageGetDataList();
+        },
       },
       deactivated() {
         this.$destroy()

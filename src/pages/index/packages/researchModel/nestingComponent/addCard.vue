@@ -13,8 +13,8 @@
             </el-option>
           </el-select>
           <span>规则</span>
-          <el-button type="primary" @click.stop="addInsideComponent(item)">增加内组件</el-button>
-          <el-button type="primary" @click.stop="addOuterComponent(item)">增加外组件</el-button>
+          <el-button class="color_style" type="primary" @click.stop="addInsideComponent(item)">增加内组件</el-button>
+          <el-button class="color_style" type="primary" @click.stop="addOuterComponent(item)">增加外组件</el-button>
           <i class="iconfont iconfuhao4" title="删除"
              v-if="delShow"
              @click="delComponentData(pItem,Index)"></i>
@@ -222,4 +222,15 @@
       }
     }
   }
+</style>
+
+<style lang="less" scoped>
+  .add_card_container{
+    .color_style{
+      background:rgba(0,186,227,0.1);
+      color:#00BAE3 ;
+      border:1px solid #00BAE3;
+    }
+  }
+
 </style>
