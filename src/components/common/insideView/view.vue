@@ -56,7 +56,7 @@ export default {
     },
     watch: {
         $route: function(newVal) {
-            this.handleLoadding(false);
+            // c
         }
     },
     mounted () {
@@ -112,6 +112,8 @@ export default {
             this.viewLoading = true;
             if( typeof(this.$refs.routercomponent2.initPage) == 'function') {
                 this.$refs.routercomponent2.initPage();
+            }else {
+                this.handleLoadding(false);
             }
         },
         handleLoadding(state) {

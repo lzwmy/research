@@ -154,7 +154,7 @@
               :default-sort="{prop: 'date', order: 'descending'}"
               @selection-change="handleSelectionChange">
               <el-table-column type="selection"></el-table-column>
-              <el-table-column label="病人姓名" width="150px">
+              <el-table-column label="病人姓名" width="100px">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="onLinkView360(scope.row)">{{scope.row.PATIENT_NAME}}</el-button>
                  </template>
@@ -165,6 +165,7 @@
                 sortable 
                 v-for="column in conditionViewList"
                 :key="column.name" 
+                :width="column.name == 'GENDER_NAME'?'80px':'' || column.name == 'AGE'?'80px':'' "
                 v-if="column.name != 'PATIENT_NAME'"
                 show-overflow-tooltip>
               </el-table-column>
@@ -1118,8 +1119,11 @@ export default {
     width: 250px !important;
   }
   .allCases {
+    .el-tabs__item {
+      border-bottom: 1px solid #E4E7ED !important;
+    }
     .bigContain {
-      box-shadow:0px 5px 10px rgba(78,91,105,0.2);
+      box-shadow:0px 8px 8px rgba(78,91,105,0.1);
     }
   }
 </style>

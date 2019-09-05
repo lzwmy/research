@@ -2,9 +2,8 @@
     <div class="report" v-loading='loading'>
         <el-table
             :data="dataList.content" v-loading="loading" ref="refTable"
-            @row-dblclick='toReportFill'
             @row-click="handleClick">
-            <el-table-column type="expand">
+            <el-table-column type="expand" width="20">
                 <template slot-scope="props">
                     <el-timeline>
                         <el-timeline-item
@@ -21,7 +20,7 @@
             </el-table-column>
             <el-table-column type="index" label="序号" width="60px"></el-table-column>
             <el-table-column prop="visitDate" label="就诊时间" width="110"></el-table-column>
-            <el-table-column prop="reportName" label="报告名称"></el-table-column>
+            <el-table-column prop="reportName" label="报告名称" width="140"></el-table-column>
             <el-table-column prop="patientName" label="姓名"></el-table-column>
             <el-table-column prop="genderName" label="性别"></el-table-column>
             <el-table-column prop="author" label="创建者"></el-table-column>
@@ -34,6 +33,11 @@
                     {{scope.row.status==0?'未填写':'已填写'}}
                 </template>
             </el-table-column> 
+            <el-table-column label="操作" width="80">
+                <template slot-scope="scope">
+                    <el-button size="mini" @click="toReportFill"><i class="icon iconfont iconbianji"></i></el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <!-- 分页 -->
         <pagination :data="dataList" @change="getDataList"></pagination>

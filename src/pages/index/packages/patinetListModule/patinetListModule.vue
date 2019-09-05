@@ -205,16 +205,23 @@
                               :element-loading-text="elementLoadingText"
                               stripe
                               :default-sort="{prop: 'date', order: 'descending'}"
-                              @selection-change="handleSelectionChange"
-                    >
+                              @selection-change="handleSelectionChange">
                       <el-table-column type="selection"></el-table-column>
                       <el-table-column label="病人姓名" sortable width="150">
                         <template slot-scope="scope">
                           <el-button type="text" size="mini" @click="onLinkView360(scope.row)">{{scope.row.PATIENT_NAME}}</el-button>
                         </template>
                       </el-table-column>
-                      <el-table-column :prop="column.name" :label="column.label" sortable v-for="column in conditionViewList" v-if="column.name != 'PATIENT_NAME'"
-                                       :key="column.name" show-overflow-tooltip></el-table-column>
+                      <el-table-column 
+                        :prop="column.name" 
+                        :label="column.label" 
+                        sortable 
+                        v-for="column in conditionViewList" 
+                        v-if="column.name != 'PATIENT_NAME'"
+                        :width="column.name == 'GENDER_NAME'?'80px':'' || column.name == 'AGE'?'80px':'' "
+                        :key="column.name" 
+                        show-overflow-tooltip>
+                      </el-table-column>
                     </el-table>
                     <!-- 分页 -->
                     <pagination :data="item.dataList" @change="getDataList" :id="item.name" :key="item.name"></pagination>
@@ -1742,8 +1749,8 @@
     width: 250px !important;
   }
   .cloud-search {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 0;
+    padding-right: 0;
     padding-top: 20px;
   }
 </style>
