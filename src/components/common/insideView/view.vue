@@ -56,7 +56,6 @@ export default {
     },
     watch: {
         $route: function(newVal) {
-            console.log(newVal)
             this.handleLoadding(false);
         }
     },
@@ -151,7 +150,6 @@ export default {
             &  > .title {
                 height: 60px;
                 line-height: 60px;
-                text-indent: 15px;
                 background-color: #fff;
                 color: #333;
                 font-size: 20px;
@@ -159,8 +157,8 @@ export default {
                 border-bottom: 1px solid #e8e8e8;
                 position: absolute;
                 top: 0px;
-                padding: 0 15px;
-                left: -15px;
+                padding: 0 20px 0 15px;
+                left: 0;
                 right: 0;
                 z-index: 10;
             }

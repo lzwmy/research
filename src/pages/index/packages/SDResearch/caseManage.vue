@@ -440,7 +440,7 @@
 </template>
 
 <script type="text/javascript">
-import './SDResearch.css';
+import './SDResearch.less';
 import echartsContain from 'components/packages/echartsContain/echartsContain';
 import multipleCheckBoxSelect from 'components/packages/multipleCheckBoxSelect/multipleCheckBoxSelect';
 import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
