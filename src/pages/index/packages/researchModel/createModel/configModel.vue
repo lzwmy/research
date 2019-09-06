@@ -457,6 +457,7 @@
     /*background-color: #ffffff;*/
   }
   .color_change{
+    margin-left: 2%;
     background-color: #1BBAE1;
     color: #ffffff;
     .iconfont{

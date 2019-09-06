@@ -23,7 +23,7 @@ export default {
     },
     mounted () {
         this.$nextTick(() => {
-            this.initView();
+            this.handlePageHeight();
             $(window).resize(()=>{
                 this.handlePageHeight();
                 this.initView();
@@ -44,6 +44,7 @@ export default {
     watch: {
         $route (to, from) {
             this.$nextTick(() => {
+                this.initView();
                 this.handlePageHeight();
             });
         }

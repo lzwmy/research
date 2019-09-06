@@ -24,6 +24,9 @@ export default {
       insideView: true,
     };
   },
+  mounted () {
+        console.log("完成")
+    },
   watch: {
     $route () {
       if (this.$route.meta.openMode === 2) {

@@ -181,16 +181,13 @@
             enabled:false
           },
           title: {
-            text: '饼状图',
-            align: 'left',
+            text: '柱状图'
           },
           legend:{
             enabled:false
           },
           xAxis: {
-            categories: [
-              '一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'
-            ],
+            categories: ['苹果', '橘子', '梨', '葡萄', '香蕉'],
             crosshair: true
           },
           yAxis: {
@@ -215,12 +212,23 @@
           plotOptions: {
             column: {
               borderWidth: 0
+            },
+            series: {
+              stacking: 'normal'
             }
           },
-          series: [{
-            name: '中国',
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-          }]
+          series: [
+            {
+              name: '小张',
+              data: [5, 3, 4, 7, 2]
+            }, {
+              name: '小彭',
+              data: [2, 2, 3, 2, 1]
+            }, {
+              name: '小潘',
+              data: [3, 4, 4, 2, 5]
+            }
+          ]
         },
         //折线图
         lineOption:{

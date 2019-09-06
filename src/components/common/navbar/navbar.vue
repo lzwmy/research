@@ -33,7 +33,7 @@ export default {
         this.menuList = this.$store.state.user.menuList;
     },
     mounted () {
-        this.$emit('mountedFinish')
+        console.log("完成")
     },
     methods: {
         toRouter(data) {
