@@ -7,6 +7,7 @@
         <div class="display_text">
           <span>报告个数：{{crfSum}}</span>
           <span> ，患者数量 {{patientCount}}</span>
+          <span>, 查询时间 {{consumeTime}}s</span>
         </div>
       </div>
       <div class="show_search_tab" v-if="active==1">
@@ -110,6 +111,7 @@
           //实时查询字段
           patientCount:0, //患者数量
           crfSum:0,//报告总个数
+          consumeTime:0,//查询时间
         }
       },
       watch:{
@@ -342,6 +344,7 @@
             if(data.code == 0) {
               that.patientCount = data.data.patientCount;
               that.crfSum = data.data.crfSum;
+              that.consumeTime = data.data.consumeTime;
             }
           }catch (error) {
             console.log(error)
