@@ -9,7 +9,7 @@ const routes = [
     name: 'staticInfo',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '统计信息',
       flag: 'staticInfo',
       belongToGroup: 'staticInfo'

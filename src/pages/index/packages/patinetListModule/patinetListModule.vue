@@ -203,21 +203,21 @@
                               :border="false"
                               :empty-text="emptyText"
                               :element-loading-text="elementLoadingText"
-                              stripe
                               :default-sort="{prop: 'date', order: 'descending'}"
                               @selection-change="handleSelectionChange">
                       <el-table-column type="selection"></el-table-column>
-                      <el-table-column label="病人姓名" sortable width="150">
+                      <!-- <el-table-column label="病人姓名" sortable width="150">
                         <template slot-scope="scope">
-                          <el-button type="text" size="mini" @click="onLinkView360(scope.row)">{{scope.row.PATIENT_NAME}}</el-button>
+                          <el-button type="text" size="mini">{{scope.row.PATIENT_NAME}}</el-button>
                         </template>
-                      </el-table-column>
+                      </el-table-column> 
+                      v-if="column.name != 'PATIENT_NAME'"
+                      -->
                       <el-table-column 
                         :prop="column.name" 
                         :label="column.label" 
                         sortable 
                         v-for="column in conditionViewList" 
-                        v-if="column.name != 'PATIENT_NAME'"
                         :width="column.name == 'GENDER_NAME'?'80px':'' || column.name == 'AGE'?'80px':'' "
                         :key="column.name" 
                         show-overflow-tooltip>
@@ -239,7 +239,7 @@
               <el-form :model="enterGroupRuleForm" label-width="95px" @submit.native.prevent>
                 <el-form-item label="课题：" prop="subject">
                   <el-select v-model.trim="enterGroupRuleForm.subject" clearable filterable placeholder="请选择" size="mini"
-                             @change="subjectChange">
+                            @change="subjectChange">
                     <el-option
                       v-for="item in subjectDataList"
                       :key="item.id"
@@ -350,7 +350,7 @@
                        @close="closeCaseListDialog" class="caseListDialog" fullscreen>
               <el-table :height="routerViewHeight"
                         :data="caseList" style="width: 100%" :empty-text="emptyText" :element-loading-text="elementLoadingText"
-                        @selection-change="handleSelectionCaseList" stripe highlight-current-row>
+                        @selection-change="handleSelectionCaseList" highlight-current-row>
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column type="index" label="序号" width="80px"></el-table-column>
                 <el-table-column prop="patientName" label="姓名" min-width="10%" show-overflow-tooltip>
@@ -1347,9 +1347,11 @@
             return item.name;
           }
         })
+        console.log(row)
         let that = this;
         that.reportFollowiUpData = {
           patientId: row.PATIENT_ID || '',
+          orgCode: row.orgCode || '',
           diseaseId: that.currentDiseaseId,
           subjectId: that.selectLabSubjectId,
           groupId: that.selectLabGroupId,
@@ -1358,7 +1360,6 @@
           groupName: this.selectLabGroupName,
 
         }
-        console.log(row)
         that.reportFollowiUpInfo = row;
         sessionStorage.setItem('caseManage',JSON.stringify(this.$route.query));
         that.reportFillData = {
@@ -1508,16 +1509,6 @@
         this.$refs.multipleCheckBoxSelect.checkList = ['BASIC_INFO'];
         this.initPage();
       },
-      //跳转到306视图页面
-      onLinkView360(row) {
-        let obj = {
-          orgCode: row.orgCode,
-          patientId: row.PATIENT_ID,
-          diseaseId: this.currentDiseaseId,
-        };
-        sessionStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
-        window.open('./view360.html?patientId='+row.PATIENT_ID, '_blank');
-      },
       //显示添加患者弹框
       showaddPatientDialog(title, data) {
         this.patientDialogTitle = title;
@@ -1645,8 +1636,6 @@
   overflow: hidden;
   .list_module_content{
     width: 100%;
-    background-color: #FFFFFF;
-    border: 1px solid #E5EBEC;
     box-sizing: border-box;
   }
 }
@@ -1668,10 +1657,9 @@
       width: 200px
     }
     .caseManage .caseManageDropdown {
-      border-radius: 1px;
+      border-radius: 4px;
       border: 1px solid #d8dce5;
       text-align: center;
-      padding: 0 20px;
       height: 32px;
       line-height: 32px;
     }
@@ -1751,7 +1739,7 @@
   .cloud-search {
     padding-left: 0;
     padding-right: 0;
-    padding-top: 20px;
+    padding-top: 10px;
   }
 </style>
 

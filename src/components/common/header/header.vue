@@ -37,7 +37,7 @@
           </el-dropdown>
 
           <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="400px">
-            <el-form :model="ruleForm" :rules="rules" label-width="90px" style="padding-right:20px " ref="ruleForm"
+            <el-form :model="ruleForm" :rules="rules" label-width="100px" style="padding-right:20px " ref="ruleForm"
                     class="el-dialog--center" v-loading="loading">
               <el-form-item label="旧密码：" prop="oldPassword">
                 <el-input v-model.trim="ruleForm.oldPassword" placeholder="请输入旧密码" type="password" :maxlength="20"
@@ -53,8 +53,8 @@
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer el-dialog--center">
-              <el-button @click="cancelSubmit">取消</el-button>
               <el-button type="primary" @click="submit" :disabled="loading">确定</el-button>
+              <el-button @click="cancelSubmit">取消</el-button>
             </div>
           </el-dialog>
       </div>

@@ -7,7 +7,7 @@ const routes = [
     name: 'diseaseChart',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '病种概览',
       flag: 'diseaseChart',
       belongToGroup: 'insideView',
@@ -20,7 +20,7 @@ const routes = [
     name:'chartConfig',
     meta:{
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '病种概览',
       flag: 'diseaseChart',
       belongToGroup: 'insideView',

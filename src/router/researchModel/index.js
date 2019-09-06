@@ -15,7 +15,7 @@ const routes = [
     name: 'modelManage',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '科研建模',
       flag: 'modelManage',
       belongToGroup: 'insideView',
@@ -28,7 +28,7 @@ const routes = [
     name: 'detailPage',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '科研建模',
       flag: 'modelManage',
       belongToGroup: 'insideView',
@@ -41,7 +41,7 @@ const routes = [
     name: 'configModel',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '科研建模',
       flag: 'modelManage',
       belongToGroup: 'insideView',

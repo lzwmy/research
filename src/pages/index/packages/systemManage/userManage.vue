@@ -85,7 +85,7 @@
       </echarts-contain>
     </div>
     <!--新增/编辑用户弹框-->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="400px"
+    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="500px"
               @close="closeUserDialog" class="userManageDialog">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="90px"
               class="el-dialog--center" @submit.native.prevent v-loading="ruleFormDialogLoading">
@@ -119,11 +119,11 @@
                     size="mini"
                     :clearable="true"></el-input>
         </el-form-item>
-        <div class="el-dialog--center">
-          <el-button @click="closeUserDialog" size="mini">取消</el-button>
-          <el-button type="primary" @click="saveUserDialog" size="mini" :disabled="ruleFormDialogLoading">确定</el-button>
-        </div>
       </el-form>
+      <div slot="footer">
+        <el-button @click="closeUserDialog" size="mini">取消</el-button>
+        <el-button type="primary" @click="saveUserDialog" size="mini" :disabled="ruleFormDialogLoading">确定</el-button>
+      </div>
     </el-dialog>
     <!--分配角色-->
     <el-dialog title="分配角色" :visible.sync="dialogRoleVisible" :append-to-body="true" width="650px"
@@ -132,7 +132,7 @@
         :height="(roleList.content && roleList.content.length>0)?(routerViewHeight*1-170):(routerViewHeight*1-135)"
         :data="roleList.content" style="width: 100%" v-loading="roleLoading"
         :empty-text="emptyText" :element-loading-text="elementLoadingText" @selection-change="handleSelectionRoleChange"
-        stripe highlight-current-row ref="roleListTable">
+        highlight-current-row ref="roleListTable">
         <el-table-column type="selection" width="55" :selectable="selectableHandleRole"></el-table-column>
         <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>
         <el-table-column prop="roleName" label="角色名称" min-width="10%" show-overflow-tooltip>
@@ -145,8 +145,8 @@
       <!-- 分页 -->
       <pagination :data="roleList" @change="getRoleList"></pagination>
       <div class="el-dialog--center" slot="footer">
-        <el-button @click="closeRoleDialog" size="mini">取消</el-button>
         <el-button type="primary" @click="saveRoleDialog" size="mini" :disabled="roleLoading">确定</el-button>
+        <el-button @click="closeRoleDialog" size="mini">取消</el-button>
       </div>
     </el-dialog>
     <!-- 分配实验组弹框 -->
@@ -156,9 +156,9 @@
                show-checkbox
                class="branchTree" :indent="50"
                ref="groupsPermissionTree" v-loading="groupsLoading"></el-tree>
-      <div class="el-dialog--center">
-        <el-button @click="closeGroupsPermissionDialog" size="mini">取消</el-button>
+      <div slot="footer">
         <el-button type="primary" @click="saveGroupsPermission" size="mini" :disabled="groupsLoading">确定</el-button>
+        <el-button @click="closeGroupsPermissionDialog" size="mini">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -653,6 +653,7 @@ export default {
           });
         });
       });
+      
       that.groupsLoading = true;
       try {
         let data = await that.$http.userAuthGroupToUser(formData);

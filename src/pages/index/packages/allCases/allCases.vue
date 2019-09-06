@@ -25,11 +25,10 @@
               </span>
             </el-option>
           </el-select>
-          <el-button type="text" size="small" @click="openSaveConditionDialog" style="margin-left: 5px;">
-            <i class="icon iconfont iconbaocun" title="保存筛选" style="font-size: 26px;vertical-align: middle;"></i>
-          </el-button>
 
         </el-form-item>
+        <el-button class="save_btn" type="text" size="small" @click="openSaveConditionDialog" icon="icon iconfont iconbaocun">
+        </el-button>
         <el-form-item class="fuzzyQuery">
           <el-input v-model.trim="fuzzyQuery" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
                     placeholder="请输入搜索内容"></el-input>
@@ -216,16 +215,16 @@
           1、如果只选择了病种，未选择实验组的话，对病例进行入库操作；
           2、如果同时选择了病种、课题及实验组，则进行入库及入组操作。
         </div>
-        <div class="el-dialog--center">
-          <el-button @click="closeEnterGroupDialog" size="mini">取消</el-button>
-          <el-button
-            type="primary"
-            @click="saveEnterGroupDialog"
-            size="mini"
-            :disabled="checkEnterGroupRuleFormDisable(enterGroupRuleForm)">确定
-          </el-button>
-        </div>
       </el-form>
+      <div slot="footer">
+        <el-button @click="closeEnterGroupDialog" size="mini">取消</el-button>
+        <el-button
+          type="primary"
+          @click="saveEnterGroupDialog"
+          size="mini"
+          :disabled="checkEnterGroupRuleFormDisable(enterGroupRuleForm)">确定
+        </el-button>
+      </div>
     </el-dialog>
     <!--保存筛选条件-->
     <el-dialog title="保存筛选条件" :visible.sync="MySaveConditionDialogVisible" :append-to-body="true"
@@ -235,13 +234,13 @@
         <el-form-item label="筛选条件名称：" prop="name">
           <el-input v-model.trim="mySaveConditionRuleForm.name" placeholder="请输入新筛选条件名称"></el-input>
         </el-form-item>
-        <div class="el-dialog--center">
-          <el-button @click="closeMySaveConditionDialog" size="mini">取消</el-button>
-          <el-button type="primary" @click="saveCondition" size="mini"
-                     :disabled="checkDisable(mySaveConditionRuleForm)">确定
-          </el-button>
-        </div>
       </el-form>
+      <div slot="footer">
+        <el-button @click="closeMySaveConditionDialog" size="mini">取消</el-button>
+        <el-button type="primary" @click="saveCondition" size="mini"
+                    :disabled="checkDisable(mySaveConditionRuleForm)">确定
+        </el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -1119,6 +1118,11 @@ export default {
     width: 250px !important;
   }
   .allCases {
+    .save_btn {
+      i {
+        font-size: 26px;
+      }
+    }
     .el-tabs__item {
       border-bottom: 1px solid #E4E7ED !important;
     }

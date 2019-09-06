@@ -23,7 +23,7 @@
         <el-table
           :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
           :data="dataList.content" style="width: 100%" v-loading="loading"
-          :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe>
+          :empty-text="emptyText" :element-loading-text="elementLoadingText" fit>
           <el-table-column type="index" label="序号" width="100px"></el-table-column>
           <el-table-column prop="categoryName" label="医学分类名称"></el-table-column>
           <el-table-column prop="categoryDesc" label="描述" show-overflow-tooltip></el-table-column>
@@ -43,7 +43,7 @@
     <el-dialog 
       :title="ruleFormDialog.title" 
       :visible.sync="ruleFormDialog.visible" 
-      :append-to-body="true" 
+      :append-to-body="true"
       width="40%">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="120px"
                class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading">

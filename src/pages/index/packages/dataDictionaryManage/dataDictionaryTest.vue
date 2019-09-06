@@ -24,7 +24,7 @@
               <div class="content">
                 <div class="global-nest-item-child" v-if="module.modules">
                   <el-table :data="module.modules" style="width: 100%" border
-                            :empty-text="emptyText" :element-loading-text="elementLoadingText" stripe
+                            :empty-text="emptyText" :element-loading-text="elementLoadingText"
                             highlight-current-row :cell-style="handleRowStyle" v-if="tableRenderAgain">
                     <el-table-column prop="name" label="字段名" min-width="10%">
                       <template slot-scope="scope">

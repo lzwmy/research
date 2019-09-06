@@ -23,13 +23,13 @@
                     
                 <el-form-item class="flex-right">
                     <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
-                    <el-button @click="reset" icon="el-icon-circle-close">清 空</el-button>
+                    <el-button @click="reset" icon="icon iconfont iconlujing1">清 空</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <!--搜索结果-->
-        <div class="cloud-search-list" v-loading="loading">
-            <ul class="flex-start-center">
+        <div class="cloud-search-list">
+            <ul class="card flex-start-center" v-loading="loading">
                 <li v-for="(item,index) in dataList" :key="index" class="box flex-start-center">
                     <div class="box_left">
                         <h3>{{item.patientName}}</h3>
@@ -52,7 +52,6 @@
 <script>
 import mixins from 'components/mixins';
 import utils from 'components/utils/index';
-import 'assets/css/common.less';
 
 export default {
     name: 'patientFollowUp',
@@ -218,8 +217,10 @@ export default {
 
 
 <style lang="less" scoped>
-    ul {
+    .card {
         flex-wrap: wrap;
+        position: relative;
+        min-height: 600px;
         li {
             height: 120px;
             border-radius: 4px;

@@ -32,7 +32,7 @@
         <el-table
           :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
           :data="dataList.content" style="width: 100%;height: 1000px;" v-loading="loading"
-          :empty-text="emptyText" :element-loading-text="elementLoadingText" stripe highlight-current-row ref="roleTable">
+          :empty-text="emptyText" :element-loading-text="elementLoadingText" highlight-current-row ref="roleTable">
           <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>
           <el-table-column prop="roleName" label="角色名称" min-width="10%" show-overflow-tooltip>
           </el-table-column>
@@ -71,9 +71,9 @@
       </echarts-contain>
     </div>
     <!--新增/编辑角色弹框-->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="400px"
+    <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="600px"
                @close="closeRoleDialog" class="roleManageDialog">
-      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="90px"
+      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="100px"
                class="el-dialog--center" @submit.native.prevent>
         <el-form-item label="角色名称：" prop="roleName">
           <el-input v-model.trim="ruleFormDialog.roleName" placeholder="请输入角色名称" :maxlength="100"
@@ -92,22 +92,21 @@
           <el-input v-model.trim="ruleFormDialog.remarks" placeholder="请输入备注(不超过500个字)" :rows="4" :maxlength="500" size="mini"
                     :clearable="true" type="textarea" resize="none"></el-input>
         </el-form-item>
-        <div class="el-dialog--center">
-          <el-button @click="closeRoleDialog" size="mini">取消</el-button>
-          <el-button type="primary" @click="saveRoleDialog" size="mini">确定</el-button>
-        </div>
       </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="saveRoleDialog('ruleFormDialog')" size="mini">确定</el-button>
+        <el-button @click="closeRoleDialog" size="mini">取消</el-button>
+      </div>
     </el-dialog>
     <!-- 分配权限弹框 -->
-    <el-dialog title="设置角色权限" :visible.sync="permissionDialogVisible" :append-to-body="true" width="350px"
-               height="400px"
-               @close="closePermissionDialog" class="roleManageTree">
+    <el-dialog title="设置角色权限" :visible.sync="permissionDialogVisible" :append-to-body="true" width="400px"
+              @close="closePermissionDialog" class="roleManageTree">
       <el-tree v-if="treeRenderAgain" :data="permissionList" :props="permissionProps" node-key="id" show-checkbox
-               class="branchTree" :indent="50"
-               ref="permissionTree" default-expand-all v-loading="menusLoading"></el-tree>
-      <div class="el-dialog--center">
-        <el-button @click="closePermissionDialog" size="mini">取消</el-button>
+              class="branchTree" :indent="50"
+              ref="permissionTree" default-expand-all v-loading="menusLoading"></el-tree>
+      <div slot="footer">
         <el-button type="primary" @click="savePermission" size="mini" :disabled="menusLoading">确定</el-button>
+        <el-button @click="closePermissionDialog" size="mini">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -262,7 +261,7 @@ export default {
         this.ruleFormDialog[key] = row[key];
       }
     },
-    saveRoleDialog () {
+    saveRoleDialog (ruleFormDialog) {
       let that = this;
       let formData = {};
       let msg = '';
@@ -328,18 +327,19 @@ export default {
       try {
         let data = await that.$http.roleGetRole(formData);
         if (data && data.code == '0') {
+          let menuList = data.data.menuList;
           let selectedKeys = [];
-          data.data.menuList.forEach(item1 => {
-            if (item1.menuLevel == 3) {
-              selectedKeys.push(item1.id);
+          let unLeafNode = [];
+
+          //需要把非叶子节点id去除
+          for(let i = 0; i < menuList.length; i++) {
+            this.findunLeafNode(menuList[i],menuList,unLeafNode);
+          }
+          menuList.forEach(item => {
+            if(unLeafNode.indexOf(item.id) == -1) {
+              selectedKeys.push(item.id);
             }
-            that.permissionList.forEach(item2 => {
-              if (item1.menuLevel == 2 && item1.id == item2.id && item2.children.length == 0) {
-                selectedKeys.push(item1.id);
-              }
-            });
           });
-          selectedKeys.push(that.defaultCheckedMenuIdList);
           that.$refs.permissionTree.setCheckedKeys(selectedKeys);
           that.menusLoading = false;
         }
@@ -348,6 +348,14 @@ export default {
         that.permissionDialogVisible = false;
         that.menusLoading = false;
         console.log(error);
+      }
+    },
+    //找到非叶子节点id
+    findunLeafNode(item,arr,unLeafNode) {
+      for(let j = 0; j < arr.length; j++) {
+        if(item.menuCode === arr[j].superiorMenu) {
+          unLeafNode.push(item.id);
+        }
       }
     },
     async getPermissionTree () {
@@ -379,60 +387,44 @@ export default {
                   parent.children.push(child);
                 }
               }
+
             });
           });
-          // console.log(that.permissionList);
+          this.menuLevel3(that.menusList,that.permissionList);
         }
       } catch (error) {
         that.$notice('获取菜单树失败');
         console.log(error);
       }
     },
+    menuLevel3(menuList,arr) {
+      arr.forEach(leve1=>{
+        leve1.children.forEach(leve2=>{
+          leve2.children = [];
+          menuList.forEach(item=>{
+            if(item.menuLevel == 4 && leve2.menuCode == item.superiorMenu){
+              item.children = [];
+              leve2.children.push(item)
+            }
+          })
+        })
+      })
+
+    },
     async savePermission () {
-      let that = this;
-      let menuIds = that.$refs.permissionTree.getCheckedKeys();
-      // 由于这样获取的节点，如果一个1级菜单下面只选择了部分二级菜单，则这个1级菜单的id并没有获取到，而后台接收需要这个父级id，所以需要处理menuIds；
-      let needParentMenus = [];
-      let allParentMenus = [];
-      menuIds.forEach(id => {
-        that.menusList.forEach(item => {
-          if (id == item.id && item.menuLevel == 3) {
-            needParentMenus.push(item);
-          }
-        });
-      });
-      needParentMenus.forEach(item1 => {
-        that.menusList.forEach(item2 => {
-          if (item1.superiorMenu == item2.menuCode && item2.menuLevel == 2) {
-            allParentMenus.push(item2);
-          }
-        });
-      });
-      allParentMenus.forEach(item1 => {
-        let haveFlag = false;
-        menuIds.forEach(id => {
-          if (id == item1.id) {
-            haveFlag = true;
-            return false;
-          }
-        });
-        if (!haveFlag) {
-          menuIds.push(item1.id);
-        }
-      });
       let formData = {
-        menuIds: menuIds,
-        roleId: that.currRole.id
+        menuIds: this.$refs.permissionTree.getCheckedKeys().concat(this.$refs.permissionTree.getHalfCheckedKeys()),
+        roleId: this.currRole.id
       };
-      that.menusLoading = true;
+      this.menusLoading = true;
       try {
-        let data = await that.$http.roleBindMenuToRole(formData);
+        let data = await this.$http.roleBindMenuToRole(formData);
         if (data && data.code == '0') {
-          that.$notice(data.msg);
-          that.closePermissionDialog();
+          this.$notice(data.msg);
+          this.closePermissionDialog();
         }
       } catch (error) {
-        that.$notice('绑定菜单权限失败');
+        this.$notice('绑定菜单权限失败');
         console.log(error);
       }
     },
