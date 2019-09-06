@@ -56,7 +56,7 @@
               </el-col>
               <el-col :span="8">
                 <span>表单关系</span>
-                <el-select class="fromSearch" v-model="relationFrom">
+                <el-select class="fromSearch" v-model="relationFrom" @change="changeRelationForm">
                   <el-option
                     v-for="item in relationFromList"
                     :key="item.value"
@@ -76,7 +76,12 @@
             <div class="segmentation_line"></div>
           </div>
           <div class="research_box" style="min-height: 500px;">
-            <component ref="researchBox" :treeData="treeData" :modelData="modelData" :is="switchComponent" @status-modifyTableData="callbackModifyData"></component>
+            <component ref="researchBox"
+                       :treeData="treeData"
+                       :modelData="modelData"
+                       :is="switchComponent"
+                       @status-modifyTableData="callbackModifyData">
+            </component>
           </div>
         </div>
       </div>
@@ -87,8 +92,6 @@
 <script>
   import researchBody from './../researchBody';
   export default {
-    props:{
-    },
     data() {
       return {
         switchComponent:researchBody,
@@ -147,7 +150,6 @@
         let diseaseId = this.$route.query.id;
         let name = this.$route.query.modelName;
         let modelId = this.$route.query.modelId;
-        console.log(diseaseId,name,modelId);
         /*this.$router.push({
           path:"/modelManage/detailPage",
           query:{
@@ -171,14 +173,18 @@
       changeFromSearchTerm(value) {
         console.log(value)
         if(value.length!==0) {
-          this.modelTreeList(value)
+          this.modelTreeList(value);
+          this.$refs.researchBox.modelDisplaySum();
         }else{
           this.$refs.researchBox.searchList = [];
           this.$refs.researchBox.searchTreeList = [];
           this.$refs.researchBox.exportTreeListAdd = [];
           this.$refs.researchBox.showTreeListAdd = [];
         }
-
+      },
+      changeRelationForm(value) {
+        this.relationFrom = value;
+        this.$refs.researchBox.modelDisplaySum();
       },
       callbackModifyData(data) {
         if(data!==null && data !== 'null'){
@@ -396,22 +402,6 @@
           this.$refs.researchBox.getDataList(this.$route.query.modelId);
         })
       }
-      $('#modifyKeepAside').on('click',function() {
-        $('.crf-left-menu').hide();
-        $(this).hide();
-        $('#modifyShowAside').show();
-        $('.crf-main-box').css({
-          width:"100%"
-        });
-      });
-      $('#modifyShowAside').on('click',function() {
-        $('.crf-left-menu').fadeIn();
-        $(this).hide();
-        $('#modifyKeepAside').show();
-        $('.crf-main-box').css({
-          width:"80%"
-        })
-      })
     },
     deactivated() {
       this.$destroy()
@@ -536,6 +526,15 @@
       padding: 20px;
       border:1px solid #E5EBEC;
       box-sizing: border-box;
+    }
+  }
+</style>
+<style lang="less">
+  .research_content_box{
+    .fromSearch{
+      .el-input{
+        height: auto;
+      }
     }
   }
 </style>

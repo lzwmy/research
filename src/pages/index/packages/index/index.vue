@@ -76,7 +76,7 @@ export default {
                       color: '#9ed464',
                       lineWidth: 1,
                   },
-              }
+              },
           },
           yAxis: {
               min: 0,

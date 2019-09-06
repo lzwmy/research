@@ -14,6 +14,7 @@
             <!--<i class="iconfont iconbianji1"></i>
             <span>编辑</span>-->
             <img src="./images/disease_set_chart.png" alt="">
+            <!--<i class="iconfont iconbianji1" title="编辑"></i>-->
           </div>
         </div>
       </div>
@@ -192,7 +193,7 @@
             let data = await that.$http.modelExportTable(formData);
             let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
             let dateTitle = utils.formateDate(new Date().getTime());
-            console.log(dateTitle)
+            // console.log(dateTitle)
             // let fileNmae = data.headers['content-disposition'].split('filename=')[1];
             // that.$download(fileNmae, blob);
             that.$download(dateTitle+'.xlsx', blob);
@@ -221,6 +222,10 @@
   padding: 13px 15px 0 15px !important;
   .create_model_btn{
     height: 36px;
+    .iconfont{
+      font-size:18px;
+      color: #666666;
+    }
   }
   .component_head{
     p{

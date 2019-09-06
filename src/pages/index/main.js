@@ -28,8 +28,6 @@ import 'assets/css/crfStyle.less';
 import 'assets/fonticon/iconfont.css';
 import 'assets/css/common.less';
 
-
-
 Vue.use(VueQuillEditor)
 Vue.use(install);
 Vue.use(VueRouter);

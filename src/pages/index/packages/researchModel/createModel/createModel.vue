@@ -105,7 +105,7 @@
           let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
             return item.id == diseaseId;
           });
-          console.log(dataList[0]);
+          // console.log(dataList[0]);
           this.$router.push({
             path:"/modelManage/configModel",
             query:{
@@ -118,7 +118,7 @@
         },
         //跳转到详细页面
         jumpDetailPage(data) {
-          console.log(data);
+          // console.log(data);
           let diseaseId = this.$route.query.id;
           this.$router.push({
             path:'/modelManage/detailPage',
@@ -135,7 +135,7 @@
           let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
             return item.id == diseaseId;
           });
-          console.log(dataList[0]);
+          // console.log(dataList[0]);
           this.$router.push({
             path:"/modelManage/configModel",
             query:{
@@ -153,7 +153,7 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(()=>{
-            console.log('确定删除');
+            // console.log('确定删除');
             this.modelManageDelete(data.modelId)
           }).catch(()=>{
             this.$notice("已取消删除");
@@ -166,7 +166,6 @@
           };
           try {
             let data = await that.$http.modelManageGetDataList(formData);
-            console.log(data);
             if(data.code ==0) {
               that.commonList = data.data.common.modelList;
               that.personalList = data.data.personal.modelList;

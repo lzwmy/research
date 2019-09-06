@@ -4,7 +4,7 @@
       <div class="card_content_box">
         <div class="card_basic_info" :class="{'active':this.$store.state.researchModel.researchData == item}" @click.stop="activeStyle(item)">
           <span class="help_inline">匹配一下</span>
-          <el-select v-model="item.matchType">
+          <el-select v-model="item.matchType" @change="stateTransmit">
             <el-option
               v-for="item in matchTypeList"
               :key="item.value"
@@ -18,7 +18,7 @@
           <i class="iconfont iconfuhao4" title="删除"
              v-if="delShow"
              @click="delComponentData(pItem,Index)"></i>
-          <add-line-info v-for="(it,index) in item.nodeList" :item="it" :Index="index" :PItem="item.nodeList"></add-line-info>
+          <add-line-info v-for="(it,index) in item.nodeList" :item="it" :Index="index" :PItem="item.nodeList" @state-refresh="stateTransmit"></add-line-info>
           <addCard v-for="(it,index) in item.children"  :pItem="item.children" :Index="index" :item="it" :delShow="true"></addCard>
         </div>
       </div>
@@ -102,6 +102,10 @@
       computed:{
       },
       methods:{
+        //状态传递
+        stateTransmit(){
+          this.$emit('state-refresh',{refresh:true})
+        },
         activeStyle(obj) {
           console.log(this.$store.state.researchModel.researchData);
           console.log(obj);

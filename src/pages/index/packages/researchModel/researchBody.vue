@@ -4,6 +4,10 @@
         <div class="search_tab " :class="{'active':active==1}" @click="searchTab">查询项</div>
         <div class="exprot_tab" :class="{'active':active==2}" @click="switchTab">展示项</div>
         <div class="show_tab" :class="{'active':active==3}" @click="exportTab">导出项</div>
+        <div class="display_text">
+          <span>报告个数：{{crfSum}}</span>
+          <span> ，患者数量 {{patientCount}}</span>
+        </div>
       </div>
       <div class="show_search_tab" v-if="active==1">
         <div class="tree_style left" v-loading="loadingTree">
@@ -24,7 +28,7 @@
         <div class="search_tab_component" v-for="(item,index) in searchList" :key="index">
           <div class="search_tab_name">{{item.reportName}}</div>
           <!--v-for="(it,index) in item.query"-->
-          <add-card :pItem="item.children" :Index="index" :item="item.query" :delShow="false"></add-card>
+          <add-card :pItem="item.children" :Index="index" :item="item.query" :delShow="false" @state-refresh="stateRefresh"></add-card>
         </div>
       </div>
       <div class="show_tab_line" v-if="showItemComponent" v-show="active==2">
@@ -180,6 +184,9 @@
             ,
             "reportName": ""
           },
+          //实时查询字段
+          patientCount:0, //患者数量
+          crfSum:0,//报告总个数
         }
       },
       watch:{
@@ -198,7 +205,7 @@
             this.searchTreeList = [];
             this.searchList = [];
           }
-        }
+        },
       },
       created() {
         /*if(this.modelData.type == 'modify'){
@@ -208,7 +215,8 @@
       mounted() {
         this.$nextTick(()=>{
           setTimeout(()=>{
-            this.resize()
+            this.resize();
+            this.modelDisplaySum();
           },300)
         })
       },
@@ -357,6 +365,10 @@
             this.$message.info('请点击对应的报告添加查询条件')
           }
         },
+        //接收参数
+        stateRefresh() {
+            this.modelDisplaySum();
+        },
         //双击查询项返回node节点
         handleDblclickNode({leafNode}) {
           if(leafNode){
@@ -393,6 +405,25 @@
             }
           }
         },
+        //实时更新 患者人数和报告数
+        async modelDisplaySum() {
+          let that = this;
+          let formData = {
+            formRelation:that.$parent.relationFrom,
+            filter:that.searchList,
+            crfList:that.$parent.searchTerm || [],
+          };
+          // console.log(formData);
+          try {
+            let data  = await this.$http.modelDisplaySum(formData);
+            if(data.code == 0) {
+              that.patientCount = data.data.patientCount;
+              that.crfSum = data.data.crfSum;
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        }
       }
     }
 </script>
@@ -441,6 +472,16 @@
       cursor: pointer;
       border-top-left-radius: 2px;
       border-top-right-radius: 2px;
+    }
+    .display_text{
+      color: #D95555;
+      display: inline-block;
+      float: right;
+      margin-left: 10px;
+      line-height: 36px;
+      /*position: absolute;
+      top: 2%;
+      left: 40%;*/
     }
   }
   .active{

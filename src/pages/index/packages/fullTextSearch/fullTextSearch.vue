@@ -1,7 +1,7 @@
 <!-- 全文检索 -->
 <template>
   <div class="cloud-component fullTextSearch">
-    <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" :widthRatio="1">
+<!--    <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" :widthRatio="1">-->
       <div class="search-init" v-if="step === 'init'">
         <div class="page-title">临床科研数据全文检索</div>
         <el-input placeholder="请输入您需要检索的关键字信息" v-model="keyword" @keyup.enter.native="search" class="input-with-btn">
@@ -11,7 +11,7 @@
       <div class="search-rs" v-else>
         <div class="search-box">
           <el-input v-model="keyword" placeholder="请输入内容" @keyup.enter.native="search" class="input-search"></el-input>
-          <el-button type="primary" style="height: 38px;" size="medium" @click="search">全文检索</el-button>
+          <el-button type="primary" style="height: 39px;" size="medium" @click="search">全文检索</el-button>
           <!--<span icon="el-icon-search" class="search-btn" ></span>-->
         </div>
         <div style="padding-bottom:20px; border-bottom: 1px dashed #D8DCE4;width: 845px">
@@ -52,7 +52,7 @@
             :data="dataContent"
             tooltip-effect="dark"
             :show-header="false"
-            style="width: 861px;height:570px;overflow: auto;"
+            style="width: 861px;min-height:570px;overflow: auto;"
             @selection-change="handleSelectionChange"
             @row-dblclick="jumpReportRead">
             <el-table-column
@@ -87,7 +87,7 @@
           </el-table>
         </div>
       </div>
-    </echarts-contain>
+<!--    </echarts-contain>-->
     <!-- 入组弹窗 -->
     <el-dialog title="入库入组" :visible.sync="enterGroupDialogVisible" :append-to-body="true" width="400px"
                @close="closeEnterGroupDialog" class="enterGroupDialog">
@@ -217,7 +217,9 @@ export default {
     //   })
     // },
     initPage () {
-      this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
+      // this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
+      let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom')) + parseInt($("#main").css('paddingTop')) + parseInt($("#main").css('paddingBottom'));
+      $('.search-init').css({'min-height': $('body').height() - otherHeihgt +'px'})
     },
     search () {
       if(this.keyword!=="" ){
@@ -512,7 +514,7 @@ export default {
       text-align: left;
       height: 100%;
       padding-top: 35px;
-      background: url("./images/fulltext_green.png") no-repeat 99% 98%;
+      /*background: url("./images/fulltext_green.png") no-repeat 99% 98%;*/
       background-size: 300px auto;
     }
   }
@@ -539,7 +541,8 @@ export default {
     height: 50px !important;
     line-height: 48px;
     font-size: 14px;
-    border-radius: 8px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
     padding-left: 20px;
   }
 
@@ -547,7 +550,7 @@ export default {
     text-align: left;
     height: 100%;
     padding-top: 35px;
-    background: url("./images/fulltext_blue.png") no-repeat 99% 98%;
+    /*background: url("./images/fulltext_blue.png") no-repeat 99% 98%;*/
     background-size: 300px auto;
   }
 

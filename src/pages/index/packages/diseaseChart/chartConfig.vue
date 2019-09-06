@@ -312,7 +312,7 @@
           },
           yAxis: {
             title: {
-              text: '气温 (°C)',
+              text: '',
             },
             lineWidth: 1,
             minorGridLineWidth: 0,
