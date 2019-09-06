@@ -21,8 +21,12 @@
             <!--@click.stop="jumpDetailPage(item)"-->
             <div class="personal_card"  v-for="(item,index) in personalList" :key="index">
               <div class="text_model" @click.stop="jumpDetailPage(item)">
-                <p>{{item.patientCount }}/{{item.crfSum}}</p>
-                <p>{{item.modelName}}</p>
+                <p>
+                  <span title="患者数量">{{item.patientCount }}</span>
+                  /
+                  <span title="报告个数">{{item.crfSum}}</span>
+                </p>
+                <p class="desc">{{item.modelName}}</p>
               </div>
               <div class="img_model">
                 <i class="iconfont iconshuju"></i>
@@ -54,8 +58,12 @@
           <div class="personal_content">
             <div class="personal_card"  v-for="(item,index) in commonList" :key="index">
               <div class="text_model" @click.stop="jumpDetailPage(item)">
-                <p>{{item.patientCount }}/{{item.crfSum}}</p>
-                <p>{{item.modelName}}</p>
+                <p>
+                  <span title="患者数量">{{item.patientCount }}</span>
+                  /
+                  <span title="报告个数">{{item.crfSum}}</span>
+                </p>
+                <p class="desc">{{item.modelName}}</p>
               </div>
               <div class="img_model">
                 <i class="iconfont iconshuju"></i>
@@ -282,6 +290,22 @@
           box-shadow: 0 2px 16px -11px rgba(0, 0, 0, 0.5);
           transition: all 300ms;
           .text_model{
+            p{
+              :first-child{
+                font-size: 22px;
+                color: #04B8DD;
+                font-family:Roboto;
+                font-weight: bold;
+                padding-bottom: 8px;
+              }
+              :last-child{
+                font-size: 22px;
+                color: #04B8DD;
+                font-family:Roboto;
+                font-weight: bold;
+                padding-bottom: 8px;
+              }
+            }
             :first-child{
               font-size: 22px;
               color: #04B8DD;
@@ -289,7 +313,7 @@
               font-weight: bold;
               padding-bottom: 8px;
             }
-            :last-child{
+            .desc{
               display: inline-block;
               width: 140px;
               font-size: 12px;
