@@ -1,11 +1,11 @@
 <template>
     <div class="cloud-container">
-        <transition name="el-fade-in-linear" mode="out-in">
+        <transition name="el-fade-in" mode="out-in">
             <keep-alive exclude="insideView">
                 <router-view v-if="$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
             </keep-alive>
         </transition>
-        <transition name="el-fade-in-linear" mode="out-in">
+        <transition name="el-fade-in" mode="out-in">
             <router-view v-if="!$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
         </transition>
     </div>

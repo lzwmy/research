@@ -6,7 +6,7 @@ const routes = [
     name: 'researchReportManage',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '报告列表',
       flag: 'researchReportManage',
       belongToGroup: 'researchReportManage',

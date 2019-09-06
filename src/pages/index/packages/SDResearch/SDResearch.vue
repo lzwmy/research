@@ -16,25 +16,28 @@
           <el-button icon="el-icon-plus" type="primary">新建病种</el-button>
         </div> -->
         <div class="cart">
-          <router-link tag="a" class="sd-title-wrapper" v-for="item in dataList" :key="item.id"
-                      :to="getMenu(item)">
-            <div class="sd-thumbnail">
-              <div class="sd-thumbnail-content">
-                <img :class="'sd-thumbnail-img ' + item.logo + '_bgColor'"
-                    :src="'./static/img/disease-logo/' + item.logo+ '.svg'">
-              </div>
-              <div class="sd-thumbnail-title">
-                <span class="sd-name-span" :title="item.name">{{item.name}}</span>
-              </div>
-            </div>
-            <div class="sd-title-tools">
-              <div>
-                <router-link tag="a" :to="{ name: 'diseaseSet',query:{id:item.id}}" title="病种设置" class="sd-cog-btn">
-                  <span class="name">病种管理</span>
-                </router-link>
-              </div>
-            </div>
-          </router-link>
+          <el-row :gutter="14">
+            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" v-for="(item,index) in dataList" :key="index">
+              <router-link tag="a" class="sd-title-wrapper" :to="getMenu(item)">
+                <div class="sd-thumbnail">
+                  <div class="sd-thumbnail-content">
+                    <img :class="'sd-thumbnail-img ' + item.logo + '_bgColor'"
+                        :src="'./static/img/disease-logo/' + item.logo+ '.svg'">
+                  </div>
+                  <div class="sd-thumbnail-title">
+                    <span class="sd-name-span" :title="item.name">{{item.name}}</span>
+                  </div>
+                </div>
+                <div class="sd-title-tools">
+                  <div>
+                    <router-link tag="a" :to="{ name: 'diseaseSet',query:{id:item.id}}" title="病种设置" class="sd-cog-btn">
+                      <span class="name">病种管理</span>
+                    </router-link>
+                  </div>
+                </div>
+              </router-link>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </div>
@@ -157,13 +160,9 @@ export default {
     .sd-title-wrapper {
       display: inline-block;
       position: relative;
-      width: 187.5px;
-      margin: 15px 15px 0   0;
+      margin-bottom: 14px;
       cursor: pointer;
       box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, .1);
-      &:nth-child(6n){
-        margin-right: 0;
-      }
     }
   }
 

@@ -30,20 +30,24 @@
         <!--搜索结果-->
         <div class="cloud-search-list">
             <ul class="card flex-start-center" v-loading="loading">
-                <li v-for="(item,index) in dataList" :key="index" class="box flex-start-center">
-                    <div class="box_left">
-                        <h3>{{item.patientName}}</h3>
-                        <p>{{item.genderName}}/{{item.age}}</p>
-                    </div>
-                    <div class="box_right flex-center-end">
-                        <div class="box_tag"><span>已联系</span></div>
-                        <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber}}</p>
-                        <div class="box_btn_group flex-start-center">
-                            <span class="flex-center-center"><i class="icon iconfont iconzujian9"></i>短信随访</span>
-                            <span class="flex-center-center"><i class="icon iconfont iconzujian11"></i>微信随访</span>
-                        </div>
-                    </div>
-                </li>
+                <el-row :gutter="21">
+                    <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" v-for="(item,index) in dataList" :key="index">
+                        <li class="box flex-start-center">
+                            <div class="box_left">
+                                <h3>{{item.patientName}}</h3>
+                                <p>{{item.genderName}}/{{item.age}}</p>
+                            </div>
+                            <div class="box_right flex-center-end">
+                                <div class="box_tag"><span>已联系</span></div>
+                                <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber}}</p>
+                                <div class="box_btn_group flex-start-center">
+                                    <span class="flex-center-center"><i class="icon iconfont iconzujian9"></i>短信随访</span>
+                                    <span class="flex-center-center"><i class="icon iconfont iconzujian11"></i>微信随访</span>
+                                </div>
+                            </div>
+                        </li>
+                    </el-col>
+                </el-row>
             </ul>
         </div>
     </div>
@@ -227,12 +231,8 @@ export default {
             padding: 15px;
             background:rgba(255,255,255,1);
             box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
-            width: 386px;
-            margin: 0 21px 21px 0;
+            margin-bottom: 21px;
             transition: all 300ms;
-            &:nth-child(3n) {
-                margin-right: 0;
-            }
             &:hover {
                 transform: translateY(-3px);
                 box-shadow:0px 4px 10px rgba(0,0,0,0.3); 

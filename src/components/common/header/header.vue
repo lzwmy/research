@@ -16,9 +16,15 @@
                 @click="changeThemeColor('theme-green')">绿色</span></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown> -->
-
-          <div class="li logout" @click="logout">退出</div>
-
+          <div class="li setText">
+            <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+              <i class="icon iconfont iconzujian23"></i>
+            </el-tooltip>
+          </div>
+          <div class="li setText">
+            <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+              <i class="icon iconfont iconzujian22"></i>
+            </el-tooltip></div>
           <el-dropdown class="li systemSet">
             <div class="welcomeText flex-between-center" title="系统设置">
               <div class="img_head">
@@ -28,11 +34,11 @@
               <span class="el-icon-arrow-down"></span>
             </div>
             <el-dropdown-menu slot="dropdown" class="setdropdown">
-              <el-dropdown-item><span @click="dialogFormVisible=true">修改密码</span>
-              </el-dropdown-item>
+              <el-dropdown-item><span @click="dialogFormVisible=true">修改密码</span></el-dropdown-item>
               <el-dropdown-item>
                 <router-link :to="{name:'openEHRIntroduction'}">关于我们</router-link>
               </el-dropdown-item>
+              <el-dropdown-item><p @click="logout">退出登录</p></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
 
@@ -63,8 +69,6 @@
 </template>
 
 <script>
-import './theme/green/header.less';
-import './theme/blue/header.less';
 import utils from 'components/utils';
 
 export default {
@@ -271,6 +275,10 @@ export default {
             color: #fff;
             font-size: 16px;
             margin-left: 30px;
+            .icon {
+              font-size: 26px;
+              cursor: pointer;
+            }
             .img_head {
               width: 36px;
               height: 36px;

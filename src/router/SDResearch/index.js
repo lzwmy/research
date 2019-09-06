@@ -28,7 +28,7 @@ const routes = [
     name: 'caseManage',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '病例管理',
       flag: 'caseManage',
       belongToGroup: 'SDResearch',
@@ -41,7 +41,7 @@ const routes = [
     name: 'diseaseSet',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '专病科研',
       flag: 'SDResearch',
       belongToGroup: 'SDResearch'
@@ -53,7 +53,7 @@ const routes = [
     name: 'enterGroupManager',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '入组管理',
       flag: 'enterGroupManager',
       belongToGroup: 'enterGroupManager',

@@ -12,7 +12,7 @@
             width="100%"
             v-model="popoverVisible"
             :visible-arrow="false"
-            trigger="hover">
+            trigger="click">
             <ul class="disease_content flex-start-center">
                 <li v-for="(item,index) in dataList" :key="index" @click="handleSelect(item)"> 
                     <div class="disease_img" :class="'thumbnail-img ' + item.logo + '_bgColor'">
@@ -26,6 +26,7 @@
     </div>
 </template>
 <script>
+import '../../../pages/index/packages/SDResearch/card_bgColor.less';
 export default {
     name: 'insideHeader',
     props: {
@@ -124,7 +125,7 @@ export default {
             .popover_disease {
                 height: 100%;
                 min-width: 90px;
-                padding:0 15px;
+                // padding:0 15px;
                 transition: all 300ms;
                 cursor: pointer;
                 &:hover {

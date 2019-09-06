@@ -55,7 +55,7 @@ export default {
   }
   #main {
     margin: 24px auto 0;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
     width: 1200px;
     .cloud-component{
       padding: 0;
