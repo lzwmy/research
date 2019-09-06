@@ -4,6 +4,27 @@
         <div class="cloud-search el-form-item-small">
             <el-form :inline="true" :model="form" class="flex-start-center">
                 <!-- <disease-subjectgroup style="display: inline-block;" @select="changeDiseaseSubjectGroup" width="70px" ref="diseaseSubjectGroup"></disease-subjectgroup>
+                <el-form-item label="状态:">
+                    <el-select v-model="form.state" size="mini">
+                        <el-option label="全部" value=""></el-option>
+                        <el-option label="未填写" value="0"></el-option>
+                        <el-option label="已填写" value="1"></el-option>
+                    </el-select>
+                </el-form-item>
+                    
+                <el-form-item>
+                <el-button type="primary" size="mini" @click="getDataList()">查 询</el-button>
+                <el-button @click="reset" size="mini">清 空</el-button>
+                </el-form-item> -->
+                <!-- <el-form-item label="" label-width=''>
+                    <el-input
+                        placeholder="专病报告"
+                        suffix-icon="el-input__icon el-icon-search"
+                        v-model="form.report"
+                        clearable
+                        style="width:280px;">
+                    </el-input>
+                </el-form-item> -->
                 <el-form-item label="时间范围：">
                     <el-date-picker
                         v-model="form.time"
@@ -22,31 +43,10 @@
                         <el-option label="已填写" value="1"></el-option>
                     </el-select>
                 </el-form-item>
-                    
-                <el-form-item>
-                <el-button type="primary" size="mini" @click="getDataList()">查 询</el-button>
-                <el-button @click="reset" size="mini">清 空</el-button>
-                </el-form-item> -->
-                <el-form-item label="" label-width=''>
-                    <el-input
-                        placeholder="专病报告"
-                        suffix-icon="el-input__icon el-icon-search"
-                        v-model="form.report"
-                        clearable
-                        style="width:280px;">
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="状态:">
-                    <el-select v-model="form.state" size="mini">
-                        <el-option label="全部" value=""></el-option>
-                        <el-option label="未填写" value="0"></el-option>
-                        <el-option label="已填写" value="1"></el-option>
-                    </el-select>
-                </el-form-item>
                 <el-form-item label="" label-width='' class="flex-right">
                     <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
-                    <el-button icon="icon iconfont iconzujian12" type="primary">提交</el-button>
-                    <el-button icon="icon iconfont iconzujian16" type="primary">核查</el-button>
+                    <!-- <el-button icon="icon iconfont iconzujian12" type="primary">提交</el-button>
+                    <el-button icon="icon iconfont iconzujian16" type="primary">核查</el-button> -->
                 </el-form-item>
             </el-form>
         </div>

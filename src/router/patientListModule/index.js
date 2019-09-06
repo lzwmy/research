@@ -7,7 +7,7 @@ const routes = [
     name: 'patientListModule',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '病人列表',
       flag: 'patientListModule',
       belongToGroup: 'insideView',

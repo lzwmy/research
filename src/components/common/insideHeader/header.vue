@@ -57,7 +57,7 @@ export default {
     },
     watch: {   
         $route: function(newVal) {
-            this.disease + "";
+            this.disease = "";
             this.dataList.forEach(item => { 
                 if(this.$route.query.id == item.id) {
                     this.disease = item.name;
@@ -73,8 +73,7 @@ export default {
         handleSelect(item) {
             this.disease = item.name;
             this.popoverVisible = false;
-            this.replaceParamVal("id",item.id)
-            this.$emit('changeDisease')
+            this.$emit('diseaseSelect', item.id)
         },
         async getDataList () {
             this.loading = true;
@@ -89,14 +88,6 @@ export default {
             } catch (error) {
                 console.log(error);
             }
-        },
-        //替换指定传入参数的值,paramName为参数,replaceWith为新值
-        replaceParamVal(paramName,replaceWith) {
-            var oUrl = window.location.href.toString();
-            var re=eval('/('+ paramName+'=)([^&]*)/gi');
-            var nUrl = oUrl.replace(re,paramName+'='+replaceWith);
-            window.location = nUrl;
-        　　window.location.href = nUrl
         }
     }
 };
@@ -143,6 +134,7 @@ export default {
                     display: block;
                     height: 60px;
                     width: 100%;
+                    font-size: 15px;
                     text-align: center;
                     line-height: 60px;
                     color: #777;

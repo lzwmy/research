@@ -77,6 +77,55 @@
 /* 弹框style*/
 .el-dialog {
     min-height: 300px;
+    .el-dialog__header {
+        text-align: left;
+        height: 42px;
+        background-color: #409eff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        .el-dialog__title {
+            color: #fff;
+            font-size: 16px;
+        }
+        .el-dialog__headerbtn {
+            position: static;
+            .el-icon-close {
+                color: #fff;
+                font-size: 20px;
+                font-family: "iconfont" !important;
+                &::before {
+                    content: '\e644';
+                }
+            }
+        }
+    }
+    .el-dialog__body{
+        padding: 35px 35px 75px;
+    }
+    .el-dialog__body:last-child {
+        padding: 35px;
+    }
+    .el-dialog__footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 25px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0;
+    }
+    &.is-fullscreen {
+        .el-dialog__body {
+            overflow: auto;
+        }
+        .el-dialog__footer {
+            display: none;
+        }
+    }
     .el-form-item.fill {
         .el-select {
             display: block;
@@ -98,16 +147,6 @@
     .el-form-item__error {
         min-width: auto !important;
     }
-    .el-dialog__body {
-        padding: 25px 35px 60px 35px;
-    }
-    .el-dialog__footer {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        text-align: center;
-    }
 }
 
 /* 表格样式 */
@@ -127,7 +166,7 @@
             font-size: 13px;
         }
         .el-button {
-            padding: 0 6px;
+            padding: 0;
             line-height: 20px;
             border-width: 0;
             background: transparent;
@@ -145,14 +184,6 @@
             color:#409eff;
         }
     }
-    .el-table__row.current-row{
-        .el-button:hover{
-            color: #5a5e66;
-        }
-        .el-button, .el-button:focus {
-            color: #fff;
-        }
-    } 
 }
 
 

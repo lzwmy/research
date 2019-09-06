@@ -24,7 +24,7 @@ const routes = [
     name: 'crfConfig',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: 'CRF配置',
       flag: 'crfConfig',
       belongToGroup: 'insideView',

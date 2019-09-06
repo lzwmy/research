@@ -11,7 +11,7 @@ const routes = [
     name: 'roleManage',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '角色管理',
       flag: 'roleManage',
       belongToGroup: 'systemManage',
@@ -24,7 +24,7 @@ const routes = [
     name: 'userManage',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '用户管理',
       flag: 'userManage',
       belongToGroup: 'systemManage',

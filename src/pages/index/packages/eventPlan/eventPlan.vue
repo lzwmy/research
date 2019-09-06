@@ -64,6 +64,7 @@
         <el-dialog 
             :title="dialog.title" 
             :visible.sync="dialog.visible" 
+            :append-to-body="true"
             width="650px">
             <el-form 
                 :model="dialogFrom" 
@@ -156,7 +157,7 @@
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="onSave" size="mini" :disabled="dialogFrom.loading">保 存</el-button>
+                <el-button type="primary" @click="onSave('dialogFrom')" size="mini" :disabled="dialogFrom.loading">保 存</el-button>
                 <el-button @click="dialog.visible = false;" size="mini">关 闭</el-button>
             </span>
         </el-dialog>
@@ -312,7 +313,7 @@ export default {
         selectChange() {
 
         },
-        onSave() {
+        onSave(dialogFrom) {
             this.dialog.visible = false;
         },
         showDialog(title, row) {

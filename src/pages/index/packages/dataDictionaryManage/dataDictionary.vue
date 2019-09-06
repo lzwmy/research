@@ -22,9 +22,9 @@
         <el-table
           :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
           :data="dataList.content" style="width: 100%" v-loading="loading"
-          :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe>
+          :empty-text="emptyText" :element-loading-text="elementLoadingText" fit>
           <el-table-column prop="termGroupName" label="代码集名称" width="210px"></el-table-column>
-          <el-table-column prop="termGroupOid" label="代码集OID" width="200px" show-overflow-tooltip>
+          <el-table-column prop="termGroupOid" label="代码集OID" show-overflow-tooltip>
           </el-table-column>
           <el-table-column  label="代码集包含的显示名称" show-overflow-tooltip>
             <template slot-scope="scope">
@@ -38,7 +38,7 @@
               <p v-for="(item, index) in scope.row.formItemRspList" :key="index">{{item.controlName}} > {{item.controlDisplayName}}</p>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="150px">
+          <el-table-column label="操作" width="140">
             <template slot-scope="scope">
               <el-button type="text" @click="onShowDialog(scope.row)"><i class="iconfont iconbianji"></i></el-button>
               <el-button type="text" @click="onDelete(scope.row)"><i class="iconfont iconshanchu del"></i></el-button>
@@ -102,11 +102,11 @@
             </el-table-column>
           </el-table>
         </el-form-item>
-        <div class="el-dialog--center">
-          <el-button type="primary" @click="onSaveDialog" size="mini" :disabled="ruleFormDialog.loading">保 存</el-button>
-          <el-button @click="ruleFormDialog.visible = false;" size="mini">关 闭</el-button>
-        </div>
       </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="onSaveDialog('ruleFormDialog')" size="mini" :disabled="ruleFormDialog.loading">保 存</el-button>
+        <el-button @click="ruleFormDialog.visible = false;" size="mini">关 闭</el-button>
+      </div>
     </el-dialog>
 
     <!--添加医学代码弹框-->
@@ -143,9 +143,6 @@
               </template>
             </el-table-column>
           </el-table>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="addCodeDialog.visible = false;" size="mini">关 闭</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -285,7 +282,7 @@ export default {
       }).catch((error) => {});
     },
     //保存新增/编辑 医学代码集
-    onSaveDialog() {
+    onSaveDialog(ruleFormDialog) {
       let that = this;
       that.$refs.ruleFormDialog.validate(async (valid) => {
         if (!valid) {
@@ -505,7 +502,6 @@ export default {
     font-size: 25px;
     font-weight: 800;
     line-height: 36px !important;
-    vertical-align: middle;
     padding-left: 10px;
   }
   .iconfuhao5,

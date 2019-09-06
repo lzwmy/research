@@ -23,16 +23,28 @@ export default {
     },
     mounted () {
         this.$nextTick(() => {
-            this.initView();
+            this.handlePageHeight();
             $(window).resize(()=>{
                 this.handlePageHeight();
                 this.initView();
             })
+            let headerH = $("#main_header").height();
+            let mainMarginTop = parseInt($('#main').css('marginTop'));
+            $(document).scroll(function() {
+                if($(document).scrollTop() > headerH) {
+                    $("#navbar").addClass('fixed');
+                    $("#main").css({'margin-top': headerH + mainMarginTop +'px'})
+                }else {
+                    $("#navbar").removeClass('fixed');
+                    $("#main").css({'margin-top': '24px'})
+                }
+            });
         });
     },
     watch: {
         $route (to, from) {
             this.$nextTick(() => {
+                this.initView();
                 this.handlePageHeight();
             });
         }

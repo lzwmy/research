@@ -15,7 +15,7 @@ const routes = [
     name: 'dataDictionary',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '医学代码集',
       flag: 'dataDictionary',
       belongToGroup: 'dataDictionaryManage',
@@ -28,7 +28,7 @@ const routes = [
     name: 'medicalCode',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '医学代码',
       flag: 'medicalCode',
       belongToGroup: 'dataDictionaryManage',
@@ -41,7 +41,7 @@ const routes = [
     name: 'medicalCodeClass',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '医学代码分类',
       flag: 'medicalCodeClass',
       belongToGroup: 'dataDictionaryManage',
@@ -54,7 +54,7 @@ const routes = [
     name: 'dataDictionaryTest',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '数据字典',
       flag: 'dataDictionaryTest',
       belongToGroup: 'dataDictionaryManage',

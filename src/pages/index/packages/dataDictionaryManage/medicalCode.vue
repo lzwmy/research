@@ -22,7 +22,7 @@
         <el-table
           :height="(dataList.content && JSON.stringify(dataList.content) != '[]')?(routerViewHeight*1-50):(routerViewHeight*1-10)"
           :data="dataList.content" style="width: 100%" v-loading="loading"
-          :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe>
+          :empty-text="emptyText" :element-loading-text="elementLoadingText" fit>
           <el-table-column type="index" label="序号" width="100px"></el-table-column>
           <el-table-column prop="termItemName" label="显示名"></el-table-column>
           <el-table-column prop="termItemCode" label="显示代码"></el-table-column>
@@ -46,6 +46,7 @@
     <!--添加/编辑代码集弹框-->
     <el-dialog 
       :title="ruleFormDialog.title" 
+      :append-to-body="true"
       :visible.sync="ruleFormDialog.visible" 
       width="45%">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="100px"
@@ -85,11 +86,11 @@
         <el-form-item label="描述：" align="left">
           <el-input type="textarea" :rows="8" v-model="ruleFormDialog.termItemDesc"></el-input>
         </el-form-item>
-        <div class="el-dialog--center">
-          <el-button type="primary" @click="onSaveDialog" size="mini" :disabled="ruleFormDialog.loading">保 存</el-button>
-          <el-button @click="ruleFormDialog.visible = false;" size="mini">关 闭</el-button>
-        </div>
       </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="onSaveDialog('ruleFormDialog')" size="mini" :disabled="ruleFormDialog.loading">保 存</el-button>
+        <el-button @click="ruleFormDialog.visible = false;" size="mini">关 闭</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -221,7 +222,7 @@ export default {
         }
       }).catch((error) => {});
     },
-    onSaveDialog(row) {
+    onSaveDialog(ruleFormDialog) {
       let that = this;
       that.$refs.ruleFormDialog.validate(async (valid) => {
         if (!valid) {

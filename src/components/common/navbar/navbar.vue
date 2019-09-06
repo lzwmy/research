@@ -33,19 +33,7 @@ export default {
         this.menuList = this.$store.state.user.menuList;
     },
     mounted () {
-        this.$nextTick(()=>{
-            let headerH = $("#main_header").height();
-            let mainMarginTop = parseInt($('#main').css('marginTop'));
-            // $(document).scroll(function() {
-            //     if($(document).scrollTop() > headerH) {
-            //         $("#navbar").addClass('fixed');
-            //         $("#main").css({'margin-top': headerH + mainMarginTop +'px'})
-            //     }else {
-            //         $("#navbar").removeClass('fixed');
-            //         $("#main").css({'margin-top': mainMarginTop + 'px'})
-            //     }
-            // });
-        })
+        console.log("完成")
     },
     methods: {
         toRouter(data) {

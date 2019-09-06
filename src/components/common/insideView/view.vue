@@ -1,6 +1,6 @@
 <template>
     <div class="inside_cloud-container" v-loading="loading"  element-loading-background="#eee" element-loading-text="拼命加载中">
-        <insideHeader @changeDisease="handleDisease" @menuViewChange="handleMenuView" :menuPath="menuPath"></insideHeader>
+        <insideHeader @diseaseSelect="handleDiseaseSelect" @menuViewChange="handleMenuView" :menuPath="menuPath"></insideHeader>
         <insideMenu :title="title" @changeLoadding="handleLoadding" :openMenuView="openMenuView" :menuList="menuList" :menuPath="menuPath"></insideMenu>
         <div id="insideContainer" :class="openMenuView?'open':'close'" v-loading="viewLoading"  
                         element-loading-background="#fff"
@@ -32,7 +32,6 @@
 <script>
 import insideHeader from 'components/common/insideHeader/header'
 import insideMenu from 'components/common/insideMenu/menu'
-import footer from 'components/common/footer/footer';
 export default {
     name: 'insideView',
     data () {
@@ -42,22 +41,19 @@ export default {
             title: "",
             menuPath: '/index',
             menuList: [],
-            viewLoading: false
+            viewLoading: false,
+            disease: ""
         };
     },
     components: {
         insideHeader,
         insideMenu,
-        'app-footer': footer,
     },
     created () {
         // this.loading = true;
         this.getMenuList();
     },
     watch: {
-        $route: function(newVal) {
-            // c
-        }
     },
     mounted () {
         this.initView();
@@ -108,8 +104,15 @@ export default {
             this.openMenuView = val
         },
         //切换病种
-        handleDisease() {
+        handleDiseaseSelect(diseaseId) {
             this.viewLoading = true;
+            this.$router.push({
+                path: '/' + this.$route.meta.flag,
+                query: {
+                    id: diseaseId
+                }
+            });
+            typeof(this.$refs.routercomponent2.hideReportFollowiUp)== 'function' && this.$refs.routercomponent2.hideReportFollowiUp();
             if( typeof(this.$refs.routercomponent2.initPage) == 'function') {
                 this.$refs.routercomponent2.initPage();
             }else {

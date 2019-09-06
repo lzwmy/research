@@ -17,7 +17,7 @@
             </div>
             <div class="right flex-end-center">
                 <el-button type="primary" icon="icon iconfont iconweixin1" class="weChat">微信相关</el-button>
-                <el-button type="primary" icon="icon iconfont iconquanjingshitu" class="view">全景视图</el-button>
+                <el-button type="primary" icon="icon iconfont iconquanjingshitu" class="view" @click="onLinkView360">全景视图</el-button>
                 <el-button type="primary" icon="icon iconfont icontianjia" class="report" @click="showDialogReport">添加报告</el-button>
             </div>
         </div>
@@ -257,6 +257,16 @@ export default {
                 this.resize();
             });
         },
+        //跳转到306视图页面
+        onLinkView360() {
+            let obj = {
+                orgCode: this.dataInfo.orgCode,
+                patientId: this.dataInfo.patientId,
+                diseaseId: this.dataInfo.diseaseId,
+            };
+            sessionStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
+            window.open('./view360.html?patientId='+ this.dataInfo.patientId, '_blank');
+        },
         //保存功能
         saveDrawer() {
             this.addTreatmentInfo();
@@ -466,86 +476,6 @@ export default {
                 i{
                     font-size: 14px;
                 }
-            }
-        }
-    }
-    .patientInfo {
-        .content {
-            position: relative;
-            .timeline {
-                width: 60%;
-                margin-top: 33px;
-                .el-timeline-item__node {
-                    background-color: #fff;
-                    .diagnosis {
-                        color: rgba(27, 186, 225, 1);
-                        font-size: 18px;
-                    }
-                    .followUp {
-                        color: rgba(0, 189, 145, 1);
-                        font-size: 18px;
-                    }
-                }
-                .el-timeline-item__tail {
-                    left: 7px;
-                    border-left: 2px solid rgba(27, 186, 225, 0.1);
-                }
-                .el-timeline-item__timestamp {
-                    color: rgba(57, 66, 99, 1);
-                    font-weight: bold;
-                    font-size: 16px;
-                }
-                .el-card__body {
-                    padding: 15px;
-                    p {
-                        color: rgba(89, 101, 144, 1);
-                        line-height: 30px;
-                    }
-                    .el-button {
-                        height: 26px;
-                        line-height: 26px;
-                    }
-                    h4 {
-                        line-height: 30px;
-                        color: rgba(57, 66, 99, 1);
-                    }
-                }
-            }
-            .reportList {
-                position: absolute;
-                top: 55px;
-                right: 20px;
-                bottom: 0;
-                left: 20px;
-            }
-            .group_btn {
-                font-size: 0;
-                width: 130px;
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                .el-button {
-                    width:64px;
-                    height:35px;
-                    background:rgba(101, 210, 237, 1);
-                    border-radius:1px;
-                    margin: 0;
-                    .icon {
-                        font-size: 22px;
-                    }
-                    &.active {
-                        background:rgba(0,186,227,1);
-                    }
-                }
-            }
-        }
-        .record {
-            .el-timeline-item__node--normal {
-                width: 8px;
-                height: 8px;
-            }
-            .el-timeline-item__tail {
-                left: 2px;
             }
         }
     }

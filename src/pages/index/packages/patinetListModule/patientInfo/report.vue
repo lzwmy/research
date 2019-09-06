@@ -25,15 +25,15 @@
             <el-table-column prop="genderName" label="性别"></el-table-column>
             <el-table-column prop="author" label="创建者"></el-table-column>
             <el-table-column prop="updator" label="更新者"></el-table-column>
-            <el-table-column prop="updateTime" label="更新时间" width="180"></el-table-column>
+            <el-table-column prop="updateTime" label="更新时间" width="160"></el-table-column>
             <el-table-column prop="diseaseName" label="病种"></el-table-column>
-            <el-table-column prop="groupName" label="课题组"></el-table-column>
-            <el-table-column label="报告状态" width="120px">
+            <el-table-column prop="groupName" label="课题组" width="120"></el-table-column>
+            <el-table-column label="报告状态" width="100px">
                 <template slot-scope="scope">
                     {{scope.row.status==0?'未填写':'已填写'}}
                 </template>
             </el-table-column> 
-            <el-table-column label="操作" width="80">
+            <el-table-column label="操作" width="65">
                 <template slot-scope="scope">
                     <el-button size="mini" @click="toReportFill"><i class="icon iconfont iconbianji"></i></el-button>
                 </template>

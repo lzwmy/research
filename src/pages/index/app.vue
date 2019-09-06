@@ -24,8 +24,9 @@ export default {
       insideView: true,
     };
   },
-  computed: {
-  },
+  mounted () {
+        console.log("完成")
+    },
   watch: {
     $route () {
       if (this.$route.meta.openMode === 2) {
@@ -34,9 +35,6 @@ export default {
         this.insideView = false;
       }
     },
-  },
-  mounted () {
-    
   },
   methods: {
     
@@ -50,10 +48,10 @@ export default {
   #app {
     background-color: #f0f2f7;
     min-height: 100%;
-    &:not(.insideView) .el-loading-mask {
-      position: fixed;
-      top: 121px;
-    }
+    // &:not(.insideView) .el-loading-mask {
+    //   position: fixed;
+    //   top: 121px;
+    // }
   }
   #main {
     margin: 24px auto 0;

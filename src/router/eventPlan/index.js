@@ -6,7 +6,7 @@ const routes = [
     name: 'eventPlan',
     meta: {
       requireAuth: true,
-      isKeepAlive: true,
+      isKeepAlive: false,
       txt: '事件计划',
       flag: 'eventPlan',
       belongToGroup: 'eventPlan',

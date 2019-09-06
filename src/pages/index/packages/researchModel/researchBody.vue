@@ -90,88 +90,11 @@
           },
           // 查询条件匹配
           searchList: [
-            /*{
-              "query":
-                {
-                  "children":[],
-                  "matchType":0,
-                  "nodeList":[
-                    /!*{
-                      "name":"报告",
-                      "controlType":"RADIO_BUTTON",
-                      "operator":"",
-                      "value1":"",
-                      "value2":"",
-                      "item":{
-                        "name":"单页",
-                        "operator":"",
-                        "value1":"",
-                        "value2":"",
-                        "item":{
-                          "name":"小节",
-                          "operator":"",
-                          "value1":"",
-                          "value2":"",
-                          "item":{
-                            "name":"就诊类型",
-                            "operator":"",
-                            "value1":"专家门诊",
-                            "value2":"",
-                            "item":{}
-                          }
-                        }
-                      }
-                    }*!/
-                    /!*{
-                      "controlType":"SINGLE_INPUT",
-                      "matchType":"",
-                      "operator":"",
-                      "value1":"",
-                      "value2":"",
-                      "itemTree":[
-                        // {
-                        //     "name":"首页"
-                        // },
-                        // {
-                        //     "name":"首页"
-                        // }
-                      ]
-                    }*!/
-                  ],
-                },
-              "reportName":""
-            }*/
           ],
           searchMatchObj:{
             "children":[],
             "matchType":0,
             "nodeList":[
-              /*{
-                "name":"报告",
-                "controlType":"NUMBER_INPUT",
-                "operator":"",
-                "value1":"",
-                "value2":"",
-                "item":{
-                  "name":"单页",
-                  "operator":"",
-                  "value1":"",
-                  "value2":"",
-                  "item":{
-                    "name":"小节",
-                    "operator":"",
-                    "value1":"",
-                    "value2":"",
-                    "item":{
-                      "name":"就诊类型",
-                      "operator":"",
-                      "value1":"专家门诊",
-                      "value2":"",
-                      "item":{}
-                    }
-                  }
-                }
-              }*/
             ],
           },
           searchMathQuery: {

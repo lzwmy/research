@@ -71,24 +71,21 @@ export default {
         };
     },
     watch: {
-        $route(to, from) {
-            if(to.meta.belongToGroup == 'insideView') {
-                this.diseaseId = utils.getQueryString('id');
-            }
-            this.$nextTick(()=>{
-                this.defaultActive = '/' + to.meta.flag;
-            })
-        }
+        // $route(to, from) {
+        //     if(to.meta.belongToGroup == 'insideView') {
+        //         this.diseaseId = utils.getQueryString('id');
+        //     }
+        //     this.$nextTick(()=>{
+        //         this.defaultActive = '/' + to.meta.flag;
+        //     })
+        // },
+        // diseaseId: function(newVal) {
+        //     this.$emit('diseaseIdChange',newVal)
+        // }
     },
     created () {
         this.diseaseId =  this.$route.query.id;
-        if(this.menuList[0] && this.menuList[0].children && this.menuList[0].children.length == 0) {
-            this.defaultActive = this.menuList[0].menuPath;
-        }else {
-            this.defaultActive = this.menuList[0].children[0].menuPath;
-        }
-    },
-    mounted () {
+        this.defaultActive = this.$route.path;
     },
     methods: {
         routerLink(item) {
@@ -96,7 +93,7 @@ export default {
                 path: item.menuPath,
                 query: {id: this.diseaseId}
             })
-            //关闭其它展开项
+            //关闭菜单其它展开项
             if(item.menuLevel == 3) {
                 this.menuList.forEach(item => {
                     if(item.children.length != 0) {
@@ -222,7 +219,7 @@ export default {
                         border-color: #1bbae1;
                     } 
                     span {
-                        color: #f8f8f8;
+                        color: #dedede;
                         cursor: pointer;
                     }
                 }

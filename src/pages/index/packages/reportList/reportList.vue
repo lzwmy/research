@@ -3,7 +3,7 @@
         <!-- 搜索区域 -->
         <div class="cloud-search el-form-item-small">
             <el-form :inline="true" :model="form" class="flex-start-center">
-                <el-form-item label="" label-width=''>
+                <!-- <el-form-item label="" label-width=''>
                     <el-input
                         placeholder="专病报告"
                         suffix-icon="el-input__icon el-icon-search"
@@ -11,6 +11,17 @@
                         clearable
                         style="width:280px;">
                     </el-input>
+                </el-form-item> -->
+                <el-form-item label="时间范围：">
+                    <el-date-picker
+                        v-model="form.time"
+                        type="daterange"
+                        size="mini"
+                        value-format="yyyy-MM-dd"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item label="状态:">
                     <el-select v-model="form.state" size="mini">

@@ -6,7 +6,7 @@
         <router-link tag="a" style="color: #2d8cf0;" :to="{ name: 'userManage'}" v-if="isHasUserManageAuth"> 去授权&gt;</router-link>
       </div>
       <div v-else>
-        <div class="search_content flex-between-center">
+        <!-- <div class="search_content flex-between-center">
           <el-input
             placeholder="专病报告"
             suffix-icon="el-input__icon el-icon-search"
@@ -14,7 +14,7 @@
             clearable>
           </el-input>
           <el-button icon="el-icon-plus" type="primary">新建病种</el-button>
-        </div>
+        </div> -->
         <div class="cart">
           <router-link tag="a" class="sd-title-wrapper" v-for="item in dataList" :key="item.id"
                       :to="getMenu(item)">
