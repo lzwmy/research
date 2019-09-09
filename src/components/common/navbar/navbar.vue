@@ -1,6 +1,6 @@
 <template>
     <div id="navbar">
-        <el-tabs v-model="activeMenuIndex" @tab-click="toRouter">
+        <el-tabs v-model="activeMenuIndex" @tab-click="toRouter" :class="menuList.length == 8?'flex':''">
             <el-tab-pane v-for="(item, index) in menuList" :key="index" :name="item.menuPath">
                 <span slot="label"><i class="icon iconfont" :class="'icon'+item.ico"></i>{{item.menuName}}</span>
             </el-tab-pane>
@@ -31,9 +31,6 @@ export default {
     },
     created () {
         this.menuList = this.$store.state.user.menuList;
-    },
-    mounted () {
-        console.log("完成")
     },
     methods: {
         toRouter(data) {
@@ -77,6 +74,11 @@ export default {
         .el-tabs {
             height: 100%;
             margin: 0 auto;
+            &.flex {
+                .el-tabs__item {
+                    flex: 1;
+                }
+            }
             .el-tabs__nav {
                 width: 100%;
                 display: flex;
@@ -97,8 +99,7 @@ export default {
             }
             .el-tabs__item {
                 height: 100%;
-                flex: 1;
-                padding: 0;
+                padding: 0 40px;
                 line-height: 60px;
                 display: flex;
                 align-items: center;
@@ -111,6 +112,7 @@ export default {
                 &:nth-child(2){
                     width: 120px;
                     flex-grow: 0;
+                    padding-left: 0;
                     padding-right: 30px;
                     justify-content: flex-start;
                 }
@@ -118,7 +120,7 @@ export default {
                     justify-content: flex-end;
                     width: 120px;
                     flex-grow: 0;
-                    padding-left: 30px;
+                    padding-right: 0;
                 }
                 .icon {
                     vertical-align: middle;

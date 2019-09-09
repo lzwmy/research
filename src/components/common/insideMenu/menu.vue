@@ -127,7 +127,7 @@ export default {
         &.close {
             .cont {
                 padding-left: 10px;
-                height: 60px;
+                height: 66px;
                 overflow: hidden;
                 .userInfo {
                     justify-content: flex-start;
@@ -285,10 +285,14 @@ export default {
                 display: none;
             }
             .el-menu-item {
-                height: 48x;
+                height: 48px;
                 line-height: 48px;
+                color: #666;
                 padding-left: 15px;
                 border-width: 0px;
+                &.is-active {
+                    color: #409EFF;
+                }
             }
         }
     }

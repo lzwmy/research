@@ -42,7 +42,7 @@
                                 <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber}}</p>
                                 <div class="box_btn_group flex-start-center">
                                     <span class="flex-center-center"><i class="icon iconfont iconzujian9"></i>短信随访</span>
-                                    <span class="flex-center-center"><i class="icon iconfont iconzujian11"></i>微信随访</span>
+                                    <span class="flex-center-center" @click="pushAssociate(scope.row)"><i class="icon iconfont iconzujian11"></i>微信随访</span>
                                 </div>
                             </div>
                         </li>
@@ -201,7 +201,7 @@ export default {
             try {
                 let res = await this.$http.PFUassociatePush(formData);
                 if (res.code == 0) {
-                    this.$mes('success', "已向"+row.patientName+"推送消息!");
+                    this.$mes('success', "已向"+row.patientName+"推送微信公众号消息!");
                 }else {
                     this.$mes('error', "推送消息失败!");
                 }

@@ -22,11 +22,11 @@
                 </el-form-item>
                     
                 <el-form-item>
-                    <el-button type="primary" @click="">查 询</el-button>
-                    <el-button @click="reset">清 空</el-button>
+                    <el-button type="primary" @click="" icon="el-icon-search">查 询</el-button>
+                    <el-button @click="reset" icon="icon iconfont iconlujing1">清 空</el-button>
                 </el-form-item>
                 <el-form-item style="float: right;">
-                    <el-button type="primary" @click="showDialog('添加计划')">添加计划</el-button>
+                    <el-button type="primary" @click="showDialog('添加计划')" icon="el-icon-plus">添加计划</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -34,7 +34,7 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
-                :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
+                :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                 :data="dataList.content" style="width: 100%" v-loading="loading"
                 :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe>
                 <el-table-column type="index" label="序号" width="90px"></el-table-column>

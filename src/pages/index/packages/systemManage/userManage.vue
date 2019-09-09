@@ -20,11 +20,11 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search">查询</el-button>
-          <el-button @click="reset">重置</el-button>
+          <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+          <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
         </el-form-item>
         <el-form-item class="zfr">
-          <el-button type="primary" @click="add">新建</el-button>
+          <el-button type="primary" @click="add" icon="el-icon-plus">新建</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -32,7 +32,7 @@
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
-          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
+          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%" v-loading="loading" empty-text="暂无数据"
           :element-loading-text="elementLoadingText">
           <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>

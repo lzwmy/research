@@ -1,85 +1,10 @@
-
-
-    .text_center {
-        text-align: center;
-    }
-    .inline {
-        display: inline;
-    }
-    .block {
-        display: block;
-    }
-    .flex-wrap {
-        flex-wrap: wrap;
-    }
-    .flex-center-center {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .flex-center-around {
-        display: flex;
-        justify-content: center;
-        align-content: space-around;
-    }
-    .flex-center-between {
-        display: flex;
-        justify-content: center;
-        align-content: space-between;
-    }
-    .flex-start-center {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .flex-end-center {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
-    .flex-around-center {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-    .flex-between-center {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .flex-between-start {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-    .flex-between-end {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-    }
-    .flex-start-start {
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-    .text-center {
-        text-align: center;
-    }
-    .flex-right {
-        display: flex !important;
-        flex-grow: 1;
-        justify-content: flex-end;
-    }
-
-
-
-/*
+    /*
 * element-ui组件样式部分   
 */
 
 /* 弹框style*/
 .el-dialog {
-    min-height: 300px;
+    min-height: 40px;
     .el-dialog__header {
         text-align: left;
         height: 42px;
@@ -149,6 +74,16 @@
     }
     .el-form-item__error {
         min-width: auto !important;
+    }
+}
+
+/* 确认弹框style*/
+.el-message-box__wrapper {
+    .el-message-box__header {
+        border-bottom: 1px solid rgba(229, 235, 236, 1);
+    }
+    .el-message-box__content {
+        padding: 35px 15px 35px 50px;
     }
 }
 
@@ -300,10 +235,86 @@
 .search_content {
     margin-bottom: 10px;
 }
+
 .text-center {
     text-align: center;
 }
-//第二层 页面添加 cursor
+
 .cur_pointer{
     cursor: pointer;
 }
+
+.text_center {
+    text-align: center;
+}
+.inline {
+    display: inline;
+}
+.block {
+    display: block;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+.flex-center-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.flex-center-around {
+    display: flex;
+    justify-content: center;
+    align-content: space-around;
+}
+.flex-center-between {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+}
+.flex-start-center {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.flex-end-center {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.flex-around-center {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.flex-between-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex-between-start {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.flex-between-end {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.flex-start-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.text-center {
+    text-align: center;
+}
+.flex-right {
+    display: flex !important;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+
+
+

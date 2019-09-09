@@ -110,9 +110,9 @@
                     :clearable="true"></el-input>
         </el-form-item>
         <el-form-item label prop>
-          <el-button type="primary" @click="conditionAdd">添加</el-button>
-          <el-button type="primary" @click="search">查询</el-button>
-          <el-button @click="reset">重置</el-button>
+          <el-button type="primary" @click="conditionAdd" icon="el-icon-plus">添加</el-button>
+          <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+          <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
         </el-form-item>
       </el-form>
       <div class="conditiaoContain">
@@ -144,7 +144,7 @@
             :label="item.label"
             :name="item.name">
             <el-table :ref="item.name" style="width:100%;"
-              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-50):(routerViewHeight*1-38-50)"
+              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-55):(routerViewHeight*1-38-55)"
               :data="item.dataList.content" @row-dblclick="dblclickHandle"
               v-loading="loading"
               :border="false"
@@ -1099,6 +1099,7 @@ export default {
 
   .allCases .conditiaoContain {
     max-height: 160px;
+    margin-bottom: 10px;
     overflow: auto;
   }
 

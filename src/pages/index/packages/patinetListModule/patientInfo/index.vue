@@ -16,7 +16,7 @@
                 <span>手机号: </span>
             </div>
             <div class="right flex-end-center">
-                <el-button type="primary" icon="icon iconfont iconweixin1" class="weChat">微信相关</el-button>
+                <el-button :type="openId?'primary':'default'" icon="icon iconfont iconweixin1" class="weChat" @click="sendPatientCode">微信相关</el-button>
                 <el-button type="primary" icon="icon iconfont iconquanjingshitu" class="view" @click="onLinkView360">全景视图</el-button>
                 <el-button type="primary" icon="icon iconfont icontianjia" class="report" @click="showDialogReport">添加报告</el-button>
             </div>
@@ -540,8 +540,13 @@ export default {
             }
         }
         .right {
-            .weChat {
+            .el-button--primary.weChat {
                 background-color: rgba(6, 206, 100, 1);
+            }
+            .weChat.el-button--default:hover {
+                color: rgba(6, 206, 100, 1);
+                border-color: rgba(6, 206, 100, 1);
+                background-color: transparent;
             }
             .view {
                 background-color: rgba(245, 157, 0, 1);

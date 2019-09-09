@@ -54,7 +54,7 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1)"
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                     :data="dataList.content" v-loading="loading" ref="refTable"
                     :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
                     @row-click="handleClick">
@@ -197,8 +197,8 @@ export default {
                     groupId: this.form.diseaseSubjectGroup.group || '',
                     crfId: "",
                     patientName: "",
-                    startTime: this.form.time?this.form.time[0].split("-").join(''):null,
-                    endTime: this.form.time?this.form.time[1].split("-").join(''):null,
+                    startTime: this.form.time.length?this.form.time[0].split("-").join(''):null,
+                    endTime: this.form.time.length?this.form.time[1].split("-").join(''):null,
                     status: this.form.state
                 }
             };

@@ -3,7 +3,7 @@
     <div class="loginlongbg">
       <header>
         <div class="logocon"><img style="width: 120px;height: 30px;" :src="'./static/img/logo/weijian-white.png'"><em></em><span
-          class="logotitle">临床科研平台</span>
+          class="logotitle">专病科研平台</span>
         </div>
       </header>
       <div class="loginmain">
@@ -52,8 +52,6 @@
 </template>
 <script>
 import utils from 'components/utils';
-import 'assets/css/green/base.less';
-import 'assets/css/green/reset.less';
 import 'assets/css/blue/base.less';
 import 'assets/css/blue/reset.less';
 import CryptoJS from '../../../static/js/crypto-js.js';

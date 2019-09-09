@@ -10,9 +10,9 @@
           <el-input v-model="ruleForm.name" placeholder="请输入显示名称" size="mini" @keyup.enter.native="search" :clearable="true"  class="search-input" style="width:150px;"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search">查询</el-button>
-          <el-button @click="reset">清空</el-button>
-          <el-button @click="onShowDialog()">新建代码</el-button>
+          <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+          <el-button @click="reset" icon="icon iconfont iconlujing1">清空</el-button>
+          <el-button @click="onShowDialog()" icon="el-icon-plus">新建代码</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -20,7 +20,7 @@
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
-          :height="(dataList.content && JSON.stringify(dataList.content) != '[]')?(routerViewHeight*1-50):(routerViewHeight*1-10)"
+          :height="(dataList.content && JSON.stringify(dataList.content) != '[]')?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%" v-loading="loading"
           :empty-text="emptyText" :element-loading-text="elementLoadingText" fit>
           <el-table-column type="index" label="序号" width="100px"></el-table-column>
@@ -49,7 +49,7 @@
       :append-to-body="true"
       :visible.sync="ruleFormDialog.visible" 
       width="45%">
-      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="100px"
+      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="110px"
                class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading" label-position="left">
         <el-form-item label="医学名称：" prop="termItemName">
           <el-input 

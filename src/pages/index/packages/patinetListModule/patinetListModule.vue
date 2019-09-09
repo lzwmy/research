@@ -160,9 +160,9 @@
                             :clearable="true"></el-input>
                 </el-form-item>
                 <el-form-item label prop>
-                  <el-button type="primary" @click="conditionAdd">添加</el-button>
-                  <el-button type="primary"  @click="search">查询</el-button>
-                  <el-button @click="reset">重置</el-button>
+                  <el-button type="primary" @click="conditionAdd" icon="el-icon-plus">添加</el-button>
+                  <el-button type="primary"  @click="search" icon="el-icon-search">查询</el-button>
+                  <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
                 </el-form-item>
                 <el-form-item class="fuzzyQuery rf" label>
                   <el-button type="primary"  icon="el-icon-plus" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
@@ -197,7 +197,7 @@
                     :label="item.label"
                     :name="item.name">
                     <el-table style="width:100%;" :ref="item.name"
-                              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-50):(routerViewHeight*1-38-50)"
+                              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-55):(routerViewHeight*1-38-55)"
                               :data="item.dataList.content" @row-dblclick="dblclickHandle"
                               v-loading="loading"
                               :border="false"
@@ -224,7 +224,7 @@
                       </el-table-column>
                     </el-table>
                     <!-- 分页 -->
-                    <pagination :data="item.dataList" @change="getDataList" :id="item.name" :key="item.name"></pagination>
+                    <pagination :data="item.dataList" @change="getDataList"  :key="item.name"></pagination>
                   </el-tab-pane>
                 </el-tabs>
               </echarts-contain>
@@ -431,11 +431,11 @@
                 <el-form-item label="地址：" class="address">
                   <el-input v-model.trim="patientRuleForm.address" maxlength='60'></el-input>
                 </el-form-item>
-                <div class="el-dialog--center">
-                  <el-button @click="onSavePatient('patientRuleForm')" type="primary" size="mini">确 定</el-button>
-                  <el-button @click="onClosePatient('patientRuleForm')" size="mini">取 消</el-button>
-                </div>
               </el-form>
+              <div slot="footer">
+                <el-button @click="onSavePatient('patientRuleForm')" type="primary" size="mini">确 定</el-button>
+                <el-button @click="onClosePatient('patientRuleForm')" size="mini">取 消</el-button>
+              </div>
             </el-dialog>
           </div>
         </div>
@@ -1684,9 +1684,6 @@
       width: 240px !important;
     }
     .addPatientDialog{
-      .el-dialog__body {
-        padding: 30px;
-      }
       .el-date-editor .el-input__inner{
         width: 210px;
       }

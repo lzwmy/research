@@ -18,11 +18,11 @@
           </el-select>
         </el-form-item>
         <el-form-item class="ml30">
-          <el-button type="primary" @click="search" :loading="loading">查询</el-button>
-          <el-button @click="reset">重置</el-button>
+          <el-button type="primary" @click="search" :loading="loading" icon="el-icon-search">查询</el-button>
+          <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
         </el-form-item>
         <el-form-item class="zfr">
-          <el-button type="primary" @click="add">新建</el-button>
+          <el-button type="primary" @click="add" icon="el-icon-plus">新建</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -30,7 +30,7 @@
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
-          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
+          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%;height: 1000px;" v-loading="loading"
           :empty-text="emptyText" :element-loading-text="elementLoadingText" highlight-current-row ref="roleTable">
           <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>
@@ -72,9 +72,9 @@
     </div>
     <!--新增/编辑角色弹框-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="600px"
-               @close="closeRoleDialog" class="roleManageDialog">
+              @close="closeRoleDialog" class="roleManageDialog">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="100px"
-               class="el-dialog--center" @submit.native.prevent>
+              @submit.native.prevent>
         <el-form-item label="角色名称：" prop="roleName">
           <el-input v-model.trim="ruleFormDialog.roleName" placeholder="请输入角色名称" :maxlength="100"
                     size="mini"

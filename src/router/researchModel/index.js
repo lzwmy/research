@@ -1,6 +1,6 @@
 //科研建模
 
-const modelAside = r => require.ensure([], () => r(require('packages/researchModel/modelAside')), 'modelAside');
+// const modelAside = r => require.ensure([], () => r(require('packages/researchModel/modelAside')), 'modelAside');
 
 //科研建模 2.0
 const createModel = r => require.ensure([], () => r(require('packages/researchModel/createModel/createModel')), 'createModel');

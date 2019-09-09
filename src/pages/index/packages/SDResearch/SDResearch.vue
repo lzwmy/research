@@ -118,6 +118,9 @@ export default {
           list = item.children;
         }
       })
+      if(list.length == 0) {
+        return "";
+      }
       let params = {
         path: list[0].menuPath,
         id: item.id,

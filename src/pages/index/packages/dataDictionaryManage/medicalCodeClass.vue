@@ -11,9 +11,9 @@
         </el-form-item>
             
         <el-form-item>
-          <el-button type="primary" @click="search">查 询</el-button>
-          <el-button @click="reset">清 空</el-button>
-          <el-button @click="onShowDialog()">添加医学分类</el-button>
+          <el-button type="primary" @click="search" icon="el-icon-search">查 询</el-button>
+          <el-button @click="reset" icon="icon iconfont iconlujing1">清 空</el-button>
+          <el-button @click="onShowDialog()" icon="el-icon-plus">添加医学分类</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -21,7 +21,7 @@
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
-          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
+          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%" v-loading="loading"
           :empty-text="emptyText" :element-loading-text="elementLoadingText" fit>
           <el-table-column type="index" label="序号" width="100px"></el-table-column>
@@ -45,7 +45,7 @@
       :visible.sync="ruleFormDialog.visible" 
       :append-to-body="true"
       width="40%">
-      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="120px"
+      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="130px"
                class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading">
         <el-form-item label="医学分类名称：" prop="termCategoryName" label-position="left">
           <el-input 

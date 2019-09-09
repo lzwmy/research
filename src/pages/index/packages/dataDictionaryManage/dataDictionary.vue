@@ -10,9 +10,9 @@
           <el-input v-model="ruleForm.name" @keyup.enter.native="search" size="mini" placeholder="请输入显示名称" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search">查询</el-button>
-          <el-button @click="reset">清空</el-button>
-          <el-button @click="onShowDialog()">添加代码集</el-button>
+          <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+          <el-button @click="reset" icon="icon iconfont iconlujing1">清空</el-button>
+          <el-button @click="onShowDialog()" icon="el-icon-plus">添加代码集</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -20,7 +20,7 @@
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
-          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-50):(routerViewHeight*1-10)"
+          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%" v-loading="loading"
           :empty-text="emptyText" :element-loading-text="elementLoadingText" fit>
           <el-table-column prop="termGroupName" label="代码集名称" width="210px"></el-table-column>
@@ -58,7 +58,7 @@
       width="45%"
       @close="closeDialog">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="140px" label-position="left"
-               class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading">
+              class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading">
         <el-form-item label="代码集名称：" prop="termGroupName">
           <el-input 
             v-model.trim="ruleFormDialog.termGroupName" 
@@ -78,7 +78,7 @@
             :clearable="true">
           </el-input>
         </el-form-item>
-        <el-form-item label="代码集包含的显示名：">
+        <el-form-item label="代码集包含的显示名：" label-width="160px">
           <i @click="onHandAdd" class="icon iconfont iconfuhao1" style="font-size:26px;"></i>
           <i @click="showAddCodeLoading" class="el-icon-search" style="font-size:24px;"></i>
         </el-form-item>

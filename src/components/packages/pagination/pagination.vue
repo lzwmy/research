@@ -141,7 +141,7 @@ export default {
 <style lang="less">
   #pagination {
     background: #fff;
-    padding: 9px 10px 9px;
+    padding: 11px 10px 12px;
     border-top: none;
     font-size: 13px;
     color:  #48576a;
@@ -192,8 +192,8 @@ export default {
         }
       }
       .el-input .el-input__inner, .el-input, .el-pagination__editor {
-        height: 26px;
-        line-height: 26px;
+        height: 28px;
+        line-height: 28px;
       }
     }
   }
