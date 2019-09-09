@@ -215,10 +215,10 @@ export default {
         legend: {
           // layout: 'vertical',
           // align: 'right',
-          // verticalAlign: 'middle'
+          // verticalAlign: 'middle' '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'
         },
         xAxis: {
-          categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+          categories: []
         },
         yAxis: {
           title: {
@@ -234,7 +234,7 @@ export default {
             label: {
               connectorAllowed: false
             },
-            pointStart: 2010
+            // pointStart: 2010
           },
           area: {
             fillColor: {
@@ -293,10 +293,10 @@ export default {
         legend: {
           // layout: 'vertical',
           // align: 'right',
-          // verticalAlign: 'middle'
+          // verticalAlign: 'middle' '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'
         },
         xAxis: {
-          categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+          categories: []
         },
         yAxis: {
           title: {
@@ -312,7 +312,7 @@ export default {
             label: {
               connectorAllowed: false
             },
-            pointStart: 2010
+            // pointStart: 2010
           },
           area: {
             fillColor: {
@@ -371,10 +371,10 @@ export default {
         legend: {
           // layout: 'vertical',
           // align: 'right',
-          // verticalAlign: 'middle'
+          // verticalAlign: 'middle' '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017'
         },
         xAxis: {
-          categories: ['2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017']
+          categories: []
         },
         yAxis: {
           title: {
@@ -390,7 +390,7 @@ export default {
             label: {
               connectorAllowed: false
             },
-            pointStart: 2010
+            // pointStart: 2010
           },
           area: {
             fillColor: {
