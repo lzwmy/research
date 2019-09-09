@@ -1,11 +1,9 @@
 <template>
     <div class="cloud-container">
-        <transition name="el-fade-in" mode="out-in">
-            <keep-alive exclude="insideView">
-                <router-view v-if="$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
+        <transition :name="transitionName.indexOf($route.meta.belongToGroup) != -1 ?'':'el-fade-in-linear'" mode="out-in">
+            <keep-alive exclude="insideView" v-if="$route.meta.isKeepAlive">
+                <router-view @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
             </keep-alive>
-        </transition>
-        <transition name="el-fade-in" mode="out-in">
             <router-view v-if="!$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
         </transition>
     </div>
@@ -15,6 +13,7 @@ export default {
     name: 'appView',
     data () {
         return {
+            transitionName: ['insideView','systemManage']  //去除动画组件
         };
     },
     computed: {

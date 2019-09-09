@@ -60,12 +60,12 @@ export default {
   name: 'view360',
   data () {
     return {
-      activeName: "first",
+      activeName: "six",
       activeSelect: false,
       loading: false,
       //动态组件
       dynamicCom: {
-        comName: "previewVisit",
+        comName: "timeAxis",
         comData:{}
       },
       basicInfo:{},
@@ -193,7 +193,7 @@ export default {
           this.recordType = [];
           break;
         default:
-          this.dynamicCom.comName = "previewVisit";
+          this.dynamicCom.comName = "timeAxis";
           this.recordType = this.recordType1;
           break;
       }

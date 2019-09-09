@@ -2,7 +2,9 @@
     <div class="">
         <!-- 搜索区域 -->
         <div class="cloud-search flex-end-center">
-            <el-button icon="el-icon-plus" type="primary">创建课题</el-button>
+            <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+                <el-button icon="el-icon-plus" type="primary">创建课题</el-button>
+            </el-tooltip>
         </div>
         <ul class="flex-start-center">
             <el-row :gutter="20">

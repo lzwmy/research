@@ -15,10 +15,18 @@
                 </div>
             </div>
             <div class="iconMenu flex-between-center">
-                <span class="el-icon-user-solid cur_pointer"></span>
-                <span class="el-icon-message cur_pointer"></span>
-                <span class="el-icon-s-tools cur_pointer"></span>
-                <span class="el-icon-switch-button cur_pointer"></span>
+                <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+                    <span class="el-icon-user-solid cur_pointer"></span>
+                </el-tooltip>
+                <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+                    <span class="el-icon-message cur_pointer"></span>
+                </el-tooltip>
+                <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+                    <span class="el-icon-s-tools cur_pointer"></span>
+                </el-tooltip>
+                <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+                    <span class="el-icon-switch-button cur_pointer"></span>
+                </el-tooltip>
             </div>
         </div>
         <div class="ment_list">
@@ -71,17 +79,11 @@ export default {
         };
     },
     watch: {
-        // $route(to, from) {
-        //     if(to.meta.belongToGroup == 'insideView') {
-        //         this.diseaseId = utils.getQueryString('id');
-        //     }
-        //     this.$nextTick(()=>{
-        //         this.defaultActive = '/' + to.meta.flag;
-        //     })
-        // },
-        // diseaseId: function(newVal) {
-        //     this.$emit('diseaseIdChange',newVal)
-        // }
+        $route(to, from) {
+            this.$nextTick(()=>{
+                this.defaultActive = '/' + to.meta.flag;
+            })
+        }
     },
     created () {
         this.diseaseId =  this.$route.query.id;

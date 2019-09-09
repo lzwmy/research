@@ -9,7 +9,7 @@ const routes = [
       isKeepAlive: false,
       txt: '事件计划',
       flag: 'eventPlan',
-      belongToGroup: 'eventPlan',
+      belongToGroup: 'systemManage',
       openMode: 2
     },
     component: eventPlan

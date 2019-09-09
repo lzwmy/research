@@ -25,7 +25,7 @@ export default {
     watch: {
         $route(to,from) {
             this.$nextTick(()=>{
-                this.activeMenuIndex = this.$route.path;
+                this.activeMenuIndex = '/' + to.meta.flag;
             })
         }
     },
@@ -77,7 +77,6 @@ export default {
         .el-tabs {
             height: 100%;
             margin: 0 auto;
-            width: 1200px;
             .el-tabs__nav {
                 width: 100%;
                 display: flex;

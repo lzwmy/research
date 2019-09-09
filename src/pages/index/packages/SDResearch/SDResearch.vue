@@ -16,7 +16,7 @@
           <el-button icon="el-icon-plus" type="primary">新建病种</el-button>
         </div> -->
         <div class="cart">
-          <el-row :gutter="14">
+          <el-row :gutter="14" type="flex" class="flex-wrap">
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" v-for="(item,index) in dataList" :key="index">
               <router-link tag="a" class="sd-title-wrapper" :to="getMenu(item)">
                 <div class="sd-thumbnail">

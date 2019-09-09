@@ -56,10 +56,13 @@ export default {
   #main {
     margin: 24px auto 0;
     padding-bottom: 20px;
-    width: 1200px;
+    width: 1400px;
     .cloud-component{
       padding: 0;
     }
+  }
+  #main, #navbar .el-tabs, #main_header .header_box {
+    width: 1300px;
   }
   #app.insideView {
     #main {

@@ -663,7 +663,6 @@
       color: #ffffff;
       /*justify-content: space-between;*/
       box-sizing: border-box;
-      margin: 0 20px 10px 20px;
       .disease_TODO{
         /*background-color: rgb(1, 144, 222);*/
         background-color: #ffffff;
@@ -957,14 +956,14 @@
       display: flex;
       width: 100%;
       box-sizing: border-box;
-      padding: 10px;
+      padding: 10px 0;
       flex-flow:row wrap;
       justify-content: flex-start;
       .disease_chart_box{
-        width: 32%;
+        width: 32.35%;
         height: 360px;
         border: 1px solid #F2F2F2;
-        margin: 0.5% ;
+        margin: 0.5%;
         overflow: hidden;
         background-color: #fff;
         box-shadow:0 2px 16px -11px rgba(0,0,0, 0.5);
@@ -972,6 +971,9 @@
         padding: 10px;
         border:1px solid rgba(229,235,236,1);
         border-radius: 4px;
+        &:nth-child(3n+1) {
+          margin-left: 0;
+        }
       }
     }
   }
