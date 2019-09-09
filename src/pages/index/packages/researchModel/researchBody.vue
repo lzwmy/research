@@ -400,14 +400,15 @@
       border-top-right-radius: 2px;
     }
     .display_text{
-      color: #D95555;
+      color: rgb(217, 85, 85);
       display: inline-block;
       float: right;
       margin-left: 10px;
       line-height: 36px;
-      /*position: absolute;
-      top: 2%;
-      left: 40%;*/
+      padding:  0 10px;
+      border-radius: 4px;
+      background: rgba(217, 85, 85,0.3);
+
     }
   }
   .active{
