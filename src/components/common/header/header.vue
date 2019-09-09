@@ -24,7 +24,8 @@
           <div class="li setText">
             <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
               <i class="icon iconfont iconzujian22"></i>
-            </el-tooltip></div>
+            </el-tooltip>
+          </div>
           <el-dropdown class="li systemSet">
             <div class="welcomeText flex-between-center" title="系统设置">
               <div class="img_head">
@@ -252,7 +253,6 @@ export default {
         .header_box {
           margin: 0 auto;
           height: 100%;
-          width: 1200px;
           overflow: auto;
         }
         .header-logo {

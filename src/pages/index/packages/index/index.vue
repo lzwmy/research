@@ -575,8 +575,7 @@ export default {
     height: 100%;
     background-color: #f0f2f7;
     .card {
-      /*margin-bottom: 25px;*/
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       height: 133px;
       box-shadow: 0 2px 16px -11px rgba(0, 0, 0, 0.5);
       border-radius: 1px;

@@ -1,17 +1,9 @@
 <!-- 病种管理 -->
 <template>
-  <div class="cloud-component diseaseSet">
-    <div class="cloud-search el-form-item-small">
-      <div class="block-head clearfix">
+  <div class="cloud-component diseaseSet SDResearch">
+    <div class="search_content flex-between-center">
         <span class="block-head-title">病种管理</span>
-        <!--<div class="disease-title">{{diseaseDetail.name}}</div>-->
-        <el-button
-          @click="historyGoBack('/SDResearch')"
-          type="text"
-          style="float: right; margin-right: 20px">
-          <i class="el-icon-back">返回</i>
-        </el-button>
-      </div>
+        <el-button @click="historyGoBack('/SDResearch')"><i class="el-icon-back">返回</i></el-button>
     </div>
     <!--搜索结果-->
     <div class="cloud-search-list">
@@ -20,14 +12,14 @@
           <div class="profile">
             <div class="profile-inner">
               <img v-if="diseaseDetail.logo" :src="'./static/img/disease-logo/' + diseaseDetail.logo + '.svg'"
-                   :alt="'./static/img/disease-logo/' + diseaseDetail.name"
-                   :class="'disease-logo ' + diseaseDetail.logo + '_bgColor'">
+                  :alt="'./static/img/disease-logo/' + diseaseDetail.name"
+                  :class="'disease-logo ' + diseaseDetail.logo + '_bgColor'" width="145px">
               <p class="disease-name">{{diseaseDetail.name}}</p>
               <div class="button-item">
-                <div class="icon icon-edit" @click="openDiseaseDetailDialog()"></div>
+                <div class="icon iconfont iconbianji1" @click="openDiseaseDetailDialog()"></div>
               </div>
               <div class="button-item">
-                <div class="icon icon-add" @click="openSubjectDetailDialog()"></div>
+                <div class="icon el-icon-circle-plus-outline" @click="openSubjectDetailDialog()"></div>
               </div>
             </div>
           </div>
@@ -55,28 +47,29 @@
                       {{item.name && item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name}}
                     </div>
                     <div class="subjectButtonGroup">
-                      <div class="icon icon-add" @click="openLabGroupDetailDialog(item,'add')"></div>
-                      <div class="icon icon-edit" @click="openSubjectDetailDialog(item)"></div>
-                      <div class="icon icon-delete" @click="subjectDelete(item)"></div>
+                      <div class="icon iconfont iconbianji1" @click="openLabGroupDetailDialog(item,'add')"></div>
+                      <div class="icon el-icon-circle-plus-outline" @click="openSubjectDetailDialog(item)"></div>
+                      <div class="icon iconfont iconshanchu" @click="subjectDelete(item)"></div>
                     </div>
                   </td>
                   <td colspan="4" style="width:60%;">
                     <div
                       class="lab-group-row clearfix"
+                      style="padding: 5px 0 5px 15px;"
                       v-for="innerItem in item.experimentGroups"
                       :key="innerItem.key">
-                      <div style="width: 25%;" :title="innerItem.name">
+                      <div class="subjectTitle" style="width: 25%; display:inline-block;" :title="innerItem.name">
                         {{innerItem.name && innerItem.name.length > 10 ? innerItem.name.substring(0, 10) + '...' : innerItem.name}}
                       </div>
-                      <div style="width: 25%;" :title="innerItem.formName">
+                      <div class="subjectTitle" style="width: 25%; display:inline-block;" :title="innerItem.formName">
                         {{innerItem.formName && innerItem.formName.length > 10 ? innerItem.formName.substring(0, 10) + '...' : innerItem.formName}}
                       </div>
-                      <div style="width: 25%;" :title="innerItem.remark">
+                      <div class="subjectTitle" style="width: 25%; display:inline-block;" :title="innerItem.remark">
                         {{innerItem.remark && innerItem.remark.length > 10 ? innerItem.remark.substring(0, 10) + '...' : innerItem.remark}}
                       </div>
-                      <div style="float:right;width: 25%;padding-left: 15px;">
-                        <div class="icon icon-edit" @click="openLabGroupDetailDialog(innerItem,'edit')"></div>
-                        <div class="icon icon-delete" @click="labGroupDelete(innerItem)"></div>
+                      <div style="display:inline-block;">
+                        <span class="icon iconfont iconbianji1" @click="openLabGroupDetailDialog(innerItem,'edit')"></span>
+                        <span class="icon iconfont iconshanchu" @click="labGroupDelete(innerItem)"></span>
                       </div>
                     </div>
                   </td>
@@ -98,7 +91,7 @@
           :inline="true"
           :model="diseaseDetailRuleForm"
           ref="diseaseDetailRuleForm"
-          label-width="100px"
+          label-width="110px"
           class="el-dialog--center" :rules="rulesDiseaseDetail"
           @submit.native.prevent>
           <el-form-item label="单病种名称：" prop="name">
@@ -118,18 +111,18 @@
               <img v-if="item" :src="'./static/img/disease-logo/' + item + '.svg'" :alt="item" :class="item+'_bgColor'">
             </div>
           </div>
-          <div class="el-dialog--center">
-            <el-button @click="closeDiseaseDetailDialog" size="mini">取消</el-button>
-            <el-button type="primary" @click="saveDiseaseDetailDialog" size="mini">确定</el-button>
-          </div>
         </el-form>
+        <div slot="footer" class="el-dialog--center">
+          <el-button @click="closeDiseaseDetailDialog" size="mini">取消</el-button>
+          <el-button type="primary" @click="saveDiseaseDetailDialog('diseaseDetailRuleForm')" size="mini">确定</el-button>
+        </div>
       </el-dialog>
       <!--课题弹框-->
       <el-dialog
         :title="subjectDetailDialogTitle"
         :visible.sync="subjectDetailDialogVisible"
         :append-to-body="true"
-        width="480px"
+        width="600px"
         @close="closeSubjectDetailDialog" class="diseaseSetSubjectDialog">
         <el-form
           :model="subjectDetailRuleForm"
@@ -158,16 +151,16 @@
             <!-- 入组方式 0-手动入组 1-随机入组  -->
             <el-checkbox v-model.trim="subjectDetailRuleForm.assignMode">随机入组：病例将被随机分配到其下实验组，无法手动入组</el-checkbox>
           </el-form-item>
-          <div class="el-dialog--center">
-            <el-button @click="closeSubjectDetailDialog" size="mini">取消</el-button>
-            <el-button type="primary" @click="saveSubjectDetaiDialog" size="mini">确定</el-button>
-          </div>
         </el-form>
+        <div slot="footer">
+          <el-button @click="closeSubjectDetailDialog" size="mini">取消</el-button>
+          <el-button type="primary" @click="saveSubjectDetaiDialog('subjectDetailRuleForm')" size="mini">确定</el-button>
+        </div>
       </el-dialog>
       <!--实验组弹框-->
       <el-dialog :title="labGroupDetailDialogTitle" :visible.sync="labGroupDetailDialogVisible" :append-to-body="true"
-                 width="420px" @close="closeLabGroupDetailDialog" class="diseaseSetGroupDialog">
-        <el-form :model="labGroupDetailRuleForm" ref="labGroupDetailRuleForm" label-width="100px"
+                 width="520px" @close="closeLabGroupDetailDialog" class="diseaseSetGroupDialog">
+        <el-form :model="labGroupDetailRuleForm" ref="labGroupDetailRuleForm" label-width="110px"
                  :rules="rulesLabGroupDetail"
                  @submit.native.prevent>
           <el-form-item label="实验组名称：" prop="name">
@@ -195,11 +188,11 @@
                       :maxlength="500"
                       :clearable="true"></el-input>
           </el-form-item>
-          <div class="el-dialog--center">
-            <el-button @click="closeLabGroupDetailDialog" size="mini">取消</el-button>
-            <el-button type="primary" @click="saveLabGroupDetailDialog" size="mini">确定</el-button>
-          </div>
         </el-form>
+        <div slot="footer" class="el-dialog--center">
+          <el-button @click="closeLabGroupDetailDialog" size="mini">取消</el-button>
+          <el-button type="primary" @click="saveLabGroupDetailDialog('labGroupDetailRuleForm')" size="mini">确定</el-button>
+        </div>
       </el-dialog>
     </div>
   </div>
@@ -384,7 +377,7 @@ export default {
       }
       this.$refs.diseaseDetailRuleForm.clearValidate();
     },
-    saveDiseaseDetailDialog () {
+    saveDiseaseDetailDialog (diseaseDetailRuleForm) {
       let that = this;
       that.$refs.diseaseDetailRuleForm.validate(async (valid) => {
         if (!valid) {
@@ -435,7 +428,7 @@ export default {
       that.subjectDetailRuleForm.assignMode = false;
       that.$refs.subjectDetailRuleForm.clearValidate();
     },
-    saveSubjectDetaiDialog () {
+    saveSubjectDetaiDialog (subjectDetailRuleForm) {
       let that = this;
       that.$refs.subjectDetailRuleForm.validate(async (valid) => {
         if (!valid) {
@@ -531,7 +524,7 @@ export default {
       }
       this.$refs.labGroupDetailRuleForm.clearValidate();
     },
-    saveLabGroupDetailDialog () {
+    saveLabGroupDetailDialog (labGroupDetailRuleForm) {
       let that = this;
       that.$refs.labGroupDetailRuleForm.validate(async (valid) => {
         if (!valid) {
@@ -610,9 +603,6 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
 
 <style lang="less">
   body {
@@ -641,9 +631,72 @@ export default {
       height: 27px;
       vertical-align: middle;
     }
+    .diseaseSet {
+      .block-head-title {
+        font-size: 16px;
+        color: #999;
+      }
+      .diseaseSetContent {
+        background-color: #fff;
+        .disease-detail {
+          flex: 1;
+        }
+        .icon {
+          display: inline-block;
+          font-size: 20px;
+          color: #999;
+          cursor: pointer;
+          padding: 0 3px;
+          &:hover {
+            color: #2d8cf0;
+          }
+        }
+      }
+      .table-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        background: #f5f7fa;
+        border: 1px solid #e6ebf5;
+        border-bottom: none;
+        border-top: 2px solid #2d8cf0;
+      }
+
+      .common-table {
+        width: 100%;
+        font-size: 15px;
+        border-collapse: collapse;
+        border: 1px solid #e9eaec;
+        border-top:2px solid #2d8cf0;
+      }
+
+      .table-thead table {
+        border-bottom: none !important;
+      }
+
+      .table-tbody .common-table {
+        border-top: none !important;
+      }
+      .table-tbody .common-table tbody tr:first-child td {
+        border-top: none !important;
+      }
+      // 修改tab页的选中和没选中的状态背景颜色
+      .el-tabs__item{
+        height: 35px;
+        line-height: 35px;
+        //background: #f0f2f5!important;
+        background: #ffffff!important;
+        border-bottom: 2px solid #dfe4ed;
+      }
+      .el-tabs__item.is-active{
+        background: #fff!important;
+      }
+    }
   }
 
-  body.theme-blue {
+  body {
     .profile .profile-inner {
       border: 1px solid #e9eaec;
       border-top: 2px solid #2d8cf0;
@@ -651,13 +704,37 @@ export default {
       overflow: hidden;
     }
   }
-
-  body.theme-green {
-    .profile .profile-inner {
-      border: 1px solid #e9eaec;
-      border-top: 2px solid #00d1a0;
-      padding-top: 15px;
-      overflow: hidden;
+  .diseaseSetDiseaseDialog {
+    .logo-section .logo-option {
+      width: 85px;
+      height: 85px;
+      display: inline-block;
+      margin: 10px;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .logo-section .logo-option.select:before {
+      content: ' ';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      display: block;
+      background: url('./images/select.png') no-repeat center;
+    }
+    
+    .logo-option img {
+      width: 100%;
+      height: 100%;
+      background-color: #1dd2a3;
+    }
+    
+    .disease-logo {
+      width: 145px;
+      height: 100px;
+      background-color: #1dd2a3;
     }
   }
 </style>

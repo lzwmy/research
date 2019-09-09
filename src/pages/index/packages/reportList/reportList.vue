@@ -165,7 +165,10 @@ export default {
         },
         initPage () {
             this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
-            this.getDataList();
+            this.getDataList()
+            .then(()=>{
+                this.$emit('changeLoadding',false)
+            })
         }, 
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
@@ -182,8 +185,8 @@ export default {
                     groupId: this.form.diseaseSubjectGroup.group || '',
                     crfId: "",
                     patientName: "",
-                    startTime: this.form.time?this.form.time[0].split("-").join(''):null,
-                    endTime: this.form.time?this.form.time[1].split("-").join(''):null,
+                    startTime: this.form.time.length?this.form.time[0].split("-").join(''):null,
+                    endTime: this.form.time.length?this.form.time[1].split("-").join(''):null,
                     status: this.form.state
                 }
             };
