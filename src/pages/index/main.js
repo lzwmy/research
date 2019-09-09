@@ -28,6 +28,10 @@ import 'assets/css/crfStyle.less';
 import 'assets/fonticon/iconfont.css';
 import 'assets/css/common.less';
 
+require('zrender/lib/vml/vml');
+require('zrender/lib/svg/svg');
+
+
 Vue.use(VueQuillEditor)
 Vue.use(install);
 Vue.use(VueRouter);
@@ -45,8 +49,6 @@ Vue.prototype.$mes = function (type, message) {
 
 
 Object.keys(filters).forEach(i => Vue.filter(i, filters[i]));
-require('zrender/lib/vml/vml');
-require('zrender/lib/svg/svg');
 
 
 let Highcharts = require('highcharts');

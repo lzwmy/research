@@ -4,6 +4,7 @@ import App from './app';
 import utils from 'components/utils';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'assets/css/normalize.less';
 import 'assets/fonticon/iconfont.css';
 import 'assets/css/crf.less';
 import 'assets/css/crfStyle.less';

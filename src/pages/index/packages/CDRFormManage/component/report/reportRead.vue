@@ -182,12 +182,14 @@ export default {
     },
     //下载pdf
     onDownloadPDF() {
+      $(".crfConfig").addClass("heightAuto");
       $("#pdfDom").addClass("pdf")
       this.pdfLoading = true;
       let that = this;
       setTimeout(function(){
         utils.domToPDF("#pdfDom", that.report.reportName);
         that.pdfLoading = false;
+        $(".crfConfig").removeClass("heightAuto");
         $("#pdfDom").removeClass("pdf")
       },600)
     },
@@ -246,10 +248,9 @@ export default {
   position: relative;
   & > .el-row {
     position: absolute;
-    top: 1px;
-    right: 0;
+    top: 5px;
+    right: 5px;
     left: 0;
-    width: 100%;
   }
   .container {
     border: 1px solid #ccc;
@@ -262,14 +263,12 @@ export default {
     position: relative;
     top: 5px;
     .head_fixed {
-      /*height: 85px;*/
-      // height: 60px;
-      height: 55px;
+      height: 85px;
       position: absolute;
       top: 10px;
       right: 10px;
       left: 10px;
-      padding: 15px 0;
+      padding: 20px 0;
       border-bottom: 1px solid #ccc;
       background-color: #ffffff;
       &.shadow {
@@ -378,7 +377,9 @@ export default {
                   min-width: 80px;
                   text-align: center;
                   display: inline-block;
-                  margin-right: 5px;
+                  margin-right: 25px;
+                  padding-bottom: 3px;
+                  margin-bottom: 8px;
                   &:after {
                     content:"";
                     position: absolute;
@@ -397,7 +398,7 @@ export default {
               justify-content: flex-start;
               flex-wrap: wrap;
               & > div {
-                padding: 5px 25px;
+                padding: 10px 25px;
               }
             }
           }
@@ -424,18 +425,6 @@ export default {
     .indent {
       font-size: 14px;
       color: #444;
-    }
-    &.pdf {
-      height: auto;
-      .head_fixed,
-      .content {
-        position: relative;
-        overflow: visible;
-        left:0;
-      }
-      .content {
-        top: 11px;
-      }
     }
   }
   .box_table {
@@ -501,6 +490,21 @@ export default {
     }
     td {
       color: #777;
+    }
+  }
+}
+  .crfConfig.heightAuto {
+  height: auto !important;
+  #pdfDom.pdf {
+    height: auto;
+    .head_fixed,
+    .content {
+      position: sticky;
+      overflow: visible;
+      left:0;
+    }
+    .content {
+      top: 11px;
     }
   }
 }

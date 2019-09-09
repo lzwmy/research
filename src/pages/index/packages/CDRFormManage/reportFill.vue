@@ -481,7 +481,7 @@ body.theme-green {
       text-align: center;
       font-size: 18px;
       position: absolute;
-      top: 20%;
+      top: 0%;
       left: 27%;
     }
     &.hide {
