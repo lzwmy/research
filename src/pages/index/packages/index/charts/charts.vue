@@ -38,7 +38,7 @@ export default {
         });
     },
     methods: {
-        initHighcharts() {
+      initHighcharts() {
             this.chart = this.$Highcharts.chart(this.$el, this.data);
         }
     },
