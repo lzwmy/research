@@ -22,7 +22,7 @@
                 </el-form-item>
                     
                 <el-form-item class="flex-right">
-                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="getDataList">查 询</el-button>
                     <el-button @click="reset" icon="icon iconfont iconlujing1">清 空</el-button>
                 </el-form-item>
             </el-form>
@@ -150,7 +150,7 @@ export default {
             let date = new Date().getTime();
             this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
             this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
-            this.$refs.diseaseSubjectGroup.ruleForm.disease = '';
+            // this.$refs.diseaseSubjectGroup.ruleForm.disease = '';
         },
         toReportFill(row) {
             this.getIdentify(row.patientId)

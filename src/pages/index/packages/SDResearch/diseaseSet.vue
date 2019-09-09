@@ -8,72 +8,65 @@
     <!--搜索结果-->
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
-        <div class="diseaseSetContent">
+        <div class="diseaseSetContent flex-between-start">
           <div class="profile">
             <div class="profile-inner">
               <img v-if="diseaseDetail.logo" :src="'./static/img/disease-logo/' + diseaseDetail.logo + '.svg'"
                   :alt="'./static/img/disease-logo/' + diseaseDetail.name"
-                  :class="'disease-logo ' + diseaseDetail.logo + '_bgColor'" width="145px">
-              <p class="disease-name">{{diseaseDetail.name}}</p>
-              <div class="button-item">
-                <div class="icon iconfont iconbianji1" @click="openDiseaseDetailDialog()"></div>
-              </div>
-              <div class="button-item">
-                <div class="icon el-icon-circle-plus-outline" @click="openSubjectDetailDialog()"></div>
+                  :class="'disease-logo ' + diseaseDetail.logo + '_bgColor'">
+                <p class="text">{{diseaseDetail.name}}</p>
+              <div class="foot flex-between-center">
+                <div class="icon iconfont iconzujian24" @click="openDiseaseDetailDialog()"></div>
+                <div class="icon iconfont iconzujian25" @click="openSubjectDetailDialog()"></div>
               </div>
             </div>
           </div>
           <div class="disease-detail">
-            <div class="table-thead">
-              <table class="common-table">
-                <thead>
-                <tr>
-                  <th style="width:40%;">课题</th>
-                  <th style="width:15%;">实验组</th>
-                  <th style="width:15%;">绑定表单</th>
-                  <th style="width:15%;">备注</th>
-                  <th style="width:15%;">操作</th>
-                </tr>
-                </thead>
-              </table>
-            </div>
             <div class="table-tbody" :style="{height:routerViewHeight-55+'px'}">
               <table class="common-table">
+                <thead>
+                  <tr>
+                    <th style="width:45%;">课题</th>
+                    <th style="width:15%;">实验组</th>
+                    <th style="width:15%;">绑定表单</th>
+                    <th style="width:15%;">备注</th>
+                    <th style="width:9%;">操作</th>
+                  </tr>
+                </thead>
                 <tbody>
-                <tr v-for="item in diseaseDetail.subjectStudies" :key="item.id">
-                  <td style="width:40%;">
-                    <div class="subjectTitle" :title="item.name">
-                      <span class="readonly-icon" v-if="item.assignMode == 1">随机入组</span>
-                      {{item.name && item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name}}
-                    </div>
-                    <div class="subjectButtonGroup">
-                      <div class="icon iconfont iconbianji1" @click="openLabGroupDetailDialog(item,'add')"></div>
-                      <div class="icon el-icon-circle-plus-outline" @click="openSubjectDetailDialog(item)"></div>
-                      <div class="icon iconfont iconshanchu" @click="subjectDelete(item)"></div>
-                    </div>
-                  </td>
-                  <td colspan="4" style="width:60%;">
-                    <div
-                      class="lab-group-row clearfix"
-                      style="padding: 5px 0 5px 15px;"
-                      v-for="innerItem in item.experimentGroups"
-                      :key="innerItem.key">
-                      <div class="subjectTitle" style="width: 25%; display:inline-block;" :title="innerItem.name">
-                        {{innerItem.name && innerItem.name.length > 10 ? innerItem.name.substring(0, 10) + '...' : innerItem.name}}
+                  <tr v-for="item in diseaseDetail.subjectStudies" :key="item.id">
+                    <td style="width:45%;">
+                      <div class="subjectTitle" :title="item.name">
+                        <span class="readonly-icon" v-if="item.assignMode == 1">随机入组</span>
+                        {{item.name && item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name}}
                       </div>
-                      <div class="subjectTitle" style="width: 25%; display:inline-block;" :title="innerItem.formName">
-                        {{innerItem.formName && innerItem.formName.length > 10 ? innerItem.formName.substring(0, 10) + '...' : innerItem.formName}}
+                      <div class="subjectButtonGroup">
+                        <div class="icon iconfont iconzujian25" @click="openLabGroupDetailDialog(item,'add')"></div>
+                        <div class="icon iconfont iconzujian24" @click="openSubjectDetailDialog(item)"></div>
+                        <div class="icon iconfont iconzujian26" @click="subjectDelete(item)"></div>
                       </div>
-                      <div class="subjectTitle" style="width: 25%; display:inline-block;" :title="innerItem.remark">
-                        {{innerItem.remark && innerItem.remark.length > 10 ? innerItem.remark.substring(0, 10) + '...' : innerItem.remark}}
+                    </td>
+                    <td colspan="4" style="width:55%;">
+                      <div
+                        class="lab-group-row clearfix"
+                        v-for="innerItem in item.experimentGroups"
+                        :key="innerItem.key">
+                        <div class="subjectTitle" style="width: 28%; display:inline-block;" :title="innerItem.name">
+                          {{innerItem.name && innerItem.name.length > 10 ? innerItem.name.substring(0, 10) + '...' : innerItem.name}}
+                        </div>
+                        <div class="subjectTitle" style="width: 28%; display:inline-block;" :title="innerItem.formName">
+                          {{innerItem.formName && innerItem.formName.length > 10 ? innerItem.formName.substring(0, 10) + '...' : innerItem.formName}}
+                        </div>
+                        <div class="subjectTitle" style="width: 28%; display:inline-block;" :title="innerItem.remark">
+                          {{innerItem.remark && innerItem.remark.length > 10 ? innerItem.remark.substring(0, 10) + '...' : innerItem.remark}}
+                        </div>
+                        <div style="display:inline-block;">
+                          <span class="icon iconfont iconzujian24" @click="openLabGroupDetailDialog(innerItem,'edit')"></span>
+                          <span class="icon iconfont iconzujian26" @click="labGroupDelete(innerItem)"></span>
+                        </div>
                       </div>
-                      <div style="display:inline-block;">
-                        <span class="icon iconfont iconbianji1" @click="openLabGroupDetailDialog(innerItem,'edit')"></span>
-                        <span class="icon iconfont iconshanchu" @click="labGroupDelete(innerItem)"></span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -159,10 +152,10 @@
       </el-dialog>
       <!--实验组弹框-->
       <el-dialog :title="labGroupDetailDialogTitle" :visible.sync="labGroupDetailDialogVisible" :append-to-body="true"
-                 width="520px" @close="closeLabGroupDetailDialog" class="diseaseSetGroupDialog">
+                width="520px" @close="closeLabGroupDetailDialog" class="diseaseSetGroupDialog">
         <el-form :model="labGroupDetailRuleForm" ref="labGroupDetailRuleForm" label-width="110px"
-                 :rules="rulesLabGroupDetail"
-                 @submit.native.prevent>
+                :rules="rulesLabGroupDetail"
+                @submit.native.prevent>
           <el-form-item label="实验组名称：" prop="name">
             <el-input
               v-model.trim="labGroupDetailRuleForm.name"
@@ -199,6 +192,7 @@
 </template>
 
 <script type="text/javascript">
+import './card_bgColor.less';
 import './SDResearch.less';
 import mixins from 'components/mixins';
 import echartsContain from 'components/packages/echartsContain/echartsContain';
@@ -299,6 +293,7 @@ export default {
   methods: {
     initPage () {
       this.diseaseId = this.$route.query.id;
+      console.log(this.diseaseId)
       this.getSubjectDataList();
       this.getFormDataList();
       this.getDataList();
@@ -495,7 +490,6 @@ export default {
         });
     },
     openLabGroupDetailDialog (ob, type) {
-      console.log(ob)
       this.labGroupDetailDialogVisible = true;
       this.$nextTick(() => {
         this.$refs.labGroupDetailRuleForm.clearValidate();
@@ -612,9 +606,6 @@ export default {
     .diseaseSetGroupDialog .el-form .el-form-item .el-textarea, .diseaseSetSubjectDialog .el-form .el-form-item .el-textarea {
       width: 280px
     }
-    .diseaseSet .table-tbody {
-      border-bottom: 2px solid #e9eaec;
-    }
     .diseaseSet .table-thead {
       overflow-y: hidden !important;
       overflow-x: hidden !important;
@@ -633,11 +624,10 @@ export default {
     }
     .diseaseSet {
       .block-head-title {
-        font-size: 16px;
-        color: #999;
+        font-size: 18px;
+        color: #333;
       }
       .diseaseSetContent {
-        background-color: #fff;
         .disease-detail {
           flex: 1;
         }
@@ -663,25 +653,6 @@ export default {
         border-bottom: none;
         border-top: 2px solid #2d8cf0;
       }
-
-      .common-table {
-        width: 100%;
-        font-size: 15px;
-        border-collapse: collapse;
-        border: 1px solid #e9eaec;
-        border-top:2px solid #2d8cf0;
-      }
-
-      .table-thead table {
-        border-bottom: none !important;
-      }
-
-      .table-tbody .common-table {
-        border-top: none !important;
-      }
-      .table-tbody .common-table tbody tr:first-child td {
-        border-top: none !important;
-      }
       // 修改tab页的选中和没选中的状态背景颜色
       .el-tabs__item{
         height: 35px;
@@ -696,13 +667,87 @@ export default {
     }
   }
 
-  body {
-    .profile .profile-inner {
-      border: 1px solid #e9eaec;
-      border-top: 2px solid #2d8cf0;
-      padding-top: 15px;
-      overflow: hidden;
-    }
+  .diseaseSet{
+    .profile {
+      width: 160px;
+      border-radius: 0px;
+      margin-right: 20px;
+      background: #fff;
+      padding: 10px;
+      box-shadow:5px 5px 10px rgba(78,91,105,0.2);
+      .profile-inner {
+        position: relative;
+        img{
+          width: 140px;
+          height: 140px;
+        }
+        .text {
+          position: absolute;
+          bottom: 32px;
+          left: 0;
+          right: 0;
+          height: 28px;
+          text-align: center;
+          line-height: 28px;
+          color: #fff;
+          background:rgba(0,0,0,0.22);
+        }
+        .foot {
+          height: 30px;
+          border: 1px solid  rgba(241,241,241,1);
+          border-top: none;
+          .icon {
+            flex: 1;
+            font-size: 18px;
+            text-align: center;
+            // color: rgba(67, 154, 255, 1);
+            &:first-child {
+              border-right: 1px solid  rgba(241,241,241,1);
+            }
+          }
+        }
+      }
+    } 
+    .common-table {
+      width: 100%;
+      font-size: 15px;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow:5px 5px 10px rgba(78,91,105,0.2);
+      th {
+        height: 56px;
+        padding: 0 20px;
+        text-align: left;
+        background: #f9f9f9;
+        color: #333;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      td {
+        height: 44px;
+        padding: 0;
+        border-right: 1px solid rgba(241, 241, 241, 1);
+        border-top: 1px solid rgba(241, 241, 241, 1);
+        color: rgba(99, 102, 110, 1);
+        font-size: 14px;
+        .icon {
+          font-size: 18px;
+        }
+      }
+      tr td:last-child {
+        border-right: none;
+      }
+      .subjectTitle{
+        display: inline-block;
+        text-indent: 20px;
+        line-height: 46px;
+      }
+      .subjectButtonGroup{
+        display: inline-block;
+        float: right;
+        line-height: 46px;
+      }
+    } 
   }
   .diseaseSetDiseaseDialog {
     .logo-section .logo-option {

@@ -7,6 +7,10 @@ export const printStyle =
     ul li {
         list-style: none outside none;
     }
+    p,span {
+        margin: 0;
+        padding: 0;
+    }
     .com_text_align {
         text-align: center;
     }
@@ -173,7 +177,9 @@ export const printStyle =
             min-width: 80px;
             text-align: center;
             display: inline-block;
-            margin-right: 5px;
+            margin-right: 25px;
+            padding-bottom: 3px;
+            margin-bottom: 8px;
             border-bottom: 1px solid #ddd;
             }
             .container .content .box .box_body .box_cont li .text2 span:after {

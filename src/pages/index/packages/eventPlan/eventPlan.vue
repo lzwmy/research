@@ -65,6 +65,7 @@
             :title="dialog.title" 
             :visible.sync="dialog.visible" 
             :append-to-body="true"
+            class="patientFollowUp"
             width="650px">
             <el-form 
                 :model="dialogFrom" 
@@ -108,7 +109,7 @@
                     </el-select>
                 </el-form-item>
                 <div class="timingType" style="margin-left: 90px;">
-                    <el-form-item label="提醒日期:" label-width="70px" class="block" v-if="dialogFrom.timingType==0">
+                    <el-form-item label="提醒日期:" label-width="80px" class="block" v-if="dialogFrom.timingType==0">
                         <el-date-picker
                             v-model="dialogFrom.modelData.value1"
                             type="date"
@@ -116,7 +117,7 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label-width="0px" class="block select" v-if="dialogFrom.timingType==1">
-                        每<el-input v-model="dialogFrom.modelData.value1" type="number" min='1'></el-input>天
+                        每<el-input class="width_auto" v-model="dialogFrom.modelData.value1" type="number" min='1'></el-input>天
                     </el-form-item>
                     <el-form-item label-width="0px" class="block select" v-if="dialogFrom.timingType==2">
                         每<el-input v-model="dialogFrom.modelData.value1" type="number"  min='1'></el-input>周
@@ -147,7 +148,7 @@
                     </el-form-item>
                 </div>
                 <el-form-item label="持续时间:" class="block">
-                    <el-input type="number" min="1" max="10000" v-model="dialogFrom.time"></el-input>
+                    <el-input class="width_auto" type="number" min="1" max="10000" v-model="dialogFrom.time"></el-input>
                     <el-select v-model="dialogFrom.timeUnit">
                         <el-option label="天" value="1"></el-option>
                         <el-option label="周" value="2"></el-option>
@@ -365,6 +366,9 @@ export default {
                     padding:0 5px;
                 }
             }
+        }
+        .width_auto {
+            width: auto;
         }
         .el-radio__label {
             font-size: 12px !important;

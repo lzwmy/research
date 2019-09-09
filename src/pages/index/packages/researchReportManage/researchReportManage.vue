@@ -197,8 +197,8 @@ export default {
                     groupId: this.form.diseaseSubjectGroup.group || '',
                     crfId: "",
                     patientName: "",
-                    startTime: this.form.time.length?this.form.time[0].split("-").join(''):null,
-                    endTime: this.form.time.length?this.form.time[1].split("-").join(''):null,
+                    startTime: this.form.time?this.form.time[0].split("-").join(''):null,
+                    endTime: this.form.time?this.form.time[1].split("-").join(''):null,
                     status: this.form.state
                 }
             };
