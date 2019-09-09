@@ -300,7 +300,7 @@
         this.pageSize = pageSize;
         this.emptyText = emptyText;
         this.elementLoadingText = elementLoadingText;
-        $('.crfConfig').on('click', '.parent-node label', function () {
+        $('.CRFConfig').on('click', '.parent-node label', function () {
           let parentNode = $(this).parent();
           let width = $('.cloud-component').width()-$('.crf-left-menu').width()-10;
           if (!parentNode.hasClass('active')) {

@@ -489,7 +489,6 @@ export default {
           copyOption.title.text = data.data.chartName;
           copyOption.xAxis.categories = data.data.xaxis;
           copyOption.series = data.data.series;
-          console.log(copyOption);
           that.lineOption = copyOption;
         }
       }catch (error) {

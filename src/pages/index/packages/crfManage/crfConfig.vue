@@ -507,7 +507,7 @@ export default {
         that.resize();
         that.setDefaultWidth();
       });
-      $('.crfConfig').on('click', '.parent-node label', function () {
+      $('.CRFConfig').on('click', '.parent-node label', function () {
         let parentNode = $(this).parent();
         if (!parentNode.hasClass('active')) {
           parentNode.addClass('active').siblings('ul').show();
