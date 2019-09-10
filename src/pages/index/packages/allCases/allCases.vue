@@ -1066,9 +1066,6 @@ export default {
       width: 240px !important;
     }
     .addPatientDialog{
-      .el-dialog__body {
-        padding: 30px;
-      }
       .el-date-editor .el-input__inner{
         width: 210px;
       }
