@@ -469,7 +469,9 @@ export default {
       width: 110px;
       text-align: center;
     }
-
+    .fullTextSearch .input-btn {
+      border-width: 0;
+    }
     .fullTextSearch .rs-count {
       color: #2d8cf0;
       margin-right: 30px;

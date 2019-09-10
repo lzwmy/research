@@ -105,6 +105,12 @@ export default {
             }
         },
         onBack() {
+            if(this.menuPath == '/diseaseSet') {
+                this.$router.push({
+                    path: '/SDResearch'
+                })
+                return;
+            }
             this.$router.push({
                 path: this.menuPath
             })

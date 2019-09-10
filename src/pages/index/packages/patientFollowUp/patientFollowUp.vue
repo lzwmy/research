@@ -32,17 +32,17 @@
             <ul class="card flex-start-center" v-loading="loading">
                 <el-row :gutter="21">
                     <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" v-for="(item,index) in dataList" :key="index">
-                        <li class="box flex-start-center">
+                        <li class="box flex-start-center" @click="toReportFill(item)">
                             <div class="box_left">
                                 <h3>{{item.patientName}}</h3>
                                 <p>{{item.genderName}}/{{item.age}}</p>
                             </div>
                             <div class="box_right flex-center-end">
-                                <div class="box_tag"><span>已联系</span></div>
+                                <div class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已联系':'未联系'}}</span></div>
                                 <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber}}</p>
                                 <div class="box_btn_group flex-start-center">
-                                    <span class="flex-center-center"><i class="icon iconfont iconzujian9"></i>短信随访</span>
-                                    <span class="flex-center-center" @click="pushAssociate(scope.row)"><i class="icon iconfont iconzujian11"></i>微信随访</span>
+                                    <span class="flex-center-center" @click.stop="pushNote(item)"><i class="icon iconfont iconzujian9"></i>短信随访</span>
+                                    <span class="flex-center-center" @click.stop="pushAssociate(item)"><i class="icon iconfont iconzujian11"></i>微信随访</span>
                                 </div>
                             </div>
                         </li>
@@ -201,6 +201,9 @@ export default {
                 console.log(err)
             }
         },
+        pushNote(){
+            return;
+        },
         //推送消息
         async pushAssociate(row) {
             let formData = {
@@ -209,7 +212,7 @@ export default {
             try {
                 let res = await this.$http.PFUassociatePush(formData);
                 if (res.code == 0) {
-                    this.$mes('success', "已向"+row.patientName+"推送微信公众号消息!");
+                    this.$mes('success', "已向"+row.patientName+"推送微信随访消息!");
                 }else {
                     this.$mes('error', "推送消息失败!");
                 }
@@ -241,6 +244,7 @@ export default {
             box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
             margin-bottom: 21px;
             transition: all 300ms;
+            cursor: pointer;
             &:hover {
                 transform: translateY(-3px);
                 box-shadow:0px 4px 10px rgba(0,0,0,0.3); 
@@ -270,14 +274,19 @@ export default {
                 .box_tag {
                     display: flex;
                     justify-content: flex-end;
+                    &.primary span {
+                        color: #439AFF;
+                        background-color: rgba(83, 163, 255, 0.1);
+                    }
                     span {
                         width: 58px;
                         height: 24px;
                         line-height: 24px;
-                        color: #439AFF;
-                        background-color: rgba(83, 163, 255, 0.1);
+                        color: rgba(223, 88, 72, 1);
+                        background-color: rgba(223, 88, 72, 0.1);
                         text-align: center;
                         font-size: 12px;
+                        
                     }
                 }
                 .box_tel {
