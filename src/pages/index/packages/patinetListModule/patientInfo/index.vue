@@ -479,6 +479,17 @@ export default {
             }
         }
     }
+    .patientInfo {
+        .group_btn {
+            .el-button {
+                border-width: 0;
+            }
+            .icon {
+                font-size: 22px;
+                margin: 0;
+            }
+        }
+    }
 </style>
 
 <style lang="less" scoped>

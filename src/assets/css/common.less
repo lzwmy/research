@@ -3,7 +3,7 @@
 */
 
 /* 弹框style*/
-#app .el-dialog {
+body .el-dialog {
     min-height: 400px;
     .el-dialog__header {
         text-align: left;
@@ -81,7 +81,7 @@
 }
 
 /* 确认弹框style*/
-#app .el-message-box__wrapper {
+body .el-message-box__wrapper {
     .el-message-box__header {
         border-bottom: 1px solid rgba(229, 235, 236, 1);
     }
@@ -91,7 +91,7 @@
 }
 
 /* 表格样式 */
-#app .el-table {
+body .el-table {
     padding: 0 15px 10px;
     &::before {
         display: none;
@@ -129,7 +129,7 @@
 
 
 /* 日期选择器样式*/
-#app .el-range-editor.el-input__inner {
+body .el-range-editor.el-input__inner {
     line-height: 32px;
     height: 32px;
     display: flex;
@@ -142,11 +142,15 @@
 
 
 /* 按钮样式*/
-#app .el-button {
+body .el-button {
     padding: 0 15px;
     line-height: 30px;
     border-radius: 2px;
     border-color: transparent;
+    border-width: 1px;
+    &:active {
+        border-color: transparent;
+    }
     &.el-button--default {
         border-color: #DCDFE6;
     }
@@ -158,7 +162,7 @@
 
 
 /* 输入框样式*/ 
-#app .el-input {
+body .el-input {
     height: 32px;
     line-height: 32px;
     &.el-input--suffix {
@@ -175,7 +179,7 @@
 }
 
 
-#app .el-form {
+body .el-form {
     .el-form-item__content {
         // display: inline-block;
         line-height: 32px;
@@ -187,7 +191,7 @@
 }
 
 /*下拉框样式*/
-#app .el-select {
+body .el-select {
     .el-input__suffix {
         display: flex;
         align-items: center;

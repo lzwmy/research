@@ -179,7 +179,7 @@ export default {
   watch: {},
   computed: {},
   created () {
-    this.initPage();
+    this.init();
   },
   mounted () {
 
@@ -189,7 +189,7 @@ export default {
     echartsContain
   },
   methods: {
-    initPage () {
+    init () {
       this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
       this.pageNo = pageNo;
       this.pageSize = pageSize;
@@ -318,7 +318,6 @@ export default {
     async assign (row) {
       let that = this;
       that.currRole = row;
-      console.log(row)
       that.treeRenderAgain = true;
       that.permissionDialogVisible = true;
       that.menusLoading = true;
