@@ -12,7 +12,8 @@ const routes = [
       isKeepAlive: false,
       txt: '统计信息',
       flag: 'staticInfo',
-      belongToGroup: 'staticInfo'
+      belongToGroup: 'staticInfo',
+      openMode: 1
     },
     component: staticInfo
   }

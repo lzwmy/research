@@ -9,7 +9,8 @@ const routes = [
       isKeepAlive: false,
       txt: '患者随访',
       flag: 'patientFollowUp',
-      belongToGroup: 'patientFollowUp'
+      belongToGroup: 'patientFollowUp',
+      openMode: 1
     },
     component: patientFollowUp
   }

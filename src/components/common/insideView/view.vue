@@ -57,10 +57,19 @@ export default {
     },
     mounted () {
         this.initView();
+        document.getElementsByTagName('body')[0].style.zoom = 1.0;
         window.onresize = this.initView;
         // setTimeout(()=>{
         //     this.loading = false;
         // },800)
+        let headLeft = parseInt($('.component_head').css("left"));
+        $(document).scroll(function() {
+            if($(document).scrollLeft() != 0) {
+                $('.component_head').css({'left': headLeft - $(document).scrollLeft() +'px','transition': 'none'});
+            }else {
+                $('.component_head').css({'left': headLeft + 'px','transition': 'left 300ms'});
+            }
+        });
     },
     methods: {
         initView() {

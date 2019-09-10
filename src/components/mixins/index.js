@@ -6,39 +6,11 @@ const mixins = {
       routerViewHeight: 1
     };
   },
-  created () {
-    if (this.$route != undefined) {
-      if (this.$route.name && this.$route.name !== 'notFind') {
-        this.$store.commit({
-          type: 'addRoute',
-          route: this.$route
-        });
-      }
-    }
-  },
   mounted () {
 
   },
-  activated () { // 由于keep-alive的组件，再次进入的时候只执行这个生命周期，所以添加此生命周期解决再次进入的时候，顶部tab标签不增加的bug
-    // this.$nextTick(() => { // 让keepalive的页面重新拉取列表数据
-    //   if (this.getDataList) {
-    //     if (this.currentPageNo && this.currentPageSize) {
-    //       this.getDataList(this.currentPageNo, this.currentPageSize);
-    //     } else {
-    //       this.getDataList();
-    //     }
-    //   }
-    // });
-
-    if (this.$route != undefined) {
-      if (this.$route.name && this.$route.name !== 'notFind') {
-        this.$store.commit({
-          type: 'addRoute',
-          route: this.$route
-        });
-      }
-    }
-
+  activated () { 
+  
     let that = this;
     setTimeout(() => {
       // 清除上个页面的tooltips，以免当切换路由的时候，在下个页面的dom没完全加载的时候，鼠标在上个页面列表中显示出tooltips；
@@ -78,18 +50,9 @@ const mixins = {
     }
   },
   beforeRouteEnter (to, from, next) {
-    // 为了解决关闭顶部tab标签页以后，重新打开此菜单的tab标签缓存了上次关闭时的内容，为了不缓存上次的内容，所以清空表单并重新请求
     // flag为true 则再次进入不会清除之前数据，为false则会清楚之前数据，并拉取新数据
     next(vm => {
       let flag = false;
-      // 1、为了解决顶部tab页切换还能缓存数据
-      // console.warn(vm.getRouteArr);
-      for (let i = 0, len = vm.getRouteArr.length; i < len; i++) {
-        if (vm.getRouteArr[i].route.name === to.name || vm.getRouteArr[i].route.name + 'Detail' === to.name || (vm.getRouteArr[i].route.name === 'SDResearch' && to.name === 'caseManage') || (vm.getRouteArr[i].route.name === 'crfFill' && to.name === 'crfFill')) {
-          flag = true;
-          break;
-        }
-      }
       // 2、为了解决列表页进入详情页重新获取数据
       if (to.name === from.name + 'Detail' || (to.name === 'diseaseSet' && from.name === 'SDResearch') || (to.name === 'caseManage' && from.name === 'SDResearch' && to.query.cacheData === false) || (to.name === 'crfFill' && from.name === 'caseManage' && to.query.cacheData === false) || (to.name === 'enterGroupManager' && from.name === 'caseManage' && to.query.cacheData === false) || (to.name === 'enterGroupManager' && from.name === 'allCases' && to.query.cacheData === false)) {
         flag = false;

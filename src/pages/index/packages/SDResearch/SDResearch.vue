@@ -25,7 +25,7 @@
                         :src="'./static/img/disease-logo/' + item.logo+ '.svg'">
                   </div>
                   <div class="sd-thumbnail-title">
-                    <span class="sd-name-span" :title="item.name">{{item.name}}</span>
+                    <span class="sd-name-span" :title="item.name">{{item.name }}</span>
                   </div>
                 </div>
                 <div class="sd-title-tools">

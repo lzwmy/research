@@ -12,7 +12,7 @@ import store from '../../store';
 
 
 // 开始加载的loading
-let loadingInstance = Loading.service({text: '拼命加载中...', background: 'rgba(0, 0, 0, 0.15)'});
+let loadingInstance = Loading.service({text: '系统正在初始化...', background: 'rgba(0, 0, 0, 0.15)'});
 
 import VueQuillEditor from 'vue-quill-editor';
 import install from 'components/utils/install';
@@ -42,8 +42,8 @@ Vue.prototype.$message = Message;
 Vue.prototype.$mes = function (type, message) {
   this.$message({
     type: type,
-    duration: 1500,
-    message: message
+    message: message,
+    duration: message.length > 8 ? message.length * 200 : 1500
   })
 }
 
@@ -66,22 +66,6 @@ let initApp = async () => {
   try {
     //同步获取全局配置；
     await Global.getConfigJson();
-    // 引入主题颜色的class样式
-    // let ccstyle = store.state.user.ccstyle || localStorage.getItem('research_ccstyle') || 'theme-blue';
-    // console.warn(ccstyle)
-    // if (ccstyle == 'theme-green' || ccstyle == 'theme-blue') {
-    //   document.querySelector('body').className = ccstyle;
-    //   store.commit({
-    //     type: 'changeTheme',
-    //     ccstyle: ccstyle
-    //   });
-    // } else {
-    //   document.querySelector('body').className = 'theme-blue';
-    //   store.commit({
-    //     type: 'changeTheme',
-    //     ccstyle: 'theme-blue'
-    //   });
-    // }
     //同步验证浏览器自带的session有没有在登录有效期；
     await utils.validIndexAuthenticated();
 

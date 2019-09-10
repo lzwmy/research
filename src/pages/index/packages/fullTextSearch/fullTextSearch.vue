@@ -3,7 +3,7 @@
   <div class="cloud-component fullTextSearch">
 <!--    <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" :widthRatio="1">-->
       <div class="search-init" v-if="step === 'init'">
-        <div class="page-title">临床科研数据全文检索</div>
+        <div class="page-title">专病科研数据全文检索</div>
         <el-input placeholder="请输入您需要检索的关键字信息" v-model="keyword" @keyup.enter.native="search" class="input-with-btn">
           <el-button slot="append"  class="input-btn" @click="search">搜索</el-button>
         </el-input>
@@ -17,19 +17,19 @@
         <div style="padding-bottom:20px; border-bottom: 1px dashed #D8DCE4;width: 845px">
           <el-select v-model.trim="filterCondition.type" placeholder="请选择">
             <el-option v-for="item in typeList" :key="item.code" :value="item.code"
-                       :label="item.desc"></el-option>
+                      :label="item.desc"></el-option>
           </el-select>
           <el-select v-model.trim="filterCondition.template" placeholder="请选择">
             <el-option v-for="item in templateList" :key="item.code" :value="item.code"
-                       :label="item.desc"></el-option>
+                      :label="item.desc"></el-option>
           </el-select>
           <el-select v-model.trim="filterCondition.time" placeholder="请选择">
             <el-option v-for="item in timeList" :key="item.code" :value="item.code"
-                       :label="item.desc"></el-option>
+                      :label="item.desc"></el-option>
           </el-select>
           <el-select v-model.trim="filterCondition.result" placeholder="请选择">
             <el-option v-for="item in resultList" :key="item.code" :value="item.code"
-                       :label="item.desc"></el-option>
+                      :label="item.desc"></el-option>
           </el-select>
         </div>
         <div style="margin: 8px 0;color: #999;font-size: 12px;height: 28px;line-height: 28px;width: 861px">

@@ -59,7 +59,6 @@ import JSEncrypt from '../../../static/js/jsencrypt.js';
 
 export default {
   name: 'login',
-  components: {},
   data () {
     return {
       userName: '',
@@ -67,7 +66,6 @@ export default {
       validCode: '',
       imageCodeUrl: '',
       errorTip: '',
-      ie: false
     };
   },
   beforeCreate () {
@@ -90,9 +88,6 @@ export default {
   },
   methods: {
     initPage () {
-      if (!('placeholder' in document.createElement('input'))) {
-        this.ie = true;
-      }
       this.imageCodeUrl = this.$axios.defaults.baseURL + '/auth/validCode.do?t=' + new Date().getTime();
     },
     changeValidCode () {
@@ -130,8 +125,7 @@ export default {
       };
       let encLoginName = that.userName;
       let encPassword = CryptoJS.AES.encrypt(
-        CryptoJS.enc.Utf8
-          .parse(that.password),
+        CryptoJS.enc.Utf8.parse(that.password),
         aesKey, aesMode).toString();
       let params = {
         randomKey: consumerId,

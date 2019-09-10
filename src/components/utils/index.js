@@ -357,43 +357,29 @@ const loadMenuInfo = () => {
           });
           resolve(handleAfrerMenuList);
         } else {
-          MessageBox.confirm('无访问权限，请联系系统管理员！', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-            showCancelButton: false
-          }).then(() => {
-            ssoLogout();
-          }).catch((errors) => {
-            ssoLogout();
-          });
+          handleSsoLogout();
         }
       } else {
-        MessageBox.confirm('无访问权限，请联系管理员！', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          showCancelButton: false
-        }).then(() => {
-          ssoLogout();
-        }).catch((errors) => {
-          ssoLogout();
-        });
+        handleSsoLogout();
       }
     }).catch(() => {
-      MessageBox.confirm('系统错误，请联系系统管理员！', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        showCancelButton: false
-      }).then(() => {
-        ssoLogout();
-      }).catch((errors) => {
-        ssoLogout();
-      });
+      handleSsoLogout();
     });
   });
 };
+
+const handleSsoLogout = () =>{
+  MessageBox.confirm('系统错误，请联系系统管理员！', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+    showCancelButton: false
+  }).then(() => {
+    ssoLogout();
+  }).catch((errors) => {
+    ssoLogout();
+  });
+}
 
 /**
  * Created by hh on 18/01/03.
@@ -403,17 +389,12 @@ const loadMenuInfo = () => {
  */
 const ssoLogout = () => {
   try {
-    vm.$get('/auth/logout.do?t=' + (+new Date())).then(function (response) {
-      let data = response.data;
-      console.log(data);
-      if (data.code == '0') {
-        store.commit('USER_SIGNOUT');
-        window.location.href = './login.html';
-      } else {
-        store.commit('USER_SIGNOUT');
-        window.location.href = './login.html';
-      }
-    }).catch(function (error) {
+    vm.$get('/auth/logout.do?t=' + (+new Date()))
+    then(function (response) {
+      store.commit('USER_SIGNOUT');
+      window.location.href = './login.html';
+    })
+    .catch(function (error) {
       console.log(error);
       store.commit('USER_SIGNOUT');
       window.location.href = './login.html';

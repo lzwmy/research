@@ -318,6 +318,7 @@ export default {
     async assign (row) {
       let that = this;
       that.currRole = row;
+      console.log(row)
       that.treeRenderAgain = true;
       that.permissionDialogVisible = true;
       that.menusLoading = true;
@@ -360,6 +361,7 @@ export default {
     },
     async getPermissionTree () {
       let that = this;
+      that.permissionList = [];
       that.menusLoading = true;
       try {
         let data = await that.$http.menuFindAllMenus();

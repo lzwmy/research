@@ -1,40 +1,6 @@
 import html2Canvas from 'html2canvas'
 import JsPDF from 'jspdf'
 
-// let domToPDF = function(dom,title) {
-//     var title = title;
-//     html2Canvas(document.querySelector(dom), {
-//         allowTaint: true
-//     }).then(function (canvas) {
-//         let contentWidth = canvas.width
-//         let contentHeight = canvas.height
-//         //一页pdf显示html页面生成的canvas高度;
-//         let pageHeight = contentWidth / 592.28 * 841.89
-//         let leftHeight = contentHeight
-//          //页面偏移
-//         let position = 0
-//         //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
-//         let imgWidth = 595.28
-//         let imgHeight = 592.28 / contentWidth * contentHeight
-//         //返回图片dataURL，参数：图片格式和清晰度(0-1)
-//         let pageData = canvas.toDataURL('image/jpeg', 1.0)
-//         let PDF = new JsPDF('', 'pt', 'a4')
-//         if (leftHeight < pageHeight) {
-//             PDF.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight)
-//         } else {
-//         while (leftHeight > 0) {
-//             PDF.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
-//             leftHeight -= pageHeight
-//             position -= 841.89
-//             if (leftHeight > 0) {
-//                 PDF.addPage()
-//             }
-//         }
-//         }
-//         PDF.save(title + '.pdf')
-//     })
-// }
-
 let domToPDF = function(dom,title) {
     var title = title;
     // var element = document.querySelector(dom);    // 这个dom元素是要导出pdf的div容器 

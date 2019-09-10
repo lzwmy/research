@@ -10,6 +10,7 @@ const routes = [
       txt: '报告列表',
       flag: 'researchReportManage',
       belongToGroup: 'researchReportManage',
+      openMode: 1
     },
     component: researchReportManage
   },

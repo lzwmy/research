@@ -44,7 +44,8 @@ const routes = [
       isKeepAlive: false,
       txt: '专病科研',
       flag: 'SDResearch',
-      belongToGroup: 'SDResearch'
+      belongToGroup: 'SDResearch',
+      openMode: 1
     },
     component: diseaseSet
   },

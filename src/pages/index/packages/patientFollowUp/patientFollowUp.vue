@@ -114,6 +114,14 @@ export default {
         }, 
         async getDataList() {
             let that = this;
+            let startTime, endTime;
+            if(!this.form.time || this.form.time && this.form.time.length == 0) {
+                startTime = null
+                endTime = null
+            }else {
+                startTime = this.form.time[0].split("-").join('');
+                endTime = this.form.time[1].split("-").join('');
+            }
             that.loading = true;
             let formData = {
                 offset: 1,
@@ -124,8 +132,8 @@ export default {
                     groupId: '',
                     crfId: "",
                     patientName: "",
-                    startTime: this.form.time?this.form.time[0].split("-").join(''):null,
-                    endTime: this.form.time?this.form.time[1].split("-").join(''):null,
+                    startTime: startTime,
+                    endTime: endTime,
                     status: this.form.state
                 }
             };

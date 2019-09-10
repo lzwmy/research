@@ -183,6 +183,14 @@ export default {
             this.getDataList();
         }, 
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+            let startTime, endTime;
+            if(!this.form.time || this.form.time && this.form.time.length == 0) {
+                startTime = null
+                endTime = null
+            }else {
+                startTime = this.form.time[0].split("-").join('');
+                endTime = this.form.time[1].split("-").join('');
+            }
             let that = this;
             that.loading = true;
             that.paging.currentPageNo = pageNo;
@@ -197,8 +205,8 @@ export default {
                     groupId: this.form.diseaseSubjectGroup.group || '',
                     crfId: "",
                     patientName: "",
-                    startTime: this.form.time?this.form.time[0].split("-").join(''):null,
-                    endTime: this.form.time?this.form.time[1].split("-").join(''):null,
+                    startTime: startTime,
+                    endTime: endTime,
                     status: this.form.state
                 }
             };

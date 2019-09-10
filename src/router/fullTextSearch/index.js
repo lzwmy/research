@@ -12,7 +12,8 @@ const routes = [
       isKeepAlive: false,
       txt: '全文检索',
       flag: 'fullTextSearch',
-      belongToGroup: 'fullTextSearch'
+      belongToGroup: 'fullTextSearch',
+      openMode: 1
     },
     component: fullTextSearch
   }

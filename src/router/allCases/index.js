@@ -12,7 +12,8 @@ const routes = [
       isKeepAlive: false,
       txt: '全部病例',
       flag: 'allCases',
-      belongToGroup: 'allCases'
+      belongToGroup: 'allCases',
+      openMode: 1
     },
     component: allCases
   }

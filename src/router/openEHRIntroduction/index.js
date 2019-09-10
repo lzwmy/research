@@ -12,7 +12,8 @@ const routes = [
       isKeepAlive: true,
       txt: 'openEHR说明',
       flag: 'openEHRIntroduction',
-      belongToGroup: 'openEHRIntroduction'
+      belongToGroup: 'openEHRIntroduction',
+      openMode: 1
     },
     component: openEHRIntroduction
   }

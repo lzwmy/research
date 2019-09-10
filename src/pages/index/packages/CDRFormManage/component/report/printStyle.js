@@ -160,6 +160,7 @@ export const printStyle =
             color: #777;
             margin: 0;
             vertical-align: bottom;
+            padding-bottom: 3px;
             border-bottom: 1px solid #ddd;
             }
             .container .content .box .box_body .box_cont li p.label-text:after {

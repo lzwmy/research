@@ -27,14 +27,13 @@ const getGlobal = () => {
 const getConfigJson = async () => {
   try {
     let response = await getGlobal();
-    document.title = response.data.title ? response.data.title : '综合决策分析';
+    document.title = response.data.title ? response.data.title : '专病科研平台';
     sessionStorage.setItem('Global', JSON.stringify(response.data));
     // 从配置文件中获取请求baseURL，如果注销了这段，那请求baseURL被代理或者是根路径；
 
     if (process.env.NODE_ENV === 'production') { // 打包的时候生产环境下
       if (response.data.baseURL) {
         axios.defaults.baseURL = response.data.baseURL;
-        // alert(response.data.baseURL);
       } else {
         MessageBox.confirm('配置文件出错，请联系管理员！', '提示', {
           confirmButtonText: '确定',
@@ -57,7 +56,6 @@ const getConfigJson = async () => {
           baseURL = window.location.protocol + '//' + window.location.host + '/' + arr[arr.length - 2] + '/';
         }
         axios.defaults.baseURL = baseURL;
-        // console.log(baseURL);
       } else {
         MessageBox.confirm('配置文件出错，请联系管理员！', '提示', {
           confirmButtonText: '确定',

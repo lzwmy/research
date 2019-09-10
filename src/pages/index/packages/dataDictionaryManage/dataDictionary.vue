@@ -117,7 +117,7 @@
       width="600px"
       class="searchDialog">
       <el-form :model="addCodeDialog" label-width="0" label-position="left"
-          class="el-dialog--center" @submit.native.prevent v-loading="addCodeDialog.loading">
+          class="el-dialog--center" @submit.native.prevent>
         <el-form-item  prop="termGroupName" align="left">
           <el-input 
             v-model.trim="addCodeDialog.termGroupName" 
@@ -133,7 +133,7 @@
         <el-form-item label="医学代码查询结果：" label-width="160px" align="left"></el-form-item>
         <el-form-item>
           <el-table
-            :data="addCodeDialog.formList" style="width: 100%" v-loading="loading"  max-height="450"
+            :data="addCodeDialog.formList" style="width: 100%" v-loading="addCodeDialog.loading"  height="450"
             :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe size="mini">
             <el-table-column prop="termItemCode" label="显示代码" show-overflow-tooltip align="left"></el-table-column>
             <el-table-column prop="termItemName" label="显示名称" show-overflow-tooltip align="left"></el-table-column>
@@ -346,6 +346,7 @@ export default {
       this.addCodeDialog.visible = true;
       this.addCodeDialog.termGroupName = "";
       this.addCodeDialog.formList = [];
+      this.addCodeSearch();
     },
     //获取代码集
     async getCodeSet(id) {

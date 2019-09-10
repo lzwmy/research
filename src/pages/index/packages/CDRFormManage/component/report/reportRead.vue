@@ -357,6 +357,7 @@ export default {
                 display: inline-block;
                 position: relative;
                 min-width: 145px;
+                padding-bottom: 3px;
                 text-align: center;
                 color: #777;
                 vertical-align: bottom;

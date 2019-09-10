@@ -15,7 +15,6 @@ const user = {
     routeArr: [], // 每个页面路由元
     menuList: [], // 菜单列表
     session_isDislpayArrow: false,
-    ccstyle: '' // 主题颜色
   },
   mutations: {
     [USER_SIGNIN](state, userLogin) {
@@ -35,30 +34,10 @@ const user = {
     saveMenuList(state, payload) {
       sessionStorage.setItem('CURR_USER_RESEARCH_MENULIST', JSON.stringify(payload.params));
       state.menuList = payload.params;
-    },
-    addRoute(state, routeObj) {
-      for (var i = 0; i < state.routeArr.length; i++) {
-        if (state.routeArr[i].route.meta.txt === routeObj.route.meta.txt) {
-          break;
-        }
-      }
-      // 记录新增路由
-      if (i === state.routeArr.length || state.routeArr.length === 0) {
-        let myroute = {};
-        myroute.historyPath = [routeObj.route];
-        myroute.route = routeObj.route;
-        state.routeArr.push(myroute);
-      } else {
-        // 新增historyPath
-        state.routeArr[i].historyPath.unshift(routeObj.route);
-      }
+      console.log(state.menuList)
     },
     saveSession_isDislpayArrow(state, payload) {
       state.session_isDislpayArrow = payload.isDislpayArrow;
-    },
-    changeTheme(state, payload) {
-      state.ccstyle = payload.ccstyle;
-      localStorage.setItem('research_ccstyle', payload.ccstyle);
     }
   },
   actions: {}

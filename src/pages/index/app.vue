@@ -48,15 +48,10 @@ export default {
   #app {
     background-color: #f0f2f7;
     min-height: 100%;
-    // &:not(.insideView) .el-loading-mask {
-    //   position: fixed;
-    //   top: 121px;
-    // }
   }
   #main {
     margin: 24px auto 0;
     padding-bottom: 20px;
-    width: 1400px;
     .cloud-component{
       padding: 0;
     }
@@ -70,7 +65,7 @@ export default {
       margin: 0 !important;
       padding: 0 !important;
       .inside_cloud-container{ 
-        padding: 0;
+        padding: 0 !important;
       }
     }
   }
@@ -78,14 +73,16 @@ export default {
 
   @media screen and (min-width: 350px) and (max-width: 1200px) {
     #app {
-      width: 1200px !important;
-      overflow: scroll;
+      width: 1300px !important;
     }
     #navbar .el-tabs, 
     #main_header .header_box {
-      padding: 0 20px;
-      width: 1200px !important;
+      width: 100% !important;
       margin: 0;
+    }
+    #main, #navbar, #main_header {
+      width: 1300px;
+      padding: 0 10px;
     }
   }
 

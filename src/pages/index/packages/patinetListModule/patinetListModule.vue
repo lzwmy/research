@@ -1271,16 +1271,11 @@
       },
       labGroupSelect (labGroup, subject) {
         this.dropmenuHide = true;
-        console.warn(labGroup);
         this.selectLabSubjectId = labGroup.subjectId ? labGroup.subjectId : '';
         this.selectLabGroupFormId = labGroup.formId;
         this.selectLabSubjectGroupName = (subject ? subject.name + ' / ' : '') + labGroup.name;
         this.selectLabGroupId = labGroup.id;
         this.selectLabGroupName = labGroup.name;
-        console.log('this.selectLabSubjectGroupName', this.selectLabSubjectGroupName);
-        console.log('this.selectLabGroupName', this.selectLabGroupName);
-        console.log('this.selectLabSubjectId', this.selectLabSubjectId);
-        console.log('this.selectLabGroupId', this.selectLabGroupId);
         // 触发查询当前病例
         this.conditionSet = {
           viewName: this.viewName,

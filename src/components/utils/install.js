@@ -212,12 +212,6 @@ export default {
         }
       });
     };
-    Vue.prototype.$addRoute = function () {
-      this.$store.commit({
-        type: 'addRoute',
-        route: this.$route
-      });
-    };
     Vue.prototype.historyGoBack = function (path) {
       if (typeof path === 'number') {
         path = 'index';

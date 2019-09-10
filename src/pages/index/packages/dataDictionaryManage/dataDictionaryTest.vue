@@ -6,7 +6,7 @@
                       ref="dataDictionaryTree"></combination2>
       </echarts-contain>
       <echarts-contain containType="right" :parentHeight="routerViewHeight" :heightRatio="1" :widthRatio="0.8"
-                       :loading="rightLoading">
+                      :loading="rightLoading">
         <div v-if="treeTableList.length == 0" class="noData zwarning">请选择左侧数据字典的分类</div>
         <div class="contain">
           <div v-for="categories in treeTableList">

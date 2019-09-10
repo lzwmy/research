@@ -33,7 +33,8 @@ const routes = [
       isKeepAlive: true,
       txt: '首页',
       flag: 'index',
-      belongToGroup: ''
+      belongToGroup: '',
+      openMode: 1
     },
     component: index
   },
@@ -46,6 +47,7 @@ const routes = [
       txt: '专病科研',
       flag: 'insideView',
       belongToGroup: '',
+      openMode: 1
     },
     component: insideView,
     children: []
@@ -59,7 +61,8 @@ const routes = [
       isKeepAlive: true,
       txt: '首页',
       flag: '/',
-      belongToGroup: ''
+      belongToGroup: '',
+      openMode: 1
     },
     component: index
   },
@@ -71,17 +74,19 @@ const routes = [
       isKeepAlive: true,
       txt: '找不到页面',
       flag: 'notFind',
-      belongToGroup: ''
+      belongToGroup: '',
+      openMode: 1
     },
     component: notFind
   }
 ];
 
 const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, reportList, eventPlan,researchModel,patientListModule,diseaseChart, researchTask);
+//处理内页打开页面
 route.forEach(item=>{
   if(item.name == 'insideView'){
     route.forEach(li=>{
-      if(li.meta.openMode == 2 && li.name != 'insideView') {
+      if(li.meta.openMode === 2 && li.name != 'insideView') {
         item.children.push(li)
       }
     })

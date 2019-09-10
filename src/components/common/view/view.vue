@@ -9,6 +9,7 @@
     </div>
 </template>
 <script>
+import utils from 'components/utils/index';
 export default {
     name: 'appView',
     data () {
@@ -24,8 +25,9 @@ export default {
         this.$nextTick(() => {
             this.handlePageHeight();
             $(window).resize(()=>{
-                this.handlePageHeight();
                 this.initView();
+                this.handlePageHeight();
+                
             })
             let headerH = $("#main_header").height();
             let mainMarginTop = parseInt($('#main').css('marginTop'));
@@ -75,6 +77,7 @@ export default {
             });
         },
         initView() {
+            console.log(123)
             this.$nextTick(() => {
                 let otherHeihgt = $('#main_header').outerHeight() +　$('#navbar').outerHeight() + parseInt($("#main").css('marginTop')) + parseInt($("#main").css('marginBottom')) + parseInt($("#main").css('paddingTop')) + parseInt($("#main").css('paddingBottom'));
                 $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})

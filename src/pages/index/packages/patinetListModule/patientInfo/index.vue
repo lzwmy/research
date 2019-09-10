@@ -153,7 +153,7 @@
                     </el-date-picker>
                 </el-form-item>
             </el-form>
-            <span slot="footer" class="el-dialog__footer">
+            <span slot="footer">
                 <el-button type="primary" @click="onSave('dialogReportForm')" size="mini" :disabled="dialogReportForm.loading">保 存</el-button>
                 <el-button @click="onClose('dialogReportForm')" size="mini">关 闭</el-button>
             </span>

@@ -121,8 +121,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer">
+        <el-button type="primary" @click="saveUserDialog('ruleFormDialog')" size="mini" :disabled="ruleFormDialogLoading">确定</el-button>
         <el-button @click="closeUserDialog" size="mini">取消</el-button>
-        <el-button type="primary" @click="saveUserDialog" size="mini" :disabled="ruleFormDialogLoading">确定</el-button>
       </div>
     </el-dialog>
     <!--分配角色-->
@@ -384,7 +384,7 @@ export default {
       }
       this.ruleFormDialog.status = this.ruleFormDialog.status.toString();
     },
-    saveUserDialog () {
+    saveUserDialog (ruleFormDialog) {
       let that = this;
       let formData = {};
       let msg = '';

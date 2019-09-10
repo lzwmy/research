@@ -192,7 +192,11 @@ export default {
             padding: 0;
             .el-menu {
                 border: none;
-                transition: all 200ms;
+                width: 200px;
+                transition: all 250ms;
+                &.el-menu--collapse {
+                    width: 64px;
+                }
                 .el-submenu {
                     border-left: 4px solid transparent;
                 }

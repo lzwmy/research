@@ -13,6 +13,7 @@ const routes = [
             txt: '科研课题',
             flag: 'researchTask',
             belongToGroup: 'researchTask',
+            openMode: 1
         },
         component: researchTask
     }

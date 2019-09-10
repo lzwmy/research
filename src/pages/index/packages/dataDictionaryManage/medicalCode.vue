@@ -73,7 +73,7 @@
             multiple
             filterable
             default-first-option
-            class="select-class"
+            style="width: 100%;"
             placeholder="请选择代码分类">
             <el-option
               v-for="item in selectList"
@@ -366,17 +366,5 @@ export default {
   }
   .ruleFormDialog .el-input {
     width: 100% !important;
-  }
-  .select-class {
-    width:50%;
-  }
-</style>
-
-<style>
-  body.theme-blue .el-form .el-form-item .select-class .el-input,
-  body.theme-green .el-form .el-form-item .select-class .el-input,
-  body.theme-blue .el-form .el-form-item .select-class .el-input--suffix,
-  body.theme-green .el-form .el-form-item .select-class .el-input--suffix {
-    width: 100%;
   }
 </style>
