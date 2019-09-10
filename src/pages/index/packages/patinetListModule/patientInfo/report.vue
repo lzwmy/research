@@ -33,9 +33,9 @@
                     {{scope.row.status==0?'未填写':'已填写'}}
                 </template>
             </el-table-column> 
-            <el-table-column label="操作" width="65">
+            <el-table-column label="操作" width="80">
                 <template slot-scope="scope">
-                    <el-button size="mini" @click="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
+                    <el-button size="mini" @click.stop="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
