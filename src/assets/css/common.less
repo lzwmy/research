@@ -3,30 +3,33 @@
 */
 
 /* 弹框style*/
-.el-dialog {
-    min-height: 40px;
+#app .el-dialog {
+    min-height: 400px;
     .el-dialog__header {
         text-align: left;
         height: 42px;
-        background-color: #409eff;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0 20px;
+        border-bottom: 1px solid rgba(229, 235, 236, 1);
         .el-dialog__title {
-            color: #fff;
+            color: #333;
             font-size: 16px;
         }
         .el-dialog__headerbtn {
             position: static;
-            .el-icon-close {
-                color: #fff;
-                font-size: 20px;
-                font-family: "iconfont" !important;
-                &::before {
-                    content: '\e644';
-                }
-            }
+            // .el-icon-close {
+                // color: rgba(151, 155, 170, 1);
+                // font-size: 20px;
+                // font-family: "iconfont" !important;
+                // &:hover {
+                //     color: #333;
+                // }
+                // &::before {
+                //     content: '\e630';
+                // }
+            // }
         }
     }
     .el-dialog__body{
@@ -78,7 +81,7 @@
 }
 
 /* 确认弹框style*/
-.el-message-box__wrapper {
+#app .el-message-box__wrapper {
     .el-message-box__header {
         border-bottom: 1px solid rgba(229, 235, 236, 1);
     }
@@ -88,7 +91,7 @@
 }
 
 /* 表格样式 */
-.el-table {
+#app .el-table {
     padding: 0 15px 10px;
     &::before {
         display: none;
@@ -126,7 +129,7 @@
 
 
 /* 日期选择器样式*/
-.el-range-editor.el-input__inner {
+#app .el-range-editor.el-input__inner {
     line-height: 32px;
     height: 32px;
     display: flex;
@@ -139,13 +142,13 @@
 
 
 /* 按钮样式*/
-.el-button {
+#app .el-button {
     padding: 0 15px;
-    line-height: 32px;
+    line-height: 30px;
     border-radius: 2px;
-    border-width: 0;
+    border-color: transparent;
     &.el-button--default {
-        border-width: 1px;
+        border-color: #DCDFE6;
     }
     .icon {
         font-size: 14px;
@@ -155,9 +158,13 @@
 
 
 /* 输入框样式*/ 
-.el-input {
+#app .el-input {
     height: 32px;
     line-height: 32px;
+    &.el-input--suffix {
+        height: auto;
+        min-height: 32px;
+    }
     .el-input__inner {
         height: 32px;
         line-height: 32px;
@@ -168,7 +175,7 @@
 }
 
 
-.el-form {
+#app .el-form {
     .el-form-item__content {
         // display: inline-block;
         line-height: 32px;
@@ -180,7 +187,7 @@
 }
 
 /*下拉框样式*/
-.el-select {
+#app .el-select {
     .el-input__suffix {
         display: flex;
         align-items: center;
@@ -227,7 +234,7 @@
         left: 200px;
     }
     &.close .component_head{
-        left: 64px;
+        left: 64px !important;
     }
 }
 
