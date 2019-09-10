@@ -10,7 +10,7 @@
               <el-input placeholder="条目显示名称" v-model="basisData.controlDisplayName" size="mini"></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
-              <el-select v-model="basisData.controlType" size="mini">
+              <el-select v-model="basisData.controlType" size="mini" @change="changeControlType(basisData)">
                 <el-option v-for="item in selectShowList"
                            :key="item.value"
                            :label="item.name"
@@ -19,7 +19,7 @@
               </el-select>
               <span class="content_must-fill">*</span>
               <!--单位-->
-              <el-select v-if="basisData.termUnit.numberIsSwitch=='1'&&basisData.controlType=='NUMBER_INPUT'" v-model="unitName" filterable size="mini">
+              <el-select v-if="basisData.termUnit.numberIsSwitch=='1'&&basisData.controlType=='NUMBER_INPUT'" v-model="basisData.termUnit.unitName" filterable size="mini">
                 <el-option v-for="item in unitList"
                            :key="item.id"
                            :label="item.unitName"
@@ -33,9 +33,9 @@
               </el-select>
               <!--是否必填-->
               <i class="iconfont iconfuhao2 gray" v-if="basisData.displayIsVisible=='0'" @click="isVisible(basisData)"></i>
-              <i class="iconfont iconfuhao2" v-else-if="basisData.displayIsVisible=='1'" @click="isVisible(basisData)"></i>
+              <i class="iconfont iconfuhao2" v-else @click="isVisible(basisData)"></i>
               <!--设置-->
-              <i class="iconfont iconfuhao7"></i>
+              <i class="iconfont iconfuhao7" v-if="basisData.controlType!==''" @click="changeParameterConfig(basisData)"></i>
               <!--添加-->
               <i class="iconfont iconfuhao1"
                  v-if="basisData.controlType=='GATHER'||basisData.controlType=='TABLE'"
@@ -49,11 +49,14 @@
               <!--下移-->
               <!--<i class="iconfont iconfuhao6"></i>-->
             </div>
-            <basisComponent v-if="basisData.children.length!==0" :children="basisData.children"></basisComponent>
+            <basis-component v-if="basisData.children.length!==0" :children="basisData.children"></basis-component>
           </div>
+          <div>{{basisData}}</div>
         </div>
         <!--参数配置-->
-        <div class="basis_parameter_config">{{basisData}}</div>
+        <div class="basis_parameter_config">
+          <parameter-config v-if="JSON.stringify(basisDataInfo)!=='{}'" :basicDataInfo="basisDataInfo"></parameter-config>
+        </div>
       </div>
     </div>
 </template>
@@ -61,9 +64,11 @@
 <script>
   import parameter from './js/parameter';
   import basisComponent from './basisComponent';
+  import parameterConfig from './parameterConfig';
     export default {
       components:{
-        basisComponent
+        basisComponent,
+        parameterConfig
       },
       data() {
         return {
@@ -189,8 +194,8 @@
                   {
                     "id": "",
                     "bindingId": "",
-                    "operator": "Equals",
-                    "operatorName": "等于",
+                    "operator": "",//Equals
+                    "operatorName": "", //等于
                     "param": "",
                     "param2": "",
                     "columnEn": "",
@@ -209,10 +214,8 @@
               ]
             },
             "termSet": {
-              "termDefaultValue": [
-                ""
-              ],
-              "termItemList": [
+              "termDefaultValue": [],
+              "termItemList": [ //值域
                 {
                   "id": "",
                   "termItemName": ""
@@ -224,17 +227,64 @@
               "unitName": ""
             },
             "gatherKnowType": 0,
-            "gatherFoldFlag": "展开: 0, 折叠: 1",
+            "gatherFoldFlag": 0,//展开: 0, 折叠: 1
             "controlIsAvailable": 0,
-            "gatherRank": "上下排列: 1, 左右排列: 2",
+            "gatherRank": 0,//上下排列: 1, 左右排列: 2
             "gatherColumnNumber": 0,
-            "binding": "0 没有绑定 1 绑定",
+            "binding": 0,//0 没有绑定 1 绑定"
             "fileType": "",
             "children": []
-          }
+          },
+          basisDataInfo:{}
         }
       },
       methods:{
+        //控件类型
+        changeControlType(data) {
+          if(data.controlType == 'GATHER'|| data.controlType == 'TABLE') {
+            data.children = [];
+          }
+          //选择类型是 清除termUnit设置
+          data.baseProperty={
+            "controlWidth": 4, //(控件宽度)1 / 2 / 3 / 4 0(代表未设置)
+            "controlHeight": 0, //(控件高度)1 / 2 / 3 / 4 0(代表未设置)
+            "controlTip": "", //(控件输入提示)
+            "controlIsDefaultDateTime": 0, //(是否使用默认时间或日期)
+            "controlIsExtend":0, //(下拉框是否可扩展)
+            "labelType":null,
+            "labelContent":null,
+            "labelImage":null,
+            "itemFileRsp":[],
+            "fileType":"FILE",
+            "binding":0,
+            "bindingInfo":{
+              "itemId":"",
+              "viewId":"",
+              "viewColumn":"",
+              "bindingType":"",
+              "bindingColumn":"",
+              "bindingColumnName":"",
+              "list":[]
+            }
+          };
+          data.termSet= {
+            "termGroupOid": "", //(代码集OID)
+            "termGroupName":'', //(代码集名称)
+            "termDefaultValue":[],// 是否有默认值
+            "termItemList": [],
+            "foldFlag":1,
+          };
+          data.termUnit={
+            "numberIsSwitch":1, //单位是否显示
+            "unitName":"",//单位值
+          };
+          data.gatherKnowType=0;
+          data.inputValue="";
+          data.gatherRank=0;
+          data.gatherColumnNumber=2;
+          data.gatherIsVisible=1;
+          data.gatherFoldFlag=0;
+        },
         //集合 or 表格添加
         add(data) {
           if(data.controlName!==""&&data.controlDisplayName!==""){
@@ -253,6 +303,14 @@
             data.displayIsVisible = 1;
           }
         },
+        // 设置 参数配置
+        changeParameterConfig(data) {
+          this.basisDataInfo = {
+            obj:data,
+            selectType:data.controlType,
+            index:0
+          }
+        },
         // 切换 类型
         switchType(data) {
           if(data.termUnit.numberIsSwitch == 1) {
@@ -260,7 +318,8 @@
           }else{
             data.termUnit.numberIsSwitch  = 1
           }
-        }
+        },
+
       },
       mounted() {
       }
@@ -300,6 +359,7 @@
             font-size: 20px;
             color: #1BBAE1;
             padding: 0 7px;
+            cursor: pointer;
           }
           .gray{
             color: #9CA0B1;
@@ -314,6 +374,9 @@
       width:480px;
       background-color: #ffffff;
       border: 1px solid #E5EBEC;
+      box-sizing: border-box;
+      padding: 30px 20px 0 20px;
+      overflow: auto;
     }
   }
 }

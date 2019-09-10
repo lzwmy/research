@@ -7,7 +7,7 @@
               <el-input placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini"></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
-              <el-select v-model="basisDataItem.controlType" size="mini">
+              <el-select v-model="basisDataItem.controlType" size="mini" @change="changeControlType(basisDataItem)">
                 <el-option v-for="item in selectShowList"
                            :key="item.value"
                            :label="item.name"
@@ -29,27 +29,28 @@
                 <el-option label="是否不详" :value="2"></el-option>
               </el-select>
               <!--是否必填-->
-              <i class="iconfont iconfuhao2 gray" v-if="basisDataItem.controlIsAvailable=='0'"></i>
-              <i class="iconfont iconfuhao2" v-else></i>
+              <i class="iconfont iconfuhao2 gray" v-if="basisDataItem.displayIsVisible=='0'" @click="isVisible(basisDataItem)"></i>
+              <i class="iconfont iconfuhao2" v-else @click="isVisible(basisDataItem)"></i>
               <!--设置-->
               <i class="iconfont iconfuhao7" v-show="basisDataItem.controlType!==''"></i>
               <!--添加-->
-              <i class="iconfont iconfuhao1" v-if="basisDataItem.controlType=='GATHER'||basisDataItem.controlType=='TABLE'"></i>
+              <i class="iconfont iconfuhao1" v-if="basisDataItem.controlType=='GATHER'||basisDataItem.controlType=='TABLE'" @click="addLine(basisDataItem,basisDataIndex)"></i>
               <!--删除-->
-              <i class="iconfont iconfuhao4 del"></i>
+              <i class="iconfont iconfuhao4 del" @click="deleteLine(basisDataIndex)"></i>
               <!--切换-->
               <i class="iconfont iconzujian" v-if="basisDataItem.controlType=='NUMBER_INPUT'"></i>
               <!--上移-->
-              <i class="iconfont iconfuhao5"></i>
+              <i class="iconfont iconfuhao5" @click="moveTop(basisDataItem,basisDataIndex,basisData)"></i>
               <!--下移-->
-              <i class="iconfont iconfuhao6"></i>
+              <i class="iconfont iconfuhao6" @click="moveDown(basisDataItem,basisDataIndex,basisData)"></i>
           </div>
-
+          <basis-component v-if="basisDataItem.children.length!==0" :children="basisDataItem.children"></basis-component>
         </div>
     </div>
 </template>
 
 <script>
+  import parameter from './js/parameter';
     export default {
       name: "basisComponent",
       props:{
@@ -61,6 +62,7 @@
       data() {
         return {
           basisData:this.children,
+          //控件选择类型
           selectShowList:[
             {
               name:"单行文本框",
@@ -119,10 +121,127 @@
               value:"linkURL"
             }*/
           ],
+          //选择单位
+          unitList:[
+            {
+              unitName:"hour",
+              value:"hour"
+            },
+            {
+              unitName:"ml",
+              value:"ml"
+            },
+            {
+              unitName:"L",
+              value:"L"
+            },
+            {
+              unitName:"mg",
+              value:"mg"
+            },
+            {
+              unitName:"ug",
+              value:"ug"
+            },
+            {
+              unitName:"g",
+              value:"g"
+            },
+            {
+              unitName:"min",
+              value:"min"
+            }
+          ],
         }
       },
-      methods:{},
+      methods:{
+        //控件类型
+        changeControlType(data) {
+          if(data.controlType == 'GATHER'|| data.controlType == 'TABLE') {
+            data.children = [];
+          }
+          //选择类型是 清除termUnit设置
+          data.baseProperty={
+            "controlWidth": 4, //(控件宽度)1 / 2 / 3 / 4 0(代表未设置)
+            "controlHeight": 0, //(控件高度)1 / 2 / 3 / 4 0(代表未设置)
+            "controlTip": "", //(控件输入提示)
+            "controlIsDefaultDateTime": 0, //(是否使用默认时间或日期)
+            "controlIsExtend":0, //(下拉框是否可扩展)
+            "labelType":null,
+            "labelContent":null,
+            "labelImage":null,
+            "itemFileRsp":[],
+            "fileType":"FILE",
+            "binding":0,
+            "bindingInfo":{
+              "itemId":"",
+              "viewId":"",
+              "viewColumn":"",
+              "bindingType":"",
+              "bindingColumn":"",
+              "bindingColumnName":"",
+              "list":[]
+            }
+          };
+          data.termSet= {
+            "termGroupOid": "", //(代码集OID)
+            "termGroupName":'', //(代码集名称)
+            "termDefaultValue":[],// 是否有默认值
+            "termItemList": [],
+            "foldFlag":1,
+          };
+          data.termUnit={
+            "numberIsSwitch":1, //单位是否显示
+            "unitName":"",//单位值
+          };
+          data.gatherKnowType=0;
+          data.inputValue="";
+          data.gatherRank=0;
+          data.gatherColumnNumber=2;
+          data.gatherIsVisible=1;
+          data.gatherFoldFlag=0;
+        },
+        //是否可见
+        isVisible(data) {
+          if(data.displayIsVisible == 1) {
+            data.displayIsVisible = 0;
+          }else{
+            data.displayIsVisible = 1;
+          }
+        },
+        //添加行
+        addLine(data,index) {
+          if(data.controlType=='GATHER'||data.controlType == 'TABLE') {
+            let copyData = Object.assign({},parameter.initData);
+            data.children.push(copyData)
+          }
+        },
+        //删除行
+        deleteLine(index) {
+          this.basisData.splice(index,1);
+        },
+        //上移
+        moveTop(data,index,array) {
+          if(index === 0 ) {
+            this.$notice('已经置顶了，请往下移！');
+            return ;
+          }
+          let copyLine = Object.assign({},data);
+          array.splice(index-1,0,copyLine);
+          array.splice(index+1,1);
+        },
+        moveDown(data,index,array) {
+          if(array.length-1 === index) {
+            this.$notice('已经置底了，请往上移！');
+            return ;
+          }
+          let copyLine = Object.assign({},data);
+          array.splice(index+2,0,copyLine);
+          array.splice(index,1)
+        }
+      },
       mounted() {
+        console.log(parameter.initData);
       }
     }
 </script>
@@ -130,11 +249,11 @@
 <style lang="less" scoped>
   .basis_component_container{
     margin-left: 50px;
-    margin-top: 10px;
-    margin-bottom: 10px;
     .basis_component-content{
       display: flex;
       flex-direction: column;
+      margin-top: 5px;
+      margin-bottom: 5px;
       .component-content{
         display: flex;
         flex-direction:row;
@@ -151,6 +270,7 @@
           font-size: 20px;
           color: #1BBAE1;
           padding: 0 7px;
+          cursor: pointer;
         }
         .gray{
           color: #9CA0B1;
