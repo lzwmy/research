@@ -561,9 +561,8 @@
       //保存
       saveFromChart() {
         console.log('保存 按钮');
-
+        this.loading = true;
         if(this.bgColor==""){ //保存方法
-
           this.saveCustomChart();
         }else{ // 编辑保存
           this.modifyCustomChart();
@@ -685,6 +684,7 @@
             that.init();
             that.modelCRFFromList();
             this.loading = false;
+            window.history.go(-1);
           }
         }catch (error) {
           console.log(error)
@@ -722,7 +722,8 @@
               type:'success',
               message:data.msg
             })
-            that.$emit('refresh',{refresh:true})
+            // that.$emit('refresh',{refresh:true})
+            window.history.go(-1);
           }
         }catch (error) {
           console.log(error)
