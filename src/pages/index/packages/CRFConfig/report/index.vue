@@ -3,7 +3,7 @@
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
         <div class=" cur_pointer head_content flex-start-center">
-          <div class="create_model_btn" >
+          <div class="create_model_btn" @click="createCRF">
             <i class="iconfont icontianjia"></i>
             <span>新建CRF</span>
           </div>
@@ -133,7 +133,11 @@
         }
       },
       methods:{
-
+        createCRF() {
+          this.$router.push({
+            path:"/basisConfig"
+          })
+        }
       },
       mounted() {},
       deactivated() {
@@ -180,7 +184,6 @@
       border:1px solid #E5EBEC;
       width: 300px;
       height: 400px;
-      /*justify-content: center;*/
       padding: 15px;
       box-sizing: border-box;
       margin-left: 15px;

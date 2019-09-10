@@ -20,6 +20,10 @@ const reportFill = r => require.ensure([], () => r(require('packages/CDRFormMana
 
 // crf 2.0
 const reportConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/report/index')),"reportConfig");
+/**
+ * * 添加条目
+ */
+const CRFBasisConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/basisComponents/basisConfig')),"CRFBasisConfig");
 
 
 const routes = [
@@ -104,6 +108,23 @@ const routes = [
       openMode: 2
     },
     component: reportFill
+  },
+  {
+    path: '/basisConfig',
+    name: 'basisConfig',
+    meta: {
+      requireAuth: true,
+      isKeepAlive: false,
+      txt: 'CRF配置',
+      flag: 'crfConfig',
+      belongToGroup: 'insideView',
+      openMode: 2
+    },
+    // component: CDRFromConfig
+    /***
+     * crf 表单配置 2.0
+     * */
+    component: CRFBasisConfig
   }
 ];
 
