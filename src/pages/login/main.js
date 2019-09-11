@@ -2,13 +2,15 @@
 import Vue from 'vue';
 import App from './app';
 import utils from 'components/utils';
-import ElementUI from 'element-ui';
+import { Form,FormItem,Input, Button, MessageBox } from 'element-ui';
 
-Vue.use(ElementUI);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Input);
+Vue.use(Button);
+Vue.prototype.$alert = MessageBox.alert;
 import install from 'components/utils/install';
-
 Vue.use(install);
-import './login.less';
 import store from '../../store';
 import Global from 'components/utils/global';
 

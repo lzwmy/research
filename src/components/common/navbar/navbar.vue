@@ -16,7 +16,7 @@ export default {
         return {
             loading: true,
             menuList: [],
-            activeMenuIndex: '/index'
+            activeMenuIndex: '/'
         };
     },
     computed: {
@@ -107,7 +107,8 @@ export default {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                &.is-active{
+                transition: all 300ms;
+                &.is-active, &:hover{
                     .icon, span {
                         color: #439AFF;
                     }

@@ -12,11 +12,6 @@
       </div>
       <div class="show_search_tab" v-if="active==1">
         <div class="tree_style left" v-loading="loadingTree">
-          <!-- <el-tree ref="rootTree" node-key="id" :data="searchTreeList" :props="defaultProps" :expand-on-click-node="true" v-loading="loadingTree">
-            <span class="custom-tree-node" slot-scope="{ node, data }">
-              <span @dblclick="searchTreeQuery(data)">{{node.label}}</span>
-            </span>
-          </el-tree> -->
           <Tree 
               :dataTree="searchTreeList"
               :showCheckbox="false"
@@ -28,14 +23,11 @@
         </div>
         <div class="search_tab_component" v-for="(item,index) in searchList" :key="index">
           <div class="search_tab_name">{{item.reportName}}</div>
-          <!--v-for="(it,index) in item.query"-->
           <add-card :pItem="item.children" :Index="index" :item="item.query" :delShow="false" @state-refresh="stateRefresh"></add-card>
         </div>
       </div>
       <div class="show_tab_line" v-if="showItemComponent" v-show="active==2">
-        <!-- <showItem ref="showItem" @treeData="handleTreeDataShow" :dataTreeEdit="treeDataShowEdit" :selectTreeData="showTreeListAdd" :type="modelData.type"></showItem> -->
         <showItem ref="showItem" @treeData="handleTreeDataShow" :dataTreeAdd="showTreeListAdd" :dataTreeEdit="treeDataShowEdit"  :type="modelData.type"></showItem>
-
       </div>
       <div class="show_exprot_tab" v-if="editItemComponent" v-show="active==3">
         <exportItem ref="exportItem" @treeData="handleTreeDataExport" :dataTreeAdd="exportTreeListAdd" :dataTreeEdit="treeDataExportEdit" :type="modelData.type"></exportItem>

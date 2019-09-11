@@ -60,7 +60,6 @@ export default {
     },
     mounted () {
         this.initView();
-        document.getElementsByTagName('body')[0].style.zoom = 1.0;
         window.onresize = this.initView;
         // setTimeout(()=>{
         //     this.loading = false;

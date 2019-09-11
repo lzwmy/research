@@ -305,6 +305,9 @@
           exportItem = this.$refs.researchBox.treeDataExportEdit || [];
           displayItem = this.$refs.researchBox.treeDataShowEdit || [];
         }
+        console.log(displayItem)
+        console.log(exportItem)
+        return;
         let that = this;
         let fromData ={
           "modelId": "",
@@ -349,9 +352,9 @@
           exportItem = this.$refs.researchBox.treeDataExportEdit || [];
           displayItem = this.$refs.researchBox.treeDataShowEdit || [];
         }
-        // console.log(displayItem)
-        // console.log(exportItem)
-        // return;
+        console.log(displayItem)
+        console.log(exportItem)
+        return;
         let that = this;
         let fromData ={
           "modelId": that.$route.query.modelId || "",

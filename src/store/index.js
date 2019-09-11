@@ -34,7 +34,6 @@ const user = {
     saveMenuList(state, payload) {
       sessionStorage.setItem('CURR_USER_RESEARCH_MENULIST', JSON.stringify(payload.params));
       state.menuList = payload.params;
-      console.log(state.menuList)
     },
     saveSession_isDislpayArrow(state, payload) {
       state.session_isDislpayArrow = payload.isDislpayArrow;

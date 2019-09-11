@@ -83,7 +83,7 @@ const routes = [
 
 const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, reportList, eventPlan,researchModel,patientListModule,diseaseChart, researchTask);
 //处理内页打开页面
-route.forEach(item=>{
+route.forEach( item =>{
   if(item.name == 'insideView'){
     route.forEach(li=>{
       if(li.meta.openMode === 2 && li.name != 'insideView') {
@@ -92,4 +92,10 @@ route.forEach(item=>{
     })
   }
 })
+for(let i = 0; i < route.length; i++) {
+  if(route[i].meta.openMode === 2 ) {
+    route.splice(i,1)
+    i--;
+  }
+}
 export default route;
