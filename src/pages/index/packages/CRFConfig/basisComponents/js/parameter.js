@@ -48,9 +48,8 @@ export default {
       ]
     },
     "termSet": {
-      "termDefaultValue": [
-        ""
-      ],
+      "termDefaultValue": [],
+      "rangeText":"",
       "termItemList": [
         {
           "id": "",
@@ -67,8 +66,8 @@ export default {
     "controlIsAvailable": 0,
     "gatherRank": "",//上下排列: 1, 左右排列: 2
     "gatherColumnNumber": 0,
-    "binding": "",//0 没有绑定 1 绑定
-    "fileType": "",
+    "binding": 0,//0 没有绑定 1 绑定
+    "fileType": "FILE",
     "children": []
   }
 };
