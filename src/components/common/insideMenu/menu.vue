@@ -67,9 +67,9 @@ export default {
             type: Array,
             default: ()=> []
         },
-        menuPath: {
-            type: String,
-            default: "/index"
+        fromRouter: {
+            type: Object,
+            default: () =>({})
         },
     },
     data () {
@@ -105,15 +105,22 @@ export default {
             }
         },
         onBack() {
-            if(this.menuPath == '/diseaseSet') {
+            if(!this.fromRouter.path) {
                 this.$router.push({
-                    path: '/SDResearch'
+                    path: '/'
                 })
                 return;
+            }else if(this.fromRouter.meta.flag !== this.fromRouter.path) {
+                //如果返回的是详情页，则路由到该详情页的父页面
+                this.$router.push({
+                    path: '/' + this.fromRouter.meta.flag
+                })
+                return;
+            }else {
+                this.$router.push({
+                    path: this.fromRouter.path
+                })
             }
-            this.$router.push({
-                path: this.menuPath
-            })
             sessionStorage.removeItem('insideData');
         }
     }
@@ -172,7 +179,7 @@ export default {
                     height: 40px;
                     width: 40px;
                     border-radius: 50%;
-                    margin-right: 20px;
+                    margin-right: 15px;
                 }
                 p {
                     font-size: 12px;

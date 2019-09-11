@@ -1,21 +1,23 @@
 <template>
   <div class="cloud-component enterGroupManager">
     <!-- 搜索区域 -->
-    <div class="cloud-search el-form-item-small">
-      <div class="block-head clearfix">
-        <span class="block-head-title">入组管理</span>
+    <div class="cloud-search bottom_15 flex-between-center">
+      <div class="block-head flex-start-center">
+        <p class="page_title">入组管理</p>
         <div class="disease-title">{{ruleForm.patientName}} | {{ruleForm.identify}}</div>
+      </div>
+      <div class="flex-end-center">
         <el-button type="primary" @click="openEnterGroupDialog">入库入组</el-button>
+        <el-button type="default" @click="$router.push('/allCases')">返 回</el-button>
       </div>
     </div>
     <!--搜索结果-->
     <div class="cloud-search-list">
       <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
         <el-table
-          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-40):(routerViewHeight*1-5)"
+          :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%" v-loading="loading"
-          :empty-text="emptyText" :element-loading-text="elementLoadingText" stripe highlight-current-row
-          ref="roleTable">
+          :empty-text="emptyText" :element-loading-text="elementLoadingText" ref="roleTable">
           <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>
           <el-table-column prop="diseaseName" label="单病种库" min-width="10%" show-overflow-tooltip>
           </el-table-column>
@@ -31,13 +33,13 @@
               <span v-else>未填写</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="200px">
+          <el-table-column label="操作" width="120px">
             <template slot-scope="scope">
               <el-button type="text" size="small" @click="outGroup(scope.row)" style="margin-left: 8px">
-                <i class="icon-bangding" title="出组"></i>
+                <i class="el-icon-edit-outline" title="出组"></i>
               </el-button>
               <el-button type="text" size="small" @click="fillCRF(scope.row)" style="margin-left: 8px">
-                <i class="icon-edit" title="填写CRF"></i>
+                <i class="icon iconfont iconbianji" title="填写CRF"></i>
               </el-button>
             </template>
           </el-table-column>
@@ -426,15 +428,15 @@ export default {
 
 <style lang="less">
   body {
-    .enterGroupManager .block-head-title {
-      float: left;
-    }
+    // .enterGroupManager .block-head-title {
+    //   font-size: 16px;
+    //   color: 
+    // }
     .enterGroupManager .disease-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
-      float: left;
       margin-left: 20px;
-      margin-right: 20px;
+      display: inline-block;
       vertical-align: middle;
     }
     .enterGroupDialog .el-form .el-form-item .el-input {

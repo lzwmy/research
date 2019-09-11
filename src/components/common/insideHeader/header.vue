@@ -29,12 +29,6 @@
 import '../../../pages/index/packages/SDResearch/card_bgColor.less';
 export default {
     name: 'insideHeader',
-    props: {
-        menuPath: {
-            type: String,
-            default: "",
-        }
-    },
     data () {
         return {
             openMenuView: true,
@@ -125,7 +119,6 @@ export default {
             .popover_disease {
                 height: 100%;
                 min-width: 90px;
-                // padding:0 15px;
                 transition: all 300ms;
                 cursor: pointer;
                 &:hover {
@@ -135,6 +128,7 @@ export default {
                     display: block;
                     height: 60px;
                     width: 100%;
+                    padding:0 15px;
                     font-size: 15px;
                     text-align: center;
                     line-height: 60px;

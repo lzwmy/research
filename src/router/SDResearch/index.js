@@ -56,9 +56,9 @@ const routes = [
       requireAuth: true,
       isKeepAlive: false,
       txt: '入组管理',
-      flag: 'enterGroupManager',
+      flag: 'allCases',
       belongToGroup: 'enterGroupManager',
-      openMode: 2
+      openMode: 1
     },
     component: enterGroupManager
   }

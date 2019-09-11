@@ -34,11 +34,14 @@ export default {
     },
     methods: {
         toRouter(data) {
-            let item = this.menuList[data.index]
+            let item = this.menuList[data.index];
             if(item.children.length != 0 && item.menuPath != '/SDResearch') {
                 let params = {
                     title: item.menuName,
-                    menuPath: this.$route.path,
+                    fromRouter: {
+                        path: this.$route.path,
+                        meta: this.$route.meta
+                    },
                     menuList: item.children
                 }
                 sessionStorage.setItem('insideMenuData',JSON.stringify(params))

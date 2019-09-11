@@ -12,6 +12,17 @@ const dateTimeConvert = function (date) {
   return year + '-' + month + '-' + day;
 };
 
+// 空字符串处理
+const emptyString = function (val) {
+  if (!val) {
+    return '暂无';
+  }else {
+    return val;
+  }
+
+};
+
 export default {
-  dateTimeConvert
+  dateTimeConvert,
+  emptyString
 };

@@ -29,7 +29,7 @@
         </div>
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <ul class="card flex-start-center" v-loading="loading">
+            <ul class="card flex-start-start" v-loading="loading">
                 <el-row :gutter="21">
                     <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" v-for="(item,index) in dataList" :key="index">
                         <li class="box flex-start-center" @click="toReportFill(item)">
@@ -39,7 +39,7 @@
                             </div>
                             <div class="box_right flex-center-end">
                                 <div class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已联系':'未联系'}}</span></div>
-                                <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber}}</p>
+                                <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
                                     <span class="flex-center-center" @click.stop="pushNote(item)"><i class="icon iconfont iconzujian9"></i>短信随访</span>
                                     <span class="flex-center-center" @click.stop="pushAssociate(item)"><i class="icon iconfont iconzujian11"></i>微信随访</span>
@@ -291,7 +291,7 @@ export default {
                 }
                 .box_tel {
                     width: 100%;
-                    color: rgba(0, 0, 0, 1);
+                    color: rgba(127, 139, 159, 1);
                     font-size: 14px;
                     margin-bottom: 16px;
                     i {

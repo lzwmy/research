@@ -73,7 +73,7 @@
                             </el-timeline>
                         </template>
                     </el-table-column>
-                    <el-table-column sortable type="index" label="序号" width="75" align="center"></el-table-column>
+                    <el-table-column sortable type="index" label="序号" width="50"></el-table-column>
                     <el-table-column sortable prop="visitDate" label="就诊时间" width="110"></el-table-column>
                     <el-table-column sortable prop="reportName" label="报告名称" width="140"></el-table-column>
                     <el-table-column sortable prop="patientName" label="姓名"></el-table-column>

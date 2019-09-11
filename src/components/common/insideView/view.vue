@@ -1,7 +1,7 @@
 <template>
     <div class="inside_cloud-container" v-loading="loading"  element-loading-background="#eee" element-loading-text="拼命加载中">
-        <insideHeader @diseaseSelect="handleDiseaseSelect" @menuViewChange="handleMenuView" :menuPath="menuPath"></insideHeader>
-        <insideMenu :title="title" @changeLoadding="handleLoadding" :openMenuView="openMenuView" :menuList="menuList" :menuPath="menuPath"></insideMenu>
+        <insideHeader @diseaseSelect="handleDiseaseSelect" @menuViewChange="handleMenuView" :fromRouter="fromRouter"></insideHeader>
+        <insideMenu :title="title" @changeLoadding="handleLoadding" :openMenuView="openMenuView" :menuList="menuList" :fromRouter="fromRouter"></insideMenu>
         <div id="insideContainer" :class="openMenuView?'open':'close'" v-loading="viewLoading"  
                         element-loading-background="#fff"
                         element-loading-text="拼命加载中">
@@ -39,7 +39,10 @@ export default {
             openMenuView: true,
             loading: false,
             title: "",
-            menuPath: '/index',
+            fromRouter: {
+                path: '/index',
+                meta: {}
+            },
             menuList: [],
             viewLoading: false,
             disease: ""
@@ -78,7 +81,7 @@ export default {
         },
         getMenuList() {
             let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))
-            this.menuPath = insideData.menuPath;
+            this.fromRouter = insideData.fromRouter;
             this.title = insideData.title;
             this.menuList = insideData.menuList;
         },

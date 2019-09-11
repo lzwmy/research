@@ -6,7 +6,7 @@
                 <el-button icon="el-icon-plus" type="primary">创建课题</el-button>
             </el-tooltip>
         </div>
-        <ul class="flex-start-center">
+        <ul class="flex-start-start">
             <el-row :gutter="20">
                 <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in 8" :key="index">
                     <li>

@@ -228,18 +228,16 @@
     </el-dialog>
     <!--保存筛选条件-->
     <el-dialog title="保存筛选条件" :visible.sync="MySaveConditionDialogVisible" :append-to-body="true"
-               @close="closeMySaveConditionDialog" class="MySaveConditionDialog">
-      <el-form :model="mySaveConditionRuleForm" label-width="120px" @submit.native.prevent :rules="mySaveConditionRules"
-               ref="mySaveConditionRuleForm">
+              @close="closeMySaveConditionDialog" class="MySaveConditionDialog">
+      <el-form :model="mySaveConditionRuleForm" label-width="130px" @submit.native.prevent :rules="mySaveConditionRules"
+              ref="mySaveConditionRuleForm">
         <el-form-item label="筛选条件名称：" prop="name">
           <el-input v-model.trim="mySaveConditionRuleForm.name" placeholder="请输入新筛选条件名称"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">
+        <el-button type="primary" @click="saveCondition" size="mini" :disabled="checkDisable(mySaveConditionRuleForm)">确定</el-button>
         <el-button @click="closeMySaveConditionDialog" size="mini">取消</el-button>
-        <el-button type="primary" @click="saveCondition" size="mini"
-                    :disabled="checkDisable(mySaveConditionRuleForm)">确定
-        </el-button>
       </div>
     </el-dialog>
   </div>
