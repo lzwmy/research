@@ -4,14 +4,14 @@
     <div class="cloud-search el-form-item-small">
       <el-form :inline="true" :model="ruleForm" ref="ruleForm" @submit.native.prevent>
         <el-form-item label="医学分类名称：">
-          <el-input v-model="ruleForm.name" @keyup.enter.native="getDataList" size="mini" placeholder="请输入医学分类名称" class="search-input" :clearable="true"></el-input>
+          <el-input v-model="ruleForm.name" @keyup.enter.native="getDataList()" size="mini" placeholder="请输入医学分类名称" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item label="代码分类ID：">
-          <el-input v-model="ruleForm.code" @keyup.enter.native="getDataList" size="mini" placeholder="请输入代码分类ID" class="search-input" :clearable="true"></el-input>
+          <el-input v-model="ruleForm.code" @keyup.enter.native="getDataList()" size="mini" placeholder="请输入代码分类ID" class="search-input" :clearable="true"></el-input>
         </el-form-item>
             
         <el-form-item>
-          <el-button type="primary" @click="getDataList" icon="el-icon-search">查 询</el-button>
+          <el-button type="primary" @click="getDataList()" icon="el-icon-search">查 询</el-button>
           <el-button @click="reset" icon="icon iconfont iconlujing1">清 空</el-button>
           <el-button @click="onShowDialog()" icon="el-icon-plus">添加医学分类</el-button>
         </el-form-item>

@@ -4,13 +4,13 @@
     <div class="cloud-search el-form-item-small">
       <el-form :inline="true" :model="ruleForm" ref="ruleForm" @submit.native.prevent>
         <el-form-item label="代码集名称：">
-          <el-input v-model="ruleForm.code" @keyup.enter.native="getDataList" size="mini" placeholder="请输入显示代码" class="search-input" :clearable="true"></el-input>
+          <el-input v-model="ruleForm.code" @keyup.enter.native="getDataList()" size="mini" placeholder="请输入显示代码" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item label="包含的显示名：">
-          <el-input v-model="ruleForm.name" @keyup.enter.native="getDataList" size="mini" placeholder="请输入显示名称" class="search-input" :clearable="true"></el-input>
+          <el-input v-model="ruleForm.name" @keyup.enter.native="getDataList()" size="mini" placeholder="请输入显示名称" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="getDataList" icon="el-icon-search">查询</el-button>
+          <el-button type="primary" @click="getDataList()" icon="el-icon-search">查询</el-button>
           <el-button @click="reset" icon="icon iconfont iconlujing1">清空</el-button>
           <el-button @click="onShowDialog()" icon="el-icon-plus">添加代码集</el-button>
         </el-form-item>
@@ -139,7 +139,7 @@
             <el-table-column prop="termItemName" label="显示名称" show-overflow-tooltip align="left"></el-table-column>
             <el-table-column label="操作" align="center" label-width="90">
               <template slot-scope="scope">
-                <el-button type="text" @click="onAddtoFormList(scope.row)" size="mini" style="color:#2d8cf0;">添 加</el-button>
+                <el-button type="text" @click="onAddtoFormList(scope.row)" size="mini" style="color:#1bbae1;">添 加</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -200,6 +200,9 @@ export default {
       }
     };
   },
+  created() {
+    console.log(pageNo)
+  },
   components: {
     pagination,
     echartsContain
@@ -213,6 +216,7 @@ export default {
       this.getDataList();
     },
     async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
+      console.log(pageNo)
       let that = this;
       that.currentPageNo = pageNo;
       that.currentPageSize = pageSize;
@@ -312,7 +316,7 @@ export default {
     onShowDialog(row) {
       this.ruleFormDialog.visible = true;
       this.$nextTick(()=>{
-       this.$refs.ruleFormDialog.clearValidate();   
+      this.$refs.ruleFormDialog.clearValidate();   
       })
       if(row){
         this.ruleFormDialog.title = "编辑代码集";
@@ -496,7 +500,7 @@ export default {
   .iconfuhao6,
   .iconfuhao1,
   .el-icon-search {
-    color:#409eff;
+    color:#1bbae1;
   }
   
   .iconfuhao4 {

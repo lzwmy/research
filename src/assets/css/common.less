@@ -187,8 +187,12 @@ body {
         }
         .el-tabs__item.is-active,
         .el-button--text,
-        .el-button--default:hover {
+        .el-button--default:hover,
+        .el-loading-spinner .el-loading-text {
             color: #1bbae1;
+        }
+        .el-loading-spinner .path {
+            stroke: #1bbae1;
         }
         .el-input__inner:focus,
         .el-range-editor.is-active, 
@@ -222,7 +226,8 @@ body {
         .el-button--default:hover {
             color: #14aed4;
         }
-        .el-radio__input.is-checked+.el-radio__label {
+        .el-radio__input.is-checked+.el-radio__label,
+        .el-dialog__headerbtn:focus .el-dialog__close {
             color: #1bbae1;
         }
         .el-checkbox__input.is-checked:not(.is-disabled) .el-checkbox__inner,

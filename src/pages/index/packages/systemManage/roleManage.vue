@@ -314,6 +314,7 @@ export default {
       this.$refs.permissionTree.setCheckedKeys([]);
     },
     async assign (row) {
+      console.log(row)
       let that = this;
       that.currRole = row;
       that.treeRenderAgain = true;
@@ -390,6 +391,7 @@ export default {
             });
           });
           this.menuLevel3(that.menusList,that.permissionList);
+          console.log(this.permissionList)
         }
       } catch (error) {
         that.$notice('获取菜单树失败');

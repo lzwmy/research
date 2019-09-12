@@ -1073,7 +1073,7 @@ export default {
   body {
     .allCases .el-dropdown-link {
       cursor: pointer;
-      color: #1bbae1;
+      color: #439aff;
       display: inline-block;
       padding: 0 20px 0 20px;
     }
