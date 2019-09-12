@@ -2,8 +2,8 @@
     <div class="basis_component_container">
         <div class="basis_component-content" v-for="(basisDataItem,basisDataIndex) in basisData" :key="basisDataIndex">
           <div class="component-content">
-              <el-input placeholder="条目名称" v-model="basisDataItem.controlName" size="mini"></el-input>
-              <span class="content_must-fill">*</span>
+              <!--<el-input placeholder="条目名称" v-model="basisDataItem.controlName" size="mini"></el-input>-->
+              <!--<span class="content_must-fill">*</span>-->
               <el-input placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini"></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->

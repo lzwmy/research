@@ -38,11 +38,11 @@ const routes = [
       belongToGroup: 'insideView',
       openMode: 2
     },
-    component: CDRFromConfig
+    // component: CDRFromConfig
     /***
      * crf 表单配置 2.0
      * */
-    // component: reportConfig
+    component: reportConfig
   },
   {
     path: '/crfFill',

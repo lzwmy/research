@@ -1,16 +1,37 @@
 <template>
     <div class="basis_config_container">
+      <div class="basis_nav-box">
+        <div class="nav_info-content">
+          <div class="portion_input-left">
+            <el-input placeholder="请输入小节名称" size="mini"></el-input>
+          </div>
+          <div class="btn-right-box">
+            <el-button type="primary">
+              <i class="iconfont iconfuhao2"></i>
+              预览
+            </el-button>
+            <el-button type="primary">
+              <i class="iconfont iconbaocun"></i>
+              保存
+            </el-button>
+            <el-button type="primary">
+              <i class="iconfont icontianjia"></i>
+              添加条目
+            </el-button>
+          </div>
+        </div>
+      </div>
       <div class="basis_body-content">
         <!--内容配置-->
         <div class="basis_content_config">
-          <div class="content-box">
+          <div class="content-box" v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
-              <el-input placeholder="条目名称" v-model="basisData.controlName" size="mini"></el-input>
-              <span class="content_must-fill">*</span>
-              <el-input placeholder="条目显示名称" v-model="basisData.controlDisplayName" size="mini"></el-input>
+              <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
+              <span class="content_must-fill">*</span>-->
+              <el-input placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini"></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
-              <el-select v-model="basisData.controlType" size="mini" @change="changeControlType(basisData)">
+              <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem)">
                 <el-option v-for="item in selectShowList"
                            :key="item.value"
                            :label="item.name"
@@ -19,39 +40,39 @@
               </el-select>
               <span class="content_must-fill">*</span>
               <!--单位-->
-              <el-select v-if="basisData.termUnit.numberIsSwitch=='1'&&basisData.controlType=='NUMBER_INPUT'" v-model="basisData.termUnit.unitName" filterable size="mini">
+              <el-select v-if="basisItem.termUnit.numberIsSwitch=='1'&&basisItem.controlType=='NUMBER_INPUT'" v-model="basisItem.termUnit.unitName" filterable size="mini">
                 <el-option v-for="item in unitList"
                            :key="item.id"
                            :label="item.unitName"
                            :value="item.unitName"></el-option>
               </el-select>
               <!--是否不详-->
-              <el-select v-if="basisData.controlType=='GATHER'||basisData.controlType=='TABLE'" v-model="basisData.gatherKnowType" size="mini" placeholder="是否不详">
+              <el-select v-if="basisItem.controlType=='GATHER'||basisItem.controlType=='TABLE'" v-model="basisItem.gatherKnowType" size="mini" placeholder="是否不详">
                 <el-option label="无" :value="0"></el-option>
                 <el-option label="有无" :value="1"></el-option>
                 <el-option label="是否不详" :value="2"></el-option>
               </el-select>
               <!--是否必填-->
-              <i class="iconfont iconfuhao2 gray" v-if="basisData.displayIsVisible=='0'" @click="isVisible(basisData)"></i>
-              <i class="iconfont iconfuhao2" v-else @click="isVisible(basisData)"></i>
+              <i class="iconfont iconfuhao2 gray" v-if="basisItem.displayIsVisible=='0'" @click="isVisible(basisItem)"></i>
+              <i class="iconfont iconfuhao2" v-else @click="isVisible(basisItem)"></i>
               <!--设置-->
-              <i class="iconfont iconfuhao7" v-if="basisData.controlType!==''" @click="changeParameterConfig(basisData)"></i>
+              <i class="iconfont iconfuhao7" v-if="basisItem.controlType!==''" @click="changeParameterConfig(basisItem)"></i>
               <!--添加-->
               <i class="iconfont iconfuhao1"
-                 v-if="basisData.controlType=='GATHER'||basisData.controlType=='TABLE'"
-                @click="add(basisData)"></i>
-              <!--删除-->
-              <!--<i class="iconfont iconfuhao4 del"></i>-->
+                 v-if="basisItem.controlType=='GATHER'||basisItem.controlType=='TABLE'"
+                @click="add(basisItem)"></i>
               <!--切换-->
-              <i class="iconfont iconzujian" v-if="basisData.controlType=='NUMBER_INPUT'" @click="switchType(basisData)"></i>
+              <i class="iconfont iconzujian" v-if="basisItem.controlType=='NUMBER_INPUT'" @click="switchType(basisItem)"></i>
               <!--上移-->
               <!--<i class="iconfont iconfuhao5"></i>-->
               <!--下移-->
               <!--<i class="iconfont iconfuhao6"></i>-->
+              <!--删除-->
+              <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
-            <basis-component v-if="basisData.children.length!==0" :children="basisData.children"></basis-component>
+            <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
           </div>
-          <div>{{basisData}}</div>
+          <!--<div>{{basisDataList[0]}}</div>-->
         </div>
         <!--参数配置-->
         <div class="basis_parameter_config">
@@ -165,7 +186,8 @@
           ],
           unitName:"",
           gatherKnowType:'',// 是否不详
-          basisData:{
+          basisDataList:[
+            {
             "id": "",
             "controlName": "",
             "diseaseId": "",
@@ -215,10 +237,12 @@
             },
             "termSet": {
               "termDefaultValue": [],
+              "rangeText":"",
               "termItemList": [ //值域
                 {
                   "id": "",
-                  "termItemName": ""
+                  "termItemName": "",
+                  "valueRange":""
                 }
               ]
             },
@@ -232,13 +256,22 @@
             "gatherRank": 0,//上下排列: 1, 左右排列: 2
             "gatherColumnNumber": 0,
             "binding": 0,//0 没有绑定 1 绑定"
-            "fileType": "",
+            "fileType": "FILE",
             "children": []
-          },
+          }
+          ],
           basisDataInfo:{}
         }
       },
       methods:{
+        resize() {
+          let height = $(".basis_config_container").height();
+          $('.basis_body-content').height(height-91)
+        },
+        //条目名称
+        changeControlName(data,value) {
+          data.controlDisplayName = value;
+        },
         //控件类型
         changeControlType(data) {
           if(data.controlType == 'GATHER'|| data.controlType == 'TABLE') {
@@ -251,9 +284,9 @@
             "controlTip": "", //(控件输入提示)
             "controlIsDefaultDateTime": 0, //(是否使用默认时间或日期)
             "controlIsExtend":0, //(下拉框是否可扩展)
-            "labelType":null,
-            "labelContent":null,
-            "labelImage":null,
+            "labelType":'TEXT',
+            "labelContent":"",
+            "labelImage":"",
             "itemFileRsp":[],
             "fileType":"FILE",
             "binding":0,
@@ -272,6 +305,7 @@
             "termGroupName":'', //(代码集名称)
             "termDefaultValue":[],// 是否有默认值
             "termItemList": [],
+            "rangeText":"",
             "foldFlag":1,
           };
           data.termUnit={
@@ -287,7 +321,7 @@
         },
         //集合 or 表格添加
         add(data) {
-          if(data.controlName!==""&&data.controlDisplayName!==""){
+          if(data.controlDisplayName!==""){
             //添加到children
             let copyData = Object.assign({},JSON.parse(JSON.stringify(parameter.initData)));
             data.children.push(copyData);
@@ -319,9 +353,15 @@
             data.termUnit.numberIsSwitch  = 1
           }
         },
-
+        //删除行
+        deleteBlock(index) {
+          this.basisDataList.splice(index,1);
+        }
       },
       mounted() {
+        this.$nextTick(()=>{
+          this.resize();
+        });
       }
     }
 </script>
@@ -330,8 +370,9 @@
 .basis_config_container{
   .basis_body-content{
     display: flex;
-    height: 100%;
-    flex:1;
+    /*height: 100%;*/
+    /*flex:1;*/
+    /*min-height: 809px;*/
     flex-direction: row;
     box-sizing: border-box;
     padding: 0 30px;
@@ -379,5 +420,41 @@
       overflow: auto;
     }
   }
+  .basis_nav-box{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 30px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    .nav_info-content{
+      width: 100%;
+      height: 76px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffffff;
+      border:1px solid #E5EBEC;
+      padding: 0 30px;
+      box-sizing: border-box;
+      .btn-right-box{
+        .el-button--primary{
+          background-color: #1BBAE1;
+        }
+        .iconfont{
+          font-size: 14px;
+          padding-right: 9px;
+        }
+      }
+    }
+  }
 }
+</style>
+<style lang="less">
+  .basis_config_container{
+    .el-input__inner{
+      border-radius: 2px;
+    }
+  }
 </style>
