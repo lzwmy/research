@@ -581,43 +581,52 @@
           column2:[
             {
               column:12,
-              position:1
+              position:1,
+              selection:false
             },
             {
               column:12,
-              position:2
+              position:2,
+              selection:false
             }
           ],
           column3:[
             {
               column:8,
-              position:1
+              position:1,
+              selection:false
             },
             {
               column:8,
-              position:2
+              position:2,
+              selection:false
             },
             {
               column:8,
-              position:3
+              position:3,
+              selection:false
             }
           ],
           column4:[
             {
               column:6,
-              position:1
+              position:1,
+              selection:false
             },
             {
               column:6,
-              position:2
+              position:2,
+              selection:false
             },
             {
               column:6,
-              position:3
+              position:3,
+              selection:false
             },
             {
               column:6,
-              position:4
+              position:4,
+              selection:false
             }
           ],
           //标签参数
