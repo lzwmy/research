@@ -7,15 +7,6 @@
       </router-link>
 
       <div class="header-info flex-end-center">
-          <!-- <el-dropdown class="li set">
-            <div class="setText">设置皮肤</div>
-            <el-dropdown-menu slot="dropdown" class="setdropdown">
-              <el-dropdown-item :class="{on:$parent.ccstyle=='theme-blue'}"><span @click="changeThemeColor('theme-blue')">蓝色</span>
-              </el-dropdown-item>
-              <el-dropdown-item :class="{on:$parent.ccstyle=='theme-green'}"><span
-                @click="changeThemeColor('theme-green')">绿色</span></el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown> -->
           <div class="li setText">
             <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
               <i class="icon iconfont iconzujian23"></i>
@@ -27,7 +18,7 @@
             </el-tooltip>
           </div>
           <el-dropdown class="li systemSet">
-            <div class="welcomeText flex-between-center" title="系统设置">
+            <div class="welcomeText flex-between-center cur_pointer">
               <div class="img_head">
                 <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像">
               </div>

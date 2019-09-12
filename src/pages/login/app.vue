@@ -151,6 +151,9 @@ export default {
             window.location.href = './index.html#/index';
           }
         } else {
+          if(data.code == 40) {
+            document.querySelector('#validCode').focus();
+          }
           that.changeValidCode();
         }
       }).catch(function (error) {
@@ -278,7 +281,6 @@ export default {
   @media screen and (min-width: 350px) and (max-width: 1200px) {
     #app {
       width: 1300px !important;
-      min-height: 700px !important;
     }
   }
 
