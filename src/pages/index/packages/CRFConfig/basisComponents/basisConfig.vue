@@ -1,5 +1,11 @@
 <template>
     <div class="basis_config_container">
+      <div class="component_head flex-between-center">
+        <p>新建小节</p>
+        <div class="head_content cur_pointer">
+          <i class="iconfont iconguanbi" @click="close"></i>
+        </div>
+      </div>
       <div class="basis_nav-box">
         <div class="nav_info-content">
           <div class="portion_input-left">
@@ -268,9 +274,9 @@
           let height = $(".basis_config_container").height();
           $('.basis_body-content').height(height-91)
         },
-        //条目名称
-        changeControlName(data,value) {
-          data.controlDisplayName = value;
+        //关闭
+        close() {
+          window.history.go(-1);
         },
         //控件类型
         changeControlType(data) {
@@ -362,12 +368,24 @@
         this.$nextTick(()=>{
           this.resize();
         });
+      },
+      destroyed() {
+        this.$destroy();
       }
     }
 </script>
 
 <style lang="less" scoped>
 .basis_config_container{
+  .component_head{
+    p{
+      font-size: 18px;
+      color: #394263;
+      font-weight:bold;
+      cursor: pointer;
+
+    }
+  }
   .basis_body-content{
     display: flex;
     /*height: 100%;*/
@@ -412,7 +430,7 @@
       }
     }
     .basis_parameter_config{
-      width:480px;
+      width:490px;
       background-color: #ffffff;
       border: 1px solid #E5EBEC;
       box-sizing: border-box;

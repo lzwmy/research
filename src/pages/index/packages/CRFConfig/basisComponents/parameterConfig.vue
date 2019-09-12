@@ -581,43 +581,52 @@
           column2:[
             {
               column:12,
-              offset:1
+              position:1,
+              selection:false
             },
             {
               column:12,
-              offset:2
+              position:2,
+              selection:false
             }
           ],
           column3:[
             {
               column:8,
-              offset:1
+              position:1,
+              selection:false
             },
             {
               column:8,
-              offset:2
+              position:2,
+              selection:false
             },
             {
               column:8,
-              offset:3
+              position:3,
+              selection:false
             }
           ],
           column4:[
             {
               column:6,
-              offset:1
+              position:1,
+              selection:false
             },
             {
               column:6,
-              offset:2
+              position:2,
+              selection:false
             },
             {
               column:6,
-              offset:3
+              position:3,
+              selection:false
             },
             {
               column:6,
-              offset:4
+              position:4,
+              selection:false
             }
           ],
           //标签参数
@@ -694,8 +703,10 @@
           }else{
             this.selectList.push(item)
           }
-        },
+          console.log(this.selectList);
+          //选择列 只能连着选
 
+        },
         //添加过滤条件
         addFilter() {
           console.log("点击添加成功");
@@ -1009,10 +1020,10 @@
           }
           .active{
             color: #ffffff;
-            background-color: #1BBAE1;
+            background-color: #9CA0B1;
           }
           :hover{
-            background:rgba(27,186,225,1);
+            background-color: #9CA0B1;
             color: #ffffff;
           }
         }
@@ -1034,8 +1045,8 @@
           cursor: pointer;
         }
         .active{
-          background-color: #1bbae1;
-          border-color: #1bbae1;
+          background-color: #9CA0B1;
+          border-color: #9CA0B1;
           &:last-child{
             border-left-color: #ffffff;
           }
@@ -1052,11 +1063,11 @@
           cursor: pointer;
         }
         .active{
-          background-color: #1bbae1;
-          border-color: #1bbae1;
+          background-color: #9CA0B1;
+          border-color: #9CA0B1;
           border-right-color: #ffffff;
           &:last-child{
-            border-left-color: #1bbae1;
+            border-left-color: #9CA0B1;
           }
         }
       }
@@ -1071,11 +1082,11 @@
           cursor: pointer;
         }
         .active{
-          background-color: #1bbae1;
-          border-color: #1bbae1;
+          background-color: #9CA0B1;
+          border-color: #9CA0B1;
           border-right-color: #ffffff;
           &:last-child{
-            border-left-color: #1bbae1;
+            border-left-color: #9CA0B1;
           }
         }
       }
