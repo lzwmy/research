@@ -250,16 +250,12 @@ export default {
       treeRenderAgain: true
     };
   },
-  created () {
-    this.initPage();
-  },
   activated () {
     this.getRoleList();
     this.getGroupsPermission();
   },
   methods: {
     initPage () {
-      this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
       this.pageNo = pageNo;
       this.pageSize = pageSize;
       this.rolePageNo = pageNo;

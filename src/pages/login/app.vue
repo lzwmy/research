@@ -205,7 +205,7 @@ export default {
       .login_content {
         width: 100%;
         height: 550px;
-        padding: 0 70px;
+        padding: 0 52px;
         .login_title {
           font-size:30px;
           font-weight:400;
@@ -271,7 +271,7 @@ export default {
         .login_button {
           width: 100%;
           height: 58px;
-          font-size: 22px;
+          font-size: 24px;
           border-radius:4px;
           background-color: rgba(67, 154, 255, 1);
         }

@@ -77,7 +77,8 @@ export default {
         let date = new Date().getTime();
         this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
         this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
-        this.initPage();
+        this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
+        this.getDataList();
     },
     mounted () {
         this.addEventListenervisibilityChange();
@@ -108,13 +109,10 @@ export default {
                 }
             }, false);
         },
-        initPage () {
-            this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
-            this.getDataList();
-        }, 
         async getDataList() {
             let that = this;
             let startTime, endTime;
+            console.log(this.form.time)
             if(!this.form.time || this.form.time && this.form.time.length == 0) {
                 startTime = null
                 endTime = null
@@ -122,6 +120,7 @@ export default {
                 startTime = this.form.time[0].split("-").join('');
                 endTime = this.form.time[1].split("-").join('');
             }
+            console.log(this.form.time)
             that.loading = true;
             let formData = {
                 offset: 1,

@@ -87,6 +87,9 @@ export default {
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
+                .el-tabs__active-bar {
+                    background-color: #439AFF;
+                }
             }
             .el-tabs__nav-wrap {
                 padding: 0px;

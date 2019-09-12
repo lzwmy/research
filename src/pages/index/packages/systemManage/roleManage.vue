@@ -179,7 +179,6 @@ export default {
   watch: {},
   computed: {},
   created () {
-    this.init();
   },
   mounted () {
 
@@ -189,8 +188,7 @@ export default {
     echartsContain
   },
   methods: {
-    init () {
-      this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
+    initPage () {
       this.pageNo = pageNo;
       this.pageSize = pageSize;
       this.emptyText = emptyText;

@@ -127,7 +127,10 @@ export default {
         let date = new Date().getTime();
         this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
         this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
-        this.initPage();
+        this.getDataList()
+        .then(()=>{
+            this.$emit('changeLoadding',false)
+        })
     },
     mounted () {
         this.addEventListenervisibilityChange();
@@ -163,19 +166,20 @@ export default {
                 }
             }, false);
         },
-        initPage () {
-            this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
-            this.getDataList()
-            .then(()=>{
-                this.$emit('changeLoadding',false)
-            })
-        }, 
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
             that.loading = true;
             that.paging.currentPageNo = pageNo;
             that.paging.currentPageSize = pageSize;
             that.dataList.content = [];
+            let startTime, endTime;
+            if(!this.form.time || this.form.time && this.form.time.length == 0) {
+                startTime = null
+                endTime = null
+            }else {
+                startTime = this.form.time[0].split("-").join('');
+                endTime = this.form.time[1].split("-").join('');
+            }
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
@@ -185,8 +189,8 @@ export default {
                     groupId: this.form.diseaseSubjectGroup.group || '',
                     crfId: "",
                     patientName: "",
-                    startTime: this.form.time.length?this.form.time[0].split("-").join(''):null,
-                    endTime: this.form.time.length?this.form.time[1].split("-").join(''):null,
+                    startTime: startTime,
+                    endTime: endTime,
                     status: this.form.state
                 }
             };

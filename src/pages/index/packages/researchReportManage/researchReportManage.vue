@@ -67,7 +67,7 @@
                                     :hide-timestamp="true">
                                     <div class="content">
                                         <i class="el-icon-edit"></i>
-                                        <p><span>2019-8-20 16:10:20</span><span>张医生填写报告</span></p>
+                                        <p><span>2019-8-20 16:10:20</span><span>{{$store.state.user.account}}填写报告</span></p>
                                     </div>
                                 </el-timeline-item>
                             </el-timeline>
@@ -142,7 +142,7 @@ export default {
         let date = new Date().getTime();
         this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
         this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
-        this.initPage();
+        this.getDataList();
     },
     mounted () {
         this.addEventListenervisibilityChange();
@@ -178,10 +178,6 @@ export default {
                 }
             }, false);
         },
-        initPage () {
-            this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
-            this.getDataList();
-        }, 
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let startTime, endTime;
             if(!this.form.time || this.form.time && this.form.time.length == 0) {

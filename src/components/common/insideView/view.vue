@@ -40,7 +40,7 @@ export default {
             loading: false,
             title: "",
             fromRouter: {
-                path: '/index',
+                path: '/',
                 meta: {}
             },
             menuList: [],

@@ -239,7 +239,7 @@
                 cursor: pointer;
                 &.active {
                     border-color: transparent;
-                    background: #2d8cf0;
+                    background: #1bbae1;
                     &::after {
                         content: "";
                         animation: animationCheckBoc  150ms forwards;

@@ -118,15 +118,8 @@ export default {
       return ccstyle;
     }
   },
-  created () {
-
-  },
-  mounted () {
-    this.initPage();
-  },
   methods: {
     initPage () {
-      this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
       this.emptyText = emptyText;
       this.elementLoadingText = elementLoadingText;
     },

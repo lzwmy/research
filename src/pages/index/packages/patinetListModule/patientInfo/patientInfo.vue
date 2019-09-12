@@ -47,6 +47,7 @@ export default {
         async getDataList () {
             let that = this;
             that.loading = true;
+            console.log(this.dataInfo)
             let formData = {
                 offset: 1,
                 limit: 99,

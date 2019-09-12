@@ -575,6 +575,7 @@ export default {
                 height: 100%;
                 flex-grow: 1;
                 padding: 20px;
+                overflow-y: auto;
             }
             .aside {
                 background-color: #f6f9fc;

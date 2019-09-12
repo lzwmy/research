@@ -367,7 +367,8 @@ export default {
     }
   },
   computed: {},
-  created () {},
+  created () {
+    },
   mounted () {
     this.initPage();
   },
@@ -1072,12 +1073,12 @@ export default {
   body {
     .allCases .el-dropdown-link {
       cursor: pointer;
-      color: #2d8cf0;
+      color: #1bbae1;
       display: inline-block;
       padding: 0 20px 0 20px;
     }
     .labGroup-btn {
-      color: #2d8cf0;
+      color: #1bbae1;
       margin: 2px 15px 2px 0;
       cursor: pointer;
       text-align: left;

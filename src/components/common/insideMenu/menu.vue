@@ -10,7 +10,7 @@
                     <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像">
                 </div>
                 <div>
-                    <p>张医生</p>
+                    <p>{{$store.state.user.account}}</p>
                     <p>主治医生</p>
                 </div>
             </div>
@@ -105,6 +105,7 @@ export default {
             }
         },
         onBack() {
+            console.log(this.fromRouter)
             if(!this.fromRouter.path) {
                 this.$router.push({
                     path: '/'
@@ -209,9 +210,6 @@ export default {
                 transition: all 250ms;
                 &.el-menu--collapse {
                     width: 64px;
-                }
-                .el-submenu {
-                    border-left: 4px solid transparent;
                 }
                 .el-menu-item {
                     height: 48px;

@@ -125,7 +125,10 @@ export default {
         path: list[0].menuPath,
         id: item.id,
         title: title,
-        menuPath: menuPath,
+        fromRouter: {
+            path: menuPath,
+            meta: this.$route.meta
+        },
         menuList: list
       }
       sessionStorage.setItem('insideMenuData',JSON.stringify(params))

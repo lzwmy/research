@@ -248,13 +248,6 @@ export default {
             }
         }
     },
-    computed: {},
-    created () {
-        this.initPage();
-    },
-    mounted () {
-
-    },
     components: {
         pagination,
         echartsContain
@@ -266,14 +259,9 @@ export default {
             this.pageSize = pageSize;
             this.emptyText = emptyText;
             this.elementLoadingText = elementLoadingText;
-            //   this.search();
+            //     this.getDataList();
             },
-            search () {
-            this.$nextTick(() => {
-                this.getDataList();
-            });
-            },
-            async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
+        async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
             let that = this;
             that.currentPageNo = pageNo;
             that.currentPageSize = pageSize;

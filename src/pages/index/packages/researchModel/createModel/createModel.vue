@@ -293,14 +293,14 @@
             p{
               :first-child{
                 font-size: 22px;
-                color: #04B8DD;
+                color: #1bbae1;
                 font-family:Roboto;
                 font-weight: bold;
                 padding-bottom: 8px;
               }
               :last-child{
                 font-size: 22px;
-                color: #04B8DD;
+                color: #1bbae1;
                 font-family:Roboto;
                 font-weight: bold;
                 padding-bottom: 8px;
@@ -308,7 +308,7 @@
             }
             :first-child{
               font-size: 22px;
-              color: #04B8DD;
+              color: #1bbae1;
               font-family:Roboto;
               font-weight: bold;
               padding-bottom: 8px;
@@ -330,7 +330,7 @@
           .img_model{
             i{
               font-size: 40px;
-              color: #04B8DD;
+              color: #1bbae1;
             }
           }
           .modify_model{
@@ -383,8 +383,8 @@
               z-index: 1;
               transform: translate(0,-50%);
               &:hover{
-                color: #04B8DD;
-                border-color: #04B8DD;
+                color: #1bbae1;
+                border-color: #1bbae1;
               }
             }
             .delete_text{
@@ -399,8 +399,8 @@
               border-radius: 2px;
               transform: translate(0,-50%);
               &:hover{
-                color: #04B8DD;
-                border-color: #04B8DD;
+                color: #1bbae1;
+                border-color: #1bbae1;
               }
             }
           }
@@ -483,7 +483,7 @@
       font-size: 14px;
       color: #666666;
       &:hover{
-        color: #04B8DD;
+        color: #1bbae1;
         cursor: pointer;
       }
     }

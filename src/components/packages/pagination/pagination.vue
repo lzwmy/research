@@ -197,4 +197,30 @@ export default {
       }
     }
   }
+
+  .insideView #pagination {
+    .btn-prev, 
+    .btn-next{
+      color: #1bbae1;
+    }
+    .el-pagination__sizes .el-input .el-input__inner:hover,
+    .el-select .el-input.is-focus .el-input__inner{
+      border-color: #1bbae1;
+    }
+    .btn-prev:hover, .btn-next:hover {
+      background-color: #1bbae1;
+    }
+    .el-pager li {
+      color: #1bbae1;
+      &:hover, &.active {
+        background-color: #1bbae1;
+      }
+    }
+  }
+  .insideView + .el-popper {
+    color: red;
+    .el-select-dropdown__item.selected {
+      color: #1bbae1;
+    }
+  }
 </style>

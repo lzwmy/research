@@ -6,9 +6,6 @@ const mixins = {
       routerViewHeight: 1
     };
   },
-  mounted () {
-
-  },
   activated () { 
   
     let that = this;
@@ -39,8 +36,11 @@ const mixins = {
       this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
     });
   },
-  beforeUpdate () {
+  created() {
     this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
+    // if(typeof(this.initPage) == 'function') {
+    //   this.initPage();
+    // }
   },
   computed: {
     getRouteArr () {

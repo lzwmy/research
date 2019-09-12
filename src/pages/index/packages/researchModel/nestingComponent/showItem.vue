@@ -42,7 +42,7 @@ export default {
     },
     data() {
         return {
-            colorArr: ['#FFB100','#5DBA58','#2F7BDD','#D89787','#767879','#CFB66D'],
+            colorArr: ['#FFB100','#5DBA58','#1bbae1','#D89787','#767879','#CFB66D'],
             loading: false,
             props: {
                 label:'labelName',
@@ -206,7 +206,7 @@ export default {
                     margin: 0 7px 7px 0;
                     border-radius:2px;
                 &:first-child {
-                        background: #2F7BDD !important;
+                        background: #1bbae1 !important;
                     }
                 }
             }

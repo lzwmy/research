@@ -451,7 +451,7 @@
   }
   .color_change{
     margin-left: 2%;
-    background-color: #1BBAE1;
+    background-color: #1bbae1;
     color: #ffffff;
     .iconfont{
       font-size: 14px;
@@ -472,7 +472,7 @@
       background-color: #EEEEEE;
       padding-left: 3%;
       i{
-        color: #3C81F0;
+        color: #1bbae1;
         padding: 0 5px;
         cursor: pointer;
       }

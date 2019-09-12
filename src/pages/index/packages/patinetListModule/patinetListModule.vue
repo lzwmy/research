@@ -628,14 +628,12 @@
     },
     computed: {},
     created () {
-
+      this.initPage();
     },
     mounted () {
-      this.initPage();
     },
     methods: {
       async initPage () {
-        this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
         this.pageNo = pageNo;
         this.pageSize = pageSize;
         this.emptyText = emptyText;
@@ -1688,12 +1686,12 @@
   body {
     .caseManage .el-dropdown-link {
       cursor: pointer;
-      color: #2d8cf0;
+      color: #1bbae1;
       display: inline-block;
       padding: 0 20px 0 20px;
     }
     .labGroup-btn {
-      color: #2d8cf0;
+      color: #1bbae1;
       margin: 2px 15px 2px 0;
       cursor: pointer;
       text-align: left;

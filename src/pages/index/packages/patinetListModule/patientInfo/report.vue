@@ -12,7 +12,7 @@
                             :hide-timestamp="true">
                             <div class="content">
                                 <i class="el-icon-edit"></i>
-                                <p><span>2019-8-20 16:10:20</span><span>张医生填写报告</span></p>
+                                <p><span>2019-8-20 16:10:20</span><span> {{$store.state.user.account}}填写报告</span></p>
                             </div>
                         </el-timeline-item>
                     </el-timeline>

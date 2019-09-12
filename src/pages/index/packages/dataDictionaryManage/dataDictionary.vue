@@ -4,13 +4,13 @@
     <div class="cloud-search el-form-item-small">
       <el-form :inline="true" :model="ruleForm" ref="ruleForm" @submit.native.prevent>
         <el-form-item label="代码集名称：">
-          <el-input v-model="ruleForm.code" @keyup.enter.native="search" size="mini" placeholder="请输入显示代码" class="search-input" :clearable="true"></el-input>
+          <el-input v-model="ruleForm.code" @keyup.enter.native="getDataList" size="mini" placeholder="请输入显示代码" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item label="包含的显示名：">
-          <el-input v-model="ruleForm.name" @keyup.enter.native="search" size="mini" placeholder="请输入显示名称" class="search-input" :clearable="true"></el-input>
+          <el-input v-model="ruleForm.name" @keyup.enter.native="getDataList" size="mini" placeholder="请输入显示名称" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+          <el-button type="primary" @click="getDataList" icon="el-icon-search">查询</el-button>
           <el-button @click="reset" icon="icon iconfont iconlujing1">清空</el-button>
           <el-button @click="onShowDialog()" icon="el-icon-plus">添加代码集</el-button>
         </el-form-item>
@@ -200,30 +200,17 @@ export default {
       }
     };
   },
-  watch: {},
-  computed: {},
-  created () {
-    this.initPage();
-  },
-  mounted () {
-  },
   components: {
     pagination,
     echartsContain
   },
   methods: {
     initPage () {
-      this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
       this.pageNo = pageNo;
       this.pageSize = pageSize;
       this.emptyText = emptyText;
       this.elementLoadingText = elementLoadingText;
-      this.search();
-    },
-    search () {
-      this.$nextTick(() => {
-        this.getDataList();
-      });
+      this.getDataList();
     },
     async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
       let that = this;

@@ -143,24 +143,108 @@ body .el-range-editor.el-input__inner {
 
 
 /* 按钮样式*/
-body .el-button {
-    padding: 0 15px;
-    line-height: 30px;
-    border-radius: 2px;
-    border-color: transparent;
-    border-width: 1px;
-    &:active {
+body {
+    .el-button {
+        padding: 0 15px;
+        line-height: 30px;
+        border-radius: 2px;
         border-color: transparent;
-    }
-    &.el-button--default {
-        border-color: #DCDFE6;
-    }
-    .icon {
-        font-size: 14px;
-        margin-right: 4px;
-    }
-} 
+        border-width: 0;
+        &.el-button--primary {
+            background-color: #439aff;
+            &:hover {
+                background-color: #1d85ff;
+            }
+        }
+        &.el-button--default {
+            border-color: #DCDFE6;
+            border-width: 1px;
+            &:active {
+                border-width: 1px;
+            }
+            &:hover {
+            }
+        }
+        .icon {
+            font-size: 14px;
+            margin-right: 4px;
+        }
+    } 
+}
 
+/* 内页样式 */
+body {
+    .insideView {
+        .el-button--primary {
+            background-color: #1bbae1;
+            &:hover {
+                background-color: #14aed4;
+            }
+        }
+        .el-table__row .iconbianji,
+        .el-input__inner:focus  {
+            color: #1bbae1 !important;
+        }
+        .el-tabs__item.is-active,
+        .el-button--text,
+        .el-button--default:hover {
+            color: #1bbae1;
+        }
+        .el-input__inner:focus,
+        .el-range-editor.is-active, 
+        .el-range-editor.is-active:hover,
+        .el-select .el-input.is-focus .el-input__inner,
+        .el-radio__inner:hover {
+            border-color: #1bbae1;
+        }
+        .el-checkbox__input.is-checked .el-checkbox__inner,
+        .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+            border-color: #1bbae1;
+            background-color: #1bbae1;
+        }
+    }
+    .insideView ~ .el-popper {
+        .el-select-dropdown__item.selected{
+            color: #1bbae1;
+        }
+        .el-date-table td.end-date span, 
+        .el-date-table td.start-date span,
+        .el-range-editor.is-active, 
+        .el-range-editor.is-active:hover,
+        .el-date-table td.current:not(.disabled) span {
+            background-color: #1bbae1;
+        }
+    }
+    .insideView ~ .el-dialog__wrapper {
+        .el-button--primary {
+            background-color: #1bbae1;
+        }
+        .el-button--default:hover {
+            color: #14aed4;
+        }
+        .el-radio__input.is-checked+.el-radio__label {
+            color: #1bbae1;
+        }
+        .el-checkbox__input.is-checked:not(.is-disabled) .el-checkbox__inner,
+        .el-checkbox__input.is-indeterminate .el-checkbox__inner,
+        .el-radio__input.is-checked .el-radio__inner {
+            border-color: #1bbae1;
+            background-color: #1bbae1;
+        }
+        .el-input.is-active .el-input__inner,
+        .el-input__inner:focus {
+            border-color: #1bbae1;
+        }
+    }
+    .insideView ~ .el-message-box__wrapper {
+        .el-button--primary {
+            background-color: #1bbae1;
+        }
+        .el-button--default:hover {
+            color: #14aed4;
+        }
+    }
+}
 
 /* 输入框样式*/ 
 body .el-input {

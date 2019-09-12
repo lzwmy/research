@@ -460,7 +460,7 @@ export default {
 <style lang="less">
   body {
     .fullTextSearch .input-with-btn .el-input-group__append {
-      background-color: #2d8cf0;
+      background-color: #439AFF;
       font-size: 18px;
       color: #fff;
       border-radius: 8px;
@@ -473,11 +473,11 @@ export default {
       border-width: 0;
     }
     .fullTextSearch .rs-count {
-      color: #2d8cf0;
+      color: #439AFF;
       margin-right: 30px;
     }
     .fullTextSearch .queryAllDom,.clearAllDom {
-      color: #2d8cf0;
+      color: #439AFF;
       cursor: pointer;
       padding-right: 2%;
     }
@@ -562,7 +562,7 @@ export default {
     width: 69%;
     font-size: 14px;
     /*color: #35B1D5;*/
-    color: #2d8cf0;
+    color: #439AFF;
     /*margin-bottom: 15px;*/
   }
   .fullTextSearch .patient-name span{
@@ -609,10 +609,10 @@ export default {
   }
   .fullTextSearch .el-table.rs-table td .bg_highlight{
     /*background-color: #8AB4F7;*/
-    background-color: #2d8cf0;
+    background-color: #439AFF;
     color: #ffffff;
     padding: 1px;
-    /*border-right: 2px solid #2d8cf0;*/
+    /*border-right: 2px solid #439AFF;*/
   }
 
   .fullTextSearch .el-table.rs-table::before {
