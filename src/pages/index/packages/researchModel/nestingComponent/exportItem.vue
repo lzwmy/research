@@ -137,7 +137,7 @@ export default {
                 }
             }else if(data.children && data.children.length != 0) {
                 //多个选中or取消
-                if(!data.checked) {
+                if(data.checked) {
                     arrayErgodic(data , this.changeContent, true)
                 }else {
                     arrayErgodic(data , this.changeContent, false)

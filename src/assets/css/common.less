@@ -1,7 +1,12 @@
-    /*
+
+
+@themeColor1:  #439aff;
+@themeColor2:  #1bbae1;
+
+
+/*
 * element-ui组件样式部分   
 */
-
 /* 弹框style*/
 body .el-dialog {
     min-height: 400px;
@@ -151,7 +156,7 @@ body {
         border-color: transparent;
         border-width: 0;
         &.el-button--primary {
-            background-color: #439aff;
+            background-color: @themeColor1;
             &:hover {
                 background-color: #1d85ff;
             }
@@ -176,74 +181,74 @@ body {
 body {
     .insideView {
         .el-button--primary {
-            background-color: #1bbae1;
+            background-color: @themeColor2;
             &:hover {
                 background-color: #14aed4;
             }
         }
         .el-table__row .iconbianji,
         .el-input__inner:focus  {
-            color: #1bbae1 !important;
+            color: @themeColor2 !important;
         }
         .el-tabs__item.is-active,
         .el-button--text,
         .el-button--default:hover,
         .el-loading-spinner .el-loading-text {
-            color: #1bbae1;
+            color: @themeColor2;
         }
         .el-loading-spinner .path {
-            stroke: #1bbae1;
+            stroke: @themeColor2;
         }
         .el-input__inner:focus,
         .el-range-editor.is-active, 
         .el-range-editor.is-active:hover,
         .el-select .el-input.is-focus .el-input__inner,
         .el-radio__inner:hover {
-            border-color: #1bbae1;
+            border-color: @themeColor2;
         }
         .el-checkbox__input.is-checked .el-checkbox__inner,
         .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-            border-color: #1bbae1;
-            background-color: #1bbae1;
+            border-color: @themeColor2;
+            background-color: @themeColor2;
         }
     }
     .insideView ~ .el-popper {
         .el-select-dropdown__item.selected{
-            color: #1bbae1;
+            color: @themeColor2;
         }
         .el-date-table td.end-date span, 
         .el-date-table td.start-date span,
         .el-range-editor.is-active, 
         .el-range-editor.is-active:hover,
         .el-date-table td.current:not(.disabled) span {
-            background-color: #1bbae1;
+            background-color: @themeColor2;
         }
     }
     .insideView ~ .el-dialog__wrapper {
         .el-button--primary {
-            background-color: #1bbae1;
+            background-color: @themeColor2;
         }
         .el-button--default:hover {
             color: #14aed4;
         }
         .el-radio__input.is-checked+.el-radio__label,
         .el-dialog__headerbtn:focus .el-dialog__close {
-            color: #1bbae1;
+            color: @themeColor2;
         }
         .el-checkbox__input.is-checked:not(.is-disabled) .el-checkbox__inner,
         .el-checkbox__input.is-indeterminate .el-checkbox__inner,
         .el-radio__input.is-checked .el-radio__inner {
-            border-color: #1bbae1;
-            background-color: #1bbae1;
+            border-color: @themeColor2;
+            background-color: @themeColor2;
         }
         .el-input.is-active .el-input__inner,
         .el-input__inner:focus {
-            border-color: #1bbae1;
+            border-color: @themeColor2;
         }
     }
     .insideView ~ .el-message-box__wrapper {
         .el-button--primary {
-            background-color: #1bbae1;
+            background-color: @themeColor2;
         }
         .el-button--default:hover {
             color: #14aed4;

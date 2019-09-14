@@ -1,7 +1,7 @@
 <template>
   <div id="main_header" class="header" :class="{'onclick':isDislpayArrow}">
     <div class="header_box flex-between-center">
-      <router-link :to="{ name: 'index'}" class="header-logo flex-start-center">
+      <router-link :to="{ name: 'index'}" class="header-logo flex-start-center cur_pointer">
         <img :src="'./static/img/logo/'+this.logo" alt="卫健智能">
         <span class="head-title">{{title}}</span>
       </router-link>

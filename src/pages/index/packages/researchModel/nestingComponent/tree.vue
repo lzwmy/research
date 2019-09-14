@@ -5,7 +5,7 @@
             <li v-for="(item,index) in dataTree" :key="index">
                 <div class="tree_lable" :class="defaultExpandAll?'open':'close'" v-if="filter.val.every( val =>{ return item[filter.key] != val })">
                     <i  @click="onTelescopic" class="el-icon-caret-bottom" v-if="JSON.stringify(item[props.children]) != '[]'"></i>
-                    <span v-if="showCheckbox" class="checkbox" @click="onCurrentDom" :class="(item.checked?'active':'')"><input type="checkbox" @click="onSelectCheckBox(item)" v-model="item.checked"></span>
+                    <span v-if="showCheckbox" class="checkbox" :class="(item.checked?'active':'')"><input type="checkbox" @click.stop="onSelectCheckBox(item)" v-model="item.checked"></span>
                     <p @click="onTelescopic" @dblclick="onDblclickNode({data:item})">{{item[props.label]}}</p>
                 </div>
                 <dataBaseTree 
@@ -64,7 +64,6 @@
         methods:{
             //操作多选框
             onSelectCheckBox(item){
-                this.onSelectCheckBoxItem(item)
                 if(item[this.props.children] && item[this.props.children].length != 0) {
                     if(!item.checked) {
                         this.updatedChecked(item, true);
@@ -72,28 +71,30 @@
                         this.updatedChecked(item, false);
                     }
                 }
-                this.onselectTreeUpdate(this.dataTree)
+                this.onSelectCheckBoxItem(item);
+                this.onselectTreeUpdate();
                 
             },
             //更新tree
-            onselectTreeUpdate(data){
-                this.changeParent(this.dataTree)
-                this.$emit("selectTreeUpdate",this.dataTree);
+            onselectTreeUpdate(){
+                setTimeout(()=>{
+                    this.changeParent(this.dataTree);
+                    this.$emit("selectTreeUpdate",this.dataTree);
+                },50)
             },
             //子节点改变时联动父节点状态
             changeParent(dataTree) {
-                for(let item of dataTree) {
-                    //取消勾选时，当全部取消时需改变父节点状态
-                    let isEmpty = this.findisEmpty(item[this.props.children]);
-                    if(isEmpty){
-                        item.checked = false;
-                        return;
-                    }
-                    for(let li of item[this.props.children]) {
-                        //当子节点选中时，父级节点也变为选中状态
-                        if(li.checked == true || (this.currentLeafNode.checked == false && li.id == this.currentLeafNode.id)){
-                            item.checked = true;
+                for(let i = 0; i < dataTree.length; i++) {
+                    //当子节点选中时，父级节点也变为选中状态
+                    for(let li of dataTree[i][this.props.children]) {
+                        if(li.checked == true){
+                            dataTree[i].checked = true;
                         }
+                    }
+                    //取消勾选时，当全部取消时需改变父节点状态
+                    let isEmpty = this.findisEmpty(dataTree[i][this.props.children]);
+                    if(isEmpty){
+                        dataTree[i].checked = false;
                     }
                 }
             },
@@ -138,37 +139,10 @@
                     }
                 }, 50)
             },
-            //点击当前节点checked(如chilren节点全取消勾选，联动到父节点状态)
-            onCurrentDom(e) {
-                let isExist = false;
-                this.$nextTick( ()=>{
-                    setTimeout(()=>{
-                        let oul = $(e.target).parents(".dataBaseTree")[0];
-                        Array.from($(oul).children('li')).forEach( li =>{
-                            if($(li).find('.checkbox').hasClass('active')){
-                                isExist = true;
-                            }
-                        })
-                        if(isExist) {
-                            $(e.target).parent(".dataBaseTree").parent('.tree_lable').find('.checkbox').addClass('active');
-                        }else {
-                            $(oul).parent('.tree_lable').find('.checkbox').removeClass('active');
-                        }
-                        this.$emit("selectTreeUpdate", this.dataTree);
-                    },150)
-                })
-                
-            },
             //更新tree状态
             updatedChecked(obj, checked) {
                 if (obj instanceof Object) {
                     obj.checked = checked;
-                    let isEmpty;
-                    if(obj[this.props.children] && obj[this.props.children].length != 0){
-                        isEmpty = obj[this.props.children].every( item=>{
-                            return item.checked == false;
-                        })
-                    }
                     for (let i in obj) {
                         this.updatedChecked(obj[i], checked); 
                     } 
@@ -262,6 +236,7 @@
                     z-index: 10;
                     width: 16px;
                     height: 16px;
+                    cursor: pointer;
                     opacity: 0;
                 }
             }

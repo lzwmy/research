@@ -248,6 +248,15 @@ export default {
           input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 1000px white inset !important;
             border-color: rgba(67, 154, 255, 1);
+            background-color: transparent;
+            & + .el-input__prefix .icon {
+              color: rgba(67, 154, 255, 1);
+            }
+          }
+          input:-moz-autofill {
+            -webkit-box-shadow: 0 0 0 1000px white inset !important;
+            border-color: rgba(67, 154, 255, 1);
+            background-color: transparent;
             & + .el-input__prefix .icon {
               color: rgba(67, 154, 255, 1);
             }
