@@ -38,7 +38,7 @@
                                 <p>{{item.genderName}}/{{item.age}}</p>
                             </div>
                             <div class="box_right flex-center-end">
-                                <div class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已联系':'未联系'}}</span></div>
+                                <div class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已填写':'未填写'}}</span></div>
                                 <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
                                     <span class="flex-center-center" @click.stop="pushNote(item)"><i class="icon iconfont iconzujian9"></i>短信随访</span>

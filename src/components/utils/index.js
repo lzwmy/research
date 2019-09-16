@@ -728,6 +728,36 @@ const deepCopy = function(o) {
   } 
 }
 
+const handleTableScorll = function() {
+  if(!document.querySelector('.el-table')) {
+    return;
+  }
+  let tableTop = $('.el-table').offset().top;
+  let scrollTop = $(document).scrollTop();
+  let mainEle = $('#main').offset();
+  $('#pagination').css({'left': mainEle.left + 'px'})
+  $('.el-table__header-wrapper').css({'left': mainEle.left + 'px'})
+  if(tableTop < scrollTop + $("#navbar").outerHeight()) {
+      $('.el-table__header-wrapper').addClass('fixed');
+  }else {
+      $('.el-table__header-wrapper').removeClass('fixed');
+  }
+}
+
+const handlePagination = function() {
+  let mainEle = $('#main').offset();
+  let windowH = $(window).height();
+  let otherViewHeight = $("#main_header").outerHeight(true) + $("#navbar").outerHeight(true)+ $(".cloud-component > .cloud-search").outerHeight(true) +
+                        parseInt($("#main").css("marginTop")) + parseInt($("#main").css("marginBottom")) + ($("#main").outerHeight() - $("#main").height());
+  let tableH = $('.el-table').height();
+  if(tableH >= windowH - otherViewHeight) {
+    $('#pagination').addClass('fixed').css({'left': mainEle.left + 'px'})
+  }else {
+    $('#pagination').removeClass('fixed');
+  }
+}
+
+
 
 export default {
   getQuery,
@@ -764,4 +794,6 @@ export default {
   validLoginAuthenticated, // 验证登录页浏览器自带的session有没有在登录有效期
   calculationAge,    //根据出生年月日计算周岁
   deepCopy,   //深克隆
+  handleTableScorll,   //操作表格滚动
+  handlePagination,   //操作分页表现表形
 };

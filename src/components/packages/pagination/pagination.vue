@@ -17,6 +17,7 @@
 </template>
 <script>
 import { on } from 'components/utils/dom';
+import utils from 'components/utils/index';
 
 export default {
   name: 'pagination',
@@ -72,6 +73,7 @@ export default {
       return this.data[this.pageNoName];
     },
     pageSizeInit () {
+      utils.handlePagination();
       return this.data[this.pageSizeName];
     }
   },
@@ -87,6 +89,10 @@ export default {
     }
   },
   created () {},
+  mounted () {
+    let mainEle = $('#main').offset();
+    $('#app:not(.insideView) #pagination').css({'left': mainEle.left +'px'})
+  },  
   updated () {
     let that = this;
     let el;
@@ -130,9 +136,6 @@ export default {
       }
       this.$emit('change', page, this.currentSize);
     },
-  },
-  mounted () {
-
   }
 };
 </script>
@@ -217,6 +220,56 @@ export default {
       }
     }
   }
+  #pagination.fixed{
+    position: fixed;
+    bottom: 0;
+    left: 0px;
+    width: 1300px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    bottom: 0px;
+    z-index: 99;
+    padding: 1px 15px;
+    background: rgba(75,75,75,.85);
+    .el-pagination__total,
+    .el-pagination__jump {
+      color: #eee;
+    }
+    .el-pager li {
+      background-color: transparent;
+      border:none;
+      color: #fff;
+      &.active {
+        color: #439aff;
+        background-color: transparent;
+      }
+      &:hover {
+        background: rgba(255,255,255,.3);
+      }
+      &:first-child  {
+        border: none;
+      }
+    }
+    .el-pagination .btn-prev,
+    .el-pagination .btn-next {
+      background-color: transparent;
+      color: #fff;
+      border:none;
+      &:hover {
+        background: rgba(255,255,255,.3);
+      }
+    }
+    .el-pagination .el-input .el-input__inner {
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      &:hover {
+        background: rgba(255,255,255,.3);
+      }
+    }
+  }
+
+
   .insideView + .el-popper {
     color: red;
     .el-select-dropdown__item.selected {

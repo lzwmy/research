@@ -52,9 +52,9 @@
         </div>
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+            <!-- <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1"> -->
+                    <!-- :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)" -->
                 <el-table
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                     :data="dataList.content" v-loading="loading" ref="refTable"
                     :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
                     @row-click="handleClick">
@@ -96,7 +96,7 @@
                 </el-table>
                 <!-- 分页 -->
                 <pagination :data="dataList" @change="getDataList"></pagination>
-            </echarts-contain>
+            <!-- </echarts-contain> -->
         </div>
     </div>
 </template>
@@ -128,7 +128,7 @@ export default {
             identify:"",
             paging: {
                 pageNo: 1,
-                pageSize: 10,
+                pageSize: 20,
                 currentPageNo: '',
                 currentPageSize: '',
             },
@@ -141,6 +141,7 @@ export default {
     created () {
         let date = new Date().getTime();
         this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
+        // this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 360));
         this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
         this.getDataList();
     },
@@ -284,21 +285,12 @@ export default {
         handleClick(row) {
             this.$refs.refTable.toggleRowExpansion(row)
         }
-    },
-    beforeRouteEnter (to, from, next) {
-        next();
-    },
-    beforeRouteLeave (to, from, next) {
-        next();
     }
 };
 </script>
 
 <style lang="less">
     .researchReportManage {
-        // .el-table__expand-column{
-        //     display: none;
-        // }
         .el-table__expanded-cell {
             background-color: #F9F9FB;
             &:hover {

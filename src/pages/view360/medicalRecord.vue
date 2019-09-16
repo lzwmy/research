@@ -208,7 +208,10 @@ export default {
       align-items: center;
       font-size:0;
       .el-button {
-        padding: 10px 30px;
+        padding: 2px 20px;
+        &.el-button--primary {
+          border: 1px solid #439aff;
+        }
       }
       .btn:last-child {
         margin-left:0;

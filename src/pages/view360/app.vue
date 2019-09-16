@@ -351,13 +351,13 @@ export default {
     justify-content: flex-start;
     align-items: center;
     height: 68px;
-    background: #498BF4;
+    background: #3A5998;
     border-bottom: 1px solid #eee;
     .title {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      background: #3C81F0;
+      background: #294376;
       height: 100%;
       padding:0 20px;
       h1 {

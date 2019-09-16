@@ -136,7 +136,8 @@
       </div>
     </div>
     <div class="cloud-search-list">
-      <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+      <!-- <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1"> -->
+              <!-- :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-55):(routerViewHeight*1-38-55)" -->
         <el-tabs v-model="viewName" type="card" closable @tab-click="changeViewName" @tab-remove="removeViewName">
           <el-tab-pane
             v-for="(item, index) in currentSelectViewsList"
@@ -144,7 +145,6 @@
             :label="item.label"
             :name="item.name">
             <el-table :ref="item.name" style="width:100%;"
-              :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-55):(routerViewHeight*1-38-55)"
               :data="item.dataList.content" @row-dblclick="dblclickHandle"
               v-loading="loading"
               :border="false"
@@ -156,7 +156,7 @@
               <el-table-column label="病人姓名" width="100px">
                 <template slot-scope="scope">
                   <el-button type="text" size="mini" @click="onLinkView360(scope.row)">{{scope.row.PATIENT_NAME}}</el-button>
-                 </template>
+                </template>
               </el-table-column>
               <el-table-column 
                 :prop="column.name" 
@@ -169,18 +169,18 @@
                 show-overflow-tooltip>
               </el-table-column>
             </el-table>
-           <pagination :data="item.dataList" @change="getDataList"></pagination>
+            <pagination :data="item.dataList" @change="getDataList"></pagination>
           </el-tab-pane>
         </el-tabs>
-      </echarts-contain>
+      <!-- </echarts-contain> -->
     </div>
     <!-- 入组弹窗 -->
     <el-dialog title="入库入组" :visible.sync="enterGroupDialogVisible" :append-to-body="true" width="400px"
-               @close="closeEnterGroupDialog" class="enterGroupDialog">
+              @close="closeEnterGroupDialog" class="enterGroupDialog">
       <el-form :model="enterGroupRuleForm" label-width="95px" @submit.native.prevent>
         <el-form-item label="病种：" prop="disease">
           <el-select v-model.trim="enterGroupRuleForm.disease" clearable filterable placeholder="请选择"
-                     @change="diseaseChange">
+                    @change="diseaseChange">
             <el-option
               v-for="item in diseaseDataList"
               :key="item.id"
@@ -260,7 +260,7 @@ export default {
     return {
       loading: false,
       pageNo: '',
-      pageSize: '',
+      pageSize: 20,
       currentPageNo: '',
       currentPageSize: '',
       emptyText: '',
@@ -376,7 +376,6 @@ export default {
     async initPage () {
       this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
       this.pageNo = pageNo;
-      this.pageSize = pageSize;
       this.emptyText = emptyText;
       this.elementLoadingText = elementLoadingText;
       this.genderList = dictionary.options('GENDER');

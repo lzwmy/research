@@ -38,9 +38,22 @@ const mixins = {
   },
   created() {
     this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
-    // if(typeof(this.initPage) == 'function') {
-    //   this.initPage();
-    // }
+  },
+  mounted() {
+    this.$nextTick(()=>{
+      if(!$('#app').hasClass('insideView')) {
+        utils.handleTableScorll();
+        $(window).resize(()=>{
+          utils.handleTableScorll();
+        })
+        $(document).scroll(()=>{
+          utils.handleTableScorll();
+        })
+      }
+    })
+  },
+  methods: {
+    
   },
   computed: {
     getRouteArr () {

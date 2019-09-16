@@ -107,6 +107,10 @@ body .el-table {
             font-weight: bold;
         }
     }
+    .el-table__body-wrapper,
+    .el-table__empty-block {
+        min-height: 500px;
+    }
     tbody {
         .cell {
             font-size: 13px;
@@ -128,6 +132,32 @@ body .el-table {
         }
         .el-table__row .iconbianji {
             color:#409eff;
+        }
+    }
+}
+
+// 首页表格样式
+#app:not(.insideView) .el-table{
+    .el-table__header-wrapper.fixed {
+        position: fixed;
+        top: 60px;
+        width: 1300px;
+        left: 0;
+        z-index: 99;
+        padding-left: 15px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        background: rgba(75,75,75,.85);
+        & + .el-table__body-wrapper {
+            margin-top: 38px;
+        }
+        th {
+            padding: 2px 0;
+            background: rgba(75,75,75,.85);
+            border: none;
+            .cell {
+                color: #eee;
+            }
         }
     }
 }
