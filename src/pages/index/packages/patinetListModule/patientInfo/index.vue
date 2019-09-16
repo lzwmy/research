@@ -553,6 +553,9 @@ export default {
         .right {
             .el-button--primary.weChat {
                 background-color: rgba(6, 206, 100, 1);
+                &:hover {
+                    background-color: #03b557;
+                }
             }
             .weChat.el-button--default:hover {
                 color: rgba(6, 206, 100, 1);
@@ -561,9 +564,15 @@ export default {
             }
             .view {
                 background-color: rgba(245, 157, 0, 1);
+                &:hover {
+                    background-color: #de8f01;
+                }
             }
             .report {
                 background-color: rgba(27, 186, 225, 1);
+                &:hover {
+                    background-color: #03a4cc;
+                }
             }
         }
         .container {

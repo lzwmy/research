@@ -20,13 +20,6 @@ export default {
     computed: {
     },
     created () {
-        if(utils.detectZoom() != 100){
-            this.$alert('当前网页缩放比例不等于100%，请按键盘ctrl+0恢复100%显示标准，以防页面显示错乱！', '警告', {
-                type: 'warning',
-                confirmButtonText: '确定',
-                callback: action => {}
-            });
-        }
     },
     mounted () {
         this.$nextTick(() => {

@@ -728,27 +728,6 @@ const deepCopy = function(o) {
   } 
 }
 
-const detectZoom  = function(){
-  var ratio = 0,
-      screen = window.screen,
-      ua = navigator.userAgent.toLowerCase();
-  if(window.devicePixelRatio !== undefined) {
-      ratio = window.devicePixelRatio;
-  }else if (~ua.indexOf('msie')) {
-      if (screen.deviceXDPI && screen.logicalXDPI) {
-          ratio = screen.deviceXDPI / screen.logicalXDPI;
-      }
-  }else if (window.outerWidth !== undefined && window.innerWidth !== undefined) {
-      ratio = window.outerWidth / window.innerWidth;
-  }
-  if (ratio){
-      ratio = Math.round(ratio * 100);
-  }
-  return ratio;
-}
-
-
-
 
 export default {
   getQuery,
@@ -785,5 +764,4 @@ export default {
   validLoginAuthenticated, // 验证登录页浏览器自带的session有没有在登录有效期
   calculationAge,    //根据出生年月日计算周岁
   deepCopy,   //深克隆
-  detectZoom,   //判断网页缩放比
 };

@@ -370,7 +370,7 @@ export default {
           data.data.forEach(item => {
             if (item.menuLevel == 2) {
               if (item.menuPath === '/index') {
-                item.disabled = true;
+                // item.disabled = true;
                 that.defaultCheckedMenuIdList = [item.id];
               }
               item.children = [];

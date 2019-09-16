@@ -211,7 +211,7 @@ export default {
     height: 36px;
     font-size: 12px;
     float: left;
-    border-bottom: 2px solid #2d8cf0;
+    border-bottom: 2px solid #1bbae1;
     margin-bottom: 20px;
     overflow: hidden;
     .tab-item {
@@ -227,7 +227,7 @@ export default {
       cursor: pointer;
     }
     .acitve {
-      color: #3b81f0;
+      color: #1bbae1;
     }
   }
   .tab_content {

@@ -80,13 +80,6 @@ export default {
     }
   },
   created () {
-    if(utils.detectZoom() != 100){
-      this.$alert('当前网页缩放比例不等于100%，请按键盘ctrl+0恢复100%显示标准，以防页面显示错乱！', '警告', {
-          type: 'warning',
-          confirmButtonText: '确定',
-          callback: action => {}
-      });
-    }
     this.logo = JSON.parse(sessionStorage.getItem('Global')).logo;
     this.title = JSON.parse(sessionStorage.getItem('Global')).title;
   },
@@ -187,14 +180,15 @@ export default {
         color: #fff;
         h1 {
           margin: 16px 0;
-          font-size: 1.7vw;
+          font-size: 32px;
           text-align: right;
           font-weight: bold;
         }
         p {
-          font-size: 1.7vw;
+          font-size: 40px;
           width: 100%;
           text-align: right;
+          color: rgba(255, 255, 255, 0.74);
           text-transform: uppercase;
         }
       }
@@ -282,7 +276,10 @@ export default {
           height: 58px;
           font-size: 24px;
           border-radius:4px;
-          background-color: rgba(67, 154, 255, 1);
+          background-color: #439aff;
+          &:hover {
+            background-color: #1d85ff;;
+          }
         }
       }
     }

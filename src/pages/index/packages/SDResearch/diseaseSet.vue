@@ -292,8 +292,8 @@ export default {
   },
   methods: {
     initPage () {
+      this.$emit('handlePageHeight');
       this.diseaseId = this.$route.query.id;
-      console.log(this.diseaseId)
       this.getSubjectDataList();
       this.getFormDataList();
       this.getDataList();

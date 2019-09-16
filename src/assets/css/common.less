@@ -202,7 +202,8 @@ body {
         .el-range-editor.is-active, 
         .el-range-editor.is-active:hover,
         .el-select .el-input.is-focus .el-input__inner,
-        .el-radio__inner:hover {
+        .el-radio__inner:hover,
+        .el-checkbox__inner:hover  {
             border-color: @themeColor2;
         }
         .el-checkbox__input.is-checked .el-checkbox__inner,
@@ -211,10 +212,10 @@ body {
             background-color: @themeColor2;
         }
     }
-    .insideView ~ .el-popper {
-        .el-select-dropdown__item.selected{
-            color: @themeColor2;
-        }
+    .insideView ~ .el-popper,
+    .insideView ~ .el-dialog__wrapper,
+    .insideView ~ .el-message-box__wrapper {
+        .el-button--primary,
         .el-date-table td.end-date span, 
         .el-date-table td.start-date span,
         .el-range-editor.is-active, 
@@ -222,16 +223,25 @@ body {
         .el-date-table td.current:not(.disabled) span {
             background-color: @themeColor2;
         }
-    }
-    .insideView ~ .el-dialog__wrapper {
-        .el-button--primary {
-            background-color: @themeColor2;
-        }
         .el-button--default:hover {
             color: #14aed4;
         }
+        .el-button--default.el-button--primary:hover {
+            color: #fff;
+            background-color: #14aed4;
+        }
+        .el-select-dropdown__item.selected,
         .el-radio__input.is-checked+.el-radio__label,
-        .el-dialog__headerbtn:focus .el-dialog__close {
+        .el-dialog__headerbtn:focus .el-dialog__close,
+        .el-dropdown-menu__item:focus,
+        .el-dropdown-menu__item:not(.is-disabled):hover,
+        .el-date-table td.today span,
+        .el-date-table td.available:hover,
+        .el-date-picker__header-label.active,
+        .el-date-picker__header-label:hover,
+        .el-year-table td .cell:hover, 
+        .el-year-table td.current:not(.disabled) .cell,
+        .el-month-table td .cell:hover {
             color: @themeColor2;
         }
         .el-checkbox__input.is-checked:not(.is-disabled) .el-checkbox__inner,
@@ -241,16 +251,15 @@ body {
             background-color: @themeColor2;
         }
         .el-input.is-active .el-input__inner,
-        .el-input__inner:focus {
+        .el-input__inner:focus,
+        .el-select .el-input.is-focus .el-input__inner,
+        .el-textarea__inner:focus,
+        .el-radio__inner:hover,
+        .el-checkbox__inner:hover {
             border-color: @themeColor2;
         }
-    }
-    .insideView ~ .el-message-box__wrapper {
-        .el-button--primary {
-            background-color: @themeColor2;
-        }
-        .el-button--default:hover {
-            color: #14aed4;
+        .el-radio__input.is-disabled.is-checked .el-radio__inner::after {
+            background-color: #fff;
         }
     }
 }

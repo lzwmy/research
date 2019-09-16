@@ -462,7 +462,7 @@
     }
     .entry_content {
       .iconfont {
-        color: #3b81f0;
+        color: #1bbae1;
         font-size: 18px;
         margin: 0 5px;
       }

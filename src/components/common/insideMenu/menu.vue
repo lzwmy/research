@@ -276,6 +276,7 @@ export default {
                     text-indent: 4px;
                     line-height: 48px;
                     height:  48px;
+                    transition: background-color .3s;
                     &:hover {
                         background-color: transparent;
                     }
@@ -291,9 +292,6 @@ export default {
                     background-color: #282e45;
                 }
             }
-            // &.close .el-submenu__icon-arrow {
-            //     display: none;
-            // }
             &.close .el-submenu.is-active  .el-submenu__title {
                 border-left: 4px solid #1bbae1;
                 text-indent: -1px;
@@ -301,6 +299,7 @@ export default {
             &.close .el-submenu__title > span,
             &.close .el-submenu__title > .el-submenu__icon-arrow {
                 opacity: 0;
+                transform: scale(0);
             }
             &.open .el-submenu__title > span,
             &.open .el-submenu__title > .el-submenu__icon-arrow  {
@@ -319,7 +318,7 @@ export default {
                 padding-left: 15px;
                 border-width: 0px;
                 &.is-active {
-                    color: #409EFF;
+                    color: #1bbae1;
                 }
             }
         }

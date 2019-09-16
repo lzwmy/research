@@ -206,13 +206,6 @@
                               :default-sort="{prop: 'date', order: 'descending'}"
                               @selection-change="handleSelectionChange">
                       <el-table-column type="selection"></el-table-column>
-                      <!-- <el-table-column label="病人姓名" sortable width="150">
-                        <template slot-scope="scope">
-                          <el-button type="text" size="mini">{{scope.row.PATIENT_NAME}}</el-button>
-                        </template>
-                      </el-table-column> 
-                      v-if="column.name != 'PATIENT_NAME'"
-                      -->
                       <el-table-column 
                         :prop="column.name" 
                         :label="column.label" 
@@ -258,16 +251,16 @@
                       :value="item.id"></el-option>
                   </el-select>
                 </el-form-item>
-                <div class="el-dialog--center">
-                  <el-button @click="closeEnterGroupDialog" size="mini">取消</el-button>
-                  <el-button
-                    type="primary"
-                    @click="saveEnterGroupDialog"
-                    size="mini"
-                    :disabled="checkDisable(enterGroupRuleForm)">确定
-                  </el-button>
-                </div>
               </el-form>
+              <div slot="footer" class="el-dialog--center">
+                <el-button @click="closeEnterGroupDialog" size="mini">取消</el-button>
+                <el-button
+                  type="primary"
+                  @click="saveEnterGroupDialog"
+                  size="mini"
+                  :disabled="checkDisable(enterGroupRuleForm)">确定
+                </el-button>
+              </div>
             </el-dialog>
             <!-- 迁组弹窗 -->
             <el-dialog
@@ -299,16 +292,16 @@
                       :value="item.id"></el-option>
                   </el-select>
                 </el-form-item>
-                <div class="el-dialog--center">
-                  <el-button @click="closeMoveGroupDialog" size="mini">取消</el-button>
-                  <el-button
-                    type="primary"
-                    @click="saveMoveGroupDialog"
-                    size="mini"
-                    :disabled="checkDisable(moveGroupRuleForm)">确定
-                  </el-button>
-                </div>
               </el-form>
+              <div slot="footer" class="el-dialog--center">
+                <el-button @click="closeMoveGroupDialog" size="mini">取消</el-button>
+                <el-button
+                  type="primary"
+                  @click="saveMoveGroupDialog"
+                  size="mini"
+                  :disabled="checkDisable(moveGroupRuleForm)">确定
+                </el-button>
+              </div>
             </el-dialog>
             <!-- 病例入库-查找病例 -->
             <el-dialog title="病例入库" :visible.sync="caseStorageDialogVisible" :append-to-body="true"
@@ -339,11 +332,11 @@
                 <el-form-item label="备注：" prop="remarks">
                   <el-input v-model.trim="caseStorageRuleForm.remarks" size="mini" placeholder="请输入备注" :maxlength="300"></el-input>
                 </el-form-item>
-                <div class="el-dialog--center">
-                  <el-button type="primary" @click="casesFindPatients" size="mini">查找</el-button>
-                  <el-button @click="clearCaseStorageDialog" size="mini">清空</el-button>
-                </div>
               </el-form>
+              <div slot="footer" class="el-dialog--center">
+                <el-button type="primary" @click="casesFindPatients('caseStorageRuleForm')" size="mini">查找</el-button>
+                <el-button @click="clearCaseStorageDialog" size="mini">清空</el-button>
+              </div>
             </el-dialog>
             <!--病例入库-查找到的病例列表-->
             <el-dialog title="查找到的病例" :visible.sync="caseListDialogVisible" :append-to-body="true"
@@ -372,7 +365,7 @@
                 <el-table-column prop="tel" label="电话" min-width="10%" show-overflow-tooltip>
                 </el-table-column>
               </el-table>
-              <div class="el-dialog--center" style="margin-top: 30px;">
+              <div slot="footer" class="el-dialog--center" style="margin-top: 30px;">
                 <el-button type="primary" @click="saveCaseListDialog" size="mini" :disabled="selectCaseList.length == 0">入库
                 </el-button>
                 <el-button @click="closeCaseListDialog" size="mini">取消</el-button>
@@ -385,13 +378,13 @@
                 <el-form-item label="筛选条件名称：" prop="name">
                   <el-input v-model.trim="mySaveConditionRuleForm.name" size="mini" :maxlength="100" placeholder="请输入新筛选条件名称"></el-input>
                 </el-form-item>
-                <div class="el-dialog--center">
-                  <el-button @click="closeMySaveConditionDialog" size="mini">取消</el-button>
-                  <el-button type="primary" @click="saveCondition" size="mini"
-                             :disabled="checkDisable(mySaveConditionRuleForm)">确定
-                  </el-button>
-                </div>
               </el-form>
+              <div slot="footer" class="el-dialog--center">
+                <el-button @click="closeMySaveConditionDialog" size="mini">取消</el-button>
+                <el-button type="primary" @click="saveCondition('mySaveConditionRuleForm')" size="mini"
+                            :disabled="checkDisable(mySaveConditionRuleForm)">确定
+                </el-button>
+              </div>
             </el-dialog>
             <!-- 添加患者弹窗 -->
             <el-dialog
@@ -1219,7 +1212,7 @@
       handleSelectionCaseList (val) {
         this.selectCaseList = val;
       },
-      async casesFindPatients () {
+      async casesFindPatients (caseStorageRuleForm) {
         let that = this;
         that.$refs.caseStorageRuleForm.validate(async (valid) => {
           if (!valid) {
@@ -1437,7 +1430,7 @@
         this.mySaveConditionRuleForm = {name: ''};
         this.$refs.mySaveConditionRuleForm.clearValidate();
       },
-      async saveCondition () {
+      async saveCondition (mySaveConditionRuleForm) {
         let that = this;
         that.$refs.mySaveConditionRuleForm.validate(async (valid) => {
           if (!valid) return false;

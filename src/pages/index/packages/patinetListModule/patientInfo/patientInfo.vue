@@ -145,6 +145,7 @@ export default {
                     margin: 0;
                     .icon {
                         font-size: 22px;
+                        line-height: 35px;
                     }
                     &.active {
                         background:rgba(0,186,227,1);
