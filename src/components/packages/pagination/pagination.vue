@@ -4,7 +4,6 @@
       <el-pagination 
         ref="pagination" 
         @size-change="sizeChange"
-        background
         @current-change="currentChange"
         :current-page.sync="currentPage"
         :page-sizes="pageSizesConfig"
@@ -142,7 +141,7 @@ export default {
 
 
 <style lang="less">
-  #pagination {
+  .cloud-pagination {
     background: #fff;
     padding: 11px 10px 12px;
     border-top: none;
@@ -162,7 +161,7 @@ export default {
         border-right: none;
         &:hover {
             border: none;
-            color: #fff;
+            color: #fff !important;
             background-color: #409EFF;
         }
       }
@@ -170,7 +169,7 @@ export default {
         border-left: none;
         &:hover {
             border: none;
-            color: #fff;
+            color: #fff !important;
             background-color: #409EFF;
         }
       }
@@ -189,7 +188,7 @@ export default {
           }
           &.active, &:hover{
             border: none;
-            color: #fff;
+            color: #fff !important;
             background-color: #409EFF;
           }
         }
@@ -201,7 +200,7 @@ export default {
     }
   }
 
-  .insideView #pagination {
+  .insideView .cloud-pagination {
     .btn-prev, 
     .btn-next{
       color: #1bbae1;
@@ -270,10 +269,10 @@ export default {
   }
 
 
-  .insideView + .el-popper {
-    color: red;
-    .el-select-dropdown__item.selected {
-      color: #1bbae1;
-    }
-  }
+  // .insideView ~ .el-popper {
+  //   color: red;
+  //   .el-select-dropdown__item.selected {
+  //     color: #1bbae1;
+  //   }
+  // }
 </style>

@@ -57,7 +57,7 @@
                 <i class="el-icon-edit-outline" title="编辑"></i>
               </el-button>
               <el-button @click="updateStatus(scope.row)" type="text" size="small">
-                <i class="el-icon-error" title="禁用" v-if="scope.row.status == '0'"></i>
+                <i class="el-icon-remove" title="禁用" v-if="scope.row.status == '0'"></i>
                 <i class="el-icon-success" title="启用" v-if="scope.row.status == '1'"></i>
               </el-button>
               <el-button type="text" size="small" @click="deleteItem(scope.row)">
@@ -494,26 +494,11 @@ export default {
       callback();
     },
     reset () {
-      // 区域对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
-      this.$refs.ruleForm.resetFields();
-      Object.assign(this.$data, this.$options.data());
-      this.$data.dialogRules = {
-        roleName: [
-          {required: true, validator: this.validateRoleName, trigger: 'blur'}
-        ],
-        status: [
-          {required: true, message: '有效性不能为空！', trigger: 'blur'}
-        ]
-      };
-      // 初始化data默认值及页面
-      this.initPage();
+      this.ruleForm = {
+        roleName: '',
+        status: ''
+      }
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    next();
-  },
-  beforeRouteLeave (to, from, next) {
-    next();
   }
 };
 </script>

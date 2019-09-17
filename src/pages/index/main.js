@@ -3,6 +3,7 @@ import Vue from 'vue';
 import App from './app';
 import utils from 'components/utils';
 import Global from 'components/utils/global';
+import 'babel-polyfill'
 import ElementUI from 'element-ui';
 import { Loading, MessageBox,Message } from 'element-ui';
 import VueRouter from 'vue-router';

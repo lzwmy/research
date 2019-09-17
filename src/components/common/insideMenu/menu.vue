@@ -1,6 +1,6 @@
 <template>
     <div class="insideMenu" :class="openMenuView?'open':'close'">
-        <div class="top flex-start-center" @click="onBack">
+        <div class="top flex-start-center" @click="onBack" title="返回">
             <span class="icon iconfont iconfanhuishouye"></span>
             <p v-show="openMenuView">{{title}}</p>
         </div>
@@ -156,6 +156,10 @@ export default {
             background-color: #313854;
             color: #F8F8F8;
             cursor: pointer;
+            transition: background-color 300ms;
+            &:hover {
+                background-color: #1bbae1;
+            }
             span {
                 color: #F8F8F8;
                 font-size: 22px;

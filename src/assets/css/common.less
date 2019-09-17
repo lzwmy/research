@@ -83,6 +83,12 @@ body .el-dialog {
     .el-form-item__error {
         min-width: auto !important;
     }
+    .el-table {
+        .el-table__body-wrapper,
+        .el-table__empty-block {
+            min-height: 250px;
+        }
+    }
 }
 
 /* 确认弹框style*/
@@ -96,7 +102,7 @@ body .el-message-box__wrapper {
 }
 
 /* 表格样式 */
-body .el-table {
+body .cloud-container .el-table {
     padding: 0 15px 10px;
     &::before {
         display: none;
@@ -216,6 +222,9 @@ body {
                 background-color: #14aed4;
             }
         }
+        .el-button--default:active {
+            color: @themeColor2;
+        }
         .el-table__row .iconbianji{
             color: @themeColor2 !important;
         }
@@ -250,8 +259,15 @@ body {
         .el-date-table td.start-date span,
         .el-range-editor.is-active, 
         .el-range-editor.is-active:hover,
-        .el-date-table td.current:not(.disabled) span {
+        .el-date-table td.current:not(.disabled) span,
+        .cloud-pagination .el-pagination .el-pager li.active,
+        .cloud-pagination .el-pagination .el-pager li:hover,
+        .cloud-pagination .el-pagination .btn-prev:hover,
+        .cloud-pagination .el-pagination .btn-next:hover {
             background-color: @themeColor2;
+        }
+        .el-loading-spinner .path {
+            stroke: @themeColor2;
         }
         .el-button--default:hover {
             color: #14aed4;
@@ -260,6 +276,7 @@ body {
             color: #fff;
             background-color: #14aed4;
         }
+        .el-loading-spinner .el-loading-text,
         .el-select-dropdown__item.selected,
         .el-radio__input.is-checked+.el-radio__label,
         .el-dialog__headerbtn:focus .el-dialog__close,
@@ -271,7 +288,9 @@ body {
         .el-date-picker__header-label:hover,
         .el-year-table td .cell:hover, 
         .el-year-table td.current:not(.disabled) .cell,
-        .el-month-table td .cell:hover {
+        .el-month-table td .cell:hover,
+        .cloud-pagination .el-pagination .btn-prev,
+        .cloud-pagination .el-pagination .btn-next {
             color: @themeColor2;
         }
         .el-checkbox__input.is-checked:not(.is-disabled) .el-checkbox__inner,
@@ -285,7 +304,8 @@ body {
         .el-select .el-input.is-focus .el-input__inner,
         .el-textarea__inner:focus,
         .el-radio__inner:hover,
-        .el-checkbox__inner:hover {
+        .el-checkbox__inner:hover,
+        .el-pagination__sizes .el-input .el-input__inner:hover {
             border-color: @themeColor2;
         }
         .el-radio__input.is-disabled.is-checked .el-radio__inner::after {

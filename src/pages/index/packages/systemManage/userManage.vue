@@ -72,7 +72,7 @@
                 <i class="el-icon-edit-outline" title="编辑"></i>
               </el-button>
               <el-button @click="updateStatus(scope.row)" type="text" size="small">
-                <i class="el-icon-error" title="禁用" v-if="scope.row.status == '0'"></i>
+                <i class="el-icon-remove" title="禁用" v-if="scope.row.status == '0'"></i>
                 <i class="el-icon-success" title="启用" v-if="scope.row.status == '1'"></i>
               </el-button>
               <el-button type="text" size="small" @click="deleteItem(scope.row)">
@@ -127,9 +127,9 @@
     </el-dialog>
     <!--分配角色-->
     <el-dialog title="分配角色" :visible.sync="dialogRoleVisible" :append-to-body="true" width="650px"
-               @close="closeRoleDialog">
+              @close="closeRoleDialog">
+        <!-- :height="(roleList.content && roleList.content.length>0)?(routerViewHeight*1-270):(routerViewHeight*1-135)" -->
       <el-table
-        :height="(roleList.content && roleList.content.length>0)?(routerViewHeight*1-170):(routerViewHeight*1-135)"
         :data="roleList.content" style="width: 100%" v-loading="roleLoading"
         :empty-text="emptyText" :element-loading-text="elementLoadingText" @selection-change="handleSelectionRoleChange"
         highlight-current-row ref="roleListTable">
@@ -151,11 +151,11 @@
     </el-dialog>
     <!-- 分配实验组弹框 -->
     <el-dialog title="分配实验组权限" :visible.sync="groupsPermissionDialogVisible" :append-to-body="true" width="450px"
-               @close="closeGroupsPermissionDialog" class="userManageTree">
+              @close="closeGroupsPermissionDialog" class="userManageTree">
       <el-tree v-if="treeRenderAgain" :data="groupsPermissionList" :props="groupsPermissionProps" node-key="id"
-               show-checkbox
-               class="branchTree" :indent="50"
-               ref="groupsPermissionTree" v-loading="groupsLoading"></el-tree>
+              show-checkbox
+              class="branchTree" :indent="50"
+              ref="groupsPermissionTree" v-loading="groupsLoading"></el-tree>
       <div slot="footer">
         <el-button type="primary" @click="saveGroupsPermission" size="mini" :disabled="groupsLoading">确定</el-button>
         <el-button @click="closeGroupsPermissionDialog" size="mini">取消</el-button>
@@ -250,10 +250,6 @@ export default {
       treeRenderAgain: true
     };
   },
-  activated () {
-    this.getRoleList();
-    this.getGroupsPermission();
-  },
   methods: {
     initPage () {
       this.pageNo = pageNo;
@@ -264,6 +260,8 @@ export default {
       this.elementLoadingText = elementLoadingText;
       this.userstatus = dictionary.options('USER_STATUS');
       this.search();
+      this.getRoleList();
+      this.getGroupsPermission();
     },
     search () {
       this.params_ruleForm = utils.deepClone(this.ruleForm);
@@ -554,7 +552,6 @@ export default {
               item2.children = item2.experimentGroups;
             });
           });
-          // console.log(that.groupsPermissionList);
         }
       } catch (error) {
         that.$notice('获取实验组树失败');
@@ -738,25 +735,11 @@ export default {
       callback();
     },
     reset () {
-      Object.assign(this.$data, this.$options.data());
-      this.$data.dialogRules = {
-        account: [
-          {required: true, validator: this.validateAccount, trigger: 'blur'}
-        ],
-        userName: [
-          {required: true, message: '用户名不能为空', trigger: 'blur'}
-        ],
-        idNumber: [
-          {validator: this.validateIdNumber, trigger: 'blur'}
-        ],
-        tel: [
-          {validator: this.validateTel, trigger: 'blur'}
-        ],
-        email: [
-          {validator: this.validateEmail, trigger: 'blur'}
-        ]
-      };
-      this.initPage();
+      this.ruleForm = {
+        account: '',
+        userName: '',
+        status: ''
+      }
     }
   }
 };
@@ -781,4 +764,10 @@ export default {
       padding: 0;
     }
   }
+</style>
+
+<style lang="less">
+    .userManageTree .branchTree .el-tree-node__label{
+      padding-left: 8px;
+    }
 </style>

@@ -21,14 +21,13 @@
                     :title="item.name">{{ item.name.length > 7 ? item.name.substring(0, 7) + '...' : item.name }}</span>
               <span style="float: right;font-size: 13px;padding-left:35px;">
                 <i class="el-icon-error el-button" style="border:none;background: transparent;padding:0;"
-                   @click.stop="deleteMySaveCondition(item)" title="删除"></i>
+                  @click.stop="deleteMySaveCondition(item)" title="删除"></i>
               </span>
             </el-option>
           </el-select>
 
         </el-form-item>
-        <el-button class="save_btn" type="text" size="small" @click="openSaveConditionDialog" icon="icon iconfont iconbaocun">
-        </el-button>
+          <el-button class="save_btn" type="primary" @click="openSaveConditionDialog" icon="icon iconfont iconbaocun">保 存</el-button>
         <el-form-item class="fuzzyQuery">
           <el-input v-model.trim="fuzzyQuery" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
                     placeholder="请输入搜索内容"></el-input>
@@ -1114,11 +1113,6 @@ export default {
     width: 250px !important;
   }
   .allCases {
-    .save_btn {
-      i {
-        font-size: 26px;
-      }
-    }
     .el-tabs__item {
       border-bottom: 1px solid #E4E7ED !important;
     }
