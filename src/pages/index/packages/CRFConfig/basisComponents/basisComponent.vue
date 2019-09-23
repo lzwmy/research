@@ -32,7 +32,7 @@
               <i class="iconfont iconfuhao2 gray" v-if="basisDataItem.displayIsVisible=='0'" @click="isVisible(basisDataItem)"></i>
               <i class="iconfont iconfuhao2" v-else @click="isVisible(basisDataItem)"></i>
               <!--设置-->
-              <i class="iconfont iconfuhao7" v-show="basisDataItem.controlType!==''"></i>
+              <i class="iconfont iconfuhao7" v-show="basisDataItem.controlType!==''" @click="changeParameterConfigChildren(basisDataItem)"></i>
               <!--添加-->
               <i class="iconfont iconfuhao1" v-if="basisDataItem.controlType=='GATHER'||basisDataItem.controlType=='TABLE'" @click="addLine(basisDataItem,basisDataIndex)"></i>
               <!--删除-->
@@ -152,6 +152,7 @@
               value:"min"
             }
           ],
+          basisDataInfo:{}
         }
       },
       methods:{
@@ -167,9 +168,9 @@
             "controlTip": "", //(控件输入提示)
             "controlIsDefaultDateTime": 0, //(是否使用默认时间或日期)
             "controlIsExtend":0, //(下拉框是否可扩展)
-            "labelType":null,
-            "labelContent":null,
-            "labelImage":null,
+            "labelType":'TEXT',
+            "labelContent":"",
+            "labelImage":"",
             "itemFileRsp":[],
             "fileType":"FILE",
             "binding":0,
@@ -181,6 +182,11 @@
               "bindingColumn":"",
               "bindingColumnName":"",
               "list":[]
+            },
+            "layout":{
+              "columns":1,
+              "selection":[],
+              "wrap":1,
             }
           };
           data.termSet= {
@@ -196,7 +202,7 @@
           };
           data.gatherKnowType=0;
           data.inputValue="";
-          data.gatherRank=0;
+          data.gatherRank= data.controlType=='TABLE'? 1 : 0;
           data.gatherColumnNumber=2;
           data.gatherIsVisible=1;
           data.gatherFoldFlag=0;
@@ -216,6 +222,15 @@
             data.children.push(copyData)
           }
         },
+        // 设置
+        changeParameterConfigChildren(data) {
+          this.basisDataInfo = {
+            obj:data,
+            selectType:data.controlType,
+            index:0
+          };
+          this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
+        },
         //删除行
         deleteLine(index) {
           this.basisData.splice(index,1);
@@ -230,6 +245,7 @@
           array.splice(index-1,0,copyLine);
           array.splice(index+1,1);
         },
+        //下移
         moveDown(data,index,array) {
           if(array.length-1 === index) {
             this.$notice('已经置底了，请往上移！');
@@ -279,6 +295,18 @@
           color: #DB5452;
         }
       }
+    }
+    .basis_parameter_config{
+      width: 490px;
+      background-color: #ffffff;
+      border: 1px solid transparent;
+      box-sizing: border-box;
+      padding: 30px 20px 0 20px;
+      overflow: auto;
+      position: absolute;
+      top: 166px;
+      right:45px;
+      z-index: 10;
     }
   }
 </style>

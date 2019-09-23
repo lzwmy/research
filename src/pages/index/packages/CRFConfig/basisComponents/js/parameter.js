@@ -7,12 +7,12 @@ export default {
     "controlType": "",
     "displayIsVisible": 1,
     "baseProperty": {
-      "controlWidth": 0,
+      "controlWidth": 4,
       "controlHeight": 0,
       "controlTip": "",
       "controlIsDefaultDateTime": 0,
       "controlIsExtend": 0,
-      "labelType": "",
+      "labelType": "TEXT",
       "labelContent": "",
       "labelImage": "",
       "bindingInfo": {
@@ -39,6 +39,11 @@ export default {
         "groupColumn": "",
         "keyColumn": ""
       },
+      "layout":{
+        "columns":1,
+        "selection":[],
+        "wrap":1,
+      },
       "fileType": "",
       "itemFileRsp": [
         {
@@ -64,11 +69,11 @@ export default {
     "gatherKnowType": 0,
     "gatherFoldFlag": "",//展开: 0, 折叠: 1
     "controlIsAvailable": 0,
-    "gatherRank": "",//上下排列: 1, 左右排列: 2
+    "gatherRank": "1",//上下排列: 0, 左右排列: 1
     "gatherColumnNumber": 0,
     "binding": 0,//0 没有绑定 1 绑定
     "fileType": "FILE",
     "children": []
-  }
+  },
 };
 

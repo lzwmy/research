@@ -15,7 +15,9 @@ import fullTextSearch from  './fullTextSearch/index';
 import treatmentAnalysis from './treatmentAnalysis/index';
 //病种概览
 import diseaseChart from './diseaseChart';
+//CRF 2.0
+import CRFConfig from './CRFConfig';
 
-const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart);
+const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig);
 
 export default http;

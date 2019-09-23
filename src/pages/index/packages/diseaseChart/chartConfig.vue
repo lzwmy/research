@@ -1325,7 +1325,7 @@
       background-color: #ffffff;
       padding: 0 5px;
       box-sizing: border-box;
-      overflow: hidden;
+      overflow: auto;
       position: relative;
       .model_set{
         line-height: 40px;

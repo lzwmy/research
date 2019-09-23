@@ -33,15 +33,15 @@
                     </el-table-column>
                     <el-table-column prop="ctrlType" label="表单类型" min-width="5%" show-overflow-tooltip>
                       <template slot-scope="scope">
-                        <span v-if="scope.row.ctrlType == '1-1'">单行输入框</span>
-                        <span v-if="scope.row.ctrlType == '1-2'">多行输入框</span>
-                        <span v-if="scope.row.ctrlType == '2-1'">下拉单选</span>
-                        <span v-if="scope.row.ctrlType == '2-2'">下拉复选</span>
-                        <span v-if="scope.row.ctrlType == '2-3'">单选框</span>
-                        <span v-if="scope.row.ctrlType == '2-4'">复选框</span>
-                        <span v-if="scope.row.ctrlType == '3-1'">日期</span>
-                        <span v-if="scope.row.ctrlType == '3-2'">时间</span>
-                        <span v-if="scope.row.ctrlType == '3-3'">日期时间</span>
+                        <span v-if="scope.row.ctrlType == 'SINGLE_INPUT'">单行输入框</span>
+                        <span v-if="scope.row.ctrlType == 'MULTI_INPUT'">多行输入框</span>
+                        <span v-if="scope.row.ctrlType == 'SINGLE_COMBOX'">下拉单选</span>
+                        <span v-if="scope.row.ctrlType == 'MULTI_COMBOX'">下拉复选</span>
+                        <span v-if="scope.row.ctrlType == 'RADIO_BUTTON'">单选框</span>
+                        <span v-if="scope.row.ctrlType == 'CHECKBOX'">复选框</span>
+                        <span v-if="scope.row.ctrlType == 'DATE'">日期</span>
+                        <span v-if="scope.row.ctrlType == 'DATE_TIME'">时间</span>
+                        <span v-if="scope.row.ctrlType == 'DATE_TIME'">日期时间</span>
                       </template>
                     </el-table-column>
                     <el-table-column prop="dataType" label="字段类型" min-width="5%" show-overflow-tooltip>

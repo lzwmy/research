@@ -10,116 +10,22 @@
         </div>
       </div>
       <div class="report_config_content">
-        <div class="report_config-card">
+        <div class="report_config-card" v-for="(item,index) in dataList" :key="index" @click="jumpModifyReport(item)">
           <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
+            <img v-if="item.crfImage!==null && item.crfImage!=='null'" :src="item.crfImage" alt="">
+            <img v-else src="./../img/z_w_t.png" alt="">
           </div>
-          <div class="report_card-title">初诊报告</div>
+          <div class="report_card-title">{{item.crfDisplayName}}</div>
           <div class="report_card_detail-info">
-            <div class="report-state TODO">待访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
+            <div class="report-state" :class="{'TODO':item.crfType === 1}">{{item.crfType==1?'普通' : '随访'}}</div>
+            <div class="report-time">{{item.updateTime}}</div>
+          </div>
+          <div class="close-ben" @click.stop="deleteCrf(item)">
+            <i class="iconfont iconlujing1"></i>
           </div>
         </div>
-        <!--以下复制粘贴位置-->
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
-        </div>
-        <div class="report_config-card">
-          <div class="card_img">
-            <img src="./../img/z_w_t.png" alt="">
-          </div>
-          <div class="report_card-title">初诊报告</div>
-          <div class="report_card_detail-info">
-            <div class="report-state">随访</div>
-            <div class="report-time">2019-08-21 18:00:30</div>
-          </div>
+        <div class="img_none" v-if="dataList.length==0">
+          <img  src="./../basisComponents/image/none_content.png" alt="">
         </div>
       </div>
     </div>
@@ -129,17 +35,73 @@
     export default {
       data() {
         return {
-
+          dataList:[],
         }
       },
       methods:{
         createCRF() {
+          let diseaseId = this.$route.query.id;
           this.$router.push({
-            path:"/basisConfig"
+            path:"/createReport",
+            query:{
+              id:diseaseId,
+              type:'add'
+            }
           })
+        },
+        //跳转 到 编辑报告
+        jumpModifyReport(data) {
+          let diseaseId = this.$route.query.id;
+          this.$router.push({
+            path:"/createReport",
+            query:{
+              id:diseaseId,
+              type:'modify',
+              crfId:data.crfId
+            }
+          })
+        },
+        //删除表单
+        deleteCrf(data) {
+          // console.log(data.crfId);
+          this.CRFDeleteForm(data.crfId).then(()=>{
+            this.reportList();
+          })
+        },
+        // 查询所有 报告列表
+        async reportList() {
+          let that = this;
+          let formData = {
+            diseaseId:this.$route.query.id
+          };
+          try {
+            let data = await that.$http.CRFReportList(formData);
+            if(data.code == 0) {
+              that.dataList = data.data;
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        },
+        //删除 报告
+        async CRFDeleteForm(value) {
+          let that = this;
+          let formData = {
+            formCrfId:value
+          };
+          try{
+            let data = await that.$http.CRFDeleteForm(formData);
+            if(data.code == 0) {
+              that.$message.success(data.data);
+            }
+          }catch (error) {
+            console.log(error)
+          }
         }
       },
-      mounted() {},
+      mounted() {
+        this.reportList();
+      },
       deactivated() {
       }
     }
@@ -190,6 +152,7 @@
       margin-right: 15px;
       margin-bottom: 29px;
       transition: all 300ms;
+      position: relative;
       .card_img{
         width: 100%;
         text-align: center;
@@ -230,9 +193,32 @@
           font-size: 12px;
         }
       }
+      .close-ben{
+        position: absolute;
+        top: -10px;
+        right: -8px;
+        display: none;
+        .iconfont{
+          font-size: 20px;
+          color: #D95555;
+        }
+      }
       &:hover{
         transform: translate(0,-2px);
         cursor: pointer;
+        .close-ben{
+          display: inline-block;
+        }
+      }
+    }
+    .img_none{
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      img{
+        width: 200px;
       }
     }
   }
