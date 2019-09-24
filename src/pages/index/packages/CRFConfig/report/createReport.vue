@@ -327,7 +327,9 @@
         if(this.$route.query.type=='modify') {
           this.previewCRFList().then(()=>{
             let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
-            this.dataList = temporarySave.dataList;
+            if(temporarySave.dataList.length==0){
+              this.dataList = temporarySave.dataList;
+            }
           })
         }else if(this.$route.query.type=='add') {
           let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
