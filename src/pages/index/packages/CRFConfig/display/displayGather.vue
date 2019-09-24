@@ -23,7 +23,7 @@
       <!--集合上下排列-->
       <div :class="item.controlType+'_bg_color'" style="padding-left:55px;" v-if="item.gatherRank=='0'"  @click="popMehtod">
         <div  style="margin-top:15px" v-for="(it,index) in item.children" :key="index" :layoutData="layoutInfo(it,index,item.children)">
-          <el-row v-if="item.baseProperty.layout.wrap == '1'">
+          <!--<el-row v-if="item.baseProperty.layout.wrap == '1'">
             <el-col :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
               <display-input v-if="it.controlType=='SINGLE_INPUT'" :item="it" :report="getData(it)"/>
               <display-multi-input v-else-if="it.controlType=='MULTI_INPUT'" :item="it" :report="getData(it)"/>
@@ -37,9 +37,9 @@
               <display-radio v-else-if="it.controlType=='RADIO_BUTTON'" :item="it" :report="getData(it)"/>
               <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
               <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
-            </el-col>
-          </el-row>
-          <el-col v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
+            </el-col>  v-if="item.baseProperty.layout.wrap == '0'"
+          </el-row>-->
+          <el-col :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
             <display-input v-if="it.controlType=='SINGLE_INPUT'" :item="it" :report="getData(it)"/>
             <display-multi-input v-else-if="it.controlType=='MULTI_INPUT'" :item="it" :report="getData(it)"/>
             <display-check-box v-else-if="it.controlType=='CHECKBOX'" :item="it" :report="getData(it)"/>

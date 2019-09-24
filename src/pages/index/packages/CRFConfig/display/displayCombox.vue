@@ -9,6 +9,7 @@
     </div>
     <!--style="display:inline-block"-->
     <div :class="item.controlType+'_box'" v-if="item.baseProperty.controlIsExtend=='1'">
+
       <el-select
         filterable
         allow-create
@@ -152,6 +153,14 @@ export default {
         
       }
     }
+    //判断 值域是否等于空
+    if(this.item.termSet.rangeText!==""){
+      let arrayList = this.item.termSet.rangeText.split('\n').map(item=>{
+        return {termItemName:item}
+      });
+      this.item.termSet.termItemList = arrayList;
+    }
+
   },
   computed: {
     ...mapGetters([
