@@ -1719,7 +1719,7 @@
   .MySaveConditionDialog .el-dialog .el-input {
     width: 250px !important;
   }
-  .cloud-search {
+  .caseManage .cloud-search {
     padding-left: 0;
     padding-right: 0;
     padding-top: 10px;

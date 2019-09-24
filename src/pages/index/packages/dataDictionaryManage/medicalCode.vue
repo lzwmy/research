@@ -50,7 +50,7 @@
       :visible.sync="ruleFormDialog.visible" 
       width="45%">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="110px"
-               class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading" label-position="left">
+              class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading" label-position="left">
         <el-form-item label="医学名称：" prop="termItemName">
           <el-input 
             v-model.trim="ruleFormDialog.termItemName" 

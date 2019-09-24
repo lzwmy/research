@@ -1,8 +1,8 @@
 <template>
-    <div class="inside_cloud-container" v-loading="loading"  element-loading-background="#eee" element-loading-text="拼命加载中">
-        <insideHeader @diseaseSelect="handleDiseaseSelect" @menuViewChange="handleMenuView" :fromRouter="fromRouter"></insideHeader>
-        <insideMenu :title="title" @changeLoadding="handleLoadding" :openMenuView="openMenuView" :menuList="menuList" :fromRouter="fromRouter"></insideMenu>
-        <div id="insideContainer" :class="openMenuView?'open':'close'" v-loading="viewLoading"  
+    <div class="inside_cloud-container">
+        <insideHeader @diseaseSelect="handleDiseaseSelect" :fromRouter="fromRouter"></insideHeader>
+        <insideMenu :title="title" @changeLoadding="handleLoadding" :menuList="menuList" :fromRouter="fromRouter"></insideMenu>
+        <div id="insideContainer" :class="$store.state.common.openMenuView?'open':'close'" v-loading="viewLoading"  
                         element-loading-background="#fff"
                         element-loading-text="拼命加载中">
             <p class="title">{{$route.meta.txt}}</p>
@@ -36,7 +36,6 @@ export default {
     name: 'insideView',
     data () {
         return {
-            openMenuView: true,
             loading: false,
             title: "",
             fromRouter: {
@@ -44,8 +43,8 @@ export default {
                 meta: {}
             },
             menuList: [],
-            viewLoading: false,
-            disease: ""
+            disease: "",
+            viewLoading: false
         };
     },
     components: {
@@ -53,7 +52,6 @@ export default {
         insideMenu,
     },
     created () {
-        // this.loading = true;
         this.getMenuList();
     },
     watch: {
@@ -61,9 +59,6 @@ export default {
     mounted () {
         this.initView();
         window.onresize = this.initView;
-        // setTimeout(()=>{
-        //     this.loading = false;
-        // },800)
         let headLeft = parseInt($('.component_head').css("left"));
         $(document).scroll(function() {
             if($(document).scrollLeft() != 0) {
@@ -109,10 +104,6 @@ export default {
                     }
                 });
             }, 400);
-        },
-        //展开折叠切换
-        handleMenuView(val) {
-            this.openMenuView = val
         },
         //切换病种
         handleDiseaseSelect(diseaseId) {

@@ -1,3 +1,5 @@
+import store from '../store/index';
+
 // 子路由
 import SDResearch from './SDResearch';
 import crfManage from './crfManage';
@@ -13,6 +15,7 @@ import reportList from './reportList';
 import eventPlan from './eventPlan';
 import researchModel from './researchModel';
 import researchTask from './researchTask';
+import task from './task';
 //病人列表
 import patientListModule from './patientListModule';
 //病种概览
@@ -81,7 +84,7 @@ const routes = [
   }
 ];
 
-const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, reportList, eventPlan,researchModel,patientListModule,diseaseChart, researchTask);
+const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, reportList, eventPlan,researchModel,patientListModule,diseaseChart, researchTask, task);
 //处理内页打开页面
 route.forEach( item =>{
   if(item.name == 'insideView'){
@@ -98,4 +101,9 @@ for(let i = 0; i < route.length; i++) {
     i--;
   }
 }
+
+store.commit({
+  type: 'saveTaskMenuList',
+  params: task
+});
 export default route;

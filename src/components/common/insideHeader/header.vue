@@ -1,13 +1,13 @@
 <template>
-    <div class="inside_header flex-start-center" :class="openMenuView?'open':'close'">
+    <div class="inside_header flex-start-center" :class="$store.state.common.openMenuView?'open':'close'">
         <el-button type="text" @click="handleMenuView">
-            <span class="menuBtn" :class="openMenuView?'el-icon-s-fold':'el-icon-s-unfold'"></span>
+            <span class="menuBtn" :class="$store.state.common.openMenuView?'el-icon-s-fold':'el-icon-s-unfold'"></span>
         </el-button>
         <el-popover
             v-show="$route.meta.belongToGroup == 'insideView'"
             placement="top-start"
             title=""
-            :popper-class="'popover_disease ' + openMenuView"
+            :popper-class="'popover_disease ' + $store.state.common.openMenuView"
             class="popover_disease"
             width="100%"
             v-model="popoverVisible"
@@ -31,13 +31,10 @@ export default {
     name: 'insideHeader',
     data () {
         return {
-            openMenuView: true,
             disease: "",
             popoverVisible: false,
             dataList: []
         };
-    },
-    computed: {
     },
     created () {
         this.getDataList()
@@ -62,8 +59,7 @@ export default {
     },
     methods: {
         handleMenuView() {
-            this.openMenuView = !this.openMenuView;
-            this.$emit('menuViewChange', this.openMenuView)
+            this.$store.commit("changeMenuView", !this.$store.state.common.openMenuView);
         },
         handleSelect(item) {
             this.disease = item.name;

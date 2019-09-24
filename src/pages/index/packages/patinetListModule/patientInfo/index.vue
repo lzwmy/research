@@ -24,7 +24,7 @@
 
         <div class="container flex-between-center">
             <div class="content">
-                <patientInfoDetail v-if="!showReportComponent" class="timeline" :dataInfo="dataInfo"></patientInfoDetail>
+                <patientInfoDetail v-if="!showReportComponent" class="timeline" :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
                 <report-list v-if="showReportComponent" class="reportList" :reportFillData="reportFillData"></report-list>
                 <div class="group_btn">
                     <el-button type="primary" icon="icon iconfont iconzujian19" :class="!showReportComponent?'active':''" @click="handleComponent(false)"></el-button>

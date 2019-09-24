@@ -388,20 +388,36 @@ const handleSsoLogout = () =>{
  *@return {Object} [返回对象]
  */
 const ssoLogout = () => {
+  //是否为科研项目登录
+  // return;
+  let  isResearch = store.state.user.loginType === "research";
   try {
     vm.$get('/auth/logout.do?t=' + (+new Date()))
     then(function (response) {
       store.commit('USER_SIGNOUT');
-      window.location.href = './login.html';
+      if(!isResearch) {
+        window.location.href = './login.html';
+      }else {
+        window.location.href = './loginResearch.html';
+      }
     })
     .catch(function (error) {
       console.log(error);
       store.commit('USER_SIGNOUT');
-      window.location.href = './login.html';
+      if(!isResearch) {
+        window.location.href = './login.html';
+      }else {
+        window.location.href = './loginResearch.html';
+      }
     });
   } catch (err) {
     store.commit('USER_SIGNOUT');
     window.location.href = './login.html';
+    if(!isResearch) {
+      window.location.href = './login.html';
+    }else {
+      window.location.href = './loginResearch.html';
+    }
   }
 };
 
@@ -695,7 +711,31 @@ const validIndexAuthenticated = function () {
       }
     } catch (err) {
       store.commit('USER_SIGNOUT');
-      window.location.href = './login.html';
+      //是否为科研项目登录
+      let  isResearch = store.state.user.loginType === "research";
+      if(!isResearch) {
+        window.location.href = './login.html';
+      }else {
+        window.location.href = './loginResearch.html';
+      }
+    }
+  });
+};
+
+const deleteFileId = function (id) {
+  return new Promise(async (resolve, reject) => {
+    let params = {
+      file_id: id
+    }
+    try {
+      let res = await vm.$http.deleteFileId(params);
+      if (res && res.code == '0' && res.data) {
+        resolve();
+      }else {
+        reject(res.msg);
+      }
+    } catch (err) {
+      reject(res.msg);
     }
   });
 };
@@ -796,4 +836,5 @@ export default {
   deepCopy,   //深克隆
   handleTableScorll,   //操作表格滚动
   handlePagination,   //操作分页表现表形
+  deleteFileId,     //单文件删除
 };

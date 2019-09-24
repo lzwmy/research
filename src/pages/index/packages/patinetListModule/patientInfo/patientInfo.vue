@@ -9,11 +9,11 @@
                 :icon="item.reportType==1?'icon iconfont iconshijianzhoubeifen diagnosis':'icon iconfont iconzujian20 followUp'"
                 size="18">
                 <el-card>
-                    <div class="flex-between-center">
+                    <div class="flex-between-center cur_pointer" @click="toReportFill(item)">
                         <p>{{item.author}}  {{item.createTime}}</p>
                         <span class="state">已审核</span>
                     </div>
-                    <h4>{{item.reportType==1?'初诊':'随访'}}</h4>
+                    <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'初诊':'随访'}}</h4>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
@@ -24,11 +24,12 @@
 
 export default {
     name: 'patientInfoDetail',
-    props:['dataInfo'],
+    props:['dataInfo','reportFillData'],
     data () {
         return {
             reportDataList:[],
-            loading: false
+            loading: false,
+            identify: ""
         };
     },
     watch: {
@@ -39,7 +40,7 @@ export default {
         this.getDataList();
     },
     mounted () {
-
+        this.getIdentify(this.reportFillData.patientId);
     },
     components: {
     },
@@ -66,6 +67,47 @@ export default {
                 console.log(err)
             }
         },
+        //获取身份证号
+        async getIdentify(patientId) {
+            let formData = {
+                patientId: patientId
+            }
+            try {
+                let res = await this.$http.casesSearchPatient(formData);
+                if (res.code == 0) {
+                    this.identify = res.data.identitycardno || "";
+                }else {
+                    this.$mes('error', "获取基本信息失败!");
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        toReportFill(row) {
+            this.getIdentify(this.identify)
+            .then( ()=>{
+                let that = this;
+                let urlParameter={
+                    cacheData: false,
+                    formId: row.crfId || "",
+                    reportId: row.id || '',
+                    groupId: row.groupId || "",
+                    subjectId: row.subjectId || "",
+                    diseaseId: row.diseaseId || "",
+                    patientName: row.patientName || "",
+                    patientId: row.patientId || "",
+                    identify: this.identify || "",
+                    from: "caseManage",
+                    diseaseName: row.diseaseName || "",
+                    subjectName: row.subjectName || "",
+                    groupName: row.groupName || "",
+                    title: row.reportName,
+                    isModify:"displayShow"
+                }
+                sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+                window.open('./patientForm.html');
+            })
+        }
     },
 };
 </script>

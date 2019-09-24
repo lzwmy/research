@@ -231,7 +231,7 @@ export default {
 
 
 <style lang="less" scoped>
-    .card {
+    .patientFollowUp .card {
         flex-wrap: wrap;
         position: relative;
         min-height: 600px;

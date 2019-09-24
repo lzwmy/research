@@ -1,8 +1,8 @@
 <template>
-    <div class="insideMenu" :class="openMenuView?'open':'close'">
+    <div class="insideMenu" :class="$store.state.common.openMenuView?'open':'close'">
         <div class="top flex-start-center" @click="onBack" title="返回">
             <span class="icon iconfont iconfanhuishouye"></span>
-            <p v-show="openMenuView">{{title}}</p>
+            <p v-show="$store.state.common.openMenuView">{{title}}</p>
         </div>
         <div class="cont" v-if="$route.meta.belongToGroup == 'insideView'">
             <div class="userInfo flex-center-center">
@@ -30,13 +30,14 @@
             </div>
         </div>
         <div class="ment_list">
-            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" ref="menu" :collapse="!openMenuView" :unique-opened="true">
+            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" ref="menu" :collapse="!$store.state.common.openMenuView" :unique-opened="true">
                 <span v-for="(item, index) in menuList" :key="index">
-                    <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="item.children.length == 0">
+                    <p class="line" v-if="item.name=='organizationManagement'" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
+                    <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="item.children && item.children.length == 0">
                         <i class="icon iconfont" :class="'icon'+item.ico"></i>
                         <span slot="title">{{item.menuName}}</span>
                     </el-menu-item>
-                    <el-submenu :index="item.menuCode" v-if="item.children.length != 0">
+                    <el-submenu :index="item.menuCode" v-if="item.children && item.children.length != 0">
                         <template slot="title">
                             <i class="icon iconfont" :class="'icon'+item.ico"></i>
                             <span slot="title">{{item.menuName}}</span>
@@ -55,10 +56,6 @@ import utils from 'components/utils/index'
 export default {
     name: 'insideMenu',
     props: {
-        openMenuView: {
-            type: Boolean,
-            default: true
-        },
         title: {
             type: String,
             default: ""
@@ -98,14 +95,13 @@ export default {
             //关闭菜单其它展开项
             if(item.menuLevel == 3) {
                 this.menuList.forEach(item => {
-                    if(item.children.length != 0) {
+                    if(item.children && item.children.length != 0) {
                         this.$refs.menu.close(item.menuCode);
                     }
                 });
             }
         },
         onBack() {
-            console.log(this.fromRouter)
             if(!this.fromRouter.path) {
                 this.$router.push({
                     path: '/'

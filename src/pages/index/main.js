@@ -27,6 +27,7 @@ import 'quill/dist/quill.bubble.css';
 import 'assets/css/crf.less';
 import 'assets/css/crfStyle.less';
 import 'assets/fonticon/iconfont.css';
+import 'assets/fonticon/iconfont.js';
 import 'assets/css/common.less';
 
 require('zrender/lib/vml/vml');
@@ -70,8 +71,14 @@ let initApp = async () => {
     //同步验证浏览器自带的session有没有在登录有效期；
     await utils.validIndexAuthenticated();
 
-    //同步获取菜单；
-    await utils.loadMenuInfo();
+    //是否为科研项目登录
+    let  isResearch = store.state.user.loginType === "research";
+    console.log(isResearch)
+    //同步获取菜单；(非科研项目登录)
+    console.log(store)
+    if(!isResearch) {
+      await utils.loadMenuInfo();
+    }
     loadingInstance.close();// 在获取权限后关闭loading
     // 初始化路由
     let router = new VueRouter({
@@ -89,7 +96,11 @@ let initApp = async () => {
           next();
         } else {
           utils.ssoLogout();
-          window.location.href = './login.html';
+          if(!isResearch) {
+            window.location.href = './login.html';
+          }else {
+            window.location.href = './loginResearch.html';
+          }
         }
       }
     });

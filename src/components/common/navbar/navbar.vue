@@ -35,7 +35,7 @@ export default {
     methods: {
         toRouter(data) {
             let item = this.menuList[data.index];
-            if(item.children.length != 0 && item.menuPath != '/SDResearch') {
+            if(item.children.length != 0 && item.menuPath != '/SDResearch' && item.menuPath != '/researchTask' ) {
                 let params = {
                     title: item.menuName,
                     fromRouter: {
@@ -46,12 +46,26 @@ export default {
                 }
                 sessionStorage.setItem('insideMenuData',JSON.stringify(params))
                 this.$router.push({
-                    name: 'dataDictionary',
+                    name: this.findFirstChildren(item.children).menuPath.slice(1),
                     params: params
                 })
                 return;
             }
             this.$router.push(item.menuPath)
+        },
+        findFirstChildren(arr) {
+            if(!arr instanceof Array) {
+                return;
+            }
+            let first;
+            for (let i = 0; i < arr.length; i++) {
+                if(arr[i].menuOrder == 1 && arr[i].children && arr[i].children.length != 0) {
+                    first = this.findFirstChildren(arr[i].children);
+                }else if(arr[i].menuOrder == 1 ) {
+                    first = arr[i];
+                }
+            }
+            return first;
         }
     }
 };

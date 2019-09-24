@@ -46,7 +46,7 @@
       :append-to-body="true"
       width="40%">
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="ruleFormDialogRules" label-width="130px"
-               class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading">
+              class="ruleFormDialog" @submit.native.prevent v-loading="ruleFormDialog.loading">
         <el-form-item label="医学分类名称：" prop="termCategoryName" label-position="left">
           <el-input 
             v-model.trim="ruleFormDialog.termCategoryName" 
@@ -58,11 +58,11 @@
         <el-form-item label="描述：">
           <el-input type="textarea" :rows="8" v-model="ruleFormDialog.termCategoryDesc"></el-input>
         </el-form-item>
-        <div class="el-dialog--center">
-          <el-button type="primary" @click="onSaveDialog" size="mini" :disabled="ruleFormDialog.loading">保 存</el-button>
-          <el-button @click="ruleFormDialog.visible = false;" size="mini">关 闭</el-button>
-        </div>
       </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="onSaveDialog" size="mini" :disabled="ruleFormDialog.loading">保 存</el-button>
+        <el-button @click="ruleFormDialog.visible = false;" size="mini">关 闭</el-button>
+      </div>
     </el-dialog>
 
   </div>

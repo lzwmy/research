@@ -13,9 +13,11 @@ import eventPlan from './eventPlan/index';
 import researchModel from './researchModel/index';
 import fullTextSearch from  './fullTextSearch/index';
 import treatmentAnalysis from './treatmentAnalysis/index';
+import organizationManagement from './organizationManagement/index';
+import researchTask from './researchTask/index';
 //病种概览
 import diseaseChart from './diseaseChart';
 
-const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart);
+const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,organizationManagement,researchTask);
 
 export default http;

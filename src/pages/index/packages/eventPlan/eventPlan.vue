@@ -36,7 +36,7 @@
                 <el-table
                 :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                 :data="dataList.content" style="width: 100%" v-loading="loading"
-                :empty-text="emptyText" :element-loading-text="elementLoadingText" fit stripe>
+                :empty-text="emptyText" :element-loading-text="elementLoadingText" fit>
                 <el-table-column type="index" label="序号" width="90px"></el-table-column>
                 <el-table-column prop="a" label="事件名称"></el-table-column>
                 <el-table-column prop="b" label="关联表单"></el-table-column>
@@ -170,7 +170,6 @@ import echartsContain from 'components/packages/echartsContain/echartsContain';
 import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
 import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
-import 'assets/css/common.less';
 
 export default {
     name: 'eventPlan',
@@ -260,7 +259,7 @@ export default {
             this.emptyText = emptyText;
             this.elementLoadingText = elementLoadingText;
             //     this.getDataList();
-            },
+        },
         async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
             let that = this;
             that.currentPageNo = pageNo;

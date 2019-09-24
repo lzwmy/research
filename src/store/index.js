@@ -14,7 +14,9 @@ const user = {
     account: '', // 登录账号
     routeArr: [], // 每个页面路由元
     menuList: [], // 菜单列表
+    taskMenuList: [], // 科研课题菜单列表
     session_isDislpayArrow: false,
+    loginType: ''
   },
   mutations: {
     [USER_SIGNIN](state, userLogin) {
@@ -35,8 +37,16 @@ const user = {
       sessionStorage.setItem('CURR_USER_RESEARCH_MENULIST', JSON.stringify(payload.params));
       state.menuList = payload.params;
     },
+    saveTaskMenuList(state, list) {
+      sessionStorage.setItem('CURR_USER_TASK_MENULIST', JSON.stringify(list));
+      state.taskMenuList = list;
+    },
     saveSession_isDislpayArrow(state, payload) {
       state.session_isDislpayArrow = payload.isDislpayArrow;
+    },
+    saveLoginType(state, val) {
+      sessionStorage.setItem('CURR_LOGIN_TYPE', JSON.stringify(val));
+      state.loginType = val;
     }
   },
   actions: {}
@@ -116,12 +126,24 @@ const getters = {
   }
 };
 
+const common = {
+  state:{
+    openMenuView: true  //内页菜单是否展开
+  },
+  mutations:{
+    changeMenuView:function(state,val) {
+      state.openMenuView = val
+    }
+  }
+}
+
 var store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // 在非生产环境下，使用严格模式
   modules: {
     user,
     crf,
-    researchModel
+    researchModel,
+    common
   },
   getters
 });

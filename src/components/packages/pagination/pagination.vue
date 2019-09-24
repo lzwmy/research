@@ -72,7 +72,9 @@ export default {
       return this.data[this.pageNoName];
     },
     pageSizeInit () {
-      utils.handlePagination();
+      if(!$('#app').hasClass('insideView')) {
+        utils.handlePagination();
+      }
       return this.data[this.pageSizeName];
     }
   },
