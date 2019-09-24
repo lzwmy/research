@@ -475,9 +475,10 @@
           };
           try {
             let data = await that.$http.CRFPortionBakSave(formData);
-            console.log(data);
+            // console.log(data);
             if(data.code == 0) {
-              this.$message.success(data.data);
+              // this.$message.success(data.data);
+              this.$message.success("保存成功");
               //保存成功跳转到 CRF表单
               window.history.go(-1);
             }
@@ -497,9 +498,10 @@
           };
           try {
             let data = await that.$http.CRFPortionBakModify(formData);
-            console.log(data);
+            // console.log(data);
             if(data.code == 0) {
-              this.$message.success(data.data);
+              // this.$message.success(data.data);
+              this.$message.success("保存成功");
               //保存成功跳转到 CRF表单
               window.history.go(-1);
             }
