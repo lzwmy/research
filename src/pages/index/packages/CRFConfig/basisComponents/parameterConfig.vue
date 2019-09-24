@@ -729,14 +729,12 @@
         processTopLine(data) {
           let prevData = this.$store.state.CRFConfig.basisDataList;
           let index = this.$store.state.CRFConfig.basisIndex;
-          let prevColumns  = prevData[index-1].baseProperty.layout.columns;
+          /*let prevColumns  = prevData[index-1].baseProperty.layout.columns;
           let prevSelectionList = prevData[index-1].baseProperty.layout.selection;
           let columns = this.basicDataInfo.obj.baseProperty.layout.columns;
-          let selectionList = this.basicDataInfo.obj.baseProperty.layout.selection;
-          //判断上一行 与 当前行 columns 是否相同,
-            //-- 如果相同，判断 selection 里的position 是否相同， 存在相同 就换行 如果不相同就添加到 显示数组里面去
-          if(columns == prevColumns){
-            /*let flag = prevSelectionList.includes(...selectionList);*/
+          let selectionList = this.basicDataInfo.obj.baseProperty.layout.selection;*/
+          /*if(columns == prevColumns){
+            /!*let flag = prevSelectionList.includes(...selectionList);*!/
             for(let i=0;i<prevSelectionList.length;i++) {
               for(let j=0;j<selectionList.length;j++) {
                 if(prevSelectionList[i].position !== selectionList[j].position){
@@ -762,7 +760,22 @@
                 }
               }
             }
+          }*/
+          if(index == 0) {
+              console.log('没有上一行');
+            return ;
           }
+          let copyLine = Object.assign({},JSON.parse(JSON.stringify(prevData[index-1].baseProperty.layout)));
+          for(let i=0;i<copyLine.displayChecked.length;i++) {
+            for(let j=0;j<copyLine.selection.length;j++) {
+              if(copyLine.displayChecked[i].position == copyLine.selection[j].position) {
+                copyLine.displayChecked[i].selection = true;
+              }
+            }
+          }
+          copyLine.selection = [];
+          copyLine.wrap = 0;
+          this.basicDataInfo.obj.baseProperty.layout = copyLine;
         },
         //布局 位置选择
         selectLayout(item) {
@@ -842,7 +855,7 @@
               if((item.position - array[0] == 1)||(item.position - array[0] == '-1') ){
                 this.selectList.push(item)
               }else if((item.position - array[i] == 1)||(item.position - array[i] == '-1')){
-                item.selection = true;
+                // item.selection = true;
                 this.selectList.push(item)
               }else{
                 this.$notify.info({

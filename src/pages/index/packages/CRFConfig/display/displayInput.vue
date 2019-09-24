@@ -16,7 +16,7 @@
         :placeholder="item.baseProperty.controlTip"
       ></el-input>
     </div>
-    {{item.baseProperty.layout}}
+    <!--{{item.baseProperty.layout}}-->
   </div>
 </template>
 

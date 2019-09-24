@@ -29,7 +29,7 @@
           <div class="portion_body_content-box">
             <el-tabs v-model="tabName" type="card">
               <el-tab-pane label="病种" name="first" class="subDisease_container">
-                <div class="disease-content-box">
+                <div class="disease-content-box" v-if="diseaseList.length!==0">
                   <div class="report_box">
                     <div class="display_detail_info-item-box"  v-for="(item,index) in filterData(diseaseList)" :key="index" @click.stop="diseaseActive(item,index)">
                       <div class="detail_info" :class="{'active':index===diseaseIdIndex}" >
@@ -63,9 +63,12 @@
                     </div>
                   </div>
                 </div>
+                <div class="disease-content-box blank_page" v-else>
+                  <img class="tipInfo" src="./../basisComponents/image/none_content.png" alt="">
+                </div>
               </el-tab-pane>
               <el-tab-pane label="小节" class="portions_container" name="second">
-                <div class="portion_tab-container">
+                <div class="portion_tab-container" v-if="portionList.length!==0">
                   <div class="portion_display-item">
                     <div class="display_detail_info-item-box" v-if="portionList.length!==0" v-for="(item,index) in portionList" :key="index" @click.stop="portionActive(item,index)">
                       <div class="detail_info" :class="{'active':item.portionId==portionId}" >
@@ -127,6 +130,9 @@
                       <img v-show="tableList.length==0" src="./../basisComponents/image/none_content.png" alt="">
                     </div>
                   </div>
+                </div>
+                <div class="portion_tab-container blank_page" v-else>
+                  <img class="tipInfo" src="./../basisComponents/image/none_content.png" alt="">
                 </div>
               </el-tab-pane>
             </el-tabs>
@@ -194,9 +200,9 @@
           this.portionList = [];
           this.preview = {};
           this.diseasePreview = {};
-          this.$nextTick(()=>{
+          /*this.$nextTick(()=>{
             this.$refs.multipleTable.clearSelection();
-          })
+          })*/
         },
         //关闭 弹框
         closeAddDialog() {
@@ -530,6 +536,16 @@
                 }
               }
             }
+            .blank_page{
+              width: 100%;
+              height: 426px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              .tipInfo{
+                height: 150px;
+              }
+            }
           }
           .subDisease_container{
             display: flex;
@@ -665,6 +681,16 @@
                     display: none;
                   }
                 }
+              }
+            }
+            .blank_page{
+              width: 100%;
+              height: 426px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              .tipInfo{
+                height: 150px;
               }
             }
           }

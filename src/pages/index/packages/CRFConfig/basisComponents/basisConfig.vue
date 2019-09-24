@@ -29,7 +29,7 @@
       </div>
       <div class="basis_body-content">
         <!--内容配置-->
-        <div class="basis_content_config">
+        <div class="basis_content_config" v-if="basisDataList.length!==0">
           <div class="content-box" v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
               <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
@@ -81,9 +81,15 @@
           </div>
          <!-- <div>{{basisDataList}}</div>-->
         </div>
+        <div class="basis_content_config blank_page" v-else>
+          <img src="./image/none_content.png" alt="">
+        </div>
         <!--参数配置-->
-        <div class="basis_parameter_config">
+        <div class="basis_parameter_config" v-if="JSON.stringify(basisDataInfo)!=='{}'">
           <parameter-config v-if="JSON.stringify(basisDataInfo)!=='{}'" :basicDataInfo="basisDataInfo"></parameter-config>
+        </div>
+        <div class="basis_parameter_config blank_page" v-else>
+          <img src="./image/none_content.png" alt="">
         </div>
       </div>
       <!--添加条目弹框-->
@@ -343,6 +349,7 @@
               "columns":1,
               "selection":[],
               "wrap":1,
+              "displayChecked":[]
             }
           };
           data.termSet= {
@@ -402,6 +409,7 @@
         },
         //删除行
         deleteBlock(index) {
+          this.basisDataInfo = {};
           this.basisDataList.splice(index,1);
         },
         //上移
@@ -411,8 +419,15 @@
             return ;
           }
           let copyLine = Object.assign({},data);
+          copyLine.baseProperty.layout = {
+            "columns":1,
+            "selection":[],
+            "wrap":1,
+            "displayChecked":[]
+          };
           array.splice(index-1,0,copyLine);
           array.splice(index+1,1);
+          this.basisDataInfo = {};
         },
         //下移
         moveDown(data,index,array) {
@@ -421,8 +436,15 @@
             return ;
           }
           let copyLine = Object.assign({},data);
+          copyLine.baseProperty.layout = {
+            "columns":1,
+            "selection":[],
+            "wrap":1,
+            "displayChecked":[]
+          };
           array.splice(index+2,0,copyLine);
           array.splice(index,1)
+          this.basisDataInfo = {};
         },
         //添加条目 -- 显示弹框
         addItem() {
@@ -471,6 +493,10 @@
         },
         //预览
         previewBtn() {
+          if(this.portionName==""){
+            this.$message.info('请输入小节名称');
+            return ;
+          }
           this.portionMask = true;
           let array = [];
           this.basisDataList.forEach(item=>{
@@ -612,6 +638,16 @@
             color: #DB5452;
           }
         }
+      }
+    }
+    .blank_page{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img{
+        height: 150px;
       }
     }
     .basis_parameter_config{

@@ -43,6 +43,7 @@ export default {
         "columns":1,
         "selection":[],
         "wrap":1,
+        "displayChecked":[]
       },
       "fileType": "",
       "itemFileRsp": [
