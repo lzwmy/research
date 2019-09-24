@@ -213,7 +213,9 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            this.CRFDeletePortion(data,index);
+            // this.CRFDeletePortion(data,index);
+            this.dataList.splice(index,1);
+            this.$message.success('删除成功');
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -236,7 +238,12 @@
           try {
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
-              this.$message.success(data.data);
+              this.$message.success('保存成功');
+              let temporarySave = {
+                dataList:[],
+                crfName:"",
+              };
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
               //保存成功返回 报告页
               window.history.go(-1);
             }
@@ -259,7 +266,12 @@
           try {
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
-              this.$message.success(data.data);
+              this.$message.success('保存成功');
+              let temporarySave = {
+                dataList:[],
+                crfName:"",
+              };
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
               //保存成功返回 报告页
               window.history.go(-1);
             }
@@ -357,6 +369,7 @@
         }
       },
       destroyed() {
+
         this.$destroy();
       }
     }
