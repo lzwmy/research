@@ -564,6 +564,7 @@
                 height: 100%;
                 border-right: 1px solid #E5EBEC;
                 box-sizing: border-box;
+                overflow: auto;
                 .display_detail_info-item-box{
                   display: flex;
                   flex-direction: row;
@@ -606,6 +607,7 @@
                 height: 100%;
                 border-right: 1px solid #E5EBEC;
                 box-sizing: border-box;
+                overflow: auto;
                 .display_detail_info-item-box{
                   display: flex;
                   flex-direction: row;
