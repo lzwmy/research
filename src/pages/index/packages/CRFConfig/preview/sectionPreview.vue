@@ -19,11 +19,11 @@
       components:{
         displayPortion
       },
-     /* watch:{
+      /*watch:{
         "portion":{
           deep:true,
           handler:(value)=>{
-            console.log('sectionPreview',value)
+            this.portion = value;
           }
         }
       },*/

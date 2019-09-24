@@ -216,84 +216,7 @@
           ],
           unitName:"",
           gatherKnowType:'',// 是否不详
-          basisDataList:[
-            /*{
-            "id": "",
-            "controlName": "",
-            "diseaseId": "",
-            "controlDisplayName": "",
-            "controlType": "",
-            "displayIsVisible": 1,
-            "baseProperty": {
-              "controlWidth": 0,
-              "controlHeight": 0,
-              "controlTip": "",
-              "controlIsDefaultDateTime": 0,
-              "controlIsExtend": 0,
-              "labelType": "",
-              "labelContent": "",
-              "labelImage": "",
-              "bindingInfo": {
-                "id": "",
-                "itemId": "",
-                "viewId": "",
-                "viewName": "",
-                "viewColumn": "",
-                "bindingType": "",
-                "bindingColumn": "",
-                "bindingColumnName": "",
-                "list": [
-                  {
-                    "id": "",
-                    "bindingId": "",
-                    "operator": "",//Equals
-                    "operatorName": "", //等于
-                    "param": "",
-                    "param2": "",
-                    "columnEn": "",
-                    "columnName": ""
-                  }
-                ],
-                "groupColumn": "",
-                "keyColumn": ""
-              },
-              "fileType": "",
-              "itemFileRsp": [
-                {
-                  "fileId": "",
-                  "fileName": ""
-                }
-              ],
-              "layout":{
-                "column":1,
-                "selection":[]
-              }
-            },
-            "termSet": {
-              "termDefaultValue": [],
-              "rangeText":"",
-              "termItemList": [ //值域
-                {
-                  "id": "",
-                  "termItemName": "",
-                  "valueRange":""
-                }
-              ]
-            },
-            "termUnit": {
-              "numberIsSwitch": 1, //0: 代码集/值域, 1: 单位表
-              "unitName": ""
-            },
-            "gatherKnowType": 0,
-            "gatherFoldFlag": 0,//展开: 0, 折叠: 1
-            "controlIsAvailable": 0,
-            "gatherRank": 0,//上下排列: 1, 左右排列: 2
-            "gatherColumnNumber": 0,
-            "binding": 0,//0 没有绑定 1 绑定"
-            "fileType": "FILE",
-            "children": []
-          }*/
-          ],
+          basisDataList:[],
           basisDataInfo:{},
           portionName:"",//小节名称
           portionPreviewData:{},
@@ -510,14 +433,16 @@
             });
           }else if(this.$route.query.type == 'modify') {
             this.portionModifySave().then(()=>{
+              let i = this.$route.query.i;
               let formData = {
-                "formCrfId": this.$route.query.crfId,
-                "formPortionId": this.$route.query.portionId,
+                // "formCrfId": this.$route.query.crfId,
+                "id": this.$route.query.portionId,
                 "portionName": this.portionName,
                 "diseaseId": this.$route.query.id,
                 "formItemList": this.basisDataList||[]
               };
-              temporarySave.dataList.push(formData);
+              // temporarySave.dataList.push(formData);
+              temporarySave.dataList[i] = formData;
               sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
             })
           }
@@ -604,7 +529,6 @@
           let that = this;
           try{
             let data = await that.$http.crfUnitList()
-            console.log(data)
             if(data.code ===0){
               that.unitList = data.data
             }
@@ -627,8 +551,9 @@
             let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
             let i = this.$route.query.i;
             let portionObj = temporarySave.dataList[i];
-            this.portionName = portionObj.crfName;
-            this.basisDataList = portionObj.dataList;
+            console.log(portionObj)
+            this.portionName = portionObj.portionName;
+            this.basisDataList = portionObj.formItemList;
           }
         }
         if(this.$route.query.portionName !== '0') {

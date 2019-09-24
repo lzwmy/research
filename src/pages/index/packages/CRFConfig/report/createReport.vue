@@ -56,19 +56,21 @@
           </div>
         </div>
         <div class="report_body-box">
-          <div class="report_body-item" v-for="(item,index) in dataList" :key="index">
-            <div class="report_header-content">
-              <div class="display_line"></div>
-              <div class="header-title">{{item.portionName}}</div>
-              <div class="header-btn">
-                <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
-                <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
+          <div style="width: 100%" v-if="dataList.length!==0">
+            <div class="report_body-item" v-for="(item,index) in dataList" :key="index">
+              <div class="report_header-content">
+                <div class="display_line"></div>
+                <div class="header-title">{{item.portionName}}</div>
+                <div class="header-btn">
+                  <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
+                  <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
+                </div>
               </div>
-            </div>
-            <div class="report_body-content">
-              <!--{{item}}-->
-              <!--<div>暂时无法预览</div>-->
-              <preview-portion :item="item"></preview-portion>
+              <div class="report_body-content">
+                <!--{{item}}-->
+                <!--<div>暂时无法预览</div>-->
+                <preview-portion :item="item"></preview-portion>
+              </div>
             </div>
           </div>
           <!--<div class="report_body-item">
@@ -130,6 +132,14 @@
           crfPreview:{}
         }
       },
+      watch:{
+        "dataList":{
+          deep:true,
+          handler:function (value) {
+            this.dataList = value
+          }
+        }
+      },
       methods: {
         breakGo() {
           window.history.go(-1);
@@ -179,6 +189,11 @@
           this.directAddSave();
           let diseaseId = this.$route.query.id;
           let crfId = this.$route.query.crfId;
+          let temporarySave = {
+            dataList:this.dataList||[],
+            crfName:this.crfName || "",
+          };
+          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
           this.$router.push({
             path:'/basisConfig',
             query:{
@@ -188,7 +203,8 @@
               crfId:crfId,
               i:index,
             }
-          })
+          });
+
         },
         //删除小节
         portionDeleteItem(data,index) {
@@ -312,7 +328,6 @@
               "formPortions": that.dataList
             };
           }
-
           try {
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
@@ -328,7 +343,10 @@
           this.previewCRFList().then(()=>{
             let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
             if(temporarySave.dataList.length!==0){
-              this.dataList = temporarySave.dataList;
+              this.dataList = [];
+              this.$nextTick(()=>{
+                this.dataList = temporarySave.dataList;
+              });
             }
           })
         }else if(this.$route.query.type=='add') {
@@ -338,9 +356,9 @@
           this.dataList = temporarySave.dataList;
         }
       },
-      /*destroyed() {
+      destroyed() {
         this.$destroy();
-      }*/
+      }
     }
 </script>
 
