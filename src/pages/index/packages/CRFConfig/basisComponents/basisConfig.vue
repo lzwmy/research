@@ -1,7 +1,7 @@
 <template>
     <div class="basis_config_container">
       <div class="component_head flex-between-center">
-        <p>新建小节</p>
+        <p>{{$route.query.type=='add' ? '新建' :'编辑'}}小节</p>
         <div class="head_content cur_pointer">
           <i class="iconfont iconguanbi" @click="close"></i>
         </div>
@@ -9,18 +9,18 @@
       <div class="basis_nav-box">
         <div class="nav_info-content">
           <div class="portion_input-left">
-            <el-input placeholder="请输入小节名称" size="mini"></el-input>
+            <el-input  placeholder="请输入小节名称" v-model="portionName" size="mini"></el-input>
           </div>
           <div class="btn-right-box">
-            <el-button type="primary">
+            <el-button type="primary" @click="previewBtn">
               <i class="iconfont iconfuhao2"></i>
               预览
             </el-button>
-            <el-button type="primary">
+            <el-button type="primary" @click="saveBtn">
               <i class="iconfont iconbaocun"></i>
               保存
             </el-button>
-            <el-button type="primary">
+            <el-button type="primary" @click="addItem">
               <i class="iconfont icontianjia"></i>
               添加条目
             </el-button>
@@ -29,15 +29,15 @@
       </div>
       <div class="basis_body-content">
         <!--内容配置-->
-        <div class="basis_content_config">
-          <div class="content-box" v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
+        <div class="basis_content_config" v-if="basisDataList.length!==0">
+          <div class="content-box"  v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
               <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
               <span class="content_must-fill">*</span>-->
-              <el-input placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini"></el-input>
+              <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" :autofocus="true"></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
-              <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem)">
+              <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem,basisIndex,basisDataList)">
                 <el-option v-for="item in selectShowList"
                            :key="item.value"
                            :label="item.name"
@@ -70,21 +70,39 @@
               <!--切换-->
               <i class="iconfont iconzujian" v-if="basisItem.controlType=='NUMBER_INPUT'" @click="switchType(basisItem)"></i>
               <!--上移-->
-              <!--<i class="iconfont iconfuhao5"></i>-->
+              <i class="iconfont iconfuhao5" @click="moveTop(basisItem,basisIndex,basisDataList)"></i>
               <!--下移-->
-              <!--<i class="iconfont iconfuhao6"></i>-->
+              <i class="iconfont iconfuhao6" @click="moveDown(basisItem,basisIndex,basisDataList)"></i>
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
+            <!--{{basisItem.baseProperty.layout}}-->
             <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
           </div>
-          <!--<div>{{basisDataList[0]}}</div>-->
+         <!-- <div>{{basisDataList}}</div>-->
+        </div>
+        <div class="basis_content_config blank_page" v-else>
+          <img src="./image/none_content.png" alt="">
         </div>
         <!--参数配置-->
-        <div class="basis_parameter_config">
+        <div class="basis_parameter_config" v-if="JSON.stringify(basisDataInfo)!=='{}'">
           <parameter-config v-if="JSON.stringify(basisDataInfo)!=='{}'" :basicDataInfo="basisDataInfo"></parameter-config>
         </div>
+        <div class="basis_parameter_config blank_page" v-else>
+          <img src="./image/none_content.png" alt="">
+        </div>
       </div>
+      <!--添加条目弹框-->
+      <add-item-data :displayMask="displayMask"
+                     @selection-add="selectionAdd"
+                     @direct-add = 'addDirect'
+                     @close-dialog="closeDialog">
+      </add-item-data>
+      <!--小节配置实时预览-->
+      <config-portion-preview :portionMask="portionMask"
+                              :configDataInfo="portionPreviewData"
+                              @close-dialog="closeDialog">
+      </config-portion-preview>
     </div>
 </template>
 
@@ -92,13 +110,19 @@
   import parameter from './js/parameter';
   import basisComponent from './basisComponent';
   import parameterConfig from './parameterConfig';
+  import addItemData from './addItemData';
+  import configPortionPreview from './configPortionPreview';
     export default {
       components:{
         basisComponent,
-        parameterConfig
+        parameterConfig,
+        addItemData,
+        configPortionPreview
       },
       data() {
         return {
+          displayMask:false,//添加条目弹框
+          portionMask:false,
           //下拉 数据 有集合
           selectShowList:[
             {
@@ -193,7 +217,7 @@
           unitName:"",
           gatherKnowType:'',// 是否不详
           basisDataList:[
-            {
+            /*{
             "id": "",
             "controlName": "",
             "diseaseId": "",
@@ -239,7 +263,11 @@
                   "fileId": "",
                   "fileName": ""
                 }
-              ]
+              ],
+              "layout":{
+                "column":1,
+                "selection":[]
+              }
             },
             "termSet": {
               "termDefaultValue": [],
@@ -264,9 +292,12 @@
             "binding": 0,//0 没有绑定 1 绑定"
             "fileType": "FILE",
             "children": []
-          }
+          }*/
           ],
-          basisDataInfo:{}
+          basisDataInfo:{},
+          portionName:"",//小节名称
+          portionPreviewData:{},
+          activeId:"",
         }
       },
       methods:{
@@ -278,8 +309,18 @@
         close() {
           window.history.go(-1);
         },
+        activeConfig(data,index,array) {
+          this.basisDataInfo = {
+            obj:data,
+            selectType:data.controlType,
+            index:index
+          };
+          this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
+          this.$store.commit('SET_ARRAY',array);
+          this.$store.commit('SET_INDEX',index);
+        },
         //控件类型
-        changeControlType(data) {
+        changeControlType(data,index,array) {
           if(data.controlType == 'GATHER'|| data.controlType == 'TABLE') {
             data.children = [];
           }
@@ -304,6 +345,12 @@
               "bindingColumn":"",
               "bindingColumnName":"",
               "list":[]
+            },
+            "layout":{
+              "columns":1,
+              "selection":[],
+              "wrap":1,
+              "displayChecked":[]
             }
           };
           data.termSet= {
@@ -320,10 +367,20 @@
           };
           data.gatherKnowType=0;
           data.inputValue="";
-          data.gatherRank=0;
+
+          data.gatherRank=data.controlType=='TABLE'? 1 : 0;
           data.gatherColumnNumber=2;
           data.gatherIsVisible=1;
           data.gatherFoldFlag=0;
+          // 触发 数据设置
+          this.basisDataInfo = {
+            obj:data,
+            selectType:data.controlType,
+            index:index
+          };
+          this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
+          this.$store.commit('SET_ARRAY',array);
+          this.$store.commit('SET_INDEX',index);
         },
         //集合 or 表格添加
         add(data) {
@@ -349,9 +406,10 @@
             obj:data,
             selectType:data.controlType,
             index:0
-          }
+          };
+          this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
         },
-        // 切换 类型
+        // 数值 切换
         switchType(data) {
           if(data.termUnit.numberIsSwitch == 1) {
             data.termUnit.numberIsSwitch = 0
@@ -361,13 +419,221 @@
         },
         //删除行
         deleteBlock(index) {
+          this.basisDataInfo = {};
           this.basisDataList.splice(index,1);
-        }
+        },
+        //上移
+        moveTop(data,index,array) {
+          if(index === 0 ) {
+            this.$notice('已经置顶了，请往下移！');
+            return ;
+          }
+          let copyLine = Object.assign({},data);
+          copyLine.baseProperty.layout = {
+            "columns":1,
+            "selection":[],
+            "wrap":1,
+            "displayChecked":[]
+          };
+          array.splice(index-1,0,copyLine);
+          array.splice(index+1,1);
+          this.basisDataInfo = {};
+        },
+        //下移
+        moveDown(data,index,array) {
+          if(array.length-1 === index) {
+            this.$notice('已经置底了，请往上移！');
+            return ;
+          }
+          let copyLine = Object.assign({},data);
+          copyLine.baseProperty.layout = {
+            "columns":1,
+            "selection":[],
+            "wrap":1,
+            "displayChecked":[]
+          };
+          array.splice(index+2,0,copyLine);
+          array.splice(index,1)
+          this.basisDataInfo = {};
+        },
+        //添加条目 -- 显示弹框
+        addItem() {
+          this.displayMask = true;
+        },
+        //关闭弹框
+        closeDialog(data) {
+          this.displayMask = data;
+          this.portionMask = data;
+        },
+        // 弹框 选中添加
+        selectionAdd(data) {
+          data.forEach(item=>{
+            let copyData = Object.assign({},JSON.parse(JSON.stringify(parameter.initData)));
+            copyData.controlDisplayName = item.elNameCN;
+            copyData.controlType = item.ctrlType;
+            copyData.baseProperty.layout = {
+              "columns":1,
+              "selection":[], //当前选中
+              "wrap":1,
+              "displayChecked":[], //展示
+            };
+            this.basisDataList.push(copyData)
+          })
+        },
+        //弹框 直接添加
+        addDirect(data) {
+          let copyData = Object.assign({},JSON.parse(JSON.stringify(parameter.initData)));
+          copyData.controlDisplayName = data.controlDisplayName;
+          copyData.controlType = data.controlType;
+          copyData.baseProperty.layout = {
+            "columns":1,
+            "selection":[],
+            "wrap":1,
+            "displayChecked":[],
+          };
+          this.basisDataList.push(copyData)
+        },
+        //保存
+        saveBtn() {
+          let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+          if(this.$route.query.type == 'add') {
+            this.portionSave().then(()=>{
+              let formData = {
+                "formCrfId": "",
+                "formPortionId": "",
+                "portionName": this.portionName,
+                "diseaseId":this.$route.query.id,
+                "formItemList": this.basisDataList||[]
+              };
+              temporarySave.dataList.push(formData);
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+            });
+          }else if(this.$route.query.type == 'modify') {
+            this.portionModifySave().then(()=>{
+              let formData = {
+                "formCrfId": this.$route.query.crfId,
+                "formPortionId": this.$route.query.portionId,
+                "portionName": this.portionName,
+                "diseaseId": this.$route.query.id,
+                "formItemList": this.basisDataList||[]
+              };
+              temporarySave.dataList.push(formData);
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+            })
+          }
+        },
+        //预览
+        previewBtn() {
+          if(this.portionName==""){
+            this.$message.info('请输入小节名称');
+            return ;
+          }
+          this.portionMask = true;
+          let array = [];
+          this.basisDataList.forEach(item=>{
+            array.push(
+              Object.assign({},JSON.parse(JSON.stringify(item)))
+            )
+          });
+          this.portionPreviewData.portionName = this.portionName || "";
+          this.portionPreviewData.formItemList = array;
+        },
+        // 配置小节 新增保存
+        async portionSave() {
+          let that = this;
+          let formData = {
+            "formCrfId": "",
+            "formPortionId": "",
+            "portionName": that.portionName,
+            "diseaseId":that.$route.query.id,
+            "formItemList": that.basisDataList||[]
+          };
+          try {
+            let data = await that.$http.CRFPortionBakSave(formData);
+            console.log(data);
+            if(data.code == 0) {
+              this.$message.success(data.data);
+              //保存成功跳转到 CRF表单
+              window.history.go(-1);
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        },
+        //配置小节 编辑保存
+        async portionModifySave() {
+          let that = this;
+          let formData = {
+            "formCrfId": that.$route.query.crfId,
+            "formPortionId": that.$route.query.portionId,
+            "portionName": that.portionName,
+            "diseaseId": that.$route.query.id,
+            "formItemList": that.basisDataList||[]
+          };
+          try {
+            let data = await that.$http.CRFPortionBakModify(formData);
+            console.log(data);
+            if(data.code == 0) {
+              this.$message.success(data.data);
+              //保存成功跳转到 CRF表单
+              window.history.go(-1);
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        },
+        //预览小节
+        async previewPortionData() {
+          let that = this;
+          let formData = {
+            formPortionId:that.$route.query.portionId
+          };
+          try {
+            let data = await that.$http.CRFPreviewPortion(formData);
+            console.log(data)
+            if(data.code == 0) {
+              that.portionName = data.data.portionName;
+              that.basisDataList = data.data.formItemList;
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        },
+        //获取单位列表
+        async UnitListOrg() {
+          let that = this;
+          try{
+            let data = await that.$http.crfUnitList()
+            console.log(data)
+            if(data.code ===0){
+              that.unitList = data.data
+            }
+          }catch (error) {
+            that.$notice("获取单位列表数据失败");
+            console.log(error);
+          }
+        },
       },
       mounted() {
+        this.$store.commit('CRF_SET_OBJECT',{});
+        this.UnitListOrg();
         this.$nextTick(()=>{
           this.resize();
         });
+        if(this.$route.query.type =='modify') {
+          if(this.$route.query.portionId!=='0') {
+            this.previewPortionData();
+          }else{
+            let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+            let i = this.$route.query.i;
+            let portionObj = temporarySave.dataList[i];
+            this.portionName = portionObj.crfName;
+            this.basisDataList = portionObj.dataList;
+          }
+        }
+        if(this.$route.query.portionName !== '0') {
+          this.portionName = this.$route.query.portionName;
+        }
       },
       destroyed() {
         this.$destroy();
@@ -401,11 +667,13 @@
       border: 1px solid #E5EBEC;
       box-sizing: border-box;
       padding: 15px 15px 0 15px;
+      overflow: auto;
       .content-box{
         .content-line{
           display: flex;
           flex-direction:row;
           align-items: center;
+          margin-bottom: 10px;
           .el-input,.el-select{
             width: 160px;
           }
@@ -427,6 +695,16 @@
             color: #DB5452;
           }
         }
+      }
+    }
+    .blank_page{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img{
+        height: 150px;
       }
     }
     .basis_parameter_config{

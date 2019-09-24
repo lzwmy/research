@@ -476,8 +476,8 @@
                   break;
               }
             }
-            console.log(array)
             that.chartList=array;
+            this.$emit('changeLoadding',false);
           }
         }catch (error) {
           console.log(error)

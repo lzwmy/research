@@ -18,13 +18,15 @@ const CDFReportPagePreview = r => require.ensure([], () => r(require('packages/C
 
 const reportFill = r => require.ensure([], () => r(require('packages/CDRFormManage/reportFill')), 'reportFill');
 
-// crf 2.0
-const reportConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/report/index')),"reportConfig");
 /**
- * * 添加条目
+ * *   crf 2.0
  */
-const CRFBasisConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/basisComponents/basisConfig')),"CRFBasisConfig");
+const reportConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/report/index')),"reportConfig");
 
+//新建小节
+const CRFBasisConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/basisComponents/basisConfig')),"CRFBasisConfig");
+//配置报告
+const createReport = r => require.ensure([],()=>r(require('packages/CRFConfig/report/createReport')),"createReport");
 
 const routes = [
   {
@@ -38,11 +40,11 @@ const routes = [
       belongToGroup: 'insideView',
       openMode: 2
     },
-    component: CDRFromConfig
+    // component: CDRFromConfig
     /***
      * crf 表单配置 2.0
      * */
-    // component: reportConfig
+    component: reportConfig
   },
   {
     path: '/crfFill',
@@ -120,12 +122,29 @@ const routes = [
       belongToGroup: 'insideView',
       openMode: 2
     },
-    // component: CDRFromConfig
     /***
      * crf 表单配置 2.0
+     *  -- 新建小节
      * */
     component: CRFBasisConfig
-  }
+  },
+  {
+    path: '/createReport',
+    name: 'createReport',
+    meta: {
+      requireAuth: true,
+      isKeepAlive: false,
+      txt: '报告配置',
+      flag: 'crfConfig',
+      belongToGroup: 'insideView',
+      openMode: 2
+    },
+    /***
+     * crf 表单配置 2.0
+     *  -- 新建小节
+     * */
+    component: createReport
+  },
 ];
 
 export default routes;

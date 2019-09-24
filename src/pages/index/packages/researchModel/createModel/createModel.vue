@@ -101,6 +101,12 @@
         }
       },
       methods:{
+        //病种切换 刷新页面
+        initPage() {
+          this.modelManageGetDataList().then(()=>{
+            this.$emit('changeLoadding',false);
+          })
+        },
         resize() {
           let height = $('#insideContainer').height()-60;
           $('.research_box').eq(0).css({

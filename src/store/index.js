@@ -107,6 +107,29 @@ const researchModel = {
   },
   actions: {}
 }
+const CRFConfig = {
+  state:{
+    basisDataInfo:{},
+    layouts:"",
+    basisDataList:[],
+    basisIndex:0,
+  },
+  mutations:{
+    'CRF_SET_OBJECT':function (state,obj) {
+      state.basisDataInfo = obj;
+    },
+    'LAYOUT_SET_OBJECT':function (state,obj) {
+      state.layouts = obj;
+    },
+    'SET_ARRAY':function (state,obj) {
+      state.basisDataList = obj;
+    },
+    'SET_INDEX':function (state,obj) {
+      state.basisIndex = obj;
+    }
+  },
+  actions: {}
+}
 
 const getters = {
   crfBindingData: state => {
@@ -143,7 +166,8 @@ var store = new Vuex.Store({
     user,
     crf,
     researchModel,
-    common
+    common,
+    CRFConfig
   },
   getters
 });

@@ -17,7 +17,7 @@ import organizationManagement from './organizationManagement/index';
 import researchTask from './researchTask/index';
 //病种概览
 import diseaseChart from './diseaseChart';
-
-const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,organizationManagement,researchTask);
-
+//CRF 2.0
+import CRFConfig from './CRFConfig';
+const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask);
 export default http;
