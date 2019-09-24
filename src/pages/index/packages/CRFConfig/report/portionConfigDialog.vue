@@ -215,7 +215,7 @@
         },
         //直接添加
         addDirect() {
-          this.$parent.directAddSave();
+          // this.$parent.directAddSave();
           let diseaseId = this.$route.query.id;
           this.$router.push({
             path:"/basisConfig",

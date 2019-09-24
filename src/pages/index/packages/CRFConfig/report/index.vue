@@ -21,7 +21,7 @@
             <div class="report-time">{{item.updateTime}}</div>
           </div>
           <div class="close-ben" @click.stop="deleteCrf(item)">
-            <i class="iconfont iconlujing1"></i>
+            <i class="iconfont iconshanchu1"></i>
           </div>
         </div>
         <div class="img_none" v-if="dataList.length==0">
@@ -64,9 +64,21 @@
         //删除表单
         deleteCrf(data) {
           // console.log(data.crfId);
-          this.CRFDeleteForm(data.crfId).then(()=>{
-            this.reportList();
-          })
+          this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.CRFDeleteForm(data.crfId).then(()=>{
+              this.reportList();
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+
         },
         // 查询所有 报告列表
         async reportList() {
@@ -195,12 +207,18 @@
       }
       .close-ben{
         position: absolute;
-        top: -10px;
-        right: -8px;
+        top: 10px;
+        right:10px;
         display: none;
+        width:36px;
+        height:24px;
+        background:rgba(239,63,73,1);
+        border-radius:2px;
+        text-align: center;
+        line-height: 24px;
         .iconfont{
-          font-size: 20px;
-          color: #D95555;
+          font-size: 14px;
+          color: #ffffff;
         }
       }
       &:hover{
