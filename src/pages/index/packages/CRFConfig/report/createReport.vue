@@ -61,7 +61,7 @@
               <div class="display_line"></div>
               <div class="header-title">{{item.portionName}}</div>
               <div class="header-btn">
-                <i class="iconfont iconzujian14" @click="portionModify(item)"></i>
+                <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
                 <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
               </div>
             </div>
@@ -133,9 +133,19 @@
       methods: {
         breakGo() {
           window.history.go(-1);
+          let temporarySave = {
+            dataList:[],
+            crfName:"",
+          };
+          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
         },
         add() {
           this.displayMask = true;
+          let temporarySave = {
+            dataList:this.dataList||[],
+            crfName:this.crfName || "",
+          };
+          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
         },
         //关闭弹框
         closeDialog(data) {
@@ -164,7 +174,7 @@
           }
         },
         //编辑小节
-        portionModify(data) {
+        portionModify(data,index) {
           console.log('编辑 小节',data);
           this.directAddSave();
           let diseaseId = this.$route.query.id;
@@ -174,8 +184,9 @@
             query:{
               id:diseaseId,
               type:'modify',
-              portionId:data.id,
-              crfId:crfId
+              portionId:data.id || '0' ,
+              crfId:crfId,
+              i:index,
             }
           })
         },
@@ -314,7 +325,15 @@
       },
       mounted() {
         if(this.$route.query.type=='modify') {
-          this.previewCRFList();
+          this.previewCRFList().then(()=>{
+            let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
+            this.dataList = temporarySave.dataList;
+          })
+        }else if(this.$route.query.type=='add') {
+          let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
+          // console.log(temporarySave);
+          this.crfName = temporarySave.crfName;
+          this.dataList = temporarySave.dataList;
         }
       },
       /*destroyed() {

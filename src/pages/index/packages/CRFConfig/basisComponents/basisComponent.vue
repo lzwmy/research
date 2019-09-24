@@ -4,10 +4,10 @@
           <div class="component-content">
               <!--<el-input placeholder="条目名称" v-model="basisDataItem.controlName" size="mini"></el-input>-->
               <!--<span class="content_must-fill">*</span>-->
-              <el-input placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini"></el-input>
+              <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)"></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
-              <el-select v-model="basisDataItem.controlType" size="mini" @change="changeControlType(basisDataItem)">
+              <el-select v-model="basisDataItem.controlType" size="mini" @change="changeControlType(basisDataItem,basisDataIndex,basisData)">
                 <el-option v-for="item in selectShowList"
                            :key="item.value"
                            :label="item.name"
@@ -16,7 +16,7 @@
               </el-select>
               <span class="content_must-fill">*</span>
               <!--单位-->
-              <el-select v-if="basisDataItem.termUnit.numberIsSwitch=='1'&&basisDataItem.controlType=='NUMBER_INPUT'" v-model="unitName" size="mini">
+              <el-select v-if="basisDataItem.termUnit.numberIsSwitch=='1'&&basisDataItem.controlType=='NUMBER_INPUT'" filterable v-model="basisDataItem.termUnit.unitName" size="mini">
                 <el-option v-for="item in unitList"
                            :key="item.id"
                            :label="item.unitName"
@@ -38,7 +38,7 @@
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteLine(basisDataIndex)"></i>
               <!--切换-->
-              <i class="iconfont iconzujian" v-if="basisDataItem.controlType=='NUMBER_INPUT'"></i>
+              <i class="iconfont iconzujian" v-if="basisDataItem.controlType=='NUMBER_INPUT'" @click="switchType(basisDataItem)"></i>
               <!--上移-->
               <i class="iconfont iconfuhao5" @click="moveTop(basisDataItem,basisDataIndex,basisData)"></i>
               <!--下移-->
@@ -57,6 +57,15 @@
         children:{
           type:Array,
           default:null
+        }
+      },
+      directives: {
+        focus: {
+          // 指令的定义
+          inserted: function (el) {
+            // 聚焦元素
+            el.querySelector('input').focus()
+          }
         }
       },
       data() {
@@ -156,8 +165,18 @@
         }
       },
       methods:{
+        activeConfig(data,index,array) {
+          this.basisDataInfo = {
+            obj:data,
+            selectType:data.controlType,
+            index:index
+          };
+          this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
+          this.$store.commit('SET_ARRAY',array);
+          this.$store.commit('SET_INDEX',index);
+        },
         //控件类型
-        changeControlType(data) {
+        changeControlType(data,index,array) {
           if(data.controlType == 'GATHER'|| data.controlType == 'TABLE') {
             data.children = [];
           }
@@ -187,6 +206,7 @@
               "columns":1,
               "selection":[],
               "wrap":1,
+              "displayChecked":[]
             }
           };
           data.termSet= {
@@ -194,6 +214,7 @@
             "termGroupName":'', //(代码集名称)
             "termDefaultValue":[],// 是否有默认值
             "termItemList": [],
+            "rangeText":"",
             "foldFlag":1,
           };
           data.termUnit={
@@ -202,10 +223,20 @@
           };
           data.gatherKnowType=0;
           data.inputValue="";
-          data.gatherRank= data.controlType=='TABLE'? 1 : 0;
+
+          data.gatherRank=data.controlType=='TABLE'? 1 : 0;
           data.gatherColumnNumber=2;
           data.gatherIsVisible=1;
           data.gatherFoldFlag=0;
+          // 触发 数据设置
+          this.basisDataInfo = {
+            obj:data,
+            selectType:data.controlType,
+            index:index
+          };
+          this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
+          this.$store.commit('SET_ARRAY',array);
+          this.$store.commit('SET_INDEX',index);
         },
         //是否可见
         isVisible(data) {
@@ -235,6 +266,14 @@
         deleteLine(index) {
           this.basisData.splice(index,1);
         },
+        // 数值 切换
+        switchType(data) {
+          if(data.termUnit.numberIsSwitch == 1) {
+            data.termUnit.numberIsSwitch = 0
+          }else{
+            data.termUnit.numberIsSwitch  = 1
+          }
+        },
         //上移
         moveTop(data,index,array) {
           if(index === 0 ) {
@@ -254,10 +293,25 @@
           let copyLine = Object.assign({},data);
           array.splice(index+2,0,copyLine);
           array.splice(index,1)
-        }
+        },
+        //获取单位列表
+        async UnitListOrg() {
+          let that = this;
+          try{
+            let data = await that.$http.crfUnitList()
+            console.log(data)
+            if(data.code ===0){
+              that.unitList = data.data
+            }
+          }catch (error) {
+            that.$notice("获取单位列表数据失败");
+            console.log(error);
+          }
+        },
       },
       mounted() {
-        console.log(parameter.initData);
+        this.UnitListOrg()
+        // console.log(parameter.initData);
       }
     }
 </script>

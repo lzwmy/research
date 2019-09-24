@@ -9,7 +9,7 @@
       <div class="basis_nav-box">
         <div class="nav_info-content">
           <div class="portion_input-left">
-            <el-input placeholder="请输入小节名称" v-model="portionName" size="mini"></el-input>
+            <el-input  placeholder="请输入小节名称" v-model="portionName" size="mini"></el-input>
           </div>
           <div class="btn-right-box">
             <el-button type="primary" @click="previewBtn">
@@ -30,14 +30,14 @@
       <div class="basis_body-content">
         <!--内容配置-->
         <div class="basis_content_config" v-if="basisDataList.length!==0">
-          <div class="content-box" v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
+          <div class="content-box"  v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
               <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
               <span class="content_must-fill">*</span>-->
-              <el-input placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)"></el-input>
+              <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" :autofocus="true"></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
-              <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem)">
+              <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem,basisIndex,basisDataList)">
                 <el-option v-for="item in selectShowList"
                            :key="item.value"
                            :label="item.name"
@@ -296,7 +296,8 @@
           ],
           basisDataInfo:{},
           portionName:"",//小节名称
-          portionPreviewData:{}
+          portionPreviewData:{},
+          activeId:"",
         }
       },
       methods:{
@@ -319,7 +320,7 @@
           this.$store.commit('SET_INDEX',index);
         },
         //控件类型
-        changeControlType(data) {
+        changeControlType(data,index,array) {
           if(data.controlType == 'GATHER'|| data.controlType == 'TABLE') {
             data.children = [];
           }
@@ -371,6 +372,15 @@
           data.gatherColumnNumber=2;
           data.gatherIsVisible=1;
           data.gatherFoldFlag=0;
+          // 触发 数据设置
+          this.basisDataInfo = {
+            obj:data,
+            selectType:data.controlType,
+            index:index
+          };
+          this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
+          this.$store.commit('SET_ARRAY',array);
+          this.$store.commit('SET_INDEX',index);
         },
         //集合 or 表格添加
         add(data) {
@@ -399,7 +409,7 @@
           };
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
         },
-        // 切换 类型
+        // 数值 切换
         switchType(data) {
           if(data.termUnit.numberIsSwitch == 1) {
             data.termUnit.numberIsSwitch = 0
@@ -485,10 +495,31 @@
         },
         //保存
         saveBtn() {
+          let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
           if(this.$route.query.type == 'add') {
-            this.portionSave();
+            this.portionSave().then(()=>{
+              let formData = {
+                "formCrfId": "",
+                "formPortionId": "",
+                "portionName": this.portionName,
+                "diseaseId":this.$route.query.id,
+                "formItemList": this.basisDataList||[]
+              };
+              temporarySave.dataList.push(formData);
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+            });
           }else if(this.$route.query.type == 'modify') {
-            this.portionModifySave();
+            this.portionModifySave().then(()=>{
+              let formData = {
+                "formCrfId": this.$route.query.crfId,
+                "formPortionId": this.$route.query.portionId,
+                "portionName": this.portionName,
+                "diseaseId": this.$route.query.id,
+                "formItemList": this.basisDataList||[]
+              };
+              temporarySave.dataList.push(formData);
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+            })
           }
         },
         //预览
@@ -567,15 +598,41 @@
           }catch (error) {
             console.log(error)
           }
-        }
+        },
+        //获取单位列表
+        async UnitListOrg() {
+          let that = this;
+          try{
+            let data = await that.$http.crfUnitList()
+            console.log(data)
+            if(data.code ===0){
+              that.unitList = data.data
+            }
+          }catch (error) {
+            that.$notice("获取单位列表数据失败");
+            console.log(error);
+          }
+        },
       },
       mounted() {
         this.$store.commit('CRF_SET_OBJECT',{});
+        this.UnitListOrg();
         this.$nextTick(()=>{
           this.resize();
         });
         if(this.$route.query.type =='modify') {
-          this.previewPortionData();
+          if(this.$route.query.portionId!=='0') {
+            this.previewPortionData();
+          }else{
+            let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+            let i = this.$route.query.i;
+            let portionObj = temporarySave.dataList[i];
+            this.portionName = portionObj.crfName;
+            this.basisDataList = portionObj.dataList;
+          }
+        }
+        if(this.$route.query.portionName !== '0') {
+          this.portionName = this.$route.query.portionName;
         }
       },
       destroyed() {

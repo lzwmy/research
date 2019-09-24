@@ -4,7 +4,7 @@ export default {
     "controlName": "",
     "diseaseId": "",
     "controlDisplayName": "",
-    "controlType": "",
+    "controlType": "SINGLE_INPUT",
     "displayIsVisible": 1,
     "baseProperty": {
       "controlWidth": 4,

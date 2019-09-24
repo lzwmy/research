@@ -221,7 +221,8 @@
             path:"/basisConfig",
             query:{
               id:diseaseId,
-              type:'add'
+              type:'add',
+              portionName:this.searchName || '0',
             }
           })
         },
