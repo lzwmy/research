@@ -76,7 +76,7 @@
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
-            {{basisItem.baseProperty.layout}}
+            <!--{{basisItem.baseProperty.layout}}-->
             <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
           </div>
          <!-- <div>{{basisDataList}}</div>-->
@@ -441,8 +441,9 @@
             copyData.controlType = item.ctrlType;
             copyData.baseProperty.layout = {
               "columns":1,
-              "selection":[],
+              "selection":[], //当前选中
               "wrap":1,
+              "displayChecked":[], //展示
             };
             this.basisDataList.push(copyData)
           })
@@ -456,6 +457,7 @@
             "columns":1,
             "selection":[],
             "wrap":1,
+            "displayChecked":[],
           };
           this.basisDataList.push(copyData)
         },
@@ -582,6 +584,7 @@
       border: 1px solid #E5EBEC;
       box-sizing: border-box;
       padding: 15px 15px 0 15px;
+      overflow: auto;
       .content-box{
         .content-line{
           display: flex;

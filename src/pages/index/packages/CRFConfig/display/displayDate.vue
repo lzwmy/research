@@ -44,7 +44,7 @@ export default {
     if (this.item.baseProperty.controlWidth > 0) {
       this.inputWidth = 47 * this.item.baseProperty.controlWidth;
     }
-    console.log(this.report);
+    // console.log(this.report);
     if (this.item.baseProperty.controlIsDefaultDateTime == "1") {
       this.report.value = this.report.value || new Date();
     }

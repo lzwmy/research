@@ -75,35 +75,46 @@ export default {
         // 双列
         if(currentColumns==2) {
           //判断上一个 与 当前 columns  是否 相同， 如果不相同就换行 相同就判断是否存在交集
-          if(currentColumns==preData.columns){
+          if(currentColumns==preData.columns && item.baseProperty.layout.wrap=='0'){
             //判断选中的个数等于1 并且position 不等于2 偏移量 offset 0
             if(currentSelection.length==1){
               // console.log(JSON.stringify(currentSelection)+'\n'+JSON.stringify(preData.selection))
               for(let i=0;i<preData.selection.length;i++) {
                 for(let j=0;j<currentSelection.length;j++) {
                   if(preData.selection[i].position!==currentSelection[j].position){
-                    item.baseProperty.layout.wrap = '0';
-                    preData.wrap = '0'
+                    /*item.baseProperty.layout.wrap = '0';
+                    preData.wrap = '0'*/
                     return ;
                   }
                 }
               }
+              /*let positionList = currentSelection.map(item=>{
+                return item.position;
+              }).sort((a,b)=>{
+                return a-b;
+              });
+              if(positionList.length==1) {
+                if(positionList[0]==2) {
+                  item.baseProperty.layout.offset = '12';
+                }
+              }*/
             }else if(currentSelection.length==2) {
               //默认换行
-              item.baseProperty.layout.wrap = '1';
+              // item.baseProperty.layout.wrap = '1';
             }
             //判断selection position 位置是否 相等， 如果不相等，不换行， 如果相等就换行
           }else{
             // 不相同 默认换行
-            item.baseProperty.layout.wrap = 1
+            // item.baseProperty.layout.wrap = 1
+            // console.log(item.baseProperty.layout.selection);
             let positionList = currentSelection.map(item=>{
               return item.position;
             }).sort((a,b)=>{
-              return a-b
+              return a-b;
             });
             if(positionList.length==1) {
               if(positionList[0]==2) {
-                item.item.baseProperty.layout.offset = '12';
+                item.baseProperty.layout.offset = '12';
               }
             }
           }
@@ -111,9 +122,9 @@ export default {
         //三列
         if(currentColumns==3) {
           //判断上一个 与 当前 columns  是否 相同， 如果不相同就换行 相同就判断是否存在交集
-          if(currentColumns==preData.columns){
+          if(currentColumns==preData.columns && item.baseProperty.layout.wrap=='0'){
             //如果当前选中数量等于1
-            if(currentSelection.length==1){
+            if(currentSelection.length==1 && item.baseProperty.layout.wrap=='0'){
               let positionList = currentSelection.map(item=>{
                 return item.position;
               }).sort((a,b)=>{
@@ -122,17 +133,44 @@ export default {
               //判断当前与上一个是否存在交集，如果不存在交集 就 不换行
               for(let i=0;i<preData.selection.length;i++) {
                 for(let j=0;j<currentSelection.length;j++) {
-                  if(preData.selection[i].position!==currentSelection[j].position){
+                  if((preData.selection[i].position!==currentSelection[j].position)&&(item.baseProperty.layout.wrap==preData.wrap)){
                     // let sum = Math.abs(currentSelection[j].position-preData.selection[i].position)
-                    let sum = currentSelection[j].position-preData.selection[i].position;
-                    item.baseProperty.layout.wrap = '0'
-                    preData.wrap = '0';
-                    if(sum>0&&sum=='2'){
-                      item.baseProperty.layout.offset =sum*8
+                    // let sum = currentSelection[j].position-preData.selection[i].position;
+                    // console.log(positionList.length,preData.selection.length,sum);
+                    let currentItemList = currentSelection.map(item=>{
+                      return item.position;
+                    }).sort((a,b)=>{
+                      return a-b;
+                    });
+                    let prevItemList = preData.selection.map(item=>{
+                      return item.position;
+                    }).sort((a,b)=>{
+                      return b-a;
+                    });
+                    console.log(currentItemList,prevItemList);
+                    let sum = currentItemList[0]-prevItemList[0];
+                    if(sum ==1) {
+                      item.baseProperty.layout.offset = 0;
+                    }else if(sum == 2) {
+                      item.baseProperty.layout.offset = 8;
                     }
+                    /*item.baseProperty.layout.wrap = '0'
+                    preData.wrap = '0';*/
+                    /*if(positionList.length==1&&preData.selection.length==2){
+                      if(sum>0&&sum=='2'){
+                        item.baseProperty.layout.offset =sum*8
+                      }
+                    }else if(preData.selection.length==2) {
+
+                    }else if(positionList.length==1&&preData.selection.length==1){
+                      console.log('触发')
+                      if(sum>0&&sum=='2'){
+                        item.baseProperty.layout.offset =8
+                      }
+                    }*/
                     return ;
-                  }else if(preData.selection[i].position==currentSelection[j].position){
-                    item.baseProperty.layout.wrap = '0';
+                  }else if(preData.selection[i].position==currentSelection[j].position || item.baseProperty.layout.wrap!==preData.wrap){
+                    // item.baseProperty.layout.wrap = '0';
                     if(positionList[0]==2){
                       item.baseProperty.layout.offset = '8'
                     }else if(positionList[0]==3) {
@@ -142,7 +180,7 @@ export default {
                 }
               }
             }
-            if(currentSelection.length==2) {
+            if(currentSelection.length==2 && item.baseProperty.layout.wrap=='0') {
               let positionList = currentSelection.map(item=>{
                 return item.position;
               }).sort((a,b)=>{
@@ -152,9 +190,9 @@ export default {
               for(let i=0;i<preData.selection.length;i++) {
                 for(let j=0;j<currentSelection.length;j++) {
                   if(preData.selection[i].position!==currentSelection[j].position){
-                    item.baseProperty.layout.wrap = '0';
+                    // item.baseProperty.layout.wrap = '0';
                   }else if(preData.selection[i].position==currentSelection[j].position){
-                    item.baseProperty.layout.wrap = '1';
+                    // item.baseProperty.layout.wrap = '1';
                     if(positionList[0]==2){
                       item.baseProperty.layout.offset = '8'
                     }
@@ -163,11 +201,11 @@ export default {
               }
             }
             if(currentSelection.length == 3) {
-              item.baseProperty.layout.wrap = '1'
+              // item.baseProperty.layout.wrap = '1'
             }
           }else {
             // 不相同 默认换行
-            item.baseProperty.layout.wrap = 1
+            // item.baseProperty.layout.wrap = 1
             let positionList = currentSelection.map(item=>{
               return item.position;
             }).sort((a,b)=>{
@@ -189,7 +227,7 @@ export default {
         //四列
         if(currentColumns == 4) {
           //判断上一列 与 当前列 是否相同， 如果不相同 就换行， 相同就判断是否存在交集
-          if(currentColumns==preData.columns) {
+          if(currentColumns==preData.columns && item.baseProperty.layout.wrap=='0') {
             let positionList = currentSelection.map(item=>{
               return item.position;
             }).sort((a,b)=>{
@@ -200,14 +238,14 @@ export default {
             }).sort((a,b)=>{
               return b-a;
             });
-            if(currentSelection.length == 1) {
+            if(currentSelection.length == 1 && item.baseProperty.layout.wrap=='0') {
               //判断当前 与上一个是否存在交集， 如果存在交集， 默认换行， 不存在 交集，不换行，并设置偏移量
               for(let i=0;i<preData.selection.length;i++) {
                 for(let j=0;j<currentSelection.length;j++) {
                   let sum = positionList[0]-prePositionList[0];
                   if(preData.selection[i].position!==currentSelection[j].position) {
-                    item.baseProperty.layout.wrap = '0';
-                    preData.wrap = '0';
+                    /*item.baseProperty.layout.wrap = '0';
+                    preData.wrap = '0';*/
                     if(sum>0&&sum == 1) {
                       item.baseProperty.layout.offset = '0';
                     }else if(sum>0&&sum == 2) {
@@ -219,7 +257,7 @@ export default {
                     }
                     return ;
                   }else if(preData.selection[i].position==currentSelection[j].position){
-                    item.baseProperty.layout.wrap = '1';
+                    // item.baseProperty.layout.wrap = '1';
                     if(currentSelection[j].position == 1) {
                       item.baseProperty.layout.offset = '0';
                     }else if(currentSelection[j].position == 2) {
@@ -232,7 +270,7 @@ export default {
                 }
               }
             }
-            if(currentSelection.length == 2) {
+            if(currentSelection.length == 2 && item.baseProperty.layout.wrap=='0') {
               //判断当前 与上一个是否存在交集， 如果存在交集， 默认换行， 不存在 交集，不换行，并设置偏移量
               for(let i=0;i<preData.selection.length;i++) {
                 for(let j=0;j<currentSelection.length;j++) {
@@ -261,7 +299,7 @@ export default {
                 }
               }
             }
-            if(currentSelection.length == 3) {
+            if(currentSelection.length == 3 && item.baseProperty.layout.wrap=='0') {
               //判断当前 与上一个是否存在交集， 如果存在交集， 默认换行， 不存在 交集，不换行，并设置偏移量
               /*for(let i=0;i<preData.selection.length;i++) {
                 for(let j=0;j<currentSelection.length;j++) {
@@ -281,19 +319,19 @@ export default {
                 }
               }*/
               if(prePositionList[0]==1&&positionList[0]==1){
-                item.baseProperty.layout.wrap = '1';
+                // item.baseProperty.layout.wrap = '1';
                 item.baseProperty.layout.offset = '0';
               }else if(positionList[0]==2) {
-                item.baseProperty.layout.wrap = '1';
+                // item.baseProperty.layout.wrap = '1';
                 item.baseProperty.layout.offset = '6';
               }
             }
             if(currentSelection.length == 4) {
-              item.baseProperty.layout.wrap = 1
+              // item.baseProperty.layout.wrap = 1
             }
           }else {
             // 不相同 默认换行
-            item.baseProperty.layout.wrap = 1
+            // item.baseProperty.layout.wrap = 1
             let positionList = currentSelection.map(item=>{
               return item.position;
             }).sort((a,b)=>{
@@ -326,7 +364,7 @@ export default {
           if(currentSelection.length==1&&currentSelection[0].position==2){
             item.baseProperty.layout.offset = '12'
           }else if(currentSelection.length==2) {
-            item.baseProperty.layout.wrap = '1';
+            // item.baseProperty.layout.wrap = '1';
           }
         }
         if(currentColumns == 3) {
