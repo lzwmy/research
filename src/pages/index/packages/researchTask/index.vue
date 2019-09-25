@@ -120,7 +120,6 @@
     methods: {
       //课题验证
       jumpSubject() {
-        console.log('课题验证');
         this.$router.push({
           path:"/subjectVerification",
         })

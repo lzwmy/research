@@ -13,16 +13,17 @@
           <div class="statistical_analysis_item"
                :class="{'add_bg':bgColor == item.chartId}"
                v-for="(item,index) in modelList"
+               :key="index"
                @click="changeBGColor(item)">
             <div class="active_column" :class="{'display_show':bgColor == item.chartId}"></div>
             <div class="item_display">
               <span :title="item.chartName">{{item.chartName}}</span>
             </div>
-            <div class="item_modify" :class="{'display_show':bgColor == item.chartId}">
+            <!--<div class="item_modify" :class="{'display_show':bgColor == item.chartId}">
                 <span @click.stop="deleteModel(item)">
                   <i class="iconfont iconshanchu"></i>
                 </span>
-            </div>
+            </div>-->
           </div>
           <div class="blank_img" v-show="modelList.length==0">
             <img src="./images/blank_page.png" alt="">
@@ -36,10 +37,15 @@
         </div>-->
       </div>
       <div class="mask_layer_right">
-        <div class="model_set">模板配置</div>
+        <div class="model_set">
+          <span>指标设置</span>
+          <span @click="close">
+            <i class="iconfont iconguanbi2"></i>
+          </span>
+        </div>
         <div class="model_window_box" v-show="blankImg==true" v-loading="loading" element-loading-text="加载中">
           <div class="model_from_set" >
-            <div class="from_name">图表名称</div>
+            <!--<div class="from_name">图表名称</div>
             <el-input v-model="chartName" size="small" placeholder="请输入模板名称"></el-input>
             <div class="from_name">图表类型</div>
             <div class="from_chart_type">
@@ -48,8 +54,8 @@
               <el-radio v-model="chartType" label="LINE" @change="changeChartType('LINE')">折线图</el-radio>
               <el-radio v-model="chartType" label="2D_SCATTER" @change="changeChartType('2D_SCATTER')">2D散点图</el-radio>
               <el-radio v-model="chartType" label="3D_SCATTER" @change="changeChartType('3D_SCATTER')">3D散点图</el-radio>
-            </div>
-            <div class="from_name">CRF表单</div>
+            </div>-->
+            <!--<div class="from_name">CRF表单</div>
             <el-select v-model="crf" @change="changeCRFFrom">
               <el-option
                 v-for="item in fromList"
@@ -57,7 +63,14 @@
                 :label="item.crfName"
                 :value="item.id">
               </el-option>
-            </el-select>
+            </el-select>-->
+            <div class="from_name">病种选择</div>
+            <el-cascader
+              v-model="diseaseValue"
+              :options="diseaseList"
+              :props="{ expandTrigger: 'hover' }"
+              @change="handleChangeCrf">
+            </el-cascader>
             <div class="from_name">统计指标</div>
             <el-select v-model="statistics" v-loading="checkLoading">
               <el-option
@@ -103,9 +116,9 @@
                 :value="item.formItemId">
               </el-option>
             </el-select>
-            <div class="submit_btn">
+            <!--<div class="submit_btn">
               <el-button type="primary" @click="saveFromChart">保存</el-button>
-            </div>
+            </div>-->
           </div>
           <div class="model_view">
             <div class="chart_window" v-loading="chartLoading" element-loading-text="更新中">
@@ -122,7 +135,7 @@
         </div>
         <div class="blank_img" v-show="blankImg==false">
           <img src="./images/blank_page.png" alt="">
-          <p>请新增统计分析模板</p>
+          <p>请选择图表类型...</p>
         </div>
       </div>
     </div>
@@ -174,31 +187,33 @@
         zaxis:"",
         modelList:[
           {
-            chartName:"饼状图",
+            chartName:"饼状分析",
             chartId:1,
             chartType:"PIE",
           },
           {
-            chartName:"柱状图",
+            chartName:"堆叠柱状分析",
             chartId:2,
             chartType:"BAR",
           },
           {
-            chartName:"折线图",
+            chartName:"折线分析",
             chartId:3,
             chartType:"LINE",
           },
           {
-            chartName:"2D散点图",
+            chartName:"2D散点分析",
             chartId:4,
             chartType:"2D_SCATTER",
           },
           {
-            chartName:"3D散点图",
+            chartName:"3D散点分析",
             chartId:5,
             chartType:"3D_SCATTER",
           }
         ],
+        diseaseList:[],//crf 表单 级联选择器
+        diseaseValue:[],// crf 选择值
         //图表配置
         chart:null,
         //饼状图
@@ -483,7 +498,7 @@
     methods:{
       resize() {
         let height = $('.cloud-container').height();
-        $(".mask_layer_body").height(height);
+        $(".mask_layer_container-subject").height(height);
       },
       //初始化
       initPage() {
@@ -502,6 +517,9 @@
         this.compareFormItemId = "";
         this.compareFormItemList = [];
         this.$emit('changeLoadding',false);
+        this.$nextTick(()=>{
+          this.resize();
+        });
       },
       close() {
         this.initPage();
@@ -535,30 +553,6 @@
         this.zaxis = "";
         this.compareFormItemId = "";
         this.compareFormItemList = [];
-        //清除值
-        /*switch (value) {
-          case "PIE":
-            this.statistics = "";
-            this.mutStatistics = [];
-            this.xaxis = "";
-            this.yaxis = "";
-            this.zaxis = "";
-            break;
-          case "BAR":
-
-            break;
-          case "LINE":
-
-            break;
-          case "2D_SCATTER":
-
-            break;
-          case "3D_SCATTER":
-
-            break;
-          default:
-            break;
-        }*/
       },
       changeCRFFrom(value) {
         console.log(value);
@@ -566,8 +560,17 @@
         this.statisticalIndicators(value);
         this.xyz(value);
       },
+      handleChangeCrf(value) {
+        this.checkLoading = true;
+        this.statisticalIndicators(value[1]);
+        this.xyz(value[1]);
+      },
       // 预览
       clickPreviewChart() {
+        if(this.diseaseValue.length==0) {
+          this.$message.info("请选择病种");
+          return ;
+        }
         this.chartLoading = true;
         switch (this.chartType) {
           case "PIE":
@@ -597,6 +600,18 @@
           this.saveCustomChart();
         }else{ // 编辑保存
           this.modifyCustomChart();
+        }
+      },
+      //病种 选择
+      async subjectTestChart() {
+        let that = this;
+        try{
+          let data = await that.$http.subjectTestChart();
+          if(data.code == 0) {
+            this.diseaseList = data.data;
+          }
+        }catch (error) {
+          console.log(error)
         }
       },
       // CRF 表单
@@ -989,9 +1004,9 @@
           formItemIds = []
         }
         let fromData = {
-          "chartName":that.chartName || "" ,
+          "chartName":"" ,
           "chartType": that.chartType || "",
-          "crfId": that.crf || "",
+          "crfId": that.diseaseValue[1]|| "",
           "formItemIds": formItemIds
         };
         try {
@@ -1034,7 +1049,7 @@
         let fromData = {
           "chartName":that.chartName || "" ,
           "chartType": that.chartType || "",
-          "crfId": that.crf || "",
+          "crfId": that.diseaseValue[1] || "",
           "formItemIds": formItemIds,
           "compareFormItemId":that.compareFormItemId|| ""
         };
@@ -1073,7 +1088,7 @@
         let fromData = {
           "chartName":that.chartName || "" ,
           "chartType": that.chartType || "",
-          "crfId": that.crf || "",
+          "crfId": that.diseaseValue[1] || "",
           "formItemIds": formItemIds
         };
         try {
@@ -1106,11 +1121,11 @@
           "xaxis": that.xaxis,
           "yaxis": that.yaxis,
           "zaxis": that.zaxis,
-          "chartName": that.chartName,
+          "chartName": that.chartName || "",
           "chartType": that.chartType,
-          "crfId": that.crf,
+          "crfId": that.diseaseValue[1],
           "formItemIds": formItemIds,
-          "diseaseId": that.$route.query.id
+          "diseaseId": that.diseaseValue[0]
         };
         try{
           let data = await that.$http.preview2DScatter(fromData);
@@ -1158,9 +1173,9 @@
           "zaxis": that.zaxis,
           "chartName": that.chartName,
           "chartType": that.chartType,
-          "crfId": that.crf,
+          "crfId": that.diseaseValue[1],
           "formItemIds": formItemIds,
-          "diseaseId": that.$route.query.id
+          "diseaseId": that.diseaseValue[0]
         };
         try {
           let data = await that.$http.preview3DScatter(fromData);
@@ -1198,8 +1213,9 @@
       /*this.initPage();
       this.getChartListModel();
       this.modelCRFFromList();*/
+      this.subjectTestChart();
       this.$nextTick(()=>{
-        this.resize();
+        this.initPage();
       })
     }
   }
@@ -1368,6 +1384,13 @@
         text-align: left;
         border-bottom: 1px solid #E5EBEC;
         padding-left: 20px;
+        padding-right: 20px;
+        display: flex;
+        justify-content: space-between;
+        .iconfont{
+          cursor: pointer;
+          font-size: 14px;
+        }
       }
       .model_window_box{
         display: flex;
@@ -1375,7 +1398,7 @@
         flex-direction: row;
         box-sizing: border-box;
         padding: 20px 15px;
-        height: 100%;
+        /*height: 100%;*/
         .model_from_set{
           width: 50%;
           box-sizing: border-box;
