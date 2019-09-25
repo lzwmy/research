@@ -45,7 +45,7 @@ export default {
   data () {
     return {
       form: {
-        phoneNumber: '18870724953',
+        phoneNumber: '',
         validCode: '',
       },
       logo:'',
@@ -92,13 +92,7 @@ export default {
             userId: res.data.userId
           };
           this.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-          this.$store.commit('saveLoginType', 'research');
-          let url = utils.getQuery('url');
-          if (url) {
-            window.location.href = url;
-          } else {
-            window.location.href = './index.html#/index';
-          }
+          window.location.href = './index.html#/projectProgress';
         } else {
           if(res.code == 40) {
             document.querySelector('#validCode').focus();

@@ -1,6 +1,6 @@
 <template>
     <div class="inside_cloud-container">
-        <insideHeader @diseaseSelect="handleDiseaseSelect" :fromRouter="fromRouter"></insideHeader>
+        <insideHeader @diseaseSelect="handleDiseaseSelect" :researchId="researchId"></insideHeader>
         <insideMenu :title="title" @changeLoadding="handleLoadding" :menuList="menuList" :fromRouter="fromRouter"></insideMenu>
         <div id="insideContainer" :class="$store.state.common.openMenuView?'open':'close'" v-loading="viewLoading"  
                         element-loading-background="#fff"
@@ -43,6 +43,7 @@ export default {
                 meta: {}
             },
             menuList: [],
+            researchId: '',
             disease: "",
             viewLoading: false
         };
@@ -74,10 +75,21 @@ export default {
             $('.inside_cloud-container').css({'min-height':$('body').height()+'px'})
         },
         getMenuList() {
+            //如果从科研项目入口录入
+            if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {
+                this.fromRouter = {};
+                this.title = '科研项目';
+                this.menuList = this.$store.state.user.taskMenuList.params;
+                this.researchId = sessionStorage.getItem('CURR_RESEARCH_ID');
+                return;
+            }
             let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))
             this.fromRouter = insideData.fromRouter;
             this.title = insideData.title;
             this.menuList = insideData.menuList;
+            if(insideData.researchId) {
+                this.researchId = insideData.researchId;
+            }
         },
         handlePageHeight () { // 高度自适应处理
             setTimeout(() => {

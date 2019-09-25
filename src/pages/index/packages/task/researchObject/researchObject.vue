@@ -63,6 +63,9 @@
                 </el-popover>
             </div>
             <div class="search_condition flex-start-center">
+                <p v-show="multipleSelection.length != 0" style="min-width: 136px; color: #666;" class="font_14">已选中 {{multipleSelection.length}} 位研究对象</p>
+                <el-button v-show="multipleSelection.length != 0" type="primary" icon="icon iconfont iconzujian12" @click="">提交CRF</el-button>
+                <el-button v-show="multipleSelection.length != 0" type="danger" class="right_6" icon="icon iconfont iconzujian41" @click="">删除</el-button>
                 <el-popover trigger="click" popper-class="popover_condition" v-model="popoverVisible">
                     <el-button slot="reference">已选3项 <span class="el-icon-caret-bottom"></span></el-button>
                     <div class="box">
@@ -116,6 +119,7 @@
                     fit
                     :data="dataList.content"
                     v-loading="tableLoading"
+                    @selection-change="handleSelectionChange"
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)">
                     <el-table-column type="selection"></el-table-column>
                     <el-table-column label="入组序号" width="90">
@@ -177,6 +181,7 @@ export default {
                 title: "批量导入研究数据",
                 visible: false
             },
+            multipleSelection: [],
             confingData: {
                 title: "设置表格固定列",
                 visible: false,
@@ -221,6 +226,9 @@ export default {
         // initPage () {
         //     this.getDataList();
         // },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
         selectGroup(index) {
             this.activeGroup = index;
         },

@@ -77,13 +77,12 @@ let initApp = async () => {
     //同步获取全局配置；
     await Global.getConfigJson();
     //同步验证浏览器自带的session有没有在登录有效期；
-    await utils.validIndexAuthenticated();
+    // await utils.validIndexAuthenticated();
 
     //是否为科研项目登录
-    let  isResearch = store.state.user.loginType === "research";
-    console.log(isResearch)
+    let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
+    
     //同步获取菜单；(非科研项目登录)
-    console.log(store)
     if(!isResearch) {
       await utils.loadMenuInfo();
     }
@@ -101,14 +100,20 @@ let initApp = async () => {
         // 该路由需要登录权限，所以校验是否登录，如登录则模拟登录
         if (JSON.parse(window.sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO'))) {
           store.commit('USER_SIGNIN', window.sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO'));
-          next();
-        } else {
-          utils.ssoLogout();
-          if(!isResearch) {
-            window.location.href = './login.html';
+          //如果是从科研项目入口登录，则不能进入到其它模块
+          if(isResearch && to.meta.belongToGroup != 'researchTask') {
+            next('/projectProgress');
           }else {
-            window.location.href = './loginResearch.html';
+            next();
           }
+        } 
+        else {
+          utils.ssoLogout();
+          // if(!isResearch) {
+          //   window.location.href = './login.html';
+          // }else {
+          //   window.location.href = './loginResearch.html';
+          // }
         }
       }
     });

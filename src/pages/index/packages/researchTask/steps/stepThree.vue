@@ -78,7 +78,7 @@ export default {
         editGroup(index) {
             this.$set(this.groupList[index],'edit',true);
             this.$nextTick(()=>{
-                $("#groupUl li:last-child input").focus();
+                $("#groupUl li input").focus();
             })
         },
         finish() {
@@ -186,7 +186,7 @@ export default {
                 overflow-y: auto;
                 ul {
                     li {
-                        line-height: 48px;
+                        line-height: 40px;
                         text-align: center;
                         border-bottom: 1px solid rgba(235, 237, 242, 1);
                         border-left: 3px solid transparent;
@@ -216,6 +216,11 @@ export default {
                     border: 1px solid rgba(67, 154, 255, 1);
                     color: rgba(67, 154, 255, 1);
                 }
+                // .plus {
+                //     margin: 20px auto;
+                //     width: 100%;
+                //     line-height: 38px;
+                // }
             }
             .content {
                 flex: 1;

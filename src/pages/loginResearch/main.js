@@ -1,7 +1,6 @@
 /*eslint-disable*/
 import Vue from 'vue';
 import App from './app';
-import utils from 'components/utils';
 import { Form,FormItem,Input, Button, MessageBox, Message } from 'element-ui';
 
 Vue.use(Form);
@@ -24,10 +23,10 @@ import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
+    store.commit('USER_SIGNOUT');
+    sessionStorage.setItem('CURR_LOGIN_TYPE', 'research');
     //同步获取全局配置：
     await Global.getConfigJson();
-    //同步验证浏览器自带的session有没有在登录有效期;
-    // await utils.validLoginAuthenticated();
 
     // 初始化根vue
     new Vue({

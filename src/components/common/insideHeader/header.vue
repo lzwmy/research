@@ -23,11 +23,13 @@
             </ul>
             <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
         </el-popover>
+        <p v-show="$route.meta.belongToGroup == 'researchTask'" @click="researchlLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
     </div>
 </template>
 <script>
 import '../../../pages/index/packages/SDResearch/card_bgColor.less';
 export default {
+    props: ['researchId'],
     name: 'insideHeader',
     data () {
         return {
@@ -79,6 +81,10 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        researchlLogin() {
+            sessionStorage.setItem('CURR_RESEARCH_ID', this.researchId);
+            window.open('./loginResearch.html');
         }
     }
 };
@@ -106,6 +112,18 @@ export default {
         }
         &.close {
             left: 64px;
+        }
+        .researchLogin {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            &:hover {
+                color: #1bbae1;
+            }
         }
     }
 </style>    

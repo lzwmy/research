@@ -39,7 +39,7 @@ const routes = [
             isKeepAlive: false,
             txt: '项目进度',
             flag: 'projectProgress',
-            belongToGroup: 'projectProgress',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: projectProgress
@@ -61,7 +61,7 @@ const routes = [
             isKeepAlive: false,
             txt: '研究对象',
             flag: 'researchObject',
-            belongToGroup: 'researchObject',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: researchObject
@@ -82,7 +82,7 @@ const routes = [
             isKeepAlive: false,
             txt: '随访管理',
             flag: 'followUpManagement',
-            belongToGroup: 'followUpManagement',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: followUpManagement
@@ -103,7 +103,7 @@ const routes = [
             isKeepAlive: false,
             txt: '我的任务',
             flag: 'myTasks',
-            belongToGroup: 'myTasks',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: myTasks
@@ -124,7 +124,7 @@ const routes = [
             isKeepAlive: false,
             txt: '统计分析',
             flag: 'statisticalAnalysis',
-            belongToGroup: 'statisticalAnalysis',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: statisticalAnalysis
@@ -145,7 +145,7 @@ const routes = [
             isKeepAlive: false,
             txt: '文章润色',
             flag: 'articlesEmbellish',
-            belongToGroup: 'articlesEmbellish',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: articlesEmbellish
@@ -166,7 +166,7 @@ const routes = [
             isKeepAlive: false,
             txt: '组织管理',
             flag: 'organizationManagement',
-            belongToGroup: 'organizationManagement',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: organizationManagement
@@ -187,7 +187,7 @@ const routes = [
             isKeepAlive: false,
             txt: '研究指标',
             flag: 'researchTarget',
-            belongToGroup: 'researchTarget',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: researchTarget
@@ -208,7 +208,7 @@ const routes = [
             isKeepAlive: false,
             txt: '项目分组',
             flag: 'projectGrouping',
-            belongToGroup: 'projectGrouping',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: projectGrouping
@@ -229,7 +229,7 @@ const routes = [
             isKeepAlive: false,
             txt: '随访计划',
             flag: 'followUpPlan',
-            belongToGroup: 'followUpPlan',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: followUpPlan
@@ -250,7 +250,7 @@ const routes = [
             isKeepAlive: false,
             txt: '操作记录',
             flag: 'operationRecord',
-            belongToGroup: 'operationRecord',
+            belongToGroup: 'researchTask',
             openMode: 2
         },
         component: operationRecord

@@ -29,7 +29,7 @@
         </div>
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <ul class="card flex-start-start" v-loading="loading">
+            <ul class="card" v-loading="loading">
                 <el-row :gutter="21">
                     <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" v-for="(item,index) in dataList" :key="index">
                         <li class="box flex-start-center" @click="toReportFill(item)">

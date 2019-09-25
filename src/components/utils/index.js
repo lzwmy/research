@@ -390,7 +390,7 @@ const handleSsoLogout = () =>{
 const ssoLogout = () => {
   //是否为科研项目登录
   // return;
-  let  isResearch = store.state.user.loginType === "research";
+  let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
   try {
     vm.$get('/auth/logout.do?t=' + (+new Date()))
     then(function (response) {
@@ -712,7 +712,7 @@ const validIndexAuthenticated = function () {
     } catch (err) {
       store.commit('USER_SIGNOUT');
       //是否为科研项目登录
-      let  isResearch = store.state.user.loginType === "research";
+      let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
       if(!isResearch) {
         window.location.href = './login.html';
       }else {

@@ -202,9 +202,9 @@ export default {
     .projectProgress {
         .step {
             background-color: #fff;
-            padding: 25px 30px;
+            padding: 15px;
             .label {
-                font-size:14px;
+                font-size: 16px;
                 font-weight:bold;
                 margin-bottom: 15px;
                 color:rgba(57,66,99,1);
@@ -286,7 +286,7 @@ export default {
                     font-weight: bold;
                 }
                 &.wrap_box_3 {
-                    padding: 30px 50px;
+                    padding: 0 2vw;
                     .finish {
                         background-color: rgba(90, 216, 166, 1);
                         border-radius: 50%;
@@ -303,7 +303,7 @@ export default {
                         }
                     }
                     ul {
-                        margin-left: 50px;
+                        margin-left: 2vw;
                         flex: 1;
                         li {
                             font-size: 14px;

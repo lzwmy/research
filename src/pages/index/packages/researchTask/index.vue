@@ -9,7 +9,7 @@
       <el-button type="text" class="special_btn" @click="jumpSubject">课题验证</el-button>
       <el-button icon="el-icon-plus" type="primary" @click="createTask">创建项目</el-button>
     </div>
-    <ul class="flex-start-start" v-loading="loading">
+    <ul v-loading="loading">
       <el-row :gutter="20">
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
           <li @click="linkTask(item)">
@@ -150,6 +150,7 @@
         if (item.createStatus == 3) {
           let params = {
             title: '科研课题',
+            researchId: item.id,
             fromRouter: {
               path: this.$route.path,
               meta: this.$route.meta

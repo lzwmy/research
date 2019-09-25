@@ -67,6 +67,9 @@
                 </el-popover>
             </div>
             <div class="search_condition flex-start-center">
+                <p v-show="multipleSelection.length != 0" style="min-width: 136px; color: #666;" class="font_14">已选中 {{multipleSelection.length}} 位研究对象</p>
+                <el-button v-show="multipleSelection.length != 0" type="primary" icon="icon iconfont iconqueren" @click="">触发开始随访</el-button>
+                <el-button v-show="multipleSelection.length != 0" type="danger" class="right_6" icon="icon iconfont iconzujian12" @click="">提交随访点</el-button>
                 <el-popover trigger="click" popper-class="popover_condition" v-model="popoverVisible">
                     <el-button slot="reference">已选3项 <span class="el-icon-caret-bottom"></span></el-button>
                     <div class="box">

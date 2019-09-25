@@ -102,6 +102,9 @@ export default {
             }
         },
         onBack() {
+            if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {
+                return;
+            }
             if(!this.fromRouter.path) {
                 this.$router.push({
                     path: '/'
