@@ -133,11 +133,17 @@ body .cloud-container .el-table {
             border-width: 0;
             background: transparent;
             i {
-                font-size: 20px;
+                font-size: 18px;
             }
             &:hover {
                 background: transparent;
             }
+        }
+        .el-table__row .danger {
+            color: #f0433c;
+        }
+        .el-table__row .info {
+            color: #999;
         }
         .el-table__row .iconshanchu.del {
             color: #f0433c;
@@ -209,6 +215,9 @@ body .el-button {
         &:active {
             border-width: 1px;
         }
+    }
+    &.el-button--default.el-button--primary {
+        color: #fff !important;
     }
     .icon {
         font-size: 14px;
@@ -286,7 +295,8 @@ body {
         .el-range-editor.is-active:hover,
         .el-select .el-input.is-focus .el-input__inner,
         .el-radio__inner:hover,
-        .el-checkbox__inner:hover  {
+        .el-checkbox__inner:hover,
+        .el-textarea__inner:focus  {
             border-color: @themeColor2;
         }
         .el-checkbox__input.is-checked .el-checkbox__inner,
@@ -351,7 +361,8 @@ body {
         .el-checkbox__inner:hover,
         .el-pagination__sizes .el-input .el-input__inner:hover,
         .el-range-editor.is-active, 
-        .el-range-editor.is-active:hover {
+        .el-range-editor.is-active:hover,
+        .el-textarea__inner:focus {
             border-color: @themeColor2;
         }
         .el-radio__input.is-disabled.is-checked .el-radio__inner::after {

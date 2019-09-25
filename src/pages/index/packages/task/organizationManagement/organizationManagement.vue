@@ -360,11 +360,12 @@ export default {
     .organizationManagement {
         .box {
             position: relative;
+            color: #394263;
             .aside {                
                 width: 220px;
                 #orgUl {
                     background-color: #fff;
-                    border: 1px solid rgba(229, 235, 236, 1);
+                    border: 1px solid rgba(229, 235, 236, .7);
                 }
                 li {
                     height: 40px;
@@ -373,8 +374,14 @@ export default {
                     border-left: 3px solid transparent;
                     cursor: pointer;
                     &.active {
-                        background-color: rgba(245, 247, 250, 1);
+                        background-color: rgba(245, 247, 250, .7);
                         border-left: 3px solid #1bbae1;
+                        color: #1bbae1;
+                    }
+                    &:hover {
+                        background-color: rgba(245, 247, 250, .7);
+                        border-left: 3px solid #1bbae1;
+                        color: #1bbae1;
                     }
                 }
                 .plus {

@@ -65,9 +65,8 @@ export default {
         }
     },
     created() {
-        this.actionUrl =  'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
-        
-        console.log(this.formData)
+        this.actionUrl =  JSON.parse(sessionStorage.getItem('Global')).baseURL + '/subject/info/uploadFile.do';
+
         //项目回显数据 
         if(this.formData.proType == 'edit') {
             //如果有存在文件id

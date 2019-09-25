@@ -112,7 +112,7 @@ export default {
     },
     created() {
         this.getDataList();
-        this.actionUrl =  'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
+        this.actionUrl =  JSON.parse(sessionStorage.getItem('Global')).baseURL + '/subject/info/uploadFile.do';
     },
     methods: {
         createTask() {
@@ -140,7 +140,7 @@ export default {
             let data = this.$store.state.user.taskMenuList;
             if(item.createStatus == 3){
                 let params = {
-                    title: '科研课题',
+                    title: '科研项目',
                     fromRouter: {
                         path: this.$route.path,
                         meta: this.$route.meta
