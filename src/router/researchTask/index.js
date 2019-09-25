@@ -5,6 +5,9 @@ const researchTask = r => require.ensure([], () => r(require('packages/researchT
 //创建课题
 const createProject = r => require.ensure([], () => r(require('packages/researchTask/createProject')), 'createProject');
 
+//课题验证
+const subjectVerification = r => require.ensure([], () => r(require('packages/researchTask/subjectVerification')), 'subjectVerification');
+
 const routes = [
     {
         path: '/researchTask',
@@ -30,7 +33,20 @@ const routes = [
             openMode: 1
         },
         component: createProject
-    }
+    },
+  {
+    path: '/subjectVerification',
+    name: 'subjectVerification',
+    meta: {
+      requireAuth: true,
+      isKeepAlive: false,
+      txt: '课题验证',
+      flag: 'researchTask',
+      belongToGroup: 'createProject',
+      openMode: 1
+    },
+    component: subjectVerification
+  }
 ];
 
 export default routes;
