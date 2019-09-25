@@ -141,6 +141,13 @@
         }
       },
       methods: {
+        init() {
+          let temporarySave = {
+            dataList:[],
+            crfName:"",
+          };
+          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+        },
         breakGo() {
           window.history.go(-1);
           let temporarySave = {
@@ -351,6 +358,7 @@
         }
       },
       mounted() {
+        this.init();
         if(this.$route.query.type=='modify') {
           this.previewCRFList().then(()=>{
             let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
@@ -369,7 +377,6 @@
         }
       },
       destroyed() {
-
         this.$destroy();
       }
     }
