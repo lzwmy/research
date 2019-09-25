@@ -1159,6 +1159,132 @@
       "font_class": "operationRecord",
       "unicode": "e6d7",
       "unicode_decimal": 59095
+    },
+    {
+      "icon_id": "11045684",
+      "name": "文章润色",
+      "font_class": "zujian33",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "11045685",
+      "name": "word",
+      "font_class": "zujian34",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    },
+    {
+      "icon_id": "11045686",
+      "name": "生成",
+      "font_class": "zujian35",
+      "unicode": "e696",
+      "unicode_decimal": 59030
+    },
+    {
+      "icon_id": "11045728",
+      "name": "选择1",
+      "font_class": "zujian36",
+      "unicode": "e699",
+      "unicode_decimal": 59033
+    },
+    {
+      "icon_id": "11045730",
+      "name": "隐藏",
+      "font_class": "zujian37",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
+    },
+    {
+      "icon_id": "11045731",
+      "name": "保存",
+      "font_class": "zujian38",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    },
+    {
+      "icon_id": "11045732",
+      "name": "未选",
+      "font_class": "tuoyuan",
+      "unicode": "e69c",
+      "unicode_decimal": 59036
+    },
+    {
+      "icon_id": "11045733",
+      "name": "选择2",
+      "font_class": "zu10",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "11045735",
+      "name": "拖拽",
+      "font_class": "zujian39",
+      "unicode": "e69e",
+      "unicode_decimal": 59038
+    },
+    {
+      "icon_id": "11045737",
+      "name": "拖拽",
+      "font_class": "zujian40",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "11045769",
+      "name": "删除",
+      "font_class": "zujian41",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "11045770",
+      "name": "日期",
+      "font_class": "zujian42",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "11052586",
+      "name": "不良事件",
+      "font_class": "buliangshijian",
+      "unicode": "e6d8",
+      "unicode_decimal": 59096
+    },
+    {
+      "icon_id": "11052587",
+      "name": "完成",
+      "font_class": "wancheng1",
+      "unicode": "e6d9",
+      "unicode_decimal": 59097
+    },
+    {
+      "icon_id": "11052588",
+      "name": "终止",
+      "font_class": "zhongzhi",
+      "unicode": "e6da",
+      "unicode_decimal": 59098
+    },
+    {
+      "icon_id": "11052589",
+      "name": "待访",
+      "font_class": "daifang",
+      "unicode": "e6db",
+      "unicode_decimal": 59099
+    },
+    {
+      "icon_id": "11052590",
+      "name": "全部",
+      "font_class": "quanbu",
+      "unicode": "e6dc",
+      "unicode_decimal": 59100
+    },
+    {
+      "icon_id": "11052591",
+      "name": "失访",
+      "font_class": "shifang",
+      "unicode": "e6dd",
+      "unicode_decimal": 59101
     }
   ]
 }
