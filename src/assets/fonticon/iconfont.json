@@ -1285,6 +1285,13 @@
       "font_class": "shifang",
       "unicode": "e6dd",
       "unicode_decimal": 59101
+    },
+    {
+      "icon_id": "11084125",
+      "name": "远程教学",
+      "font_class": "education",
+      "unicode": "e6b1",
+      "unicode_decimal": 59057
     }
   ]
 }

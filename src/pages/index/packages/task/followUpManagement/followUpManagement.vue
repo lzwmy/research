@@ -175,6 +175,7 @@ export default {
                 radio: 1,
                 checked: []
             },
+            multipleSelection: [],
             activeGroup: 1,
             activeCrf: 1,
             loading: false,
@@ -240,8 +241,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
-    
+    .followUpManagement {
+        .el-table {
+                padding: 0;
+        }
+        
+    }
 </style>
 
 <style lang="less">

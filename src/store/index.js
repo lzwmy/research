@@ -15,8 +15,7 @@ const user = {
     routeArr: [], // 每个页面路由元
     menuList: [], // 菜单列表
     taskMenuList: [], // 科研课题菜单列表
-    session_isDislpayArrow: false,
-    loginType: ''
+    session_isDislpayArrow: false
   },
   mutations: {
     [USER_SIGNIN](state, userLogin) {
@@ -43,10 +42,6 @@ const user = {
     },
     saveSession_isDislpayArrow(state, payload) {
       state.session_isDislpayArrow = payload.isDislpayArrow;
-    },
-    saveLoginType(state, val) {
-      sessionStorage.setItem('CURR_LOGIN_TYPE', JSON.stringify(val));
-      state.loginType = val;
     }
   },
   actions: {}

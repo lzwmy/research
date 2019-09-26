@@ -137,11 +137,14 @@
                         show-overflow-tooltip>
                     </el-table-column> -->
                     <el-table-column type="index" label="序号" width="90px"></el-table-column>
-                    <el-table-column prop="a" label="用户名"></el-table-column>
                     <el-table-column prop="b" label="手机号"></el-table-column>
                     <el-table-column prop="c" label="机构"></el-table-column>
                     <el-table-column prop="d" label="科室"></el-table-column>
                     <el-table-column prop="e" label="职称"></el-table-column>
+                    <el-table-column prop="a" label="研究内容">
+                        <el-table-column prop="v" label="用户名1"></el-table-column>
+                        <el-table-column prop="f" label="用户名2"></el-table-column>
+                    </el-table-column>
                     <el-table-column width="80">
                         <template slot="header" slot-scope="scope">
                             <el-button @click="showConfigDialog" type="text" icon="icon iconfont iconfuhao7"></el-button>
@@ -294,6 +297,9 @@ export default {
         }
     }
     .researchObject {
+        .el-table {
+            padding: 0;
+        }
         .el-table__header-wrapper .el-button {
             padding: 0;
             .icon {
