@@ -18,7 +18,11 @@
           </div>
         </div>
       </div>
-      <div class="detail_page_body" v-loading="loading" element-loading-text="加载中">
+      <div class="tab_switch">
+        <div class="btn" :class="{'active':tabSwitchId==0}" @click="changeTab(0)">关联报告</div>
+        <div class="btn" :class="{'active':tabSwitchId==1}" @click="changeTab(1)">统计分析</div>
+      </div>
+      <div class="detail_page_body" v-show="tabSwitchId==0" v-loading="loading" element-loading-text="加载中">
         <div class="relation_form_title">
           <span>关联表单：</span>
           <span>{{dynamicTableDataList.crfName}}</span>
@@ -62,6 +66,7 @@
           <pagination :data="paginationData" @change="ModelQueryDynamicTable"></pagination>
         </div>
       </div>
+      <statistics-chart v-show="tabSwitchId==1"></statistics-chart>
     </div>
 </template>
 
@@ -71,12 +76,14 @@
   import pagination from 'components/packages/pagination/pagination';
   import echartsContain from 'components/packages/echartsContain/echartsContain';
   import mixins from 'components/mixins';
+  import statisticsChart from './statisticsChart';
     export default {
       name: "detailPage",
       mixins: [mixins],
       components:{
         pagination,
-        echartsContain
+        echartsContain,
+        statisticsChart
       },
       data() {
         return {
@@ -86,6 +93,7 @@
           tableLabel:[],
           loading:false,
           dynamicTableDataList:{},
+          tabSwitchId:0,
           //分页参数
           paginationData:{},
           pageNo: '',
@@ -99,6 +107,9 @@
       methods:{
         resize() {
 
+        },
+        changeTab(value) {
+          this.tabSwitchId = value;
         },
         //返回上一页
         breakGo() {
@@ -331,6 +342,31 @@
       .el-table{
         border-top: 1px solid #E5E8EB;
       }
+    }
+  }
+  .tab_switch{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    margin-bottom: 10px;
+    .btn{
+      width: auto;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      color: #3c4353;
+      border-radius: 2px;
+      padding: 2px 8px;
+      line-height: 40px;
+      margin-right: 4px;
+      &:hover{
+        background: rgba(0,0,0,.075);
+        color: #222;
+      }
+    }
+    .active{
+      background: rgba(0,0,0,.075);
+      color: #222;
     }
   }
 }
