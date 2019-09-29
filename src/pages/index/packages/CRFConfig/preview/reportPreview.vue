@@ -64,7 +64,7 @@
       created() {
         // console.log(this.$route.query.id)
         // this.crfReportDetailPreview(this.$route.query.id)
-        this.portion = this.item;
+        this.portion = JSON.parse(JSON.stringify(this.item));
         // console.log(this.item)
       }
     }

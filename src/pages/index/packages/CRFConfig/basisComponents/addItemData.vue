@@ -15,7 +15,9 @@
                 <el-option label="报告" :value="1"></el-option>
                 <el-option label="随访" :value="2"></el-option>
               </el-select>-->
-              <el-input class="search_item" v-model="searchName" @keyup.enter.native="searchItem(searchName)" placeholder="请输入条目名称"></el-input>
+              <el-input class="search_item" v-model="searchName" @keyup.enter.native="searchItem(searchName)" placeholder="请输入条目名称">
+                <i slot="suffix" class="el-input__icon el-icon-search" @click.stop="searchItem(searchName)"></i>
+              </el-input>
             </div>
             <div class="search_term-right">
               <el-button type="primary" @click="addDirect">
@@ -287,6 +289,13 @@
                 .el-input__inner{
                   border-top-left-radius: 2px;
                   border-bottom-left-radius: 2px;
+                }
+                .el-input__suffix{
+                  cursor: pointer;
+                  .el-input__icon{
+                    font-size: 18px;
+                    line-height: 38px;
+                  }
                 }
               }
               .el-input__inner{

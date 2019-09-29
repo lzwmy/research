@@ -10,8 +10,9 @@
           :item="child"
           :report="getData(child)"
           :layoutData="layoutInfo(child,index,item.formItemList)"
-          :key="child.controlDisplayName"
+          :key="index"
         />
+        <!--:key="child.controlDisplayName"-->
       </el-row>
     </div>
   </div>
@@ -60,7 +61,7 @@ export default {
       );
       return arr[0];
     },
-    /*layoutInfo(item,index,array) {
+    /*layoutInfos(item,index,array) {
       // console.log(item,index);
       // 给每个 item  添加默认偏移量为0
       item.baseProperty.layout.offset = 0;
@@ -147,7 +148,7 @@ export default {
                     }).sort((a,b)=>{
                       return b-a;
                     });
-                    console.log(currentItemList,prevItemList);
+                    // console.log(currentItemList,prevItemList);
                     let sum = currentItemList[0]-prevItemList[0];
                     if(sum ==1) {
                       item.baseProperty.layout.offset = 0;
@@ -172,9 +173,9 @@ export default {
                   }else if(preData.selection[i].position==currentSelection[j].position || item.baseProperty.layout.wrap!==preData.wrap){
                     // item.baseProperty.layout.wrap = '0';
                     if(positionList[0]==2){
-                      item.baseProperty.layout.offset = '8'
+                      item.baseProperty.layout.offset = 8
                     }else if(positionList[0]==3) {
-                      item.baseProperty.layout.offset = '16'
+                      item.baseProperty.layout.offset = 16
                     }
                   }
                 }
@@ -194,7 +195,7 @@ export default {
                   }else if(preData.selection[i].position==currentSelection[j].position){
                     // item.baseProperty.layout.wrap = '1';
                     if(positionList[0]==2){
-                      item.baseProperty.layout.offset = '8'
+                      item.baseProperty.layout.offset = 8
                     }
                   }
                 }
@@ -213,13 +214,13 @@ export default {
             });
             if(positionList.length==1){
               if(positionList[0]==2){
-                item.baseProperty.layout.offset = '8';
+                item.baseProperty.layout.offset = 8;
               }else if(positionList[0]==3) {
-                item.baseProperty.layout.offset = '16';
+                item.baseProperty.layout.offset = 16;
               }
             }else if(positionList.length==2) {
               if(positionList[0]==2) {
-                item.baseProperty.layout.offset = '8';
+                item.baseProperty.layout.offset = 8;
               }
             }
           }
@@ -249,9 +250,9 @@ export default {
                     if(sum>0&&sum == 1) {
                       item.baseProperty.layout.offset = '0';
                     }else if(sum>0&&sum == 2) {
-                      item.baseProperty.layout.offset = '6';
+                      item.baseProperty.layout.offset = 6;
                     }else if(sum>0&&sum == 3) {
-                      item.baseProperty.layout.offset = '12';
+                      item.baseProperty.layout.offset = 12;
                     }else if(sum<0){
                       item.baseProperty.layout.offset = (currentSelection[j].position-1)*6
                     }
@@ -259,11 +260,11 @@ export default {
                   }else if(preData.selection[i].position==currentSelection[j].position){
                     // item.baseProperty.layout.wrap = '1';
                     if(currentSelection[j].position == 1) {
-                      item.baseProperty.layout.offset = '0';
+                      item.baseProperty.layout.offset = 0;
                     }else if(currentSelection[j].position == 2) {
-                      item.baseProperty.layout.offset = '6';
+                      item.baseProperty.layout.offset = 6;
                     }else if(currentSelection[j].position == 3) {
-                      item.baseProperty.layout.offset = '12';
+                      item.baseProperty.layout.offset = 12;
                     }
                     return ;
                   }
@@ -276,23 +277,23 @@ export default {
                 for(let j=0;j<currentSelection.length;j++) {
                   if(preData.selection[i].position!==currentSelection[j].position) {
                     let sum = Math.abs(positionList[0]-prePositionList[0]);
-                    item.baseProperty.layout.wrap = '0';
-                    preData.wrap = '0';
+                    // item.baseProperty.layout.wrap = '0';
+                    // preData.wrap = '0';
                     if(sum==1){
-                      item.baseProperty.layout.offset = '0';
+                      item.baseProperty.layout.offset = 0;
                     }else if(sum == 2){
-                      item.baseProperty.layout.offset = '6';
+                      item.baseProperty.layout.offset = 6;
                     }else if(sum == 3) {
-                      item.baseProperty.layout.offset = '12';
+                      item.baseProperty.layout.offset = 12;
                     }
                     return ;
                   }else if(preData.selection[i].position==currentSelection[j].position){
                     if(currentSelection[j].position==1){
-                      item.baseProperty.layout.offset = '0';
+                      item.baseProperty.layout.offset = 0;
                     }else if(currentSelection[j].position == 2){
-                      item.baseProperty.layout.offset = '6';
+                      item.baseProperty.layout.offset = 6;
                     }else if(currentSelection[j].position == 3) {
-                      item.baseProperty.layout.offset = '12';
+                      item.baseProperty.layout.offset = 12;
                     }
                     return ;
                   }
@@ -320,10 +321,10 @@ export default {
               }*!/
               if(prePositionList[0]==1&&positionList[0]==1){
                 // item.baseProperty.layout.wrap = '1';
-                item.baseProperty.layout.offset = '0';
+                item.baseProperty.layout.offset = 0;
               }else if(positionList[0]==2) {
                 // item.baseProperty.layout.wrap = '1';
-                item.baseProperty.layout.offset = '6';
+                item.baseProperty.layout.offset = 6;
               }
             }
             if(currentSelection.length == 4) {
@@ -339,21 +340,21 @@ export default {
             });
             if(positionList.length==1) {
               if(positionList[0]==2) {
-                item.baseProperty.layout.offset = '6';
+                item.baseProperty.layout.offset = 6;
               }else if(positionList[0]==3) {
-                item.baseProperty.layout.offset = '12';
+                item.baseProperty.layout.offset = 12;
               }else if(positionList[0]==4) {
-                item.baseProperty.layout.offset = '18';
+                item.baseProperty.layout.offset = 18;
               }
             }else if(positionList.length==2) {
               if(positionList[0]==2) {
-                item.baseProperty.layout.offset = '6';
+                item.baseProperty.layout.offset = 6;
               }else if(positionList[0]==3) {
-                item.baseProperty.layout.offset = '12';
+                item.baseProperty.layout.offset = 12;
               }
             }else if(positionList.length==3) {
               if(positionList[0]==2) {
-                item.baseProperty.layout.offset = '6';
+                item.baseProperty.layout.offset = 6;
               }
             }
           }
@@ -362,7 +363,7 @@ export default {
         // 双列
         if(currentColumns==2){
           if(currentSelection.length==1&&currentSelection[0].position==2){
-            item.baseProperty.layout.offset = '12'
+            item.baseProperty.layout.offset = 12
           }else if(currentSelection.length==2) {
             // item.baseProperty.layout.wrap = '1';
           }
@@ -374,9 +375,9 @@ export default {
             return a-b
           });
           if(positionList[0] == 2) {
-            item.baseProperty.layout.offset = '8'
+            item.baseProperty.layout.offset = 8
           }else if(positionList[0] == 3) {
-            item.baseProperty.layout.offset = '16'
+            item.baseProperty.layout.offset = 16
           }
         }
         if(currentColumns == 4) {
@@ -386,18 +387,18 @@ export default {
             return a-b
           });
           if(positionList[0]==2) {
-            item.baseProperty.layout.offset = '6'
+            item.baseProperty.layout.offset = 6
           }else if(positionList[0] == 3) {
-            item.baseProperty.layout.offset = '12'
+            item.baseProperty.layout.offset = 12
           }else if(positionList[0] == 4) {
-            item.baseProperty.layout.offset = '18'
+            item.baseProperty.layout.offset = 18
           }
         }
       }
       // item.baseProperty.layout.wrap = 0
       return item
-    }*/
-    layoutInfo(item,index,array) {
+    },*/
+    /*layoutInfo(item,index,array) {
       // console.log(item,index);
       // 给每个 item  添加默认偏移量为0
       item.baseProperty.layout.offset = 0;
@@ -600,7 +601,7 @@ export default {
             }
             if(currentSelection.length == 3) {
               //判断当前 与上一个是否存在交集， 如果存在交集， 默认换行， 不存在 交集，不换行，并设置偏移量
-              /*for(let i=0;i<preData.selection.length;i++) {
+              /!*for(let i=0;i<preData.selection.length;i++) {
                 for(let j=0;j<currentSelection.length;j++) {
                   if(preData.selection[i].position!==currentSelection[j].position){
                     let sum = Math.abs(positionList[0]-prePositionList[0]);
@@ -616,7 +617,7 @@ export default {
                     item.baseProperty.layout.wrap = '1';
                   }
                 }
-              }*/
+              }*!/
               if(prePositionList[0]==1&&positionList[0]==1){
                 item.baseProperty.layout.wrap = '1';
                 item.baseProperty.layout.offset = '0';
@@ -695,19 +696,288 @@ export default {
       }
       // item.baseProperty.layout.wrap = 0
       return item
-    },
+    },*/
+    layoutInfo(item,index,array) {
+      // 给每个 item  添加默认偏移量为0
+      item.baseProperty.layout.offset = 0;
+      let currentColumns = item.baseProperty.layout.columns;
+      let currentSelection = item.baseProperty.layout.selection;
+      if(index !== 0) {
+        let preData = array[index-1].baseProperty.layout;
+        let currentItemList = currentSelection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return a-b;
+        });
+        let prevItemList = preData.selection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return b-a;
+        });
+        switch (currentColumns) {
+          case 2 : //2列
+            //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              if(currentSelection.length==1) {
+                preData.wrap = 0
+              }
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentSelection.length == 1 && currentSelection[0].position == 2) {
+                item.baseProperty.layout.offset = 12
+              }
+              //如果 上一列columns 与 当前行不相等，设置offset
+            }
+            else if(currentColumns !== preData.columns && currentSelection.length == 1) {
+              if(currentSelection[0].position == 2) {
+                item.baseProperty.layout.offset = 12
+              }
+            }
+            break;
+          case 3 : //3列
+            // 如果 当前行 columns 与 上一列 columns 相等，判断当前行是否引用上一行，如果引用，就把上一行 wrap = 0，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              preData.wrap = 0
+              let sum = currentItemList[0]-prevItemList[0];
+              if(sum ==1) {
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                item.baseProperty.layout.offset = 8;
+              }
+            //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentItemList[0] == 2) {
+                item.baseProperty.layout.offset = 8;
+              }else if(currentItemList[0] == 3) {
+                item.baseProperty.layout.offset = 16;
+              }
+              //如果 当前行 columns 与 上一列 columns 不相等
+            }
+            else if(currentColumns !== preData.columns) {
+              if(currentItemList[0] == 2) {
+                item.baseProperty.layout.offset = 8;
+              }else if(currentItemList[0] == 3) {
+                item.baseProperty.layout.offset = 16;
+              }
+            }
+            break;
+          case 4 : //4列
+            //如果 当前行 columns 与 上一行 columns 相等 && 当前行wrap=0, 需把上一行 wrap = 0 ，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              preData.wrap = 0;
+              let sum = Math.abs(currentItemList[0] - prevItemList[0]);
+              if(sum == 1) {
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                item.baseProperty.layout.offset = 6;
+              }else if(sum == 3) {
+                if(currentItemList[0] - prevItemList[0]>0){
+                  item.baseProperty.layout.offset = 12;
+                }
+              }
+              //如果 当前行 columns 与 上一行 columns 相等 && 当前行 wrap !==1 ,设置当前行 offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }
+              }else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+              //如果 当前行 columns 与 上一行 columns 不相等，设置当前行 的offset
+            }
+            else if(currentColumns !== preData.columns){
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 0;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 12;
+                }
+              }else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+            }
+            break;
+          default:
+            break
+        }
+      }else {
+        let preData = array[index].baseProperty.layout;
+        let currentItemList = currentSelection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return a-b;
+        });
+        let prevItemList = preData.selection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return b-a;
+        });
+        switch (currentColumns) {
+          case 2 : //2列
+            //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              if(currentSelection.length==1) {
+                preData.wrap = 0
+              }
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentSelection.length == 1 && currentSelection[0].position == 2) {
+                item.baseProperty.layout.offset = 12
+              }
+              //如果 上一列columns 与 当前行不相等，设置offset
+            }
+            else if(currentColumns !== preData.columns && currentSelection.length == 1) {
+              if(currentSelection[0].position == 2) {
+                item.baseProperty.layout.offset = 12
+              }
+            }
+            break;
+          case 3 : //3列
+            // 如果 当前行 columns 与 上一列 columns 相等，判断当前行是否引用上一行，如果引用，就把上一行 wrap = 0，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              preData.wrap = 0
+              let sum = currentItemList[0]-prevItemList[0];
+              if(sum ==1) {
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                item.baseProperty.layout.offset = 8;
+              }
+              //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentItemList[0] == 2) {
+                item.baseProperty.layout.offset = 8;
+              }else if(currentItemList[0] == 3) {
+                item.baseProperty.layout.offset = 16;
+              }
+              //如果 当前行 columns 与 上一列 columns 不相等
+            }
+            else if(currentColumns !== preData.columns) {
+              if(currentItemList[0] == 2) {
+                item.baseProperty.layout.offset = 8;
+              }else if(currentItemList[0] == 3) {
+                item.baseProperty.layout.offset = 16;
+              }
+            }
+            break;
+          case 4 : //4列
+            //如果 当前行 columns 与 上一行 columns 相等 && 当前行wrap=0, 需把上一行 wrap = 0 ，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              preData.wrap = 0;
+              let sum = Math.abs(currentItemList[0] - prevItemList[0]);
+              if(sum == 1) {
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                item.baseProperty.layout.offset = 6;
+              }else if(sum == 3) {
+                item.baseProperty.layout.offset = 12;
+              }
+              //如果 当前行 columns 与 上一行 columns 相等 && 当前行 wrap !==1 ,设置当前行 offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }
+              else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }
+              }
+              else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+              //如果 当前行 columns 与 上一行 columns 不相等，设置当前行 的offset
+            }
+            else if(currentColumns !== preData.columns){
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 0;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 12;
+                }
+              }else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+            }
+            break;
+          default:
+            break
+        }
+      }
+      return item;
+    }
   }
-
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
+  .displayPortion_title{
+    width: 100%;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #ddd;
+    padding-left: 15px;
+  }
   .displayPortion_box{
     .el-col{
       margin-top: 5px;
       margin-bottom: 5px;
+      /*min-height: 32px;*/
     }
   }
-
+  .displayPortion_container{
+    /*min-width: 1200px;
+    width: 1200px;*/
+  }
 </style>

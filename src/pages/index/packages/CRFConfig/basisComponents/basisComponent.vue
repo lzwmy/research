@@ -4,7 +4,7 @@
           <div class="component-content">
               <!--<el-input placeholder="条目名称" v-model="basisDataItem.controlName" size="mini"></el-input>-->
               <!--<span class="content_must-fill">*</span>-->
-              <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)"></el-input>
+              <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
               <el-select v-model="basisDataItem.controlType" size="mini" @change="changeControlType(basisDataItem,basisDataIndex,basisData)">
@@ -32,7 +32,7 @@
               <i class="iconfont iconfuhao2 gray" v-if="basisDataItem.displayIsVisible=='0'" @click="isVisible(basisDataItem)"></i>
               <i class="iconfont iconfuhao2" v-else @click="isVisible(basisDataItem)"></i>
               <!--设置-->
-              <i class="iconfont iconfuhao7" v-show="basisDataItem.controlType!==''" @click="changeParameterConfigChildren(basisDataItem)"></i>
+              <!--<i class="iconfont iconfuhao7" v-show="basisDataItem.controlType!==''" @click="changeParameterConfigChildren(basisDataItem)"></i>-->
               <!--添加-->
               <i class="iconfont iconfuhao1" v-if="basisDataItem.controlType=='GATHER'||basisDataItem.controlType=='TABLE'" @click="addLine(basisDataItem,basisDataIndex)"></i>
               <!--删除-->
@@ -59,7 +59,7 @@
           default:null
         }
       },
-      directives: {
+      /*directives: {
         focus: {
           // 指令的定义
           inserted: function (el) {
@@ -67,7 +67,7 @@
             el.querySelector('input').focus()
           }
         }
-      },
+      },*/
       data() {
         return {
           basisData:this.children,
@@ -249,7 +249,7 @@
         //添加行
         addLine(data,index) {
           if(data.controlType=='GATHER'||data.controlType == 'TABLE') {
-            let copyData = Object.assign({},parameter.initData);
+            let copyData = Object.assign({},JSON.parse(JSON.stringify(parameter.initData)));
             data.children.push(copyData)
           }
         },
@@ -283,6 +283,15 @@
           let copyLine = Object.assign({},data);
           array.splice(index-1,0,copyLine);
           array.splice(index+1,1);
+          // 清除 当前一下 所有 layOut 布局数据
+          for(let i=index;i<array.length;i++) {
+            array[i].baseProperty.layout = {
+              "columns":1,
+              "selection":[],
+              "wrap":1,
+              "displayChecked":[]
+            }
+          }
         },
         //下移
         moveDown(data,index,array) {
@@ -293,6 +302,15 @@
           let copyLine = Object.assign({},data);
           array.splice(index+2,0,copyLine);
           array.splice(index,1)
+          //清空向下移所有 layout 布局信息
+          for(let i=index+1;i<array.length;i++) {
+            array[i].baseProperty.layout = {
+              "columns":1,
+              "selection":[],
+              "wrap":1,
+              "displayChecked":[]
+            }
+          }
         },
         //获取单位列表
         async UnitListOrg() {

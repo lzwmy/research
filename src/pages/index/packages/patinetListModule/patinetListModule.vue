@@ -907,7 +907,7 @@
       handleCommand (command) {
         let that = this;
         if (that.selectRow && that.selectRow.length == 1 && command == 'crfFill') {
-          that.$router.push({
+          /*that.$router.push({
             name: 'reportFill',
             query: {
               cacheData: false,
@@ -919,7 +919,9 @@
               patientId: that.selectRow[0].PATIENT_ID || '',
               identify: that.selectRow[0].IDENTIFY || ''
             }
-          });
+          });*/
+          let formData = "cacheData="+false+"&formId="+that.selectLabGroupFormId+"&groupId="+that.selectLabGroupId+"&subjectId="+that.currentDiseaseId+"&diseaseId="+that.currentDiseaseId+"&patientName="+that.selectRow[0].PATIENT_NAME || ''+"&patientId="+that.selectRow[0].PATIENT_ID || ''+"&identify="+that.selectRow[0].IDENTIFY || ''
+          window.open('./patientForm.html?'+formData)
         } else if (that.selectRow && that.selectRow.length != 1 && command == 'crfFill') {
           this.$notice('请勾选一行进行CRF表单填写');
         } else if (that.selectRow && that.selectRow.length === 1 && command == 'enterGroupManager') {

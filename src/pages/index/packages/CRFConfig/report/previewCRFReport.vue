@@ -82,6 +82,7 @@
 <style lang="less">
 .crf_form-preview-dialog{
   .el-dialog{
+    background-color: #f7f8fc;
     .el-dialog__header{
       .el-dialog__title{
         font-size: 16px;
@@ -90,6 +91,7 @@
       }
     }
     .el-dialog__body{
+
       .crf_report-title{
         font-size: 16px;
         color: #394263;
@@ -101,6 +103,14 @@
       .crf-report_content{
         .report_view_container{
           background-color: transparent;
+        }
+        .displayPortion_title{
+          margin-bottom: 5px;
+        }
+        .displayPortion_box{
+          /*width: 1200px;
+          min-width: 1200px;*/
+          margin-left: 15px;
         }
       }
     }

@@ -27,6 +27,8 @@ const url = {
   CRFDeletePortion:"/form/portion/bak/delete.do",
   //删除CRF 表单
   CRFDeleteForm:'/form/crf/bak/delete.do',
+  //获取小节ID
+  CRFQueryPortionId:"/form/portion/bak/generate/portionId.do",
 };
 
 const http = {
@@ -59,6 +61,9 @@ const http = {
   },
   CRFDeleteForm(params) {
     return vm.$post(url.CRFDeleteForm,params,true)
+  },
+  CRFQueryPortionId(params) {
+    return vm.$post(url.CRFQueryPortionId,{},true);
   }
 };
 

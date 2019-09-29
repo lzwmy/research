@@ -116,6 +116,7 @@ const CRFConfig = {
   },
   mutations:{
     'CRF_SET_OBJECT':function (state,obj) {
+      state.basisDataInfo = {};
       state.basisDataInfo = obj;
     },
     'LAYOUT_SET_OBJECT':function (state,obj) {

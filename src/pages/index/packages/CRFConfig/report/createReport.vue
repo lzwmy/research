@@ -25,7 +25,7 @@
         </div>
       </div>
       <!--主体内容-->
-      <div class="create_report-content">
+      <div class="create_report-content" v-loading="loading">
         <div class="report-content-nav">
           <div class="report-title">
             <input type="text" v-model="crfName" placeholder="请输入报告名称" >
@@ -56,51 +56,33 @@
           </div>
         </div>
         <div class="report_body-box">
-          <div style="width: 100%" v-if="dataList.length!==0">
-            <div class="report_body-item" v-for="(item,index) in dataList" :key="index">
-              <div class="report_header-content">
-                <div class="display_line"></div>
-                <div class="header-title">{{item.portionName}}</div>
-                <div class="header-btn">
-                  <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
-                  <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
+          <div style="width: 100%" v-if="isReset&&dataList.length!==0">
+            <!--<draggable :options="options" @start="drag" @end="drop" :move="checkMove">-->
+              <div class="report_body-item" v-for="(item,index) in dataList" :key="index">
+                <div class="report_header-content">
+                  <div class="display_line"></div>
+                  <div class="header-title">{{item.portionName}}</div>
+                  <div class="header-btn">
+                    <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
+                    <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
+                  </div>
+                </div>
+                <div class="report_body-content" >
+                  <!--{{item}}-->
+                  <!--<div>暂时无法预览</div>-->
+                  <preview-portion :item="item" ></preview-portion>
                 </div>
               </div>
-              <div class="report_body-content">
-                <!--{{item}}-->
-                <!--<div>暂时无法预览</div>-->
-                <preview-portion :item="item"></preview-portion>
-              </div>
-            </div>
+            <!--</draggable>-->
+
           </div>
-          <!--<div class="report_body-item">
-            <div class="report_header-content">
-              <div class="display_line"></div>
-              <div class="header-title">患者就诊信息</div>
-              <div class="header-btn">
-                <i class="iconfont iconzujian14" @click="portionModify(item)"></i>
-                <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
-              </div>
-            </div>
-            <div class="report_body-content"></div>
-          </div>
-          <div class="report_body-item">
-            <div class="report_header-content">
-              <div class="display_line"></div>
-              <div class="header-title">患者就诊信息</div>
-              <div class="header-btn">
-                <i class="iconfont iconzujian14"></i>
-                <i class="iconfont iconzujian26"></i>
-              </div>
-            </div>
-            <div class="report_body-content"></div>
-          </div>-->
-          <img v-if="dataList.length==0" src="./../basisComponents/image/none_content.png" alt="">
+          <img v-else="dataList.length==0" src="./../basisComponents/image/none_content.png" alt="">
         </div>
       </div>
       <!--配置小节弹框-->
       <portion-config-dialog :displayMask="displayMask"
                              @portion-selection-add="portionSelectionAdd"
+                             @update-add="updateAdd"
                              @close-dialog="closeDialog" >
       </portion-config-dialog>
       <!--预览报告表单-->
@@ -108,71 +90,124 @@
                           :crfPreview="crfPreview"
                           @close-dialog="closeDialog">
       </preview-crf-report>
+      <!--新增或者编辑小节弹框-->
+      <portion-dialog :showConfigPortion="showConfigPortion"
+                      :portionConfigData="portionConfigData"
+                      @update-data="updateData"
+                      @close-dialog="closeDialog">
+      </portion-dialog>
     </div>
 </template>
 
 <script>
+  import './../css/crfLayoutStyle.less';
   import portionConfigDialog from './portionConfigDialog';
   import previewPortion from './../preview/sectionPreview';
   import previewCrfReport from './previewCRFReport';
+  import portionDialog from './portionDialog';
+  import draggable from 'vuedraggable';
     export default {
       components:{
         portionConfigDialog,
         previewPortion,
-        previewCrfReport
+        previewCrfReport,
+        portionDialog,
+        draggable
       },
       data() {
         return {
+          loading:false,
           enable:false,//是否启用
           crfType:1,// 1 报告 2 随访
           crfName:"",
           displayMask:false,
           formMask:false,
+          showConfigPortion:false,
+          isReset:false,
           dataList:[],
-          crfPreview:{}
+          crfPreview:{},
+          portionConfigData:{},//配置小节数据
+          //拖动参数配置
+          options:{
+            scroll:true,
+            group:'people'
+          }
         }
       },
       watch:{
         "dataList":{
           deep:true,
           handler:function (value) {
-            this.dataList = value
+            // this.dataList = value;
           }
         }
       },
       methods: {
         init() {
-          let temporarySave = {
-            dataList:[],
-            crfName:"",
-          };
-          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
         },
         breakGo() {
           window.history.go(-1);
-          let temporarySave = {
-            dataList:[],
-            crfName:"",
-          };
-          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
         },
         add() {
           this.displayMask = true;
-          let temporarySave = {
-            dataList:this.dataList||[],
-            crfName:this.crfName || "",
-          };
-          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+        },
+        //开始
+        drag(evt){
+          console.log('开始',evt);
+        },
+        //结束
+        drop(evt) {
+          console.log('结束',evt);
+          let oldIndex = evt.oldIndex;
+          let newIndex = evt.newIndex;
+          console.log(this.dataList)
+        },
+        // 移除
+        checkMove(evt) {
+          let startIndex = evt.draggedContext.index;
+          let endIndex = evt.draggedContext.futureIndex;
         },
         //关闭弹框
         closeDialog(data) {
           this.displayMask = data;
           this.formMask = data;
+          this.showConfigPortion = data;
         },
         //弹框 选中小节添加
         portionSelectionAdd(data) {
-          console.log(data)
+          console.log(data);
+          this.isReset = true;
           this.dataList.push(data)
+        },
+        //编辑或 新增小节 数据更新
+        updateData(data) {
+          console.log("更新数据",data);
+          this.isReset = false;
+          if(data.type == 'modify') {
+            let formData = {
+              diseaseId:data.diseaseId,
+              formItemList: data.formItemList,
+              id:data.id,
+              portionName:data.portionName
+            };
+            this.$nextTick(()=>{
+              this.dataList.splice(data.index+1,0,formData);
+              this.dataList.splice(data.index,1);
+              this.isReset = true;
+            });
+          }
+        },
+        //新增 添加 小节
+        updateAdd(data) {
+          console.log('添加 小节',data)
+          this.isReset = true;
+          let formData = {
+            diseaseId:data.diseaseId,
+            formItemList: data.formItemList,
+            id:data.id,
+            portionName:data.portionName
+          };
+          this.dataList.push(formData);
         },
         // CRF 保存
         saveCRF() {
@@ -185,15 +220,27 @@
         //CRF 预览
         previewCRF() {
           this.formMask = true;
+          let crfName = JSON.parse(JSON.stringify(this.crfName));
+          let dataList = JSON.parse(JSON.stringify(this.dataList));
           this.crfPreview = {
-            crfDisplayName:this.crfName || "",
-            formPortions:this.dataList|| []
+            crfDisplayName:crfName || "",
+            formPortions:dataList|| []
           }
         },
         //编辑小节
         portionModify(data,index) {
           console.log('编辑 小节',data);
-          this.directAddSave();
+          this.portionConfigData= {
+            diseaseId:data.diseaseId,
+            formItemList:data.formItemList || [],
+            id:data.id,
+            portionName:data.portionName,
+            type:"modify",
+            index:index
+          };
+          console.log(this.portionConfigData);
+          this.showConfigPortion = true;
+          /*this.directAddSave();
           let diseaseId = this.$route.query.id;
           let crfId = this.$route.query.crfId;
           let temporarySave = {
@@ -210,11 +257,11 @@
               crfId:crfId,
               i:index,
             }
-          });
-
+          });*/
         },
         //删除小节
         portionDeleteItem(data,index) {
+          this.isReset = false;
           this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -222,6 +269,7 @@
           }).then(() => {
             // this.CRFDeletePortion(data,index);
             this.dataList.splice(index,1);
+            this.isReset = true;
             this.$message.success('删除成功');
           }).catch(() => {
             this.$message({
@@ -246,11 +294,11 @@
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
               this.$message.success('保存成功');
-              let temporarySave = {
+              /*let temporarySave = {
                 dataList:[],
                 crfName:"",
               };
-              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
               //保存成功返回 报告页
               window.history.go(-1);
             }
@@ -274,11 +322,11 @@
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
               this.$message.success('保存成功');
-              let temporarySave = {
+              /*let temporarySave = {
                 dataList:[],
                 crfName:"",
               };
-              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
               //保存成功返回 报告页
               window.history.go(-1);
             }
@@ -300,9 +348,12 @@
               that.crfType = data.data.crfType;
               that.dataList = data.data.formPortions;
             }
+            this.loading = false;
           }catch (error) {
             console.log(data);
+            this.loading = false;
           }
+          this.loading = false;
         },
         // CRF 报告 删除小节
         async CRFDeletePortion(data,index) {
@@ -358,22 +409,14 @@
         }
       },
       mounted() {
-        this.init();
+        // this.init();
         if(this.$route.query.type=='modify') {
+          this.loading = true;
+          this.isReset = false;
           this.previewCRFList().then(()=>{
-            let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
-            if(temporarySave.dataList.length!==0){
-              this.dataList = [];
-              this.$nextTick(()=>{
-                this.dataList = temporarySave.dataList;
-              });
-            }
+            this.isReset = true;
           })
-        }else if(this.$route.query.type=='add') {
-          let temporarySave =JSON.parse(sessionStorage.getItem('temporarySave'));
-          // console.log(temporarySave);
-          this.crfName = temporarySave.crfName;
-          this.dataList = temporarySave.dataList;
+
         }
       },
       destroyed() {
@@ -529,10 +572,10 @@
         min-height: 298px;
         width: 100%;
         box-sizing: border-box;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         .report_header-content{
           width: 100%;
-          height: 60px;
+          height: 50px;
           background-color: #E5EBEC;
           border:1px solid rgba(229,235,236,1);
           display: flex;
@@ -546,7 +589,7 @@
             top: 0;
             left: 0;
             width: 4px;
-            height: 60px;
+            height: 50px;
             background-color: #1BBAE1;
           }
           .header-title{
@@ -572,6 +615,7 @@
           width: 100%;
           min-height: 238px;
           background-color: #ffffff;
+          /*background-color: #f7f8fc;*/
           border:1px solid #E5EBEC;
           .displayPortion_title{
             display: none;
@@ -585,8 +629,18 @@
 <style lang="less">
   .report_config-container{
     .report_body-content{
+      .displayPortion_container{
+        /*width: 1200px;
+        min-width: 1200px;*/
+      }
       .displayPortion_title{
         display: none;
+      }
+      .section_preview_container{
+        padding-top: 5px;
+      }
+      .GATHER_bg_color{
+        background-color: #ffffff;
       }
     }
   }
