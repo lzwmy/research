@@ -1,6 +1,6 @@
 <template>
   <!--数据连接管理-->
-  <div class="cloud-component clearfix  content-container" style="position:relative;height: 100%;">
+  <div class="cloud-component clearfix  content-container" style="position:relative;">
     <div class="crfConfig clearfix crffill">
       <div class="crf-main" v-loading="mainLoading" v-if="!showReadComponent">
         <div class="crf-main-content" >
@@ -191,7 +191,10 @@ export default {
       let that = this;
       that.mainLoading = true;
       try {
-        let result = await this.$http.crfReportDetailPreview({
+        /*let result = await this.$http.crfReportDetailPreview({
+          formCrfId: this.formId
+        });*/
+        let result = await this.$http.previewCrfReportHttp({
           formCrfId: this.formId
         });
         console.log(result)
@@ -209,17 +212,18 @@ export default {
       try {
         // let params = { groupId: this.groupId, patientId: this.patientId };
         let params = { reportId: this.reportId };
-        let report = await this.$http.reportFindReport(this.$format(params));
+        // let report = await this.$http.reportFindReport(this.$format(params));
+        let report = await this.$http.queryReportDisplayInfo(this.$format(params));
         console.log('report data',report)
         if (report.data && report.code == "0") {
           this.report = report.data;
           console.log("====================================")
           console.log(this.report)
-          if(report.data && report.data.pages&&report.data.pages.length==0){
+          if(report.data && report.data.portions&&report.data.portions.length==0){
               this.$store.commit("CRF_SET_REPORT_STATUS", true);
-              
           }else{
-            this.showReadComponent=true;
+            // this.showReadComponent=true;
+            this.showReadComponent=false;
           }
         }
       } catch (error) {
@@ -241,7 +245,8 @@ export default {
           this.report.subjectName = this.urlParameter.subjectName || '';
           this.report.groupName = this.urlParameter.groupName || '';
         }
-        let result = await this.$http.reportSaveReport(this.report);
+        // let result = await this.$http.reportSaveReport(this.report);
+        let result = await this.$http.reportDataSave(this.report);
         if (result && result.code == "0") {
           this.$notice("保存成功");
           // 保存成功后，强制删除当前的crf填写页面的路由
@@ -374,7 +379,7 @@ export default {
         this.referView=this.crfViewList.find(e=>e.name==newer.rootBinding.baseProperty.bindingInfo.viewId);
         this.searchDataList(newer.rootBinding);
       }
-    },
+    }
   }
 };
 </script>

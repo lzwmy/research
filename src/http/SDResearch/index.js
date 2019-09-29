@@ -97,6 +97,19 @@ const url = {
   //保存报告
   saveReport: '/report/save',
 
+  /**
+   *  报告2.0
+   * */
+  //获取报告列表
+  getReportList:"/form/crf/bak/simple/list.do",
+  //患者页 添加报告 保存接口
+  patientReportAddSave:"/report/bak/add.do",
+  //根据过滤条件 获取报告列表
+  queryFilterReportList:"/report/bak/reportList.do",
+  // 获取报告 回显信息
+  queryReportDisplayInfo:"/report/bak/findReport",
+  // 报告 保存 数据
+  reportDataSave:"/report/bak/save.do",
 
   /**
    * 提醒
@@ -109,6 +122,8 @@ const url = {
   changeRemindState: '/report/remind/change.do',
   //删除提醒
   deleteRemind: '/report/remind/delete.do',
+  //预览CRF表单数据
+  previewCrfReportHttp:"/form/crf/bak/preview.do",
 };
 
 const http = {
@@ -242,7 +257,31 @@ const http = {
   },
   PFUdeleteRemind(data) {
     return vm.$get(url.deleteRemind, data, false);
-  }
+  },
+  /**
+   * 报告 2.0
+   *  新增 获取报告列表
+   * */
+  //获取 报告列表
+  getReportList(params) {
+    return vm.$get(url.getReportList,params,true);
+  },
+  //患者页 添加报告 保存接口
+  patientReportAddSave(params) {
+    return vm.$post(url.patientReportAddSave,params,false);
+  },
+  queryFilterReportList(params) {
+    return vm.$post(url.queryFilterReportList,params,false);
+  },
+  previewCrfReportHttp(params) {
+    return vm.$post(url.previewCrfReportHttp,params,true);
+  },
+  queryReportDisplayInfo(params) {
+    return vm.$get(url.queryReportDisplayInfo,params,true);
+  },
+  reportDataSave(params) {
+    return vm.$post(url.reportDataSave,params,false);
+  },
 };
 
 export default http;

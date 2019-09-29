@@ -1,8 +1,11 @@
 <template>
   <div class="displayPage_container">
     <div v-if="item.isDisplayName=='1'" class="display_title">
-      {{conversionNimber(index+1)}}、{{item.pageDisplayName}}
+      {{conversionNumber(index+1)}}、{{item.pageDisplayName}}
     </div>
+     <div class="display_title">
+       {{item.crfDisplayName}}
+     </div>
       <div class="displayPage_box">
         <display-portion
           v-for="child in item.formPortions"
@@ -27,24 +30,26 @@ export default {
     displayPortion
   },
   created() {
+    console.log(this.item,this.report)
     this.item.formPortions.forEach(element => {
       let arr = this.report.portions.filter(
-        o => o.portionName == element.portionDisplayName
+        o => o.reportName == element.portionName
       );
       if (arr.length == 0) {
-        let newObj = { portionName: element.portionDisplayName, items: [] };
+        let newObj = { portionName: element.portionName, items: [] };
         this.report.portions.push(newObj);
       }
     });
+
   },
   methods: {
     getData(portion) {
       let arr = this.report.portions.filter(
-        o => o.portionName == portion.portionDisplayName
+        o => o.portionName == portion.portionName
       );
       return arr[0];
     },
-    conversionNimber(n) {
+    conversionNumber(n) {
       const cnum = [
         "零",
         "一",

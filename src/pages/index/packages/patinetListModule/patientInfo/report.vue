@@ -111,7 +111,9 @@ export default {
                 }
             };
             try {
-                let res = await that.$http.RRMgetDataList(formData);
+                // let res = await that.$http.RRMgetDataList(formData);
+                // 新 2.0 查询报告记录
+                let res = await that.$http.queryFilterReportList(formData);
                 if (res.code == '0') {
                     let obj = {};
                     obj.content = res.data.args;
@@ -149,7 +151,7 @@ export default {
                     groupName: row.groupName || "",
                     title: row.reportName,
                     isModify:"displayShow"
-                }
+                };
                 sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
                 window.open('./patientForm.html');
             })

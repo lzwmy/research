@@ -47,6 +47,10 @@ const user = {
     saveresearchID(state, id) {
       sessionStorage.setItem('CURR_RESEARCH_ID', id);
       state.researchID = id;
+    },
+    changeTheme(state, payload) {
+      state.ccstyle = payload.ccstyle;
+      localStorage.setItem('research_ccstyle', payload.ccstyle);
     }
   },
   actions: {}

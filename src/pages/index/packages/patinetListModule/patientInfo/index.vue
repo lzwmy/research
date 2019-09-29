@@ -226,11 +226,13 @@ export default {
     watch: {
         'dialogReportForm.type': function(newVal) {
             this.dialogReportForm.name = "";
-            this.getReportSelectList();
+            // this.getReportSelectList();
+          this.getReportList();
         }
     },
     created () {
-        this.getReportSelectList();
+        // this.getReportSelectList();
+        this.getReportList();
         this.getPatientSearch();
     },
     mounted () {
@@ -395,7 +397,9 @@ export default {
                         subjectName: this.dataInfo.subjectName,
                         groupName: this.dataInfo.groupName
                     }
-                    let res = await this.$http.PFUaddReport(formData);
+                    // let res = await this.$http.PFUaddReport(formData);
+                    // 新2.0 保存接口
+                    let res = await this.$http.patientReportAddSave(formData);
                     try {
                         if (res.code == 0) {
                             this.$mes('success', "添加报告成功!");
@@ -433,6 +437,24 @@ export default {
             } catch (err) {
                 console.log(err)
             }
+        },
+        //获取报告列表
+        async getReportList() {
+          let that = this;
+          let formData = {
+            crfType:that.dialogReportForm.type,
+            diseaseId:that.$route.query.id
+          };
+          try {
+            let data = await that.$http.getReportList(formData);
+            if(data.code == 0) {
+              that.reportSelectList = data.data;
+            }else {
+              that.$mes('error', "获取关联报告列表失败!");
+            }
+          }catch (error) {
+            console.log(error)
+          }
         },
         handleComponent(val) {
             this.showReportComponent = val;
