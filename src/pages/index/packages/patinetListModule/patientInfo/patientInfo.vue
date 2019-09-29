@@ -117,8 +117,16 @@ export default {
         .content {
             position: relative;
             .timeline {
-                width: 60%;
+                position: absolute;
+                top: 66px;
+                left: 20px;
+                bottom: 10px;
+                right: 0px;
                 margin-top: 33px;
+                overflow-y: auto;
+                .el-timeline {
+                    width: 60%;
+                }
                 .el-timeline-item__node {
                     background-color: #fff;
                     .diagnosis {

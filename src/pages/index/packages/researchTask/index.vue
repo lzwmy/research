@@ -149,7 +149,7 @@
         let data = this.$store.state.user.taskMenuList;
         if (item.createStatus == 3) {
           let params = {
-            title: '科研课题',
+            title: '科研项目',
             researchId: item.id,
             fromRouter: {
               path: this.$route.path,
@@ -162,6 +162,7 @@
             name: "projectProgress",
             params: params
           })
+          this.$store.commit('saveresearchID',item.id);
           this.btnLoading = false;
           return;
         } else {
@@ -336,7 +337,7 @@
 
     .special_btn {
       transition: all 300ms;
-
+      color: #333;
       &:hover {
         background: #ccc;
         color: #fff;

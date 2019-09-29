@@ -1,102 +1,103 @@
 <template>
     <div class="patient_list_module SDResearch">
+      <div class="component_head flex-between-center">
+        <p>{{$route.meta.txt}}</p>
+        <div class=" cur_pointer head_content flex-start-center">
+          <el-button type="primary"  icon="el-icon-plus" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
+        </div>
+      </div>
+
       <div class="list_module_content">
         <div v-if="!showPatientInfo">
           <!-- 病例管理 cloud-component-->
           <div class="cloud-component caseManage">
             <!-- 搜索区域 -->
             <div class="cloud-search el-form-item-small">
-              <!--<div class="block-head clearfix">
-                <span class="block-head-title">病例管理</span>
-                <div class="disease-title">{{diseaseDetail.name}}</div>
-                <el-button
-                  @click="historyGoBack('/SDResearch')"
-                  type="text"
-                  style="float: right; margin-right: 20px">
-                  <i class="el-icon-back">返回</i>
-                </el-button>
-              </div>-->
               <el-form :inline="true" @submit.native.prevent>
-                <el-form-item label prop>
-                  <div :class="{'labGroup-section': true,'dropmenuHide': dropmenuHide}" @mouseover="dropmenuHide = false">
-                    <div class="selectLabSubjectGroupName" :title="selectLabSubjectGroupName">{{selectLabSubjectGroupName}}
-                    </div>
-                    <div class="labGroup-dropmenu" :style="{maxHeight:routerViewHeight+'px'}">
-                  <span class="labGroup-btn all"
-                        @click="labGroupSelect({name: diseaseDetail.name+'-全部病例',id: ''})">{{diseaseDetail.name}}-全部病例</span>
-                      <table class="dropmenu-table">
-                        <tr v-for="subject in subjectDataList" :key="subject.id" v-if="subject.experimentGroups.length !== 0">
-                          <td width="150" :title="subject.name">
-                            {{subject.name.length > 9 ? subject.name.substring(0, 9) + '...' : subject.name}}
-                          </td>
-                          <td>
-                            <div v-for="labGroup in subject.experimentGroups" :key="labGroup.id"
-                                 class="labGroup-btn" @click="labGroupSelect(labGroup,subject)" :title="labGroup.name">
-                              {{labGroup.name.length > 12 ? labGroup.name.substring(0, 12) + '...' : labGroup.name}} -- {{labGroup.formName.length > 12 ? labGroup.formName.substring(0, 12) + '...' : labGroup.formName}}
-                            </div>
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
+                <div class="flex-between-center flex-wrap">
+                  <div>
+                    <el-form-item label prop>
+                      <div :class="{'labGroup-section': true,'dropmenuHide': dropmenuHide}" @mouseover="dropmenuHide = false">
+                        <div class="selectLabSubjectGroupName" :title="selectLabSubjectGroupName">{{selectLabSubjectGroupName}}
+                        </div>
+                        <div class="labGroup-dropmenu" :style="{maxHeight:routerViewHeight+'px'}">
+                      <span class="labGroup-btn all"
+                            @click="labGroupSelect({name: diseaseDetail.name+'-全部病例',id: ''})">{{diseaseDetail.name}}-全部病例</span>
+                          <table class="dropmenu-table">
+                            <tr v-for="subject in subjectDataList" :key="subject.id" v-if="subject.experimentGroups.length !== 0">
+                              <td width="150" :title="subject.name">
+                                {{subject.name.length > 9 ? subject.name.substring(0, 9) + '...' : subject.name}}
+                              </td>
+                              <td>
+                                <div v-for="labGroup in subject.experimentGroups" :key="labGroup.id"
+                                    class="labGroup-btn" @click="labGroupSelect(labGroup,subject)" :title="labGroup.name">
+                                  {{labGroup.name.length > 12 ? labGroup.name.substring(0, 12) + '...' : labGroup.name}} -- {{labGroup.formName.length > 12 ? labGroup.formName.substring(0, 12) + '...' : labGroup.formName}}
+                                </div>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </el-form-item>
+                    <el-form-item label="视图列表：" class="change_height">
+                      <multipleCheckBoxSelect ref="multipleCheckBoxSelect" @change="viewChangeHandle" placeholderText="选择视图"
+                                              :dataList="viewsList"
+                                              :isFilterable="true"></multipleCheckBoxSelect>
+                    </el-form-item>
+                    <el-form-item label="我的筛选：" class="change_height">
+                      <el-select v-model.trim="currentSelectMySaveConditionId" class="move_top" clearable filterable placeholder="选择我的筛选" size="mini"
+                                @change="changeCurrentSelectMySaveCondition" @visible-change="getMySaveCondition">
+                        <el-option
+                          v-for="item in mySaveConditionViewList"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id">
+                      <span style="float: left"
+                            :title="item.name">{{ item.name.length > 7 ? item.name.substring(0, 7) + '...' : item.name }}</span>
+                          <span style="float: right;font-size: 13px;padding-left:35px;">
+                        <i class="el-icon-error el-button" style="border:none;background: transparent;padding:0;"
+                          @click.stop="deleteMySaveCondition(item)" title="删除"></i>
+                      </span>
+                        </el-option>
+                      </el-select>
+                      <el-button type="text" size="small" @click="openSaveConditionDialog" style="margin-left: 5px;">
+                        <i class="icon-save" title="保存筛选"></i>
+                      </el-button>
+
+                    </el-form-item>
                   </div>
-                </el-form-item>
-                <el-form-item label="视图列表：" class="change_height">
-                  <multipleCheckBoxSelect ref="multipleCheckBoxSelect" @change="viewChangeHandle" placeholderText="选择视图"
-                                          :dataList="viewsList"
-                                          :isFilterable="true"></multipleCheckBoxSelect>
-                </el-form-item>
-                <el-form-item label="我的筛选：" class="change_height">
-                  <el-select v-model.trim="currentSelectMySaveConditionId" class="move_top" clearable filterable placeholder="选择我的筛选" size="mini"
-                             @change="changeCurrentSelectMySaveCondition" @visible-change="getMySaveCondition">
-                    <el-option
-                      v-for="item in mySaveConditionViewList"
-                      :key="item.id"
-                      :label="item.name"
-                      :value="item.id">
-                  <span style="float: left"
-                        :title="item.name">{{ item.name.length > 7 ? item.name.substring(0, 7) + '...' : item.name }}</span>
-                      <span style="float: right;font-size: 13px;padding-left:35px;">
-                    <i class="el-icon-error el-button" style="border:none;background: transparent;padding:0;"
-                       @click.stop="deleteMySaveCondition(item)" title="删除"></i>
-                  </span>
-                    </el-option>
-                  </el-select>
-                  <el-button type="text" size="small" @click="openSaveConditionDialog" style="margin-left: 5px;">
-                    <i class="icon-save" title="保存筛选"></i>
-                  </el-button>
-
-                </el-form-item>
-                <el-form-item class="fuzzyQuery rf mt">
-                  <el-input v-model.trim="fuzzyQuery" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
-                            prefix-icon="el-icon-search"
-                            placeholder="请输入搜索内容"></el-input>
-                </el-form-item>
-                <el-form-item class="fuzzyQuery rf mt">
-                  <el-dropdown class="caseManageDropdown" style="margin-right: 6px;" @command="handleCommand" trigger="hover"
-                               size="medium">
-                  <span class="el-dropdown-link">操作
-                    <i class="el-icon-arrow-down el-icon--right"></i>
-                  </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="crfFill"
-                                        v-if="selectLabGroupId && (selectRow.length==0 || selectRow.length ==1)">填写
-                      </el-dropdown-item>
-                      <el-dropdown-item command="enterGroup">入组</el-dropdown-item>
-                      <el-dropdown-item command="enterGroupManager" v-if="selectRow.length==0 || selectRow.length ==1">入组管理
-                      </el-dropdown-item>
-                      <el-dropdown-item command="outGroup" v-if="selectLabGroupId">出组</el-dropdown-item>
-                      <el-dropdown-item command="moveGroup" v-if="selectLabGroupId">迁组</el-dropdown-item>
-                      <!-- <el-dropdown-item>病人360视图</el-dropdown-item> -->
-                      <el-dropdown-item command="export">导出</el-dropdown-item>
-                      <el-dropdown-item command="exportAll" v-if="selectLabGroupId">导出所有</el-dropdown-item>
-                      <el-dropdown-item command="caseStorage">病例入库</el-dropdown-item>
-                      <el-dropdown-item command="edit" :disabled="selectRow.length != 1">编辑患者</el-dropdown-item>
-                      <el-dropdown-item command="delete" :disabled="selectRow.length == 0">删除患者</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </el-form-item>
-
-                <br>
+                  <div>
+                    <el-form-item class="fuzzyQuery rf mt">
+                      <el-input v-model.trim="fuzzyQuery" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
+                                prefix-icon="el-icon-search"
+                                placeholder="请输入搜索内容"></el-input>
+                    </el-form-item>
+                    <el-form-item class="fuzzyQuery rf mt">
+                      <el-dropdown class="caseManageDropdown" style="margin-right: 6px;" @command="handleCommand" trigger="hover"
+                                  size="medium">
+                      <span class="el-dropdown-link">操作
+                        <i class="el-icon-arrow-down el-icon--right"></i>
+                      </span>
+                        <el-dropdown-menu slot="dropdown">
+                          <el-dropdown-item command="crfFill"
+                                            v-if="selectLabGroupId && (selectRow.length==0 || selectRow.length ==1)">填写
+                          </el-dropdown-item>
+                          <el-dropdown-item command="enterGroup">入组</el-dropdown-item>
+                          <el-dropdown-item command="enterGroupManager" v-if="selectRow.length==0 || selectRow.length ==1">入组管理
+                          </el-dropdown-item>
+                          <el-dropdown-item command="outGroup" v-if="selectLabGroupId">出组</el-dropdown-item>
+                          <el-dropdown-item command="moveGroup" v-if="selectLabGroupId">迁组</el-dropdown-item>
+                          <!-- <el-dropdown-item>病人360视图</el-dropdown-item> -->
+                          <el-dropdown-item command="export">导出</el-dropdown-item>
+                          <el-dropdown-item command="exportAll" v-if="selectLabGroupId">导出所有</el-dropdown-item>
+                          <el-dropdown-item command="caseStorage">病例入库</el-dropdown-item>
+                          <el-dropdown-item command="edit" :disabled="selectRow.length != 1">编辑患者</el-dropdown-item>
+                          <el-dropdown-item command="delete" :disabled="selectRow.length == 0">删除患者</el-dropdown-item>
+                        </el-dropdown-menu>
+                      </el-dropdown>
+                    </el-form-item>
+                  </div>
+                </div>
                 <el-form-item label prop class="change_height">
                   <el-select v-model.trim="conditionSet.column" clearable filterable placeholder="选择列名" size="mini">
                     <el-option
@@ -109,7 +110,7 @@
                 </el-form-item>
                 <el-form-item label prop class="change_height">
                   <el-select v-model.trim="conditionSet.operator" clearable filterable placeholder="选择运算符" size="mini"
-                             @change="changeOperator">
+                            @change="changeOperator">
                     <el-option
                       v-for="item in conditionOperatorList"
                       :key="item.name"
@@ -127,8 +128,8 @@
                                   placeholder="选择日期时间">
                   </el-date-picker>
                   <el-select v-else-if=" conditionSet.column === 'fill'" size="mini"
-                             v-model="conditionSet.param" clearable filterable placeholder="选择是否填写"
-                             :disabled="conditionSet.operator =='Null' || conditionSet.operator =='NotNull'">
+                            v-model="conditionSet.param" clearable filterable placeholder="选择是否填写"
+                            :disabled="conditionSet.operator =='Null' || conditionSet.operator =='NotNull'">
                     <el-option label="已填写" value="1"></el-option>
                     <el-option label="未填写" value="0"></el-option>
                   </el-select>
@@ -148,8 +149,8 @@
                                   placeholder="选择日期时间">
                   </el-date-picker>
                   <el-select v-else-if=" conditionSet.column === 'fill'" size="mini"
-                             v-model="conditionSet.param2" clearable filterable placeholder="选择是否填写"
-                             :disabled="conditionSet.operator =='Null' || conditionSet.operator =='NotNull'">
+                            v-model="conditionSet.param2" clearable filterable placeholder="选择是否填写"
+                            :disabled="conditionSet.operator =='Null' || conditionSet.operator =='NotNull'">
                     <el-option label="已填写" value="1"></el-option>
                     <el-option label="未填写" value="0"></el-option>
                   </el-select>
@@ -163,9 +164,6 @@
                   <el-button type="primary" @click="conditionAdd" icon="el-icon-plus">添加</el-button>
                   <el-button type="primary"  @click="search" icon="el-icon-search">查询</el-button>
                   <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
-                </el-form-item>
-                <el-form-item class="fuzzyQuery rf" label>
-                  <el-button type="primary"  icon="el-icon-plus" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
                 </el-form-item>
               </el-form>
               <div class="conditiaoContain">
@@ -391,7 +389,7 @@
               :title="patientDialogTitle"
               :visible.sync="patientDialogVisible"
               :append-to-body="true"
-              width="730px"
+              width="780px"
               class="addPatientDialog"
               @close="onClosePatient('patientRuleForm')">
               <el-form :model="patientRuleForm" ref="patientRuleForm" :rules="patientRuleFormRules" label-width="100px" @submit.native.prevent>

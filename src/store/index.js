@@ -14,9 +14,9 @@ const user = {
     account: '', // 登录账号
     routeArr: [], // 每个页面路由元
     menuList: [], // 菜单列表
-    taskMenuList: [], // 科研课题菜单列表
-    session_isDislpayArrow: false,
-    loginType: ''
+    taskMenuList: [], // 科研项目菜单列表
+    researchID: sessionStorage.getItem('CURR_RESEARCH_ID') || '',  //科研项目ID
+    session_isDislpayArrow: false
   },
   mutations: {
     [USER_SIGNIN](state, userLogin) {
@@ -44,9 +44,9 @@ const user = {
     saveSession_isDislpayArrow(state, payload) {
       state.session_isDislpayArrow = payload.isDislpayArrow;
     },
-    saveLoginType(state, val) {
-      sessionStorage.setItem('CURR_LOGIN_TYPE', JSON.stringify(val));
-      state.loginType = val;
+    saveresearchID(state, id) {
+      sessionStorage.setItem('CURR_RESEARCH_ID', id);
+      state.researchID = id;
     }
   },
   actions: {}

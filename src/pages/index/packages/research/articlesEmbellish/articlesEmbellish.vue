@@ -7,7 +7,6 @@
                 <el-button type="primary" icon="icon iconfont iconzujian34" @click="">Word下载</el-button>
             </div>
         </div>
-        <!-- <img src="../images/articlesEmbellish.png" alt="" width="100%"> -->
         <div class="articlesEmbellish_content flex-start-start">
             <div class="left">
                 <el-menu

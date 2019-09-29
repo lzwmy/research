@@ -73,17 +73,14 @@
                             </el-timeline>
                         </template>
                     </el-table-column>
-                    <el-table-column sortable type="index" label="序号" width="50"></el-table-column>
-                    <el-table-column sortable prop="visitDate" label="就诊时间" width="110"></el-table-column>
-                    <el-table-column sortable prop="reportName" label="报告名称" width="140"></el-table-column>
+                    <el-table-column sortable prop="visitDate" label="就诊时间"></el-table-column>
+                    <el-table-column sortable prop="reportName" label="报告名称"></el-table-column>
                     <el-table-column sortable prop="patientName" label="姓名"></el-table-column>
-                    <el-table-column sortable prop="genderName" label="性别" width="75"></el-table-column>
-                    <el-table-column sortable prop="author" label="创建者" width="90"></el-table-column>
-                    <el-table-column sortable prop="updator" label="更新者" width="90"></el-table-column>
-                    <el-table-column sortable prop="updateTime" label="更新时间" width="180"></el-table-column>
+                    <el-table-column sortable prop="genderName" label="性别" width="110"></el-table-column>
+                    <el-table-column sortable prop="author" label="创建者"></el-table-column>
                     <el-table-column sortable prop="diseaseName" label="病种"></el-table-column>
-                    <el-table-column sortable prop="groupName" label="课题组" width="140"></el-table-column>
-                    <el-table-column sortable label="报告状态" width="120px">
+                    <el-table-column sortable prop="groupName" label="课题组"></el-table-column>
+                    <el-table-column sortable label="报告状态" width="110px">
                         <template slot-scope="scope">
                             {{scope.row.status==0?'未填写':'已填写'}}
                         </template>

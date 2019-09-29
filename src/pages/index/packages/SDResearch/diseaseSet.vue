@@ -26,16 +26,15 @@
               <table class="common-table">
                 <thead>
                   <tr>
-                    <th style="width:45%;">课题</th>
-                    <th style="width:15%;">实验组</th>
-                    <th style="width:15%;">绑定表单</th>
-                    <th style="width:15%;">备注</th>
-                    <th style="width:9%;">操作</th>
+                    <th style="width:40%;">课题</th>
+                    <th style="width:25%;">实验组</th>
+                    <th style="width:25%;">备注</th>
+                    <th style="width:10%;">操作</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="item in diseaseDetail.subjectStudies" :key="item.id">
-                    <td style="width:45%;">
+                    <td style="width:40%;">
                       <div class="subjectTitle" :title="item.name">
                         <span class="readonly-icon" v-if="item.assignMode == 1">随机入组</span>
                         {{item.name && item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name}}
@@ -46,18 +45,15 @@
                         <div class="icon iconfont iconzujian26" @click="subjectDelete(item)"></div>
                       </div>
                     </td>
-                    <td colspan="4" style="width:55%;">
+                    <td colspan="4" style="width:60%;">
                       <div
                         class="lab-group-row clearfix"
                         v-for="innerItem in item.experimentGroups"
                         :key="innerItem.key">
-                        <div class="subjectTitle" style="width: 28%; display:inline-block;" :title="innerItem.name">
+                        <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.name">
                           {{innerItem.name && innerItem.name.length > 10 ? innerItem.name.substring(0, 10) + '...' : innerItem.name}}
                         </div>
-                        <div class="subjectTitle" style="width: 28%; display:inline-block;" :title="innerItem.formName">
-                          {{innerItem.formName && innerItem.formName.length > 10 ? innerItem.formName.substring(0, 10) + '...' : innerItem.formName}}
-                        </div>
-                        <div class="subjectTitle" style="width: 28%; display:inline-block;" :title="innerItem.remark">
+                        <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.remark">
                           {{innerItem.remark && innerItem.remark.length > 10 ? innerItem.remark.substring(0, 10) + '...' : innerItem.remark}}
                         </div>
                         <div style="display:inline-block;">
@@ -106,8 +102,8 @@
           </div>
         </el-form>
         <div slot="footer" class="el-dialog--center">
-          <el-button @click="closeDiseaseDetailDialog" size="mini">取消</el-button>
           <el-button type="primary" @click="saveDiseaseDetailDialog('diseaseDetailRuleForm')" size="mini">确定</el-button>
+          <el-button @click="closeDiseaseDetailDialog" size="mini">取消</el-button>
         </div>
       </el-dialog>
       <!--课题弹框-->
@@ -146,8 +142,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer">
-          <el-button @click="closeSubjectDetailDialog" size="mini">取消</el-button>
           <el-button type="primary" @click="saveSubjectDetaiDialog('subjectDetailRuleForm')" size="mini">确定</el-button>
+          <el-button @click="closeSubjectDetailDialog" size="mini">取消</el-button>
         </div>
       </el-dialog>
       <!--实验组弹框-->
@@ -183,8 +179,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="el-dialog--center">
-          <el-button @click="closeLabGroupDetailDialog" size="mini">取消</el-button>
           <el-button type="primary" @click="saveLabGroupDetailDialog('labGroupDetailRuleForm')" size="mini">确定</el-button>
+          <el-button @click="closeLabGroupDetailDialog" size="mini">取消</el-button>
         </div>
       </el-dialog>
     </div>
@@ -677,7 +673,6 @@ export default {
       margin-right: 20px;
       background: #fff;
       padding: 10px;
-      box-shadow:5px 5px 10px rgba(78,91,105,0.2);
       .profile-inner {
         position: relative;
         img{
@@ -716,7 +711,6 @@ export default {
       font-size: 15px;
       border-collapse: collapse;
       background-color: #fff;
-      box-shadow:5px 5px 10px rgba(78,91,105,0.2);
       th {
         height: 56px;
         padding: 0 20px;
@@ -748,6 +742,7 @@ export default {
       .subjectButtonGroup{
         display: inline-block;
         float: right;
+        padding-right: 15px;
         line-height: 46px;
       }
     } 

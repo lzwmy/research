@@ -1,5 +1,11 @@
 <template>
     <div class="cloud-component patientFollowUp">
+        <div class="component_head flex-between-center">
+        <p>{{$route.meta.txt}}</p>
+        <div class=" cur_pointer head_content flex-start-center">
+            <el-button type="primary" @click="showDialog('添加计划')" icon="el-icon-plus">添加计划</el-button>
+        </div>
+    </div>
         <!-- 搜索区域 -->
         <div class="cloud-search el-form-item-small">
             <el-form :inline="true" :model="form">
@@ -23,10 +29,7 @@
                     
                 <el-form-item>
                     <el-button type="primary" @click="" icon="el-icon-search">查 询</el-button>
-                    <el-button @click="reset" icon="icon iconfont iconlujing1">清 空</el-button>
-                </el-form-item>
-                <el-form-item style="float: right;">
-                    <el-button type="primary" @click="showDialog('添加计划')" icon="el-icon-plus">添加计划</el-button>
+                    <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>

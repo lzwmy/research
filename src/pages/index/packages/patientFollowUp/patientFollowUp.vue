@@ -20,10 +20,8 @@
                         <el-option label="已填写" value="1"></el-option>
                     </el-select>
                 </el-form-item>
-                    
                 <el-form-item class="flex-right">
-                    <el-button type="primary" icon="el-icon-search" @click="getDataList">查 询</el-button>
-                    <el-button @click="reset" icon="icon iconfont iconlujing1">清 空</el-button>
+                    <el-button type="primary" icon="el-icon-refresh-left" @click="getDataList">刷 新</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -31,7 +29,7 @@
         <div class="cloud-search-list">
             <ul class="card" v-loading="loading">
                 <el-row :gutter="21">
-                    <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" v-for="(item,index) in dataList" :key="index">
+                    <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
                         <li class="box flex-start-center" @click="toReportFill(item)">
                             <div class="box_left">
                                 <h3>{{item.patientName}}</h3>
@@ -150,14 +148,10 @@ export default {
             }
         },
         reset () {
-            this.form = {
-                time:[],
-                state:""
-            }
+            this.form.state = '';
             let date = new Date().getTime();
             this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
             this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
-            // this.$refs.diseaseSubjectGroup.ruleForm.disease = '';
         },
         toReportFill(row) {
             this.getIdentify(row.patientId)
@@ -236,22 +230,20 @@ export default {
         position: relative;
         min-height: 600px;
         li {
-            height: 120px;
-            border-radius: 4px;
-            padding: 15px;
+            height: 110px;
+            border-radius: 0px;
+            padding: 10px;
             background:rgba(255,255,255,1);
-            box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
             margin-bottom: 21px;
             transition: all 300ms;
             cursor: pointer;
             &:hover {
-                transform: translateY(-3px);
-                box-shadow:0px 4px 10px rgba(0,0,0,0.3); 
+                box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
             }
             .box_left {
                 width: 105px;
                 height: 100%;
-                padding: 15px 0 0 15px;
+                padding: 15px 0 0 5px;
                 border-right: 1px solid #eee;
                 h3 {
                     font-size: 20px;
@@ -269,7 +261,7 @@ export default {
                 flex-wrap: wrap;
                 flex-direction: column;
                 height: 100%;
-                padding-left: 30px;
+                padding-left: 16px;
                 .box_tag {
                     display: flex;
                     justify-content: flex-end;

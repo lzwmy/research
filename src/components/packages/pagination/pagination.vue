@@ -241,8 +241,7 @@ export default {
       border:none;
       color: #fff;
       &.active {
-        color: #439aff;
-        background-color: transparent;
+        color: #439aff !important;
       }
       &:hover {
         background: rgba(255,255,255,.3);

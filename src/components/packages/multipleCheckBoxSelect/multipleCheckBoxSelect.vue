@@ -1,7 +1,7 @@
 <template>
   <el-select class="multiple-checkBox-select" v-model="checkList" multiple
              :collapse-tags="collapseTags" :placeholder="placeholderText"
-             @change="changeselect" size="mini"
+             @change="changeselect"
              @remove-tag="removeTag" @visible-change="visibleChange" :filterable="isFilterable"
              :no-match-text="noMatchText" :multiple-limit="multipleLimit" :disabled="isDisabled" :editable="false">
     <el-option v-for="item in dataList" :key="item.name" :label="item.label" :value="item.name"

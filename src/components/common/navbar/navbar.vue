@@ -35,6 +35,12 @@ export default {
     methods: {
         toRouter(data) {
             let item = this.menuList[data.index];
+            //点击远程教学
+            if(item.menuPath == '/education') {
+                window.open('http://39.108.27.203:28081/teach-web/#/');
+                this.$router.push('/')
+                return;
+            }
             if(item.children.length != 0 && item.menuPath != '/SDResearch' && item.menuPath != '/researchTask' ) {
                 let params = {
                     title: item.menuName,
@@ -114,7 +120,7 @@ export default {
             }
             .el-tabs__item {
                 height: 100%;
-                padding: 0 48px;
+                padding: 0 36px;
                 line-height: 60px;
                 display: flex;
                 align-items: center;

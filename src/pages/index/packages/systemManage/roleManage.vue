@@ -2,7 +2,9 @@
   <div class="cloud-component roleManage">
     <div class="component_head flex-between-center">
       <p>{{$route.meta.txt}}</p>
-      <div class="head_content"></div>
+      <div class=" cur_pointer head_content flex-start-center">
+        <el-button type="primary" @click="add" icon="el-icon-plus">新建</el-button>
+      </div>
     </div>
     <!-- 搜索区域 -->
     <div class="cloud-search el-form-item-small">
@@ -21,9 +23,6 @@
           <el-button type="primary" @click="search" :loading="loading" icon="el-icon-search">查询</el-button>
           <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
         </el-form-item>
-        <el-form-item class="zfr">
-          <el-button type="primary" @click="add" icon="el-icon-plus">新建</el-button>
-        </el-form-item>
       </el-form>
     </div>
     <!--搜索结果-->
@@ -33,20 +32,20 @@
           :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%;height: 1000px;" v-loading="loading"
           :empty-text="emptyText" :element-loading-text="elementLoadingText" highlight-current-row ref="roleTable">
-          <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>
-          <el-table-column prop="roleName" label="角色名称" min-width="10%" show-overflow-tooltip>
+          <el-table-column prop="index" label="序号" width="80"></el-table-column>
+          <el-table-column prop="roleName" label="角色名称" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="description" label="角色描述" min-width="16%" show-overflow-tooltip>
+          <el-table-column prop="description" label="角色描述" min-width="150" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="status" label="角色状态" min-width="10%" show-overflow-tooltip>
+          <el-table-column prop="status" label="角色状态" width="120" show-overflow-tooltip>
             <template slot-scope="scope">
               <span v-if="scope.row.status ==0">启用</span>
               <span class='zwarning' v-else>禁用</span>
             </template>
           </el-table-column>
-          <el-table-column prop="remarks" label="备注" min-width="10%" show-overflow-tooltip>
+          <el-table-column prop="remarks" label="备注" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间" min-width="10%" show-overflow-tooltip>
+          <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" width="200px">
             <template slot-scope="scope" v-if="scope.row.roleType!=='0'">
