@@ -162,6 +162,7 @@
             name: "projectProgress",
             params: params
           })
+          this.$store.commit('saveresearchID',item.id);
           this.btnLoading = false;
           return;
         } else {

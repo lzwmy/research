@@ -28,8 +28,8 @@
         <br/>
         <br/>
         <div class="charts_btn flex-start-start">
-            <el-button type="primary" @click="">直方图</el-button>
-            <el-button @click="">箱线图</el-button>
+            <el-button :class="activeChart == 0?'active':''" @click="selectBtn(0)">直方图</el-button>
+            <el-button :class="activeChart == 1?'active':''" @click="selectBtn(1)">箱线图</el-button>
         </div>
         <br/>
         <div class="charts flex-between-center">
@@ -47,6 +47,7 @@ export default {
         return {
             tableLoading: false,
             textarea:'',
+            activeChart: 0,
             dataList: [{a:1},{a:1}],
             optionGroup1: {
                 chart: {
@@ -94,7 +95,9 @@ export default {
         charts
     },
     methods: {
-        
+        selectBtn(val) {
+            this.activeChart = val;
+        }
     }
 };
 </script>
@@ -114,11 +117,16 @@ export default {
         .charts_btn {
             .el-button {
                 border-radius: 0;
+                height: 32px;
                 margin: 0;
+                border: 1px solid #1bbae1;
+                background-color: #fff;
+                color: #1bbae1;
+                &.active {
+                    background-color: #1bbae1;
+                    color: #fff;
+                }
                 &:last-child {
-                    border: 1px solid #1bbae1;
-                    border-left: none;
-                    color: #1bbae1;
                 }
             }
         }

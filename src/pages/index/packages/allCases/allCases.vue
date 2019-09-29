@@ -4,7 +4,7 @@
     <!-- 搜索区域 -->
     <div class="cloud-search el-form-item-small">
       <el-form :inline="true" @submit.native.prevent>
-        <el-form-item label="视图列表：">
+        <el-form-item label="视图列表：" class="viewList">
           <multipleCheckBoxSelect ref="multipleCheckBoxSelect" @change="viewChangeHandle" placeholderText="选择视图"
                                   :dataList="viewsList"
                                   :isFilterable="true"></multipleCheckBoxSelect>
@@ -1045,6 +1045,12 @@ export default {
     }
     .allCases .block-head {
       margin-bottom: 15px;
+    }
+    .allCases .el-form-item.viewList .el-form-item__content{
+      width: 200px;
+      .el-select {
+        display: block;
+      }
     }
     .enterGroupDialog .el-form .el-form-item .el-input, .moveGroupDialog .el-form .el-form-item .el-input, .caseStorageDialog .el-form .el-form-item .el-input, .caseStorageDialog .el-form .el-form-item .el-input.el-date-editor--date {
       width: 200px

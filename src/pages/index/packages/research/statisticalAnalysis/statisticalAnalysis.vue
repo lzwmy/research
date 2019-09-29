@@ -51,10 +51,16 @@
                     <div class="content">
                         <div class="top flex-between-center">
                             <div class="domain flex-start-center">
-                                    <div v-for="(item, index) in domainList" :key="index" class="box flex-center-center flex-wrap" :class="item.draggableList.length!=0?'active':''">
+                                    <div v-for="(item, index) in domainList" v-show="item.type == activeTag" :key="index" class="box flex-center-center flex-wrap" :class="item.draggableList.length!=0?'active':''">
                                         <svg class="icon" aria-hidden="true"><use :xlink:href="item.draggableList.length==0?'#iconzujian40':'#iconzujian39'"></use></svg>
                                         <p>{{item.label}}</p>
-                                        <draggable  class="draggable flex-center-center" v-model="item.draggableList" :group='{name: "menu",put: true, pull: "clone"}' :sort="false">
+                                        <draggable 
+                                            @end="onEndCallBack" 
+                                            :move="draggableRemoveCallBack"
+                                            class="draggable flex-center-center" 
+                                            :data-id="index" v-model="item.draggableList" 
+                                            :group='{name: "menu",put: true, pull: "clone"}' 
+                                            :sort="false">
                                             <div class="li" v-for="(li, index) in item.draggableList" :key="index">{{li.label}}</div>
                                         </draggable>
                                     </div>
@@ -68,7 +74,7 @@
                     <p class="page_title">已保存的统计结果</p>
                     <ul>
                         <li v-for="(item, index) in statisticalResultsList" :key="index">
-                            <p>{{item.text}}<i class="icon el-icon-close"></i></p>
+                            <p>{{item.text}}<i class="icon el-icon-close" @click="onDeleteResult(item)"></i></p>
                         </li>
                     </ul>
                 </div>
@@ -112,13 +118,12 @@ export default {
                 { label: '性别11', type: 1}
             ],
             domainList: [
-                {label: '分组变量拖拽区域', draggableList: []},
-                {label: '结果变量拖拽区域', draggableList: []}
+                {type: 0, label: '将变量拖入此区可进行新的分析', draggableList: []},
+                {type: 1, label: '分组变量拖拽区域', draggableList: []},
+                {type: 1, label: '结果变量拖拽区域', draggableList: []}
             ],
             //被拖拽的目标对象
             targetElemnt: {},
-            //当前拖拽的目标索引
-            currentdomainIndex: null,
             statisticalResultsList: [
                 {text:'Xxx关于xxx的单因素分析 样本：队列1-实验组'},
                 {text:'Xxx关于xxx的单因素分析 样本：队列1-实验组'}
@@ -134,24 +139,40 @@ export default {
             this.activeTag = val;
         },
         //拖拽后的回调
-        onEndCallBack() {
-            if(this.currentdomainIndex != null) {
-                this.domainList.forEach((item)=>{
-                    item.draggableList = [];
-                })
-                this.domainList[this.currentdomainIndex].draggableList = [this.targetElemnt];
-            }else {
-                this.domainList.forEach((item,index)=>{
-                    if(item.draggableList.length != 0) {
-                        this.currentdomainIndex = index;
-                    }
-                })
+        onEndCallBack(data) {
+            if(data.to.dataset.id == undefined) {
+                return;
             }
+            this.domainList.forEach((item)=>{
+                item.draggableList = [];
+            })
+
+            this.domainList[data.to.dataset.id].draggableList = [this.targetElemnt];
         },
         //获取拖拽的对象
         draggableRemoveCallBack(data) {
-            console.log(data)
             this.targetElemnt = data.draggedContext.element;
+        },
+        //删除已保存的统计结果
+        onDeleteResult(item) {
+            this.$confirm('确认删除该条结果？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                // let formData = {
+                //     id: row.id
+                // };
+                // try {
+                //     let data = await this.$http.ORGdeleteUserList(formData);
+                //     if (data.code == '0') {
+                //         this.$mes('success',data.message || '删除成功');
+                //         this.getDataList(this.paging.currentPageNo, this.paging.currentPageSize);
+                //     }
+                // } catch (error) {
+                //     this.$mes('error', '删除出错');
+                // }
+            }).catch((error) => {});
         }
     }
 };
@@ -193,7 +214,7 @@ export default {
                     overflow-y: auto;
                     padding: 0 15px;
                     li {
-                        cursor: pointer;
+                        cursor: move;
                         border: 1px solid #EBEDF2;
                         height: 36px;
                         font-size: 14px;
@@ -275,7 +296,13 @@ export default {
                                         right: 0;
                                         left: 0;
                                         bottom: 0;
+                                        cursor: move;
                                         .li {
+                                            position: absolute;
+                                            top: 0 ;
+                                            right: 0;
+                                            left: 0;
+                                            bottom: 0;
                                             font-size: 20px;
                                             width: 100%;
                                             text-align: center;

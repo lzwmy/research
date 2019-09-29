@@ -1,25 +1,25 @@
 //项目进度
-const projectProgress = r => require.ensure([], () => r(require('packages/task/projectProgress/projectProgress')), 'projectProgress');
+const projectProgress = r => require.ensure([], () => r(require('packages/research/projectProgress/projectProgress')), 'projectProgress');
 //研究对象
-const researchObject = r => require.ensure([], () => r(require('packages/task/researchObject/researchObject')), 'researchObject');
+const researchObject = r => require.ensure([], () => r(require('packages/research/researchObject/researchObject')), 'researchObject');
 //随访管理
-const followUpManagement = r => require.ensure([], () => r(require('packages/task/followUpManagement/followUpManagement')), 'followUpManagement');
+const followUpManagement = r => require.ensure([], () => r(require('packages/research/followUpManagement/followUpManagement')), 'followUpManagement');
 //我的任务
-const myTasks = r => require.ensure([], () => r(require('packages/task/myTasks/myTasks')), 'myTasks');
+const myTasks = r => require.ensure([], () => r(require('packages/research/myTasks/myTasks')), 'myTasks');
 //统计分析
-const statisticalAnalysis = r => require.ensure([], () => r(require('packages/task/statisticalAnalysis/statisticalAnalysis')), 'statisticalAnalysis');
+const statisticalAnalysis = r => require.ensure([], () => r(require('packages/research/statisticalAnalysis/statisticalAnalysis')), 'statisticalAnalysis');
 //文章润色
-const articlesEmbellish = r => require.ensure([], () => r(require('packages/task/articlesEmbellish/articlesEmbellish')), 'articlesEmbellish');
+const articlesEmbellish = r => require.ensure([], () => r(require('packages/research/articlesEmbellish/articlesEmbellish')), 'articlesEmbellish');
 //组织管理
-const organizationManagement = r => require.ensure([], () => r(require('packages/task/organizationManagement/organizationManagement')), 'organizationManagement');
+const organizationManagement = r => require.ensure([], () => r(require('packages/research/organizationManagement/organizationManagement')), 'organizationManagement');
 //项目分组
-const projectGrouping = r => require.ensure([], () => r(require('packages/task/projectGrouping/projectGrouping')), 'projectGrouping');
+const projectGrouping = r => require.ensure([], () => r(require('packages/research/projectGrouping/projectGrouping')), 'projectGrouping');
 //研究指标
-const researchTarget = r => require.ensure([], () => r(require('packages/task/researchTarget/researchTarget')), 'researchTarget');
+const researchTarget = r => require.ensure([], () => r(require('packages/research/researchTarget/researchTarget')), 'researchTarget');
 //随访计划
-const followUpPlan = r => require.ensure([], () => r(require('packages/task/followUpPlan/followUpPlan')), 'followUpPlan');
+const followUpPlan = r => require.ensure([], () => r(require('packages/research/followUpPlan/followUpPlan')), 'followUpPlan');
 //操作记录
-const operationRecord = r => require.ensure([], () => r(require('packages/task/operationRecord/operationRecord')), 'operationRecord');
+const operationRecord = r => require.ensure([], () => r(require('packages/research/operationRecord/operationRecord')), 'operationRecord');
 
 const routes = [
     {

@@ -14,10 +14,14 @@ import researchModel from './researchModel/index';
 import fullTextSearch from  './fullTextSearch/index';
 import treatmentAnalysis from './treatmentAnalysis/index';
 import organizationManagement from './organizationManagement/index';
+import researchObject from './research/researchObject/index';
 import researchTask from './researchTask/index';
+import projectGrouping from './research/projectGrouping/index';
+import followUpPlan from './research/followUpPlan/index';
+
 //病种概览
 import diseaseChart from './diseaseChart';
 //CRF 2.0
 import CRFConfig from './CRFConfig';
-const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask);
+const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,projectGrouping,followUpPlan);
 export default http;

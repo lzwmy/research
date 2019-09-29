@@ -177,6 +177,8 @@ export default {
             height: 100%;
             flex-grow: 0;
             border: 1px solid #D8D8D8;
+            border-bottom: none;
+            border-left: none;
             overflow: auto;
             .el-tree-node__label {
                 width: 90px;

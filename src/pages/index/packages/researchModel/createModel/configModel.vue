@@ -478,7 +478,7 @@
       }
     }
     .research_content_box{
-      margin: 20px 0;
+      margin-bottom: 15px;
       padding: 20px;
       background-color: #ffffff;
       border:1px solid #E5EBEC;
@@ -526,7 +526,7 @@
     }
     .research_box{
       background-color: #ffffff;
-      padding: 20px;
+      padding: 10px;
       border:1px solid #E5EBEC;
       box-sizing: border-box;
     }

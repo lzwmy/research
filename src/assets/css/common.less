@@ -17,28 +17,18 @@ body .el-dialog {
         justify-content: space-between;
         align-items: center;
         padding: 0 20px;
-        border-bottom: 1px solid rgba(229, 235, 236, 1);
+        // border-bottom: 1px solid rgba(229, 235, 236, 1);
         .el-dialog__title {
-            color: #333;
+            color: #394263;
+            font-weight: bold;
             font-size: 16px;
         }
         .el-dialog__headerbtn {
             position: static;
-            // .el-icon-close {
-                // color: rgba(151, 155, 170, 1);
-                // font-size: 20px;
-                // font-family: "iconfont" !important;
-                // &:hover {
-                //     color: #333;
-                // }
-                // &::before {
-                //     content: '\e630';
-                // }
-            // }
         }
     }
     .el-dialog__body{
-        padding: 35px 35px 75px;
+        padding: 15px 35px 55px;
     }
     .el-dialog__body:last-child {
         padding: 35px;
@@ -90,12 +80,6 @@ body .el-dialog {
         }
     }
 }
-// /* 内页全屏弹框 */
-// body .insideView ~ .el-dialog__wrapper {
-//     .is-fullscreen {
-
-//     }
-// }
 
 /* 确认弹框style*/
 body .el-message-box__wrapper {
@@ -281,7 +265,8 @@ body {
         .el-button--text,
         .el-button--default:hover,
         .el-loading-spinner .el-loading-text,
-        .el-checkbox__input.is-checked+.el-checkbox__label {
+        .el-checkbox__input.is-checked+.el-checkbox__label,
+        .el-radio__input.is-checked+.el-radio__label {
             color: @themeColor2;
         }
         .el-loading-spinner .path {
@@ -297,7 +282,8 @@ body {
             border-color: @themeColor2;
         }
         .el-checkbox__input.is-checked .el-checkbox__inner,
-        .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        .el-checkbox__input.is-indeterminate .el-checkbox__inner,
+        .el-radio__input.is-checked .el-radio__inner {
             border-color: @themeColor2;
             background-color: @themeColor2;
         }
@@ -341,11 +327,13 @@ body {
         .el-year-table td.current:not(.disabled) .cell,
         .el-month-table td .cell:hover,
         .cloud-pagination .el-pagination .btn-prev,
-        .cloud-pagination .el-pagination .btn-next {
+        .cloud-pagination .el-pagination .btn-next,
+        .el-radio__input.is-checked+.el-radio__label {
             color: @themeColor2;
         }
         .el-checkbox__input.is-checked:not(.is-disabled) .el-checkbox__inner,
         .el-checkbox__input.is-indeterminate .el-checkbox__inner,
+        .el-radio__input.is-checked .el-radio__inner,
         .el-radio__input.is-checked .el-radio__inner {
             border-color: @themeColor2;
             background-color: @themeColor2;

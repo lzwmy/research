@@ -143,8 +143,8 @@
         },
         resize() {
           let height = $('.config_model_container').height();
-          $('.research_box').height(height - 210);
-          $('.research_body_container').height(height-184);
+          $('.research_box').height(height - 165);
+          $('.research_body_container').height(height-160);
         },
         //查询项
         searchTab() {
@@ -353,15 +353,12 @@
   position: relative;
   .tab_switch{
     width: auto;
-    // position: absolute;
     top: 0;
     left: 0;
     font-size: 14px;
     .search_tab{
       float: left;
       padding: 11px 40px;
-      /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
-      /*border-radius:1px;*/
       border:1px solid #E5EBEC;
       border-bottom-color: transparent;
       cursor: pointer;
@@ -372,8 +369,6 @@
       float: left;
       padding: 11px 40px;
       margin: 0 4px;
-      /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
-      /*border-radius:1px;*/
       border:1px solid #E5EBEC;
       border-bottom-color: transparent;
       cursor: pointer;
@@ -383,8 +378,6 @@
     .show_tab{
       float: left;
       padding: 11px 40px;
-      /*background:linear-gradient(360deg,rgba(244,247,250,1) 0%,rgba(255,255,255,1) 100%);*/
-      /*border-radius:1px;*/
       border:1px solid #E5EBEC;
       border-bottom-color: transparent;
       cursor: pointer;
@@ -409,7 +402,6 @@
     position: relative;
     z-index: 1;
     height: 41px;
-    /*background: #fff !important;*/
     background: #1bbae1 !important;
     color: #ffffff;
     border-left: 1px solid #1bbae1 !important;
@@ -419,13 +411,11 @@
     border-top-right-radius: 2px !important;
   }
   .show_search_tab,.show_exprot_tab,.show_tab_line{
-    // position: absolute;
     top: 38px;
     width: 100%;
-    // min-height: 420px;
-    padding: 16px 16px 16px 16px;
+    padding: 10px 10px 0px 0px;
     position: absolute;
-    bottom: 50px;
+    bottom: 8px;
     left: 0;
     float: left;
     margin-top: 2px;
@@ -436,9 +426,10 @@
       height: 100%;
       background:rgba(255,255,255,1);
       border:1px solid rgba(216,216,216,1);
+      border-left: none;
+      border-bottom: none;
       padding: 5px;
       box-sizing: border-box;
-      /*display: inline-block;*/
       vertical-align: top;
       float: left;
       overflow: auto;
@@ -446,7 +437,6 @@
     .search_tab_component{
       display: inline-block;
       width: 81%;
-      /*height: 100%;*/
       margin-bottom: 1%;
       float: right;
       margin-left: 5px;

@@ -2,7 +2,9 @@
   <div class="cloud-component userManage">
     <div class="component_head flex-between-center">
       <p>{{$route.meta.txt}}</p>
-      <div class="head_content"></div>
+      <div class=" cur_pointer head_content flex-start-center">
+        <el-button type="primary" @click="add" icon="el-icon-plus">新建</el-button>
+      </div>
     </div>
     <!-- 搜索区域 -->
     <div class="cloud-search  el-form-item-small">
@@ -23,9 +25,6 @@
           <el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
           <el-button @click="reset" icon="el-icon-refresh-left">重置</el-button>
         </el-form-item>
-        <el-form-item class="zfr">
-          <el-button type="primary" @click="add" icon="el-icon-plus">新建</el-button>
-        </el-form-item>
       </el-form>
     </div>
     <!--搜索结果-->
@@ -35,26 +34,26 @@
           :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
           :data="dataList.content" style="width: 100%" v-loading="loading" empty-text="暂无数据"
           :element-loading-text="elementLoadingText">
-          <el-table-column prop="index" label="序号" min-width="5%"></el-table-column>
-          <el-table-column prop="account" label="账号" min-width="8%" show-overflow-tooltip>
+          <el-table-column prop="index" label="序号" width="80"></el-table-column>
+          <el-table-column prop="account" label="账号" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="userName" label="用户名" min-width="8%" show-overflow-tooltip>
+          <el-table-column prop="userName" label="用户名" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="role" label="角色" min-width="10%" show-overflow-tooltip>
+          <el-table-column prop="role" label="角色" show-overflow-tooltip>
             <template slot-scope="scope">
               <span v-for="role,index in scope.row.roleList" :key="role.roleId">{{role.roleName}}<span
                 v-if="index != scope.row.roleList.length-1">、</span></span>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="用户状态" min-width="5%" show-overflow-tooltip>
+          <el-table-column prop="status" label="用户状态" show-overflow-tooltip>
             <template slot-scope="scope">
               <span v-if="scope.row.status == 0">启用</span>
               <span class='zwarning' v-else>禁用</span>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" min-width="6%" prop="createTime" show-overflow-tooltip>
+          <el-table-column label="创建时间"  prop="createTime" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column label="更新时间" min-width="6%" prop="updateTime" show-overflow-tooltip>
+          <el-table-column label="更新时间"  prop="updateTime" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" width="260">
             <template slot-scope="scope"

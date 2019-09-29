@@ -13,12 +13,19 @@
                 <div class="aside">
                     <p class="label text_center">项目分组</p>
                     <ul id="groupUl">
-                        <li v-for="(item, index) in groupList" :key="index" :class="index == activeGroup?'active':''" @click="selectGroup(index,item)">
+                        <li 
+                            v-for="(item, index) in groupList" 
+                            :key="index" 
+                            class="aside_li text_center" 
+                            :class="index == activeGroup?'active':''" 
+                            @click="selectGroup(index,item)"
+                            @dblclick="editGroup(index)">
                             <span v-show="!item.edit">{{item.name}}</span>
-                            <el-input @keyup.enter.native="addGroup(index)" @blur="addGroup(index)" class="addOrg" v-show="item.edit" v-model="item.name"></el-input>
+                            <el-input @keyup.enter.native="addGroup(index)" @blur="addGroup(index)" class="groupUl" v-show="item.edit" v-model="item.name"></el-input>
                             <el-popover
                                 placement="bottom"
-                                popper-class="stepThree_popper"
+                                v-show="!item.edit"
+                                popper-class="more_popper"
                                 trigger="hover">
                                 <i  slot="reference" class="icon el-icon-more"></i>
                                 <ul class="stepThree_ul">
@@ -54,7 +61,6 @@ export default {
         }
     },
     created() {
-        console.log(this.formData)
         this.formData.proType = 'edit';
     },
     methods: {
@@ -167,6 +173,7 @@ export default {
 </script>
 
 <style lang="less"> 
+    @import url('../../research/css/common.less');
     .stepThree {
         .box {
             height: 430px;
@@ -186,29 +193,6 @@ export default {
                 overflow-y: auto;
                 ul {
                     li {
-                        line-height: 40px;
-                        text-align: center;
-                        border-bottom: 1px solid rgba(235, 237, 242, 1);
-                        border-left: 3px solid transparent;
-                        cursor: pointer;
-                        position: relative;
-                        &.active {
-                            background:rgba(240,247,255,1);
-                            border: none;
-                            border-left: 3px solid rgba(67, 154, 255, 1);
-                        }
-                        &:hover .icon {
-                            opacity: 1;
-                        }
-                        .icon {
-                            position: absolute;
-                            top: 6px;
-                            right: 2px;
-                            transform: rotate(90deg);
-                            font-size: 16px;
-                            color: #666;
-                            opacity: 0;
-                        }
                     }
                 }
                 .plus {
@@ -216,11 +200,6 @@ export default {
                     border: 1px solid rgba(67, 154, 255, 1);
                     color: rgba(67, 154, 255, 1);
                 }
-                // .plus {
-                //     margin: 20px auto;
-                //     width: 100%;
-                //     line-height: 38px;
-                // }
             }
             .content {
                 flex: 1;
@@ -231,19 +210,7 @@ export default {
             }
         }
     }
-    .stepThree_popper {
-        padding: 0;
-        min-width: 80px;
-        ul li {
-            line-height: 36px;
-            text-align: center;
-            cursor: pointer;
-            &:hover {
-                background-color: #e9f6ff;
-                color: #4db3fe;
-            }
-        }
-    }
+    
 </style>
 
 

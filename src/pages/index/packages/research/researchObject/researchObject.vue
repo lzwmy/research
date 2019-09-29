@@ -23,7 +23,7 @@
         <!-- 搜索区域 -->
         <div class="cloud-search flex-between-center">
             <div class="search_group flex-start-center">
-                <div v-for="(item, index) in 3" :key="index" class="group_item" :class="activeGroup==index+1?'active':''" @click="selectGroup(index+1)">分组{{item+1}} <span class="badge">12</span> </div>
+                <div v-for="(item, index) in groupList" :key="index" class="group_item" :class="activeGroup==index?'active':''" @click="selectGroup(item,index)">{{item.groupName}} <span class="badge">12</span> </div>
                 <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView">
                     <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i> 搜索</div>
                     <el-form :inline="true" :model="form" label-width="110px" class="flex-start-center flex-wrap researchObject_search">
@@ -115,35 +115,35 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table 
-                    ref="refTable"
-                    fit
+                    ref="refTable" fit
                     :data="dataList.content"
                     v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)">
                     <el-table-column type="selection"></el-table-column>
-                    <el-table-column label="入组序号" width="90">
-                        <template slot-scope="scope">
-                            1
-                        </template>
-                    </el-table-column>
-                    <!-- <el-table-column 
-                        :prop="column.name" 
+                    <el-table-column 
+                        v-for="column in dataList.header"
+                        :prop="column.prop" 
                         :label="column.label" 
                         sortable 
-                        v-for="column in conditionViewList"
-                        :key="column.name" 
-                        :width="column.name == 'GENDER_NAME'?'80px':'' || column.name == 'AGE'?'80px':'' "
+                        :key="column.prop" 
+                        :width="column.prop == 'patientId'?'110px':''"
+                        v-if="column.type !='report'"
                         show-overflow-tooltip>
-                    </el-table-column> -->
-                    <el-table-column type="index" label="序号" width="90px"></el-table-column>
-                    <el-table-column prop="b" label="手机号"></el-table-column>
-                    <el-table-column prop="c" label="机构"></el-table-column>
-                    <el-table-column prop="d" label="科室"></el-table-column>
-                    <el-table-column prop="e" label="职称"></el-table-column>
-                    <el-table-column prop="a" label="研究内容">
-                        <el-table-column prop="v" label="用户名1"></el-table-column>
-                        <el-table-column prop="f" label="用户名2"></el-table-column>
+                    </el-table-column>
+                    <el-table-column label="研究内容">
+                        <span v-for="li in dataList.header" :key="li.prop" >
+                            <el-table-column 
+                                v-if="li.type=='report'"
+                                :prop="li.prop" 
+                                :label="li.label" 
+                                :key="li.prop">
+                                <template slot-scope="scope">
+                                    <el-button v-if="JSON.parse(scope.row[li.prop]) && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconbianji3"></el-button>
+                                    <el-button v-else type="text" icon="icon iconfont iconwancheng"></el-button>
+                                </template>
+                            </el-table-column>
+                        </span>
                     </el-table-column>
                     <el-table-column width="80">
                         <template slot="header" slot-scope="scope">
@@ -177,8 +177,9 @@ export default {
     mixins: [mixins],
     data () {
         return {
+            groupList: [],
             dataList: {
-                content: [{a:'1',b:12}]
+                content: []
             },
             importData: {
                 title: "批量导入研究数据",
@@ -216,8 +217,8 @@ export default {
             }
         }
     },
-    watch: {
-        
+    created() {
+        this.getGroupList();
     },
     components: {
         echartsContain,
@@ -232,13 +233,32 @@ export default {
         handleSelectionChange(val) {
             this.multipleSelection = val;
         },
-        selectGroup(index) {
+        selectGroup(item, index) {
+            this.getDataList(0,15,item);
             this.activeGroup = index;
         },
         selectCrf(index) {
             this.activeCrf = index;
         },
-        async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+        async getGroupList() {
+            this.groupLoading = true;
+            let params = {
+                subjectInfoId: this.$store.state.user.researchID
+            }
+            try {
+                let res = await this.$http.projectGroupingGroup(params);
+                if (res.code == '0') {
+                    this.groupList = res.data;
+                }else {
+                    this.$mes('error', res.msg);
+                }
+                this.groupLoading = false;
+            } catch (err) {
+                this.groupLoading = false;
+                console.log(err)
+            }
+        },
+        async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize,item) {
             let that = this;
             that.tableLoading = true;
             that.paging.currentPageNo = pageNo;
@@ -247,23 +267,37 @@ export default {
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
-                args: {
-                    
-                }
+                subjectInfoId: this.$store.state.user.researchID,
+                subjectGroupId: item.id,
+                createTime: '',
+                endTime: '',
+                formCrfId: '',
+                formCrfStatus: 0,
+                patientStatus: 0
             };
             try {
-                // let res = await that.$http.RRMgetDataList(formData);
-                // if (res.code == '0') {
-                //     let obj = {};
-                //     obj.content = res.data.args;
-                //     obj.pageNo = pageNo;
-                //     obj.pageSize = pageSize;
-                //     obj.totalCount = parseInt(res.data.totalElements);
-                //     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
-                //     that.dataList = obj;
-                // }else {
-                //     this.$mes('error', res.msg);
-                // }
+                let res = await that.$http.researchObjectTable(formData);
+                if (res.code == '0') {
+                    let obj = {
+                        content: res.data.body,
+                        header: res.data.header
+                    };
+                    console.log(res.data.body)
+                    res.data.body.forEach(item=>{
+                        // console.log(JSON.parse(JSON.stringify({"crfId":"1","status":"1"})))
+                        console.log(JSON.parse(item.report_1))
+                        // console.log(Object.assign({},item.report_1))
+                    })
+
+                    // obj.content = res.data.args;
+                    // obj.pageNo = pageNo;
+                    // obj.pageSize = pageSize;
+                    // obj.totalCount = parseInt(res.data.totalElements);
+                    // obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
+                    that.dataList = obj;
+                }else {
+                    this.$mes('error', res.msg);
+                }
                 that.tableLoading = false;
             } catch (err) {
                 that.tableLoading = false;
@@ -298,7 +332,7 @@ export default {
     }
     .researchObject {
         .el-table {
-            padding: 0;
+            padding: 0 !important;
         }
         .el-table__header-wrapper .el-button {
             padding: 0;

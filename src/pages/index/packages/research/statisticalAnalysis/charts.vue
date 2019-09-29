@@ -36,6 +36,6 @@ export default {
 <style lang='less' scoped>
     .chartContent {
         width: 100%;
-        height: 280px;
+        height: 290px;
     }
 </style>

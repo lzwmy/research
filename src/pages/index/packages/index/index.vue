@@ -100,7 +100,7 @@ export default {
               enabled:false
           }
       },
-      //课程病例数分布
+      //课程病例数统计
       subjectOption:{
         chart: {
           type: 'column',
