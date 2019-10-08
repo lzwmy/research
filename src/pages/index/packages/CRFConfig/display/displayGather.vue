@@ -22,7 +22,8 @@
     <div v-if="!isFold"  :class="['view_content',{'width_container':item.gatherRank=='1'}]">
       <!--集合上下排列-->
       <div :class="item.controlType+'_bg_color'" style="padding-left:55px;" v-if="item.gatherRank=='0'"  @click="popMehtod">
-        <div  style="margin-top:15px" v-for="(it,index) in item.children" :key="index" :layoutData="layoutInfo(it,index,item.children)">
+        <!--style="margin-top:15px"-->
+        <div   v-for="(it,index) in item.children" :key="index" :layoutData="layoutInfo(it,index,item.children)">
           <el-row v-if="it.baseProperty.layout.wrap == '1'" style="display: inline-block">
             <el-col :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
               <display-input v-if="it.controlType=='SINGLE_INPUT'" :item="it" :report="getData(it)"/>
