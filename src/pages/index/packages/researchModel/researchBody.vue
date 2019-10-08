@@ -359,30 +359,33 @@
     .search_tab{
       float: left;
       padding: 11px 40px;
-      border:1px solid #E5EBEC;
+      border:1px solid #F3F3F9;
       border-bottom-color: transparent;
       cursor: pointer;
       border-top-left-radius: 2px;
       border-top-right-radius: 2px;
+      background-color: #E5EBEC;
     }
     .exprot_tab{
       float: left;
       padding: 11px 40px;
-      margin: 0 4px;
-      border:1px solid #E5EBEC;
+      /*margin: 0 4px;*/
+      border:1px solid #F3F3F9;
       border-bottom-color: transparent;
       cursor: pointer;
       border-top-left-radius: 2px;
       border-top-right-radius: 2px;
+      background-color: #E5EBEC;
     }
     .show_tab{
       float: left;
       padding: 11px 40px;
-      border:1px solid #E5EBEC;
+      border:1px solid #F3F3F9;
       border-bottom-color: transparent;
       cursor: pointer;
       border-top-left-radius: 2px;
       border-top-right-radius: 2px;
+      background-color: #E5EBEC;
     }
     .display_text{
       color: rgb(217, 85, 85);
@@ -402,11 +405,11 @@
     position: relative;
     z-index: 1;
     height: 41px;
-    background: #1bbae1 !important;
-    color: #ffffff;
-    border-left: 1px solid #1bbae1 !important;
-    border-top: 1px solid #1bbae1 !important;
-    border-right: 1px solid #1bbae1 !important;
+    background: #ffffff !important;
+    color: #394263;
+    border-left: 1px solid #d8d8d8 !important;
+    border-top: 1px solid #d8d8d8 !important;
+    border-right: 1px solid #d8d8d8 !important;
     border-top-left-radius: 2px !important;
     border-top-right-radius: 2px !important;
   }

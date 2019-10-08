@@ -30,11 +30,11 @@
         <div class="export_nav_box">
           <div class="personal_box">
             <span>
-              <i class="iconfont iconbingren"></i>
+              <i class="iconfont iconbingren1"></i>
               {{dynamicTableDataList.patientCount}}例
             </span>
             <span>
-              <i class="iconfont iconbaogao"></i>
+              <i class="iconfont iconbingli"></i>
               {{dynamicTableDataList.crfSum}}例
             </span>
           </div>
@@ -293,7 +293,7 @@
           i{
             color: #04B8DD;
             font-size: 19px;
-            padding-right: 12px;
+            padding-right: 8px;
           }
           &:last-child{
             font-size: 14px;
