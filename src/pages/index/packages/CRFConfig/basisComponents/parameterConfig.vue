@@ -9,12 +9,11 @@
                   <div class="layout_title">
                     <div class="layout_name">布局</div>
                     <div class="layout_item-box">
-                      <!--<span class="name_item">上一行</span>-->
-                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.wrap===0}" @click="changeColumn(0)">上一行</span>
-                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===1&&basicDataInfo.obj.baseProperty.layout.wrap===1}" @click="changeColumn(1)">单列</span>
-                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===2&&basicDataInfo.obj.baseProperty.layout.wrap===1}" @click="changeColumn(2)">双列</span>
-                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===3&&basicDataInfo.obj.baseProperty.layout.wrap===1}" @click="changeColumn(3)">三列</span>
-                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===4&&basicDataInfo.obj.baseProperty.layout.wrap===1}" @click="changeColumn(4)">四列</span>
+                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.wrap==0}" @click="changeColumn(0)">{{$store.state.CRFConfig.basisIndex == 0 ? '不换行' : '上一行'}}</span>
+                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===1&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(1)">单列</span>
+                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===2&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(2)">双列</span>
+                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===3&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(3)">三列</span>
+                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===4&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(4)">四列</span>
                     </div>
                   </div>
                   <!--单列-->
@@ -22,15 +21,15 @@
                   <!--双列-->
                   <div class="column_2" v-if="basicDataInfo.obj.baseProperty.layout.columns===2" >
                     <!--selectList.includes(item)-->
-                    <el-button class="column_item-12" :disabled="item.selection"  v-for="(item,index) in basicDataInfo.obj.baseProperty.layout.displayChecked" :key="index" :class="{active:selectList.includes(item),'disabledActive':item.selection}" @click="selectLayout(item)"></el-button>
+                    <el-button class="column_item-12" :disabled="item.selection"  v-for="(item,index) in basicDataInfo.obj.baseProperty.layout.displayChecked" :key="index" :class="{active:changeState(item),'disabledActive':item.selection}" @click="selectLayout(item)"></el-button>
                   </div>
                   <!--三列-->
                   <div class="column_3" v-if="basicDataInfo.obj.baseProperty.layout.columns===3">
-                    <el-button class="column_item-8" :disabled="item.selection" v-for="(item,index) in basicDataInfo.obj.baseProperty.layout.displayChecked" :key="index" :class="{active:selectList.includes(item),'disabledActive':item.selection}" @click="selectLayout(item)"></el-button>
+                    <el-button class="column_item-8" :disabled="item.selection" v-for="(item,index) in basicDataInfo.obj.baseProperty.layout.displayChecked" :key="index" :class="{active:changeState(item),'disabledActive':item.selection}" @click="selectLayout(item)"></el-button>
                   </div>
                   <!--四列-->
                   <div class="column_4" v-if="basicDataInfo.obj.baseProperty.layout.columns===4">
-                    <el-button class="column_item-6" :disabled="item.selection" v-for="(item,index) in basicDataInfo.obj.baseProperty.layout.displayChecked" :key="index" :class="{active:selectList.includes(item),'disabledActive':item.selection}" @click="selectLayout(item)"></el-button>
+                    <el-button class="column_item-6" :disabled="item.selection" v-for="(item,index) in basicDataInfo.obj.baseProperty.layout.displayChecked" :key="index" :class="{active:changeState(item),'disabledActive':item.selection}" @click="selectLayout(item)"></el-button>
                   </div>
                 </div>
               </el-form-item>
@@ -498,7 +497,7 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane class="range_container" label="值域" name="range"
-                       v-if="controlType=='NUMBER_INPUT'||controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'||controlType=='RADIO_BUTTON'||controlType=='CHECKBOX'||controlType=='GATHER'">
+                       v-if="(controlType=='NUMBER_INPUT'&&basicDataInfo.obj.termUnit.numberIsSwitch == '0')||controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'||controlType=='RADIO_BUTTON'||controlType=='CHECKBOX'||controlType=='GATHER'">
             <el-form class="alignment">
               <el-form-item label="值域选项">
                 <el-input type="textarea" :rows="5" v-model="basicDataInfo.obj.termSet.rangeText" ></el-input>
@@ -547,7 +546,6 @@
           }
         },
         "selectList":function (value) {
-          /*console.log(value)*/
           this.basicDataInfo.obj.baseProperty.layout.selection = value;
           // this.basicDataInfo.obj.baseProperty.layout.displayChecked = value;
         },
@@ -705,6 +703,7 @@
           // console.log(this.basicDataInfo.obj.controlDisplayName);
           if(data ==0) {
             this.basicDataInfo.obj.baseProperty.layout.wrap = data;
+            this.selectList = [];
             this.processTopLine(data);
             return ;
           }
@@ -723,7 +722,6 @@
             // this.selectList.push(this.column4[0]);
             this.basicDataInfo.obj.baseProperty.layout.displayChecked = JSON.parse(JSON.stringify(this.column4));
           }
-
         },
         //处理 上一行 逻辑
         processTopLine(data) {
@@ -762,7 +760,12 @@
             }
           }*/
           if(index == 0) {
-              console.log('没有上一行');
+            this.$notify.info({
+              title: '警告',
+              message: '第一行不能不能点击上一行，默认第一行',
+              duration:1000
+            });
+            this.basicDataInfo.obj.baseProperty.layout.wrap = 1;
             return ;
           }
           let copyLine = Object.assign({},JSON.parse(JSON.stringify(prevData[index-1].baseProperty.layout)));
@@ -777,9 +780,27 @@
           copyLine.wrap = 0;
           this.basicDataInfo.obj.baseProperty.layout = copyLine;
         },
+        //更新 选择状态
+        changeState(data) {
+          let status = false;
+         this.selectList.forEach(item=>{
+           if(item.position == data.position) {
+             status = true
+           }
+         });
+          return status;
+        },
         //布局 位置选择
         selectLayout(item) {
-          const index = this.selectList.indexOf(item);
+          // const index = this.selectList.indexOf(item);
+          let index;
+          if(this.selectList.length!==0) {
+            for(let i=0;i<this.selectList.length;i++) {
+              if(this.selectList[i].position == item.position) {
+                index = i;
+              }
+            }
+          };
           if(index > -1) {
             if(this.layoutColumn ===3&&this.selectList.length==3){
               if(item.position==2) {
@@ -1093,7 +1114,7 @@
             newData.obj.baseProperty.bindingInfo.viewId;
           this.dataSetting.filter = newData.obj.baseProperty.bindingInfo.list;
           //布局 选中框
-          console.log(newData.obj.baseProperty);
+          // console.log(newData.obj.baseProperty.layout.selection.includes(newData.obj.baseProperty.layout.displayChecked[0]));
           this.selectList = newData.obj.baseProperty.layout.selection;
           this.layoutColumn = newData.obj.baseProperty.layout.columns;
           if (!this.dataSetting.filter) {
@@ -1147,7 +1168,7 @@
       },
       mounted(){},
       created() {
-        // console.log(this.basicDataInfo);
+        // console.log(this.basicDataInfo.obj.baseProperty.layout);
         //初始化集合
         this.searchBindingTypeList();
         this.searchBindingViewList();
@@ -1179,7 +1200,9 @@
           .name_item{
             padding: 2px 10px;
             cursor: pointer;
-            background-color: #F5F7FA;
+            /*background-color: #F5F7FA;*/
+            background-color: #E5EBEC;
+            border: 1px solid #E5EBEC;
             &:first-child{
               border-radius:2px 0 0 2px;
             }
@@ -1196,8 +1219,9 @@
             }
           }
           .active{
-            color: #ffffff;
-            background-color: #9CA0B1;
+            /*color: #ffffff;*/
+            color: #394263;
+            background-color: #ffffff;
           }
           :hover{
             background-color: #9CA0B1;
@@ -1221,18 +1245,20 @@
         .column_item-12{
           width: 50%;
           height: 36px;
-          border: 1px solid #E5EBEC;
+          /*border: 1px solid #E5EBEC;*/
+          border: 1px solid #F3F3F9;
           cursor: pointer;
         }
         .active{
-          background-color: #9CA0B1;
-          border-color: #9CA0B1;
+          background-color: #E5EBEC;
+          border-color: #E5EBEC;
           &:last-child{
-            border-left-color: #ffffff;
+            border-left-color: #F3F3F9;
           }
         }
         .disabledActive{
-          background: rgba(27,186,225,0.5);
+          /*background: rgba(27,186,225,0.5);*/
+          border:1px dashed;
         }
       }
       .column_3{
@@ -1245,19 +1271,20 @@
         .column_item-8{
           width: 33.33%;
           height: 36px;
-          border: 1px solid #E5EBEC;
+          border: 1px solid #F3F3F9;
           cursor: pointer;
         }
         .active{
-          background-color: #9CA0B1;
-          border-color: #9CA0B1;
-          border-right-color: #ffffff;
+          background-color: #E5EBEC;
+          border-color: #E5EBEC;
+          border-right-color: #F3F3F9;
           &:last-child{
-            border-left-color: #9CA0B1;
+            border-left-color: #F3F3F9;
           }
         }
         .disabledActive{
-          background: rgba(27,186,225,0.5);
+          /*background: rgba(27,186,225,0.5);*/
+          border:1px dashed;
         }
       }
       .column_4{
@@ -1270,19 +1297,19 @@
         .column_item-6{
           width: 25%;
           height: 36px;
-          border: 1px solid #E5EBEC;
+          border: 1px solid #F3F3F9;
           cursor: pointer;
         }
         .active{
-          background-color: #9CA0B1;
-          border-color: #9CA0B1;
-          border-right-color: #ffffff;
+          background-color: #E5EBEC;
+          border-color: #E5EBEC;
+          border-right-color: #F3F3F9;
           &:last-child{
-            border-left-color: #9CA0B1;
+            border-left-color: #F3F3F9;
           }
         }
         .disabledActive{
-          background: rgba(27,186,225,0.5);
+          border:1px dashed;
         }
       }
     }
@@ -1354,6 +1381,14 @@
         font-size: 12px;
         color: #394263;
       }
+    }
+  }
+  .config_select-content{
+    .el-tabs__item{
+      background-color: #E5EBEC;
+    }
+    .el-tabs__item.is-active{
+      background-color: #ffffff;
     }
   }
 </style>

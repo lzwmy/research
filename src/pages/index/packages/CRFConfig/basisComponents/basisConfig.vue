@@ -1,11 +1,11 @@
 <template>
     <div class="basis_config_container">
-      <div class="component_head flex-between-center">
+      <!--<div class="component_head flex-between-center">
         <p>{{$route.query.type=='add' ? '新建' :'编辑'}}小节</p>
         <div class="head_content cur_pointer">
           <i class="iconfont iconguanbi" @click="close"></i>
         </div>
-      </div>
+      </div>-->
       <div class="basis_nav-box">
         <div class="nav_info-content">
           <div class="portion_input-left">
@@ -34,7 +34,7 @@
             <div class="content-line">
               <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
               <span class="content_must-fill">*</span>-->
-              <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" :autofocus="true"></el-input>
+              <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" ></el-input>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
               <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem,basisIndex,basisDataList)">
@@ -62,7 +62,7 @@
               <i class="iconfont iconfuhao2 gray" v-if="basisItem.displayIsVisible=='0'" @click="isVisible(basisItem)"></i>
               <i class="iconfont iconfuhao2" v-else @click="isVisible(basisItem)"></i>
               <!--设置-->
-              <i class="iconfont iconfuhao7" v-if="basisItem.controlType!==''" @click="changeParameterConfig(basisItem)"></i>
+              <!--<i class="iconfont iconfuhao7" v-if="basisItem.controlType!==''" @click="changeParameterConfig(basisItem)"></i>-->
               <!--添加-->
               <i class="iconfont iconfuhao1"
                  v-if="basisItem.controlType=='GATHER'||basisItem.controlType=='TABLE'"
@@ -76,10 +76,9 @@
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
-            {{basisItem.baseProperty.layout}}
+            <!--{{basisDataInfo}}-->
             <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
           </div>
-         <!-- <div>{{basisDataList}}</div>-->
         </div>
         <div class="basis_content_config blank_page" v-else>
           <img src="./image/none_content.png" alt="">
@@ -113,11 +112,26 @@
   import addItemData from './addItemData';
   import configPortionPreview from './configPortionPreview';
     export default {
+      props:{
+        configData:{
+          type:Object,
+          default:null
+        }
+      },
       components:{
         basisComponent,
         parameterConfig,
         addItemData,
         configPortionPreview
+      },
+      watch:{
+        "$store.state.CRFConfig.basisDataInfo":{
+          deep:true,
+          handler:function (data) {
+            // console.log('发生改变',data);
+            this.basisDataInfo = data;
+          }
+        }
       },
       data() {
         return {
@@ -290,7 +304,6 @@
           };
           data.gatherKnowType=0;
           data.inputValue="";
-
           data.gatherRank=data.controlType=='TABLE'? 1 : 0;
           data.gatherColumnNumber=2;
           data.gatherIsVisible=1;
@@ -361,6 +374,15 @@
           array.splice(index-1,0,copyLine);
           array.splice(index+1,1);
           this.basisDataInfo = {};
+          // 清除 当前一下 所有 layOut 布局数据
+          for(let i=index;i<array.length;i++) {
+            array[i].baseProperty.layout = {
+              "columns":1,
+              "selection":[],
+              "wrap":1,
+              "displayChecked":[]
+            }
+          }
         },
         //下移
         moveDown(data,index,array) {
@@ -376,8 +398,18 @@
             "displayChecked":[]
           };
           array.splice(index+2,0,copyLine);
-          array.splice(index,1)
+          array.splice(index,1);
           this.basisDataInfo = {};
+          console.log(array[index]);
+          //清空向下移所有 layout 布局信息
+          for(let i=index+1;i<array.length;i++) {
+            array[i].baseProperty.layout = {
+              "columns":1,
+              "selection":[],
+              "wrap":1,
+              "displayChecked":[]
+            }
+          }
         },
         //添加条目 -- 显示弹框
         addItem() {
@@ -418,9 +450,10 @@
         },
         //保存
         saveBtn() {
-          let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
-          if(this.$route.query.type == 'add') {
-            this.portionSave().then(()=>{
+          // let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+          if(this.configData.type == 'add') {
+            console.log('触发')
+            this.portionSave()/*.then(()=>{
               let formData = {
                 "formCrfId": "",
                 "formPortionId": "",
@@ -428,22 +461,18 @@
                 "diseaseId":this.$route.query.id,
                 "formItemList": this.basisDataList||[]
               };
-              temporarySave.dataList.push(formData);
-              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
-            });
-          }else if(this.$route.query.type == 'modify') {
+            });*/
+          }else if(this.configData.type == 'modify') {
             this.portionModifySave().then(()=>{
-              let i = this.$route.query.i;
               let formData = {
-                // "formCrfId": this.$route.query.crfId,
-                "id": this.$route.query.portionId,
+                "id": this.configData.id,
                 "portionName": this.portionName,
                 "diseaseId": this.$route.query.id,
-                "formItemList": this.basisDataList||[]
+                "formItemList": this.basisDataList||[],
+                "index":this.configData.index,
+                "type":this.configData.type
               };
-              // temporarySave.dataList.push(formData);
-              temporarySave.dataList[i] = formData;
-              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+              this.$emit('portion-callback-data',formData);
             })
           }
         },
@@ -460,15 +489,15 @@
               Object.assign({},JSON.parse(JSON.stringify(item)))
             )
           });
-          this.portionPreviewData.portionName = this.portionName || "";
-          this.portionPreviewData.formItemList = array;
+          this.portionPreviewData.portionName = JSON.parse(JSON.stringify(this.portionName)) || "";
+          this.portionPreviewData.formItemList = JSON.parse(JSON.stringify(array));
         },
         // 配置小节 新增保存
         async portionSave() {
           let that = this;
           let formData = {
-            "formCrfId": "",
-            "formPortionId": "",
+            "formCrfId": that.$route.query.crfId,
+            "formPortionId": that.configData.id,
             "portionName": that.portionName,
             "diseaseId":that.$route.query.id,
             "formItemList": that.basisDataList||[]
@@ -480,7 +509,18 @@
               // this.$message.success(data.data);
               this.$message.success("保存成功");
               //保存成功跳转到 CRF表单
-              window.history.go(-1);
+              // window.history.go(-1);
+              let formData = {
+                "id": that.configData.id,
+                "portionName": that.portionName,
+                "diseaseId": that.$route.query.id,
+                "formItemList": that.basisDataList||[],
+                "index":that.configData.index,
+                "type":that.configData.type
+              };
+              console.log(formData);
+              // this.$emit('portion-callback-add',formData);
+              this.$emit('portion-callback-add',formData);
             }
           }catch (error) {
             console.log(error)
@@ -491,7 +531,7 @@
           let that = this;
           let formData = {
             "formCrfId": that.$route.query.crfId,
-            "formPortionId": that.$route.query.portionId,
+            "formPortionId": that.configData.id,
             "portionName": that.portionName,
             "diseaseId": that.$route.query.id,
             "formItemList": that.basisDataList||[]
@@ -503,7 +543,7 @@
               // this.$message.success(data.data);
               this.$message.success("保存成功");
               //保存成功跳转到 CRF表单
-              window.history.go(-1);
+              // window.history.go(-1);
             }
           }catch (error) {
             console.log(error)
@@ -546,7 +586,16 @@
         this.$nextTick(()=>{
           this.resize();
         });
-        if(this.$route.query.type =='modify') {
+        // console.log('portion page',this.configData);
+        if(this.configData.type=='add'){
+          this.portionName = this.configData.portionName || "";
+          this.basisDataList = [];
+        }else if(this.configData.type=='modify'){
+          this.portionName = this.configData.portionName;
+          this.basisDataList = this.configData.formItemList;
+        }
+
+        /*if(this.$route.query.type =='modify') {
           if(this.$route.query.portionId!=='0') {
             this.previewPortionData();
           }else{
@@ -560,7 +609,7 @@
         }
         if(this.$route.query.portionName !== '0') {
           this.portionName = this.$route.query.portionName;
-        }
+        }*/
       },
       destroyed() {
         this.$destroy();
@@ -641,6 +690,7 @@
       box-sizing: border-box;
       padding: 30px 20px 0 20px;
       overflow: auto;
+      flex: 1;
     }
   }
   .basis_nav-box{

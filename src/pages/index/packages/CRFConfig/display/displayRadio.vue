@@ -20,6 +20,7 @@
       </div>
       <div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>
     </div>
+    <!--{{item.baseProperty.layout}}-->
   </div>
 </template>
 
@@ -140,6 +141,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .RADIO_BUTTON {
+  line-height: 32px;
 }
 .RADIO_BUTTON .RADIO_BUTTON_title {
   width: 188px;
@@ -152,6 +154,7 @@ export default {
   min-width: 164px;
   max-width: 800px;
   display: table-cell;
+
 }
 .RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group {
   min-width: 164px;

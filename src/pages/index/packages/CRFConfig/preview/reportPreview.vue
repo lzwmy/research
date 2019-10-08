@@ -64,7 +64,7 @@
       created() {
         // console.log(this.$route.query.id)
         // this.crfReportDetailPreview(this.$route.query.id)
-        this.portion = this.item;
+        this.portion = JSON.parse(JSON.stringify(this.item));
         // console.log(this.item)
       }
     }
@@ -72,7 +72,7 @@
 
 <style lang="less" scoped>
 .report_view_container{
-  padding:15px;
+  /*padding:15px;*/
   margin: 15px;
   .report_title{
     font-size: 22px;

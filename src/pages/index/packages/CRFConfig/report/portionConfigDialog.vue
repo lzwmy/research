@@ -42,7 +42,7 @@
                     <div class="display_detail_info-item-box" v-if="item.diseaseId == diseaseId"  v-for="(item,index) in diseaseList" :key="index" @click.stop="dropActive(item)">
                       <div class="detail_info" :class="{'active':item.portionId==dropPortionId}" >
                         <i class="tab" :class="{'active':item.portionId==dropPortionId}"></i>
-                        <span>{{item.portionName}}</span>
+                        <span v-if="item.diseaseId == diseaseId">{{item.portionName}}</span>
                       </div>
                     </div>
                   </div>
@@ -139,15 +139,21 @@
           </div>
         </div>
       </el-dialog>
+      <portion-dialog :showConfigPortion="showConfigPortion"
+                      :portionConfigData="portionConfigData"
+                      @portionCallback-add="portionCallbackAdd"
+                      @close-dialog="closeDialog"></portion-dialog>
     </div>
 </template>
 
 <script>
   import previewPortion from './../preview/sectionPreview';
+  import portionDialog from './portionDialog';
     export default {
       name: "portionConfigDialog",
       components:{
-        previewPortion
+        previewPortion,
+        portionDialog
       },
       props:{
         displayMask:{
@@ -167,6 +173,7 @@
         return {
           dialogVisible:false,
           tableLoading:false,
+          showConfigPortion:false,
           searchType:0,// 搜索类型
           searchName:"",// 搜索名称
           tabName:"first",//切换名称
@@ -182,6 +189,7 @@
           portionName:"",//小节名称
           preview:{},
           diseasePreview:{},
+          portionConfigData:{}
         }
       },
       methods:{
@@ -216,7 +224,7 @@
         //直接添加
         addDirect() {
           // this.$parent.directAddSave();
-          let diseaseId = this.$route.query.id;
+          /*let diseaseId = this.$route.query.id;
           this.$router.push({
             path:"/basisConfig",
             query:{
@@ -224,7 +232,9 @@
               type:'add',
               portionName:this.searchName || '0',
             }
-          })
+          })*/
+          this.CRFQueryPortionId();
+
         },
         // 预览 确定添加
         previewAdd() {
@@ -286,6 +296,17 @@
           }
           return arr;
         },
+        //表单返回
+        closeDialog(data) {
+          this.dialogVisible = false;
+          this.showConfigPortion = false;
+          this.$emit('close-dialog',false)
+        },
+        //小节回调 添加
+        portionCallbackAdd(data) {
+          console.log('添加回调',data)
+          this.$emit('update-add',data);
+        },
         // 表格 数据
         async CRFPreviewTableInfo(value) {
           let that = this;
@@ -330,6 +351,26 @@
               that.diseaseList = data.data;
               that.preview = {};
               that.diseasePreview = {};
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        },
+        async CRFQueryPortionId() {
+          let that = this;
+          try{
+            let data = await that.$http.CRFQueryPortionId();
+            if(data.code == 0) {
+              console.log(data);
+              that.portionConfigData = {
+                diseaseId:that.$route.query.id,
+                formItemList:[],
+                id:data.data,
+                portionName:that.searchName,
+                type:"add",
+                index:0
+              };
+              this.showConfigPortion = true;
             }
           }catch (error) {
             console.log(error)
@@ -442,6 +483,7 @@
                 display: flex;
                 flex-direction: column;
                 position: relative;
+                overflow: auto;
                 img{
                   width: 100px;
                   position: absolute;
@@ -453,8 +495,9 @@
                   display: flex;
                   flex-direction: row;
                   width: 100%;
-                  height: 40px;
+                  min-height: 40px;
                   align-items: center;
+                  /*overflow: auto;*/
                   .detail_info{
                     height: 100%;
                     width: 100%;
@@ -667,8 +710,14 @@
                   .header-btn{
                     color: #1BBAE1;
                     cursor: pointer;
+                    padding: 5px;
+                    border-radius: 2px;
                     span{
                       padding-left: 2px;
+                    }
+                    &:hover{
+                      padding: 5px;
+                      background-color: #F5F7FA;
                     }
                   }
                   .gray{
@@ -677,7 +726,8 @@
                   }
                 }
                 .preview_content{
-                  width: 100%;
+                  min-width: 850px;
+                  width: 850px;
                   height: 384px;
                   overflow: auto;
                   .displayPortion_title{

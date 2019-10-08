@@ -1,18 +1,20 @@
 <template>
   <div class="report_container">
     <!--<div class="report_title">{{item.crfDisplayName}}</div>-->
-    <display-page
-      v-for="(child,index) in item.formPages"
+    <!--<display-page
+      v-for="(child,index) in item.formPortions"
       :key="child.pageDisplayName"
       :item="child"
       :index="index"
       :report="getData(child)"
-    ></display-page>
+    ></display-page>-->
+    <display-page :item="item" :report="report"></display-page>
   </div>
 </template>
 
 <script>
 import displayPage from "./displayPage";
+import displayPortion from "./displayPortion";
 export default {
   name: "displayReport",
   props: {
@@ -21,18 +23,20 @@ export default {
     index: Number
   },
   components: {
-    displayPage
+    displayPage,
+    displayPortion
   },
   created() {
-    this.item.formPages.forEach(element => {
-      let arr = this.report.pages.filter(
-        o => o.pageName == element.pageDisplayName
-      );
+    /*this.item.formPortions.forEach(element => {
+      let arr = this.report.portions.filter(o => {
+          o.portionName == element.portionName
+      });
       if (arr.length == 0) {
-        let newObj = { pageName: element.pageDisplayName, portions: [] };
-        this.report.pages.push(newObj);
+        // let newObj = { pageName: element.pageDisplayName, portions: [] };
+        let newObj = { pageName: element.portionName, items: [] };
+        this.report.portions.push(newObj);
       }
-    });
+    });*/
   },
   mounted() {
   },

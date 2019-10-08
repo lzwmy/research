@@ -39,6 +39,11 @@
         }
       },
       methods:{
+        initPage() {
+          this.reportList().then(()=>{
+            this.$emit('changeLoadding',false);
+          })
+        },
         createCRF() {
           let diseaseId = this.$route.query.id;
           this.$router.push({

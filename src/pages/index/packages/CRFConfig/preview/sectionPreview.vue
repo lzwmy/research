@@ -10,6 +10,7 @@
   import displayPortion from "./../display/displayPortion";
     export default {
       // mixins: [mixins],
+      // name:"sectionPreview",
       props:{
         item:{
           type:Object,
@@ -20,9 +21,11 @@
         displayPortion
       },
       /*watch:{
-        "portion":{
+        "item":{
           deep:true,
           handler:(value)=>{
+            // console.log('监听 小节 预览',value)
+            // this.portion.portionName = "";
             this.portion = value;
           }
         }
@@ -54,7 +57,7 @@
       },
       mounted() {
         // console.log(this.$route.query.id);
-        this.portion = this.item;
+        this.portion = JSON.parse(JSON.stringify(this.item));
         // console.log(this.item)
         // this.crfSectionPreview(this.$route.query.id)
       }

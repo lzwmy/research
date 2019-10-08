@@ -146,6 +146,8 @@ export default {
 }
 .SINGLE_INPUT .SINGLE_INPUT_title {
   width: 188px;
+  /*width: 85px;
+  max-width: 188px;*/
   display: table-cell;
   /*padding-left: 1%;*/
   font-size: 14px;
