@@ -23,7 +23,7 @@
       <!--集合上下排列-->
       <div :class="item.controlType+'_bg_color'" style="padding-left:55px;" v-if="item.gatherRank=='0'"  @click="popMehtod">
         <div  style="margin-top:15px" v-for="(it,index) in item.children" :key="index" :layoutData="layoutInfo(it,index,item.children)">
-          <el-row v-if="it.baseProperty.layout.wrap == '1'">
+          <el-row v-if="it.baseProperty.layout.wrap == '1'" style="display: inline-block">
             <el-col :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
               <display-input v-if="it.controlType=='SINGLE_INPUT'" :item="it" :report="getData(it)"/>
               <display-multi-input v-else-if="it.controlType=='MULTI_INPUT'" :item="it" :report="getData(it)"/>
@@ -506,5 +506,9 @@ export default {
 }
   .GATHER_bg_color{
     background-color: rgb(247, 248, 252);
+  }
+  .view_box .view_title .iconfont{
+    font-size: 16px;
+    color: #356cbc;
   }
 </style>

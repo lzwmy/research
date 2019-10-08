@@ -497,7 +497,7 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane class="range_container" label="值域" name="range"
-                       v-if="controlType=='NUMBER_INPUT'||controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'||controlType=='RADIO_BUTTON'||controlType=='CHECKBOX'||controlType=='GATHER'">
+                       v-if="(controlType=='NUMBER_INPUT'&&basicDataInfo.obj.termUnit.numberIsSwitch == '0')||controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'||controlType=='RADIO_BUTTON'||controlType=='CHECKBOX'||controlType=='GATHER'">
             <el-form class="alignment">
               <el-form-item label="值域选项">
                 <el-input type="textarea" :rows="5" v-model="basicDataInfo.obj.termSet.rangeText" ></el-input>
@@ -1200,7 +1200,9 @@
           .name_item{
             padding: 2px 10px;
             cursor: pointer;
-            background-color: #F5F7FA;
+            /*background-color: #F5F7FA;*/
+            background-color: #E5EBEC;
+            border: 1px solid #E5EBEC;
             &:first-child{
               border-radius:2px 0 0 2px;
             }
@@ -1217,8 +1219,9 @@
             }
           }
           .active{
-            color: #ffffff;
-            background-color: #9CA0B1;
+            /*color: #ffffff;*/
+            color: #394263;
+            background-color: #ffffff;
           }
           :hover{
             background-color: #9CA0B1;
@@ -1242,18 +1245,20 @@
         .column_item-12{
           width: 50%;
           height: 36px;
-          border: 1px solid #E5EBEC;
+          /*border: 1px solid #E5EBEC;*/
+          border: 1px solid #F3F3F9;
           cursor: pointer;
         }
         .active{
-          background-color: #9CA0B1;
-          border-color: #9CA0B1;
+          background-color: #E5EBEC;
+          border-color: #E5EBEC;
           &:last-child{
-            border-left-color: #ffffff;
+            border-left-color: #F3F3F9;
           }
         }
         .disabledActive{
-          background: rgba(27,186,225,0.5);
+          /*background: rgba(27,186,225,0.5);*/
+          border:1px dashed;
         }
       }
       .column_3{
@@ -1266,19 +1271,20 @@
         .column_item-8{
           width: 33.33%;
           height: 36px;
-          border: 1px solid #E5EBEC;
+          border: 1px solid #F3F3F9;
           cursor: pointer;
         }
         .active{
-          background-color: #9CA0B1;
-          border-color: #9CA0B1;
-          border-right-color: #ffffff;
+          background-color: #E5EBEC;
+          border-color: #E5EBEC;
+          border-right-color: #F3F3F9;
           &:last-child{
-            border-left-color: #9CA0B1;
+            border-left-color: #F3F3F9;
           }
         }
         .disabledActive{
-          background: rgba(27,186,225,0.5);
+          /*background: rgba(27,186,225,0.5);*/
+          border:1px dashed;
         }
       }
       .column_4{
@@ -1291,19 +1297,19 @@
         .column_item-6{
           width: 25%;
           height: 36px;
-          border: 1px solid #E5EBEC;
+          border: 1px solid #F3F3F9;
           cursor: pointer;
         }
         .active{
-          background-color: #9CA0B1;
-          border-color: #9CA0B1;
-          border-right-color: #ffffff;
+          background-color: #E5EBEC;
+          border-color: #E5EBEC;
+          border-right-color: #F3F3F9;
           &:last-child{
-            border-left-color: #9CA0B1;
+            border-left-color: #F3F3F9;
           }
         }
         .disabledActive{
-          background: rgba(27,186,225,0.5);
+          border:1px dashed;
         }
       }
     }
@@ -1375,6 +1381,14 @@
         font-size: 12px;
         color: #394263;
       }
+    }
+  }
+  .config_select-content{
+    .el-tabs__item{
+      background-color: #E5EBEC;
+    }
+    .el-tabs__item.is-active{
+      background-color: #ffffff;
     }
   }
 </style>

@@ -9,7 +9,7 @@
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;">关闭</el-button>
             <el-button @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保存</el-button>
-            <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>
+            <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
           </div>
           <div ref="top" class="crf-step-content" id="mainContent">
             <display-report v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
@@ -82,10 +82,10 @@
   </div>
 </template>
 <script type="text/javascript">
+import "./../css/crfReady.css";
 import displayReport from "./../display/displayReport";
 // import reportRead from "./../report/reportRead";
 import mixins from "components/mixins";
-// import "./../crfManage/crf.css";
 import { mapGetters } from "vuex";
 export default {
   name: "crfConfig",
@@ -465,6 +465,7 @@ body.theme-green {
   .crf-step-header {
     display: block !important;
     border-bottom: 1px dashed #e9eaec !important;
+    padding: 11.5px;
   }
   .break_icon{
     position: absolute;

@@ -42,7 +42,7 @@
                     <div class="display_detail_info-item-box" v-if="item.diseaseId == diseaseId"  v-for="(item,index) in diseaseList" :key="index" @click.stop="dropActive(item)">
                       <div class="detail_info" :class="{'active':item.portionId==dropPortionId}" >
                         <i class="tab" :class="{'active':item.portionId==dropPortionId}"></i>
-                        <span>{{item.portionName}}</span>
+                        <span v-if="item.diseaseId == diseaseId">{{item.portionName}}</span>
                       </div>
                     </div>
                   </div>
@@ -710,8 +710,14 @@
                   .header-btn{
                     color: #1BBAE1;
                     cursor: pointer;
+                    padding: 5px;
+                    border-radius: 2px;
                     span{
                       padding-left: 2px;
+                    }
+                    &:hover{
+                      padding: 5px;
+                      background-color: #F5F7FA;
                     }
                   }
                   .gray{
@@ -720,7 +726,8 @@
                   }
                 }
                 .preview_content{
-                  width: 100%;
+                  min-width: 850px;
+                  width: 850px;
                   height: 384px;
                   overflow: auto;
                   .displayPortion_title{

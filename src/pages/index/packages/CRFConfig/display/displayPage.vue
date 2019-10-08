@@ -30,7 +30,7 @@ export default {
     displayPortion
   },
   created() {
-    console.log(this.item,this.report)
+    // console.log(this.item,this.report)
     this.item.formPortions.forEach(element => {
       let arr = this.report.portions.filter(
         o => o.reportName == element.portionName

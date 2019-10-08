@@ -57,14 +57,18 @@
         </div>
         <div class="report_body-box">
           <div style="width: 100%" v-if="isReset&&dataList.length!==0">
-            <!--<draggable :options="options" @start="drag" @end="drop" :move="checkMove">-->
+            <draggable v-model="dataList" :options="options" @start="drag" @end="drop" :move="checkMove">
               <div class="report_body-item" v-for="(item,index) in dataList" :key="index">
                 <div class="report_header-content">
                   <div class="display_line"></div>
                   <div class="header-title">{{item.portionName}}</div>
                   <div class="header-btn">
-                    <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
-                    <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
+                    <span>
+                      <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
+                    </span>
+                    <span>
+                      <i class="iconfont iconzujian26" @click="portionDeleteItem(item,index)"></i>
+                    </span>
                   </div>
                 </div>
                 <div class="report_body-content" >
@@ -73,7 +77,7 @@
                   <preview-portion :item="item" ></preview-portion>
                 </div>
               </div>
-            <!--</draggable>-->
+            </draggable>
 
           </div>
           <img v-else="dataList.length==0" src="./../basisComponents/image/none_content.png" alt="">
@@ -153,14 +157,16 @@
         },
         //开始
         drag(evt){
-          console.log('开始',evt);
+          // console.log('开始',evt);
         },
         //结束
         drop(evt) {
-          console.log('结束',evt);
+          this.isReset = false;
           let oldIndex = evt.oldIndex;
           let newIndex = evt.newIndex;
-          console.log(this.dataList)
+          this.$nextTick(()=>{
+            this.isReset = true;
+          });
         },
         // 移除
         checkMove(evt) {
@@ -600,15 +606,24 @@
             margin-left: 20px;
           }
           .header-btn{
-            .iconfont{
-              font-size: 16px;
-              color: #979BAA;
-              cursor: pointer;
+            span{
+              padding: 5px;
+              display: inline-block;
+              .iconfont{
+                font-size: 16px;
+                color: #979BAA;
+                cursor: pointer;
+              }
               &:last-child{
-                padding-right: 32px;
-                padding-left: 13px;
+                margin-right: 32px;
+                margin-left:13px;
+              }
+              &:hover{
+                background-color: #ccc;
+                color:#666666;
               }
             }
+
           }
         }
         .report_body-content{

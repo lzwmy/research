@@ -2,8 +2,8 @@
   <div v-loading="loading">
     <!--class="view_container"-->
     <!--{{item.baseProperty.layout}}-->
-      <el-row v-if="item.baseProperty.layout.wrap == '1'">
-        <el-col :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
+      <el-row v-if="item.baseProperty.layout.wrap == '1'" style="display: inline-block">
+        <el-col  :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
           <display-input v-if="item.controlType=='SINGLE_INPUT'" :item="item" :report="report"/>
           <display-multi-input v-else-if="item.controlType=='MULTI_INPUT'" :item="item" :report="report"/>
           <display-check-box v-else-if="item.controlType=='CHECKBOX'" :item="item" :report="report"/>

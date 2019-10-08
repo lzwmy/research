@@ -4,8 +4,9 @@
       {{item.portionName}}
     </div>
     <div class="displayPortion_box">
-      <el-row>
+      <el-row class="length_set">
         <display-item
+          :class="'set_'+child.baseProperty.layout.columns"
           v-for="(child,index) in item.formItemList"
           :item="child"
           :report="getData(child)"
@@ -36,7 +37,7 @@ export default {
     }
   },
   created() {
-    console.log(this.report,this.item)
+    // console.log(this.report,this.item)
     this.item.formItemList.forEach(element => {
       let arr = this.report.items.filter(
         o => o.name == element.controlDisplayName
@@ -335,6 +336,11 @@ export default {
     padding-left: 15px;
   }
   .displayPortion_box{
+    .length_set{
+      min-width: 1200px;
+      width: 1200px;
+      padding: 5px 0;
+    }
     .el-col{
       margin-top: 5px;
       margin-bottom: 5px;

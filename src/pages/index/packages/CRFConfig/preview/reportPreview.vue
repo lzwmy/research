@@ -72,7 +72,7 @@
 
 <style lang="less" scoped>
 .report_view_container{
-  padding:15px;
+  /*padding:15px;*/
   margin: 15px;
   .report_title{
     font-size: 22px;

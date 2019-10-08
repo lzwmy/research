@@ -76,7 +76,7 @@
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
-            <!--{{basisItem.baseProperty.layout}}-->
+            <!--{{basisDataInfo}}-->
             <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
           </div>
         </div>
@@ -690,6 +690,7 @@
       box-sizing: border-box;
       padding: 30px 20px 0 20px;
       overflow: auto;
+      flex: 1;
     }
   }
   .basis_nav-box{
