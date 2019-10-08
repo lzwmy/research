@@ -14,7 +14,7 @@ export default {
     name: 'appView',
     data () {
         return {
-            transitionName: ['insideView','systemManage']  //去除动画组件
+            transitionName: ['insideView','systemManage','researchTask']  //去除动画组件
         };
     },
     computed: {

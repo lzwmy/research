@@ -13,16 +13,17 @@
                             <span class="title">{{item.groupName}}</span>
                         </template>
                         <el-menu-item-group v-for="(li, liIndex) in item.stages" :key="liIndex"> 
-                            <el-menu-item :index="li.stageId" class="flex-between-center menu_li" :class="li.stageId == activeGroup?'active':''" @click="selectGroup(li,li.stageId)">
-                                <span v-if="!li.edit">{{li.stageName}}</span>
+                            <el-menu-item :index="li.stageId" class="flex-between-center menu_li" :class="li.stageId == activeGroup?'active':''" @click="selectGroup(li,li.stageId,item,liIndex)">
+                                <span>{{li.stageName}}</span>
                                 <el-popover
                                     placement="bottom"
+                                    v-if="!li.crfId"
                                     popper-class="more_popper"
                                     trigger="hover">
                                     <i  slot="reference" class="icon el-icon-more"></i>
                                     <ul class="stepThree_ul">
-                                        <li @click="showAddDialog('编辑阶段',item,li)">编辑</li>
-                                        <li @click="onDelete(li)">删除</li>
+                                        <li  @click="showAddDialog('编辑阶段',item,li)">编辑</li>
+                                        <li  @click="onDelete(li)">删除</li>
                                     </ul>
                                 </el-popover>
                             </el-menu-item> 
@@ -37,113 +38,108 @@
                 </el-menu>
             </div>
             <div class="right" v-loading="infoLoading">
-                <p class="page_title">随访频次</p>
-                <div class="wrap">
-                    <el-form label-position="left" label-width="100px" :model="form">
-                        <el-form-item label="随访次数">
-                            <el-slider v-model="form.amount" :marks="marks" :min="4.7" :step="4.7" :format-tooltip="formatTooltip" @change="sliderChange"></el-slider>
-                        </el-form-item>
-                        <el-form-item label="随访名称" v-show="form.amount <= 96 ">
-                            <el-input v-for="(item, index) in form.nameArr" :key="index" v-model="item.name" style="width:150px;margin:0 10px 10px 0;"></el-input>
-                        </el-form-item>
-                        <el-form-item label="随访频次">
-                            <el-radio-group v-model="form.frequencyType">
-                                <el-radio label="1">不限制频率</el-radio>
-                                <el-radio label="2">均匀随访</el-radio>
-                                <el-radio label="3">非均匀随访</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="">
-                            <div class="frequency flex-start-center" v-show="form.frequencyType=='2'">
-                                <span class="right_6">每</span>
-                                <el-input placeholder="请输入内容" v-model="form.frequency.frequencyParam" style="width:200px;"></el-input>
-                                <el-select v-model="form.frequency.frequencyParam2" placeholder="请选择" class="special_select">
-                                    <el-option label="天" value="day"></el-option>
-                                    <el-option label="月" value="month"></el-option>
-                                    <el-option label="年" value="year"></el-option>
-                                </el-select>
-                                <span class="left_6">随访一次</span>
-                            </div>
-                            <div class="frequency flex-start-center" v-show="form.frequencyType=='3'">
-                                <span class="right_6">间隔</span>
-                                <el-input placeholder="以逗号分隔,如：1,2,3" v-model="form.frequency.frequencyParam" style="width:200px;"></el-input>
-                                <el-select v-model="form.frequency.frequencyParam2" placeholder="请选择" class="special_select">
-                                    <el-option label="天" value="day"></el-option>
-                                    <el-option label="月" value="month"></el-option>
-                                    <el-option label="年" value="year"></el-option>
-                                </el-select>
-                                <span class="left_6">随访一次</span>
-                            </div>
-                        </el-form-item>
-                        <el-form-item label="开始时间">
-                            <el-radio-group v-model="form.startType">
-                                <el-radio label="1">手动触发开始</el-radio>
-                                <el-radio label="2">入组后开始</el-radio>
-                                <el-radio label="3">入组阶段时间题目触发开始</el-radio>
-                                <el-radio label="4">某个阶段结束后触发开始</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item label="">
-                            <div class="frequency flex-start-center" v-show="form.startType=='2'">
-                                <span class="right_6">入组后</span>
-                                <el-input placeholder="请输入内容" v-model="form.startTimeParam.startParam" style="width:200px;"></el-input>
-                                <el-select v-model="form.startTimeParam.startParam2" placeholder="请选择" class="special_select">
-                                    <el-option label="天" value="天"></el-option>
-                                    <el-option label="月" value="月"></el-option>
-                                    <el-option label="年" value="年"></el-option>
-                                </el-select>
-                                <span class="left_6">开始</span>
-                            </div>
-                            <div class="frequency flex-start-center" v-show="form.startType=='3'">
-                                <el-select v-model="form.startTimeParam.startParam" placeholder="请选择CRF" style="width:100px;">
-                                    <el-option label="CRF(1)" value="CRF"></el-option>
-                                    <el-option label="CRF(1)" value="CRF"></el-option>
-                                </el-select>
-                                <span class="right_6 left_6">中填写的</span>
-                                <el-select v-model="form.startTimeParam.startParam2" placeholder="请选择题目" style="width:100px;">
-                                    <el-option label="天" value="天"></el-option>
-                                    <el-option label="月" value="月"></el-option>
-                                    <el-option label="年" value="年"></el-option>
-                                </el-select>
-                                <span class="right_6 left_6">后</span>
-                                <el-input placeholder="多少" v-model="form.startTimeParam.startParam3" style="width:100px;"></el-input>
-                                <el-select v-model="form.startTimeParam.startParam4" placeholder="请选择" class="special_select">
-                                    <el-option label="天" value="天"></el-option>
-                                    <el-option label="月" value="月"></el-option>
-                                    <el-option label="年" value="年"></el-option>
-                                </el-select>
-                                <span class="left_6">开始第一次随访</span>
-                            </div>
-                            <div class="frequency flex-start-center" v-show="form.startType=='4'">
-                                <el-select v-model="form.startTimeParam.startParam" placeholder="请选择阶段" style="width:100px;">
-                                    <el-option label="天" value="天"></el-option>
-                                    <el-option label="月" value="月"></el-option>
-                                    <el-option label="年" value="年"></el-option>
-                                </el-select>
-                                <span class="right_6 left_6">结束后</span>
-                                <el-input placeholder="请输入内容" v-model="form.startTimeParam.startParam2" style="width:100px;"></el-input>
-                                <el-select v-model="form.startTimeParam.startParam3" placeholder="请选择" class="special_select">
-                                    <el-option label="天" value="天"></el-option>
-                                    <el-option label="月" value="月"></el-option>
-                                    <el-option label="年" value="年"></el-option>
-                                </el-select>
-                                <span class="left_6">开始第一次随访</span>
-                            </div>
-                        </el-form-item>
-                    </el-form>
-                </div>
+                <div >
+                    <p class="page_title">随访频次</p>
+                    <div class="wrap">
+                        <el-form label-position="left" label-width="100px" :model="form">
+                            <el-form-item label="随访次数">
+                                <el-slider v-model="form.amount" :disabled="configExists" :marks="marks" :min="1" :max="21" :step="1" :format-tooltip="formatTooltip" @change="sliderChange"></el-slider>
+                            </el-form-item>
+                            <el-form-item label="随访点名称" v-show="form.amount <= 20 ">
+                                <el-input :disabled="configExists" v-for="(item, index) in form.pointNames" :key="index" v-model="item.name" style="width:150px;margin:0 10px 10px 0;"></el-input>
+                            </el-form-item>
+                            <el-form-item label="随访频次">
+                                <el-radio-group :disabled="configExists" v-model="form.frequencyType">
+                                    <el-radio label="1">不限制频率</el-radio>
+                                    <el-radio label="2">均匀随访</el-radio>
+                                    <el-radio label="3">非均匀随访</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label="">
+                                <div class="frequency flex-start-center" v-show="form.frequencyType=='2'">
+                                    <span class="right_6">每</span>
+                                    <el-input :disabled="configExists" placeholder="请输入内容" v-model="form.frequency.frequencyParam" style="width:200px;"></el-input>
+                                    <el-select :disabled="configExists" v-model="form.frequency.frequencyParam2" placeholder="请选择" class="special_select">
+                                        <el-option v-for="(item, index) in dateSelectList" :key="index" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                                    <span class="left_6">随访一次</span>
+                                </div>
+                                <div class="frequency flex-start-center" v-show="form.frequencyType=='3'">
+                                    <span class="right_6">间隔</span>
+                                    <el-input :disabled="configExists" placeholder="以逗号分隔,如：1,2,3" v-model="form.frequency.frequencyParam" style="width:200px;"></el-input>
+                                    <el-select :disabled="configExists" v-model="form.frequency.frequencyParam2" placeholder="请选择" class="special_select">
+                                        <el-option v-for="(item, index) in dateSelectList" :key="index" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                                    <span class="left_6">随访一次</span>
+                                </div>
+                            </el-form-item>
+                            <el-form-item label="开始时间">
+                                <el-radio-group :disabled="configExists" v-model="form.startType">
+                                    <el-radio label="1">手动触发开始</el-radio>
+                                    <el-radio label="2">入组后开始</el-radio>
+                                    <el-radio label="3">入组阶段时间题目触发开始</el-radio>
+                                    <el-radio label="4">某个阶段结束后触发开始</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label="">
+                                <div class="frequency flex-start-center" v-show="form.startType=='2'">
+                                    <span class="right_6">入组后</span>
+                                    <el-input placeholder="请输入内容" :disabled="configExists" v-model="form.startTimeParam.startParam" style="width:200px;"></el-input>
+                                    <el-select :disabled="configExists" v-model="form.startTimeParam.startParam2" placeholder="请选择" class="special_select">
+                                        <el-option v-for="(item, index) in dateSelectList" :key="index" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                                    <span class="left_6">开始</span>
+                                </div>
+                                <div class="frequency flex-start-center" v-show="form.startType=='3'">
+                                    <el-select :disabled="configExists" v-model="form.startTimeParam.startParam" placeholder="请选择CRF" style="width:120px;">
+                                        <el-option label="CRF(1)" value="CRF"></el-option>
+                                        <el-option label="CRF(1)" value="CRF"></el-option>
+                                    </el-select>
+                                    <span class="right_6 left_6">中填写的</span>
+                                    <el-select :disabled="configExists" v-model="form.startTimeParam.startParam2" placeholder="请选择题目" style="width:120px;">
+                                        <el-option label="无" value="无"></el-option>
+                                    </el-select>
+                                    <span class="right_6 left_6">后</span>
+                                    <el-input :disabled="configExists" placeholder="多少" v-model="form.startTimeParam.startParam3" style="width:120px;"></el-input>
+                                    <el-select :disabled="configExists" v-model="form.startTimeParam.startParam4" placeholder="请选择" class="special_select">
+                                        <el-option v-for="(item, index) in dateSelectList" :key="index" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                                    <span class="left_6">开始第一次随访</span>
+                                </div>
+                                <div class="frequency flex-start-center" v-show="form.startType=='4'">
+                                    <el-select :disabled="configExists" v-model="form.startTimeParam.startParam" placeholder="请选择阶段" style="width:120px;">
+                                        <el-option v-for="(item, index) in stageList" :key="index" :label="item.stageName" :value="item.stageId"></el-option>
+                                    </el-select>
+                                    <span class="right_6 left_6">结束后</span>
+                                    <el-input :disabled="configExists" placeholder="请输入内容" v-model="form.startTimeParam.startParam2" style="width:120px;"></el-input>
+                                    <el-select :disabled="configExists" v-model="form.startTimeParam.startParam3" placeholder="请选择" class="special_select">
+                                        <el-option v-for="(item, index) in dateSelectList" :key="index" :label="item.label" :value="item.value"></el-option>
+                                    </el-select>
+                                    <span class="left_6">开始第一次随访</span>
+                                </div>
+                            </el-form-item>
+                        </el-form>
+                    </div>
 
-                <p class="page_title">随访内容</p>
-                <div class="wrap">
-                    <el-checkbox v-model="addCRFchecked">添加CFR</el-checkbox>
-                    <div class="CRF_group" v-show="addCRFchecked">
-                        <el-button><i class="el-icon-edit"></i> 添加或编辑CRF</el-button>
+                    <p class="page_title">随访内容</p>
+                    <div class="wrap flex-start-start">
+                        <!-- <el-checkbox v-model="addCRFchecked">添加CFR</el-checkbox> -->
+                        <div class="CRF_group" v-show="form.crfId">
+                            <div class="crf_box crf_box1 flex-between-center">
+                                <i class="el-icon-edit">CRF(1)</i><i class="icon iconfont iconfuhao3"></i>
+                            </div>
+                        </div>
+                        <div class="CRF_group left_6">
+                            <div class="crf_box flex-center-center">
+                                <i class="el-icon-edit"></i> 添加或编辑CRF
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wrap">
+                        <el-button v-if="configExists" type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">再次发布</el-button>
+                        <el-button v-else type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">发 布</el-button>
                     </div>
                 </div>
-                <div class="wrap">
-                    <el-button type="primary" icon="icon iconfont iconzujian38" @click="">保 存</el-button>
-                </div>
-                
             </div>
         </div>
 
@@ -182,23 +178,26 @@ export default {
             menuList: [],
             groupLoading: false,
             infoLoading: false,
+            configExists: false,    //是否可编辑表单
             form: {
-                amount: 1,
-                nameArr: [{name:'随访点1'}],
+                stageId:'',
+                amount: 5,
+                pointNames: [],
                 frequency:{
                     frequencyParam:'',
-                    frequencyParam2:'',
+                    frequencyParam2:'day',
                 },
-                frequencyType: '',
-                startType: '',
+                frequencyType: '1',
+                startType: '1',
                 startTimeParam: {
                     startParam:'',
                     startParam2:'',
                     startParam3:'',
                     startParam4:'',
                 },
-                startType: ''
+                crfId:''
             },
+            stageList: [],
             dialgoForm: {
                 groupId: '',
                 stageId: '',
@@ -209,12 +208,17 @@ export default {
             },
             marks: {
                 1:'1',
-                24:'5',
-                46:'10',
-                74:'15',
-                94:'20',
-                100:'无限',
+                5:'5',
+                10:'10',
+                15:'15',
+                20:'20',
+                21:'无限',
             },
+            dateSelectList: [
+                {label: '天', value: 'day'},
+                {label: '月', value: 'month'},
+                {label: '年', value: 'year'},
+            ],
             addCRFchecked: false,
             dialgoFormRules: {
                 stageName: [
@@ -226,20 +230,84 @@ export default {
     created() {
         this.getGroupList()
         .then(()=>{
-            if(this.menuList.length != 0) {
+            if(this.menuList.length != 0 && this.menuList[0].stages.length != 0) {
                 this.menuList.forEach(item => {
                     this.defaultOpeneds.push(item.groupId)
                 });
-                // this.selectGroup(this.menuList[0].stages[0],0);
+                this.selectGroup(this.menuList[0].stages[0],this.menuList[0].stages[0].stageId);
             }
         })
     },
-    methods: {
-        selectGroup(li,index) {
-            this.activeGroup = index;
-            this.getInfo(li.stageId)
+    watch: {
+        'form.frequencyType': function(newVal) {
+            if(this.configExists) {
+                return;
+            }
+            switch (newVal) {
+                case '2': 
+                    this.form.frequency = {
+                        frequencyParam:'',
+                        frequencyParam2:'day',
+                    };break;
+                case '3': 
+                    this.form.frequency = {
+                        frequencyParam:'',
+                        frequencyParam2:'day',
+                    };break;
+            }
         },
-        async getInfo(stageId) {
+        'form.startType': function(newVal) {
+            if(this.configExists) {
+                return;
+            }
+            switch (newVal) {
+                case '2': 
+                    this.form.startTimeParam = {
+                        startParam:'',
+                        startParam2:'天',
+                        startParam3:'',
+                        startParam4:'',
+                    };break;
+                case '3': 
+                    this.form.startTimeParam = {
+                        startParam:'',
+                        startParam2:'',
+                        startParam3:'',
+                        startParam4:'天',
+                    };break;
+                case '4': 
+                    this.form.startTimeParam = {
+                        startParam:'',
+                        startParam2:'',
+                        startParam3:'天',
+                        startParam4:'',
+                    };break;
+                default:
+                    this.form.startTimeParam = {
+                        startParam:'',
+                        startParam2:'',
+                        startParam3:'',
+                        startParam4:'',
+                    };break;
+            }
+        }
+    },
+    methods: {
+        selectGroup(li,index,item,liIndex) {
+            this.initFrom();
+            this.activeGroup = index;
+            this.form.stageId = li.stageId;
+            if(item) {
+                //处理选择阶段之前的阶段
+                this.stageList = [];
+                for (let i = 0; i < liIndex; i++) {
+                    this.stageList.push(item.stages[i]);
+                }
+            }
+            this.getConfigInfo(li.stageId);
+        },
+        //获取阶段配置信息
+        async getConfigInfo(stageId) {
             this.infoLoading = true;
             let params = {
                 id: stageId
@@ -247,9 +315,32 @@ export default {
             try {
                 let res = await this.$http.followUpPlanPlanInfo(params);
                 if (res.code == '0') {
-
-                }else {
-                    this.$mes('error', res.msg);
+                    if(res.data.points.length) {
+                        this.configExists = true;
+                    }
+                    if(res.data.crfId) {
+                        this.addCRFchecked = true;
+                    }
+                    this.form = {
+                        stageId: stageId,
+                        amount: res.data.amount,
+                        pointNames: res.data.points,
+                        frequency: {
+                            frequencyParam:  res.data.frequencyParam,
+                            frequencyParam2: res.data.frequencyParam2,
+                        },
+                        frequencyType: String(res.data.frequencyType),
+                        startType: String(res.data.startType),
+                        startTimeParam: {
+                            startParam: res.data.startParam,
+                            startParam2: res.data.startParam2,
+                            startParam3: res.data.startParam3,
+                            startParam4: res.data.startParam4,
+                        },
+                        crfId: res.data.crfId || ''
+                    }
+                    console.log(res.data.frequencyParam)
+                    console.log(this.form)
                 }
                 this.infoLoading = false;
             } catch (err) {
@@ -257,38 +348,62 @@ export default {
                 console.log(err)
             }
         },
-        async createInfo(stageId) {
+        async saveConfig() {
             this.infoLoading = true;
             let params = {
-                "stageId": "string",
-                "amount": 0,
-                "frequencyType": 0,
-                "frequencyParam": "string",
-                "frequencyParam2": "string",
-                "startType": 0,
-                "startParam": "string",
-                "startParam2": "string",
-                "startParam3": "string",
-                "startParam4": "string",
-                "crfId": "string",
-                "pointNames": [
-                    {
-                    "id": "string",
-                    "name": "string"
-                    }
-                ]
+                stageId: this.form.stageId,
+                amount: this.form.amount,
+                frequencyType: parseInt(this.form.frequencyType),
+                frequencyParam: this.form.frequency.frequencyParam,
+                frequencyParam2: this.form.frequency.frequencyParam2,
+                startType: parseInt(this.form.startType),
+                startParam: this.form.startTimeParam.startParam,
+                startParam2: this.form.startTimeParam.startParam2,
+                startParam3: this.form.startTimeParam.startParam3,
+                startParam4: this.form.startTimeParam.startParam4,
+                crfId: "666",
+                pointNames: this.form.pointNames
             }
+            console.log(params)
             try {
-                let res = await this.$http.followUpPlanPlanInfo(params);
+                let res;
+                if(this.configExists) {
+                    res = await this.$http.followUpPlanPlanEdit(params);
+                }else {
+                    res = await this.$http.followUpPlanPlanAdd(params);
+                }
                 if (res.code == '0') {
-
+                    this.$mes('success', this.configExists?'再次发布成功':'发布成功');
                 }else {
                     this.$mes('error', res.msg);
                 }
+                this.getConfigInfo(this.form.stageId);
                 this.infoLoading = false;
             } catch (err) {
                 this.infoLoading = false;
                 console.log(err)
+            }
+        },
+        initFrom() {
+            this.configExists = false;
+            this.addCRFchecked = false;
+            this.form = {
+                stageId:'',
+                amount: 1,
+                pointNames: [{id:'',name:'随访点1'}],
+                frequency:{
+                    frequencyParam:'',
+                    frequencyParam2:'day'
+                },
+                frequencyType: '1',
+                startType: '1',
+                startTimeParam: {
+                    startParam:'',
+                    startParam2:'',
+                    startParam3:'',
+                    startParam4:''
+                },
+                crfId:''
             }
         },
         async getGroupList() {
@@ -331,7 +446,7 @@ export default {
                 }
             }
         },
-        //保存新建||编辑
+        //保存新建||编辑阶段
         saveAddStage() {
             let that = this;
             that.$refs.dialgoForm.validate(async (valid) => {
@@ -395,21 +510,20 @@ export default {
             }).catch((error) => {});
         },
         formatTooltip(val) {
-            let n = Math.floor(val / 4.7);
-            if(n > 20) {
+            if(val > 20) {
                 return '无限';
             }
-            return n;
+            return val;
         },
         sliderChange(val) {
             this.form.amount = val;
-            let n = Math.floor(val / 4.7);
-            this.form.nameArr = [];
-            if(n > 20) {
+            this.form.pointNames = [];
+            if(val > 20) {
                 return;
             }
-            for (let i = 1; i <= n; i++) {
-                this.form.nameArr.push({
+            for (let i = 1; i <= val; i++) {
+                this.form.pointNames.push({
+                    id: '',
                     name: '随访点'+ i
                 })
             }
@@ -524,6 +638,7 @@ export default {
                         .special_select {
                             width: 60px;
                             .el-input__inner {
+                                height: 32px !important;
                                 border-radius: 0;
                                 border-left: none;
                                 border-top-right-radius: 4px;
@@ -557,11 +672,20 @@ export default {
             }
             .CRF_group {
                 margin-top: 15px;
-                .el-button {
+                .crf_box {
                     line-height: 68px;
+                    padding: 0 20px;
                     width: 260px;
                     color: #1BBAE1;
+                    cursor: pointer;
                     border: 1px dashed #1BBAE1;
+                    &.crf_box1 {
+                        color: #394263;
+                        border: 1px solid #999;
+                        &:hover {
+                            border-color: #1BBAE1;
+                        }
+                    }
                 }
             }
         }
