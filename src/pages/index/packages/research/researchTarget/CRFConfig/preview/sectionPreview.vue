@@ -1,6 +1,6 @@
 <template>
     <div class="section_preview_container">
-<!--      {{portion.portionDisplayName}}-->
+<!--      {{portion.portionName}}-->
       <display-portion v-if="portion.portionName" :item="portion" :report="report" />
     </div>
 </template>

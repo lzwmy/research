@@ -2,12 +2,12 @@
     <div class="report_config-container">
       <div class="component_head flex-between-center">
         <p>
-          <span class="break_box" @click="breakGo">
+          <span class="break_box" @click="breakGo" v-show="formOptions.backStatus !== '3'">
             <i class="iconfont iconfanhui"></i>
             <span>返回</span>
             <i class="partition_line"></i>
           </span>
-          <span class="title">{{$route.query.type=='add' ? '新建' :'编辑'}}CRF表单</span>
+          <span class="title">{{formOptions.title}}</span>
         </p>
         <div class=" cur_pointer head_content flex-start-center">
           <el-button type="primary" @click="previewCRF">
@@ -28,7 +28,7 @@
       <div class="create_report-content" v-loading="loading">
         <div class="report-content-nav">
           <div class="report-title">
-            <input type="text" readonly v-model="crfName" placeholder="请输入报告名称" >
+            <input type="text"  v-model="crfName" placeholder="请输入报告名称" @change="FormTitleFill(crfName)">
           </div>
           <div class="report-config_nav">
             <div class="config-nav_left">
@@ -115,6 +115,10 @@
         crfData:{
           type:Object,
           default:null
+        },
+        formOptions:{
+          type:Object,
+          default: null
         }
       },
       components:{
@@ -154,15 +158,27 @@
       },
       methods: {
         init() {
-          console.log('初始化1',this.crfData);
-          this.isReset = true;
+          // console.log('初始化1',this.crfData);
           this.crfName = this.crfData.crfDisplayName;
           this.enable = this.crfData.crfIsAvailable == '1' ? true : false;
           this.crfType = this.crfData.crfType;
-          this.dataList = this.crfData.subjectPortions
+          this.dataList = this.crfData.subjectPortions;
+          // console.log(this.dataList);
+          this.$nextTick(()=>{
+            this.isReset = true;
+          });
+        },
+        FormTitleFill(data) {
+          if(this.formOptions.researchType == 'researchTarget') {
+            this.$emit("callback-data",data)
+          }
         },
         breakGo() {
-          window.history.go(-1);
+          if(this.formOptions.backStatus == '1') {
+            window.history.go(-1);
+          }else if(this.formOptions.backStatus == '2') {
+            this.$emit('back-status')
+          }
         },
         add() {
           this.displayMask = true;
@@ -427,7 +443,9 @@
         }
       },
       mounted() {
-        this.init();
+        if(this.formOptions.researchType === 'researchTarget') {
+          this.init();
+        }
         /*if(this.$route.query.type=='modify') {
           this.loading = true;
           this.isReset = false;
