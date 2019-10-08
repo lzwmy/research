@@ -16,6 +16,10 @@ const url = {
     planInfo: '/subject/visit/plan/info',
     //新建阶段配置信息
     planAdd: '/subject/visit/plan/add',
+    //编辑阶段配置信息
+    planEdit: '/subject/visit/plan/edit',
+    //获取阶段配置信息的随访点集合
+    planPoints: '/subject/visit/plan/points',
 };
 
 const http = {
@@ -36,6 +40,12 @@ const http = {
     },
     followUpPlanPlanAdd (params) {
         return vm.$post(url.planAdd, params, false);
+    },
+    followUpPlanPlanEdit (params) {
+        return vm.$post(url.planEdit, params, false);
+    },
+    followUpPlanPlanPoints (params) {
+        return vm.$get(url.planPoints, params, true);
     }
 };
 
