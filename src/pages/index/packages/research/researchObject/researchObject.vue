@@ -23,9 +23,9 @@
         <!-- 搜索区域 -->
         <div class="cloud-search flex-between-center">
             <div class="search_group flex-start-center">
-                <div v-for="(item, index) in groupList" :key="index" class="group_item" :class="activeGroup==index?'active':''" @click="selectGroup(item,index)">{{item.groupName}} <span class="badge">12</span> </div>
+                <div v-for="(item, index) in groupList" :key="index" class="group_item" :class="currentGrounpId==item.id?'active':''" @click="selectGroup(item.id)">{{item.groupName}} <span class="badge">12</span> </div>
                 <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView">
-                    <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i> 搜索</div>
+                    <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i> 搜索</div> 
                     <el-form :inline="true" :model="form" label-width="110px" class="flex-start-center flex-wrap researchObject_search">
                         <el-form-item label="首次录入时间：" class="bold">
                             <el-date-picker
@@ -38,27 +38,29 @@
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="入组阶段状态:" class="bold">
-                            <el-select v-model="form.formName" clearable>
-                                <el-option label="录入中" value="0"></el-option>
-                                <el-option label="已完成" value="1"></el-option>
+                            <el-select v-model="form.formName">
+                                <el-option label="全部表单" value="0"></el-option>
+                                <el-option v-for="(item,index) in crfList" :key="index" :label="item.crfName" :value="item.crfId"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label-width="0">
-                            <el-select v-model="form.formState" clearable>
-                                <el-option label="待录入" value="0"></el-option>
-                                <el-option label="已完成" value="1"></el-option>
+                            <el-select v-model="form.formState">
+                                <el-option label="全部状态" value="0"></el-option>
+                                <el-option label="待录入" value="1"></el-option>
+                                <el-option label="已完成" value="2"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="患者状态:">
-                            <el-select v-model="form.patientState" clearable>
-                                <el-option label="待录入" value="0"></el-option>
-                                <el-option label="已完成" value="1"></el-option>
+                            <el-select v-model="form.patientState">
+                                <el-option label="全部状态" value="0"></el-option>
+                                <el-option label="录入中" value="1"></el-option>
+                                <el-option label="已完成" value="2"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-form>
                     <div class="btnGroup_search">
                         <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
-                        <el-button icon="el-icon-refresh" @click="">重 置</el-button>
+                        <el-button icon="el-icon-refresh" @click="onReset">重 置</el-button>
                     </div>
                 </el-popover>
             </div>
@@ -73,15 +75,15 @@
                             <p>选择搜索</p><span class="el-icon-close cur_pointer" @click="popoverVisible = false"></span>
                         </div>
                         <div class="radio_group">
-                            <el-radio v-model="form.radio" label="1">精准搜索</el-radio>
-                            <el-radio v-model="form.radio" label="2">模糊搜索</el-radio>
+                            <el-radio v-model="form.radio" label="0">精准搜索</el-radio>
+                            <el-radio v-model="form.radio" label="1">模糊搜索</el-radio>
                         </div>
                         <div class="content flex-start-start">
                             <div class="left">
                                 <p class="label">请选择</p>
                                 <ul>
-                                    <li v-for="(item,index) in 10" :key="index" class="flex-between-center" :class="activeCrf==index+1?'active':''" @click="selectCrf(index+1)">
-                                        <p>CRF({{item}})</p>
+                                    <li v-for="(item,index) in allCrfForm" :key="index" class="flex-between-center" :class="activeCrf == item.crfId?'active':''" @click="selectCrf(item.crfId,item)">
+                                        <p>{{item.crfName}}</p>
                                         <div class="icon">
                                             <span>3</span>
                                             <i class="el-icon-arrow-right"></i>   
@@ -95,7 +97,7 @@
                                     v-model="form.checked"
                                     :min="0"
                                     :max="5">
-                                    <el-checkbox v-for="(item,index) in checkedList" :label="item" :key="index">{{item}}</el-checkbox>
+                                    <el-checkbox v-for="(item,index) in formItemRspList" :label="item.formItemName" :key="index">{{item.formItemName}}</el-checkbox>
                                 </el-checkbox-group>
                             </div>
                         </div>
@@ -139,13 +141,13 @@
                                 :label="li.label" 
                                 :key="li.prop">
                                 <template slot-scope="scope">
-                                    <el-button v-if="JSON.parse(scope.row[li.prop]) && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconbianji3"></el-button>
+                                    <el-button v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconbianji3"></el-button>
                                     <el-button v-else type="text" icon="icon iconfont iconwancheng"></el-button>
                                 </template>
                             </el-table-column>
                         </span>
                     </el-table-column>
-                    <el-table-column width="80">
+                    <el-table-column width="60" align="center">
                         <template slot="header" slot-scope="scope">
                             <el-button @click="showConfigDialog" type="text" icon="icon iconfont iconfuhao7"></el-button>
                         </template>
@@ -155,7 +157,7 @@
                     </el-table-column>
                 </el-table>
                 <!-- 分页 -->
-                <pagination :data="dataList" @change="getDataList"></pagination>    
+                <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
             </echarts-contain>
         </div>
 
@@ -178,6 +180,9 @@ export default {
     data () {
         return {
             groupList: [],
+            crfList: [],
+            allCrfForm: [],
+            currentGrounpId: null,
             dataList: {
                 content: []
             },
@@ -189,25 +194,21 @@ export default {
             confingData: {
                 title: "设置表格固定列",
                 visible: false,
-                defaultChecked: [],
-                dataList: [
-                    {name: 'CRF(1)',checked:[],checkedList:[{name:'姓名'},{name:'性别'},{name:'年龄'}]},
-                    {name: 'CRF(1)',checked:[],checkedList:[{name:'姓名'},{name:'性别'},{name:'年龄'}]}
-                ]
+                defaultChecked: ['入组序号','首次入组时间','所在中心'],
+                dataList: []
             },
             popoverVisible: false,
-            checkedList:['出生日期1','出生日期2','出生日期3','出生日期4','出生日期5','出生日期6'],
+            formItemRspList: [],
             form: {
                 keyword: '',
                 time:[],
-                formName: '',
-                formState: '',
-                patientState: '',
-                radio: 1,
+                formName: '0',
+                formState: '0',
+                patientState: '0',
+                radio: '0',
                 checked: []
             },
-            activeGroup: 1,
-            activeCrf: 1,
+            activeCrf: null,
             tableLoading: false,
             paging: {
                 pageNo: 1,
@@ -218,7 +219,12 @@ export default {
         }
     },
     created() {
-        this.getGroupList();
+        this.getGroupList()
+        .then(()=>{
+            this.getDataList(0,15);
+        })
+        this.getCrfList();
+        this.getAllFormItem();
     },
     components: {
         echartsContain,
@@ -227,19 +233,32 @@ export default {
         tableConfig
     },
     methods: {
-        // initPage () {
-        //     this.getDataList();
-        // },
+        //表格多选项
         handleSelectionChange(val) {
             this.multipleSelection = val;
         },
-        selectGroup(item, index) {
-            this.getDataList(0,15,item);
-            this.activeGroup = index;
+        //选择分组
+        selectGroup(id) {
+            this.currentGrounpId = id;
+            this.getDataList(0,15);
         },
-        selectCrf(index) {
-            this.activeCrf = index;
+        //搜索表格配置选中表单
+        selectCrf(id,item) {
+            this.activeCrf = id;
+            this.formItemRspList = item.formItemRspList;
         },
+        onReset() {
+            this.form = {
+                keyword: '',
+                time:[],
+                formName: '0',
+                formState: '0',
+                patientState: '0',
+                radio: '0',
+                checked: []
+            }
+        },
+        //获取分组列表
         async getGroupList() {
             this.groupLoading = true;
             let params = {
@@ -249,8 +268,9 @@ export default {
                 let res = await this.$http.projectGroupingGroup(params);
                 if (res.code == '0') {
                     this.groupList = res.data;
-                }else {
-                    this.$mes('error', res.msg);
+                    if(this.groupList.length) {
+                        this.currentGrounpId = this.groupList[0].id;
+                    }
                 }
                 this.groupLoading = false;
             } catch (err) {
@@ -258,23 +278,94 @@ export default {
                 console.log(err)
             }
         },
-        async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize,item) {
+        //crf表单列表和列表下的所有指标
+        async getAllFormItem() {
+            this.groupLoading = true;
+            let params = {
+                subjectInfoId: this.$store.state.user.researchID
+            }
+            try {
+                let res = await this.$http.researchObjectAllFormItem(params);
+                if (res.code == '0') {
+                    res.data.forEach(item=>{
+                        item.checkedList = [];
+                    })
+                    this.allCrfForm = res.data;
+                    this.confingData.dataList = this.allCrfForm;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //回显crf表单列表下的已选指标
+        // async getAllFormItem() {
+        //     this.groupLoading = true;
+        //     let params = {
+        //         subjectInfoId: this.$store.state.user.researchID
+        //     }
+        //     try {
+        //         let res = await this.$http.researchObjectAllFormItem(params);
+        //         if (res.code == '0') {
+        //             this.allCrfForm = res.data;
+        //         }
+        //     } catch (err) {
+        //         console.log(err)
+        //     }
+        // },
+        //获取crf表单列表
+        async getCrfList() {
+            this.groupLoading = true;
+            let params = {
+                subjectInfoId: this.$store.state.user.researchID
+            }
+            try {
+                let res = await this.$http.researchObjectCrfList(params);
+                if (res.code == '0') {
+                    this.crfList = res.data;
+                    if(this.crfList.length) {
+                        this.activeCrf = this.crfList[0].crfId;
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
             that.tableLoading = true;
             that.paging.currentPageNo = pageNo;
             that.paging.currentPageSize = pageSize;
             that.dataList.content = [];
+            let time = ['',''];
+            if(this.form.time && this.form.time.length != 0) {
+                time = this.form.time;
+            }
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
                 subjectInfoId: this.$store.state.user.researchID,
-                subjectGroupId: item.id,
-                createTime: '',
-                endTime: '',
-                formCrfId: '',
-                formCrfStatus: 0,
-                patientStatus: 0
+                subjectGroupId: this.currentGrounpId,
+                createTime: time[0],
+                endTime: time[1],
+                formCrfId: parseInt(this.form.formName),
+                formCrfStatus: parseInt(this.form.formState),
+                patientStatus: parseInt(this.form.patientState),
+                searchType: parseInt(this.form.radio),
+                keyword: this.form.keyword
             };
+            // let formData = {
+            //     offset: 1,
+            //     limit: pageSize,
+            //     subjectInfoId: this.$store.state.user.researchID,
+            //     subjectGroupId: this.currentGrounpId,
+            //     createTime: '',
+            //     endTime: '',
+            //     formCrfId: 0,
+            //     formCrfStatus: 0,
+            //     patientStatus: 0,
+            //     searchType: 0,
+            //     keyword: ''
+            // };
             try {
                 let res = await that.$http.researchObjectTable(formData);
                 if (res.code == '0') {
@@ -282,13 +373,11 @@ export default {
                         content: res.data.body,
                         header: res.data.header
                     };
-                    console.log(res.data.body)
-                    res.data.body.forEach(item=>{
-                        // console.log(JSON.parse(JSON.stringify({"crfId":"1","status":"1"})))
+                    // console.log(res.data.body)
+                    res.data.body.forEach((item)=>{
+                        console.log(item)
                         console.log(JSON.parse(item.report_1))
-                        // console.log(Object.assign({},item.report_1))
                     })
-
                     // obj.content = res.data.args;
                     // obj.pageNo = pageNo;
                     // obj.pageSize = pageSize;
@@ -296,7 +385,10 @@ export default {
                     // obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
                 }else {
-                    this.$mes('error', res.msg);
+                    that.dataList = {
+                        content: [],
+                        header: []
+                    }
                 }
                 that.tableLoading = false;
             } catch (err) {
@@ -310,7 +402,8 @@ export default {
         showConfigDialog() {
             this.confingData.visible = true;
         },
-        handleSaveConfig() {
+        handleSaveConfig(data) {
+            console.log(data)
             this.confingData.visible = false;
         }
     }

@@ -147,6 +147,7 @@
             :title="dialgoForm.title" 
             :append-to-body="true"
             @close="closeDialog"
+            class="height_auto"
             :visible.sync="dialgoForm.visible" 
             width="45%">
             <el-form :model="dialgoForm" ref="dialgoForm" :rules="dialgoFormRules" label-width="110px"
@@ -339,8 +340,6 @@ export default {
                         },
                         crfId: res.data.crfId || ''
                     }
-                    console.log(res.data.frequencyParam)
-                    console.log(this.form)
                 }
                 this.infoLoading = false;
             } catch (err) {
@@ -364,7 +363,6 @@ export default {
                 crfId: "666",
                 pointNames: this.form.pointNames
             }
-            console.log(params)
             try {
                 let res;
                 if(this.configExists) {

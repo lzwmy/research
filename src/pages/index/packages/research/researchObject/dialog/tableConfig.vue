@@ -13,15 +13,15 @@
                 </el-checkbox-group>
                 <ul class="row">
                     <li v-for="(item,index) in dataInfo.dataList" :key="index">
-                        <p class="label">{{index+1}}、{{item.name}}</p>
-                        <el-checkbox-group v-model="item.checked">
-                            <el-checkbox v-for="(li,index) in item.checkedList" :label="li" :key="index">{{li.name}}</el-checkbox>
+                        <p class="label">{{index+1}}、{{item.crfName}}</p>
+                        <el-checkbox-group v-model="item.checkedList">
+                            <el-checkbox v-for="(li,index) in item.formItemRspList" :label="li.controlName" :key="index">{{li.controlName}}</el-checkbox>
                         </el-checkbox-group>
                     </li>
                 </ul>
             </div>
             <div slot="footer">
-                <el-button type="primary" @click="$emit('saveConfig')" size="mini" :disabled="dataInfo.loading">保 存</el-button>
+                <el-button type="primary" @click="$emit('saveConfig',dataInfo)" size="mini" :disabled="dataInfo.loading">保 存</el-button>
                 <el-button @click="dataInfo.visible = false;" size="mini">关 闭</el-button>
             </div>
         </el-dialog>

@@ -34,6 +34,9 @@ require('zrender/lib/vml/vml');
 require('zrender/lib/svg/svg');
 
 
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard)
 Vue.use(VueQuillEditor)
 Vue.use(install);
 Vue.use(VueRouter);

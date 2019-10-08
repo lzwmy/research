@@ -24,6 +24,24 @@
             <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
         </el-popover>
         <p v-show="$route.meta.belongToGroup == 'researchTask'" @click="researchlLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
+
+        <el-dialog 
+            title="" 
+            :append-to-body="true"
+            :visible.sync="dialgoForm.visible" 
+            class="projectShare"
+            width="950px">
+            <el-form :model="dialgoForm" label-width="110px"
+                    class="ruleFormDialog" @submit.native.prevent v-loading="dialgoForm.loading" label-position="left">
+                <el-form-item label="分享地址:">
+                    <el-input v-model.trim="dialgoForm.url" ></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button type="primary" v-clipboard:copy="dialgoForm.url"  v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">复 制</el-button>
+                <el-button @click="dialgoForm.visible = false">关 闭</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -35,7 +53,12 @@ export default {
         return {
             disease: "",
             popoverVisible: false,
-            dataList: []
+            dataList: [],   //专病列表
+            //项目分享弹框
+            dialgoForm: {
+                url: 'http://192.168.1.109:4040/loginResearch.html?id='+ this.researchId,
+                visible: false
+            },
         };
     },
     created () {
@@ -83,8 +106,16 @@ export default {
             }
         },
         researchlLogin() {
-            sessionStorage.setItem('CURR_RESEARCH_ID', this.researchId);
-            window.open('./loginResearch.html');
+            this.dialgoForm.visible = true;
+        },
+        onCopySuccess(e) {
+            this.$mes('success', '复制成功！');
+            setTimeout(()=>{
+                this.dialgoForm.visible = false;
+            },500)
+        },
+        onCopyError(e) {
+            this.$mes('error', '复制失败,请手动复制！');
         }
     }
 };
@@ -192,6 +223,9 @@ export default {
                     }
                 }
             }
+        }
+        .projectShare .el-dialog{
+            min-height: 200px;
         }
     }
 

@@ -5,7 +5,9 @@
             <ul class="flex-between-center">
                 <li v-for="(item,index) in step" :key="index" :class="item.finish?'finish':''">
                     <div class="step_wrap">
-                        <span class="icon iconfont" :class="item.icon" :style="'background-color:' + item.bgColor + ';'"></span>
+                        <router-link :to="item.to">
+                            <span class="icon iconfont" :class="item.icon" :style="'background-color:' + item.bgColor + ';'"></span>
+                        </router-link>
                         <p>{{item.text}}</p>
                     </div>
                 </li>
@@ -71,16 +73,16 @@ export default {
     data () {
         return {
             step: [
-                {icon: 'iconkeyanlingganbeifen', bgColor: 'rgba(245, 166, 35, 1)', text: '科研灵感',finish: true},
-                {icon: 'iconketiyanzhengbeifen', bgColor: 'rgba(67, 154, 255, 1)', text: '课题验证',finish: true},
-                {icon: 'iconbaogaoxinxibeifen', bgColor: 'rgba(142, 196, 102, 1)', text: '项目信息',finish: true},
-                {icon: 'iconyanjiufenzubeifen', bgColor: 'rgba(67, 154, 255, 1)', text: '研究分组',finish: true},
-                {icon: 'iconyanjiuneirongbeifen', bgColor: 'rgba(177, 182, 205, 1)', text: '研究内容',finish: true},
-                {icon: 'iconshujulurubeifen', bgColor: 'rgba(161, 204, 255, 1)', text: '数据录入',finish: false},
-                {icon: 'iconhuanzhesuifangbeifen', bgColor: 'rgba(128, 221, 200, 1)', text: '患者随访',finish: false},
-                {icon: 'iconshujusuodingbeifen', bgColor: 'rgba(161, 204, 255, 1)', text: '数据锁定',finish: false},
-                {icon: 'iconkeyanfenxibeifen', bgColor: 'rgba(129, 219, 238, 1)', text: '科研分析',finish: false},
-                {icon: 'iconlunwenrunsebeifen', bgColor: 'rgba(161, 204, 255, 1)', text: '论文润色',finish: false},
+                {icon: 'iconkeyanlingganbeifen', bgColor: 'rgba(245, 166, 35, 1)', text: '科研灵感',finish: true, to:''},
+                {icon: 'iconketiyanzhengbeifen', bgColor: 'rgba(67, 154, 255, 1)', text: '课题验证',finish: true, to:''},
+                {icon: 'iconbaogaoxinxibeifen', bgColor: 'rgba(142, 196, 102, 1)', text: '项目信息',finish: true, to:''},
+                {icon: 'iconyanjiufenzubeifen', bgColor: 'rgba(67, 154, 255, 1)', text: '项目分组',finish: true, to:'/projectGrouping'},
+                {icon: 'iconyanjiuneirongbeifen', bgColor: 'rgba(177, 182, 205, 1)', text: '研究指标',finish: true, to:'/researchTarget'},
+                {icon: 'iconshujulurubeifen', bgColor: 'rgba(161, 204, 255, 1)', text: '数据录入',finish: false, to:'/researchObject'},
+                {icon: 'iconhuanzhesuifangbeifen', bgColor: 'rgba(128, 221, 200, 1)', text: '患者随访',finish: false, to:'/followUpManagement'},
+                {icon: 'iconshujusuodingbeifen', bgColor: 'rgba(161, 204, 255, 1)', text: '数据锁定',finish: false, to:''},
+                {icon: 'iconkeyanfenxibeifen', bgColor: 'rgba(129, 219, 238, 1)', text: '统计分析',finish: false, to:'/statisticalAnalysis'},
+                {icon: 'iconlunwenrunsebeifen', bgColor: 'rgba(161, 204, 255, 1)', text: '论文润色',finish: false, to:'/articlesEmbellish'}
             ],
             optionPatient: {
                 chart: {

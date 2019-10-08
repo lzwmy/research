@@ -1,18 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" class="flex-center-center">
     <div class="container flex-between-center">
-      <div class="left flex-between-start flex-wrap">
-        <div class="logo">
-          <img :src="'./static/img/logo/'+ this.logo" alt="卫健智能">
-        </div>
-        <div class="bottom">
-          <h1>{{title}}</h1>
-          <p>Special disease research platform</p>
-        </div>
+      <div class="left flex-center-center flex-wrap">
+          <h1><img :src="'./static/img/logo/'+ this.logo" alt="卫健智能"><br/>专病科研平台</h1>
       </div>
-      <div class="right flex-center-center">
-        <div class="login_content">
-          <p class="login_title text_center">欢迎登录</p>
+      <div class="login_content">
+          <p class="login_title text_center">用户登录</p>
           <el-form :model="form" ref="refForm" label-width="0" :rules="rules">
             <el-form-item prop="phoneNumber">
               <el-input id="phoneNumber" class="login_input" @keyup.enter.native="login" v-model.trim="form.phoneNumber" autocomplete="off"  maxlength="30" type="text" :class="form.userName?'active':''" placeholder="请输入手机号码" clearable>
@@ -20,15 +13,18 @@
                 </el-input>
               </el-form-item>
             <el-form-item prop="validCode">
-              <el-input id='validCode' @keyup.enter.native="login" class="login_input" v-model.trim="form.validCode" maxlength="4" type="text" :class="form.validCode?'active':''"  placeholder="请输入短信验证码">
-                <i slot="prefix" class="icon iconfont iconzujian29"></i>
-                <el-button @click="getValidCode" class="validCode" slot='suffix'>获取手机验证码</el-button>
-              </el-input>
+              <div class="flex-between-center">
+                <el-input id='validCode' @keyup.enter.native="login" class="login_input" v-model.trim="form.validCode" maxlength="4" type="text" :class="form.validCode?'active':''"  placeholder="请输入短信验证码">
+                  <i slot="prefix" class="icon iconfont iconzujian29"></i>
+                  <!-- <el-button @click="getValidCode" class="validCode" slot='suffix'>获取手机验证码</el-button> -->
+                </el-input>
+                <el-button type='text' v-if="count==0"  @click="getValidCode" class="validCode">获取验证码</el-button>
+                <el-button type='text' v-else class="validCode">{{count}} s</el-button>
+              </div>
             </el-form-item>
           </el-form>
           <el-button @click="login" class="login_button" type="primary">登 录</el-button>
         </div>
-      </div>
     </div>
   </div>
 </template>
@@ -44,6 +40,8 @@ export default {
   name: 'login',
   data () {
     return {
+      count: 0,
+      timer: null,
       form: {
         phoneNumber: '',
         validCode: '',
@@ -59,6 +57,7 @@ export default {
   created () {
     this.logo = JSON.parse(sessionStorage.getItem('Global')).logo;
     this.title = JSON.parse(sessionStorage.getItem('Global')).title;
+    sessionStorage.setItem('CURR_RESEARCH_ID', utils.getQuery('id'));
   },
   mounted () {
   },
@@ -103,12 +102,23 @@ export default {
       });
     },
     getValidCode() {
+      if(this.count != 0) {
+        return;
+      }
       let params = {
         phoneNumber: this.form.phoneNumber
       }
       this.$get('/auth/subject/send/code.do', this.$format(params), false).then((res) => {
         if (res && res.code == 0 && res.data) {
           this.$mes('success','验证码已发送，请注意查收');
+          this.count = 59;
+          this.timer = setInterval(() => {
+            if(this.count > 0) {
+              this.count--;
+            }else {
+              clearInterval(this.timer);
+            }
+          }, 1000);
         } else {
           if(data.code == 40) {
             document.querySelector('#validCode').focus();
@@ -127,64 +137,46 @@ export default {
   html, body, #app {
     height: 100%;
   }  
-  .container {
+  #app {
     height: 100%;
+    background-image: url('./images/bg1.png');
+    background-position: center bottom;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-color: #eaf3fd;
+  }
+  .container {
+    width: 634px;
+    height: 418px;
     .left {
-      flex: 1;
+      width: 314px;
       height: 100%;
-      background: #82b7f3;
-      background-size: cover;
-      background-position: center;
-      padding: 60px 80px 100px 60px;
-      .logo img {
-          height: 56px;
-      }
-      .bottom {
-        align-self: flex-end;
-        width: 100%;
+      background-image: url('./images/bg2.jpg');
+      border-top-left-radius: 4px; 
+      border-bottom-left-radius: 4px; 
+      h1 {
         color: #fff;
-        h1 {
-          margin: 16px 0;
-          font-size: 32px;
-          text-align: right;
-          font-weight: bold;
-        }
-        p {
-          font-size: 40px;
-          width: 100%;
-          text-align: right;
-          color: rgba(255, 255, 255, 0.74);
-          text-transform: uppercase;
-        }
+        text-align: center;
+        font-size: 22px;
+      }
+      img {
+          height: 35px;
       }
     }
-    .right {
-      width: 574px;
-      height: 100%;
-      .login_content {
-        width: 100%;
-        height: 550px;
-        padding: 0 52px;
+    .login_content {
+        flex: 1;
+        height: 100%;
+        background-color: #fff;
+        border-top-right-radius: 4px; 
+        border-bottom-right-radius: 4px; 
+        padding: 64px 20px;
         .login_title {
-          font-size:30px;
-          font-weight:400;
-          height: 50px;
-          line-height:40px;
-          color:rgba(9,14,64,1);
-          position: relative;
-          &::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width:120px;
-            height:4px;
-            background:rgba(67,154,255,1);
-          }
+          font-size:22px;
+          font-weight: bold;
+          color: #797979;
         }    
         .el-form {
-          margin: 80px 0;
+          margin: 36px 0;
           .login_input {
             height: auto;
           }
@@ -198,45 +190,60 @@ export default {
           }
           .el-input__inner {
             border:none;
-            border-bottom:1px solid rgba(229,229,229,1);
-            height: 60px;
-            font-size: 16px;
-            padding-left: 46px;
-            line-height: 60px;
+            height: 40px;
+            font-size: 14px;
+            padding-left: 30px;
+            line-height: 40px;
             color: rgba(99, 102, 110, 0.965);
-            background-color: transparent;
-            
+            background-color: #F1F6FD;
+            &::-webkit-input-placeholder {
+                color:#BEC9DB;
+            }
+            &::-moz-placeholder {   /* Mozilla Firefox 19+ */
+                color:#BEC9DB;
+            }
+            &:-moz-placeholder {    /* Mozilla Firefox 4 to 18 */
+                color:#BEC9DB;
+            }
+            &:-ms-input-placeholder {  /* Internet Explorer 10-11 */ 
+                color:#BEC9DB;
+            }
           }
           input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0 1000px white inset !important;
-            border-color: rgba(67, 154, 255, 1);
-            background-color: transparent;
+            border-color: transparent;
+            background-color: #F1F6FD;
             & + .el-input__prefix .icon {
               color: rgba(67, 154, 255, 1);
             }
           }
           input:-moz-autofill {
             -webkit-box-shadow: 0 0 0 1000px white inset !important;
-            border-color: rgba(67, 154, 255, 1);
-            background-color: transparent;
+            border-color: transparent;
+            background-color: #F1F6FD;
             & + .el-input__prefix .icon {
               color: rgba(67, 154, 255, 1);
             }
           }
           .el-form-item__error {
-            left: 46px;
+            left: 30px;
           }
           .icon {
-            line-height: 60px;
-            font-size: 22px;
-            color: rgba(107, 107, 108, 1);
+            line-height: 40px;
+            font-size: 20px;
+            color: rgba(107, 107, 108, .7);
             
+          }
+          .validCode {
+            width: 100px;
+            line-height: 40px;
+            margin-left: 5px;
           }
         } 
         .login_button {
           width: 100%;
-          height: 58px;
-          font-size: 24px;
+          height: 40px;
+          font-size: 16px;
           border-radius:4px;
           background-color: #439aff;
           &:hover {
@@ -244,7 +251,6 @@ export default {
           }
         }
       }
-    }
   }
   @media screen and (min-width: 350px) and (max-width: 1200px) {
     #app {

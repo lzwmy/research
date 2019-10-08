@@ -80,6 +80,10 @@ body .el-dialog {
         }
     }
 }
+/* */
+body .insideView ~ .el-dialog__wrapper.height_auto .el-dialog {
+    min-height: 250px;
+}
 
 /* 确认弹框style*/
 body .el-message-box__wrapper {
@@ -246,6 +250,11 @@ body .el-select {
     }
 }
 
+/*消息提示框*/ 
+body .el-message {
+    z-index: 99999 !important;
+}
+
 /* 内页样式 */
 body {
     .insideView {
@@ -331,6 +340,12 @@ body {
         .el-radio__input.is-checked+.el-radio__label {
             color: @themeColor2;
         }
+        .el-date-table td.today.end-date span,
+        .el-date-table td.today.start-date span {
+            color: #fff;
+        }
+
+        
         .el-checkbox__input.is-checked:not(.is-disabled) .el-checkbox__inner,
         .el-checkbox__input.is-indeterminate .el-checkbox__inner,
         .el-radio__input.is-checked .el-radio__inner,

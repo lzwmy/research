@@ -131,7 +131,7 @@ const routes = [
     },{
         ico: 'articlesEmbellish',
         menuLevel: 3,
-        menuName: '文章润色',
+        menuName: '论文润色',
         menuOrder: 6,
         menuPath: '/articlesEmbellish',
         superiorMenu: '0107',
@@ -143,7 +143,7 @@ const routes = [
         meta: {
             requireAuth: true,
             isKeepAlive: false,
-            txt: '文章润色',
+            txt: '论文润色',
             flag: 'articlesEmbellish',
             belongToGroup: 'researchTask',
             openMode: 2

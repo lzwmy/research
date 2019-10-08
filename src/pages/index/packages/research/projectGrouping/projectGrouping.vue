@@ -39,6 +39,7 @@
         <el-dialog 
             :title="dialgoForm.title" 
             :append-to-body="true"
+            class="height_auto"
             @close="closeDialog"
             :visible.sync="dialgoForm.visible" 
             width="45%">
