@@ -15,7 +15,7 @@
                     <li v-for="(item,index) in dataInfo.dataList" :key="index">
                         <p class="label">{{index+1}}、{{item.crfName}}</p>
                         <el-checkbox-group v-model="item.checkedList">
-                            <el-checkbox v-for="(li,index) in item.formItemRspList" :label="li.controlName" :key="index">{{li.controlName}}</el-checkbox>
+                            <el-checkbox v-for="(li,index) in item.formItemRspList" :label="li.formItemName" :key="index">{{li.formItemName}}</el-checkbox>
                         </el-checkbox-group>
                     </li>
                 </ul>

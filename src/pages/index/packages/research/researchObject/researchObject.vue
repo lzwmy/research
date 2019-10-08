@@ -82,23 +82,26 @@
                             <div class="left">
                                 <p class="label">请选择</p>
                                 <ul>
-                                    <li v-for="(item,index) in allCrfForm" :key="index" class="flex-between-center" :class="activeCrf == item.crfId?'active':''" @click="selectCrf(item.crfId,item)">
-                                        <p>{{item.crfName}}</p>
-                                        <div class="icon">
-                                            <span>3</span>
-                                            <i class="el-icon-arrow-right"></i>   
+                                    <li v-for="(item,index) in allCrfForm" :key="index" class="flex-between-center" :class="activeCrf == item.crfId?'active':''" @click="selectCrf(item.crfId)">
+                                        <div class="crfName flex-between-center">
+                                            {{item.crfName}}
+                                            <div class="icon">
+                                                <span class="count">{{item.checkedList.length}}</span>
+                                                <i class="el-icon-arrow-right"></i>   
+                                            </div>
+                                        </div>
+                                        <div class="cont" v-show="activeCrf == item.crfId">
+                                            <p class="label">选择搜索字段，至少选择1项，最多5项</p>
+                                            <el-checkbox-group 
+                                                v-model="item.checkedList"
+                                                :min="0"
+                                                :max="5"
+                                                @change="checkboxChange">
+                                                <el-checkbox v-for="(item,index) in item.formItemRspList" :label="item.formItemName" :key="index">{{item.formItemName}}</el-checkbox>
+                                            </el-checkbox-group>
                                         </div>
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="right">
-                                <p class="label">选择搜索字段，至少选择1项，最多5项</p>
-                                <el-checkbox-group 
-                                    v-model="form.checked"
-                                    :min="0"
-                                    :max="5">
-                                    <el-checkbox v-for="(item,index) in formItemRspList" :label="item.formItemName" :key="index">{{item.formItemName}}</el-checkbox>
-                                </el-checkbox-group>
                             </div>
                         </div>
                         <div class="footer flex-end-center">
@@ -122,26 +125,26 @@
                     v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)">
-                    <el-table-column type="selection"></el-table-column>
+                    <el-table-column type="selection" align="center" width="40"></el-table-column>
                     <el-table-column 
                         v-for="column in dataList.header"
                         :prop="column.prop" 
                         :label="column.label" 
                         sortable 
                         :key="column.prop" 
-                        :width="column.prop == 'patientId'?'110px':''"
+                        :width="column.prop == 'patientId'?'110':''"
                         v-if="column.type !='report'"
                         show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="研究内容">
-                        <span v-for="li in dataList.header" :key="li.prop" >
+                        <span v-for="li in dataList.header" :key="li.prop">
                             <el-table-column 
                                 v-if="li.type=='report'"
                                 :prop="li.prop" 
                                 :label="li.label" 
                                 :key="li.prop">
                                 <template slot-scope="scope">
-                                    <el-button v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconbianji3"></el-button>
+                                    <el-button v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
                                     <el-button v-else type="text" icon="icon iconfont iconwancheng"></el-button>
                                 </template>
                             </el-table-column>
@@ -198,15 +201,13 @@ export default {
                 dataList: []
             },
             popoverVisible: false,
-            formItemRspList: [],
             form: {
                 keyword: '',
                 time:[],
                 formName: '0',
                 formState: '0',
                 patientState: '0',
-                radio: '0',
-                checked: []
+                radio: '0'
             },
             activeCrf: null,
             tableLoading: false,
@@ -243,9 +244,17 @@ export default {
             this.getDataList(0,15);
         },
         //搜索表格配置选中表单
-        selectCrf(id,item) {
+        selectCrf(id) {
             this.activeCrf = id;
-            this.formItemRspList = item.formItemRspList;
+        },
+        //多选框改变
+        checkboxChange(data) {
+            let count = 0;
+            this.allCrfForm.forEach(item=>{
+                count += item.checkedList.length;
+            })
+            console.log(count)
+            console.log(this.allCrfForm)
         },
         onReset() {
             this.form = {
@@ -254,8 +263,7 @@ export default {
                 formName: '0',
                 formState: '0',
                 patientState: '0',
-                radio: '0',
-                checked: []
+                radio: '0'
             }
         },
         //获取分组列表
@@ -289,6 +297,7 @@ export default {
                 if (res.code == '0') {
                     res.data.forEach(item=>{
                         item.checkedList = [];
+                        item.maxSelect = 5;
                     })
                     this.allCrfForm = res.data;
                     this.confingData.dataList = this.allCrfForm;
@@ -373,11 +382,6 @@ export default {
                         content: res.data.body,
                         header: res.data.header
                     };
-                    // console.log(res.data.body)
-                    res.data.body.forEach((item)=>{
-                        console.log(item)
-                        console.log(JSON.parse(item.report_1))
-                    })
                     // obj.content = res.data.args;
                     // obj.pageNo = pageNo;
                     // obj.pageSize = pageSize;
@@ -410,9 +414,6 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
-
-</style>
 
 <style lang="less">
     @import url('./popover.less');

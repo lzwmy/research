@@ -125,12 +125,12 @@
                     <div class="wrap flex-start-start">
                         <!-- <el-checkbox v-model="addCRFchecked">添加CFR</el-checkbox> -->
                         <div class="CRF_group" v-show="form.crfId">
-                            <div class="crf_box crf_box1 flex-between-center">
+                            <div class="crf_box crf_box1 flex-between-center" @click="showCrfDialog">
                                 <i class="el-icon-edit">CRF(1)</i><i class="icon iconfont iconfuhao3"></i>
                             </div>
                         </div>
                         <div class="CRF_group left_6">
-                            <div class="crf_box flex-center-center">
+                            <div class="crf_box flex-center-center" @click="showCrfDialog">
                                 <i class="el-icon-edit"></i> 添加或编辑CRF
                             </div>
                         </div>
@@ -166,10 +166,13 @@
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>
         </el-dialog>
+
+        <refFome :dialogForm="dialgoCrfForm"></refFome>
     </div>
 </template>
 
 <script>
+import refFome from '../crfForm/crfForm'
 export default {
     name: 'followUpPlan',
     data () {
@@ -225,8 +228,16 @@ export default {
                 stageName: [
                     {required: true, message: '请输入阶段名称', trigger: 'change'}
                 ]
+            },
+            dialgoCrfForm: {
+                visible: false,
+                title: '',
+                loading: false,
             }
         }
+    },
+    components: {
+        refFome
     },
     created() {
         this.getGroupList()
@@ -536,6 +547,10 @@ export default {
                 stageName: ''
             }
             this.$refs.dialgoForm.resetFields();
+        },
+        //查看表单
+        showCrfDialog() {
+            this.dialgoCrfForm.visible = true;
         }
     }
 };

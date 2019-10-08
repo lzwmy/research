@@ -104,7 +104,7 @@
         margin: 20px 0;
     }
     .content {
-        height: 180px;
+        height: 200px;
         border: 1px solid #eee;
         margin-bottom: 20px;
         .label {
@@ -113,20 +113,24 @@
             padding: 0 10px;
         }
         .left {
-            width: 180px;
+            width: 100%;
             height: 100%;
             overflow: auto;
-            border-right: 1px solid #eee;
+            position: relative;
             li {
                 font-size: 14px;
                 color: #394263;
                 line-height: 32px;
-                padding: 0 18px;
+                padding: 0;
                 cursor: pointer;
-                &.active {
+                &.active .crfName{
                     background:rgba(229,235,236,0.5);
                 }
-                span {
+                .crfName{
+                    width: 180px;
+                    padding: 0 15px;
+                }
+                .count {
                     width:16px;
                     height:16px;
                     background:rgba(245,157,0,1);
@@ -141,16 +145,20 @@
                     color: #394263;
                 }
             }
-        }
-        .right {
-            height: 100%;
-            flex: 1;
-            overflow: auto;
-            .el-checkbox-group {
-                padding: 0 20px 20px;
-                .el-checkbox {
-                    display: block;
-                    color: rgba(57, 66, 99, 1);
+            .cont {
+                position: absolute;
+                left: 180px;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                overflow: auto;
+                border-left: 1px solid #eee;
+                .el-checkbox-group {
+                    padding: 0 20px 20px;
+                    .el-checkbox {
+                        display: block;
+                        color: rgba(57, 66, 99, 1);
+                    }
                 }
             }
         }
