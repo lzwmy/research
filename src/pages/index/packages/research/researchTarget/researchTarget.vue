@@ -2,7 +2,7 @@
   <div class="cloud-component researchTarget">
     <!-- 研究指标 -->
     <!--<img src="../images/researchTarget.png" alt="" width="100%">-->
-    <el-tabs ref="elTabs" class="research_target-box" v-if="displayState" v-model="editableTabsValue" type="card"  :closable="false" addable  @tab-add="handleTabsEdit" @tab-click="handleClick">
+    <el-tabs ref="elTabs" class="research_target-box" v-if="displayState" v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
       <el-tab-pane
         :key="index"
         v-for="(item, index) in editableTabs"
@@ -46,6 +46,12 @@
   import createForm from './CRFConfig/report/createReport';
   export default {
     name: 'researchTarget',
+    props:{
+      tabAddStatus:{
+        type:Boolean,
+        default:null
+      }
+    },
     components: {
       createForm
     },
@@ -53,32 +59,15 @@
       return {
         displayState:false,
         dialogFormVisible:false,
+        addStatus:this.tabAddStatus || true,
         editableTabsValue: 0,
-        editableTabs: [
-          /*{
-            "id": 0,
-            "crfDisplayName": "癌栓专病信息",
-            "crfType": 1,
-            "crfIsAvailable": 2,
-            "crfImage": null,
-            "subjectPortions": [],
-            "diseaseId": null
-          },
-          {
-            "id": 1,
-            "crfDisplayName": "癌栓专病信息1",
-            "crfType": 1,
-            "crfIsAvailable": 2,
-            "crfImage": null,
-            "subjectPortions": [],
-            "diseaseId": null
-          }*/
-        ],
+        editableTabs: [],
         tabIndex: 0,
         crfNames:"",
         options:{
           researchType:"researchTarget",
           backStatus:"3",// 1 window.history.go(-1)  2 this.$emit() 3 隐藏返回按钮
+          saveStatus:"2", // 1 调用自己的保存并回调 2 直接回调
           title:"编辑CRF表单"
         }
       }
@@ -259,21 +248,26 @@
 .research_target-box{
   .el-tabs__header{
     height: 41px;
-    /*height: 41px;
-    .el-tabs__nav-wrap{
-      float: left;
-    }*/
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    flex-flow: row-reverse;
     .el-tabs__new-tab{
-      /*float: none;*/
       border-color: transparent;
-      /*position: relative;*/
-      /*top: 8px;*/
+      width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      margin: 2px 0 2px 10px;
       .el-icon-plus{
-        font-size: 18px;
+        font-size: 24px;
+        color: #1BBAE1;
+      }
+      &:hover{
+        background-color: #E5EBEC;
       }
     }
     .el-tabs__nav-scroll{
-      /*height: 41px;*/
       .is-active{
         background-color: #ffffff;
       }

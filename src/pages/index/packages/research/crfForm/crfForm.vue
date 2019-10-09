@@ -34,8 +34,10 @@ export default {
             this.dialogForm.visible = false;
         },
         handleSave(){
-            // this.$refs.createForm
-            this.$emit('save');
+            this.$refs.createForm.researchFormSave()
+            .then(res=>{
+                this.$emit('save',res);
+            })
         }
     }
 };

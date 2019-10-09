@@ -124,12 +124,12 @@
                     <p class="page_title">随访内容</p>
                     <div class="wrap flex-start-start">
                         <!-- <el-checkbox v-model="addCRFchecked">添加CFR</el-checkbox> -->
-                        <div class="CRF_group" v-show="form.crfId">
+                        <div class="CRF_group" v-if="crfName">
                             <div class="crf_box crf_box1 flex-between-center" @click="showCrfDialog">
-                                <i class="el-icon-edit">CRF(1)</i><i class="icon iconfont iconfuhao3"></i>
+                                <i class="el-icon-edit">{{crfName}}</i><i class="icon iconfont iconfuhao3"></i>
                             </div>
                         </div>
-                        <div class="CRF_group left_6">
+                        <div class="CRF_group left_6" v-else>
                             <div class="crf_box flex-center-center" @click="showCrfDialog">
                                 <i class="el-icon-edit"></i> 添加或编辑CRF
                             </div>
@@ -205,6 +205,7 @@ export default {
                 },
                 crfId:''
             },
+            crfName:'',
             stageList: [],
             dialgoForm: {
                 groupId: '',
@@ -343,6 +344,7 @@ export default {
                     }
                     if(res.data.crfId) {
                         this.addCRFchecked = true;
+                        this.getCrfinfo(res.data.crfId)
                     }
                     if(res.data.startType == 3) {
                         this.crfList.forEach(item=>{
@@ -431,7 +433,7 @@ export default {
                 startParam2: this.form.startTimeParam.startParam2,
                 startParam3: this.form.startTimeParam.startParam3,
                 startParam4: this.form.startTimeParam.startParam4,
-                crfId: "666",
+                crfId: this.form.crfId,
                 pointNames: this.form.pointNames
             }
             try {
@@ -658,13 +660,29 @@ export default {
             this.dialgoCrfForm.visible = true;
         },
         //保存表单回调
-        handleSave() {
-            this.dialgoCrfForm.visible = false;
-            console.log(23434)
+        handleSave(data) {
+            if(data.code == 0) {
+                this.form.crfId = data.data;
+                this.getCrfinfo(this.form.crfId)
+                this.dialgoCrfForm.visible = false;
+                this.$mes('success','保存成功!')
+            }else {
+                this.$mes('error','保存失败!')
+            }
         },
-        //保存crf表单
-        async saveCrf() {
-            
+        //获取crf表单列信息
+        async getCrfinfo(id) {
+            let params = {
+                crfId: id
+            }
+            try {
+                let res = await this.$http.followUpPlanCrfSimplePreview(params);
+                if (res.code == '0') {
+                    this.crfName = res.data.crfName
+                }
+            } catch (err) {
+                console.log(err)
+            }
         },
     }
 };
