@@ -23,7 +23,7 @@
         </div>
         <div class="research_form_box">
           <!--{{item.content}}-->
-          <createForm ref="createForm" :crfData="item" :formOptions="options" @callback-data="callbackData"></createForm>
+          <createForm ref="createForm" :crfData="item" :formOptions="options" @callback-data="callbackData" @callback-save="callbackSave"></createForm>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -87,9 +87,11 @@
     methods: {
       handleTabsEdit(targetName,action) {
         this.displayState = false;
-          let newTabName = ++this.editableTabs.length + '';
+        let newTabName = ++this.editableTabs.length + '';
+        this.queryFormId().then((data)=>{
+          // console.log(data)
           let obj = {
-            "id": newTabName,
+            "id": data.data,
             "crfDisplayName": "CRF("+newTabName+")",
             "crfType": 1,
             "crfIsAvailable": 2,
@@ -98,6 +100,7 @@
             "diseaseId": null
           };
           this.editableTabs.push(obj);
+        });
           for(let i=0;i<this.editableTabs.length;i++) {
             if(this.editableTabs[i]=="undefined" || this.editableTabs[i] == undefined) {
               this.editableTabs.splice(i,1);
@@ -109,6 +112,13 @@
         this.tabIndex = String(newTabName-1);
       },
       handleClick(tab, event) {
+        //获取 上一个 CRF表单 信息 进行 保存
+        // console.log(this.editableTabs[this.tabIndex]);
+        this.researchFormSave(this.editableTabs[this.tabIndex]).then((data)=>{
+          if(data.code === 0) {
+            this.researchRelationSave()
+          }
+        });
         this.tabIndex = tab.index
       },
       researchFormModify(data) {
@@ -122,9 +132,14 @@
           type: 'warning'
         }).then(() => {
           this.displayState = false;
-          this.deleteFormData(data.id).then(()=>{
+          // console.log(data)
+          /*if(data.id !=="") {*/
+            this.deleteFormData(data.id).then(()=>{
+              this.editableTabs.splice(index,1);
+            });
+          /*}else {
             this.editableTabs.splice(index,1);
-          });
+          }*/
           this.$nextTick(()=>{
             this.displayState = true;
           });
@@ -150,6 +165,29 @@
         this.$nextTick(()=>{
           this.displayState = true;
         });
+      },
+      callbackSave() {
+        //保存回调
+        console.log('保存回调')
+        this.researchFormSave(this.editableTabs[this.tabIndex]).then((data)=>{
+          if(data.code === 0) {
+            this.researchRelationSave().then((data)=>{
+              if(data.code === 0) {
+                this.$message.success(data.data);
+              }
+            })
+          }
+        })
+      },
+      // 获取表单id
+      async queryFormId() {
+        let that = this;
+        try{
+          let data = await that.$http.queryFormId();
+          return data
+        }catch (error) {
+          console.log(error)
+        }
       },
       //获取 数据列表
       async queryDataList() {
@@ -182,6 +220,32 @@
         }catch (error) {
           console.log(error)
         }
+      },
+      //表单 保存
+      async researchFormSave(value) {
+        let that = this;
+        let formData = value;
+        try {
+          let data = await that.$http.researchFormSave(formData);
+          return data;
+        }catch (error) {
+          console.log(error)
+        }
+      },
+      // 表单关联关系保存
+      async researchRelationSave() {
+        let that = this;
+        let formIdList = that.editableTabs.map((item)=>{return item.id});
+        let formData = {
+          formCrfIdList:formIdList || [],
+          subjectInfoId:sessionStorage.getItem('CURR_RESEARCH_ID')
+        };
+        try {
+          let data = await that.$http.researchRelationSave(formData);
+          return data
+        }catch (error) {
+          console.log(error)
+        }
       }
     },
     mounted() {
@@ -194,6 +258,7 @@
 <style lang="less">
 .research_target-box{
   .el-tabs__header{
+    height: 41px;
     /*height: 41px;
     .el-tabs__nav-wrap{
       float: left;
@@ -208,7 +273,7 @@
       }
     }
     .el-tabs__nav-scroll{
-      height: 41px;
+      /*height: 41px;*/
       .is-active{
         background-color: #ffffff;
       }
