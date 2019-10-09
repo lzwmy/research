@@ -255,7 +255,8 @@
           "diseaseId": that.$route.query.id
         };
         try{
-          let data = await that.$http.modelQuerySearchCrf(formData);
+          // let data = await that.$http.modelQuerySearchCrf(formData);
+          let data = await that.$http.formSearchList(formData);
           if(data.code==0) {
             this.searchTermList = data.data
           }

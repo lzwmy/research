@@ -28,7 +28,7 @@ const url = {
   //即时科研建模生成的患者数量和报告数
   modelDisplaySum:"/report/model/display/sum.do",
   //表单查询 new
-  formSearchList:"",
+  formSearchList:"/report/bak/model/find/crf.do",
   //
 };
 
@@ -68,6 +68,9 @@ const http = {
   },
   modelDisplaySum(params) {
       return vm.$post(url.modelDisplaySum,params,false);
+  },
+  formSearchList(params) {
+      return vm.$post(url.formSearchList,params,false);
   }
 };
 
