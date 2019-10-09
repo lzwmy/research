@@ -50,6 +50,9 @@ export default {
     }
     .el-checkbox-group {
         margin-bottom: 30px;
+        .el-checkbox {
+            min-width: 150px;
+        }
     }
     .row {
         border-top: 1px solid #eee;

@@ -236,6 +236,9 @@ export default {
                     }
                     .step_wrap {
                         width: 70px;
+                        &:hover span {
+                            box-shadow: 0 0 5px #888;
+                        }
                         span {
                             height: 70px;
                             display: block;
@@ -244,6 +247,7 @@ export default {
                             line-height: 70px;
                             text-align: center;
                             color: #fff;
+                            transition: all 300ms;
                         }
                         p {
                             font-size:14px;

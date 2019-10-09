@@ -6,7 +6,7 @@
             :fullscreen="true"
             class="crfForm_dialog"
             :visible.sync="dialogForm.visible">
-            <createForm ></createForm>
+            <createForm :formOptions="options" @back-status="back"></createForm>
         </el-dialog>
         
     </div>
@@ -20,7 +20,11 @@ export default {
     props: ['dialogForm'],
     data () {
         return {
-            
+            options:{
+            researchType:"followUpPlan",
+            backStatus:"2",// 1 window.history.go(-1)  2 this.$emit() 3 隐藏返回按钮
+            title:"新增CRF表单"
+        }
         }
     },
     components: {
@@ -30,7 +34,9 @@ export default {
         
     },
     methods: {
-        
+        back() {
+            this.dialogForm.visible = false;
+        }
     }
 };
 </script>

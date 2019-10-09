@@ -97,7 +97,7 @@
                                                 :min="0"
                                                 :max="5"
                                                 @change="checkboxChange">
-                                                <el-checkbox v-for="(item,index) in item.formItemRspList" :label="item.formItemName" :key="index">{{item.formItemName}}</el-checkbox>
+                                                <el-checkbox v-for="(li,index) in item.formItemRspList" :checked="li.checked" :label="li.formItemName" :key="index">{{li.formItemName}}</el-checkbox>
                                             </el-checkbox-group>
                                         </div>
                                     </li>
@@ -297,7 +297,9 @@ export default {
                 if (res.code == '0') {
                     res.data.forEach(item=>{
                         item.checkedList = [];
-                        item.maxSelect = 5;
+                        item.formItemRspList.forEach(li=>{
+                            li.checked = false;
+                        })
                     })
                     this.allCrfForm = res.data;
                     this.confingData.dataList = this.allCrfForm;
