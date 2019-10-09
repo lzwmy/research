@@ -245,11 +245,12 @@
         },
         // CRF 保存
         saveCRF() {
-          if(this.$route.query.type == 'add') {
+          /*if(this.$route.query.type == 'add') {
             this.CRFReportSave();
           }else if(this.$route.query.type == 'modify') {
             this.CRFReportModifySave()
-          }
+          }*/
+          this.$emit("callback-save")
         },
         //CRF 预览
         previewCRF() {

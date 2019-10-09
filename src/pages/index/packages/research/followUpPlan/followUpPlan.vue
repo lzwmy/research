@@ -168,7 +168,7 @@
             </div>
         </el-dialog>
 
-        <refFome :dialogForm="dialgoCrfForm"></refFome>
+        <refFome :dialogForm="dialgoCrfForm" @save="handleSave" :options="options"></refFome>
     </div>
 </template>
 
@@ -237,6 +237,12 @@ export default {
                 visible: false,
                 title: '',
                 loading: false,
+            },
+            options:{
+                researchType:"followUpPlan",
+                backStatus:"2",
+                saveStatus: '1',
+                title:"新增CRF表单"
             }
         }
     },
@@ -650,7 +656,16 @@ export default {
         //查看表单
         showCrfDialog() {
             this.dialgoCrfForm.visible = true;
-        }
+        },
+        //保存表单回调
+        handleSave() {
+            this.dialgoCrfForm.visible = false;
+            console.log(23434)
+        },
+        //保存crf表单
+        async saveCrf() {
+            
+        },
     }
 };
 </script>

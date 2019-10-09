@@ -6,7 +6,7 @@
             :fullscreen="true"
             class="crfForm_dialog"
             :visible.sync="dialogForm.visible">
-            <createForm :formOptions="options" @back-status="back"></createForm>
+            <createForm ref="createForm" :formOptions="options" @back-status="back" @callback-save="handleSave"></createForm>
         </el-dialog>
         
     </div>
@@ -17,14 +17,10 @@
 import createForm from '../researchTarget/CRFConfig/report/createReport';
 export default {
     name: 'crfForm',
-    props: ['dialogForm'],
+    props: ['dialogForm','options'],
     data () {
         return {
-            options:{
-            researchType:"followUpPlan",
-            backStatus:"2",// 1 window.history.go(-1)  2 this.$emit() 3 隐藏返回按钮
-            title:"新增CRF表单"
-        }
+            
         }
     },
     components: {
@@ -36,6 +32,10 @@ export default {
     methods: {
         back() {
             this.dialogForm.visible = false;
+        },
+        handleSave(){
+            // this.$refs.createForm
+            this.$emit('save');
         }
     }
 };

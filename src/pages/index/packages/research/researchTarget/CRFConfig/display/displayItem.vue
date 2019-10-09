@@ -2,7 +2,7 @@
   <div v-loading="loading">
     <!--class="view_container"-->
     <!--{{item.baseProperty.layout}}-->
-      <el-row v-if="item.baseProperty.layout.wrap == '1'" style="display: inline-block;display: flex">
+      <div class="changeblock" v-if="item.baseProperty.layout.wrap == '1'" >
         <el-col  :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
           <display-input v-if="item.controlType=='SINGLE_INPUT'" :item="item" :report="report"/>
           <display-multi-input v-else-if="item.controlType=='MULTI_INPUT'" :item="item" :report="report"/>
@@ -18,7 +18,7 @@
           <display-number-input v-else-if="item.controlType=='NUMBER_INPUT'" :item="item" :report="report"/>
           <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
         </el-col>
-      </el-row>
+      </div>
     <el-col v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
       <display-input v-if="item.controlType=='SINGLE_INPUT'" :item="item" :report="report"/>
       <display-multi-input v-else-if="item.controlType=='MULTI_INPUT'" :item="item" :report="report"/>
@@ -100,4 +100,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .changeblock{
+    /*display: inline-block;
+    display: flex;*/
+  }
 </style>
