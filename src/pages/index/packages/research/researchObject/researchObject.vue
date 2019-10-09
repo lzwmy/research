@@ -78,7 +78,7 @@
                             <el-radio v-model="form.radio" label="0">精准搜索</el-radio>
                             <el-radio v-model="form.radio" label="1">模糊搜索</el-radio>
                         </div>
-                        <div class="content flex-start-start">
+                        <div class="content flex-start-start" v-loading="formItemLoading">
                             <div class="left">
                                 <p class="label">请选择</p>
                                 <ul>
@@ -92,13 +92,13 @@
                                         </div>
                                         <div class="cont" v-show="activeCrf == item.crfId">
                                             <p class="label">选择搜索字段，至少选择1项，最多5项</p>
-                                            <el-checkbox-group 
-                                                v-model="item.checkedList"
-                                                :min="0"
-                                                :max="5"
-                                                @change="checkboxChange">
-                                                <el-checkbox v-for="(li,index) in item.formItemRspList" :checked="li.checked" :label="li.formItemName" :key="index">{{li.formItemName}}</el-checkbox>
-                                            </el-checkbox-group>
+                                            <el-checkbox 
+                                                v-for="(li,index) in item.formItemRspList" 
+                                                @change="checkboxChange(li)"  
+                                                v-model="li.checked" 
+                                                :label="li.formItemName"
+                                                class="flex-start-center" 
+                                                :key="index">{{li.formItemName}}</el-checkbox>
                                         </div>
                                     </li>
                                 </ul>
@@ -106,7 +106,7 @@
                         </div>
                         <div class="footer flex-end-center">
                             <p>最多展示500个指标</p>
-                            <el-button type="primary"  @click="">保 存</el-button>
+                            <el-button type="primary"  @click="addFormItem">保 存</el-button>
                             <el-button @click="popoverVisible = false">取 消</el-button>
                         </div>
                     </div>
@@ -211,6 +211,7 @@ export default {
             },
             activeCrf: null,
             tableLoading: false,
+            formItemLoading: false,
             paging: {
                 pageNo: 1,
                 pageSize: 10,
@@ -248,13 +249,30 @@ export default {
             this.activeCrf = id;
         },
         //多选框改变
-        checkboxChange(data) {
-            let count = 0;
+        checkboxChange(li) {
+            let selectArr = [];
+            //获取已选指标
             this.allCrfForm.forEach(item=>{
-                count += item.checkedList.length;
+                item.formItemRspList.forEach(li=>{
+                    if(li.checked) {
+                        selectArr.push(li)
+                    }
+                })
             })
-            console.log(count)
-            console.log(this.allCrfForm)
+            if(selectArr.length > 5) {
+                li.checked = false;
+                this.$mes('info','最多选择5项')
+                return;
+            }
+            //计算表单选中指标
+            this.allCrfForm.forEach(item=>{
+                item.checkedList = [];
+                item.formItemRspList.forEach(li=>{
+                    if(li.checked) {
+                        item.checkedList.push(li)
+                    }
+                })
+            })
         },
         onReset() {
             this.form = {
@@ -308,21 +326,39 @@ export default {
                 console.log(err)
             }
         },
-        //回显crf表单列表下的已选指标
-        // async getAllFormItem() {
-        //     this.groupLoading = true;
-        //     let params = {
-        //         subjectInfoId: this.$store.state.user.researchID
-        //     }
-        //     try {
-        //         let res = await this.$http.researchObjectAllFormItem(params);
-        //         if (res.code == '0') {
-        //             this.allCrfForm = res.data;
-        //         }
-        //     } catch (err) {
-        //         console.log(err)
-        //     }
-        // },
+        //新建crf表单列表下的已选指标
+        async addFormItem() {
+            this.formItemLoading = true;
+            let list = [];
+            this.allCrfForm.forEach(item=>{
+                item.formItemRspList.forEach(li=>{
+                    if(li.checked) {
+                        let obj = {
+                            formItemName: li.formItemName,
+                            jsonData: li.jsonData,
+                            path: li.controlName,
+                            crfName: item.crfName,
+                            crfId: item.crfId
+                        }
+                        list.push(obj)
+                    }
+                })
+            })
+            let params = {
+                subjectInfoId: this.$store.state.user.researchID,
+                list: list
+            }
+            try {
+                let res = await this.$http.researchObjectAddFormItem(params);
+                if (res.code == '0') {
+                    this.formItemLoading = false;
+                    this.popoverVisible = false
+                }
+            } catch (err) {
+                console.log(err)
+                this.formItemLoading = false;
+            }
+        },
         //获取crf表单列表
         async getCrfList() {
             this.groupLoading = true;

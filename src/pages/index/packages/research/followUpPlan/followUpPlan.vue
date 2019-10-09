@@ -15,9 +15,10 @@
                         <el-menu-item-group v-for="(li, liIndex) in item.stages" :key="liIndex"> 
                             <el-menu-item :index="li.stageId" class="flex-between-center menu_li" :class="li.stageId == activeGroup?'active':''" @click="selectGroup(li,li.stageId,item,liIndex)">
                                 <span>{{li.stageName}}</span>
+                                    <!-- v-if="!li.crfId" -->
+
                                 <el-popover
                                     placement="bottom"
-                                    v-if="!li.crfId"
                                     popper-class="more_popper"
                                     trigger="hover">
                                     <i  slot="reference" class="icon el-icon-more"></i>
@@ -78,7 +79,7 @@
                                     <el-radio label="1">手动触发开始</el-radio>
                                     <el-radio label="2">入组后开始</el-radio>
                                     <el-radio label="3">入组阶段时间题目触发开始</el-radio>
-                                    <el-radio label="4">某个阶段结束后触发开始</el-radio>
+                                    <el-radio label="4" :disabled="stageList.length == 0">某个阶段结束后触发开始</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                             <el-form-item label="">
@@ -91,13 +92,12 @@
                                     <span class="left_6">开始</span>
                                 </div>
                                 <div class="frequency flex-start-center" v-show="form.startType=='3'">
-                                    <el-select :disabled="configExists" v-model="form.startTimeParam.startParam" placeholder="请选择CRF" style="width:120px;">
-                                        <el-option label="CRF(1)" value="CRF"></el-option>
-                                        <el-option label="CRF(1)" value="CRF"></el-option>
+                                    <el-select :disabled="configExists" @change="crfSelect" v-model="form.startTimeParam.startParam" placeholder="请选择CRF" style="width:120px;">
+                                        <el-option v-for="(item,index) in crfList" :key="index" :label="item.crfName" :value="item.crfId"></el-option>
                                     </el-select>
                                     <span class="right_6 left_6">中填写的</span>
                                     <el-select :disabled="configExists" v-model="form.startTimeParam.startParam2" placeholder="请选择题目" style="width:120px;">
-                                        <el-option label="无" value="无"></el-option>
+                                        <el-option v-for="(item,index) in crfDateList" :key="index" :label="item.formItemName" :value="item.formItemName"></el-option>
                                     </el-select>
                                     <span class="right_6 left_6">后</span>
                                     <el-input :disabled="configExists" placeholder="多少" v-model="form.startTimeParam.startParam3" style="width:120px;"></el-input>
@@ -157,6 +157,7 @@
                         v-model.trim="dialgoForm.stageName" 
                         placeholder="请输入阶段名称"
                         :maxlength="20"
+                        @keyup.enter.native='saveAddStage'
                         clearable>
                     </el-input>
                 </el-form-item>
@@ -173,6 +174,7 @@
 
 <script>
 import refFome from '../crfForm/crfForm'
+import utils from 'components/utils/index';
 export default {
     name: 'followUpPlan',
     data () {
@@ -180,6 +182,8 @@ export default {
             activeGroup: '',
             defaultOpeneds: [],
             menuList: [],
+            crfList: [],
+            crfDateList: [],
             groupLoading: false,
             infoLoading: false,
             configExists: false,    //是否可编辑表单
@@ -249,6 +253,7 @@ export default {
                 this.selectGroup(this.menuList[0].stages[0],this.menuList[0].stages[0].stageId);
             }
         })
+        this.getCrfList();
     },
     watch: {
         'form.frequencyType': function(newVal) {
@@ -333,6 +338,13 @@ export default {
                     if(res.data.crfId) {
                         this.addCRFchecked = true;
                     }
+                    if(res.data.startType == 3) {
+                        this.crfList.forEach(item=>{
+                            if(item.crfId == res.data.startParam) {
+                                res.data.startParam = item.crfName;
+                            }
+                        })
+                    }
                     this.form = {
                         stageId: stageId,
                         amount: res.data.amount,
@@ -360,6 +372,48 @@ export default {
         },
         async saveConfig() {
             this.infoLoading = true;
+            let pointNamesNull = this.form.pointNames.every(item=>{
+                return item.name
+            })
+            if(!pointNamesNull) {
+                this.$mes('info','随访点名称不能为空!')
+            }
+            if(utils.isRepeat(this.form.pointNames)) {
+                this.$mes('info','随访点名称不能相同!')
+            }
+            switch (parseInt(this.form.frequencyType)) {
+                case 2:
+                    if(!this.form.frequency.frequencyParam) {
+                        this.$mes('info','请输入均匀随访内容')
+                    }
+                    break;
+                case 3:
+                    if(!this.form.frequency.frequencyParam) {
+                        this.$mes('info','请输入非均匀随访内容')
+                    }
+                    break;
+                default: 
+                    break;
+            }
+            switch (parseInt(this.form.startType)) {
+                case 2:
+                    if(!this.form.startTimeParam.startParam) {
+                        this.$mes('info','请输入入组后开始内容')
+                    }
+                    break;
+                case 3:
+                    if(!this.form.startTimeParam.startParam || !this.form.startTimeParam.startParam2 || !this.form.startTimeParam.startParam3) {
+                        this.$mes('info','请输入入组阶段时间题目触发开始内容')
+                    }
+                    break;
+                case 4:
+                    if(!this.form.startTimeParam.startParam || !this.form.startTimeParam.startParam2) {
+                        this.$mes('info','请输入某个阶段结束后触发开始内容')
+                    }
+                    break;
+                default: 
+                    break;
+            }
             let params = {
                 stageId: this.form.stageId,
                 amount: this.form.amount,
@@ -390,6 +444,38 @@ export default {
                 this.infoLoading = false;
             } catch (err) {
                 this.infoLoading = false;
+                console.log(err)
+            }
+        },
+        //获取crf表单列表
+        async getCrfList() {
+            let params = {
+                subjectInfoId: this.$store.state.user.researchID
+            }
+            try {
+                let res = await this.$http.researchObjectCrfList(params);
+                if (res.code == '0') {
+                    this.crfList = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //表单下拉改变事件
+        crfSelect(id) {
+            this.getCrfDateList(id)
+        },
+        //获取crf表单列表的日期下拉列表
+        async getCrfDateList(id) {
+            let params = {
+                crfId: id
+            }
+            try {
+                let res = await this.$http.followUpPlanDateList(params);
+                if (res.code == '0') {
+                    this.crfDateList = res.data;
+                }
+            } catch (err) {
                 console.log(err)
             }
         },
@@ -445,13 +531,16 @@ export default {
                     stageName: li.stageName
                 }
             }else {
+                let currentGroup = this.menuList.find(li=>{
+                    return li.groupId == item.groupId 
+                })
                 this.dialgoForm = {
                     groupId: item.groupId,
                     stageId: '',
                     visible: true,
                     title: title,
                     loading: false,
-                    stageName: '',
+                    stageName: '阶段'+(currentGroup.stages.length+1),
                 }
             }
         },
@@ -462,6 +551,17 @@ export default {
                 if (!valid) {
                     return false;
                 }
+                for (let i = 0; i < this.menuList.length; i++) {
+                    if(this.menuList[i].groupId== this.dialgoForm.groupId) {
+                        for (let j = 0; j < this.menuList[i].stages.length; j++) {
+                            if(this.menuList[i].stages[j].stageName == this.dialgoForm.stageName) {
+                                this.$mes('info', '阶段名称不能相同');
+                                return;
+                            }
+                            
+                        }
+                    }
+                }
                 this.dialgoForm.visible = true;
                 this.dialgoForm.loading = true;
                 let params,res;
@@ -471,7 +571,6 @@ export default {
                             stageId: this.dialgoForm.stageId,
                             stageName: this.dialgoForm.stageName
                         }
-                        console.log(params)
                         res = await that.$http.followUpPlanStageEdit(params);
                     }else{
                         params = {
@@ -488,7 +587,7 @@ export default {
                         this.$mes('success',  res.msg || this.dialgoForm.title+'失败');
                     }
                     this.dialgoForm.loading = false;
-                    that.getGroupList();
+                    this.getGroupList();
                 } catch (error) {
                     this.$mes('error',  data.msg);
                     this.dialgoForm.visible = false;
@@ -509,10 +608,10 @@ export default {
                     let data = await this.$http.followUpPlanstageDelete(formData);
                     if (data.code == '0') {
                         this.$mes('success',data.message || '删除成功');
+                        this.getGroupList();
                     }else {
                         this.$mes('error', '删除出错');
                     }
-                    that.getGroupList();
                 } catch (error) {
                     console.log(error)
                 }
@@ -584,6 +683,7 @@ export default {
                     border-bottom: 1px solid #eee;
                     .title {
                         color: #384163;
+                        font-weight: bold;
                     }
                 }
                 .el-menu-item-group {
@@ -701,6 +801,9 @@ export default {
                     }
                 }
             }
+        }
+        .el-select .el-input .el-input__inner {
+            height: 32px !important;
         }
     }
 </style>

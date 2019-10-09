@@ -50,6 +50,7 @@
                         v-model.trim="dialgoForm.groupName" 
                         placeholder="请输入组名称"
                         :maxlength="20"
+                        @keyup.enter.native='saveAddGroup'
                         clearable>
                     </el-input>
                 </el-form-item>
@@ -244,6 +245,7 @@ export default {
                 width: 220px;
                 .aside_title {
                     font-size: 14px;
+                    font-weight: bold;
                     background-color: #fff;
                     line-height: 36px;
                     text-indent: 20px;
@@ -270,6 +272,7 @@ export default {
                     }
                     span {
                         padding-left: 30px;
+                        font-size: 14px;
                     }
                     .icon {
                             position: absolute;

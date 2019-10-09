@@ -139,6 +139,7 @@ export default {
                     font-size: 14px;
                     background-color: #fff;
                     line-height: 36px;
+                    font-weight: bold;
                     text-indent: 20px;
                     border-bottom: 1px solid rgba(229, 235, 236, .7);
                 }
