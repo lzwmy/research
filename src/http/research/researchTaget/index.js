@@ -34,7 +34,7 @@ const http = {
     return vm.$post(url.researchRelationSave,params,false);
   },
   researchFormPreview(params) {
-    return vm.$get(url.researchFormPreview,params,true);
+    return vm.$post(url.researchFormPreview,params,true);
   }
 };
 

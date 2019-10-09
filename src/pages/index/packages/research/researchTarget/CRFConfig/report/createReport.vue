@@ -408,6 +408,8 @@
         },
         // 预览CRF 详细信息
         async previewCRFList(value) {
+          console.log('value')
+          console.log(value)
           let that = this;
           let formData = {
             // formCrfId:that.$route.query.crfId || ""

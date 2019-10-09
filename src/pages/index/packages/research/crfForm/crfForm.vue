@@ -16,7 +16,7 @@
 <script>
 import createForm from '../researchTarget/CRFConfig/report/createReport';
 export default {
-    name: 'crfForm',
+    name: 'refForm',
     props: ['dialogForm','options'],
     data () {
         return {

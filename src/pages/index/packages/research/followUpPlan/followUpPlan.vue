@@ -168,12 +168,12 @@
             </div>
         </el-dialog>
 
-        <refFome :dialogForm="dialgoCrfForm" @save="handleSave" :options="options"></refFome>
+        <refForm ref="refForm" :dialogForm="dialgoCrfForm" @save="handleSave" :options="options"></refForm>
     </div>
 </template>
 
 <script>
-import refFome from '../crfForm/crfForm'
+import refForm from '../crfForm/crfForm'
 import utils from 'components/utils/index';
 export default {
     name: 'followUpPlan',
@@ -248,7 +248,7 @@ export default {
         }
     },
     components: {
-        refFome
+        refForm
     },
     created() {
         this.getGroupList()
@@ -333,6 +333,7 @@ export default {
         //获取阶段配置信息
         async getConfigInfo(stageId) {
             this.infoLoading = true;
+            this.crfName = '';
             let params = {
                 id: stageId
             }
@@ -344,7 +345,7 @@ export default {
                     }
                     if(res.data.crfId) {
                         this.addCRFchecked = true;
-                        this.getCrfinfo(res.data.crfId)
+                        this.getCrfInfo(res.data.crfId)
                     }
                     if(res.data.startType == 3) {
                         this.crfList.forEach(item=>{
@@ -658,12 +659,17 @@ export default {
         //查看表单
         showCrfDialog() {
             this.dialgoCrfForm.visible = true;
+            if(this.form.crfId) {
+                this.$nextTick(()=>{
+                    this.$refs.refForm.$refs.createForm.previewCRFList(this.form.crfId)
+                })
+            }
         },
         //保存表单回调
         handleSave(data) {
             if(data.code == 0) {
                 this.form.crfId = data.data;
-                this.getCrfinfo(this.form.crfId)
+                this.getCrfInfo(this.form.crfId)
                 this.dialgoCrfForm.visible = false;
                 this.$mes('success','保存成功!')
             }else {
@@ -671,7 +677,7 @@ export default {
             }
         },
         //获取crf表单列信息
-        async getCrfinfo(id) {
+        async getCrfInfo(id) {
             let params = {
                 crfId: id
             }
