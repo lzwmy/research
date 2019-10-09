@@ -259,21 +259,26 @@
 .research_target-box{
   .el-tabs__header{
     height: 41px;
-    /*height: 41px;
-    .el-tabs__nav-wrap{
-      float: left;
-    }*/
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    flex-flow: row-reverse;
     .el-tabs__new-tab{
-      /*float: none;*/
       border-color: transparent;
-      /*position: relative;*/
-      /*top: 8px;*/
+      width: auto;
+      height: auto;
+      display: flex;
+      align-items: center;
+      margin: 2px 0 2px 10px;
       .el-icon-plus{
-        font-size: 18px;
+        font-size: 24px;
+        color: #1BBAE1;
+      }
+      &:hover{
+        background-color: #E5EBEC;
       }
     }
     .el-tabs__nav-scroll{
-      /*height: 41px;*/
       .is-active{
         background-color: #ffffff;
       }
