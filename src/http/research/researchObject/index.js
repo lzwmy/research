@@ -9,6 +9,8 @@ const url = {
     crfList: '/subject/patient/crfList.do',
     //crf表单列表和列表下的所有指标
     allFormItem: '/subject/info/allFormItem.do',
+    //新建指标
+    addFormItem: '/subject/info/add/formItem.do',
     //回显crf表单列表下的已选指标
     condition: '/subject/patient/research/condition.do',
 };
@@ -25,6 +27,9 @@ const http = {
     },
     researchObjectCondition (params) {
         return vm.$get(url.condition, params, true);
+    },
+    researchObjectAddFormItem (params) {
+        return vm.$post(url.addFormItem, params, false);
     }
 };
 

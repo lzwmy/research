@@ -20,6 +20,13 @@ const url = {
     planEdit: '/subject/visit/plan/edit',
     //获取阶段配置信息的随访点集合
     planPoints: '/subject/visit/plan/points',
+
+    //获取随访阶段中日期的下拉框 
+    dateList: '/subject/visit/date/list',
+    //填写随访报告
+    crfSave: '/subject/visit/crf/save',
+    //预览crf表单
+    simplePreview: '/subject/crf/visit/simplePreview.do',
 };
 
 const http = {
@@ -46,6 +53,15 @@ const http = {
     },
     followUpPlanPlanPoints (params) {
         return vm.$get(url.planPoints, params, true);
+    },
+    followUpPlanDateList (params) {
+        return vm.$get(url.dateList, params, true);
+    },
+    followUpPlanCrfSave (params) {
+        return vm.$post(url.crfSave, params, false);
+    },
+    followUpPlanCrfSimplePreview (params) {
+        return vm.$get(url.simplePreview, params, true);
     }
 };
 

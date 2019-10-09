@@ -408,8 +408,6 @@
         },
         // 预览CRF 详细信息
         async previewCRFList(value) {
-          console.log('value')
-          console.log(value)
           let that = this;
           let formData = {
             // formCrfId:that.$route.query.crfId || ""
@@ -419,10 +417,14 @@
             // let data = await that.$http.CRFReportPreview(formData);
             let data = await that.$http.researchFormPreview(formData);
             if(data.code == 0) {
+              this.isReset = false;
               that.crfName = data.data.crfDisplayName;
               that.enable =  data.data.crfIsAvailable==1 ? true :false;
               that.crfType = data.data.crfType;
               that.dataList = data.data.subjectPortions;
+              this.$nextTick(()=>{
+                this.isReset = true
+              });
             }
             this.loading = false;
           }catch (error) {

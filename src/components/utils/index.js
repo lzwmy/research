@@ -798,6 +798,17 @@ const handlePagination = function() {
 }
 
 
+const isRepeat = function(arr) {
+  let  hash = {};
+  for(let i in arr) {
+      if(hash[JSON.stringify(arr[i])]) {
+          return true;
+　　     }
+      hash[JSON.stringify(arr[i])] = true;
+  }
+  return false;
+}      
+
 
 export default {
   getQuery,
@@ -837,4 +848,5 @@ export default {
   handleTableScorll,   //操作表格滚动
   handlePagination,   //操作分页表现表形
   deleteFileId,     //单文件删除
+  isRepeat,     //数组里值是否重复
 };
