@@ -67,7 +67,7 @@
         options:{
           researchType:"researchTarget",
           backStatus:"3",// 1 window.history.go(-1)  2 this.$emit() 3 隐藏返回按钮
-          saveStatus:"2", // 1 调用自己的保存并回调 2 直接回调
+          saveStatus:"2", // 1 调用自己的保存并回调(无tab 切换) 2 直接回调
           title:"编辑CRF表单"
         }
       }
@@ -258,7 +258,7 @@
       height: auto;
       display: flex;
       align-items: center;
-      margin: 2px 0 2px 10px;
+      margin: 4px 0 4px 10px;
       .el-icon-plus{
         font-size: 24px;
         color: #1BBAE1;

@@ -407,13 +407,15 @@
           }
         },
         // 预览CRF 详细信息
-        async previewCRFList() {
+        async previewCRFList(value) {
           let that = this;
           let formData = {
-            formCrfId:that.$route.query.crfId || ""
+            // formCrfId:that.$route.query.crfId || ""
+            crfId:value || ""
           };
           try {
-            let data = await that.$http.CRFReportPreview(formData);
+            // let data = await that.$http.CRFReportPreview(formData);
+            let data = await that.$http.researchFormPreview(formData);
             if(data.code == 0) {
               that.crfName = data.data.crfDisplayName;
               that.enable =  data.data.crfIsAvailable==1 ? true :false;

@@ -26,7 +26,10 @@ const url = {
   //文件删除
   deleteFileId:'/file/deleteFile',
   //即时科研建模生成的患者数量和报告数
-  modelDisplaySum:"/report/model/display/sum.do"
+  modelDisplaySum:"/report/model/display/sum.do",
+  //表单查询 new
+  formSearchList:"",
+  //
 };
 
 const http = {

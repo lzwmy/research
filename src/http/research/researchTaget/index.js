@@ -13,6 +13,8 @@ const url = {
   researchFormSave:"/subject/crf/save.do",
   //研究 指标 表单关联关系 保存
   researchRelationSave:"/subject/info/edit/crf.do",
+  //预览 CRF 表单
+  researchFormPreview:'/subject/crf/preview.do',
 };
 
 const http = {
@@ -30,6 +32,9 @@ const http = {
   },
   researchRelationSave(params) {
     return vm.$post(url.researchRelationSave,params,false);
+  },
+  researchFormPreview(params) {
+    return vm.$get(url.researchFormPreview,params,true);
   }
 };
 
