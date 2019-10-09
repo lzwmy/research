@@ -141,6 +141,7 @@
           dataList:[],
           crfPreview:{},
           portionConfigData:{},//配置小节数据
+          formId:"",
           //拖动参数配置
           options:{
             scroll:true,
@@ -250,7 +251,13 @@
           }else if(this.$route.query.type == 'modify') {
             this.CRFReportModifySave()
           }*/
-          this.$emit("callback-save")
+          if(this.formOptions.saveStatus == '1') {
+            this.researchFormSave().then((data)=>{
+              this.$emit("callback-save",data)
+            })
+          }else if(this.formOptions.saveStatus == '2'){
+            this.$emit("callback-save")
+          }
         },
         //CRF 预览
         previewCRF() {
@@ -293,6 +300,36 @@
               i:index,
             }
           });*/
+        },
+        // 获取表单id
+        async queryFormId() {
+          let that = this;
+          try{
+            let data = await that.$http.queryFormId();
+            if(data.code === 0) {
+              this.formId = data.data;
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        },
+        //表单 保存
+        async researchFormSave() {
+          let that = this;
+          let formData = {
+            "id": that.formId,
+            "crfDisplayName": that.crfName,
+            "crfType": that.crfType,
+            "crfIsAvailable": that.enable ? 1 : 2,
+            "crfImage": "",
+            "subjectPortions":that.dataList
+          };
+          try {
+            let data = await that.$http.researchFormSave(formData);
+            return data;
+          }catch (error) {
+            console.log(error)
+          }
         },
         //删除小节
         portionDeleteItem(data,index) {
@@ -444,6 +481,7 @@
         }
       },
       mounted() {
+        this.queryFormId();
         if(this.formOptions.researchType === 'researchTarget') {
           this.init();
         }
