@@ -46,7 +46,8 @@
       },
       methods:{
         resize() {
-          let height = $(".portion_container-dialog-box").height();
+          // let height = $(".portion_container-dialog-box").height();
+          let height = $(".el-popup-parent--hidden").height();
           $(".basis_body-content").height(height-203)
         },
         init() {
