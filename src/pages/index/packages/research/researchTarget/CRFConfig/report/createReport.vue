@@ -422,7 +422,7 @@
               that.crfName = data.data.crfDisplayName;
               that.enable =  data.data.crfIsAvailable==1 ? true :false;
               that.crfType = data.data.crfType;
-              that.dataList = data.data.formPortions;
+              that.dataList = data.data.subjectPortions;
             }
             this.loading = false;
           }catch (error) {
