@@ -32,12 +32,40 @@
                     <div class="wrap_box wrap_box_3 flex-start-center">
                         <div class="finish flex-center-center flex-wrap">
                             <p>今日完成</p>
-                            <span>20</span>
+                            <span>{{todayFinish}}</span>
                         </div>
                         <ul class="content flex-start-center flex-wrap">
-                            <li v-for="item in 8">
+                            <li>
                                 <p>今日失访</p>
-                                <span>10</span>
+                                <span>{{todayLost}}</span>
+                            </li>
+                            <li>
+                                <p>今日终止</p>
+                                <span>{{todayEnd}}</span>
+                            </li>
+                            <li>
+                                <p>本周失访</p>
+                                <span>{{weekLost}}</span>
+                            </li>
+                            <li>
+                                <p>本周终止</p>
+                                <span>{{weekEnd}}</span>
+                            </li>
+                            <li>
+                                <p>本周完成</p>
+                                <span>{{weekFinish}}</span>
+                            </li>
+                            <li>
+                                <p>本月失访</p>
+                                <span>{{monthLost}}</span>
+                            </li>
+                            <li>
+                                <p>本月终止</p>
+                                <span>{{monthEnd}}</span>
+                            </li>
+                            <li>
+                                <p>本月完成</p>
+                                <span>{{monthFinish}}</span>
                             </li>
                         </ul>
                     </div>
@@ -56,7 +84,18 @@
                 </el-col>
                 <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <div class="wrap_box">
-                        <p class="wrap_label">阶段1</p>
+                        <p class="wrap_label" style="position: relative">
+                          阶段1
+                          <el-popover  placement="bottom"
+                                        popper-class="more_popper"
+                                        trigger="hover">
+                              <i slot="reference" class="el-icon-caret-bottom"></i>
+                              <ul class="stepThree_ul">
+                                <li>编辑</li>
+                                <li>删除</li>
+                              </ul>
+                          </el-popover>
+                        </p>
                         <p class="charts_y_title">患者数</p>
                         <charts :option="optionGroup1"></charts>
                     </div>
@@ -186,6 +225,15 @@ export default {
                     enabled:false
                 }
             },
+            todayFinish: 0,
+            todayLost: 0,
+            todayEnd: 0,
+            weekFinish: 0,
+            weekLost: 0,
+            weekEnd: 0,
+            monthFinish: 0,
+            monthLost: 0,
+            monthEnd: 0
         }
     },
     watch: {
@@ -195,11 +243,70 @@ export default {
         charts
     },
     methods: {
-        
-    }
+        //随访情况明细
+        async subjectVisitDetail() {
+          let that = this;
+          let formData = {
+            subjectId:sessionStorage.getItem('CURR_RESEARCH_ID')
+          };
+          try {
+            let data = await that.$http.subjectVisitDetail(formData);
+            console.log(data)
+            if(data.code === 0) {
+              that.todayFinish= data.data.todayFinish;
+              that.todayLost= data.data.todayLost;
+              that.todayEnd= data.data.todayEnd;
+              that.weekFinish= data.data.weekFinish;
+              that.weekLost= data.data.weekLost;
+              that.weekEnd= data.data.weekEnd;
+              that.monthFinish= data.data.monthFinish;
+              that.monthLost= data.data.monthLost;
+              that.monthEnd= data.data.monthEnd;
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        },
+      //随访总体进度
+      async subjectVisitTotal() {
+        let that = this;
+        let formData = {
+          subjectId: sessionStorage.getItem('CURR_RESEARCH_ID')
+        };
+        try {
+          let data = await that.$http.subjectVisitTotal(formData);
+          console.log(data)
+          if(data.code === 0) {
+
+          }
+        }catch (error) {
+          console.log(error)
+        }
+      },
+      //获取阶段下的随访情况明细
+      async subjectVisitStageDetail() {
+        let that = this;
+        let formData = {
+          stageId:""
+        };
+        try {
+          let data = await that.$http.subjectVisitStageDetail(formData);
+          console.log(data)
+        }catch (error) {
+          console.log(error)
+        }
+      }
+    },
+  mounted() {
+      // this.subjectVisitDetail();
+    this.subjectVisitTotal();
+  }
 };
 </script>
 
+<style lang='less'>
+ @import url('../css/common.less');
+</style>
 <style lang="less">
     .projectProgress {
         .step {

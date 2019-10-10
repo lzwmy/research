@@ -29,7 +29,10 @@ const url = {
   modelDisplaySum:"/report/model/display/sum.do",
   //表单查询 new
   formSearchList:"/report/bak/model/find/crf.do",
-  //
+  //树状报告列表 new
+  formTreeReportList:"/report/bak/model/find/crfList.do",
+  //新建模型保存 new
+  createModelSave:"/report/bak/model/add.do",
 };
 
 const http = {
@@ -71,6 +74,12 @@ const http = {
   },
   formSearchList(params) {
       return vm.$post(url.formSearchList,params,false);
+  },
+  formTreeReportList(params) {
+      return vm.$post(url.formTreeReportList,params,false);
+  },
+  createModuleSave(params) {
+      return vm.$post(url.createModelSave,params,false);
   }
 };
 
