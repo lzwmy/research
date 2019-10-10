@@ -180,7 +180,8 @@ export default {
                 offset: pageNo,
                 limit: pageSize,
                 args: {
-                    diseaseId: this.form.diseaseSubjectGroup.disease || '',
+                    // diseaseId: this.form.diseaseSubjectGroup.disease || '',
+                    diseaseId: this.$route.query.id || '',
                     subjectId: this.form.diseaseSubjectGroup.subject || '',
                     groupId: this.form.diseaseSubjectGroup.group || '',
                     crfId: "",
@@ -245,7 +246,8 @@ export default {
                     isModify:"displayShow"
                 }
                 sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
-                window.open('./patientForm.html');
+              let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
+              window.open('./patientForm.html?'+urlParameters);
             })
         },
         //获取身份证号

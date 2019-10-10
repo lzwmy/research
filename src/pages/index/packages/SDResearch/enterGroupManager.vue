@@ -383,7 +383,8 @@ export default {
     },
     fillCRF (row) {
       let that = this;
-      that.$router.push({
+      console.log(row)
+      /*that.$router.push({
         name: 'reportFill',
         query: {
           cacheData: false,
@@ -396,7 +397,9 @@ export default {
           identify: that.ruleForm.identify || '',
           from: that.$route.name
         }
-      });
+      });*/
+      let urlParameter = "cacheData="+false+"&formId="+row.formId+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+that.ruleForm.patientName+"&patientId="+that.ruleForm.patientId+"&identify="+that.ruleForm.identify+"&from="+'caseManage'+"&title="+row.formName+"&isModify="+"displayShow";
+      window.open('./patientForm.html?'+urlParameter);
     },
     // 通用：通过检查表单是否完成，已决定按钮是否可用
     checkDisable (form) {
