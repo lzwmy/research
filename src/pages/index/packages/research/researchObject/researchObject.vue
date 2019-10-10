@@ -23,9 +23,9 @@
         <!-- 搜索区域 -->
         <div class="cloud-search flex-between-center">
             <div class="search_group flex-start-center">
-                <div v-for="(item, index) in groupList" :key="index" class="group_item" :class="currentGrounpId==item.id?'active':''" @click="selectGroup(item.id)">{{item.groupName}} <span class="badge">12</span> </div>
-                <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView">
-                    <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i> 搜索</div> 
+                <div v-for="(item, index) in groupList" :key="index" class="group_item" :class="currentGrounpId==item.subjectGroupId?'active':''" @click="selectGroup(item.subjectGroupId)">{{item.subjectGroupName}} <span class="badge">{{item.patientNum}}</span> </div>
+                <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView" v-model="popoverSearchVisible">
+                    <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i>搜索</div>
                     <el-form :inline="true" :model="form" label-width="110px" class="flex-start-center flex-wrap researchObject_search">
                         <el-form-item label="首次录入时间：" class="bold">
                             <el-date-picker
@@ -68,11 +68,11 @@
                 <p v-show="multipleSelection.length != 0" style="min-width: 136px; color: #666;" class="font_14">已选中 {{multipleSelection.length}} 位研究对象</p>
                 <el-button v-show="multipleSelection.length != 0" type="primary" icon="icon iconfont iconzujian12" @click="">提交CRF</el-button>
                 <el-button v-show="multipleSelection.length != 0" type="danger" class="right_6" icon="icon iconfont iconzujian41" @click="">删除</el-button>
-                <el-popover trigger="click" popper-class="popover_condition" v-model="popoverVisible">
-                    <el-button slot="reference">已选3项 <span class="el-icon-caret-bottom"></span></el-button>
+                <el-popover trigger="click" popper-class="popover_condition" v-model="popoverFomeItemVisible">
+                    <el-button slot="reference">已选 {{selectFormItem.length}} 项<span class="el-icon-caret-bottom"></span></el-button>
                     <div class="box">
                         <div class="head flex-between-center">
-                            <p>选择搜索</p><span class="el-icon-close cur_pointer" @click="popoverVisible = false"></span>
+                            <p>选择搜索</p><span class="el-icon-close cur_pointer" @click="popoverFomeItemVisible = false"></span>
                         </div>
                         <div class="radio_group">
                             <el-radio v-model="form.radio" label="0">精准搜索</el-radio>
@@ -96,9 +96,10 @@
                                                 v-for="(li,index) in item.formItemRspList" 
                                                 @change="checkboxChange(li)"  
                                                 v-model="li.checked" 
-                                                :label="li.formItemName"
+                                                :label="li.path"
                                                 class="flex-start-center" 
-                                                :key="index">{{li.formItemName}}</el-checkbox>
+                                                :key="index">{{li.formItemName}}
+                                            </el-checkbox>
                                         </div>
                                     </li>
                                 </ul>
@@ -106,8 +107,8 @@
                         </div>
                         <div class="footer flex-end-center">
                             <p>最多展示500个指标</p>
-                            <el-button type="primary"  @click="addFormItem">保 存</el-button>
-                            <el-button @click="popoverVisible = false">取 消</el-button>
+                            <el-button type="primary"  @click="handleFormItem">保 存</el-button>
+                            <el-button @click="popoverFomeItemVisible = false">取 消</el-button>
                         </div>
                     </div>
                 </el-popover>
@@ -124,7 +125,7 @@
                     :data="dataList.content"
                     v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)">
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
                     <el-table-column type="selection" align="center" width="40"></el-table-column>
                     <el-table-column 
                         v-for="column in dataList.header"
@@ -132,20 +133,22 @@
                         :label="column.label" 
                         sortable 
                         :key="column.prop" 
-                        :width="column.prop == 'patientId'?'110':''"
+                        align="center"
+                        :min-width="column.label.length * 15 + 100"
                         v-if="column.type !='report'"
                         show-overflow-tooltip>
                     </el-table-column>
-                    <el-table-column label="研究内容">
+                    <el-table-column label="研究内容" align="center">
                         <span v-for="li in dataList.header" :key="li.prop">
                             <el-table-column 
                                 v-if="li.type=='report'"
                                 :prop="li.prop" 
                                 :label="li.label" 
+                                align="center"
                                 :key="li.prop">
                                 <template slot-scope="scope">
-                                    <el-button v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
-                                    <el-button v-else type="text" icon="icon iconfont iconwancheng"></el-button>
+                                    <el-button @click="toReportFill(scope.row,1)" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
+                                    <el-button @click="toReportFill(scope.row,2)" v-else type="text" icon="icon iconfont iconwancheng"></el-button>
                                 </template>
                             </el-table-column>
                         </span>
@@ -200,7 +203,12 @@ export default {
                 defaultChecked: ['入组序号','首次入组时间','所在中心'],
                 dataList: []
             },
-            popoverVisible: false,
+            //回显指标
+            previewFormItem:[],
+            //已选指标数组
+            selectFormItem: [],
+            popoverFomeItemVisible: false,
+            popoverSearchVisible: false,
             form: {
                 keyword: '',
                 time:[],
@@ -226,7 +234,11 @@ export default {
             this.getDataList(0,15);
         })
         this.getCrfList();
-        this.getAllFormItem();
+        this.getAllFormItem()
+        .then(()=>{
+            this.handlePreviewFormItem()
+        })
+        
     },
     components: {
         echartsContain,
@@ -250,16 +262,16 @@ export default {
         },
         //多选框改变
         checkboxChange(li) {
-            let selectArr = [];
+            this.selectFormItem = [];
             //获取已选指标
             this.allCrfForm.forEach(item=>{
-                item.formItemRspList.forEach(li=>{
-                    if(li.checked) {
-                        selectArr.push(li)
+                item.formItemRspList.forEach(n=>{
+                    if(n.checked) {
+                        this.selectFormItem.push(n)
                     }
                 })
             })
-            if(selectArr.length > 5) {
+            if(this.selectFormItem.length > 5 && li) {
                 li.checked = false;
                 this.$mes('info','最多选择5项')
                 return;
@@ -267,9 +279,9 @@ export default {
             //计算表单选中指标
             this.allCrfForm.forEach(item=>{
                 item.checkedList = [];
-                item.formItemRspList.forEach(li=>{
-                    if(li.checked) {
-                        item.checkedList.push(li)
+                item.formItemRspList.forEach(n=>{
+                    if(n.checked) {
+                        item.checkedList.push(n)
                     }
                 })
             })
@@ -291,11 +303,11 @@ export default {
                 subjectInfoId: this.$store.state.user.researchID
             }
             try {
-                let res = await this.$http.projectGroupingGroup(params);
+                let res = await this.$http.researchObjectGroupList(params);
                 if (res.code == '0') {
                     this.groupList = res.data;
                     if(this.groupList.length) {
-                        this.currentGrounpId = this.groupList[0].id;
+                        this.currentGrounpId = this.groupList[0].subjectGroupId;
                     }
                 }
                 this.groupLoading = false;
@@ -326,10 +338,17 @@ export default {
                 console.log(err)
             }
         },
-        //新建crf表单列表下的已选指标
-        async addFormItem() {
-            this.formItemLoading = true;
+        //新建/编辑crf表单列表下的已选指标
+        async handleFormItem() {
             let list = [];
+            this.confingData.defaultChecked.forEach(li=>{
+                let obj = {
+                    subjectInfoId: this.$store.state.user.researchID,
+                    path: li,
+                    crfName: 'default'
+                }
+                list.push(obj)
+            })
             this.allCrfForm.forEach(item=>{
                 item.formItemRspList.forEach(li=>{
                     if(li.checked) {
@@ -348,11 +367,52 @@ export default {
                 subjectInfoId: this.$store.state.user.researchID,
                 list: list
             }
+            this.formItemLoading = true;
+            let res;
             try {
-                let res = await this.$http.researchObjectAddFormItem(params);
+                if(list.length) {
+                    res = await this.$http.researchObjectEditFormItem(params);
+                    if (res.code == '0') {
+                        this.formItemLoading = false;
+                        this.popoverFomeItemVisible = false;
+                        this.getDataList(0,15);
+                    }
+                }else {
+                    res = await this.$http.researchObjectAddFormItem(params);
+                    if (res.code == '0') {
+                        this.formItemLoading = false;
+                        this.popoverFomeItemVisible = false
+                        this.getDataList(0,15);
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+                this.formItemLoading = false;
+            }
+        },
+        //回显crf表单列表下的已选指标
+        async handlePreviewFormItem() {
+            this.formItemLoading = true;
+            let params = {
+                subjectInfoId: this.$store.state.user.researchID
+            }
+            try {
+                let res = await this.$http.researchObjectPreviewFormItem(params);
                 if (res.code == '0') {
+                    this.previewFormItem = res.data;
+                    this.previewFormItem.forEach(item =>{
+                        if(item.crfId){
+                            this.allCrfForm.forEach(li => {
+                                li.formItemRspList.forEach(n => {
+                                    if(n.controlName == item.path && item.crfId == li.crfId){
+                                        n.checked = true;
+                                    }
+                                });
+                            });
+                        }
+                    })
+                    this.checkboxChange()
                     this.formItemLoading = false;
-                    this.popoverVisible = false
                 }
             } catch (err) {
                 console.log(err)
@@ -379,6 +439,7 @@ export default {
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
+            this.popoverSearchVisible = false;
             that.tableLoading = true;
             that.paging.currentPageNo = pageNo;
             that.paging.currentPageSize = pageSize;
@@ -400,19 +461,6 @@ export default {
                 searchType: parseInt(this.form.radio),
                 keyword: this.form.keyword
             };
-            // let formData = {
-            //     offset: 1,
-            //     limit: pageSize,
-            //     subjectInfoId: this.$store.state.user.researchID,
-            //     subjectGroupId: this.currentGrounpId,
-            //     createTime: '',
-            //     endTime: '',
-            //     formCrfId: 0,
-            //     formCrfStatus: 0,
-            //     patientStatus: 0,
-            //     searchType: 0,
-            //     keyword: ''
-            // };
             try {
                 let res = await that.$http.researchObjectTable(formData);
                 if (res.code == '0') {
@@ -445,9 +493,31 @@ export default {
             this.confingData.visible = true;
         },
         handleSaveConfig(data) {
-            console.log(data)
+            this.handleFormItem();
             this.confingData.visible = false;
-        }
+        },
+        //打开表单填写页面
+        toReportFill(row) {
+            let urlParameter={
+                cacheData: false,
+                formId: row.crfId || "",
+                reportId: row.id || '',
+                groupId: row.groupId || "",
+                subjectId: row.subjectId || "",
+                diseaseId: row.diseaseId || "",
+                patientName: row.patientName || "",
+                patientId: row.patientId || "",
+                identify: this.identify || "",
+                from: "caseManage",
+                diseaseName: row.diseaseName || "",
+                subjectName: row.subjectName || "",
+                groupName: row.groupName || "",
+                title: row.reportName,
+                isModify:"displayShow"
+            }
+            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+            window.open('./patientForm.html');
+        },
     }
 };
 </script>

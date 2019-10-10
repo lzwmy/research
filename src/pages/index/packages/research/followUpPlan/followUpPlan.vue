@@ -380,15 +380,16 @@ export default {
             }
         },
         async saveConfig() {
-            this.infoLoading = true;
             let pointNamesNull = this.form.pointNames.every(item=>{
                 return item.name
             })
             if(!pointNamesNull) {
                 this.$mes('info','随访点名称不能为空!')
+                return
             }
             if(utils.isRepeat(this.form.pointNames)) {
                 this.$mes('info','随访点名称不能相同!')
+                return
             }
             switch (parseInt(this.form.frequencyType)) {
                 case 2:
@@ -423,6 +424,11 @@ export default {
                 default: 
                     break;
             }
+            if(!this.form.crfId) {
+                this.$mes('info','请添加随访内容信息!')
+                return
+            }
+            this.infoLoading = true;
             let params = {
                 stageId: this.form.stageId,
                 amount: this.form.amount,

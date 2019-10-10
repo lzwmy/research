@@ -107,10 +107,6 @@ body .cloud-container .el-table {
             font-weight: bold;
         }
     }
-    .el-table__body-wrapper,
-    .el-table__empty-block {
-        min-height: 500px;
-    }
     tbody {
         .cell {
             font-size: 13px;
@@ -144,6 +140,10 @@ body .cloud-container .el-table {
 
 // 首页表格样式
 #app:not(.insideView) .el-table{
+    .el-table__body-wrapper,
+    .el-table__empty-block {
+        min-height: 500px;
+    }
     .el-table__header-wrapper.fixed {
         position: fixed;
         top: 60px;

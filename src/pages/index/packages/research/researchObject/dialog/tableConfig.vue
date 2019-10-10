@@ -5,23 +5,31 @@
             :visible.sync="dataInfo.visible" 
             :append-to-body="true"
             class="configDialog"
-            width="800px">
+            width="1000px">
             <div class="content">
                 <p class="label">默认系统字段</p>
                 <el-checkbox-group v-model="dataInfo.defaultChecked">
                     <el-checkbox v-for="(item,index) in defaultCheckedList" :label="item" :key="index">{{item}}</el-checkbox>
                 </el-checkbox-group>
+                <br/>
+                <br/>
                 <ul class="row">
                     <li v-for="(item,index) in dataInfo.dataList" :key="index">
                         <p class="label">{{index+1}}、{{item.crfName}}</p>
-                        <el-checkbox-group v-model="item.checkedList">
-                            <el-checkbox v-for="(li,index) in item.formItemRspList" v-model="li.checked" :label="li.formItemName" :key="index">{{li.formItemName}}</el-checkbox>
-                        </el-checkbox-group>
+                        <el-checkbox 
+                            v-for="(li,index) in item.formItemRspList" 
+                            @change="checkboxChange(li)"  
+                            v-model="li.checked" 
+                            :label="li.formItemName"
+                            :key="index">{{li.formItemName}}
+                        </el-checkbox>
+                        <br/>
+                        <br/>
                     </li>
                 </ul>
             </div>
             <div slot="footer">
-                <el-button type="primary" @click="$emit('saveConfig',dataInfo)" size="mini" :disabled="dataInfo.loading">保 存</el-button>
+                <el-button type="primary" @click="save" size="mini" :disabled="dataInfo.loading">保 存</el-button>
                 <el-button @click="dataInfo.visible = false;" size="mini">关 闭</el-button>
             </div>
         </el-dialog>
@@ -38,7 +46,27 @@ export default {
         }
     },
     methods: {
-        
+        //多选框改变
+        checkboxChange(li) {
+            let selectArr = [];
+            //获取已选指标
+            this.dataInfo.dataList.forEach(item=>{
+                item.formItemRspList.forEach(li=>{
+                    if(li.checked) {
+                        selectArr.push(li)
+                    }
+                })
+            })
+            if(selectArr.length > 5) {
+                li.checked = false;
+                this.$mes('info','最多选择5项')
+                return;
+            }
+        },
+        save() {
+            this.$emit('saveConfig',this.dataInfo);
+            this.dataInfo.visible = false;
+        }
     }
 };
 </script>
@@ -48,11 +76,11 @@ export default {
         color: rgba(57, 66, 99, 1);
         margin-bottom: 12px;
     }
-    .el-checkbox-group {
-        margin-bottom: 30px;
-        .el-checkbox {
-            min-width: 150px;
-        }
+    .el-checkbox {
+        width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .row {
         border-top: 1px solid #eee;
