@@ -6,15 +6,15 @@
                 <el-button type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">研究导入数据</el-button>
                 <el-button type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
                 <el-button type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
-                <el-dropdown trigger="hover">
+                <el-dropdown trigger="hover" @command="handleAddObject">
                     <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang">
                         添加研究对象
                         <span class="add"><i class="el-icon-caret-bottom el-icon--right"></i></span>
                     </el-button>
                     <el-dropdown-menu slot="dropdown" class="addresearchObject">
-                        <el-dropdown-item icon="el-icon-plus">单个添加</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-plus">批量添加</el-dropdown-item>
-                        <el-dropdown-item icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
+                        <el-dropdown-item command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
+                        <el-dropdown-item command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
+                        <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
 
@@ -23,7 +23,12 @@
         <!-- 搜索区域 -->
         <div class="cloud-search flex-between-center">
             <div class="search_group flex-start-center">
-                <div v-for="(item, index) in groupList" :key="index" class="group_item" :class="currentGrounpId==item.subjectGroupId?'active':''" @click="selectGroup(item.subjectGroupId)">{{item.subjectGroupName}} <span class="badge">{{item.patientNum}}</span> </div>
+                <searchCom 
+                    ref="refSearch"
+                    @sendGroupList="getGroupList" 
+                    @sendCrfList="getCrfList"
+                    @selectGroup="handleSelectGroup">
+                </searchCom>
                 <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView" v-model="popoverSearchVisible">
                     <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i>搜索</div>
                     <el-form :inline="true" :model="form" label-width="110px" class="flex-start-center flex-wrap researchObject_search">
@@ -68,6 +73,7 @@
                 <p v-show="multipleSelection.length != 0" style="min-width: 136px; color: #666;" class="font_14">已选中 {{multipleSelection.length}} 位研究对象</p>
                 <el-button v-show="multipleSelection.length != 0" type="primary" icon="icon iconfont iconzujian12" @click="">提交CRF</el-button>
                 <el-button v-show="multipleSelection.length != 0" type="danger" class="right_6" icon="icon iconfont iconzujian41" @click="">删除</el-button>
+
                 <el-popover trigger="click" popper-class="popover_condition" v-model="popoverFomeItemVisible">
                     <el-button slot="reference">已选 {{selectFormItem.length}} 项<span class="el-icon-caret-bottom"></span></el-button>
                     <div class="box">
@@ -91,7 +97,7 @@
                                             </div>
                                         </div>
                                         <div class="cont" v-show="activeCrf == item.crfId">
-                                            <p class="label">选择搜索字段，至少选择1项，最多5项</p>
+                                            <p class="label">选择搜索字段，至少选择1项，最多{{maxItem}}项</p>
                                             <el-checkbox 
                                                 v-for="(li,index) in item.formItemRspList" 
                                                 @change="checkboxChange(li)"  
@@ -112,6 +118,14 @@
                         </div>
                     </div>
                 </el-popover>
+                <!-- <formItemCom 
+                    @sendAllCrfForm="handleAllFormItem" 
+                    @getDataList="getDataList(0,15)" 
+                    :allCrfForm="allCrfForm" 
+                    :confingData="confingData"
+                    :form='form'>
+                </formItemCom> -->
+
                 <el-input v-model="form.keyword" class="search_input" placeholder="先选条件,再搜索" @keyup.enter.native="getDataList()" clearable></el-input>
             </div>
         </div>
@@ -147,8 +161,8 @@
                                 align="center"
                                 :key="li.prop">
                                 <template slot-scope="scope">
-                                    <el-button @click="toReportFill(scope.row,1)" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
-                                    <el-button @click="toReportFill(scope.row,2)" v-else type="text" icon="icon iconfont iconwancheng"></el-button>
+                                    <el-button @click="toReportFill(scope.row,li.prop,li.label,'add')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
+                                    <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-else type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
                                 </template>
                             </el-table-column>
                         </span>
@@ -171,6 +185,9 @@
         <import-dialog :dataInfo="importData"></import-dialog>
         <!-- 动态列配置弹窗 -->
         <table-config @saveConfig="handleSaveConfig" :dataInfo="confingData"></table-config>
+
+        <!-- 添加研究对象 -->
+        <addObject ref="addObject" :dialog="dialogAddObject" :dataInfo="addObjectData" :groupList="groupList" @successAdd="successAdd"></addObject>
     </div>
 </template>
 
@@ -180,11 +197,15 @@ import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
 import importDialog from './dialog/ImportDialog'
 import tableConfig from './dialog/tableConfig'
+import addObject from './dialog/addObject'
+import searchCom from './components/search'
+import formItemCom from './components/formItem'
 export default {
     name: 'researchObject',
     mixins: [mixins],
     data () {
         return {
+            maxItem: 10,
             groupList: [],
             crfList: [],
             allCrfForm: [],
@@ -225,36 +246,39 @@ export default {
                 pageSize: 10,
                 currentPageNo: '',
                 currentPageSize: '',
+            },
+            //添加研究对象弹框
+            dialogAddObject: {
+                title:'',
+                visible: false,
+                loading: false,
+            },
+            //添加研究对象数据
+            addObjectData: {
+                formTitle:'基本信息',
+                content: []
             }
         }
     },
     created() {
-        this.getGroupList()
-        .then(()=>{
-            this.getDataList(0,15);
-        })
-        this.getCrfList();
         this.getAllFormItem()
         .then(()=>{
             this.handlePreviewFormItem()
         })
-        
     },
     components: {
         echartsContain,
         pagination,
         importDialog,
-        tableConfig
+        tableConfig,
+        addObject,
+        searchCom,
+        formItemCom
     },
     methods: {
         //表格多选项
         handleSelectionChange(val) {
             this.multipleSelection = val;
-        },
-        //选择分组
-        selectGroup(id) {
-            this.currentGrounpId = id;
-            this.getDataList(0,15);
         },
         //搜索表格配置选中表单
         selectCrf(id) {
@@ -271,9 +295,9 @@ export default {
                     }
                 })
             })
-            if(this.selectFormItem.length > 5 && li) {
+            if(this.selectFormItem.length > this.maxItem && li) {
                 li.checked = false;
-                this.$mes('info','最多选择5项')
+                this.$mes('info','最多选择'+this.maxItem+'项')
                 return;
             }
             //计算表单选中指标
@@ -296,29 +320,8 @@ export default {
                 radio: '0'
             }
         },
-        //获取分组列表
-        async getGroupList() {
-            this.groupLoading = true;
-            let params = {
-                subjectInfoId: this.$store.state.user.researchID
-            }
-            try {
-                let res = await this.$http.researchObjectGroupList(params);
-                if (res.code == '0') {
-                    this.groupList = res.data;
-                    if(this.groupList.length) {
-                        this.currentGrounpId = this.groupList[0].subjectGroupId;
-                    }
-                }
-                this.groupLoading = false;
-            } catch (err) {
-                this.groupLoading = false;
-                console.log(err)
-            }
-        },
         //crf表单列表和列表下的所有指标
         async getAllFormItem() {
-            this.groupLoading = true;
             let params = {
                 subjectInfoId: this.$store.state.user.researchID
             }
@@ -380,10 +383,10 @@ export default {
                 }else {
                     res = await this.$http.researchObjectAddFormItem(params);
                     if (res.code == '0') {
-                        this.formItemLoading = false;
                         this.popoverFomeItemVisible = false
                         this.getDataList(0,15);
                     }
+                    this.formItemLoading = false;
                 }
             } catch (err) {
                 console.log(err)
@@ -417,24 +420,6 @@ export default {
             } catch (err) {
                 console.log(err)
                 this.formItemLoading = false;
-            }
-        },
-        //获取crf表单列表
-        async getCrfList() {
-            this.groupLoading = true;
-            let params = {
-                subjectInfoId: this.$store.state.user.researchID
-            }
-            try {
-                let res = await this.$http.researchObjectCrfList(params);
-                if (res.code == '0') {
-                    this.crfList = res.data;
-                    if(this.crfList.length) {
-                        this.activeCrf = this.crfList[0].crfId;
-                    }
-                }
-            } catch (err) {
-                console.log(err)
             }
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
@@ -497,27 +482,93 @@ export default {
             this.confingData.visible = false;
         },
         //打开表单填写页面
-        toReportFill(row) {
+        toReportFill(data,key,crfName,type) {
+            let crfForm = {};
+            if(key) {
+                crfForm = JSON.parse(data[key]);
+            }
             let urlParameter={
                 cacheData: false,
-                formId: row.crfId || "",
-                reportId: row.id || '',
-                groupId: row.groupId || "",
-                subjectId: row.subjectId || "",
-                diseaseId: row.diseaseId || "",
-                patientName: row.patientName || "",
-                patientId: row.patientId || "",
+                formId: crfForm.crfId || "",
+                reportId: crfForm.reportId || '',
+                groupId: data.groupId || "",
+                subjectId: data.subjectId || "",
+                diseaseId: data.diseaseId || "",
+                patientName: data.createTime +' ---  '+ crfName,
+                patientId: data.patientId || "2c9a80826d7c4b62016d7c6bd60d0000",
                 identify: this.identify || "",
-                from: "caseManage",
-                diseaseName: row.diseaseName || "",
-                subjectName: row.subjectName || "",
-                groupName: row.groupName || "",
-                title: row.reportName,
+                from: "researchObject",
+                diseaseName: data.diseaseName || "",
+                subjectName: data.subjectName || "",
+                groupName: data.groupName || "",
+                title: crfName,
                 isModify:"displayShow"
             }
+            console.log(urlParameter)
             sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
             window.open('./patientForm.html');
         },
+        handleAddObject(command) {
+            switch (command) {
+                case '1':
+                    let group = this.groupList.find(item => {
+                        return item.subjectGroupId == this.currentGrounpId;
+                    })
+                    this.dialogAddObject = {
+                        title: '添加研究对象',
+                        visible: true,
+                        loading: false
+                    }
+                    let newArr = [];
+                    this.allCrfForm.forEach(item=>{
+                        item.formItemRspList.forEach(li=>{
+                            if(li.checked){
+                                let obj = {
+                                    value: JSON.parse(li.jsonData).controlType=='CHECKBOX'?[]:'',
+                                    controlName: li.formItemName,
+                                    path: li.controlName,
+                                    crfId: item.crfId,
+                                    jsonData: JSON.parse(li.jsonData)
+                                }
+                                newArr = newArr.concat(obj)
+                            }
+                        })
+                    })
+                    this.addObjectData = {
+                        formTitle:'基本信息',
+                        content: newArr
+                    }
+                    this.$refs.addObject.visible = true;
+                    break;
+                default:
+                    break;
+            }
+            
+        },
+        //成功添加对象
+        successAdd() {
+            this.getDataList(0,15);
+            this.$refs.refSearch.getGroupList();
+        },
+        //获取分组列表
+        getGroupList(data) {
+            this.groupList = data.groupList;
+            this.currentGrounpId = data.currentGrounpId;
+        },
+        //获取表单列表
+        getCrfList(data) {
+            this.crfList = data.crfList;
+            this.activeCrf = data.activeCrf;
+        },
+        //点击分组
+        handleSelectGroup(data) {
+            this.currentGrounpId = data;
+            this.getDataList(0,15);
+        },
+        //获取全部crf表单列表和列表下的所有指标
+        handleAllFormItem(data) {
+            this.allCrfForm = data;
+        }
     }
 };
 </script>

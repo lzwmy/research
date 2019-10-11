@@ -15,9 +15,8 @@
                         <el-menu-item-group v-for="(li, liIndex) in item.stages" :key="liIndex"> 
                             <el-menu-item :index="li.stageId" class="flex-between-center menu_li" :class="li.stageId == activeGroup?'active':''" @click="selectGroup(li,li.stageId,item,liIndex)">
                                 <span>{{li.stageName}}</span>
-                                    <!-- v-if="!li.crfId" -->
-
                                 <el-popover
+                                    v-if="!li.crfId"
                                     placement="bottom"
                                     popper-class="more_popper"
                                     trigger="hover">
@@ -288,7 +287,7 @@ export default {
                 case '2': 
                     this.form.startTimeParam = {
                         startParam:'',
-                        startParam2:'天',
+                        startParam2:'day',
                         startParam3:'',
                         startParam4:'',
                     };break;
@@ -297,13 +296,13 @@ export default {
                         startParam:'',
                         startParam2:'',
                         startParam3:'',
-                        startParam4:'天',
+                        startParam4:'day',
                     };break;
                 case '4': 
                     this.form.startTimeParam = {
                         startParam:'',
                         startParam2:'',
-                        startParam3:'天',
+                        startParam3:'day',
                         startParam4:'',
                     };break;
                 default:
@@ -443,6 +442,7 @@ export default {
                 crfId: this.form.crfId,
                 pointNames: this.form.pointNames
             }
+            // this.form.amount > 20 无限
             try {
                 let res;
                 if(this.configExists) {
@@ -456,6 +456,7 @@ export default {
                     this.$mes('error', res.msg);
                 }
                 this.getConfigInfo(this.form.stageId);
+                this.getGroupList();
                 this.infoLoading = false;
             } catch (err) {
                 this.infoLoading = false;
@@ -596,7 +597,6 @@ export default {
                         res = await that.$http.followUpPlanStageAdd(params);
                     }
                     if (res.code == '0') {
-                        this.$mes('success',  res.msg || this.dialgoForm.title+'成功!');
                         this.dialgoForm.visible = false;
                     }else {
                         this.$mes('success',  res.msg || this.dialgoForm.title+'失败');

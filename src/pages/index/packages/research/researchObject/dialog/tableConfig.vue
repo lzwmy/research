@@ -57,9 +57,9 @@ export default {
                     }
                 })
             })
-            if(selectArr.length > 5) {
+            if(selectArr.length > 10) {
                 li.checked = false;
-                this.$mes('info','最多选择5项')
+                this.$mes('info','最多选择10项')
                 return;
             }
         },

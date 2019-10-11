@@ -146,6 +146,7 @@ export default {
                 let res = await this.$http.RTASKcreate(formData);
                 if (res.code == '0') {
                     this.$mes('success','创建成功!');
+                    this.$store.commit('saveresearchID',res.data);
                     setTimeout(()=>{
                         let data = this.$store.state.user.taskMenuList;
                         let params = {

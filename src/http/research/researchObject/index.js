@@ -17,6 +17,10 @@ const url = {
     editFormItem: '/subject/info/edit/formItem.do',
     //回显crf表单列表下的已选指标
     previewFormItem: '/subject/info/preview/formItem.do',
+    //提交报告
+    reportCommit: '/subject/report/commit.do',
+    //添加研究对象
+    addresearch: '/subject/patient/add/research.do'
 };
 
 const http = {
@@ -40,6 +44,12 @@ const http = {
     },
     researchObjectPreviewFormItem (params) {
         return vm.$post(url.previewFormItem, params, true);
+    },
+    researchObjectPreviewReportCommit (params) {
+        return vm.$post(url.reportCommit, params, false);
+    },
+    researchObjectPreviewAddresearch (params) {
+        return vm.$post(url.addresearch, params, false);
     }
 };
 

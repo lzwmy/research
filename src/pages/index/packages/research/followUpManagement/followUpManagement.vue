@@ -11,7 +11,12 @@
         <!-- 搜索区域 -->
         <div class="cloud-search flex-between-center">
             <div class="search_group flex-start-center">
-                <div v-for="(item, index) in 3" :key="index" class="group_item" :class="activeGroup==index+1?'active':''" @click="selectGroup(index+1)">分组{{item+1}} <span class="badge">12</span> </div>
+                <searchCom 
+                    ref="refSearch"
+                    @sendGroupList="getGroupList" 
+                    @sendCrfList="getCrfList"
+                    @selectGroup="handleSelectGroup">
+                </searchCom>
                 <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView">
                     <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i> 搜索</div>
                     <el-form :inline="true" :model="form" label-width="110px" class="flex-start-center flex-wrap researchObject_search">
@@ -156,11 +161,17 @@
 import echartsContain from 'components/packages/echartsContain/echartsContain';
 import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
+import searchCom from '../researchObject/components/search'
 export default {
     name: 'followUpManagement',
     mixins: [mixins],
     data () {
         return {
+            groupList: [],
+            currentGrounpId: '',
+            crfList: [],
+            activeCrf:'',
+            currentGrounpId: null,
             dataList: {
                 content: []
             },
@@ -176,8 +187,6 @@ export default {
                 checked: []
             },
             multipleSelection: [],
-            activeGroup: 1,
-            activeCrf: 1,
             loading: false,
             paging: {
                 pageNo: 1,
@@ -192,14 +201,12 @@ export default {
     },
     components: {
         echartsContain,
-        pagination
+        pagination,
+        searchCom
     },
     methods: {
         initPage () {
             this.getDataList();
-        },
-        selectGroup(index) {
-            this.activeGroup = index;
         },
         selectCrf(index) {
             this.activeCrf = index;
@@ -236,6 +243,21 @@ export default {
                 console.log(err)
             }
         },
+        //获取分组列表
+        getGroupList(data) {
+            this.groupList = data.groupList;
+            this.currentGrounpId = data.currentGrounpId;
+        },
+        //获取表单列表
+        getCrfList(data) {
+            this.crfList = data.crfList;
+            this.activeCrf = data.activeCrf;
+        },
+        //点击分组
+        handleSelectGroup(data) {
+            this.currentGrounpId = data;
+            this.getDataList(0,15);
+        }
     }
 };
 </script>
