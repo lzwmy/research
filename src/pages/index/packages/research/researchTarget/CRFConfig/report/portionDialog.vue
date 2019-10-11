@@ -48,7 +48,15 @@
         resize() {
           // let height = $(".portion_container-dialog-box").height();
           let height = $(".el-popup-parent--hidden").height();
-          $(".basis_body-content").height(height-203)
+          console.log(height)
+          if(height==null || height === 'null') {
+            $(".basis_body-content").css({
+              minHeight:"500px"
+            })
+          }else {
+            $(".basis_body-content").height(height-203)
+          }
+
         },
         init() {
           this.$nextTick(()=>{

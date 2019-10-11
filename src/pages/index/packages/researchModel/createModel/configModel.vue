@@ -279,7 +279,8 @@
           "crfIds": value
         };
         try{
-          let data = await that.$http.modelTreeList(that.$format(formData))
+          // let data = await that.$http.modelTreeList(that.$format(formData))
+          let data = await that.$http.formTreeReportList(that.$format(formData))
           console.log(data);
           if(data.code==0) {
             that.treeData = data.data
@@ -308,7 +309,6 @@
         }
         console.log(displayItem)
         console.log(exportItem)
-        return;
         let that = this;
         let fromData ={
           "modelId": "",
@@ -324,7 +324,9 @@
           displayItem: displayItem,
         };
         try{
-          let data = await that.$http.modelResearchSave(fromData);
+          // let data = await that.$http.modelResearchSave(fromData);
+          let data = await that.$http.createModuleSave(fromData);
+          console.log(data);
           if(data.code === 0 ){
             that.$message({
               type:"success",
