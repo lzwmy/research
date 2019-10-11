@@ -10,6 +10,12 @@ const url = {
   subjectVisitTotal:"/subject/progress/visit/total",
   //获取阶段下的随访情况
   subjectVisitStageDetail:"/subject/progress/visit/stage/detail",
+  //患者总体进度
+  subjectPatientTotal:"/subject/progress/patient/total",
+  //获取项目下的分组和阶段列表(发布的)
+  subjectStagePublicList:"/subject/visit/stage/public/list",
+  //组别下的研究内容填写情况统计
+  subjectStageGroupTotal:"/subject/progress/patient/group/total"
 };
 
 const http = {
@@ -21,6 +27,15 @@ const http = {
   },
   subjectVisitStageDetail(params) {
     return vm.$get(url.subjectVisitStageDetail,params,true);
+  },
+  subjectPatientTotal(params) {
+    return vm.$get(url.subjectPatientTotal,params,true);
+  },
+  subjectStagePublicList(params) {
+    return vm.$get(url.subjectStagePublicList,params,true);
+  },
+  subjectStageGroupTotal(params) {
+    return vm.$get(url.subjectStageGroupTotal,params,true);
   }
 };
 

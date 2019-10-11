@@ -13,9 +13,16 @@ export default {
         }
     },
     watch: {
+      "option":{
+        deep:true,
+        handler:function (value) {
+          this.chartData = value;
+        }
+      }
     },
-    data () {       
+    data () {
         return {
+          chartData:this.option
         };
     },
     mounted() {
@@ -25,7 +32,7 @@ export default {
     },
     methods: {
         initHighcharts() {
-            this.$Highcharts.chart(this.$el, this.option);
+            this.$Highcharts.chart(this.$el, this.chartData);
         }
     },
         
