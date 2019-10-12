@@ -61,6 +61,19 @@ const routes = [
       openMode: 1
     },
     component: enterGroupManager
+  },
+  {
+    path:"/patientListModule/enterGroupManager",
+    name:"enterGroupManager",
+    meta:{
+       requireAuth: true,
+      isKeepAlive: false,
+      txt: '入组管理',
+      flag: 'allCases',
+      belongToGroup: 'insideView',
+      openMode: 2
+    },
+    component: enterGroupManager
   }
 ];
 

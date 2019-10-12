@@ -637,7 +637,7 @@ export default {
       let that = this;
       console.log(that.selectRow)
       if (that.selectRow && that.selectRow.length === 1 && command == 'enterGroupManager') {
-        that.$router.push({
+        /*that.$router.push({
           name: 'enterGroupManager',
           query: {
             cacheData: false,
@@ -645,7 +645,16 @@ export default {
             patientId: that.selectRow[0].PATIENT_ID || '',
             identify: that.selectRow[0].IDENTIFY || ''
           }
-        });
+        });*/
+        that.$router.push({
+          path:'/enterGroupManager',
+          query: {
+            cacheData: false,
+            patientName: that.selectRow[0].PATIENT_NAME || '',
+            patientId: that.selectRow[0].PATIENT_ID || '',
+            identify: that.selectRow[0].IDENTIFY || ''
+          }
+        })
       } else if (that.selectRow && that.selectRow.length !== 0) {
         switch (command) {
           case 'enterGroup':

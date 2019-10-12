@@ -201,7 +201,8 @@
               modelId: value
           };
           try {
-              let res = await this.$http.modelManageGetPreviewDataList(formData);
+              // let res = await this.$http.modelManageGetPreviewDataList(formData);
+              let res = await this.$http.modelBakPreviewNew(formData);
               if (res.data && res.code == 0) {
                   this.$emit('status-modifyTableData',res.data);
                   let arr = res.data;

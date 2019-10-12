@@ -33,6 +33,16 @@ const url = {
   formTreeReportList:"/report/bak/model/find/crfList.do",
   //新建模型保存 new
   createModelSave:"/report/bak/model/add.do",
+  //个人模型和公共模型列表
+  modelListNew:"/report/bak/model/list.do",
+  //模型回显
+  modelBakPreviewNew:"/report/bak/model/preview.do",
+  //生成动态表
+  modelDynamicTableListNew:"/report/bak/model/table.do",
+  //编辑模型保存 new
+  modelModifySaveNew:"/report/bak/model/edit.do",
+  //删除模型
+  modelDeleteRequest:"/report/bak/model/delete.do",
 };
 
 const http = {
@@ -80,6 +90,21 @@ const http = {
   },
   createModuleSave(params) {
       return vm.$post(url.createModelSave,params,false);
+  },
+  modelListNew(params) {
+      return vm.$post(url.modelListNew,params,true);
+  },
+  modelBakPreviewNew(params) {
+      return vm.$get(url.modelBakPreviewNew,params,true);
+  },
+  modelDynamicTableListNew(params) {
+      return vm.$get(url.modelDynamicTableListNew,params,true);
+  },
+  modelModifySaveNew(params) {
+      return vm.$post(url.modelModifySaveNew,params,false);
+  },
+  modelDeleteRequest(params) {
+      return vm.$post(url.modelDeleteRequest,params,true);
   }
 };
 

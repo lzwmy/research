@@ -259,7 +259,7 @@ export default {
                     isModify:"displayShow"
                 }
                 sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
-                let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
+                let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+escape(row.patientName)+"&patientId="+row.patientId+"&identify="+this.identify||null+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+escape(row.subjectName)|| null+"&groupName="+escape(row.groupName)+"&title="+escape(row.reportName)+"&isModify=displayShow";
                 window.open('./patientForm.html?'+urlParameters);
             })
         },

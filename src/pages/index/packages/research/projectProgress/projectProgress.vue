@@ -92,11 +92,12 @@
         </el-col>
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <!--v-for="(stagesItem,stagesIndex) in item.stages" :key="stagesIndex"-->
-          <div class="wrap_box">
-            <p class="wrap_label" style="position: relative">
+          <div class="wrap_box" v-if="item.stages.length>0">
+            <p class="wrap_label" style="position: relative" >
               {{item.stages[item.stagesIndex].stageName}}
               <el-popover  placement="bottom"
                           popper-class="more_popper"
+                          v-if="item.stages.length>1"
                           trigger="hover">
                 <i slot="reference" class="el-icon-caret-bottom"></i>
                 <ul class="stepThree_ul">
@@ -107,7 +108,7 @@
               </el-popover>
             </p>
             <!--<p class="charts_y_title">患者数</p>-->
-            <div v-loading="item.stagesLoad">
+            <div v-loading="item.stagesLoad" v-if="item.stages.length>0">
               <charts v-if="JSON.stringify(item.stagesChart)!=='{}'" :option="item.stagesChart"></charts>
             </div>
           </div>
@@ -137,12 +138,12 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td class="cell">李强</td>
-                <td class="cell">2</td>
-                <td class="cell">0</td>
-                <td class="cell">1</td>
-                <td class="cell">0</td>
+              <tr v-for="(item,index) in taskList" :key="index">
+                <td class="cell">{{item.name}}</td>
+                <td class="cell">{{item.groupFinish}}</td>
+                <td class="cell">{{item.visitLost}}</td>
+                <td class="cell">{{item.visitEnd}}</td>
+                <td class="cell">{{item.visitFinish}}</td>
               </tr>
               </tbody>
             </table>
@@ -340,6 +341,7 @@
         monthLost: 0,
         monthEnd: 0,
         stageList: [],
+        taskList: [],
       }
     },
     watch: {},
@@ -608,7 +610,6 @@
                     data.data[i].stages[j].stagesChart = {};
                   }*/
                   this.subjectVisitStageDetail(data.data[i].stages[data.data[i].stagesIndex].stageId).then((res) => {
-                    console.log(res)
                     if (res.code === 0) {
                       data.data[i].stagesLoad = false;
                       chartOptions.title.text = res.data.chartName;
@@ -638,6 +639,22 @@
         } catch (error) {
           console.log(error)
         }
+      },
+      //录入员任务完成情况
+      async subjectProgressTaskTotal() {
+        let that = this;
+        let formData = {
+          subjectId: sessionStorage.getItem('CURR_RESEARCH_ID')
+        };
+        try {
+          let data = await that.$http.subjectProgressTaskTotal(formData);
+          console.log(data);
+          if (data.code === 0) {
+            this.taskList = data.data;
+          }
+        } catch (error) {
+          console.log(error)
+        }
       }
     },
     mounted() {
@@ -646,7 +663,8 @@
       this.subjectVisitDetail();
       this.subjectVisitTotal();
       this.subjectPatientTotal();
-      this.subjectStagePublicList()
+      this.subjectStagePublicList();
+      this.subjectProgressTaskTotal();
     }
   };
 </script>
@@ -730,11 +748,20 @@
       &.wrap_group {
         .wrap_box {
           height: 330px;
+
           table {
             border-collapse: collapse;
             border: 1px solid #e5ebf1;
-            thead{
+
+            thead {
               background-color: #f7f9fa;
+            }
+            tbody{
+              tr{
+                &:hover{
+                  background-color: #f7f9fa;
+                }
+              }
             }
             td {
               height: 39px;

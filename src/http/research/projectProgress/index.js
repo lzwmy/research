@@ -15,7 +15,9 @@ const url = {
   //获取项目下的分组和阶段列表(发布的)
   subjectStagePublicList:"/subject/visit/stage/public/list",
   //组别下的研究内容填写情况统计
-  subjectStageGroupTotal:"/subject/progress/patient/group/total"
+  subjectStageGroupTotal:"/subject/progress/patient/group/total",
+  //录入员任务完成情况
+  subjectProgressTaskTotal:"/subject/progress/task/total",
 };
 
 const http = {
@@ -36,6 +38,9 @@ const http = {
   },
   subjectStageGroupTotal(params) {
     return vm.$get(url.subjectStageGroupTotal,params,true);
+  },
+  subjectProgressTaskTotal(params) {
+    return vm.$get(url.subjectProgressTaskTotal,params,true);
   }
 };
 

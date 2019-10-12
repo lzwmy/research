@@ -8,7 +8,8 @@
       </div>
       <div class="flex-end-center">
         <el-button type="primary" @click="openEnterGroupDialog">入库入组</el-button>
-        <el-button type="default" @click="$router.push('/allCases')">返 回</el-button>
+        <!--<el-button type="default" @click="$router.push('/allCases')">返 回</el-button>-->
+        <el-button type="default" @click="backPage">返 回</el-button>
       </div>
     </div>
     <!--搜索结果-->
@@ -245,6 +246,9 @@ export default {
     openEnterGroupDialog () {
       this.enterGroupDialogVisible = true;
     },
+    backPage() {
+      window.history.go(-1);
+    },
     closeEnterGroupDialog () {
       this.enterGroupDialogVisible = false;
       for (let key in this.enterGroupRuleForm) {
@@ -398,8 +402,24 @@ export default {
           from: that.$route.name
         }
       });*/
-      let urlParameter = "cacheData="+false+"&formId="+row.formId+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+that.ruleForm.patientName+"&patientId="+that.ruleForm.patientId+"&identify="+that.ruleForm.identify+"&from="+'caseManage'+"&title="+row.formName+"&isModify="+"displayShow";
-      window.open('./patientForm.html?'+urlParameter);
+      let urlParameter = {
+        cacheData:false,
+        formId:row.formId,
+        reportId: row.id || '',
+        groupId:row.groupId,
+        subjectId:row.subjectId,
+        diseaseId:row.diseaseId,
+        patientName:that.ruleForm.patientName,
+        patientId:that.ruleForm.patientId,
+        identify:that.ruleForm.identify,
+        from:"caseManage",
+        title:row.formName,
+        isModify:'displayShow'
+      };
+      sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+      let urlParameters = "cacheData="+false+"&formId="+row.formId+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+that.ruleForm.patientName+"&patientId="+that.ruleForm.patientId+"&identify="+that.ruleForm.identify+"&from="+'caseManage'+"&title="+row.formName+"&isModify="+"displayShow";
+      // window.open('./patientForm.html?'+urlParameters);
+      window.open('./patientForm.html');
     },
     // 通用：通过检查表单是否完成，已决定按钮是否可用
     checkDisable (form) {

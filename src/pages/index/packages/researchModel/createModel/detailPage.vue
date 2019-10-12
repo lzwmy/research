@@ -169,7 +169,8 @@
             offset:pageNo
           };
           try{
-            let data = await that.$http.ModelQueryDynamicTable(that.$format(formData));
+            // let data = await that.$http.ModelQueryDynamicTable(that.$format(formData));
+            let data = await that.$http.modelDynamicTableListNew(that.$format(formData));
             if(data.code == 0) {
               let obj = {};
               that.dynamicTableDataList = data.data;
