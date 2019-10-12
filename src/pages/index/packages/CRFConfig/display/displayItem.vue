@@ -1,8 +1,8 @@
 <template>
   <div v-loading="loading">
-    <!--class="view_container"-->
+    <!--class="view_container" style="display: block"-->
     <!--{{item.baseProperty.layout}}-->
-      <el-row v-if="item.baseProperty.layout.wrap == '1'" style="display: inline-block">
+      <el-row v-if="item.baseProperty.layout.wrap == '1'"  align="top">
         <el-col  :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
           <display-input v-if="item.controlType=='SINGLE_INPUT'" :item="item" :report="report"/>
           <display-multi-input v-else-if="item.controlType=='MULTI_INPUT'" :item="item" :report="report"/>
@@ -19,7 +19,7 @@
           <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
         </el-col>
       </el-row>
-    <el-col v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
+    <el-col  v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
       <display-input v-if="item.controlType=='SINGLE_INPUT'" :item="item" :report="report"/>
       <display-multi-input v-else-if="item.controlType=='MULTI_INPUT'" :item="item" :report="report"/>
       <display-check-box v-else-if="item.controlType=='CHECKBOX'" :item="item" :report="report"/>

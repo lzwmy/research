@@ -4,7 +4,7 @@
       {{item.portionName}}
     </div>
     <div class="displayPortion_box">
-      <el-row class="length_set">
+      <el-row class="length_set" >
         <display-item
           :class="'set_'+child.baseProperty.layout.columns"
           v-for="(child,index) in item.formItemList"

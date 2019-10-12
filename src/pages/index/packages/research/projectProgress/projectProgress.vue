@@ -366,7 +366,7 @@
             text: '柱状图'
           },
           legend: {
-            enabled: false
+            enabled: true
           },
           xAxis: {
             categories: ['苹果', '橘子', '梨', '葡萄', '香蕉'],
@@ -536,7 +536,7 @@
             text: '柱状图'
           },
           legend: {
-            enabled: false
+            enabled: true
           },
           xAxis: {
             categories: ['苹果', '橘子', '梨', '葡萄', '香蕉'],

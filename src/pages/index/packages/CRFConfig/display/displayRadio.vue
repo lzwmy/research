@@ -141,7 +141,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .RADIO_BUTTON {
-  line-height: 32px;
+  /*line-height: 32px;*/
 }
 .RADIO_BUTTON .RADIO_BUTTON_title {
   width: 188px;

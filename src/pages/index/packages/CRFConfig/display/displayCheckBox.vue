@@ -149,7 +149,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .CHECKBOX {
-  line-height: 32px;
+  /*line-height: 32px;*/
 }
 .CHECKBOX .CHECKBOX_title {
   width: 188px;

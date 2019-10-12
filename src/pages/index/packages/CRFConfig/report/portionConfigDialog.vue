@@ -29,7 +29,7 @@
           <div class="portion_body_content-box">
             <el-tabs v-model="tabName" type="card">
               <el-tab-pane label="病种" name="first" class="subDisease_container">
-                <div class="disease-content-box" v-if="diseaseList.length!==0">
+                <div class="disease-content-box" v-loading="loading" v-if="diseaseList.length!==0">
                   <div class="report_box">
                     <div class="display_detail_info-item-box"  v-for="(item,index) in filterData(diseaseList)" :key="index" @click.stop="diseaseActive(item,index)">
                       <div class="detail_info" :class="{'active':index===diseaseIdIndex}" >
@@ -63,12 +63,12 @@
                     </div>
                   </div>
                 </div>
-                <div class="disease-content-box blank_page" v-else>
+                <div class="disease-content-box blank_page" v-loading="loading" v-else>
                   <img class="tipInfo" src="./../basisComponents/image/none_content.png" alt="">
                 </div>
               </el-tab-pane>
               <el-tab-pane label="小节" class="portions_container" name="second">
-                <div class="portion_tab-container" v-if="portionList.length!==0">
+                <div class="portion_tab-container" v-loading="loading" v-if="portionList.length!==0">
                   <div class="portion_display-item">
                     <div class="display_detail_info-item-box" v-if="portionList.length!==0" v-for="(item,index) in portionList" :key="index" @click.stop="portionActive(item,index)">
                       <div class="detail_info" :class="{'active':item.portionId==portionId}" >
@@ -131,7 +131,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="portion_tab-container blank_page" v-else>
+                <div class="portion_tab-container blank_page" v-loading="loading" v-else>
                   <img class="tipInfo" src="./../basisComponents/image/none_content.png" alt="">
                 </div>
               </el-tab-pane>
@@ -174,6 +174,7 @@
           dialogVisible:false,
           tableLoading:false,
           showConfigPortion:false,
+          loading:false,
           searchType:0,// 搜索类型
           searchName:"",// 搜索名称
           tabName:"first",//切换名称
@@ -219,7 +220,10 @@
         },
         //搜索
         searchItem(value) {
-          this.CRFSearchPortion()
+          this.loading = true;
+          this.CRFSearchPortion().then(()=>{
+            this.loading = false;
+          });
         },
         //直接添加
         addDirect() {
