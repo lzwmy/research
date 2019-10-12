@@ -118,6 +118,9 @@
                         show-overflow-tooltip
                         v-if="column.type !='report' && column.type != 'disable'">
                     </el-table-column>
+
+
+
                     <span v-for="(li,liIndex) in dataList.header" :key="'1_'+liIndex">
                         <el-table-column v-if="li.type =='report'" :label="li.label" align="center">
                             <span v-for="(point,poindex) in li.prop" :key="'2_'+poindex">
@@ -127,23 +130,23 @@
                                     :width="point.label.length * 15 + 20"
                                     align="center">
                                     <template slot-scope="scope">
-                                        <el-tooltip :disabled="handlePoint(scope.row.prop,point.prop).status == 0 || handlePoint(scope.row.prop,point.prop).status == 5" class="item" effect="dark" placement="top">
+                                        <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
                                             <div slot="content">
-                                                <p v-if="handlePoint(scope.row.prop,point.prop).status == 1 && handlePoint(scope.row.prop,point.prop).planDate">计划时间：{{handlePoint(scope.row.prop,point.prop).planDate}}</p>
-                                                <p v-else-if="handlePoint(scope.row.prop,point.prop) == 1 &&  !handlePoint(scope.row.prop,point.prop).planDate">计划时间：无</p>
-                                                <div v-else-if="parseInt(handlePoint(scope.row.prop,point.prop).status) >= 2">
-                                                    <p>随访员：{{handlePoint(scope.row.prop,point.prop).updator}}</p>
-                                                    <p>计划时间：{{handlePoint(scope.row.prop,point.prop).planDate}}</p>
-                                                    <p>时间：{{handlePoint(scope.row.prop,point.prop).updateTime}}</p>
-                                                    <p v-if="handlePoint(scope.row.prop,point.prop).note">备注：{{handlePoint(scope.row.prop,point.prop).note}}</p>
+                                                <p v-if="handlePoint(scope.row[point.prop]).status == 1 && handlePoint(scope.row[point.prop]).planDate">计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
+                                                <p v-else-if="handlePoint(scope.row[point.prop]) == 1 &&  !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
+                                                <div v-else-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
+                                                    <p>随访员：{{handlePoint(scope.row[point.prop]).updator}}</p>
+                                                    <p>计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
+                                                    <p>时间：{{handlePoint(scope.row[point.prop]).updateTime}}</p>
+                                                    <p v-if="handlePoint(scope.row[point.prop]).note">备注：{{handlePoint(scope.row[point.prop]).note}}</p>
                                                 </div> 
                                             </div>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 0"  type="text" icon="icon iconfont icondaifang"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 1"  type="text" icon="icon iconfont iconshifang"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 2"  type="text" icon="icon iconfont iconbuliangshijian"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 3"  type="text" icon="icon iconfont iconzhongzhi"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 4"  type="text" icon="icon iconfont iconwancheng1"></el-button>
-                                            <el-button v-if="handlePoint(scope.row.prop,point.prop).status == 5"  type="text" icon="el-icon-minus"></el-button> 
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon el-icon-more" style="color: #333;"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
+                                            <el-button v-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333;"></el-button> 
                                         </el-tooltip>
                                     </template>
                                 </el-table-column>
@@ -216,8 +219,11 @@ export default {
             }
         }
     },
-    created() {
-
+    mounted () {
+        this.addEventListenervisibilityChange();
+    },
+    destoryed() {
+        document.removeEventListener(this.visibilityChange)
     },
     components: {
         echartsContain,
@@ -226,6 +232,29 @@ export default {
         formItemCom
     },
     methods: {
+        //切换页面刷新操作
+        addEventListenervisibilityChange() {
+            let hidden = "";
+            this.visibilityChange = "";
+            if (typeof document.hidden !== "undefined") {
+                hidden = "hidden";
+                this.visibilityChange = "visibilitychange";
+            } else if (typeof document.mozHidden !== "undefined") {
+                hidden = "mozHidden";
+                this.visibilityChange = "mozvisibilitychange";
+            } else if (typeof document.msHidden !== "undefined") {
+                hidden = "msHidden";
+                this.visibilityChange = "msvisibilitychange";
+            } else if (typeof document.webkitHidden !== "undefined") {
+                hidden = "webkitHidden";
+                this.visibilityChange = "webkitvisibilitychange";
+            }
+            document.addEventListener(this.visibilityChange,()=>{
+                if(!document[hidden]) {
+                    this.getDataList(0,15);
+                }
+            }, false);
+        },
          //表格多选项
         handleSelectionChange(val) {
             this.multipleSelection = val;
@@ -361,6 +390,7 @@ export default {
             console.log(row)
             console.log(point)
             console.log(crfId)
+            // return;
             let group = this.groupList.find(item=>{
                 return item.subjectGroupId == this.currentGrounpId;
             })
@@ -379,7 +409,8 @@ export default {
                 subjectName: row.subjectName || "",
                 title: point.name,
                 isModify:"displayShow",
-                status: point.status,
+                status: point.status,  
+                pointPatientId: point.pointPatientId,
                 subjectId: this.$store.state.user.researchID,
                 updateTime: point.updateTime || '',
                 updator: point.updator || '',
@@ -391,11 +422,11 @@ export default {
         successAdd() {
             this.getDataList(0,15);
         },
-        handlePoint(arr,id) {
-            let obj = arr.find(item=>{
-                return item.id = id;
-            })
-            return obj;
+        handlePoint(data) {
+            if(typeof(data) != 'object') {
+                return {};
+            }
+            return data;
         }
     }
 };

@@ -1,23 +1,23 @@
 <template>
     <div class="stageList">
         <el-menu
-            default-active="0-0"
             ref="refMenu"
+            :default-openeds="defaultOpeneds"
             v-loading="loading"
             class="el-menu-vertical-demo">
-            <el-submenu v-for="(item, index) in stageList" :key="index" :index="String(index)">
+            <el-submenu v-for="(item, index) in stageList" :key="index" :index="item.stageId">
                 <template slot="title">
                     <span class="title">{{item.stageName}}</span>
                 </template>
                 <el-menu-item-group v-for="(li, liIndex) in item.pointList" :key="liIndex"> 
-                    <el-menu-item :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li.pointPatientId)">
+                    <el-menu-item :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li,item.crfId)">
                         <span>{{li.name}}</span>
-                        <span v-if="li.status == 0" class="icon iconfont icondaifang"></span>
-                        <span v-if="li.status == 1" class="icon iconfont iconshifang"></span>
-                        <span v-if="li.status == 2" class="icon iconfont iconbuliangshijian"></span>
-                        <span v-if="li.status == 3" class="icon iconfont iconzhongzhi"></span>
-                        <span v-if="li.status == 4" class="icon iconfont iconwancheng1"></span>
-                        <span v-if="li.status == 5" class="el-icon-minus"></span> 
+                        <span v-if="li.status == 0" class="icon el-icon-more" style="color: #333;"></span>
+                        <span v-if="li.status == 1" class="icon iconfont icondaifang" style="color: #00B8DF;"></span>
+                        <span v-if="li.status == 2" class="icon iconfont iconshifang" style="color: #F79E00;"></span>
+                        <span v-if="li.status == 3" class="icon iconfont iconzhongzhi" style="color: #DB5452;"></span>
+                        <span v-if="li.status == 4" class="icon iconfont iconwancheng1" style="color: #00BE90;"></span>
+                        <span v-if="li.status == 5" class="icon el-icon-minus" style="color: #333;"></span> 
                     </el-menu-item> 
                 </el-menu-item-group>
             </el-submenu>
@@ -27,21 +27,30 @@
 <script>
 export default {
     name: 'stageList',
-    props:['groupId','patientId'],
+    props:['groupId','patientId','pointPatientId'],
     data () {
         return {
             loading: false,
-            pointPatientId: '',
-            stageList: []
+            stageList: [],
+            defaultOpeneds: [],
         }
     },
     created() {
-        this.getStagePointList();
+        this.getStagePointList()
+        .then(()=>{
+            this.stageList.forEach(item => {
+                this.defaultOpeneds.push(item.stageId)
+            });
+        })
     },
     methods: {
-        selectItem(pointPatientId) {
-            this.pointPatientId = pointPatientId;
-            this.$emit('sendPointPatientId', this.pointPatientId)
+        selectItem(row,crfId) {
+            console.log(row)
+            if(row.status == 5) {
+                return;
+            }
+            let data = Object.assign(row,{crfId,crfId})
+            this.$emit('sendPoint', data)
         },
         //获取阶段列表
         async getStagePointList() {
@@ -53,8 +62,6 @@ export default {
                 let res = await this.$http.followUpManagementPointList(params);
                 if (res.code == '0') {
                     this.stageList = res.data
-                    this.pointPatientId = this.stageList[0].pointList[0].pointPatientId;
-                    this.$emit('sendPointPatientId', this.pointPatientId)
                 }else {
                     this.stageList = [];
                 }

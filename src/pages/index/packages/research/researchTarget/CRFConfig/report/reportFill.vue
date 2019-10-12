@@ -17,10 +17,30 @@
           </div>
           <div class="flex-start-start" style="height:100%;">
             <!-- 随访列表 -->
-            <stageListCom :groupId='urlParameter.groupId' :patientId="urlParameter.patientId" @sendPointPatientId="getPointPatientId"></stageListCom>
+            <stageListCom v-if="urlParameter.from=='followUpManagement'" :groupId='urlParameter.groupId' :patientId="urlParameter.patientId" :pointPatientId='pointPatientId' @sendPoint="getPoint"></stageListCom>
             <div ref="top" class="crf-step-content" id="mainContent">
-              <display-report v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
+              <br/>
+              <el-alert
+                v-if="urlParameter.from=='followUpManagement' && urlParameter.status == 4"
+                title="随访已完成"
+                :closable="false"
+                center
+                type="success"
+                show-icon>
+                <div>
+                  <p>随访员: {{urlParameter.updator}}</p>
+                  <p>完成时间: {{urlParameter.updateTime}}</p>
+                </div>
+              </el-alert>
+              <display-report v-if="crfForm!=null&&report!=null && update" :item="crfForm"  :report="report"></display-report>
             </div>
+
+            <ul v-if="urlParameter.from=='followUpManagement'" class="recordList" v-loading="recordLoading">
+              <h3>提交记录</h3>
+              <li v-for="(item,index) in recordList" :key="index">
+                <p>{{item.createTime}} 【{{item.creator}}】修改了随访表单</p>
+              </li>
+            </ul>
           </div>
           <!--<div class="saveButton">
             <el-button @click="backingOut">返回</el-button>
@@ -135,6 +155,8 @@ export default {
   },
   data() {
     return {
+      recordList: [],
+      update: true,
       patientId: "",
       formId: "",
       groupId: "",
@@ -180,7 +202,6 @@ export default {
   destroyed() {
     this.mainContent.removeEventListener('scroll',this.handleScroll);
   },
-  activated() {},
   methods: {
     handleScroll() {
       this.getContentTop(document.querySelector("#mainContent").scrollTop);
@@ -193,6 +214,7 @@ export default {
     initPage() {
       this.urlParameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
       console.log(this.urlParameter.stageList)
+      this.pointPatientId = this.urlParameter.pointPatientId;
       this.patientId = "";
       this.groupId = "";
       this.formId = this.urlParameter.formId;
@@ -213,6 +235,7 @@ export default {
       this.$store.commit("CRF_CHANGE_CONTROL", {});
       this.getForms();
       this.getReportData();
+      this.getRecordLlist();
     },
     //返回上一级
     backingOut() {
@@ -267,28 +290,26 @@ export default {
         if (report.data && report.code == "0") {
           this.report = report.data;
           //从随访管理页面进来且为报告空模版
-        if(this.urlParameter.from=='followUpManagement' && !this.report.crfId) {
-          console.log('==========')
-          console.log(this.urlParameter)
-          this.report = {
-            author: this.urlParameter.author || '',
-            createTime: this.urlParameter.createTime || '',
-            crfId: this.urlParameter.formId || '',
-            deleteFlag: this.urlParameter.deleteFlag || '',
-            groupId: this.urlParameter.groupId || '',
-            groupName: this.urlParameter.groupName || '',
-            id: this.urlParameter.reportId || '',
-            patientId: this.urlParameter.patientId || '',
-            portions: [],
-            reportName: this.urlParameter.reportName || '',
-            reportType: this.urlParameter.reportType || '',
-            status: this.urlParameter.status,
-            subjectId: this.urlParameter.subjectId || '',
-            subjectName: this.urlParameter.subjectName || '',
-            updateTime: this.urlParameter.updateTime || '',
-            updator: this.urlParameter.updator || '',
-            visitDate: this.urlParameter.visitDate || ''
-          }
+        if(this.urlParameter.from=='followUpManagement' && this.report.portions.length == 0 ) {
+          // this.report = {
+          //   // author: this.urlParameter.author || '',
+          //   // createTime: this.urlParameter.createTime || '',
+          //   crfId: this.urlParameter.formId || '',
+          //   // deleteFlag: this.urlParameter.deleteFlag || '',
+          //   // groupId: this.urlParameter.groupId || '',
+          //   // groupName: this.urlParameter.groupName || '',
+          //   // id: this.urlParameter.reportId || '',
+          //   // patientId: this.urlParameter.patientId || '',
+          //   portions: [],
+          //   reportName: this.urlParameter.reportName || '',
+          //   // reportType: this.urlParameter.reportType || '',
+          //   // status: this.urlParameter.status,
+          //   // subjectId: this.urlParameter.subjectId || '',
+          //   // subjectName: this.urlParameter.subjectName || '',
+          //   // updateTime: this.urlParameter.updateTime || '',
+          //   // updator: this.urlParameter.updator || '',
+          //   // visitDate: this.urlParameter.visitDate || ''
+          // }
           console.log(this.report)
         }
           if(report.data && report.data.portions&&report.data.portions.length==0){
@@ -366,11 +387,11 @@ export default {
         this.mainLoading = true;
         let params = {
           "id": this.report.id,
-          "reportName": this.report.reportName,
-          "patientId":this.report.patientId,
+          "reportName": this.urlParameter.reportName,
+          "patientId": this.urlParameter.patientId,
           "portions": this.report.portions,
           "subjectName": this.report.subjectName,
-          "subjectId": this.report.subjectId,
+          "subjectId": this.urlParameter.subjectId,
           "pointPatientId": this.pointPatientId,
           "type": type,
           "crfId": this.report.crfId,
@@ -507,8 +528,15 @@ export default {
       this.scrollTop = top;
     },
     //获取随访点
-    getPointPatientId(data) {
-      this.pointPatientId = data;
+    getPoint(data) {
+      let urlParameter = Object.assign(JSON.parse(sessionStorage.getItem('reportFill')).urlParameter,{
+        formId: data.crfId,
+        reportId: data.reportId,
+        status: data.status,
+        pointPatientId: data.pointPatientId
+      })
+      sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+      this.initPage();
     },
     //显示终止随访弹框
     showStopDialog() {
@@ -579,7 +607,24 @@ export default {
             }
           }
         }).catch(() => {});
-    }
+    },
+    //操作记录
+    async getRecordLlist() {
+      let that = this;
+      that.recordLoading = true;
+      try {
+        let result = await this.$http.followUpManagementRecordLlist({
+          id: this.pointPatientId
+        });
+        if (result && result.code == "0") {
+          this.recordList = result.data;
+        }
+      that.recordLoading = false;
+      } catch (error) {
+        that.recordLoading = false;
+        console.log(error);
+      }
+    },
   },
   computed: {
     allRoute() {
@@ -666,6 +711,20 @@ export default {
           }
         }
       }
+    }
+  }
+  .recordList {
+    width: 300px;
+    background-color: #fff;
+    height: 100%;
+    padding: 6px;
+    h3 {
+      line-height: 30px;
+      border-bottom: 1px solid #999;
+      margin-bottom: 15px;
+    }
+    li {
+      margin-bottom: 15px;
     }
   }
 </style>

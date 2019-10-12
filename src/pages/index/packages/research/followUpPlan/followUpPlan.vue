@@ -528,6 +528,7 @@ export default {
                     this.menuList = res.data;
                 }else {
                     this.menuList = []
+                    this.configExists = true;
                     this.$mes('error', res.msg);
                 }
                 this.groupLoading = false;

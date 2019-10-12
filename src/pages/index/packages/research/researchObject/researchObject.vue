@@ -122,7 +122,7 @@
                                 :key="li.prop">
                                 <template slot-scope="scope">
                                     <el-button @click="toReportFill(scope.row,li.prop,li.label,'add')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
-                                    <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-else type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
+                                    <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
                                 </template>
                             </el-table-column>
                         </span>
@@ -221,8 +221,11 @@ export default {
             }
         }
     },
-    created() {
-        
+    mounted () {
+        this.addEventListenervisibilityChange();
+    },
+    destoryed() {
+        document.removeEventListener(this.visibilityChange)
     },
     components: {
         echartsContain,
@@ -234,6 +237,29 @@ export default {
         formItemCom
     },
     methods: {
+        //切换页面刷新操作
+        addEventListenervisibilityChange() {
+            let hidden = "";
+            this.visibilityChange = "";
+            if (typeof document.hidden !== "undefined") {
+                hidden = "hidden";
+                this.visibilityChange = "visibilitychange";
+            } else if (typeof document.mozHidden !== "undefined") {
+                hidden = "mozHidden";
+                this.visibilityChange = "mozvisibilitychange";
+            } else if (typeof document.msHidden !== "undefined") {
+                hidden = "msHidden";
+                this.visibilityChange = "msvisibilitychange";
+            } else if (typeof document.webkitHidden !== "undefined") {
+                hidden = "webkitHidden";
+                this.visibilityChange = "webkitvisibilitychange";
+            }
+            document.addEventListener(this.visibilityChange,()=>{
+                if(!document[hidden]) {
+                    this.getDataList(0,15);
+                }
+            }, false);
+        },
         //表格多选项
         handleSelectionChange(val) {
             this.multipleSelection = val;
