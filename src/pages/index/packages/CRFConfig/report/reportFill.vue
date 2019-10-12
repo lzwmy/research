@@ -214,8 +214,8 @@ export default {
       try {
         // let params = { groupId: this.groupId, patientId: this.patientId };
         let params = { reportId: this.reportId };
-        let report = await this.$http.reportFindReport(this.$format(params));
-        // let report = await this.$http.queryReportDisplayInfo(this.$format(params));
+        // let report = await this.$http.reportFindReport(this.$format(params));
+        let report = await this.$http.queryReportDisplayInfo(this.$format(params));
         console.log('report data',report)
         if (report.data && report.code == "0") {
           this.report = report.data;

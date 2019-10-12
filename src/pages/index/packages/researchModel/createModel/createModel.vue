@@ -179,7 +179,8 @@
             diseaseId:this.$route.query.id
           };
           try {
-            let data = await that.$http.modelManageGetDataList(formData);
+            // let data = await that.$http.modelManageGetDataList(formData);
+            let data = await that.$http.modelListNew(formData);
             if(data.code ==0) {
               that.commonList = data.data.common.modelList;
               that.personalList = data.data.personal.modelList;
@@ -196,7 +197,8 @@
             modelId:value
           };
           try {
-            let data = await that.$http.modelManageDelete(that.$format(formData));
+            // let data = await that.$http.modelManageDelete(that.$format(formData));
+            let data = await that.$http.modelDeleteRequest(that.$format(formData));
             if(data.code==0) {
               this.$mes('success', data.msg);
             }

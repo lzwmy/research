@@ -357,7 +357,6 @@
         }
         console.log(displayItem)
         console.log(exportItem)
-        return;
         let that = this;
         let fromData ={
           "modelId": that.$route.query.modelId || "",
@@ -373,7 +372,8 @@
           displayItem: displayItem,
         };
         try{
-          let data = await that.$http.modelModifySave(fromData);
+          // let data = await that.$http.modelModifySave(fromData);
+          let data = await that.$http.modelModifySaveNew(fromData);
           console.log(data)
           if(data.code == 0) {
             that.$message({

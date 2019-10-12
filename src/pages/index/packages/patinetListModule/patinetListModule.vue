@@ -79,9 +79,9 @@
                         <i class="el-icon-arrow-down el-icon--right"></i>
                       </span>
                         <el-dropdown-menu slot="dropdown">
-                          <el-dropdown-item command="crfFill"
+                          <!--<el-dropdown-item command="crfFill"
                                             v-if="selectLabGroupId && (selectRow.length==0 || selectRow.length ==1)">填写
-                          </el-dropdown-item>
+                          </el-dropdown-item>-->
                           <el-dropdown-item command="enterGroup">入组</el-dropdown-item>
                           <el-dropdown-item command="enterGroupManager" v-if="selectRow.length==0 || selectRow.length ==1">入组管理
                           </el-dropdown-item>
@@ -918,12 +918,12 @@
               identify: that.selectRow[0].IDENTIFY || ''
             }
           });*/
-          let formData = "cacheData="+false+"&formId="+that.selectLabGroupFormId+"&groupId="+that.selectLabGroupId+"&subjectId="+that.currentDiseaseId+"&diseaseId="+that.currentDiseaseId+"&patientName="+that.selectRow[0].PATIENT_NAME || ''+"&patientId="+that.selectRow[0].PATIENT_ID || ''+"&identify="+that.selectRow[0].IDENTIFY || ''
+          let formData = "cacheData="+false+"&formId="+that.selectLabGroupFormId+"&groupId="+that.selectLabGroupId+"&subjectId="+that.currentDiseaseId+"&diseaseId="+that.currentDiseaseId+"&patientName="+escape(that.selectRow[0].PATIENT_NAME) || ''+"&patientId="+that.selectRow[0].PATIENT_ID || ''+"&identify="+that.selectRow[0].IDENTIFY || ''
           window.open('./patientForm.html?'+formData)
         } else if (that.selectRow && that.selectRow.length != 1 && command == 'crfFill') {
           this.$notice('请勾选一行进行CRF表单填写');
         } else if (that.selectRow && that.selectRow.length === 1 && command == 'enterGroupManager') {
-          that.$router.push({
+          /*that.$router.push({
             name: 'enterGroupManager',
             query: {
               cacheData: false,
@@ -931,7 +931,16 @@
               patientId: that.selectRow[0].PATIENT_ID || '',
               identify: that.selectRow[0].IDENTIFY || ''
             }
-          });
+          });*/
+          that.$router.push({
+            path:"/patientListModule/enterGroupManager",
+            query: {
+              cacheData: false,
+              patientName: that.selectRow[0].PATIENT_NAME || '',
+              patientId: that.selectRow[0].PATIENT_ID || '',
+              identify: that.selectRow[0].IDENTIFY || ''
+            }
+          })
         } else if (that.selectRow.length !== 0 || command == 'caseStorage' || command == 'exportAll') {
           switch (command) {
             case 'enterGroup':

@@ -291,7 +291,7 @@
             // "id": "",
             "crfDisplayName": that.crfName,
             "crfType": that.crfType,
-            "crfIsAvailable": that.enable ? 1 : 2,
+            "crfIsAvailable": that.enable ? 1 : 0,
             "crfImage": "",
             "diseaseId":that.$route.query.id,
             "formPortions": that.dataList
@@ -319,7 +319,7 @@
             "id": that.$route.query.crfId,
             "crfDisplayName": that.crfName,
             "crfType": that.crfType,
-            "crfIsAvailable": that.enable ? 1 : 2,
+            "crfIsAvailable": that.enable ? 1 : 0,
             "crfImage": "",
             "diseaseId":that.$route.query.id,
             "formPortions": that.dataList
@@ -388,7 +388,7 @@
               // "id": id,
               "crfDisplayName": that.crfName,
               "crfType": that.crfType,
-              "crfIsAvailable": that.enable ? 1 : 2,
+              "crfIsAvailable": that.enable ? 1 : 0,
               "crfImage": "",
               "diseaseId":that.$route.query.id,
               "formPortions": that.dataList
@@ -398,7 +398,7 @@
               "id": id,
               "crfDisplayName": that.crfName,
               "crfType": that.crfType,
-              "crfIsAvailable": that.enable ? 1 : 2,
+              "crfIsAvailable": that.enable ? 1 : 0,
               "crfImage": "",
               "diseaseId":that.$route.query.id,
               "formPortions": that.dataList
