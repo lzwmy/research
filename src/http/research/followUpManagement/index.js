@@ -11,6 +11,8 @@ const url = {
     reportPreview: '/subject/report/visit/preview.do',
     //终止随访或失访
     pointChangeStatus: '/subject/visit/point/changeStatus',
+    //获取报告操作记录列表
+    recordLlist: '/subject/visit/crf/record/list',
 
 };
 
@@ -26,6 +28,9 @@ const http = {
     },
     followUpManagementPointChangeStatus (params) {
         return vm.$post(url.pointChangeStatus, params, false);
+    },
+    followUpManagementRecordLlist (params) {
+        return vm.$get(url.recordLlist, params, true);
     }
 };
 
