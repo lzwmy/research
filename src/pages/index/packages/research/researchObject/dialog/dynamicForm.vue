@@ -10,8 +10,8 @@
             <div class="top flex-between-center">
                 <span class="page_title">{{dialog.title}} -- {{groupInfo.subjectGroupName}}</span>
                 <div>
-                    <el-button type="primary" @click="addObject">确认添加</el-button>
                     <el-button @click="dialog.visible = false">返 回</el-button>
+                    <el-button v-if="dialog.from=='researchObject'" type="primary" @click="addObject('确认添加')">确认添加</el-button>
                 </div>
             </div>
             <div class="content">
@@ -69,7 +69,7 @@
 
 <script>
 export default {
-    name: 'addObject',
+    name: 'dynamicForm',
     props: ['dataInfo','dialog','groupList'],
     data () {
         return {
@@ -80,35 +80,41 @@ export default {
     },
     
     methods: {
-        async addObject() {
-            let subjectItemDataDtoList = [];
-            this.dataInfo.content.forEach(li=>{
-                let obj = {
-                    itemName: li.controlName,
-                    value: typeof(li.value) == 'string'?li.value:li.value.join('\n'),
-                    path: li.path,
-                    crfId: String(li.crfId)
-                }
-                subjectItemDataDtoList.push(obj);
-            })
-            this.dialog.loading = true;
-            let params = {
-                subjectGroupId: this.groupInfo.subjectGroupId,
-                subjectInfoId: this.$store.state.user.researchID,
-                subjectGroupName: this.groupInfo.subjectGroupName,
-                subjectItemDataDtoList: subjectItemDataDtoList
-            }
-            try {
-                let res = await this.$http.researchObjectPreviewAddresearch(params);
-                if (res.code == '0') {
-                    this.$emit('successAdd')
-                    this.dialog.visible = false;
-                }
-                this.dialog.loading = false;
-            } catch (err) {
-                this.dialog.loading = false;
-                console.log(err)
-            }
+        addObject(title) {
+            this.$confirm('是否'+title+'?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+                }).then( async() => {
+                    let subjectItemDataDtoList = [];
+                    this.dataInfo.content.forEach(li=>{
+                        let obj = {
+                            itemName: li.controlName,
+                            value: typeof(li.value) == 'string'?li.value:li.value.join('\n'),
+                            path: li.path,
+                            crfId: String(li.crfId)
+                        }
+                        subjectItemDataDtoList.push(obj);
+                    })
+                    this.dialog.loading = true;
+                    let params = {
+                        subjectGroupId: this.groupInfo.subjectGroupId,
+                        subjectInfoId: this.$store.state.user.researchID,
+                        subjectGroupName: this.groupInfo.subjectGroupName,
+                        subjectItemDataDtoList: subjectItemDataDtoList
+                    }
+                    try {
+                        let res = await this.$http.researchObjectPreviewAddresearch(params);
+                        if (res.code == '0') {
+                            this.$emit('successAdd')
+                            this.dialog.visible = false;
+                        }
+                        this.dialog.loading = false;
+                    } catch (err) {
+                        this.dialog.loading = false;
+                        console.log(err)
+                    }
+                }).catch(() => {});
         },
         selectGroup() {
             if(this.radio){

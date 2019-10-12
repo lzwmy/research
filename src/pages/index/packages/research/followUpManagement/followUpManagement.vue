@@ -14,15 +14,14 @@
                 <searchCom 
                     ref="refSearch"
                     @sendGroupList="getGroupList" 
-                    @sendCrfList="getCrfList"
                     @selectGroup="handleSelectGroup">
                 </searchCom>
-                <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView">
+                <el-popover trigger="click" :popper-class="'popover_search ' + $store.state.common.openMenuView" v-model="popoverSearchVisible">
                     <div slot="reference"><i class="icon iconfont iconsousuo_fuzhi"></i> 搜索</div>
                     <el-form :inline="true" :model="form" label-width="110px" class="flex-start-center flex-wrap researchObject_search">
                         <el-form-item label="首次录入时间：" class="bold">
                             <el-date-picker
-                                v-model="form.time"
+                                v-model="form.entryTime"
                                 type="daterange"
                                 value-format="yyyy-MM-dd"
                                 range-separator="至"
@@ -31,26 +30,31 @@
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="随访点状态:" class="bold">
-                            <el-select v-model="form.formName" clearable>
-                                <el-option label="全部阶段" value="0"></el-option>
-                                <el-option label="已完成" value="1"></el-option>
+                            <el-select v-model="form.stageId" @change="changeStage">
+                                <el-option label="全部阶段" value=""></el-option>
+                                <el-option v-for="(item, index) in stageList" :key="index" :label="item.stageName" :value="item.stageId"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label-width="0">
-                            <el-select v-model="form.formState" clearable>
-                                <el-option label="全部随访点" value="0"></el-option>
-                                <el-option label="已完成" value="1"></el-option>
+                            <el-select v-model="form.pointId">
+                                <el-option label="全部随访点" value=""></el-option>
+                                <el-option v-for="(item, index) in stagePointList" :key="index" :label="item.name" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label-width="0">
-                            <el-select v-model="form.formState" clearable>
-                                <el-option label="全部状态" value="0"></el-option>
-                                <el-option label="已完成" value="1"></el-option>
+                            <el-select v-model="form.pointStatus">
+                                <el-option label="全部状态" value=""></el-option>
+                                <el-option label="未开始" value="0"></el-option>
+                                <el-option label="录入中" value="1"></el-option>
+                                <el-option label="已失访" value="2"></el-option>
+                                <el-option label="已终止" value="3"></el-option>
+                                <el-option label="已完成" value="4"></el-option>
+                                <el-option label="失效" value="5"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="最近随访时间：" class="bold">
                             <el-date-picker
-                                v-model="form.time"
+                                v-model="form.followUpTime"
                                 type="daterange"
                                 value-format="yyyy-MM-dd"
                                 range-separator="至"
@@ -59,15 +63,18 @@
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="随访状态:">
-                            <el-select v-model="form.patientState" clearable>
-                                <el-option label="全部状态" value="0"></el-option>
-                                <el-option label="已完成" value="1"></el-option>
+                            <el-select v-model="form.visitStatus">
+                                <el-option label="全部状态" value=""></el-option>
+                                <el-option label="未开始" value="0"></el-option>
+                                <el-option label="录入中" value="1"></el-option>
+                                <el-option label="已终止" value="3"></el-option>
+                                <el-option label="已完成" value="4"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-form>
                     <div class="btnGroup_search">
                         <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
-                        <el-button icon="el-icon-refresh" @click="">重 置</el-button>
+                        <el-button icon="el-icon-refresh" @click="onReset">重 置</el-button>
                     </div>
                 </el-popover>
             </div>
@@ -75,46 +82,16 @@
                 <p v-show="multipleSelection.length != 0" style="min-width: 136px; color: #666;" class="font_14">已选中 {{multipleSelection.length}} 位研究对象</p>
                 <el-button v-show="multipleSelection.length != 0" type="primary" icon="icon iconfont iconqueren" @click="">触发开始随访</el-button>
                 <el-button v-show="multipleSelection.length != 0" type="danger" class="right_6" icon="icon iconfont iconzujian12" @click="">提交随访点</el-button>
-                <el-popover trigger="click" popper-class="popover_condition" v-model="popoverVisible">
-                    <el-button slot="reference">已选3项 <span class="el-icon-caret-bottom"></span></el-button>
-                    <div class="box">
-                        <div class="head flex-between-center">
-                            <p>选择搜索</p><span class="el-icon-close cur_pointer" @click="popoverVisible = false"></span>
-                        </div>
-                        <div class="radio_group">
-                            <el-radio v-model="form.radio" label="1">精准搜索</el-radio>
-                            <el-radio v-model="form.radio" label="2">模糊搜索</el-radio>
-                        </div>
-                        <div class="content flex-start-start">
-                            <div class="left">
-                                <p class="label">请选择</p>
-                                <ul>
-                                    <li v-for="(item,index) in 10" :key="index" class="flex-between-center" :class="activeCrf==index+1?'active':''" @click="selectCrf(index+1)">
-                                        <p>CRF({{item}})</p>
-                                        <div class="icon">
-                                            <span>3</span>
-                                            <i class="el-icon-arrow-right"></i>   
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="right">
-                                <p class="label">选择搜索字段，至少选择1项，最多5项</p>
-                                <el-checkbox-group 
-                                    v-model="form.checked"
-                                    :min="0"
-                                    :max="5">
-                                    <el-checkbox v-for="(item,index) in checkedList" :label="item" :key="index">{{item}}</el-checkbox>
-                                </el-checkbox-group>
-                            </div>
-                        </div>
-                        <div class="footer flex-end-center">
-                            <p>最多展示500个指标</p>
-                            <el-button type="primary"  @click="">保 存</el-button>
-                            <el-button @click="popoverVisible = false">取 消</el-button>
-                        </div>
-                    </div>
-                </el-popover>
+                <formItemCom 
+                    ref="refFormItemCom"
+                    @sendAllCrfForm="handleAllFormItem" 
+                    @getDataList="getDataList(0,15)" 
+                    :allCrfForm="allCrfForm" 
+                    :confingData="confingData"
+                    :form='form'
+                    :activeCrf="activeCrf"
+                    @changeActiveCrf="changeActiveCrf">
+                </formItemCom>
                 <el-input v-model="form.keyword" class="search_input" placeholder="先选条件,再搜索" @keyup.enter.native="getDataList()" clearable></el-input>
             </div>
         </div>
@@ -124,34 +101,63 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table 
-                    ref="refTable"
+                    ref="refTable" fit
                     :data="dataList.content"
-                    v-loading="loading"
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)">
-                    <el-table-column type="selection"></el-table-column>
-                    <el-table-column label="入组序号" width="100">
-                        <template slot-scope="scope">
-                            1
-                        </template>
-                    </el-table-column>
-                    <!-- <el-table-column 
-                        :prop="column.name" 
+                    v-loading="tableLoading"
+                    @selection-change="handleSelectionChange"
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
+                    <el-table-column type="selection" align="center" width="40"></el-table-column>
+                    <el-table-column 
+                        v-for="(column,index) in dataList.header"
+                        :prop="column.prop" 
                         :label="column.label" 
                         sortable 
-                        v-for="column in conditionViewList"
-                        :key="column.name" 
-                        :width="column.name == 'GENDER_NAME'?'80px':'' || column.name == 'AGE'?'80px':'' "
-                        show-overflow-tooltip>
-                    </el-table-column> -->
-                    <el-table-column type="index" label="序号" width="90px"></el-table-column>
-                    <el-table-column prop="a" label="用户名"></el-table-column>
-                    <el-table-column prop="b" label="手机号"></el-table-column>
-                    <el-table-column prop="c" label="机构"></el-table-column>
-                    <el-table-column prop="d" label="科室"></el-table-column>
-                    <el-table-column prop="e" label="职称"></el-table-column>
+                        :key="index" 
+                        align="center"
+                        :min-width="column.label.length * 15 + 100"
+                        show-overflow-tooltip
+                        v-if="column.type !='report' && column.type != 'disable'">
+                    </el-table-column>
+                    <span v-for="(li,liIndex) in dataList.header" :key="'1_'+liIndex">
+                        <el-table-column v-if="li.type =='report'" :label="li.label" align="center">
+                            <span v-for="(point,poindex) in li.prop" :key="'2_'+poindex">
+                                <el-table-column 
+                                    :prop="point.prop" 
+                                    :label="point.label" 
+                                    :width="point.label.length * 15 + 20"
+                                    align="center">
+                                    <template slot-scope="scope">
+                                        <el-tooltip :disabled="handlePoint(scope.row.prop,point.prop).status == 0 || handlePoint(scope.row.prop,point.prop).status == 5" class="item" effect="dark" placement="top">
+                                            <div slot="content">
+                                                <p v-if="handlePoint(scope.row.prop,point.prop).status == 1 && handlePoint(scope.row.prop,point.prop).planDate">计划时间：{{handlePoint(scope.row.prop,point.prop).planDate}}</p>
+                                                <p v-else-if="handlePoint(scope.row.prop,point.prop) == 1 &&  !handlePoint(scope.row.prop,point.prop).planDate">计划时间：无</p>
+                                                <div v-else-if="parseInt(handlePoint(scope.row.prop,point.prop).status) >= 2">
+                                                    <p>随访员：{{handlePoint(scope.row.prop,point.prop).updator}}</p>
+                                                    <p>计划时间：{{handlePoint(scope.row.prop,point.prop).planDate}}</p>
+                                                    <p>时间：{{handlePoint(scope.row.prop,point.prop).updateTime}}</p>
+                                                    <p v-if="handlePoint(scope.row.prop,point.prop).note">备注：{{handlePoint(scope.row.prop,point.prop).note}}</p>
+                                                </div> 
+                                            </div>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 0"  type="text" icon="icon iconfont icondaifang"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 1"  type="text" icon="icon iconfont iconshifang"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 2"  type="text" icon="icon iconfont iconbuliangshijian"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 3"  type="text" icon="icon iconfont iconzhongzhi"></el-button>
+                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row.prop,point.prop),li.crfId)" v-if="handlePoint(scope.row.prop,point.prop).status == 4"  type="text" icon="icon iconfont iconwancheng1"></el-button>
+                                            <el-button v-if="handlePoint(scope.row.prop,point.prop).status == 5"  type="text" icon="el-icon-minus"></el-button> 
+                                        </el-tooltip>
+                                    </template>
+                                </el-table-column>
+                            </span>
+                        </el-table-column>
+                    </span>
+                    <el-table-column label="操作" width="60" align="center">
+                        <template slot-scope="scope">
+                            <el-button @click="" type="text" icon="el-icon-message"></el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
                 <!-- 分页 -->
-                <pagination :data="dataList" @change="getDataList"></pagination>    
+                <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
             </echarts-contain>
         </div>
     </div>
@@ -162,101 +168,234 @@ import echartsContain from 'components/packages/echartsContain/echartsContain';
 import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
 import searchCom from '../researchObject/components/search'
+import formItemCom from '../researchObject/components/formItem'
 export default {
     name: 'followUpManagement',
     mixins: [mixins],
     data () {
         return {
             groupList: [],
-            currentGrounpId: '',
-            crfList: [],
             activeCrf:'',
+            popoverSearchVisible: false,
             currentGrounpId: null,
+            allCrfForm: [],
+            confingData: {
+                title: "设置表格固定列",
+                visible: false,
+                defaultChecked: ['入组序号','首次录入时间','所在中心'],
+                dataList: []
+            },
+            stageList:[],
+            stagePointList:[],
             dataList: {
                 content: []
             },
-            popoverVisible: false,
-            checkedList:['出生日期1','出生日期2','出生日期3','出生日期4','出生日期5','出生日期6'],
             form: {
-                keyword: '',
-                time:[],
-                formName: '',
-                formState: '',
+                entryTime:[],
+                followUpTime:[],
                 patientState: '',
-                radio: 1,
-                checked: []
+                radio: '0',
+                stageId: '',
+                pointId: '',
+                pointStatus: '',
+                visitStatus: '',
+                keyword:''
             },
             multipleSelection: [],
-            loading: false,
+            tableLoading: false,
             paging: {
                 pageNo: 1,
                 pageSize: 10,
                 currentPageNo: '',
                 currentPageSize: '',
+            },
+            //编辑随访表单
+            editFollowUpData: {
+                formTitle:'',
+                content: []
             }
         }
     },
-    watch: {
-        
+    created() {
+
     },
     components: {
         echartsContain,
         pagination,
-        searchCom
+        searchCom,
+        formItemCom
     },
     methods: {
-        initPage () {
-            this.getDataList();
-        },
-        selectCrf(index) {
-            this.activeCrf = index;
+         //表格多选项
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
-            that.loading = true;
+            this.popoverSearchVisible = false;
+            that.tableLoading = true;
             that.paging.currentPageNo = pageNo;
             that.paging.currentPageSize = pageSize;
             that.dataList.content = [];
+            let entryTime = ['',''];
+            if(this.form.entryTime && this.form.entryTime.length != 0) {
+                entryTime = this.form.entryTime;
+            }
+            let followUpTime = ['',''];
+            if(this.form.followUpTime && this.form.followUpTime.length != 0) {
+                followUpTime = this.form.followUpTime;
+            }
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
-                args: {
-                    
-                }
+                subjectId: this.$store.state.user.researchID,
+                groupId: this.currentGrounpId,
+                enterStartDate: entryTime[0],
+                enterEndDate: entryTime[1],
+                visitStartDate: followUpTime[0],
+                visitEndDate: followUpTime[1],
+                stageId: this.form.stageId==''?undefined:this.form.stageId,
+                pointId: this.form.pointId==''?undefined:this.form.pointId,
+                pointStatus: this.form.pointStatus==''?undefined:this.form.pointStatus,
+                visitStatus: this.form.visitStatus==''?undefined:this.form.visitStatus,
+                searchType: parseInt(this.form.radio),
+                content: this.form.keyword
             };
             try {
-                // let res = await that.$http.RRMgetDataList(formData);
-                // if (res.code == '0') {
-                //     let obj = {};
-                //     obj.content = res.data.args;
-                //     obj.pageNo = pageNo;
-                //     obj.pageSize = pageSize;
-                //     obj.totalCount = parseInt(res.data.totalElements);
-                //     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
-                //     that.dataList = obj;
-                // }else {
-                //     this.$mes('error', res.msg);
-                // }
-                that.loading = false;
+                let res = await that.$http.followUpManagementTable(formData);
+                if (res.code == '0') {
+                    let obj = {
+                        content: res.data.body,
+                        header: res.data.header
+                    };
+                    that.dataList = obj;
+                }else {
+                    that.dataList = {
+                        content: [],
+                        header: []
+                    }
+                }
+                that.tableLoading = false;
             } catch (err) {
-                that.loading = false;
+                that.tableLoading = false;
                 console.log(err)
             }
+        },
+        //获取阶段
+        async getStageList() {
+            let params = {
+                id: this.$store.state.user.researchID
+            }
+            try {
+                let res = await this.$http.followUpPlanStageList(params);
+                if (res.code == '0') {
+                    res.data.forEach(item=>{
+                        if(item.groupId == this.currentGrounpId) {
+                            this.stageList = item.stages;
+                        }
+                    })
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //获取阶段下的随访点
+        async getStagePointList(stageId) {
+            let params = {
+                stageId: stageId
+            }
+            try {
+                let res = await this.$http.followUpPlanPlanPoints(params);
+                if (res.code == '0') {
+                    this.stagePointList = res.data;
+                }else {
+                    this.stagePointList = [];
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //改变阶段下拉列表
+        changeStage(val) {
+            if(!val) {
+                this.form.pointId = '';
+                return;
+            }
+            this.getStagePointList(val)
         },
         //获取分组列表
         getGroupList(data) {
             this.groupList = data.groupList;
             this.currentGrounpId = data.currentGrounpId;
-        },
-        //获取表单列表
-        getCrfList(data) {
-            this.crfList = data.crfList;
-            this.activeCrf = data.activeCrf;
+            this.getStageList()
         },
         //点击分组
         handleSelectGroup(data) {
             this.currentGrounpId = data;
             this.getDataList(0,15);
+        },
+        //获取全部crf表单列表和列表下的所有指标
+        handleAllFormItem(data) {
+            this.allCrfForm = data;
+            this.confingData.dataList = data;
+        },
+        //修改默认crf
+        changeActiveCrf(data) {
+            this.activeCrf = data;
+        },
+        onReset() {
+            this.form = {
+                entryTime:[],
+                followUpTime:[],
+                patientState: '',
+                radio: '0',
+                stageId: '',
+                pointId: '',
+                pointStatus: '',
+                visitStatus: '',
+                keyword:''
+            }
+        },
+        //打开表单填写页面
+        toReportFill(row,point,crfId) {
+            console.log(row)
+            console.log(point)
+            console.log(crfId)
+            let group = this.groupList.find(item=>{
+                return item.subjectGroupId == this.currentGrounpId;
+            })
+            let urlParameter={
+                cacheData: false,
+                formId: crfId || "",
+                reportId: point.reportId || '',
+                groupId: this.currentGrounpId || '',
+                groupName: group.subjectGroupName || '',
+                diseaseId: row.diseaseId || "",
+                patientName: row.createTime +' ---  ',
+                patientId: row.patientId || "",
+                identify: row.identify || "",
+                from: "followUpManagement",
+                diseaseName: row.diseaseName || "",
+                subjectName: row.subjectName || "",
+                title: point.name,
+                isModify:"displayShow",
+                status: point.status,
+                subjectId: this.$store.state.user.researchID,
+                updateTime: point.updateTime || '',
+                updator: point.updator || '',
+            }
+            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+            window.open('./subjectForm.html');
+        },
+        //表单编辑成功回调
+        successAdd() {
+            this.getDataList(0,15);
+        },
+        handlePoint(arr,id) {
+            let obj = arr.find(item=>{
+                return item.id = id;
+            })
+            return obj;
         }
     }
 };

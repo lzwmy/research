@@ -50,7 +50,7 @@
 <script>
 export default {
     name: 'searchCom',
-    props:['allCrfForm','confingData','form'],
+    props:['allCrfForm','confingData','form','activeCrf'],
     data () {
         return {
             loading: false,
@@ -59,7 +59,15 @@ export default {
             selectFormItem: [],
             //回显指标
             previewFormItem:[],
-            activeCrf: ''
+            maxItem: 10
+        }
+    },
+    watch: {
+        popoverFomeItemVisible: function(newVal) {
+            this.getAllFormItem()
+            .then(()=>{
+                this.handlePreviewFormItem()
+            })
         }
     },
     created() {
@@ -71,6 +79,7 @@ export default {
     methods: {
         //crf表单列表和列表下的所有指标
         async getAllFormItem() {
+            this.loading = true;
             let params = {
                 subjectInfoId: this.$store.state.user.researchID
             }
@@ -83,7 +92,9 @@ export default {
                             li.checked = false;
                         })
                     })
-                    // this.allCrfForm = res.data;
+                    if(res.data.length) {
+                        this.$emit('changeActiveCrf',res.data[0].crfId)
+                    }
                     this.$emit('sendAllCrfForm',res.data)
                 }
             } catch (err) {
@@ -92,7 +103,6 @@ export default {
         },
         //回显crf表单列表下的已选指标
         async handlePreviewFormItem() {
-            this.loading = true;
             let params = {
                 subjectInfoId: this.$store.state.user.researchID
             }
@@ -121,7 +131,7 @@ export default {
         },
         //搜索表格配置选中表单
         selectCrf(id) {
-            this.activeCrf = id;
+            this.$emit('changeActiveCrf',id)
         },
         //多选框改变
         checkboxChange(li) {
@@ -200,7 +210,7 @@ export default {
                 console.log(err)
                 this.loading = false;
             }
-        },
+        }
     }
 };
 </script>

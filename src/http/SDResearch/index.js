@@ -108,8 +108,14 @@ const url = {
   queryFilterReportList:"/report/bak/reportList.do",
   // 获取报告 回显信息
   queryReportDisplayInfo:"/report/bak/findReport",
+  // 获取报告 回显信息(科研项目)
+  querySubjectReportDisplayInfo:"/subject/report/preview.do",
+  // 获取表单模版 回显信息(科研项目)
+  querySubjectCrfDisplayInfo:"/subject/crf/preview.do",
   // 报告 保存 数据
   reportDataSave:"/report/bak/save.do",
+  // 报告 保存 数据(科研项目)
+  reportDataSaveSubject:"/subject/report/save.do",
 
   /**
    * 提醒
@@ -279,8 +285,17 @@ const http = {
   queryReportDisplayInfo(params) {
     return vm.$get(url.queryReportDisplayInfo,params,true);
   },
+  querySubjectReportDisplayInfo(params) {
+    return vm.$get(url.querySubjectReportDisplayInfo,params,true);
+  },
+  querySubjectCrfDisplayInfo(params) {
+    return vm.$post(url.querySubjectCrfDisplayInfo,params,true);
+  },
   reportDataSave(params) {
     return vm.$post(url.reportDataSave,params,false);
+  },
+  reportDataSaveSubject(params) {
+    return vm.$post(url.reportDataSaveSubject,params,false);
   },
 };
 

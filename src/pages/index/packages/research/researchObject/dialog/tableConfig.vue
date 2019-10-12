@@ -42,7 +42,7 @@ export default {
     props: ['dataInfo'],
     data () {
         return {
-            defaultCheckedList: ['入组序号','首次入组时间','所在中心'],
+            defaultCheckedList: ['入组序号','首次录入时间','所在中心'],
         }
     },
     methods: {

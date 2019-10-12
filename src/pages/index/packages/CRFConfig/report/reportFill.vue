@@ -9,7 +9,6 @@
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
             <el-button @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
-            <el-button @click="commitReportData" v-if="urlParameter.from=='researchObject'" type="primary" style="float:right;margin-right: 5px" :disabled="commitLoading">提 交</el-button>
             <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
           </div>
           <div ref="top" class="crf-step-content" id="mainContent">
@@ -214,8 +213,8 @@ export default {
       try {
         // let params = { groupId: this.groupId, patientId: this.patientId };
         let params = { reportId: this.reportId };
-        let report = await this.$http.reportFindReport(this.$format(params));
-        // let report = await this.$http.queryReportDisplayInfo(this.$format(params));
+        // let report = await this.$http.reportFindReport(this.$format(params));
+        let report = await this.$http.queryReportDisplayInfo(this.$format(params));
         console.log('report data',report)
         if (report.data && report.code == "0") {
           this.report = report.data;
@@ -289,45 +288,7 @@ export default {
         this.mainLoading = false;
       }
     },
-    async commitReportData() {
-      try {
-        this.commitLoading = true;
-        if (!this.report.id) {
-          this.report.groupId = this.groupId || '';
-          this.report.crfId = this.formId;
-          this.report.patientId = this.patientId || '';
-
-          this.report.diseaseId = this.urlParameter.diseaseId || '';
-          this.report.diseaseName = this.urlParameter.diseaseName || '';
-          this.report.subjectId = this.urlParameter.subjectId || '';
-          this.report.subjectName = this.urlParameter.subjectName || '';
-          this.report.groupName = this.urlParameter.groupName || '';
-        }
-        let result = await this.$http.researchObjectPreviewReportCommit(this.report);
-        if (result && result.code == "0") {
-          this.$notice("提交成功");
-          this.closePage();
-          // // 保存成功后，强制删除当前的crf填写页面的路由
-          // this.allRoute.forEach((item, index) => {
-          //   if (item.route.name === this.$route.name) {
-          //     this.$store.commit({
-          //       type: "forceReduceRoute",
-          //       paras: { index: index, vueParent: this }
-          //     });
-          //   }
-          // });
-          this.$nextTick(() => {
-            if (this.urlParameter.from === "researchObject") {
-              this.$router.push({path: this.urlParameter.from});
-            }
-          });
-        }
-        this.commitLoading = false;
-      } catch (error) {
-        console.log(error);
-        this.commitLoading = false;
-      }
-    },
+   
     //根据英文名获取中文名
     getTitle(title){
       let option=this.referView.subOptions.find(e=>e.name==title);
