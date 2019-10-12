@@ -92,8 +92,8 @@
         </el-col>
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <!--v-for="(stagesItem,stagesIndex) in item.stages" :key="stagesIndex"-->
-          <div class="wrap_box">
-            <p class="wrap_label" style="position: relative">
+          <div class="wrap_box" v-if="item.stages.length>0">
+            <p class="wrap_label" style="position: relative" >
               {{item.stages[item.stagesIndex].stageName}}
               <el-popover  placement="bottom"
                           popper-class="more_popper"
@@ -108,7 +108,7 @@
               </el-popover>
             </p>
             <!--<p class="charts_y_title">患者数</p>-->
-            <div v-loading="item.stagesLoad">
+            <div v-loading="item.stagesLoad" v-if="item.stages.length>0">
               <charts v-if="JSON.stringify(item.stagesChart)!=='{}'" :option="item.stagesChart"></charts>
             </div>
           </div>
