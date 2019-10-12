@@ -597,6 +597,13 @@
                     data.data[i].groupLoad = false;
                     chartOptions.title.text = res.data.chartName;
                     chartOptions.xAxis.categories = res.data.xaxis;
+                    for(let k=0;k<res.data.series.length;k++) {
+                      if(res.data.series[k].name=='已完成') {
+                        res.data.series[k].color = 'rgba(90, 216, 166, 1)';
+                      }else{
+                        res.data.series[k].color = 'rgba(67, 154, 255, 1)';
+                      }
+                    }
                     chartOptions.series = res.data.series;
                     data.data[i].groupChart = chartOptions;
                   }
@@ -648,7 +655,6 @@
         };
         try {
           let data = await that.$http.subjectProgressTaskTotal(formData);
-          console.log(data);
           if (data.code === 0) {
             this.taskList = data.data;
           }

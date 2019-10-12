@@ -200,7 +200,7 @@
           let that = this;
           let formData = {
             "modelId": that.$route.query.modelId,
-            "privacy": this.privacy
+            "privacy": that.privacy
           };
           try{
             // let data = await that.$http.modelExportTable(formData);

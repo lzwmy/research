@@ -111,7 +111,7 @@ const http = {
       return vm.$post(url.modelDeleteRequest,params,true);
   },
   modelExportExcelNew(params) {
-      return vm.$post(url.modelExportExcelNew,params,false);
+      return vm.$postDown(url.modelExportExcelNew,params,false);
   },
   modelRealTimeSearchNew(params) {
       return vm.$post(url.modelRealTimeSearchNew,params,false);
