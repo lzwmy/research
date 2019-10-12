@@ -153,4 +153,7 @@ export default {
 .DATE_TIME .DATE_TIME_box .el-input .el-input__inner {
   width: 188px;
 }
+  .DATE_TIME .el-date-editor.el-input{
+    width: 188px;
+  }
 </style>

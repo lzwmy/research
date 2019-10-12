@@ -366,7 +366,7 @@
             text: '柱状图'
           },
           legend: {
-            enabled: false
+            enabled: true
           },
           xAxis: {
             categories: ['苹果', '橘子', '梨', '葡萄', '香蕉'],
@@ -536,7 +536,7 @@
             text: '柱状图'
           },
           legend: {
-            enabled: false
+            enabled: true
           },
           xAxis: {
             categories: ['苹果', '橘子', '梨', '葡萄', '香蕉'],
@@ -597,6 +597,13 @@
                     data.data[i].groupLoad = false;
                     chartOptions.title.text = res.data.chartName;
                     chartOptions.xAxis.categories = res.data.xaxis;
+                    for(let k=0;k<res.data.series.length;k++) {
+                      if(res.data.series[k].name=='已完成') {
+                        res.data.series[k].color = 'rgba(90, 216, 166, 1)';
+                      }else{
+                        res.data.series[k].color = 'rgba(67, 154, 255, 1)';
+                      }
+                    }
                     chartOptions.series = res.data.series;
                     data.data[i].groupChart = chartOptions;
                   }
@@ -614,6 +621,19 @@
                       data.data[i].stagesLoad = false;
                       chartOptions.title.text = res.data.chartName;
                       chartOptions.xAxis.categories = res.data.xaxis;
+                      for(let u=0;u<res.data.series.length;u++) {
+                        if(res.data.series[u].name == '未开始') {
+                          res.data.series[u].color = 'rgba(177, 182, 205, 1)';
+                        }else if(res.data.series[u].name == '进行中') {
+                          res.data.series[u].color = 'rgba(91, 143, 249, 0.85)';
+                        }else if(res.data.series[u].name == '已终止') {
+                          res.data.series[u].color = 'rgba(255,95,92, 1)';
+                        }else if(res.data.series[u].name == '已失访') {
+                          res.data.series[u].color = 'rgba(248,164,97, 1)';
+                        }else if(res.data.series[u].name == '已完成') {
+                          res.data.series[u].color = 'rgba(90, 216, 166, 0.85)';
+                        }
+                      }
                       chartOptions.series = res.data.series;
                       data.data[i].stagesChart = chartOptions;
                     }
@@ -648,7 +668,6 @@
         };
         try {
           let data = await that.$http.subjectProgressTaskTotal(formData);
-          console.log(data);
           if (data.code === 0) {
             this.taskList = data.data;
           }

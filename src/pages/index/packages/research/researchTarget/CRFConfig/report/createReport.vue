@@ -487,7 +487,7 @@
         }
       },
       mounted() {
-        this.queryFormId();
+        // this.queryFormId();
         if(this.formOptions.researchType === 'researchTarget') {
           this.init();
         }

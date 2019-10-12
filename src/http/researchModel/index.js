@@ -43,6 +43,10 @@ const url = {
   modelModifySaveNew:"/report/bak/model/edit.do",
   //删除模型
   modelDeleteRequest:"/report/bak/model/delete.do",
+  //导出动态表Excel
+  modelExportExcelNew:"/report/bak/model/export/table.do",
+  //即时显示科研建模生成的患者人数和报告数
+  modelRealTimeSearchNew:"/report/bak/model/display/sum.do"
 };
 
 const http = {
@@ -105,6 +109,12 @@ const http = {
   },
   modelDeleteRequest(params) {
       return vm.$post(url.modelDeleteRequest,params,true);
+  },
+  modelExportExcelNew(params) {
+      return vm.$postDown(url.modelExportExcelNew,params,false);
+  },
+  modelRealTimeSearchNew(params) {
+      return vm.$post(url.modelRealTimeSearchNew,params,false);
   }
 };
 

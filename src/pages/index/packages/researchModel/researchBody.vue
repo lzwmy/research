@@ -98,7 +98,8 @@
                 "nodeList": [],
               }
             ,
-            "reportName": ""
+            "reportName": "",
+            "crfId":""
           },
           //实时查询字段
           patientCount:0, //患者数量
@@ -174,6 +175,7 @@
                   let copyData = Object.assign({},JSON.parse(JSON.stringify(this.searchMathQuery)));
                   let ItemTree = objectJoin(array);
                   copyData.reportName = array[0].labelName;
+                  copyData.crfId = array[0].id;
                   copyData.query.nodeList.push(ItemTree);
                   this.$store.commit('STATE_GRAY',copyData.query);
                   this.searchList.push(copyData);
@@ -302,6 +304,7 @@
                   copyData.query.nodeList.push(ItemTree)
                 }*/
                 copyData.reportName = result[0].labelName;
+                copyData.crfId = result[0].id;
                 this.$store.commit('STATE_GRAY',copyData.query);
                 this.searchList.push(copyData)
               }else{
@@ -333,7 +336,8 @@
           };
           // console.log(formData);
           try {
-            let data  = await this.$http.modelDisplaySum(formData);
+            // let data  = await this.$http.modelDisplaySum(formData);
+            let data  = await this.$http.modelRealTimeSearchNew(formData);
             if(data.code == 0) {
               that.patientCount = data.data.patientCount;
               that.crfSum = data.data.crfSum;
@@ -464,5 +468,8 @@
 <style>
   body.theme-blue .el-tree .el-tree-node{
     margin-bottom: 0;
+  }
+  body .cloud-container .el-table{
+    padding: 0;
   }
 </style>

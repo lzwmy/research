@@ -53,7 +53,7 @@
         </div>
         <!--动态表格-->
         <div class="menu_table_box">
-          <el-table :data="tableData" stripe @row-dblclick="researchReady"  style="width: 100%;">
+          <el-table :data="tableData" stripe @row-dblclick="researchReady"  style="width: 100%;overflow: auto;">
             <el-table-column v-for="(item, index) in tableLabel"
                              :key="index"
                              :prop="item.prop"
@@ -200,15 +200,17 @@
           let that = this;
           let formData = {
             "modelId": that.$route.query.modelId,
-            "privacy": this.privacy
+            "privacy": that.privacy
           };
           try{
-            let data = await that.$http.modelExportTable(formData);
+            // let data = await that.$http.modelExportTable(formData);
+            let data = await that.$http.modelExportExcelNew(formData);
             let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
             let dateTitle = utils.formateDate(new Date().getTime());
             // console.log(dateTitle)
             // let fileNmae = data.headers['content-disposition'].split('filename=')[1];
             // that.$download(fileNmae, blob);
+            console.log(blob);
             that.$download(dateTitle+'.xlsx', blob);
           }catch (error) {
             console.log(error)
