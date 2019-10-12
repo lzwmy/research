@@ -191,7 +191,6 @@
         };
         try {
           let data = await that.$http.queryResearchForm(formData);
-          console.log(data)
           if(data.code === 0) {
             that.editableTabs = data.data;
           }
