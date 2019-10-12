@@ -75,6 +75,11 @@
     watch: {},
     methods: {
       handleTabsEdit(targetName,action) {
+        this.researchFormSave(this.editableTabs[this.tabIndex]).then((data)=>{
+          if(data.code === 0) {
+            this.researchRelationSave()
+          }
+        });
         this.displayState = false;
         let newTabName = ++this.editableTabs.length + '';
         this.queryFormId().then((data)=>{
