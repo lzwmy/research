@@ -621,6 +621,19 @@
                       data.data[i].stagesLoad = false;
                       chartOptions.title.text = res.data.chartName;
                       chartOptions.xAxis.categories = res.data.xaxis;
+                      for(let u=0;u<res.data.series.length;u++) {
+                        if(res.data.series[u].name == '未开始') {
+                          res.data.series[u].color = 'rgba(177, 182, 205, 1)';
+                        }else if(res.data.series[u].name == '进行中') {
+                          res.data.series[u].color = 'rgba(91, 143, 249, 0.85)';
+                        }else if(res.data.series[u].name == '已终止') {
+                          res.data.series[u].color = 'rgba(255,95,92, 1)';
+                        }else if(res.data.series[u].name == '已失访') {
+                          res.data.series[u].color = 'rgba(248,164,97, 1)';
+                        }else if(res.data.series[u].name == '已完成') {
+                          res.data.series[u].color = 'rgba(90, 216, 166, 0.85)';
+                        }
+                      }
                       chartOptions.series = res.data.series;
                       data.data[i].stagesChart = chartOptions;
                     }
