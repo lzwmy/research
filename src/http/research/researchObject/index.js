@@ -13,14 +13,18 @@ const url = {
     allFormItem: '/subject/info/allFormItem.do',
     //新建指标
     addFormItem: '/subject/info/add/formItem.do',
-    //编辑指标
-    editFormItem: '/subject/info/edit/formItem.do',
-    //回显crf表单列表下的已选指标
-    previewFormItem: '/subject/info/preview/formItem.do',
+    //搜索栏编辑指标
+    editFormItem: '/subject/info/edit/search.do',
+    //回显搜索栏下的已选指标
+    previewFormItem: '/subject/info/preview/search.do',
+    //回显动态表格设置的已选指标
+    tablePreviewFormItem: '/subject/info/preview/formItem.do',
+    //表格设置编辑指标
+    tableEditFormItem: '/subject/info/edit/formItem.do',
     //提交报告
     reportCommit: '/subject/report/commit.do',
     //添加研究对象
-    addresearch: '/subject/patient/add/research.do'
+    addresearch: '/subject/patient/add/research.do',
 };
 
 const http = {
@@ -43,13 +47,19 @@ const http = {
         return vm.$post(url.editFormItem, params, false);
     },
     researchObjectPreviewFormItem (params) {
-        return vm.$post(url.previewFormItem, params, true);
+        return vm.$get(url.previewFormItem, params, true);
+    },
+    researchObjectTablePreviewFormItem (params) {
+        return vm.$post(url.tablePreviewFormItem, params, true);
     },
     researchObjectPreviewReportCommit (params) {
         return vm.$post(url.reportCommit, params, false);
     },
     researchObjectPreviewAddresearch (params) {
         return vm.$post(url.addresearch, params, false);
+    },
+    researchObjectPreviewTableEditFormItem (params) {
+        return vm.$post(url.tableEditFormItem, params, false);
     }
 };
 

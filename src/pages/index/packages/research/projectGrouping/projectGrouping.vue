@@ -9,7 +9,7 @@
         <div class="box">
             <div class="aside">
                 <p class="aside_title">项目分组</p>
-                <ul v-loading="groupLoading" id="groupUl">
+                <ul id="groupUl">
                     <li 
                         v-for="(item, index) in groupList" 
                         class="aside_li" 
@@ -31,7 +31,7 @@
                 </ul>
                 <el-button class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="showAddDialog('添加分组')">添加分组</el-button>
             </div>
-            <div class="content">
+            <div class="content" v-loading="groupLoading">
                 <h2>纳排规则说明</h2>
                 <el-input v-for="(item,index) in groupList" :key="index" v-show="index==activeGroup" type="textarea" :rows="20" v-model="item.description" placeholder="您可以输入纳排说明,如：1、分期为||、 |||期(AJCC 7th edition); 2、未行抗肿瘤治疗的初次治疗患者; 3、无其它恶性肿瘤病史; 4、男性或女性，年龄18-70岁" ></el-input>
             </div>

@@ -109,7 +109,7 @@ export default {
             try {
                 let res = await this.$http.researchObjectPreviewFormItem(params);
                 if (res.code == '0') {
-                    this.previewFormItem = res.data;
+                    this.previewFormItem = res.data.searchConditionList;
                     this.previewFormItem.forEach(item =>{
                         if(item.crfId){
                             this.allCrfForm.forEach(li => {
@@ -162,22 +162,12 @@ export default {
         //新建/编辑crf表单列表下的已选指标
         async handleFormItem() {
             let list = [];
-            this.confingData.defaultChecked.forEach(li=>{
-                let obj = {
-                    subjectInfoId: this.$store.state.user.researchID,
-                    path: li,
-                    crfName: 'default'
-                }
-                list.push(obj)
-            })
             this.allCrfForm.forEach(item=>{
                 item.formItemRspList.forEach(li=>{
                     if(li.checked) {
                         let obj = {
-                            formItemName: li.formItemName,
-                            jsonData: li.jsonData,
+                            subjectInfoId: this.$store.state.user.researchID,
                             path: li.controlName,
-                            crfName: item.crfName,
                             crfId: item.crfId
                         }
                         list.push(obj)
@@ -185,11 +175,11 @@ export default {
                 })
             })
             let params = {
-                subjectInfoId: this.$store.state.user.researchID,
-                list: list
+                searchConditionList: list
             }
             this.loading = true;
             let res;
+            console.log(params)
             try {
                 if(list.length) {
                     res = await this.$http.researchObjectEditFormItem(params);

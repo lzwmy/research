@@ -107,7 +107,7 @@
                         sortable 
                         :key="column.prop" 
                         align="center"
-                        :min-width="column.label.length * 15 + 100"
+                        :min-width="column.label.length * 14 + 50"
                         v-if="column.type !='report'"
                         show-overflow-tooltip>
                     </el-table-column>
@@ -117,7 +117,7 @@
                                 v-if="li.type=='report'"
                                 :prop="li.prop" 
                                 :label="li.label" 
-                                :width="li.label.length * 15 + 20"
+                                :width="li.label.length * 14 + 20"
                                 align="center"
                                 :key="li.prop">
                                 <template slot-scope="scope">
@@ -144,7 +144,7 @@
         <!-- 导入数据弹窗 -->
         <import-dialog :dataInfo="importData"></import-dialog>
         <!-- 动态列配置弹窗 -->
-        <table-config @saveConfig="handleSaveConfig" :dataInfo="confingData"></table-config>
+        <table-config ref="refTableConfig" @saveConfig="handleSaveConfig" :dataInfo="confingData"></table-config>
 
         <!-- 添加研究对象 -->
         <dynamicForm ref="refDynamicForm" :dialog="dialogAddObject" :dataInfo="addObjectData" :groupList="groupList" @successAdd="successAdd"></dynamicForm>
@@ -181,7 +181,6 @@ export default {
             confingData: {
                 title: "设置表格固定列",
                 visible: false,
-                defaultChecked: ['入组序号','首次录入时间','所在中心'],
                 dataList: []
             },
             //回显指标
@@ -218,14 +217,15 @@ export default {
             addObjectData: {
                 formTitle:'基本信息',
                 content: []
-            }
+            },
+            hidden: ''
         }
     },
     mounted () {
         this.addEventListenervisibilityChange();
     },
-    destoryed() {
-        document.removeEventListener(this.visibilityChange)
+    beforeDestroy(){
+        document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
     },
     components: {
         echartsContain,
@@ -239,26 +239,27 @@ export default {
     methods: {
         //切换页面刷新操作
         addEventListenervisibilityChange() {
-            let hidden = "";
+            this.hidden = "";
             this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";
             } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
+                this.hidden = "mozHidden";
                 this.visibilityChange = "mozvisibilitychange";
             } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                this.hidden = "msHidden";
                 this.visibilityChange = "msvisibilitychange";
             } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                this.hidden = "webkitHidden";
                 this.visibilityChange = "webkitvisibilitychange";
             }
-            document.addEventListener(this.visibilityChange,()=>{
-                if(!document[hidden]) {
-                    this.getDataList(0,15);
-                }
-            }, false);
+            document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
+        },
+        visibilityChangeHandle() {
+            if(!document[this.hidden]) {
+                this.getDataList(0,15);
+            }
         },
         //表格多选项
         handleSelectionChange(val) {
@@ -332,11 +333,10 @@ export default {
         },
         showConfigDialog() {
             this.confingData.visible = true;
+            this.$refs.refTableConfig.initFomeItem();
         },
         handleSaveConfig(data) {
-            this.$refs.refFormItemCom.handleFormItem();
-            this.$refs.refFormItemCom.checkboxChange();
-            this.confingData.visible = false;
+            this.getDataList(0,15);
         },
         //打开表单填写页面
         toReportFill(data,key,crfName,type) {

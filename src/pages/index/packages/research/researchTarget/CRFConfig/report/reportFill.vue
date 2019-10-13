@@ -38,7 +38,7 @@
             <ul v-if="urlParameter.from=='followUpManagement'" class="recordList" v-loading="recordLoading">
               <h3>提交记录</h3>
               <li v-for="(item,index) in recordList" :key="index">
-                <p>{{item.createTime}} 【{{item.creator}}】修改了随访表单</p>
+                <p>{{item.createTime}} {{item.content}}</p>
               </li>
             </ul>
           </div>
@@ -235,7 +235,9 @@ export default {
       this.$store.commit("CRF_CHANGE_CONTROL", {});
       this.getForms();
       this.getReportData();
-      this.getRecordLlist();
+      if(this.urlParameter.from=='followUpManagement') {
+        this.getRecordLlist();
+      }
     },
     //返回上一级
     backingOut() {

@@ -114,7 +114,7 @@
                         sortable 
                         :key="index" 
                         align="center"
-                        :min-width="column.label.length * 15 + 100"
+                        :min-width="column.label.length * 15 + 50"
                         show-overflow-tooltip
                         v-if="column.type !='report' && column.type != 'disable'">
                     </el-table-column>
@@ -216,14 +216,15 @@ export default {
             editFollowUpData: {
                 formTitle:'',
                 content: []
-            }
+            },
+            hidden:''
         }
     },
     mounted () {
         this.addEventListenervisibilityChange();
     },
-    destoryed() {
-        document.removeEventListener(this.visibilityChange)
+    beforeDestroy(){
+        document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
     },
     components: {
         echartsContain,
@@ -234,26 +235,27 @@ export default {
     methods: {
         //切换页面刷新操作
         addEventListenervisibilityChange() {
-            let hidden = "";
+            this.hidden = "";
             this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";
             } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
+                this.hidden = "mozHidden";
                 this.visibilityChange = "mozvisibilitychange";
             } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                this.hidden = "msHidden";
                 this.visibilityChange = "msvisibilitychange";
             } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                this.hidden = "webkitHidden";
                 this.visibilityChange = "webkitvisibilitychange";
             }
-            document.addEventListener(this.visibilityChange,()=>{
-                if(!document[hidden]) {
-                    this.getDataList(0,15);
-                }
-            }, false);
+            document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
+        },
+        visibilityChangeHandle() {
+            if(!document[this.hidden]) {
+                this.getDataList(0,15);
+            }
         },
          //表格多选项
         handleSelectionChange(val) {

@@ -50,7 +50,7 @@
                             </el-form-item>
                             <el-form-item label="随访频次">
                                 <el-radio-group :disabled="configExists" v-model="form.frequencyType">
-                                    <el-radio label="1">不限制频率</el-radio>
+                                    <el-radio label="1" :disabled="true">不限制频率</el-radio>
                                     <el-radio label="2">均匀随访</el-radio>
                                     <el-radio label="3">非均匀随访</el-radio>
                                 </el-radio-group>
@@ -194,7 +194,7 @@ export default {
                     frequencyParam:'',
                     frequencyParam2:'day',
                 },
-                frequencyType: '1',
+                frequencyType: '2',
                 startType: '1',
                 startTimeParam: {
                     startParam:'',
@@ -241,7 +241,7 @@ export default {
             options:{
                 researchType:"followUpPlan",
                 backStatus:"2",
-                saveStatus: '1',
+                saveStatus: '2',
                 title:"新增CRF表单"
             }
         }
@@ -506,7 +506,7 @@ export default {
                     frequencyParam:'',
                     frequencyParam2:'day'
                 },
-                frequencyType: '1',
+                frequencyType: '2',
                 startType: '1',
                 startTimeParam: {
                     startParam:'',
@@ -814,10 +814,11 @@ export default {
                 }
                 .el-slider {
                     width: 600px;
+                    
                     .el-slider__button {
                         border-color: #1BBAE1;
                     }
-                    .el-slider__bar {
+                    .el-slider__runway:not(.disabled) .el-slider__bar {
                         background-color: #1BBAE1;
                     }
                     .el-slider__marks-text:last-child {
