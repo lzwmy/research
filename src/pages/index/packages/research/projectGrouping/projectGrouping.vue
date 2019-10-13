@@ -136,14 +136,14 @@ export default {
                             id: this.dialgoForm.id,
                             groupName: this.dialgoForm.groupName,
                             description: '',
-                            subjectInfoId: this.$store.state.user.researchID
+                            subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                         }
                         res = await that.$http.projectGroupingEdit(params);
                     }else{
                         params = {
                             groupName: this.dialgoForm.groupName,
                             description: '',
-                            subjectInfoId: this.$store.state.user.researchID
+                            subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                         }
                         res = await that.$http.projectGroupingcreate(params);
                     }
@@ -165,7 +165,7 @@ export default {
         async getGroupList() {
             this.groupLoading = true;
             let params = {
-                subjectInfoId: this.$store.state.user.researchID
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId
             }
             try {
                 let res = await this.$http.projectGroupingGroup(params);
@@ -183,7 +183,7 @@ export default {
         async onSaveGroup() {
             this.groupLoading = true;
             this.groupList.forEach(item=>{
-                item.subjectInfoId =  this.$store.state.user.researchID;
+                item.subjectInfoId =  this.$store.state.user.researchInfo.subjectInfoId
             })
             let params = { groupList: this.groupList }
             try {

@@ -35,7 +35,7 @@ export default {
         async getGroupList() {
             this.groupLoading = true;
             let params = {
-                subjectInfoId: this.$store.state.user.researchID
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
             }
             try {
                 let res = await this.$http.researchObjectGroupList(params);
@@ -62,7 +62,7 @@ export default {
         //获取crf表单列表
         async getCrfList() {
             let params = {
-                subjectInfoId: this.$store.state.user.researchID
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId
             }
             try {
                 let res = await this.$http.researchObjectCrfList(params);

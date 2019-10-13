@@ -25,6 +25,8 @@ const url = {
     reportCommit: '/subject/report/commit.do',
     //添加研究对象
     addresearch: '/subject/patient/add/research.do',
+    //删除研究对象
+    deleteObject: '/subject/patient/delete/patient.do',
 };
 
 const http = {
@@ -60,6 +62,9 @@ const http = {
     },
     researchObjectPreviewTableEditFormItem (params) {
         return vm.$post(url.tableEditFormItem, params, false);
+    },
+    researchObjectPreviewTableDeleteObject (params) {
+        return vm.$post(url.deleteObject, params, false);
     }
 };
 

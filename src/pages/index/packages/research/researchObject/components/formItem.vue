@@ -81,7 +81,7 @@ export default {
         async getAllFormItem() {
             this.loading = true;
             let params = {
-                subjectInfoId: this.$store.state.user.researchID
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId
             }
             try {
                 let res = await this.$http.researchObjectAllFormItem(params);
@@ -104,7 +104,7 @@ export default {
         //回显crf表单列表下的已选指标
         async handlePreviewFormItem() {
             let params = {
-                subjectInfoId: this.$store.state.user.researchID
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId
             }
             try {
                 let res = await this.$http.researchObjectPreviewFormItem(params);
@@ -166,7 +166,7 @@ export default {
                 item.formItemRspList.forEach(li=>{
                     if(li.checked) {
                         let obj = {
-                            subjectInfoId: this.$store.state.user.researchID,
+                            subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                             path: li.controlName,
                             crfId: item.crfId
                         }

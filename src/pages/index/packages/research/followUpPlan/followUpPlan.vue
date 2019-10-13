@@ -466,7 +466,7 @@ export default {
         //获取crf表单列表
         async getCrfList() {
             let params = {
-                subjectInfoId: this.$store.state.user.researchID
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
             }
             try {
                 let res = await this.$http.researchObjectCrfList(params);
@@ -520,7 +520,7 @@ export default {
         async getGroupList() {
             this.groupLoading = true;
             let params = {
-                id: this.$store.state.user.researchID
+                id: this.$store.state.user.researchInfo.subjectInfoId,
             }
             try {
                 let res = await this.$http.followUpPlanStageList(params);
@@ -593,7 +593,7 @@ export default {
                         params = {
                             groupId: this.dialgoForm.groupId,
                             stageName: this.dialgoForm.stageName,
-                            subjectId: this.$store.state.user.researchID
+                            subjectId: this.$store.state.user.researchInfo.subjectInfoId,
                         }
                         res = await that.$http.followUpPlanStageAdd(params);
                     }
@@ -675,7 +675,7 @@ export default {
         //保存表单回调
         handleSave(data) {
             if(data.code == 0) {
-                this.form.crfId = data.data;
+                this.form.crfId = data.data.id;
                 this.getCrfInfo(this.form.crfId)
                 this.dialgoCrfForm.visible = false;
                 this.$mes('success','保存成功!')

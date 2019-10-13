@@ -132,7 +132,7 @@
                             <el-button @click="showConfigDialog" type="text" icon="icon iconfont iconfuhao7"></el-button>
                         </template>
                         <template slot-scope="scope">
-                            <el-button @click="" type="text" icon="iconfont iconshanchu del"></el-button>
+                            <el-button @click="deleteObject(scope.row)" type="text" icon="iconfont iconshanchu del"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -293,7 +293,7 @@ export default {
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
-                subjectInfoId: this.$store.state.user.researchID,
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                 subjectGroupId: this.currentGrounpId,
                 createTime: time[0],
                 endTime: time[1],
@@ -403,6 +403,30 @@ export default {
         successAdd() {
             this.getDataList(0,15);
             this.$refs.refSearch.getGroupList();
+        },
+        //删除研究对象
+        deleteObject(row) {
+            console.log(row)
+            this.$confirm('确定删除?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async() => {
+                return;
+                let params = {
+                    "subjectId": this.$store.state.user.researchInfo.subjectInfoId,
+                    "groupId": this.currentGrounpId,
+                    "patientId": row.patientId
+                }
+                try {
+                    let res = await this.$http.researchObjectPreviewTableDeleteObject(params);
+                    if (res.code == '0') {
+                        this.$mes('success','删除成功!')
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            }).catch(() => {});
         },
         //获取分组列表
         getGroupList(data) {

@@ -279,7 +279,7 @@ export default {
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
-                subjectId: this.$store.state.user.researchID,
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
                 groupId: this.currentGrounpId,
                 enterStartDate: entryTime[0],
                 enterEndDate: entryTime[1],
@@ -315,7 +315,7 @@ export default {
         //获取阶段
         async getStageList() {
             let params = {
-                id: this.$store.state.user.researchID
+                id: this.$store.state.user.researchInfo.subjectInfoId,
             }
             try {
                 let res = await this.$http.followUpPlanStageList(params);
@@ -413,7 +413,7 @@ export default {
                 isModify:"displayShow",
                 status: point.status,  
                 pointPatientId: point.pointPatientId,
-                subjectId: this.$store.state.user.researchID,
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
                 updateTime: point.updateTime || '',
                 updator: point.updator || '',
             }
