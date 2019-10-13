@@ -2,31 +2,31 @@
   <div class="cloud-component researchTarget">
     <!-- 研究指标 -->
     <!--<img src="../images/researchTarget.png" alt="" width="100%">-->
-    <el-tabs ref="elTabs" class="research_target-box" v-if="displayState" v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
-      <el-tab-pane
-        :key="index"
-        v-for="(item, index) in editableTabs"
-        :name="String(index)"
-      >
-        <!--标题名称  :label="item.crfDisplayName"-->
-        <div slot="label">
-          {{item.crfDisplayName}}
-          <el-popover
-            v-show="index == editableTabsValue"
-            placement="bottom"
-            trigger="click">
-            <p class="info_tip">另存为我的模板</p>
-            <p class="info_tip" @click="researchFormModify(item)">编辑</p>
-            <p class="info_tip" @click="researchDelete(item,index)">删除</p>
-            <i slot="reference" class="iconfont iconbianjibeifen"></i>
-          </el-popover>
-        </div>
-        <div class="research_form_box">
-          <!--{{item.content}}-->
-          <createForm ref="createForm" :crfData="item" :formOptions="options" @callback-data="callbackData" @callback-save="callbackSave"></createForm>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+      <el-tabs ref="elTabs" class="research_target-box" v-if="displayState" v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
+        <el-tab-pane
+            :key="index"
+            v-for="(item, index) in editableTabs"
+            :name="String(index)"
+          >
+            <!--标题名称  :label="item.crfDisplayName"-->
+            <div slot="label">
+              {{item.crfDisplayName}}
+              <el-popover
+                v-show="index == editableTabsValue"
+                placement="bottom"
+                trigger="click">
+                <p class="info_tip">另存为我的模板</p>
+                <p class="info_tip" @click="researchFormModify(item)">编辑</p>
+                <p class="info_tip" @click="researchDelete(item,index)">删除</p>
+                <i slot="reference" class="iconfont iconbianjibeifen"></i>
+              </el-popover>
+            </div>
+            <div class="research_form_box">
+              <!--{{item.content}}-->
+              <createForm ref="createForm" :crfData="item" :formOptions="options" @callback-data="callbackData" @callback-save="callbackSave"></createForm>
+            </div>
+          </el-tab-pane>
+      </el-tabs>
     <!--编辑弹框-->
     <el-dialog title="编辑CRF" :visible.sync="dialogFormVisible" append-to-body>
       <el-form>
@@ -44,6 +44,7 @@
 
 <script>
   import createForm from './CRFConfig/report/createReport';
+  import Sortable from 'sortablejs';
   export default {
     name: 'researchTarget',
     props:{
@@ -53,7 +54,7 @@
       }
     },
     components: {
-      createForm
+      createForm,
     },
     data() {
       return {
@@ -75,14 +76,26 @@
     watch: {},
     methods: {
       handleTabsEdit(targetName,action) {
-        this.researchFormSave(this.editableTabs[this.tabIndex]).then((data)=>{
-          if(data.code === 0) {
-            this.researchRelationSave()
-          }
-        });
+        if(this.editableTabs.length!==0){
+          this.researchFormSave(this.editableTabs[this.tabIndex]).then((data)=>{
+            if(data.code === 0) {
+              this.researchRelationSave()
+            }
+          });
+        }
         this.displayState = false;
         let newTabName = ++this.editableTabs.length + '';
-        this.queryFormId().then((data)=>{
+        let obj = {
+          "id": "",
+          "crfDisplayName": "CRF("+newTabName+")",
+          "crfType": 1,
+          "crfIsAvailable": 2,
+          "crfImage": null,
+          "subjectPortions": [],
+          "diseaseId": null,
+          "subjectId":sessionStorage.getItem('CURR_RESEARCH_ID')
+        };
+        /*this.queryFormId().then((data)=>{
           // console.log(data)
           let obj = {
             "id": data.data,
@@ -95,6 +108,11 @@
             "subjectId":sessionStorage.getItem('CURR_RESEARCH_ID')
           };
           this.editableTabs.push(obj);
+        });*/
+        this.researchFormSave(obj).then((data)=>{
+          if(data.code === 0) {
+            this.editableTabs.push(data.data);
+          }
         });
           for(let i=0;i<this.editableTabs.length;i++) {
             if(this.editableTabs[i]=="undefined" || this.editableTabs[i] == undefined) {
@@ -102,7 +120,9 @@
               i--;
             }
           }
-        this.displayState = true;
+        this.$nextTick(()=>{
+          this.displayState = true;
+        });
         this.editableTabsValue = String(newTabName-1);
         this.tabIndex = String(newTabName-1);
       },
@@ -245,6 +265,7 @@
     mounted() {
       this.displayState = true;
       this.queryDataList();
+      
     }
   };
 </script>
