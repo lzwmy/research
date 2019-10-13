@@ -73,7 +73,11 @@
         }
       }
     },
-    watch: {},
+    watch: {
+      "tabIndex":function (data) {
+          this.sortTab();
+      }
+    },
     methods: {
       handleTabsEdit(targetName,action) {
         if(this.editableTabs.length!==0){
@@ -194,6 +198,25 @@
           }
         })
       },
+      sortTab(){
+        this.$nextTick(()=>{
+          let el = document.querySelectorAll('.el-tabs__nav')[1];
+          let sortable = Sortable.create(el,{
+            onEnd:(evt) => {
+              // console.log(evt);
+              // console.log('之前的数据',this.editableTabs[evt.oldIndex]);
+              let prevCopyData = Object.assign({},JSON.parse(JSON.stringify(this.editableTabs[evt.oldIndex])));
+              this.displayState = false;
+              this.editableTabs.splice(evt.oldIndex,1);
+              this.editableTabs.splice(evt.newIndex,0,prevCopyData);
+              this.$nextTick(()=>{
+                this.displayState = true;
+                this.editableTabsValue = String(evt.newIndex);
+              });
+            }
+          })
+        });
+      },
       // 获取表单id
       async queryFormId() {
         let that = this;
@@ -264,8 +287,23 @@
     },
     mounted() {
       this.displayState = true;
-      this.queryDataList();
-      
+      this.queryDataList().then(()=>{
+        let el = document.querySelectorAll('.el-tabs__nav')[1];
+        let sortable = Sortable.create(el,{
+          onEnd:(evt) => {
+            // console.log(evt);
+            // console.log('之前的数据',this.editableTabs[evt.oldIndex]);
+            let prevCopyData = Object.assign({},JSON.parse(JSON.stringify(this.editableTabs[evt.oldIndex])));
+            this.displayState = false;
+            this.editableTabs.splice(evt.oldIndex,1);
+            this.editableTabs.splice(evt.newIndex,0,prevCopyData);
+            this.$nextTick(()=>{
+              this.displayState = true;
+              this.editableTabsValue = String(evt.newIndex);
+            });
+          }
+        })
+      });
     }
   };
 </script>
