@@ -33,6 +33,7 @@ import 'assets/css/common.less';
 require('zrender/lib/vml/vml');
 require('zrender/lib/svg/svg');
 
+import 'assets/css/crfConfig.css';
 
 import VueClipboard from 'vue-clipboard2'
 

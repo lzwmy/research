@@ -326,7 +326,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less">
+<style lang="less" scoped>
   .displayPortion_title{
     width: 100%;
     font-size: 14px;

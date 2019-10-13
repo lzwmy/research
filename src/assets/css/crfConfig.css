@@ -1,0 +1,292 @@
+/*表单渲染样式*/
+
+/*小节*/
+.displayPortion_box .length_set div .el-col {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+/*单行文本框*/
+.SINGLE_INPUT {
+}
+.SINGLE_INPUT .SINGLE_INPUT_title {
+  width: 188px;
+  /*width: 85px;
+  max-width: 188px;*/
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+  /*vertical-align: middle;*/
+}
+.SINGLE_INPUT .SINGLE_INPUT_box {
+  /* width: 188px; */
+  display: table-cell;
+  /*vertical-align: middle;*/
+}
+.SINGLE_INPUT .SINGLE_INPUT_box .el-input {
+  min-width: 188px;
+}
+.SINGLE_INPUT .SINGLE_INPUT_box .el-input .el-input__inner {
+  /* width: 188px; */
+}
+/*多选框*/
+.CHECKBOX {
+  line-height: 32px;
+}
+.CHECKBOX .CHECKBOX_title {
+  width: 188px;
+  display: table-cell;
+  vertical-align: middle;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.CHECKBOX .CHECKBOX_box {
+  min-width: 164px;
+  max-width: 800px;
+  display: table-cell;
+}
+.CHECKBOX .CHECKBOX_box .el-checkbox-group {
+  min-width: 164px;
+  max-width: 800px;
+}
+.CHECKBOX .CHECKBOX_box .el-checkbox-group .el-checkbox {
+  margin-right: 10px;
+  margin-left: 0;
+}
+.CHECKBOX .CHECKBOX_empty {
+  min-width: 24px;
+  display: table-cell;
+  color: #3c81f0;
+  cursor: pointer;
+  vertical-align: middle;
+}
+/*单选下拉*/
+.SINGLE_COMBOX {
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_title {
+  width: 188px;
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_box {
+  width: 188px;
+  display: table-cell;
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_box .el-input {
+  width: 188px;
+}
+.SINGLE_COMBOX .SINGLE_COMBOX_box .el-input .el-input__inner {
+  width: 188px;
+}
+/*日期*/
+.DATE {
+}
+.DATE .DATE_title {
+  width: 188px;
+  /*width: 85px;
+  max-width: 188px;*/
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.DATE .DATE_box {
+  width: 188px;
+  display: table-cell;
+
+}
+.DATE .DATE_box .el-date-editor.el-input{
+  width: auto;
+}
+.DATE .DATE_box .el-input .el-input__inner {
+  width: 188px;
+}
+/*日期时间*/
+.DATE_TIME {
+}
+.DATE_TIME .DATE_TIME_title {
+  display: table-cell;
+  width: 188px;
+  font-size: 14px;
+  /*padding-left: 1%;*/
+}
+.DATE_TIME .DATE_TIME_box {
+  width: 188px;
+  display: table-cell;
+}
+.DATE_TIME .DATE_TIME_box .el-input .el-input__inner {
+  width: 188px;
+}
+/*上传*/
+.FILE_UPLOAD{
+
+}
+.FILE_UPLOAD .FILE_UPLOAD_title{
+  width: 200px;
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.FILE_UPLOAD .FILE_UPLOAD_file_box {
+  display: table-cell;
+  width: 165px;
+}
+.FILE_UPLOAD .FILE_UPLOAD_file_text{
+  color: #2d8cf0;
+  cursor: pointer;
+}
+.FILE_UPLOAD .FILE_UPLOAD_file_text:hover{
+  text-decoration: underline;
+}
+.FILE_UPLOAD .FILE_UPLOAD_Image_box{
+  display: table-cell;
+  vertical-align: top;
+}
+/*弹框样式修改*/
+.upload_style{
+  z-index: 2200 !important;
+  text-align: left;
+}
+.upload_style .el-dialog__body{
+  text-align: center;
+}
+/*集合*/
+.iconGray{
+  color:gray
+}
+.GATHER_bg_color{
+  background-color: rgb(247, 248, 252);
+}
+.view_box .view_title .iconfont{
+  font-size: 16px;
+  color: #356cbc;
+}
+.gather_column{
+  display: table-cell;
+}
+/*标签*/
+.LABEL_view_box{
+  min-height: 22px;
+}
+.LABEL{
+
+}
+.LABEL .LABEL_title{
+  width: 200px;
+  display:table-cell;
+  /*padding-left: 1%;*/
+  vertical-align: middle;
+  font-size: 14px;
+}
+.LABEL .LABEL_box{
+  width: 188px;
+  display:table-cell;
+}
+.LABEL .LABEL_Image_box{
+  display: table-cell;
+  vertical-align: top;
+}
+/*多选下拉*/
+.MULTI_COMBOX {
+}
+.MULTI_COMBOX .MULTI_COMBOX_title {
+  width: 188px;
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.MULTI_COMBOX .MULTI_COMBOX_box {
+  width: 188px;
+  display: table-cell;
+}
+.MULTI_COMBOX .MULTI_COMBOX_box .el-input .el-input__inner {
+  width: 188px;
+}
+/*多行文本框*/
+.MULTI_INPUT {
+}
+.MULTI_INPUT .MULTI_INPUT_title {
+  width: 188px;
+  display: table-cell;
+  vertical-align: middle;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.MULTI_INPUT .MULTI_INPUT_box {
+  display: table-cell;
+}
+/*数值框*/
+.NUMBER_INPUT{
+
+}
+.NUMBER_INPUT .NUMBER_INPUT_title{
+  width: 188px;
+  /*width: 85px;
+  max-width: 188px;*/
+  display: table-cell;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box{
+  min-width: 188px;
+  display: table-cell;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_number{
+  width: 84px;
+  display: table-cell;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_unitName{
+  display: table-cell;
+  padding-left: 1%;
+  min-width: 104px;
+  font-size: 13px;
+}
+.NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_select{
+  width: 104px;
+  display: table-cell;
+  padding-left: 1%;
+}
+/*单选框*/
+.RADIO_BUTTON {
+  line-height: 32px;
+}
+.RADIO_BUTTON .RADIO_BUTTON_title {
+  width: 188px;
+  display: table-cell;
+  font-size: 14px;
+  vertical-align: middle;
+  /*padding-left: 1%;*/
+}
+.RADIO_BUTTON .RADIO_BUTTON_box {
+  min-width: 164px;
+  max-width: 800px;
+  display: table-cell;
+
+}
+.RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group {
+  min-width: 164px;
+  max-width: 800px;
+}
+.RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group .el-radio {
+  margin-right: 10px;
+  margin-left: 0;
+}
+.RADIO_BUTTON .RADIO_BUTTON_empty {
+  min-width: 24px;
+  display: table-cell;
+  color: #3c81f0;
+  cursor: pointer;
+  vertical-align: middle;
+}
+/*表格*/
+.table_label {
+  background-color: #f7f8fc;
+  margin-bottom: 2px;
+  min-height: 38px;
+  border: 1px solid #dee2e5;
+  display: table-cell;
+  width: 190px;
+}
+.arrangement_lr .table_label{
+  border:none;
+  padding: 1px 0;
+}
