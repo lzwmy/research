@@ -147,7 +147,7 @@ export default {
                 if (res.code == '0') {
                     this.$mes('success','创建成功!');
                     this.$store.commit('saveresearchInfo',{
-                        subjectInfoId: item.id,
+                        subjectInfoId: res.data,
                         centerModel: this.formData.centerPattern
                     });
                     setTimeout(()=>{
