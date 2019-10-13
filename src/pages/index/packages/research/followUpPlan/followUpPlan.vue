@@ -669,6 +669,7 @@ export default {
             if(this.form.crfId) {
                 this.$nextTick(()=>{
                     this.$refs.refForm.$refs.createForm.previewCRFList(this.form.crfId)
+                    this.$refs.refForm.$refs.createForm.formId = this.form.crfId;
                 })
             }
         },

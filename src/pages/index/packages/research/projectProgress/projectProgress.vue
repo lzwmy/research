@@ -431,7 +431,7 @@
       async subjectVisitDetail() {
         let that = this;
         let formData = {
-          subjectId: sessionStorage.getItem('CURR_RESEARCH_ID')
+          subjectId: this.$store.state.user.researchInfo.subjectInfoId,
         };
         try {
           let data = await that.$http.subjectVisitDetail(formData);
@@ -454,7 +454,7 @@
       async subjectVisitTotal() {
         let that = this;
         let formData = {
-          subjectId: sessionStorage.getItem('CURR_RESEARCH_ID')
+          subjectId: this.$store.state.user.researchInfo.subjectInfoId
         };
         try {
           let data = await that.$http.subjectVisitTotal(formData);
@@ -495,7 +495,7 @@
       async subjectPatientTotal() {
         let that = this;
         let formData = {
-          subjectId: sessionStorage.getItem('CURR_RESEARCH_ID')
+          subjectId: this.$store.state.user.researchInfo.subjectInfoId
         };
         try {
           let data = await that.$http.subjectPatientTotal(formData);
@@ -583,7 +583,7 @@
           ]
         };
         let formData = {
-          id: sessionStorage.getItem('CURR_RESEARCH_ID')
+          id: this.$store.state.user.researchInfo.subjectInfoId
         };
         try {
           let data = await that.$http.subjectStagePublicList(formData);
@@ -664,7 +664,7 @@
       async subjectProgressTaskTotal() {
         let that = this;
         let formData = {
-          subjectId: sessionStorage.getItem('CURR_RESEARCH_ID')
+          subjectId: this.$store.state.user.researchInfo.subjectInfoId
         };
         try {
           let data = await that.$http.subjectProgressTaskTotal(formData);

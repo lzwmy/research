@@ -97,7 +97,7 @@
           "crfImage": null,
           "subjectPortions": [],
           "diseaseId": null,
-          "subjectId":sessionStorage.getItem('CURR_RESEARCH_ID')
+          "subjectId":this.$store.state.user.researchInfo.subjectInfoId
         };
         /*this.queryFormId().then((data)=>{
           // console.log(data)
@@ -109,7 +109,7 @@
             "crfImage": null,
             "subjectPortions": [],
             "diseaseId": null,
-            "subjectId":sessionStorage.getItem('CURR_RESEARCH_ID')
+            "subjectId":this.$store.state.user.researchInfo.subjectInfoId
           };
           this.editableTabs.push(obj);
         });*/
@@ -231,7 +231,7 @@
       async queryDataList() {
         let that = this;
         let formData = {
-          subjectInfoId:sessionStorage.getItem('CURR_RESEARCH_ID')
+          subjectInfoId:this.$store.state.user.researchInfo.subjectInfoId
         };
         try {
           let data = await that.$http.queryResearchForm(formData);
@@ -275,7 +275,7 @@
         let formIdList = that.editableTabs.map((item)=>{return item.id});
         let formData = {
           formCrfIdList:formIdList || [],
-          subjectInfoId:sessionStorage.getItem('CURR_RESEARCH_ID')
+          subjectInfoId:this.$store.state.user.researchInfo.subjectInfoId
         };
         try {
           let data = await that.$http.researchRelationSave(formData);
