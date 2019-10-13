@@ -101,12 +101,12 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table 
-                    ref="refTable" fit
+                    ref="refTable" fit border
                     :data="dataList.content"
                     v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
-                    <el-table-column type="selection" align="center" width="40"></el-table-column>
+                    <el-table-column type="selection" align="center" width="50"></el-table-column>
                     <el-table-column 
                         v-for="(column,index) in dataList.header"
                         :prop="column.prop" 
@@ -118,9 +118,6 @@
                         show-overflow-tooltip
                         v-if="column.type !='report' && column.type != 'disable'">
                     </el-table-column>
-
-
-
                     <span v-for="(li,liIndex) in dataList.header" :key="'1_'+liIndex">
                         <el-table-column v-if="li.type =='report'" :label="li.label" align="center">
                             <span v-for="(point,poindex) in li.prop" :key="'2_'+poindex">
@@ -146,7 +143,7 @@
                                             <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
                                             <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
                                             <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
-                                            <el-button v-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333;"></el-button> 
+                                            <el-button v-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333; cursor: default;"></el-button> 
                                         </el-tooltip>
                                     </template>
                                 </el-table-column>
@@ -389,10 +386,6 @@ export default {
         },
         //打开表单填写页面
         toReportFill(row,point,crfId) {
-            console.log(row)
-            console.log(point)
-            console.log(crfId)
-            // return;
             let group = this.groupList.find(item=>{
                 return item.subjectGroupId == this.currentGrounpId;
             })

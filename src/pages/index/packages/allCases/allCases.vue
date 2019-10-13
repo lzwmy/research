@@ -144,6 +144,7 @@
             :label="item.label"
             :name="item.name">
             <el-table :ref="item.name" style="width:100%;"
+              v-if="item.name==viewName"
               :data="item.dataList.content" @row-dblclick="dblclickHandle"
               v-loading="loading"
               :border="false"
@@ -168,7 +169,7 @@
                 show-overflow-tooltip>
               </el-table-column>
             </el-table>
-            <pagination :data="item.dataList" @change="getDataList"></pagination>
+            <pagination v-if="item.name==viewName" :data="item.dataList" @change="getDataList"></pagination>
           </el-tab-pane>
         </el-tabs>
       <!-- </echarts-contain> -->

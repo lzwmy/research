@@ -94,12 +94,12 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table 
-                    ref="refTable" fit
+                    ref="refTable" fit border
                     :data="dataList.content"
                     v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
-                    <el-table-column type="selection" align="center" width="40"></el-table-column>
+                    <el-table-column type="selection" align="center" width="50"></el-table-column>
                     <el-table-column 
                         v-for="column in dataList.header"
                         :prop="column.prop" 

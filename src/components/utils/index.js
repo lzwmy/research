@@ -772,7 +772,6 @@ const handleTableScorll = function() {
   if(!document.querySelector('.el-table')) {
     return;
   }
-  console.log('执行了')
   let tableTop = $('.el-table').offset().top;
   let scrollTop = $(document).scrollTop();
   let mainEle = $('#main').offset();
