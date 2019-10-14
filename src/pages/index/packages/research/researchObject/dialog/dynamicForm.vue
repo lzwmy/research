@@ -99,7 +99,7 @@ export default {
                     this.dialog.loading = true;
                     let params = {
                         subjectGroupId: this.groupInfo.subjectGroupId,
-                        subjectInfoId: this.$store.state.user.researchID,
+                        subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                         subjectGroupName: this.groupInfo.subjectGroupName,
                         subjectItemDataDtoList: subjectItemDataDtoList
                     }

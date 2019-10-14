@@ -162,7 +162,13 @@
             name: "projectProgress",
             params: params
           })
-          this.$store.commit('saveresearchID',item.id);
+          // this.$store.commit('saveresearchID',item.id);
+          this.$store.commit('saveresearchInfo',{
+            subjectInfoId: item.id,
+            centerModel: item.centerPattern
+          });
+
+
           this.btnLoading = false;
           return;
         } else {

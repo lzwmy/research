@@ -9,15 +9,15 @@
         <div class="main">
             <slot></slot>
             <div class="flex-center-center">
-                <div class="card flex-center-center flex-wrap" type="primary" @click="select(0)">
-                    <div class="wrap flex-center-center" :class="centerPattern==0?'active':''">
+                <div class="card flex-center-center flex-wrap" type="primary" @click="select(1)">
+                    <div class="wrap flex-center-center" :class="centerPattern==1?'active':''">
                         <svg class="svg_icon" aria-hidden="true" style="width: 52px;height: 70px;"><use xlink:href="#iconzu8"></use></svg>
                         <i class="icon el-icon-check"></i>
                     </div>
                     <p>单中心</p>
                 </div>
-                <div class="card flex-center-center flex-wrap" type="primary" @click="select(1)">
-                    <div class="wrap flex-center-center" :class="centerPattern==1?'active':''">
+                <div class="card flex-center-center flex-wrap" type="primary" @click="select(2)">
+                    <div class="wrap flex-center-center" :class="centerPattern==2?'active':''">
                         <svg class="svg_icon" aria-hidden="true" style="width: 70px;height: 78px;"><use xlink:href="#iconzu9"></use></svg>
                         <i class="icon el-icon-check"></i>
                     </div>

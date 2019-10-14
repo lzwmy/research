@@ -57,7 +57,7 @@ export default {
         //回显crf表单列表下的已选指标
         async handlePreviewFormItem() {
             let params = {
-                subjectInfoId: this.$store.state.user.researchID
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
             }
             try {
                 let res = await this.$http.researchObjectTablePreviewFormItem(params);
@@ -118,7 +118,7 @@ export default {
             let list = [];
             this.defaultChecked.forEach(li=>{
                 let obj = {
-                    formItemName: this.$store.state.user.researchID,
+                    formItemName: this.$store.state.user.researchInfo.subjectInfoId,
                     path: li,
                     crfName: 'default'
                 } 
@@ -139,7 +139,7 @@ export default {
                 })
             })
             let params = {
-                subjectInfoId: this.$store.state.user.researchID,
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                 list: list
             }
             try {

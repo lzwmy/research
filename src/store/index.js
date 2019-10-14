@@ -7,7 +7,6 @@ Vue.use(Vuex);
 const USER_SIGNIN = 'USER_SIGNIN'; // 登录成功
 const USER_SIGNOUT = 'USER_SIGNOUT'; // 退出登录
 
-
 const user = {
   state: {
     userLogin: {}, // 登录信息
@@ -15,7 +14,11 @@ const user = {
     routeArr: [], // 每个页面路由元
     menuList: [], // 菜单列表
     taskMenuList: [], // 科研项目菜单列表
-    researchID: sessionStorage.getItem('CURR_RESEARCH_ID') || '',  //科研项目ID
+    //科研项目数据 
+    researchInfo: {
+      subjectInfoId: JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO'))?JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId:'',
+      centerModel: 1  //1单中心，2多中心
+    },
     session_isDislpayArrow: false
   },
   mutations: {
@@ -44,9 +47,9 @@ const user = {
     saveSession_isDislpayArrow(state, payload) {
       state.session_isDislpayArrow = payload.isDislpayArrow;
     },
-    saveresearchID(state, id) {
-      sessionStorage.setItem('CURR_RESEARCH_ID', id);
-      state.researchID = id;
+    saveresearchInfo(state, data) {
+      sessionStorage.setItem('CURR_RESEARCH_INFO', JSON.stringify(data));
+      state.researchInfo = data;
     },
     changeTheme(state, payload) {
       state.ccstyle = payload.ccstyle;
