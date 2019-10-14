@@ -21,6 +21,8 @@ Vue.use(install);
 import store from '../../store';
 import Global from 'components/utils/global';
 
+import 'assets/css/crfConfig.css';
+
 Vue.prototype.GetRequest = function () {
   var url = location.search;   //获取url中"?"符后的字串
   var theRequest = new Object();
