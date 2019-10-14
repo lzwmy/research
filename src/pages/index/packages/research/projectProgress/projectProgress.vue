@@ -14,7 +14,7 @@
       </ul>
     </div>
     <div class="wrap">
-      <h3 class="wrap_title">项目进度<span>共<span style="color:red;">1</span>位研究对象</span></h3>
+      <h3 class="wrap_title">项目进度<span>共<span style="color:red;">{{progressCount}}</span>位研究对象</span></h3>
       <el-row :gutter="30">
         <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
           <div class="wrap_box">
@@ -342,6 +342,7 @@
         monthEnd: 0,
         stageList: [],
         taskList: [],
+        progressCount:0
       }
     },
     watch: {},
@@ -419,6 +420,19 @@
             item.stagesChart = {};
             chartOptions.title.text = res.data.chartName;
             chartOptions.xAxis.categories = res.data.xaxis;
+            for(let u=0;u<res.data.series.length;u++) {
+              if(res.data.series[u].name == '未开始') {
+                res.data.series[u].color = 'rgba(177, 182, 205, 1)';
+              }else if(res.data.series[u].name == '进行中') {
+                res.data.series[u].color = 'rgba(91, 143, 249, 0.85)';
+              }else if(res.data.series[u].name == '已终止') {
+                res.data.series[u].color = 'rgba(255,95,92, 1)';
+              }else if(res.data.series[u].name == '已失访') {
+                res.data.series[u].color = 'rgba(248,164,97, 1)';
+              }else if(res.data.series[u].name == '已完成') {
+                res.data.series[u].color = 'rgba(90, 216, 166, 0.85)';
+              }
+            }
             chartOptions.series = res.data.series;
             this.$nextTick(() => {
               item.stagesLoad = false;
@@ -674,6 +688,21 @@
         } catch (error) {
           console.log(error)
         }
+      },
+      //获取项目下研究对象总数
+      async subjectProgressCountPatient() {
+        let that = this;
+        let formData = {
+          subjectId:this.$store.state.user.researchInfo.subjectInfoId
+        };
+        try {
+          let data = await that.$http.subjectProgressCountPatient(formData);
+          if(data.code === 0) {
+            this.progressCount = data.data
+          }
+        }catch (error) {
+          console.log(error);
+        }
       }
     },
     mounted() {
@@ -684,6 +713,7 @@
       this.subjectPatientTotal();
       this.subjectStagePublicList();
       this.subjectProgressTaskTotal();
+      this.subjectProgressCountPatient();
     }
   };
 </script>
