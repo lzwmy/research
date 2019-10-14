@@ -3,7 +3,7 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">研究导入数据</el-button>
+                <el-button type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">研究导入数据 </el-button>
                 <el-button type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
                 <el-button type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
                 <el-dropdown trigger="hover" @command="handleAddObject">
@@ -98,8 +98,8 @@
                     :data="dataList.content"
                     v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
-                    <el-table-column type="selection" align="center" width="50"></el-table-column>
+                    :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
+                    <el-table-column type="selection" fixed align="center" width="50"></el-table-column>
                     <el-table-column 
                         v-for="column in dataList.header"
                         :prop="column.prop" 
@@ -107,7 +107,7 @@
                         sortable 
                         :key="column.prop" 
                         align="center"
-                        :min-width="column.label.length * 14 + 50"
+                        :min-width="column.label.length * 15 + 50"
                         v-if="column.type !='report'"
                         show-overflow-tooltip>
                     </el-table-column>
@@ -117,7 +117,7 @@
                                 v-if="li.type=='report'"
                                 :prop="li.prop" 
                                 :label="li.label" 
-                                :width="li.label.length * 14 + 20"
+                                :width="li.label.length * 15 + 20"
                                 align="center"
                                 :key="li.prop">
                                 <template slot-scope="scope">
@@ -127,9 +127,9 @@
                             </el-table-column>
                         </span>
                     </el-table-column>
-                    <el-table-column width="60" align="center">
+                    <el-table-column width="60" align="center" fixed="right">
                         <template slot="header" slot-scope="scope">
-                            <el-button @click="showConfigDialog" type="text" icon="icon iconfont iconfuhao7"></el-button>
+                            <el-button @click="showConfigDialog" type="text" icon="setting icon iconfont iconfuhao7" style="font-size: 30px; color: #555;"></el-button>
                         </template>
                         <template slot-scope="scope">
                             <el-button @click="deleteObject(scope.row)" type="text" icon="iconfont iconshanchu del"></el-button>
@@ -160,6 +160,7 @@ import tableConfig from './dialog/tableConfig'
 import dynamicForm from './dialog/dynamicForm'
 import searchCom from './components/search'
 import formItemCom from './components/formItem'
+import utils from 'components/utils/index';
 export default {
     name: 'researchObject',
     mixins: [mixins],
@@ -223,6 +224,7 @@ export default {
     },
     mounted () {
         this.addEventListenervisibilityChange();
+        console.log(utils.judgeAuth(this.$store.state.user.researchInfo.roles,['1','2','3']))
     },
     beforeDestroy(){
         document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
@@ -237,6 +239,7 @@ export default {
         formItemCom
     },
     methods: {
+        
         //切换页面刷新操作
         addEventListenervisibilityChange() {
             this.hidden = "";
@@ -291,7 +294,7 @@ export default {
                 time = this.form.time;
             }
             let formData = {
-                offset: pageNo,
+                offset: pageNo -1,
                 limit: pageSize,
                 subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                 subjectGroupId: this.currentGrounpId,
@@ -373,8 +376,9 @@ export default {
                         visible: true,
                         loading: false
                     }
+                    //生成表单指标
                     let newArr = [];
-                    this.allCrfForm.forEach(item=>{
+                    this.confingData.dataList.forEach(item=>{
                         item.formItemRspList.forEach(li=>{
                             if(li.checked){
                                 let obj = {
@@ -446,7 +450,8 @@ export default {
         //获取全部crf表单列表和列表下的所有指标
         handleAllFormItem(data) {
             this.allCrfForm = data;
-            this.confingData.dataList = data;
+            this.confingData.dataList = utils.deepCopy(data);
+            this.$refs.refTableConfig.initFomeItem();
         },
         //修改默认crf
         changeActiveCrf(data) {
@@ -469,17 +474,14 @@ export default {
     .researchObject {
         .el-table {
             padding: 0 !important;
-        }
-        .el-table__header-wrapper .el-button {
-            padding: 0;
-            .icon {
+            .setting {
                 font-size: 20px;
                 color: #999;
                 &:hover {
                     color: #1bbae1;
                 }
             }
-        } 
+        }
     }
 </style>
 

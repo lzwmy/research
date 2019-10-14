@@ -146,54 +146,63 @@
         }
       },
       linkTask(item) {
-        let data = this.$store.state.user.taskMenuList;
-        if (item.createStatus == 3) {
-          let params = {
-            title: '科研项目',
-            researchId: item.id,
-            fromRouter: {
-              path: this.$route.path,
-              meta: this.$route.meta
-            },
-            menuList: data.params
+        this.judgeAuth()
+        .then((res)=>{
+          if(!res) {
+            this.$mes('info','暂无权限访问!')
+            return
           }
-          sessionStorage.setItem('insideMenuData', JSON.stringify(params))
-          this.$router.push({
-            name: "projectProgress",
-            params: params
-          })
-          // this.$store.commit('saveresearchID',item.id);
-          this.$store.commit('saveresearchInfo',{
-            subjectInfoId: item.id,
-            centerModel: item.centerPattern
-          });
-
-
-          this.btnLoading = false;
-          return;
-        } else {
-          this.getProjectInfo(item.id)
-            .then(() => {
+          this.getUserInfo()
+          .then((roles)=>{
+            let data = this.$store.state.user.taskMenuList;
+            if (item.createStatus == 3) {
               let params = {
-                createStatus: 2,
-                projectInfo: {
-                  proType: 'edit',
-                  centerPattern: item.centerPattern,
-                  id: item.id,
-                  description: this.projectInfo.description || '',
-                  purpose: this.projectInfo.purpose || '',
-                  subjectName: this.projectInfo.subjectName,
-                  targetPatientNum: this.projectInfo.targetPatientNum || 0,
-                  fileId: this.projectInfo.fileId || '',
-                  fileName: this.projectInfo.fileName || '',
-                }
+                title: '科研项目',
+                researchId: item.id,
+                fromRouter: {
+                  path: this.$route.path,
+                  meta: this.$route.meta
+                },
+                menuList: data.params
               }
+              sessionStorage.setItem('insideMenuData', JSON.stringify(params))
               this.$router.push({
-                name: "createProject",
+                name: "projectProgress",
                 params: params
               })
-            })
-        }
+              this.$store.commit('saveresearchInfo',{
+                subjectInfoId: item.id,
+                centerModel: item.centerPattern,
+                roles: roles
+              });
+              this.btnLoading = false;
+              return;
+            } else {
+              this.getProjectInfo(item.id)
+                .then(() => {
+                  let params = {
+                    createStatus: 2,
+                    projectInfo: {
+                      proType: 'edit',
+                      centerPattern: item.centerPattern,
+                      id: item.id,
+                      description: this.projectInfo.description || '',
+                      purpose: this.projectInfo.purpose || '',
+                      subjectName: this.projectInfo.subjectName,
+                      targetPatientNum: this.projectInfo.targetPatientNum || 0,
+                      fileId: this.projectInfo.fileId || '',
+                      fileName: this.projectInfo.fileName || '',
+                    }
+                  }
+                  this.$router.push({
+                    name: "createProject",
+                    params: params
+                  })
+                })
+            }
+          })
+          return;
+        })
       },
       async getDataList() {
         this.loading = true;
@@ -329,6 +338,30 @@
           this.loading = false;
         } catch (err) {
           this.loading = false;
+          console.log(err)
+        }
+      },
+      //判断是否有权限进入科研项目
+      async judgeAuth() {
+        try {
+          let res = await this.$http.researchAuth();
+          if (res.code == '0' && res.data) {
+            return Promise.resolve(true);
+          }else {
+            return Promise.reject(false);
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      //角色信息
+      async getUserInfo() {
+        try {
+          let res = await this.$http.researchGetRoles();
+          if (res.code == '0') {
+            return Promise.resolve(res.data);
+          }
+        } catch (err) {
           console.log(err)
         }
       }

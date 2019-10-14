@@ -100,13 +100,14 @@
         <!--搜索结果-->
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+                <!-- :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)" -->
                 <el-table 
                     ref="refTable" fit border
                     :data="dataList.content"
                     v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
-                    <el-table-column type="selection" align="center" width="50"></el-table-column>
+                    :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
+                    <el-table-column type="selection" align="center" width="50" fixed></el-table-column>
                     <el-table-column 
                         v-for="(column,index) in dataList.header"
                         :prop="column.prop" 
@@ -130,8 +131,8 @@
                                         <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
                                             <div slot="content">
                                                 <p v-if="handlePoint(scope.row[point.prop]).status == 1 && handlePoint(scope.row[point.prop]).planDate">计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
-                                                <p v-else-if="handlePoint(scope.row[point.prop]) == 1 &&  !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
-                                                <div v-else-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
+                                                <p v-if="handlePoint(scope.row[point.prop]) == 1 &&  !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
+                                                <div v-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
                                                     <p>随访员：{{handlePoint(scope.row[point.prop]).updator}}</p>
                                                     <p>计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
                                                     <p>时间：{{handlePoint(scope.row[point.prop]).updateTime}}</p>
@@ -150,7 +151,7 @@
                             </span>
                         </el-table-column>
                     </span>
-                    <el-table-column label="操作" width="60" align="center">
+                    <el-table-column label="操作" width="60" align="center" fixed="right">
                         <template slot-scope="scope">
                             <el-button @click="" type="text" icon="el-icon-message"></el-button>
                         </template>
@@ -259,6 +260,7 @@ export default {
             this.multipleSelection = val;
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+            
             let that = this;
             this.popoverSearchVisible = false;
             that.tableLoading = true;
@@ -391,6 +393,7 @@ export default {
             })
             let urlParameter={
                 cacheData: false,
+                note: point.note,
                 formId: crfId || "",
                 reportId: point.reportId || '',
                 groupId: this.currentGrounpId || '',

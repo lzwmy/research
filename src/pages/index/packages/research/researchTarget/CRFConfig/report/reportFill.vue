@@ -15,30 +15,29 @@
             <el-button v-if="urlParameter.from=='followUpManagement'" @click="showStopDialog" type="danger" style="float:right;margin-right: 5px">终止随访或失访</el-button>
             <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
           </div>
-          <div class="flex-start-start" style="height:100%;">
+          <div class="flex-start-start" style="height:100%; margin-top: 8px;">
             <!-- 随访列表 -->
             <stageListCom v-if="urlParameter.from=='followUpManagement'" :groupId='urlParameter.groupId' :patientId="urlParameter.patientId" :pointPatientId='pointPatientId' @sendPoint="getPoint"></stageListCom>
             <div ref="top" class="crf-step-content" id="mainContent">
               <br/>
-              <el-alert
-                v-if="urlParameter.from=='followUpManagement' && urlParameter.status == 4"
-                title="随访已完成"
-                :closable="false"
-                center
-                type="success"
-                show-icon>
-                <div>
-                  <p>随访员: {{urlParameter.updator}}</p>
-                  <p>完成时间: {{urlParameter.updateTime}}</p>
+              <div class="formTip flex-start-center" v-if="urlParameter.from=='followUpManagement'" >
+                <p class="formTip_title flex-center-center" :class="handleType(urlParameter.status)">
+                  <i class="icon" :class="handleType(urlParameter.status)"></i>
+                  {{handleStatus(urlParameter.status)}}
+                </p>
+                <div class="formTip_content">
+                  <p><span class="label">随访员: </span> {{urlParameter.updator}}</p>
+                  <p><span class="label">完成时间: </span> {{urlParameter.updateTime}}</p>
+                  <p v-if="handleStatus(urlParameter.status) == 2 "><span class="label">失访原因: </span> {{urlParameter.note}}</p>
                 </div>
-              </el-alert>
+              </div>
               <display-report v-if="crfForm!=null&&report!=null && update" :item="crfForm"  :report="report"></display-report>
             </div>
 
             <ul v-if="urlParameter.from=='followUpManagement'" class="recordList" v-loading="recordLoading">
               <h3>提交记录</h3>
               <li v-for="(item,index) in recordList" :key="index">
-                <p>{{item.createTime}} {{item.content}}</p>
+                <p>{{index+1}}、{{item.createTime}} {{item.content}}</p>
               </li>
             </ul>
           </div>
@@ -234,7 +233,10 @@ export default {
       this.$store.commit("CRF_SET_REPORT_STATUS", false);
       this.$store.commit("CRF_CHANGE_CONTROL", {});
       this.getForms();
-      this.getReportData();
+      this.getReportData()
+      .then(()=>{
+        this.update = true;
+      })
       if(this.urlParameter.from=='followUpManagement') {
         this.getRecordLlist();
       }
@@ -531,6 +533,7 @@ export default {
     },
     //获取随访点
     getPoint(data) {
+      this.update = false;
       let urlParameter = Object.assign(JSON.parse(sessionStorage.getItem('reportFill')).urlParameter,{
         formId: data.crfId,
         reportId: data.reportId,
@@ -627,6 +630,29 @@ export default {
         console.log(error);
       }
     },
+    handleStatus(status) {
+      switch (status) {
+        case 0: return '随访未开始';
+        case 1: return '随访录入中';
+        case 2: return '随访已失访';
+        case 3: return '随访已终止';
+        case 4: return '随访已完成';
+        case 5: return '随访已失效';
+        default: return '';
+      }
+    },
+    //匹配alert主题
+    handleType(status) {
+      switch (status) {
+        case 0: return 'el-icon-more icon0';
+        case 1: return 'iconfont icondaifang icon1';
+        case 2: return 'iconfont iconshifang icon2';
+        case 3: return 'iconfont iconzhongzhi icon3';
+        case 4: return 'iconfont iconwancheng1 icon4';
+        case 5: return 'el-icon-minus icon5';
+        default: return '';
+      }
+    }
   },
   computed: {
     allRoute() {
@@ -719,7 +745,7 @@ export default {
     width: 300px;
     background-color: #fff;
     height: 100%;
-    padding: 6px;
+    padding: 10px;
     h3 {
       line-height: 30px;
       border-bottom: 1px solid #999;
@@ -729,21 +755,48 @@ export default {
       margin-bottom: 15px;
     }
   }
+  .formTip {
+    height: 100px;
+    margin: 10px 30px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    overflow: hidden;
+    .formTip_title {
+      width: 240px;
+      height: 100%;
+      font-size: 24px;
+      color: #fff;
+      &::before {
+        display: none;
+      }
+      &.icon0 { background-color: #333; }
+      &.icon1 { background-color: #00B8DF; }
+      &.icon2 { background-color: #F79E00; }
+      &.icon3 { background-color: #DB5452; }
+      &.icon4 { background-color: #00BE90; }
+      &.icon5 { background-color: #333; }
+      .icon {
+        font-size: 40px;
+        margin-right: 10px;
+      }
+    }
+    .formTip_content {
+      padding: 15px;
+      background-color: #fff;
+      flex: 1;
+      height: 100%;
+      & > p {
+        line-height: 22px;
+        font-size: 14px;
+      }
+      .label {
+        color: #999;
+        margin-right: 10px;
+      }
+    }
+  }
 </style>
 <style lang="less">
-body.theme-blue {
-  .crffill .crf-step .crf-section-title.active,
-  .crffill .menu-panel .parent-node.active {
-    background: #c6e2ff;
-  }
-}
-
-body.theme-green {
-  .crffill .crf-step .crf-section-title.active,
-  .crffill .menu-panel .parent-node.active {
-    background: #b2efe0;
-  }
-}
 .binding-box {
   position: absolute;
   width: 400px;

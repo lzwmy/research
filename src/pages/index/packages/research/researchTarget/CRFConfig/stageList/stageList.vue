@@ -10,7 +10,7 @@
                     <span class="title">{{item.stageName}}</span>
                 </template>
                 <el-menu-item-group v-for="(li, liIndex) in item.pointList" :key="liIndex"> 
-                    <el-menu-item :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li,item.crfId)">
+                    <el-menu-item :disabled="li.status == 5" :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li,item.crfId)">
                         <span>{{li.name}}</span>
                         <span v-if="li.status == 0" class="icon el-icon-more" style="color: #333;"></span>
                         <span v-if="li.status == 1" class="icon iconfont icondaifang" style="color: #00B8DF;"></span>

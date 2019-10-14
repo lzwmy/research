@@ -13,11 +13,12 @@ const user = {
     account: '', // 登录账号
     routeArr: [], // 每个页面路由元
     menuList: [], // 菜单列表
-    taskMenuList: [], // 科研项目菜单列表
+    taskMenuList: JSON.parse(sessionStorage.getItem('CURR_USER_TASK_MENULIST'))?JSON.parse(sessionStorage.getItem('CURR_USER_TASK_MENULIST')).params:[], // 科研项目菜单列表
     //科研项目数据 
     researchInfo: {
       subjectInfoId: JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO'))?JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId:'',
-      centerModel: 1  //1单中心，2多中心
+      centerModel: 1,  //1单中心，2多中心
+      roles: []     //1、管理员(所有权限)  2、分中心管理员（无权添加中心） 3、数据录入员 4、数据管理员（导出数据）
     },
     session_isDislpayArrow: false
   },

@@ -57,7 +57,7 @@ export default {
   created () {
     this.logo = JSON.parse(sessionStorage.getItem('Global')).logo;
     this.title = JSON.parse(sessionStorage.getItem('Global')).title;
-    sessionStorage.setItem('CURR_RESEARCH_ID', utils.getQuery('id'));
+    sessionStorage.setItem('CURR_RESEARCH_INFO', JSON.stringify({ subjectInfoId: utils.getQuery('id')}));
   },
   mounted () {
   },
@@ -92,6 +92,7 @@ export default {
           };
           this.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
           window.location.href = './index.html#/projectProgress';
+          return;
         } else {
           if(res.code == 40) {
             document.querySelector('#validCode').focus();
@@ -109,7 +110,7 @@ export default {
         phoneNumber: this.form.phoneNumber
       }
       this.$get('/auth/subject/send/code.do', this.$format(params), false).then((res) => {
-        if (res && res.code == 0 && res.data) {
+        if (res.code == 0) {
           this.$mes('success','验证码已发送，请注意查收');
           this.count = 59;
           this.timer = setInterval(() => {
@@ -157,10 +158,10 @@ export default {
       h1 {
         color: #fff;
         text-align: center;
-        font-size: 22px;
+        font-size: 30px;
       }
       img {
-          height: 35px;
+          height: 48px;
       }
     }
     .login_content {

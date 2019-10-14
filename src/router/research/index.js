@@ -40,7 +40,8 @@ const routes = [
             txt: '项目进度',
             flag: 'projectProgress',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2','3','4']
         },
         component: projectProgress
     },
@@ -62,7 +63,8 @@ const routes = [
             txt: '研究对象',
             flag: 'researchObject',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2','3','4']
         },
         component: researchObject
     },{
@@ -83,7 +85,8 @@ const routes = [
             txt: '随访管理',
             flag: 'followUpManagement',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2','3','4']
         },
         component: followUpManagement
     },{
@@ -104,7 +107,8 @@ const routes = [
             txt: '我的任务',
             flag: 'myTasks',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2','3','4']
         },
         component: myTasks
     },{
@@ -125,7 +129,8 @@ const routes = [
             txt: '统计分析',
             flag: 'statisticalAnalysis',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2','3','4']
         },
         component: statisticalAnalysis
     },{
@@ -146,7 +151,8 @@ const routes = [
             txt: '论文润色',
             flag: 'articlesEmbellish',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2','3','4']
         },
         component: articlesEmbellish
     },{
@@ -167,7 +173,8 @@ const routes = [
             txt: '组织管理',
             flag: 'organizationManagement',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2']
         },
         component: organizationManagement
     },{
@@ -188,7 +195,8 @@ const routes = [
             txt: '研究指标',
             flag: 'researchTarget',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2']
         },
         component: researchTarget
     },{
@@ -209,7 +217,8 @@ const routes = [
             txt: '项目分组',
             flag: 'projectGrouping',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2']
         },
         component: projectGrouping
     },{
@@ -230,7 +239,8 @@ const routes = [
             txt: '随访计划',
             flag: 'followUpPlan',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2']
         },
         component: followUpPlan
     },{
@@ -251,7 +261,8 @@ const routes = [
             txt: '操作记录',
             flag: 'operationRecord',
             belongToGroup: 'researchTask',
-            openMode: 2
+            openMode: 2,
+            roles:['1','2']
         },
         component: operationRecord
     }

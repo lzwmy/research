@@ -44,6 +44,7 @@ export default {
         return {
             defaultCheckedList: ['入组序号','首次录入时间','所在中心'],
             defaultChecked: ['入组序号','首次录入时间','所在中心'],
+            previewFormItem:[]
         }
     },
     watch: {
@@ -52,6 +53,9 @@ export default {
                 this.initFomeItem();
             }
         }
+    },
+    created() {
+        
     },
     methods: {
         //回显crf表单列表下的已选指标
@@ -63,6 +67,7 @@ export default {
                 let res = await this.$http.researchObjectTablePreviewFormItem(params);
                 if (res.code == '0') {
                     let tempArr = [];
+                    this.previewFormItem = res.data;
                     res.data.forEach(item =>{
                         if(item.crfId){
                             this.dataInfo.dataList.forEach(li => {
