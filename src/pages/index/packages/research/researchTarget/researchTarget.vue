@@ -2,8 +2,9 @@
   <div class="cloud-component researchTarget">
     <!-- 研究指标 -->
     <!--<img src="../images/researchTarget.png" alt="" width="100%">-->
-      <el-tabs ref="elTabs" class="research_target-box" v-if="displayState" v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
+      <el-tabs ref="elTabs" class="research_target-box" v-loading="loading"  v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
         <el-tab-pane
+            v-if="displayState"
             :key="index"
             v-for="(item, index) in editableTabs"
             :name="String(index)"
@@ -23,7 +24,7 @@
             </div>
             <div class="research_form_box">
               <!--{{item.content}}-->
-              <createForm ref="createForm" :crfData="item" :formOptions="options" @callback-data="callbackData" @callback-save="callbackSave"></createForm>
+              <createForm ref="createForm"  :crfData="item" :formOptions="options" @callback-data="callbackData" @callback-save="callbackSave"></createForm>
             </div>
           </el-tab-pane>
       </el-tabs>
@@ -58,6 +59,7 @@
     },
     data() {
       return {
+        loading:false,
         displayState:false,
         dialogFormVisible:false,
         addStatus:this.tabAddStatus || true,
@@ -75,7 +77,7 @@
     },
     watch: {
       "tabIndex":function (data) {
-          this.sortTab();
+          // this.sortTab();
       }
     },
     methods: {
@@ -128,6 +130,7 @@
           this.displayState = true;
         });
         this.editableTabsValue = String(newTabName-1);
+
         this.tabIndex = String(newTabName-1);
       },
       handleClick(tab, event) {
@@ -211,7 +214,7 @@
               this.editableTabs.splice(evt.newIndex,0,prevCopyData);
               this.$nextTick(()=>{
                 this.displayState = true;
-                this.editableTabsValue = String(evt.newIndex);
+                this.editableTabsValue = String(evt.newIndex+1);
               });
             }
           })
@@ -287,9 +290,11 @@
     },
     mounted() {
       this.displayState = true;
+      this.loading = true;
       this.queryDataList().then(()=>{
-        let el = document.querySelectorAll('.el-tabs__nav')[1];
-        let sortable = Sortable.create(el,{
+        this.loading = false;
+        // let el = document.querySelectorAll('.el-tabs__nav')[1];
+        /*let sortable = Sortable.create(el,{
           onEnd:(evt) => {
             // console.log(evt);
             // console.log('之前的数据',this.editableTabs[evt.oldIndex]);
@@ -300,6 +305,31 @@
             this.$nextTick(()=>{
               this.displayState = true;
               this.editableTabsValue = String(evt.newIndex);
+            });
+          }
+        })*/
+      });
+      this.$nextTick(()=>{
+        let el = document.querySelectorAll('.el-tabs__nav')[1];
+        let sortable = Sortable.create(el,{
+          onEnd:(evt) => {
+            console.log(evt);
+            // console.log('之前的数据',this.editableTabs[evt.oldIndex]);
+            let copyList = JSON.parse(JSON.stringify(this.editableTabs));
+
+            let prevCopyData = Object.assign({},JSON.parse(JSON.stringify(copyList[evt.oldIndex])));
+
+            copyList.splice(evt.oldIndex,1);
+            copyList.splice(evt.newIndex,0,prevCopyData);
+            console.log(copyList);
+            this.editableTabs = [];
+            this.editableTabs = copyList ;
+            this.displayState = false;
+            this.$nextTick(()=>{
+              // console.log(this.editableTabs);
+              this.displayState = true;
+              this.editableTabsValue = String(evt.newIndex);
+              this.tabIndex = evt.newIndex;
             });
           }
         })

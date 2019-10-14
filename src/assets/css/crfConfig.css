@@ -1,5 +1,9 @@
 /*表单渲染样式*/
 
+.el-row::before{
+  display: none;
+}
+
 /*小节*/
 .displayPortion_box .length_set div .el-col {
   margin-top: 5px;
