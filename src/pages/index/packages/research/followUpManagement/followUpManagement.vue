@@ -3,9 +3,9 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button type="primary" icon="icon iconfont icondaochu" @click="">批量导入随访数据</el-button>
-                <el-button type="primary" icon="icon iconfont iconxiazaimoban" @click="">导出随访阶段数据</el-button>
-                <el-button type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="">批量导入随访数据</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">导出随访阶段数据</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
             </div>
         </div>
         <!-- 搜索区域 -->
@@ -126,7 +126,7 @@
                                     :prop="point.prop" 
                                     :label="point.label" 
                                     :width="point.label.length * 15 + 20"
-                                    align="center">
+                                    align="center" >
                                     <template slot-scope="scope">
                                         <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
                                             <div slot="content">
@@ -215,7 +215,7 @@ export default {
                 formTitle:'',
                 content: []
             },
-            hidden:''
+            hidden:'',
         }
     },
     mounted () {
@@ -388,6 +388,10 @@ export default {
         },
         //打开表单填写页面
         toReportFill(row,point,crfId) {
+            if(!this.$store.state.user.researchAuth.authImport) {
+                this.$mes('info','暂无操作权限!')
+                return;
+            }
             let group = this.groupList.find(item=>{
                 return item.subjectGroupId == this.currentGrounpId;
             })

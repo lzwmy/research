@@ -14,8 +14,7 @@
                         <el-input @keyup.enter.native="addOrg" @blur="addOrg" class="addOrg" v-else v-model="item.orgName"></el-input>
                     </li>
                 </ul>
-                <el-button v-if="this.$store.state.user.researchInfo.centerModel==1" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加单中心</el-button>
-                <el-button v-if="this.$store.state.user.researchInfo.centerModel==2" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加多中心</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authAddCenter" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加中心</el-button>
             </div>
             <div class="content">
                 <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">

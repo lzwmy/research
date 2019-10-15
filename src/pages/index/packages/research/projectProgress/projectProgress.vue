@@ -346,7 +346,7 @@
       }
     },
     created() {
-      if(JSON.parse(sessionStorage.getItem('CURR_LOGIN_TYPE')) == 'research') {
+      if(sessionStorage.getItem('CURR_LOGIN_TYPE') == 'research') {
         this.getUserInfo()
         .then(res=>{
           this.$store.commit('saveresearchInfo',{

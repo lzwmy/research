@@ -812,14 +812,12 @@ const isRepeat = function(arr) {
   return false;
 }      
 
-//参数1： 用户角色  参数2：有权限的角色
-const judgeAuth = function(arr1, arr2) {
-  console.log(arr1)
-  console.log(arr2)
+//判断两数组里是否包括相同元素key
+const arrayExistAttr = function(arr1, arr2,key) {
   let isExist = false;
   arr1.forEach(item=>{
     arr2.forEach(li=>{
-        if(item === li) {
+        if(item.key === li.ley) {
             isExist = true;
         }
     })
@@ -869,5 +867,5 @@ export default {
   handlePagination,   //操作分页表现表形
   deleteFileId,     //单文件删除
   isRepeat,     //数组里值是否重复
-  judgeAuth,    //科研项目 判断是否拥有权限
+  arrayExistAttr,    //判断两数组里是否包括相同元素key
 };

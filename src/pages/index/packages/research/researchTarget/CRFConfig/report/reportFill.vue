@@ -538,7 +538,9 @@ export default {
         formId: data.crfId,
         reportId: data.reportId,
         status: data.status,
-        pointPatientId: data.pointPatientId
+        pointPatientId: data.pointPatientId,
+        updateTime: data.updateTime,
+        creator: data.creator
       })
       sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
       this.initPage();
