@@ -21,7 +21,7 @@
             <div class="card_foot">
               <div class="t flex-between-center">
                 <p class="title">{{item.subjectName}}</p>
-                <p><i class="icon iconfont iconzujian8"></i>{{item.centerCount}}</p>
+                <p><i class="icon iconfont iconzujian8"></i>{{item.patientCount}}</p>
               </div>
               <div class="info flex-between-center">
                 <p><i class="icon iconfont iconzujian6"></i>{{item.author}}</p>

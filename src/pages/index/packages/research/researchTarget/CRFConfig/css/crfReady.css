@@ -254,6 +254,7 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 .crf-main .crf-step-header {
   border-bottom: 1px solid #e9eaec;
   padding: 11.5px;
+  background-color: #fff; 
 }
 
 .crf-step .crf-section-title {

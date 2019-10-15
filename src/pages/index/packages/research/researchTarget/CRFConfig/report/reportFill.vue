@@ -9,18 +9,25 @@
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;">关闭</el-button>
             <el-button v-if="urlParameter.from=='researchObject'" @click="saveReportData" type="primary" style="float:right;margin-right: 15px" :disabled="mainLoading">保 存</el-button>
-            <el-button v-if="urlParameter.from=='followUpManagement'" @click="saveFollowUpReportData(1)" type="primary" style="float:right;margin-right: 15px" :disabled="mainLoading">保 存</el-button>
+            <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(1)" type="primary" style="float:right;margin-right: 15px" :disabled="mainLoading">保 存</el-button>
             <el-button v-if="urlParameter.from=='researchObject'" @click="commitReportData" type="warning" style="float:right;margin-right: 5px" :disabled="commitLoading">提 交</el-button>
-            <el-button v-if="urlParameter.from=='followUpManagement'" @click="saveFollowUpReportData(2)" type="warning" style="float:right;margin-right: 5px" :disabled="commitLoading">提 交</el-button>
-            <el-button v-if="urlParameter.from=='followUpManagement'" @click="showStopDialog" type="danger" style="float:right;margin-right: 5px">终止随访或失访</el-button>
+            <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(2)" type="warning" style="float:right;margin-right: 5px" :disabled="commitLoading">提 交</el-button>
+            <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="showStopDialog" type="danger" style="float:right;margin-right: 5px">终止随访或失访</el-button>
             <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
           </div>
           <div class="flex-start-start" style="height:100%; margin-top: 8px;">
             <!-- 随访列表 -->
-            <stageListCom v-if="urlParameter.from=='followUpManagement'" :groupId='urlParameter.groupId' :patientId="urlParameter.patientId" :pointPatientId='pointPatientId' @sendPoint="getPoint"></stageListCom>
+            <stageListCom 
+              v-if="urlParameter.from=='followUpManagement'" 
+              :groupId='urlParameter.groupId' 
+              :patientId="urlParameter.patientId" 
+              :pointPatientId='pointPatientId' 
+              @sendPoint="getPoint"
+              @changeIsManual="handleIsManual">
+              </stageListCom>
             <div ref="top" class="crf-step-content" id="mainContent">
               <br/>
-              <div class="formTip flex-start-center" v-if="urlParameter.from=='followUpManagement'" >
+              <div class="formTip flex-start-center" v-if="urlParameter.from=='followUpManagement' && [2,3,4].indexOf(urlParameter.status) != -1" >
                 <p class="formTip_title flex-center-center" :class="handleType(urlParameter.status)">
                   <i class="icon" :class="handleType(urlParameter.status)"></i>
                   {{handleStatus(urlParameter.status)}}
@@ -172,6 +179,7 @@ export default {
       scrollTop: 0,
       urlParameter:{},
       pointPatientId:'',  //当前随访点
+      isManual: true,  //当阶段未开始时,为手动触发操作
       dialogStop: {
         type: 1,
         visible: false,
@@ -212,7 +220,6 @@ export default {
     },
     initPage() {
       this.urlParameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
-      console.log(this.urlParameter.stageList)
       this.pointPatientId = this.urlParameter.pointPatientId;
       this.patientId = "";
       this.groupId = "";
@@ -270,7 +277,6 @@ export default {
         let  result = await this.$http.querySubjectCrfDisplayInfo({
           crfId: this.formId
         });
-        console.log(result)
         if (result && result.code == "0") {
           this.crfForm = result.data;
           this.crfForm.formPortions = result.data.subjectPortions;
@@ -293,33 +299,9 @@ export default {
         }
         if (report.data && report.code == "0") {
           this.report = report.data;
-          //从随访管理页面进来且为报告空模版
-        if(this.urlParameter.from=='followUpManagement' && this.report.portions.length == 0 ) {
-          // this.report = {
-          //   // author: this.urlParameter.author || '',
-          //   // createTime: this.urlParameter.createTime || '',
-          //   crfId: this.urlParameter.formId || '',
-          //   // deleteFlag: this.urlParameter.deleteFlag || '',
-          //   // groupId: this.urlParameter.groupId || '',
-          //   // groupName: this.urlParameter.groupName || '',
-          //   // id: this.urlParameter.reportId || '',
-          //   // patientId: this.urlParameter.patientId || '',
-          //   portions: [],
-          //   reportName: this.urlParameter.reportName || '',
-          //   // reportType: this.urlParameter.reportType || '',
-          //   // status: this.urlParameter.status,
-          //   // subjectId: this.urlParameter.subjectId || '',
-          //   // subjectName: this.urlParameter.subjectName || '',
-          //   // updateTime: this.urlParameter.updateTime || '',
-          //   // updator: this.urlParameter.updator || '',
-          //   // visitDate: this.urlParameter.visitDate || ''
-          // }
-          console.log(this.report)
-        }
           if(report.data && report.data.portions&&report.data.portions.length==0){
               this.$store.commit("CRF_SET_REPORT_STATUS", true);
           }else{
-            // this.showReadComponent=true;
             this.showReadComponent=false;
           }
         }
@@ -531,6 +513,11 @@ export default {
     getContentTop(top) {
       this.scrollTop = top;
     },
+    //改变是否手动触发
+    handleIsManual(val) {
+      console.log(val)
+      this.isManual = val
+    },
     //获取随访点
     getPoint(data) {
       this.update = false;
@@ -540,7 +527,7 @@ export default {
         status: data.status,
         pointPatientId: data.pointPatientId,
         updateTime: data.updateTime,
-        creator: data.creator
+        creator: data.creator,
       })
       sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
       this.initPage();

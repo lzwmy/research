@@ -13,6 +13,13 @@
       "unicode_decimal": 59058
     },
     {
+      "icon_id": "645195",
+      "name": "更多",
+      "font_class": "iconfontgengduo",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
       "icon_id": "1126026",
       "name": "微信",
       "font_class": "weixin",
@@ -1292,6 +1299,48 @@
       "font_class": "education",
       "unicode": "e6b1",
       "unicode_decimal": 59057
+    },
+    {
+      "icon_id": "11228133",
+      "name": "听瘤",
+      "font_class": "tingliu",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
+      "icon_id": "11228134",
+      "name": "肾瘤癌栓",
+      "font_class": "shenliuaishuan",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "11242640",
+      "name": "查询",
+      "font_class": "zujian43",
+      "unicode": "e6e0",
+      "unicode_decimal": 59104
+    },
+    {
+      "icon_id": "11242641",
+      "name": "保存",
+      "font_class": "zujian44",
+      "unicode": "e6e1",
+      "unicode_decimal": 59105
+    },
+    {
+      "icon_id": "11242642",
+      "name": "添加",
+      "font_class": "zujian45",
+      "unicode": "e6e2",
+      "unicode_decimal": 59106
+    },
+    {
+      "icon_id": "11242643",
+      "name": "重置",
+      "font_class": "zujian46",
+      "unicode": "e6e3",
+      "unicode_decimal": 59107
     }
   ]
 }

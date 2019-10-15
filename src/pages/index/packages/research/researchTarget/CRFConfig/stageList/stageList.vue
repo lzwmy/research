@@ -10,9 +10,9 @@
                     <span class="title">{{item.stageName}}</span>
                 </template>
                 <el-menu-item-group v-for="(li, liIndex) in item.pointList" :key="liIndex"> 
-                    <el-menu-item :disabled="li.status == 5" :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li,item.crfId)">
+                    <el-menu-item :disabled="li.status == 5" :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li,item.crfId,item)">
                         <span>{{li.name}}</span>
-                        <span v-if="li.status == 0" class="icon el-icon-more" style="color: #333;"></span>
+                        <span v-if="li.status == 0" class="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></span>
                         <span v-if="li.status == 1" class="icon iconfont icondaifang" style="color: #00B8DF;"></span>
                         <span v-if="li.status == 2" class="icon iconfont iconshifang" style="color: #F79E00;"></span>
                         <span v-if="li.status == 3" class="icon iconfont iconzhongzhi" style="color: #DB5452;"></span>
@@ -41,15 +41,32 @@ export default {
             this.stageList.forEach(item => {
                 this.defaultOpeneds.push(item.stageId)
             });
+            let stage = [],isManual;
+            this.stageList.forEach(item=>{
+                item.pointList.forEach(li=>{
+                    if(this.pointPatientId == li.pointPatientId) {
+                        stage = item;
+                    }
+                })
+            })
+            if(this.pointPatientId == stage.pointList[0].pointPatientId) {
+                isManual = false;
+                this.$emit('changeIsManual',isManual)
+            }
         })
     },
     methods: {
-        selectItem(row,crfId) {
-            console.log(row)
+        selectItem(row,crfId,item) {
             if(row.status == 5) {
                 return;
             }
-            let data = Object.assign(row,{crfId,crfId})
+            //如果为手动触发的阶段   isManual为true则不能操作表单（非第一个随访点）
+            let isManual = item.pointList.every(li=>{return !li.planDate;})
+            if(row.pointPatientId == item.pointList[0].pointPatientId) {
+                isManual = false;
+            }
+            this.$emit('changeIsManual',isManual)
+            let data = Object.assign(row,{crfId})
             this.$emit('sendPoint', data)
         },
         //获取阶段列表
@@ -153,7 +170,6 @@ export default {
     }
 
 }
-
 </style>
 
 

@@ -112,20 +112,18 @@
                         show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="研究内容" align="center">
-                        <span v-for="li in dataList.header" :key="li.prop">
-                            <el-table-column 
-                                v-if="li.type=='report'"
-                                :prop="li.prop" 
-                                :label="li.label" 
-                                :width="li.label.length * 15 + 20"
-                                align="center"
-                                :key="li.prop">
-                                <template slot-scope="scope">
-                                    <el-button @click="toReportFill(scope.row,li.prop,li.label,'add')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
-                                    <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
-                                </template>
-                            </el-table-column>
-                        </span>
+                        <el-table-column 
+                            v-for="li in headerReportList" 
+                            :key="li.prop"
+                            :prop="li.prop" 
+                            :label="li.label" 
+                            :width="li.label.length * 15 + 20"
+                            align="center">
+                            <template slot-scope="scope">
+                                <el-button @click="toReportFill(scope.row,li.prop,li.label,'add')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
+                                <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
+                            </template>
+                        </el-table-column>
                     </el-table-column>
                     <el-table-column width="60" align="center" fixed="right">
                         <template slot="header" slot-scope="scope">
@@ -172,6 +170,7 @@ export default {
             allCrfForm: [],
             currentGrounpId: null,
             dataList: {
+                header: [],
                 content: []
             },
             importData: {
@@ -222,6 +221,13 @@ export default {
             hidden: '',
         }
     },
+    computed: {
+        headerReportList() {
+            return this.dataList.header.filter(item=>{
+                return item.type == 'report'
+            })
+        }
+    },
     created() {
         
     },
@@ -241,7 +247,6 @@ export default {
         formItemCom
     },
     methods: {
-        
         //切换页面刷新操作
         addEventListenervisibilityChange() {
             this.hidden = "";

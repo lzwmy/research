@@ -120,34 +120,35 @@
                     </el-table-column>
                     <span v-for="(li,liIndex) in dataList.header" :key="'1_'+liIndex">
                         <el-table-column v-if="li.type =='report'" :label="li.label" align="center">
-                            <span v-for="(point,poindex) in li.prop" :key="'2_'+poindex">
-                                <el-table-column 
-                                    :prop="point.prop" 
-                                    :label="point.label" 
-                                    :width="point.label.length * 15 + 20"
-                                    align="center">
-                                    <template slot-scope="scope">
-                                        <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
-                                            <div slot="content">
-                                                <p v-if="handlePoint(scope.row[point.prop]).status == 1 && handlePoint(scope.row[point.prop]).planDate">计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
-                                                <p v-if="handlePoint(scope.row[point.prop]) == 1 &&  !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
-                                                <div v-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
-                                                    <p>随访员：{{handlePoint(scope.row[point.prop]).updator}}</p>
-                                                    <p>计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
-                                                    <p>时间：{{handlePoint(scope.row[point.prop]).updateTime}}</p>
-                                                    <p v-if="handlePoint(scope.row[point.prop]).note">备注：{{handlePoint(scope.row[point.prop]).note}}</p>
-                                                </div> 
-                                            </div>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon el-icon-more" style="color: #333;"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
-                                            <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
-                                            <el-button v-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333; cursor: default;"></el-button> 
-                                        </el-tooltip>
-                                    </template>
-                                </el-table-column>
-                            </span>
+                            <el-table-column 
+                                v-for="(point,poindex) in li.prop" 
+                                :key="'2_'+poindex"
+                                :prop="point.prop" 
+                                :sort-by="String(poindex)"
+                                :label="point.label" 
+                                :width="point.label.length * 15 + 20"
+                                align="center">
+                                <template slot-scope="scope">
+                                    <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
+                                        <div slot="content">
+                                            <p v-if="handlePoint(scope.row[point.prop]).status == 1 && handlePoint(scope.row[point.prop]).planDate">计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
+                                            <p v-if="handlePoint(scope.row[point.prop]) == 1 &&  !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
+                                            <div v-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
+                                                <p>随访员：{{handlePoint(scope.row[point.prop]).updator}}</p>
+                                                <p>计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
+                                                <p>时间：{{handlePoint(scope.row[point.prop]).updateTime}}</p>
+                                                <p v-if="handlePoint(scope.row[point.prop]).note">备注：{{handlePoint(scope.row[point.prop]).note}}</p>
+                                            </div> 
+                                        </div>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
+                                        <el-button v-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333; cursor: default;"></el-button> 
+                                    </el-tooltip>
+                                </template>
+                            </el-table-column>
                         </el-table-column>
                     </span>
                     <el-table-column label="操作" width="60" align="center" fixed="right">
@@ -297,6 +298,7 @@ export default {
                         content: res.data.body,
                         header: res.data.header
                     };
+                    console.log(obj)
                     that.dataList = obj;
                 }else {
                     that.dataList = {

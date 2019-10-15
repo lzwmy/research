@@ -52,7 +52,7 @@
                                 <el-radio-group :disabled="configExists" v-model="form.frequencyType">
                                     <el-radio label="1" :disabled="true">不限制频率</el-radio>
                                     <el-radio label="2">均匀随访</el-radio>
-                                    <el-radio :disabled="form.amount == 1" label="3">非均匀随访</el-radio>
+                                    <el-radio label="3">非均匀随访</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                             <el-form-item label="">
@@ -439,7 +439,7 @@ export default {
             })
             if(this.form.frequencyType == '3') {
                 if(frequency.length != this.form.amount - 1) {
-                    this.$mes('info','非均匀随访间隔与随访点不匹配!')
+                    this.$mes('info','随访频次个数应为随访次数减1!')
                     return;
                 }
                 if(!isRight) {
