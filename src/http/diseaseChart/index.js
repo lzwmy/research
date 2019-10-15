@@ -39,7 +39,42 @@ const url = {
   //预览 -- 2D散点图
   preview2DScatter:"/diseasespecies/preview2DScatter.do",
   //预览 -- 3D散点图
-  preview3DScatter:"/diseasespecies/preview3DScatter.do"
+  preview3DScatter:"/diseasespecies/preview3DScatter.do",
+  /**
+   *  病种概览 最新
+   * **/
+  //所有的统计指标下拉框
+  chartFormItemList:"/chart/formItem/list.do",
+  //配置病种分析界面
+  chartCustomChartSave:"/chart/customChart.do",
+  //配置病种分析界面，左侧的图表列表
+  chartGetChartListNew:"/chart/getChartList.do",
+  //删除自定义表格
+  chartCustomChartDeleteNew:"/chart/customChart/delete.do",
+  //配置病种分析界面，右侧的图表预览
+  chartSimpleChartPreviewNew:"/chart/simpleChart/preview.do",
+  //饼状图
+  chartGetPieNew:"/chart/getPie.do",
+  //柱状图
+  chartGetBarNew:"/chart/getBar.do",
+  //折线图
+  chartGetLineNew:"/chart/getLine.do",
+  //2D-散点图
+  chartGet2DScatterNew:"/chart/get2DScatter.do",
+  //3D- 散点图
+  chartGet3DScatterNew:"/chart/get3DScatter.do",
+  //预览- 饼状图
+  chartPreviewPieNew:"/chart/previewPie.do",
+  //预览- 柱状图
+  chartPreviewBarNew:"/chart/previewBar.do",
+  //预览- 折线图
+  chartPreviewLineNew:"/chart/previewLine.do",
+  //预览- 2D散点图
+  chartPreview2DScatterNew:"/chart/preview2DScatter.do",
+  //预览- 3D散点图
+  chartPreview3DScatterNew:"/chart/preview3DScatter.do",
+  //病种的患者治疗抢矿熟料统计和简略图表预览
+  chartSimpleChartNew:"/chart/simple/charts.do"
 };
 
 const http = {
@@ -95,6 +130,55 @@ const http = {
   },
   preview3DScatter(params) {
     return vm.$post(url.preview3DScatter,params,false);
+  },
+  //最新
+  chartFormItemList(params) {
+    return vm.$post(url.chartFormItemList,params,true);
+  },
+  chartCustomChartSave(params) {
+    return vm.$post(url.chartCustomChartSave,params,false);
+  },
+  chartGetChartListNew(params) {
+    return vm.$post(url.chartGetChartListNew,params,true);
+  },
+  chartCustomChartDeleteNew(params) {
+    return vm.$get(url.chartCustomChartDeleteNew,params,true);
+  },
+  chartSimpleChartPreviewNew(params) {
+    return  vm.$post(url.chartSimpleChartPreviewNew,params,true);
+  },
+  chartGetPieNew(params) {
+    return vm.$post(url.chartGetPieNew,params,true);
+  },
+  chartGetBarNew(params) {
+    return vm.$post(url.chartGetBarNew,params,true);
+  },
+  chartGetLineNew(params) {
+    return vm.$post(url.chartGetLineNew,params,true);
+  },
+  chartGet2DScatterNew(params) {
+    return vm.$post(url.chartGet2DScatterNew,params,true);
+  },
+  chartGet3DScatterNew(params) {
+    return vm.$post(url.chartGet3DScatterNew,params,true);
+  },
+  chartPreviewPieNew(params) {
+    return vm.$post(url.chartPreviewPieNew,params,false);
+  },
+  chartPreviewBarNew(params) {
+    return vm.$post(url.chartPreviewBarNew,params,false);
+  },
+  chartPreviewLineNew(params) {
+    return vm.$post(url.chartPreviewLineNew,params,false);
+  },
+  chartPreview2DScatterNew(params) {
+    return vm.$post(url.chartPreview2DScatterNew,params,false);
+  },
+  chartPreview3DScatterNew(params) {
+    return vm.$post(url.chartPreview3DScatterNew,params,false);
+  },
+  chartSimpleChartNew(params) {
+    return vm.$post(url.chartSimpleChartNew,params,true);
   }
 };
 
