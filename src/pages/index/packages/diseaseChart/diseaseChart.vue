@@ -492,7 +492,7 @@
         };
         try {
           // let data = await that.$http.getPieData(fromData);
-          let data = await that.$http.chartPreviewPieNew(fromData);
+          let data = await that.$http.chartGetPieNew(fromData);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.pitOption)));
             let array = [];

@@ -217,6 +217,10 @@
         },
         // CRF 保存
         saveCRF() {
+          if(this.crfName =="") {
+            this.$message.warning('请填写报告名称');
+            return
+          }
           if(this.$route.query.type == 'add') {
             this.CRFReportSave();
           }else if(this.$route.query.type == 'modify') {

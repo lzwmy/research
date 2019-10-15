@@ -74,7 +74,9 @@ const url = {
   //预览- 3D散点图
   chartPreview3DScatterNew:"/chart/preview3DScatter.do",
   //病种的患者治疗抢矿熟料统计和简略图表预览
-  chartSimpleChartNew:"/chart/simple/charts.do"
+  chartSimpleChartNew:"/chart/simple/charts.do",
+  //自定义图表下拉框选择病种下的CRF表单
+  chartDiseaseCrfListNew:"/chart/disease/crf.do",
 };
 
 const http = {
@@ -179,6 +181,9 @@ const http = {
   },
   chartSimpleChartNew(params) {
     return vm.$post(url.chartSimpleChartNew,params,true);
+  },
+  chartDiseaseCrfListNew(params) {
+    return vm.$get(url.chartDiseaseCrfListNew);
   }
 };
 

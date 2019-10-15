@@ -52,7 +52,7 @@
                                 <el-radio-group :disabled="configExists" v-model="form.frequencyType">
                                     <el-radio label="1" :disabled="true">不限制频率</el-radio>
                                     <el-radio label="2">均匀随访</el-radio>
-                                    <el-radio label="3">非均匀随访</el-radio>
+                                    <el-radio :disabled="form.amount == 1" label="3">非均匀随访</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                             <el-form-item label="">
@@ -396,12 +396,14 @@ export default {
             switch (parseInt(this.form.frequencyType)) {
                 case 2:
                     if(!this.form.frequency.frequencyParam) {
-                        this.$mes('info','请输入均匀随访内容')
+                        this.$mes('info','请输入均匀随访内容'); 
+                        return
                     }
                     break;
                 case 3:
                     if(!this.form.frequency.frequencyParam) {
-                        this.$mes('info','请输入非均匀随访内容')
+                        this.$mes('info','请输入非均匀随访内容') ;
+                        return
                     }
                     break;
                 default: 
@@ -410,33 +412,45 @@ export default {
             switch (parseInt(this.form.startType)) {
                 case 2:
                     if(!this.form.startTimeParam.startParam) {
-                        this.$mes('info','请输入入组后开始内容')
+                        this.$mes('info','请输入入组后开始内容');
+                        return
                     }
                     break;
                 case 3:
                     if(!this.form.startTimeParam.startParam || !this.form.startTimeParam.startParam2 || !this.form.startTimeParam.startParam3) {
-                        this.$mes('info','请输入入组阶段时间题目触发开始内容')
+                        this.$mes('info','请输入入组阶段时间题目触发开始内容');
+                        return
                     }
                     break;
                 case 4:
                     if(!this.form.startTimeParam.startParam || !this.form.startTimeParam.startParam2) {
-                        this.$mes('info','请输入某个阶段结束后触发开始内容')
+                        this.$mes('info','请输入某个阶段结束后触发开始内容');
+                        return
                     }
                     break;
                 default: 
                     break;
             }
+            //随访点次数校验
             let frequency = this.form.frequency.frequencyParam.split(',');
-            console.log(frequency)
-            if(frequency.length != this.form.amount) {
-                this.$mes('info','非均匀随访间隔与随访点不匹配!')
-                return;
+            //输入整数校验
+            let isRight = frequency.every(item=>{
+                return item && Number(item);
+            })
+            if(this.form.frequencyType == '3') {
+                if(frequency.length != this.form.amount - 1) {
+                    this.$mes('info','非均匀随访间隔与随访点不匹配!')
+                    return;
+                }
+                if(!isRight) {
+                    this.$mes('info','非均匀随访间隔格式错误!')
+                    return;
+                }
             }
             if(!this.form.crfId) {
                 this.$mes('info','请添加随访内容信息!')
                 return
             }
-            return
             this.infoLoading = true;
             let params = {
                 stageId: this.form.stageId,
