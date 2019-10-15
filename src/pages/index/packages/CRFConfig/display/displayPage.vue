@@ -33,14 +33,13 @@ export default {
     // console.log(this.item,this.report)
     this.item.formPortions.forEach(element => {
       let arr = this.report.portions.filter(
-        o => o.reportName == element.portionName
+        o => o.portionName == element.portionName
       );
       if (arr.length == 0) {
         let newObj = { portionName: element.portionName, items: [] };
         this.report.portions.push(newObj);
       }
     });
-
   },
   methods: {
     getData(portion) {

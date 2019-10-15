@@ -9,7 +9,7 @@
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
             <el-button @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
-            <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
+            <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>
           </div>
           <div ref="top" class="crf-step-content" id="mainContent">
             <display-report v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
@@ -22,7 +22,7 @@
       </div>
 
       <!--报告阅读-->
-        <!--<report-read ref="reportRead" v-else  :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
+        <report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>
     </div>
     <!--数据绑定提醒-->
     <transition name="fade">
@@ -84,7 +84,7 @@
 <script type="text/javascript">
 import "./../css/crfReady.css";
 import displayReport from "./../display/displayReport";
-// import reportRead from "./../report/reportRead";
+import reportRead from "./reportRead";
 import mixins from "components/mixins";
 import { mapGetters } from "vuex";
 export default {
@@ -92,7 +92,7 @@ export default {
   mixins: [mixins],
   components: {
     displayReport,
-    // reportRead
+    reportRead
   },
   data() {
     return {
@@ -223,8 +223,8 @@ export default {
           if(report.data && report.data.portions&&report.data.portions.length==0){
               this.$store.commit("CRF_SET_REPORT_STATUS", true);
           }else{
-            // this.showReadComponent=true;
-            this.showReadComponent=false;
+            this.showReadComponent=true;
+            // this.showReadComponent=false;
           }
         }
       } catch (error) {
@@ -259,7 +259,7 @@ export default {
               });
             }
           });
-          this.$nextTick(() => {
+          /*this.$nextTick(() => {
             if (this.urlParameter.from === "caseManage") {
               this.$router.push({
                 path: this.urlParameter.from,
@@ -279,7 +279,7 @@ export default {
                 }
               });
             }
-          });
+          });*/
         }
         this.mainLoading = false;
       } catch (error) {
@@ -344,6 +344,7 @@ export default {
     //切换到报告阅读页面
     toReportRead() {
       this.showReadComponent = true;
+      console.log(this.report);
     },
     //返回顶层
     backTop() {
