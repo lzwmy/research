@@ -48,7 +48,7 @@
 
 <script>
 export default {
-    props: ['formData'],
+    props: ['formData','roles'],
     data () {
         return {
             loading: false,
@@ -148,17 +148,17 @@ export default {
                     this.$mes('success','创建成功!');
                     this.$store.commit('saveresearchInfo',{
                         subjectInfoId: res.data,
-                        centerModel: this.formData.centerPattern
+                        centerModel: this.formData.centerPattern,
+                        roles: this.roles
                     });
                     setTimeout(()=>{
-                        let data = this.$store.state.user.taskMenuList;
                         let params = {
-                            title: '科研课题',
+                            title: '科研项目',
                             fromRouter: {
                                 path: this.$route.path,
                                 meta: this.$route.meta
                             },
-                            menuList: data.params
+                            menuList: this.$store.state.user.taskMenuList
                         }
                         sessionStorage.setItem('insideMenuData',JSON.stringify(params))
                         this.loading = false;

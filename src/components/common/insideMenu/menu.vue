@@ -89,7 +89,6 @@ export default {
     methods: {
         //判断是否有权限 
         authRoles(meta) {
-            console.log(meta)
             //非科研项目模块直接为ture
             if(this.$route.meta.belongToGroup != 'researchTask') {
                 return true;

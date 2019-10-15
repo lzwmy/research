@@ -3,17 +3,17 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">研究导入数据 </el-button>
-                <el-button type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
-                <el-button type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">研究导入数据 </el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
                 <el-dropdown trigger="hover" @command="handleAddObject">
                     <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang">
                         添加研究对象
                         <span class="add"><i class="el-icon-caret-bottom el-icon--right"></i></span>
                     </el-button>
                     <el-dropdown-menu slot="dropdown" class="addresearchObject">
-                        <el-dropdown-item command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
-                        <el-dropdown-item command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
+                        <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
+                        <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
                         <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -219,12 +219,14 @@ export default {
                 formTitle:'基本信息',
                 content: []
             },
-            hidden: ''
+            hidden: '',
         }
+    },
+    created() {
+        
     },
     mounted () {
         this.addEventListenervisibilityChange();
-        console.log(utils.judgeAuth(this.$store.state.user.researchInfo.roles,['1','2','3']))
     },
     beforeDestroy(){
         document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
@@ -343,6 +345,10 @@ export default {
         },
         //打开表单填写页面
         toReportFill(data,key,crfName,type) {
+            if(!this.$store.state.user.researchAuth.authImport) {
+                this.$mes('info','暂无操作权限!')
+                return;
+            }
             let crfForm = {};
             if(key) {
                 crfForm = JSON.parse(data[key]);

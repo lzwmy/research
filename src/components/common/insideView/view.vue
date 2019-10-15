@@ -79,8 +79,8 @@ export default {
             if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {
                 this.fromRouter = {};
                 this.title = '科研项目';
-                this.menuList = this.$store.state.user.taskMenuList.params;
-                this.researchId = sessionStorage.getItem('CURR_RESEARCH_ID');
+                this.menuList = this.$store.state.user.taskMenuList;
+                this.researchId = JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId;
                 return;
             }
             let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))

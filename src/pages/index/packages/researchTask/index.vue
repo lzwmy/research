@@ -3,7 +3,7 @@
     <!-- 搜索区域 -->
     <div class="cloud-search flex-end-center">
       <a class="special_btn_a" target="_blank"
-         href="https://research.yiducloud.com.cn/dpapservice/#/knowledge/home?customization=1&given_disease=%5B%22%E5%86%85%E7%A7%91ICU%22%5D&from=prdb&title=%E7%A7%91%E7%A0%94%E5%8D%8F%E4%BD%9C%E5%B9%B3%E5%8F%B0&callback=https%3A%2F%2Fresearch.yiducloud.com.cn%2F">
+        href="https://research.yiducloud.com.cn/dpapservice/#/knowledge/home?customization=1&given_disease=%5B%22%E5%86%85%E7%A7%91ICU%22%5D&from=prdb&title=%E7%A7%91%E7%A0%94%E5%8D%8F%E4%BD%9C%E5%B9%B3%E5%8F%B0&callback=https%3A%2F%2Fresearch.yiducloud.com.cn%2F">
         <el-button type="text" class="special_btn">科研灵感</el-button>
       </a>
       <el-button type="text" class="special_btn" @click="jumpSubject">课题验证</el-button>
@@ -94,6 +94,8 @@
     name: 'researchTask',
     data() {
       return {
+        roles: [], //用户角色
+        auth: false,
         dataList: [],
         actionUrl: '',
         loading: false,
@@ -114,6 +116,8 @@
       };
     },
     created() {
+      this.judgeAuth();
+      this.getUserInfo();
       this.getDataList();
       this.actionUrl = 'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
     },
@@ -125,7 +129,16 @@
         })
       },
       createTask() {
-        this.$router.push('/createProject')
+        if(!this.auth) {
+          this.$mes('info','暂无权限访问!')
+          return;
+        }
+        this.$router.push({
+          name: 'createProject',
+          params: {
+            roles: this.roles
+          }
+        })
       },
       onRemove(file) {
         this.deleteFile();
@@ -146,63 +159,55 @@
         }
       },
       linkTask(item) {
-        this.judgeAuth()
-        .then((res)=>{
-          if(!res) {
-            this.$mes('info','暂无权限访问!')
-            return
+        if(!this.auth) {
+          this.$mes('info','暂无权限访问!')
+          return;
+        }
+        if (item.createStatus == 3) {
+          let params = {
+            title: '科研项目',
+            researchId: item.id,
+            fromRouter: {
+              path: this.$route.path,
+              meta: this.$route.meta
+            },
+            menuList: this.$store.state.user.taskMenuList
           }
-          this.getUserInfo()
-          .then((roles)=>{
-            let data = this.$store.state.user.taskMenuList;
-            if (item.createStatus == 3) {
+          sessionStorage.setItem('insideMenuData', JSON.stringify(params))
+          this.$router.push({
+            name: "projectProgress",
+            params: params
+          })
+          this.$store.commit('saveresearchInfo',{
+            subjectInfoId: item.id,
+            centerModel: item.centerPattern,
+            roles: this.roles
+          });
+          this.btnLoading = false;
+          return;
+        } else {
+          this.getProjectInfo(item.id)
+            .then(() => {
               let params = {
-                title: '科研项目',
-                researchId: item.id,
-                fromRouter: {
-                  path: this.$route.path,
-                  meta: this.$route.meta
-                },
-                menuList: data.params
+                createStatus: 2,
+                projectInfo: {
+                  proType: 'edit',
+                  centerPattern: item.centerPattern,
+                  id: item.id,
+                  description: this.projectInfo.description || '',
+                  purpose: this.projectInfo.purpose || '',
+                  subjectName: this.projectInfo.subjectName,
+                  targetPatientNum: this.projectInfo.targetPatientNum || 0,
+                  fileId: this.projectInfo.fileId || '',
+                  fileName: this.projectInfo.fileName || '',
+                }
               }
-              sessionStorage.setItem('insideMenuData', JSON.stringify(params))
               this.$router.push({
-                name: "projectProgress",
+                name: "createProject",
                 params: params
               })
-              this.$store.commit('saveresearchInfo',{
-                subjectInfoId: item.id,
-                centerModel: item.centerPattern,
-                roles: roles
-              });
-              this.btnLoading = false;
-              return;
-            } else {
-              this.getProjectInfo(item.id)
-                .then(() => {
-                  let params = {
-                    createStatus: 2,
-                    projectInfo: {
-                      proType: 'edit',
-                      centerPattern: item.centerPattern,
-                      id: item.id,
-                      description: this.projectInfo.description || '',
-                      purpose: this.projectInfo.purpose || '',
-                      subjectName: this.projectInfo.subjectName,
-                      targetPatientNum: this.projectInfo.targetPatientNum || 0,
-                      fileId: this.projectInfo.fileId || '',
-                      fileName: this.projectInfo.fileName || '',
-                    }
-                  }
-                  this.$router.push({
-                    name: "createProject",
-                    params: params
-                  })
-                })
-            }
-          })
-          return;
-        })
+            })
+        }
       },
       async getDataList() {
         this.loading = true;
@@ -346,9 +351,9 @@
         try {
           let res = await this.$http.researchAuth();
           if (res.code == '0' && res.data) {
-            return Promise.resolve(true);
+            this.auth = true;
           }else {
-            return Promise.reject(false);
+            this.auth = false;
           }
         } catch (err) {
           console.log(err)
@@ -359,7 +364,7 @@
         try {
           let res = await this.$http.researchGetRoles();
           if (res.code == '0') {
-            return Promise.resolve(res.data);
+            this.roles = res.data;
           }
         } catch (err) {
           console.log(err)
