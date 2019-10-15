@@ -18,6 +18,8 @@ const url = {
   subjectStageGroupTotal:"/subject/progress/patient/group/total",
   //录入员任务完成情况
   subjectProgressTaskTotal:"/subject/progress/task/total",
+  //获取项目下的研究对象总数
+  subjectProgressCountPatient:"/subject/progress/count/patient",
 };
 
 const http = {
@@ -41,6 +43,9 @@ const http = {
   },
   subjectProgressTaskTotal(params) {
     return vm.$get(url.subjectProgressTaskTotal,params,true);
+  },
+  subjectProgressCountPatient(params) {
+    return vm.$get(url.subjectProgressCountPatient,params,true);
   }
 };
 
