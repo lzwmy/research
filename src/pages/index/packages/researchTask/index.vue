@@ -129,6 +129,10 @@
         })
       },
       createTask() {
+        if(!this.auth) {
+          this.$mes('info','暂无权限访问!')
+          return;
+        }
         this.$router.push({
           name: 'createProject',
           params: {

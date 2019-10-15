@@ -445,7 +445,8 @@
           diseaseId:that.$route.query.id
         };
         try{
-          let data = await that.$http.chartListData(fromData);
+          // let data = await that.$http.chartListData(fromData);
+          let data = await that.$http.chartSimpleChartNew(fromData);
           console.log(data);
           if(data.code == 0) {
             that.total=data.data.total;
@@ -490,7 +491,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.getPieData(fromData);
+          // let data = await that.$http.getPieData(fromData);
+          let data = await that.$http.chartPreviewPieNew(fromData);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.pitOption)));
             let array = [];
@@ -525,7 +527,8 @@
           chartId:value
         };
         try{
-          let data = await that.$http.getBarData(formData);
+          // let data = await that.$http.getBarData(formData);
+          let data = await that.$http.chartGetBarNew(formData);
           console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.histogramOption)));
@@ -553,7 +556,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.getLineData(fromData);
+          // let data = await that.$http.getLineData(fromData);
+          let data = await that.$http.chartGetLineNew(fromData);
           console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.lineOption)));
@@ -576,7 +580,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.get2DScatter(fromData);
+          // let data = await that.$http.get2DScatter(fromData);
+          let data = await that.$http.chartGet2DScatterNew(fromData);
           console.log(data)
           if(data.code == 0&& (data.data!==null&&data.data!=='null')) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.planeOption)));6
@@ -613,7 +618,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.get3DScatter(fromData);
+          // let data = await that.$http.get3DScatter(fromData);
+          let data = await that.$http.chartGet3DScatterNew(fromData);
           console.log(data);
           if(data.code ==0 ){
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.threeDimensionalOption)));

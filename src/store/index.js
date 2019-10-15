@@ -8,7 +8,7 @@ const USER_SIGNIN = 'USER_SIGNIN'; // 登录成功
 const USER_SIGNOUT = 'USER_SIGNOUT'; // 退出登录
 
 //科研项目信息
-let CURR_RESEARCH_INFO =  JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO'));
+let CURR_RESEARCH_INFO =  JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')) || {};
 
 //权限验证 参数1： 用户角色  参数2：有权限的角色
 const judgeAuth = function(arr1, arr2) {

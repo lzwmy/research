@@ -327,7 +327,10 @@ export default {
                     this.stageList.push(item.stages[i]);
                 }
             }
-            this.getConfigInfo(li.stageId);
+            //发布阶段
+            if(li.crfId) {
+                this.getConfigInfo(li.stageId);
+            }
         },
         //获取阶段配置信息
         async getConfigInfo(stageId) {
