@@ -9,7 +9,7 @@
         <strong>{{item.controlDisplayName}}</strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
-      <div class="view_knowType" v-if="item.gatherKnowType>0">
+      <div class="view_knowType" style="display:inline-block;" v-if="item.gatherKnowType>0">
         <el-radio-group v-model="report.value">
           <el-radio v-if="item.gatherKnowType==2" label="是"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="否"  @change="changeRadioKnowType(1)"></el-radio>

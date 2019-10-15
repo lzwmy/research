@@ -148,6 +148,9 @@
 .DATE_TIME .DATE_TIME_box .el-input .el-input__inner {
   width: 188px;
 }
+.DATE_TIME .DATE_TIME_box .el-date-editor.el-input{
+  width: 188px;
+}
 /*上传*/
 .FILE_UPLOAD{
 
