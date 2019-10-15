@@ -43,8 +43,9 @@
           </div>
 
           <div class="content" id="content" ref="content">
-            <div v-for="(obj, objIndex) in reportOjb" :key="objIndex">
-              <div class="box" v-for="(item, index) in obj.portions" :key="index">
+            <!--v-for="(obj, objIndex) in reportOjb" :key="objIndex"-->
+            <div >
+              <div class="box" v-for="(item, index) in reportOjb" :key="index">
                 <div class="box_title">
                   <el-checkbox v-model="checkedAll">{{item.portionName}}</el-checkbox>
                 </div>
@@ -142,7 +143,8 @@ export default {
     if(!this.report){
       this.report = {}
     }else {
-      this.reportOjb = JSON.stringify(this.report) != '{}' && this.report.pages;
+      // this.reportOjb = JSON.stringify(this.report) != '{}' && this.report.pages;
+      this.reportOjb = JSON.stringify(this.report) != '{}' && this.report.portions;
     }
     this.urlParameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
   },
@@ -331,6 +333,8 @@ export default {
         }
         .box_body {
           padding: 10px 15px;
+          /*width: 25%;*/
+          display: inline-block;
           h3 {
             font-size: 14px;
             font-weight: normal;
