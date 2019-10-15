@@ -348,7 +348,30 @@
     components: {
       charts
     },
+    created() {
+      if(!JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).roles) {
+        this.getUserInfo()
+          .then(res=>{
+            this.$store.commit('saveresearchInfo',{
+              subjectInfoId: JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId,
+              centerModel: 1,
+              roles: res
+            });
+          })
+      }
+    },
     methods: {
+      //角色信息
+      async getUserInfo() {
+        try {
+          let res = await this.$http.researchSharegetRoles();
+          if (res.code == '0') {
+            return Promise.resolve(res.data);
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      },
       //切换阶段
       switchStage(item, index) {
         console.log(item, index);

@@ -1,4 +1,6 @@
-
+.patient_form_container {
+  padding: 0 !important;
+}
 .cloud-component.crfConfig {
   height: 94.5%;
   position: relative;
@@ -11,14 +13,7 @@
   overflow: hidden;
 }
 
-.crf-main {
-  overflow: hidden;
-  border: 1px solid #e9eaec;
-  position: absolute;
-  left: 298px;
-  right: 305px;
 
-}
 .patient_form_container{
   padding: 5px;
   box-sizing: border-box;
@@ -339,7 +334,7 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 
 .crffill .crf-main {
   left: 10px;
-  width: calc(100% - 20px);
+  width: 100%;
   height: 100%;
   background-color: #f7f8fc;
   /*top: 10px;*/

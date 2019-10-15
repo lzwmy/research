@@ -77,6 +77,8 @@ const user = {
       state.session_isDislpayArrow = payload.isDislpayArrow;
     },
     saveresearchInfo(state, data) {
+      debugger
+      console.log(data)
       sessionStorage.setItem('CURR_RESEARCH_INFO', JSON.stringify(data));
       state.researchInfo = data;
       state.authImport = judgeAuth(data.roles,['1','2','3']);  //导入授权
