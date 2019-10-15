@@ -251,6 +251,10 @@
           }else if(this.$route.query.type == 'modify') {
             this.CRFReportModifySave()
           }*/
+          if(this.crfName =="") {
+            this.$message.warning('请填写报告名称');
+            return
+          }
           if(this.formOptions.saveStatus == '1') {
             this.researchFormSave().then((data)=>{
               this.$emit("callback-save",data)
