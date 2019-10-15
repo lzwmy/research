@@ -5,11 +5,33 @@
   width: 1200px;
   padding: 5px 0;
 }
+.view_knowType .empty {
+  position: relative;
+  /*top: 3px;*/
+  left: 5px;
+  color: #3c81f0;
+  cursor: pointer;
+}
+
+.displayPortion_box .tb_content .view_container_tlr .table_label .DATE .DATE_title span{
+  display: none;
+}
+.arrangement_lr .icon {
+  font-size: 14px;
+  cursor: pointer;
+  color: #3c81f0;
+}
+.arrangement_lr .icon .del{
+  color: #f0433c;
+}
 
 .el-row::before{
   display: none;
 }
 
+.el-row{
+  position: unset;
+}
 /*小节*/
 .displayPortion_box .length_set div .el-col {
   margin-top: 5px;
@@ -165,6 +187,9 @@
 }
 .GATHER_bg_color{
   background-color: rgb(247, 248, 252);
+}
+.GATHER_bg_color .el-col-12{
+  width: 34.55%;
 }
 .view_box .view_title .iconfont{
   font-size: 16px;

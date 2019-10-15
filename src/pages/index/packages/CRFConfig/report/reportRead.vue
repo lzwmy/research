@@ -333,7 +333,7 @@ export default {
         }
         .box_body {
           padding: 10px 15px;
-          width: 25%;
+          /*width: 25%;*/
           display: inline-block;
           h3 {
             font-size: 14px;
