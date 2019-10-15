@@ -669,8 +669,6 @@ const validLoginAuthenticated = function () {
     try {
       let data = await vm.$http.authLoginValidAuthenticated();
       data = data.data;
-      resolve();
-      return;
       if (data && data.code == '0' && data.data) {
         let userLogin = {
           name: data.data.name,

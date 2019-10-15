@@ -3,7 +3,7 @@
         <!-- 动态组件 -->
         <section>
             <keep-alive>
-                <component ref="componets" :is="currentComponent" @changeStep="handleStep" @changeLoading="handleLoading" :formData="formData">
+                <component ref="componets" :is="currentComponent" @changeStep="handleStep" @changeLoading="handleLoading" :formData="formData" :roles='roles'>
                     <el-steps :active="activeStep" finish-status="process"  align-center>
                         <el-step title="选择项目类型" icon="icon iconfont iconzujian30" :class="activeStep==0?'active':''"></el-step>
                         <el-step title="填写项目信息" icon="icon iconfont iconzujian32" :class="activeStep==1?'active':''"></el-step>
@@ -25,7 +25,8 @@ export default {
         return {
             activeStep: 0,
             currentComponent: stepOne,
-            formData: {}
+            formData: {},
+            roles: []
         }
     },
     watch: {
@@ -46,6 +47,7 @@ export default {
     },
     created() {
         //项目回显
+        this.roles = this.$route.params.roles;
         if(this.$route.params.createStatus) {
             this.formData = this.$route.params.projectInfo;
             this.activeStep = 2;

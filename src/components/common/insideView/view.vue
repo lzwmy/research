@@ -80,7 +80,6 @@ export default {
                 this.fromRouter = {};
                 this.title = '科研项目';
                 this.menuList = this.$store.state.user.taskMenuList;
-                console.log(this.menuList)
                 this.researchId = JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId;
                 return;
             }

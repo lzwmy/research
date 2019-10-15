@@ -79,6 +79,9 @@ const user = {
     saveresearchInfo(state, data) {
       sessionStorage.setItem('CURR_RESEARCH_INFO', JSON.stringify(data));
       state.researchInfo = data;
+      state.authImport = judgeAuth(data.roles,['1','2','3']);  //导入授权
+      state.authExport = judgeAuth(data.roles,['1','2','4']);  //导出授权
+      state.authAddCenter = judgeAuth(data.roles,['1']);  //添加中心授权
     },
     changeTheme(state, payload) {
       state.ccstyle = payload.ccstyle;
