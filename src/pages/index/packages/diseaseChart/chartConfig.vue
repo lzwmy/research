@@ -59,48 +59,48 @@
                 </el-option>
               </el-select>
               <div class="from_name">统计指标</div>
-              <el-select v-model="statistics" v-loading="checkLoading">
+              <el-select v-model="statistics" v-loading="checkLoading" @change="changeTarget(statistics)">
                 <el-option
                   v-for="item in statisticsList"
-                  :key="item.formItemId"
+                  :key="item.path"
                   :label="item.formItemName"
-                  :value="item.formItemId">
+                  :value="item.path">
                 </el-option>
               </el-select>
               <div class="from_name" v-show="chartType=='BAR'">对比指标</div>
-              <el-select v-model="compareFormItemId"  v-show="chartType=='BAR'" v-loading="checkLoading">
+              <el-select v-model="compareFormItemId"  v-show="chartType=='BAR'" v-loading="checkLoading" @change="changeCompareValuePath(compareFormItemId)">
                 <el-option
                   v-for="item in compareFormItemList"
-                  :key="item.formItemId"
+                  :key="item.path"
                   :label="item.formItemName"
-                  :value="item.formItemId">
+                  :value="item.path">
                 </el-option>
               </el-select>
               <div class="from_name" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'">X轴</div>
               <el-select v-model="xaxis" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'" v-loading="checkLoading">
                 <el-option
                   v-for="item in xaxisList"
-                  :key="item.formItemId"
+                  :key="item.path"
                   :label="item.formItemName"
-                  :value="item.formItemId">
+                  :value="item.path">
                 </el-option>
               </el-select>
               <div class="from_name" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'">Y轴</div>
               <el-select v-model="yaxis" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'" v-loading="checkLoading">
                 <el-option
                   v-for="item in yaxisList"
-                  :key="item.formItemId"
+                  :key="item.path"
                   :label="item.formItemName"
-                  :value="item.formItemId">
+                  :value="item.path">
                 </el-option>
               </el-select>
               <div class="from_name" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'&&chartType!=='2D_SCATTER'">Z轴</div>
               <el-select v-model="zaxis" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'&&chartType!=='2D_SCATTER'" v-loading="checkLoading">
                 <el-option
                   v-for="item in zaxisList"
-                  :key="item.formItemId"
+                  :key="item.path"
                   :label="item.formItemName"
-                  :value="item.formItemId">
+                  :value="item.path">
                 </el-option>
               </el-select>
               <div class="submit_btn">
@@ -173,6 +173,8 @@
         zaxisList:[],
         zaxis:"",
         modelList:[],
+        valueText:"", //统计指标的值域 ,
+        compareValuePath:"",//对比指标值域
         //图表配置
         chart:null,
         //饼状图
@@ -466,6 +468,8 @@
         this.yaxis = "";
         this.zaxis = "";
         this.bgColor = "";
+        this.valueText = "";
+        this.compareValuePath = "";
         this.mutStatistics = [];
         this.statisticsList = [] ;
         this.chartType = "PIE";
@@ -490,8 +494,19 @@
       },
       //删除
       deleteModel(data) {
-        this.customChartDelete(data.chartId);
-        this.initPage();
+        this.$confirm('是否确定删除','提示',{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(()=>{
+          // console.log('确定删除');
+          this.customChartDelete(data.chartId).then(()=>{
+            this.initPage();
+          });
+        }).catch(()=>{
+          this.$notice("已取消删除");
+        })
+
       },
       //表类型切换
       changeChartType(value) {
@@ -528,6 +543,24 @@
           default:
             break;
         }*/
+      },
+      //统计指标
+      changeTarget(data) {
+        let path = this.statisticsList.filter((item)=>{
+          if(item.path == data) {
+            return item;
+          }
+        });
+        // console.log(path)
+        this.valueText = path[0].valueRange || "" ;
+      },
+      changeCompareValuePath(data) {
+        let path = this.compareFormItemList.filter(item => {
+          if(item.path == data) {
+            return item;
+          }
+        })
+        this.compareValuePath = path[0].valueRange || "";
       },
       changeCRFFrom(value) {
         console.log(value);
@@ -576,7 +609,8 @@
           "diseaseId": that.$route.query.id
         };
         try{
-          let data = await that.$http.modelCRFFromList(fromData);
+          // let data = await that.$http.modelCRFFromList(fromData);
+          let data = await that.$http.formSearchList(fromData);
           if(data.code == 0) {
             this.fromList = data.data
           }
@@ -591,7 +625,8 @@
           diseaseId: that.$route.query.id
         };
         try{
-          let data = await that.$http.getChartListModel(fromData);
+          // let data = await that.$http.getChartListModel(fromData);
+          let data = await that.$http.chartGetChartListNew(fromData);
           if(data.code == 0) {
             this.modelList = data.data;
           }
@@ -613,7 +648,8 @@
           scatterFlag:false
         };
         try{
-          let data = await that.$http.statisticalIndicatorsQ(fromData);
+          // let data = await that.$http.statisticalIndicatorsQ(fromData);
+          let data = await that.$http.chartFormItemList(fromData);
           if(data.code == 0) {
             that.statisticsList = data.data;
             that.compareFormItemList = data.data;
@@ -636,7 +672,8 @@
           scatterFlag:true
         };
         try{
-          let data = await that.$http.statisticalIndicatorsQ(fromData);
+          // let data = await that.$http.statisticalIndicatorsQ(fromData);
+          let data = await that.$http.chartFormItemList(fromData);
           if(data.code == 0) {
             that.xaxisList = data.data;
             that.yaxisList = data.data;
@@ -672,8 +709,25 @@
           "charts": [],
           "compareFormItemId":that.compareFormItemId || ""
         };
+        let formData = {
+          "xaxis": that.xaxis || "",
+          "yaxis": that.yaxis || "",
+          "zaxis": that.zaxis || "",
+          "chartId": "",
+          "chartName": that.chartName || "",
+          "chartType": that.chartType || "",
+          "crfId": that.crf || "",
+          "diseaseId":that.$route.query.id || "",
+          "path":that.statistics || "",//统计指标路径
+          "valueText": that.valueText || "",
+          "comparePath":that.compareFormItemId || "",//对比指标路劲
+          "compareValuePath": that.compareValuePath || "",
+          "charts":[],
+        };
+        console.log(formData)
         try {
-          let data = await that.$http.saveCustomChart(fromData);
+          // let data = await that.$http.saveCustomChart(formData);
+          let data = await that.$http.chartCustomChartSave(formData);
           console.log(data);
           if(data.code == 0) {
             this.dialogVisible  = false;
@@ -681,7 +735,7 @@
               type:'success',
               message:data.msg
             });
-            that.init();
+            // that.init();
             that.modelCRFFromList();
             this.loading = false;
             window.history.go(-1);
@@ -713,8 +767,25 @@
           "charts": [],
           "compareFormItemId":that.compareFormItemId || ""
         };
+        let formData = {
+          "xaxis": that.xaxis || "",
+          "yaxis": that.yaxis || "",
+          "zaxis": that.zaxis || "",
+          "chartId": that.bgColor||"",
+          "chartName": that.chartName || "",
+          "chartType": that.chartType || "",
+          "crfId": that.crf || "",
+          "diseaseId":that.$route.query.id || "",
+          "path":that.statistics || "",//统计指标路径
+          "valueText": that.valueText || "",
+          "comparePath":that.compareFormItemId || "",//对比指标路劲
+          "compareValuePath": that.compareValuePath || "",
+          "charts":[],
+        };
+        console.log(formData)
         try {
-          let data = await that.$http.saveCustomChart(fromData);
+          // let data = await that.$http.saveCustomChart(fromData);
+          let data = await that.$http.chartCustomChartSave(formData);
           console.log(data);
           if(data.code == 0) {
             this.dialogVisible  = false;
@@ -736,7 +807,8 @@
           chartId:value
         };
         try{
-          let data = await that.$http.simpleChartPreview(fromData);
+          // let data = await that.$http.simpleChartPreview(fromData);
+          let data = await that.$http.chartSimpleChartPreviewNew(fromData);
           console.log(data);
           if(data.code == 0) {
             that.chartName = data.data.chartName;
@@ -751,26 +823,34 @@
             switch (data.data.chartType) {
               case "PIE":
                 that.getPieData(value);
-                that.statistics = data.data.formItemIds[0];
+                // that.statistics = data.data.formItemIds[0];
+                that.statistics = data.data.path;
+                that.valueText = data.data.valueText;
                 break;
               case "BAR":
                 that.getBarData(value);
-                that.statistics = data.data.formItemIds[0];
-                that.compareFormItemId = data.data.compareFormItemId;
+                // that.statistics = data.data.formItemIds[0];
+                that.statistics = data.data.path;
+                that.valueText = data.data.valueText;
+                that.compareFormItemId = data.data.comparePath;
+                that.compareValuePath = data.data.compareValueText
                 break;
               case "LINE":
                 that.getLineData(value);
-                that.statistics = data.data.formItemIds[0];
+                that.statistics = data.data.path;
+                that.valueText = data.data.valueText;
                 break;
               case "2D_SCATTER":
                 that.get2DScatter(value);
-                that.statistics = data.data.formItemIds[0];
+                that.statistics = data.data.path;
+                that.valueText = data.data.valueText;
                 that.xaxis = data.data.xaxis;
                 that.yaxis = data.data.yaxis;
                 break;
               case "3D_SCATTER":
                 that.get3DScatter(value);
-                that.statistics = data.data.formItemIds[0];
+                that.statistics = data.data.path;
+                that.valueText = data.data.valueText;
                 that.xaxis = data.data.xaxis;
                 that.yaxis = data.data.yaxis;
                 that.zaxis = data.data.zaxis;
@@ -790,7 +870,8 @@
           chartId:value
         };
         try{
-          let data = await that.$http.customChartDelete(fromData);
+          // let data = await that.$http.customChartDelete(fromData);
+          let data = await that.$http.chartCustomChartDeleteNew(fromData);
           if(data.code == 0) {
             that.$notice(data.msg)
           }
@@ -806,7 +887,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.getPieData(fromData);
+          // let data = await that.$http.getPieData(fromData);
+          let data = await that.$http.chartGetPieNew(fromData);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.pitOption)));
             let array = [];
@@ -838,7 +920,8 @@
           chartId:value
         };
         try{
-          let data = await that.$http.getBarData(formData);
+          // let data = await that.$http.getBarData(formData);
+          let data = await that.$http.chartGetBarNew(formData);
           console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.histogramOption)));
@@ -864,7 +947,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.getLineData(fromData);
+          // let data = await that.$http.getLineData(fromData);
+          let data = await that.$http.chartGetLineNew(fromData);
           console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.lineOption)));
@@ -885,7 +969,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.get2DScatter(fromData);
+          // let data = await that.$http.get2DScatter(fromData);
+          let data = await that.$http.chartGet2DScatterNew(fromData);
           console.log(data)
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.planeOption)));6
@@ -920,7 +1005,8 @@
           chartId:value
         };
         try {
-          let data = await that.$http.get3DScatter(fromData);
+          // let data = await that.$http.get3DScatter(fromData);
+          let data = await that.$http.chartGet3DScatterNew(fromData);
           console.log(data);
           if(data.code ==0 ){
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.threeDimensionalOption)));
@@ -963,8 +1049,16 @@
           "crfId": that.crf || "",
           "formItemIds": formItemIds
         };
+        let formData = {
+          "chartName": that.chartName || "" ,
+          "chartType": that.chartType || "",
+          "crfId": that.crf || "",
+          "path": that.statistics || "",
+          "valueText": that.valueText || ""
+        };
         try {
-          let data = await that.$http.previewPie(fromData);
+          // let data = await that.$http.previewPie(fromData);
+          let data = await that.$http.chartPreviewPieNew(formData);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.pitOption)));
             let array = [];
@@ -1007,8 +1101,18 @@
           "formItemIds": formItemIds,
           "compareFormItemId":that.compareFormItemId|| ""
         };
+        let formData = {
+          "chartName": that.chartName || "" ,
+          "chartType": that.chartType || "",
+          "crfId": that.crf || "",
+          "comparePath": that.compareFormItemId || "",
+          "path": that.statistics || "",
+          "valueText": that.valueText || "",
+          "compareValueText": that.compareValuePath || ""
+        };
         try {
-          let data = await that.$http.previewBar(fromData);
+          // let data = await that.$http.previewBar(fromData);
+          let data = await that.$http.chartPreviewBarNew(formData);
           console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.histogramOption)));
@@ -1045,8 +1149,16 @@
           "crfId": that.crf || "",
           "formItemIds": formItemIds
         };
+        let formData = {
+          "chartName":that.chartName || "" ,
+          "chartType": that.chartType || "",
+          "crfId": that.crf || "",
+          "path": that.statistics || "",
+          "valueText": that.valueText || ""
+        };
         try {
-          let data = await that.$http.previewLine(fromData);
+          // let data = await that.$http.previewLine(fromData);
+          let data = await that.$http.chartPreviewLineNew(formData);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.lineOption)));
             copyOption.title.text = data.data.chartName;
@@ -1081,8 +1193,20 @@
           "formItemIds": formItemIds,
           "diseaseId": that.$route.query.id
         };
+        let formData = {
+          "xaxis": that.xaxis,
+          "yaxis": that.yaxis,
+          "zaxis": that.zaxis,
+          "chartName": that.chartName,
+          "chartType": that.chartType,
+          "crfId": that.crf,
+          "path": that.statistics || "",
+          "valueText": that.valueText || "",
+          "diseaseId": that.$route.query.id
+        };
         try{
-          let data = await that.$http.preview2DScatter(fromData);
+          // let data = await that.$http.preview2DScatter(fromData);
+          let data = await that.$http.chartPreview2DScatterNew(formData);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.planeOption)));6
             copyOption.title.text = data.data.chartName;
@@ -1131,8 +1255,20 @@
           "formItemIds": formItemIds,
           "diseaseId": that.$route.query.id
         };
+        let formData = {
+          "xaxis": that.xaxis,
+          "yaxis": that.yaxis,
+          "zaxis": that.zaxis,
+          "chartName": that.chartName,
+          "chartType": that.chartType,
+          "crfId": that.crf,
+          "path": that.statistics || "",
+          "valueText": that.valueText || "",
+          "diseaseId": that.$route.query.id
+        };
         try {
-          let data = await that.$http.preview3DScatter(fromData);
+          // let data = await that.$http.preview3DScatter(fromData);
+          let data = await that.$http.chartPreview3DScatterNew(formData);
           if(data.code ==0 ){
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.threeDimensionalOption)));
             copyOption.title.text = data.data.chartName;

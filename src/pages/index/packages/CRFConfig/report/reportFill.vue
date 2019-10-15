@@ -467,6 +467,7 @@ body.theme-green {
     display: block !important;
     border-bottom: 1px dashed #e9eaec !important;
     padding: 11.5px;
+    background-color: #ffffff;
   }
   .break_icon{
     position: absolute;
