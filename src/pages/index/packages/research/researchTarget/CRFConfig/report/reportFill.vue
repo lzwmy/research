@@ -564,7 +564,7 @@ export default {
       let title = '';
       if(!this.dialogStop.reason) {
         if(this.dialogStop.type==1) {
-          if(this.dialogStop.label == 1) {
+          if(this.dialogStop.radio == 1) {
             title = '请填写终止当前随访阶段原因'
           }else {
             title = '请填写终止该患者全部随访阶段原因'
@@ -574,7 +574,7 @@ export default {
         }
       } else {
         if(this.dialogStop.type==1) {
-          if(this.dialogStop.label == 1) {
+          if(this.dialogStop.radio == 1) {
             title = '确认终止当前随访阶段？'
           }else {
             title = '确认终止该患者全部随访阶段？'

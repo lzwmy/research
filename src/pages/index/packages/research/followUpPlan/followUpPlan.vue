@@ -96,7 +96,7 @@
                                     </el-select>
                                     <span class="right_6 left_6">中填写的</span>
                                     <el-select :disabled="configExists" v-model="form.startTimeParam.startParam2" placeholder="请选择题目" style="width:120px;">
-                                        <el-option v-for="(item,index) in crfDateList" :key="index" :label="item.formItemName" :value="item.formItemName"></el-option>
+                                        <el-option v-for="(item,index) in crfDateList" :key="index" :label="item.formItemName" :value="item.path"></el-option>
                                     </el-select>
                                     <span class="right_6 left_6">后</span>
                                     <el-input :disabled="configExists" placeholder="多少" v-model="form.startTimeParam.startParam3" style="width:120px;"></el-input>
@@ -335,7 +335,6 @@ export default {
         //获取阶段配置信息
         async getConfigInfo(stageId) {
             this.infoLoading = true;
-            this.crfName = '';
             let params = {
                 id: stageId
             }
@@ -381,6 +380,7 @@ export default {
                 console.log(err)
             }
         },
+        //发布
         async saveConfig() {
             let pointNamesNull = this.form.pointNames.every(item=>{
                 return item.name
@@ -426,10 +426,17 @@ export default {
                 default: 
                     break;
             }
+            let frequency = this.form.frequency.frequencyParam.split(',');
+            console.log(frequency)
+            if(frequency.length != this.form.amount) {
+                this.$mes('info','非均匀随访间隔与随访点不匹配!')
+                return;
+            }
             if(!this.form.crfId) {
                 this.$mes('info','请添加随访内容信息!')
                 return
             }
+            return
             this.infoLoading = true;
             let params = {
                 stageId: this.form.stageId,
@@ -486,6 +493,8 @@ export default {
         },
         //获取crf表单列表的日期下拉列表
         async getCrfDateList(id) {
+            this.crfDateList = [];
+            this.form.startTimeParam.startParam2 = '';
             let params = {
                 crfId: id
             }
@@ -501,6 +510,7 @@ export default {
         initFrom() {
             this.configExists = false;
             this.addCRFchecked = false;
+            this.crfName = '';
             this.form = {
                 stageId:'',
                 amount: 1,
@@ -529,6 +539,12 @@ export default {
                 let res = await this.$http.followUpPlanStageList(params);
                 if (res.code == '0') {
                     this.menuList = res.data;
+                    let isExist = this.menuList.some(item=>{
+                        return item.stages.length != 0;
+                    })
+                    if(!isExist) {
+                        this.configExists = true;
+                    }
                 }else {
                     this.menuList = []
                     this.configExists = true;

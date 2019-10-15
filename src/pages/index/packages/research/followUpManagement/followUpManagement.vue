@@ -100,7 +100,6 @@
         <!--搜索结果-->
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
-                <!-- :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)" -->
                 <el-table 
                     ref="refTable" fit border
                     :data="dataList.content"
@@ -126,7 +125,7 @@
                                     :prop="point.prop" 
                                     :label="point.label" 
                                     :width="point.label.length * 15 + 20"
-                                    align="center" >
+                                    align="center">
                                     <template slot-scope="scope">
                                         <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
                                             <div slot="content">
