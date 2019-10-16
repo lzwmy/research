@@ -55,7 +55,7 @@
                                 <el-option label="已完成" value="2"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="患者状态:">
+                        <el-form-item label="患者状态:" class="bold">
                             <el-select v-model="form.patientState">
                                 <el-option label="全部状态" value="0"></el-option>
                                 <el-option label="录入中" value="1"></el-option>
@@ -423,8 +423,8 @@ export default {
         deleteObject(row) {
             console.log(row)
             this.$confirm('确定删除?', '提示', {
-                confirmButtonText: '确定',
                 cancelButtonText: '取消',
+                confirmButtonText: '确定',
                 type: 'warning'
             }).then(async() => {
                 return;
