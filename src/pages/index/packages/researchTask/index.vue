@@ -121,7 +121,8 @@
         this.getUserInfo();
       })
       this.getDataList();
-      this.actionUrl = 'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
+      // this.actionUrl = 'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
+      this.actionUrl =  JSON.parse(sessionStorage.getItem('Global')).baseURL + '/subject/info/uploadFile.do';
     },
     methods: {
       //课题验证

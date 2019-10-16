@@ -121,7 +121,7 @@
                             align="center">
                             <template slot-scope="scope">
                                 <el-button @click="toReportFill(scope.row,li.prop,li.label,'add')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
-                                <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
+                                <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-else-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
                             </template>
                         </el-table-column>
                     </el-table-column>

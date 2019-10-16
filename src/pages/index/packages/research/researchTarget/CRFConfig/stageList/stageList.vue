@@ -11,7 +11,7 @@
                     <span class="title">{{item.stageName}}</span>
                 </template>
                 <el-menu-item-group v-for="(li, liIndex) in item.pointList" :key="liIndex"> 
-                    <el-menu-item :disabled="li.status == 5" :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li,item.crfId,item)">
+                    <el-menu-item  :index="index+'-'+liIndex" class="flex-between-center menu_li" :class="li.pointPatientId == pointPatientId?'active':''" @click="selectItem(li,item.crfId,item)">
                         <span>{{li.name}}</span>
                         <span v-if="li.status == 0" class="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></span>
                         <span v-if="li.status == 1" class="icon iconfont icondaifang" style="color: #00B8DF;"></span>
@@ -42,32 +42,49 @@ export default {
             this.stageList.forEach(item => {
                 this.defaultOpeneds.push(item.stageId)
             });
-            let stage = [],isManual;
+            let stage = [];
+            let point = [];
             this.stageList.forEach(item=>{
                 item.pointList.forEach(li=>{
                     if(this.pointPatientId == li.pointPatientId) {
                         stage = item;
+                        point = li;
                     }
                 })
             })
-            if(this.pointPatientId == stage.pointList[0].pointPatientId) {
-                isManual = false;
-                this.$emit('changeIsManual',isManual)
+            //当前节点
+            let stageName = stage.stageName;
+            let pointName = point.name;
+            this.$emit('changeNode',{
+                stageName,
+                pointName
+            })
+            if(stage.startType == 1 && this.pointPatientId != stage.pointList[0].pointPatientId) {
+                this.$emit('changeIsDisabled',true)
+            }else {
+                this.$emit('changeIsDisabled',false)
             }
         })
     },
     methods: {
-        selectItem(row,crfId,item) {
-            if(row.status == 5) {
-                return;
+        selectItem(li,crfId,item) {
+            let isDisabled = false;
+            if(li.status == 5) {
+                isDisabled = true;
             }
-            //如果为手动触发的阶段   isManual为true则不能操作表单（非第一个随访点）
-            let isManual = item.pointList.every(li=>{return !li.planDate;})
-            if(row.pointPatientId == item.pointList[0].pointPatientId) {
-                isManual = false;
+            //如果startType==1为手动触发的阶段:  isDisabled为true则不能操作表单（非第一个随访点）
+            if(item.startType == 1 && li.pointPatientId != item.pointList[0].pointPatientId) {
+                isDisabled = true;
             }
-            this.$emit('changeIsManual',isManual)
-            let data = Object.assign(row,{crfId})
+            //当前节点
+            let stageName = item.stageName;
+            let pointName = li.name;
+            this.$emit('changeNode',{
+                stageName,
+                pointName
+            })
+            this.$emit('changeIsDisabled',isDisabled)
+            let data = Object.assign(li,{crfId})
             this.$emit('sendPoint', data)
         },
         //获取阶段列表

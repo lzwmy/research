@@ -194,7 +194,7 @@ export default {
       }
     }
     .right {
-      width: 574px;
+      width: 500px;
       height: 100%;
       .login_content {
         width: 100%;
