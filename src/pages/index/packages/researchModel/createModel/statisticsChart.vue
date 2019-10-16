@@ -1335,8 +1335,10 @@
       .statistical_analysis_model{
         line-height: 40px;
         font-size: 14px;
-        color:#666666 ;
-        text-align: center;
+        color:#394263 ;
+        font-weight: 600;
+        text-align: left;
+        padding-left: 15px;
         /*border-bottom: 1px solid #D8DCE4;*/
         border:1px solid rgba(229,235,236,1);
         background-color: #ffffff;
@@ -1360,6 +1362,8 @@
           cursor: pointer;
           align-items: center;
           position: relative;
+          color: #394263;
+          font-weight: 600;
           .item_display{
             display: flex;
             cursor: pointer;
@@ -1453,7 +1457,8 @@
       .model_set{
         line-height: 40px;
         font-size: 14px;
-        color:#666666 ;
+        color:#394263 ;
+        font-weight: 600;
         text-align: left;
         border-bottom: 1px solid #E5EBEC;
         padding-left: 20px;
