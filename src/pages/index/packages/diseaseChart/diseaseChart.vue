@@ -181,7 +181,8 @@
             enabled:false
           },
           title: {
-            text: '柱状图'
+            text: '柱状图',
+            align: 'left',
           },
           legend:{
             enabled:false
