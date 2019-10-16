@@ -76,6 +76,7 @@ export default {
             if(item.startType == 1 && li.pointPatientId != item.pointList[0].pointPatientId) {
                 isDisabled = true;
             }
+            console.log(item)
             //当前节点
             let stageName = item.stageName;
             let pointName = li.name;

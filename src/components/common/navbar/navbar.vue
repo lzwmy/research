@@ -120,7 +120,7 @@ export default {
             }
             .el-tabs__item {
                 height: 100%;
-                padding: 0 36px;
+                padding: 0 32px;
                 line-height: 60px;
                 display: flex;
                 align-items: center;
@@ -147,8 +147,7 @@ export default {
                 .icon {
                     vertical-align: middle;
                     line-height: 60px;
-                    font-size: 18px;
-                    font-weight: bold;
+                    font-size: 26px;
                     color: #333;
                     margin-right: 5px;
                 }
