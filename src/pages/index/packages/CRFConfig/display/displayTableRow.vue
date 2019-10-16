@@ -41,7 +41,7 @@
         />
         
       </div>
-      <div class="icon" style="width:50px">
+      <div class="icon" style="width:50px;position:relative;top: 7px">
         <i
           class="iconfont iconfuhao4 del" style="font-size:17px"
           v-if="showDelete"
