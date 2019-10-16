@@ -1359,7 +1359,8 @@
         font-size: 14px;
         color:#394263 ;
         font-weight: bold;
-        text-align: center;
+        text-align: left;
+        padding-left: 15px;
         /*border-bottom: 1px solid #D8DCE4;*/
         border:1px solid rgba(229,235,236,1);
         background-color: #ffffff;
@@ -1393,6 +1394,8 @@
               overflow: hidden;
               text-overflow:ellipsis;
               white-space: nowrap;
+              color: #394263;
+              font-weight: 600;
             }
           }
           .item_modify{
