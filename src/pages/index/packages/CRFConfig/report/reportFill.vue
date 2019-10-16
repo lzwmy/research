@@ -312,8 +312,9 @@ export default {
     async searchDataList(item) {
       try {
         let params = {
-          bindingId: item.baseProperty.bindingInfo.id,
-          patientId: this.patientId
+          // bindingId: item.baseProperty.bindingInfo.id,
+          patientId: this.patientId,
+          bindingInfo:item.baseProperty.bindingInfo
         };
         this.dataList=null;
         let result = await this.$http.searchBindingDataList(
