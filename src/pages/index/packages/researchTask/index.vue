@@ -7,7 +7,7 @@
         <el-button type="text" class="special_btn">科研灵感</el-button>
       </a>
       <el-button type="text" class="special_btn" @click="jumpSubject">课题验证</el-button>
-      <el-button icon="el-icon-plus" type="primary" @click="createTask">创建项目</el-button>
+      <el-button icon="icon iconfont iconzujian45" type="primary" @click="createTask">创建项目</el-button>
     </div>
     <ul v-loading="loading">
       <el-row :gutter="20">
@@ -121,7 +121,8 @@
         this.getUserInfo();
       })
       this.getDataList();
-      this.actionUrl = 'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
+      // this.actionUrl = 'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
+      this.actionUrl =  JSON.parse(sessionStorage.getItem('Global')).baseURL + '/subject/info/uploadFile.do';
     },
     methods: {
       //课题验证

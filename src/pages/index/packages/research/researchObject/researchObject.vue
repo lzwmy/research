@@ -55,7 +55,7 @@
                                 <el-option label="已完成" value="2"></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="患者状态:">
+                        <el-form-item label="患者状态:" class="bold">
                             <el-select v-model="form.patientState">
                                 <el-option label="全部状态" value="0"></el-option>
                                 <el-option label="录入中" value="1"></el-option>
@@ -121,7 +121,7 @@
                             align="center">
                             <template slot-scope="scope">
                                 <el-button @click="toReportFill(scope.row,li.prop,li.label,'add')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 0" type="text" icon="icon iconfont iconbianji3"></el-button>
-                                <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
+                                <el-button @click="toReportFill(scope.row,li.prop,li.label,'edit')" v-else-if="scope.row[li.prop] && JSON.parse(scope.row[li.prop]).status == 1" type="text" icon="icon iconfont iconwancheng" style="color:#00BD91;"></el-button>
                             </template>
                         </el-table-column>
                     </el-table-column>
@@ -423,8 +423,8 @@ export default {
         deleteObject(row) {
             console.log(row)
             this.$confirm('确定删除?', '提示', {
-                confirmButtonText: '确定',
                 cancelButtonText: '取消',
+                confirmButtonText: '确定',
                 type: 'warning'
             }).then(async() => {
                 return;

@@ -12,9 +12,9 @@
             <div>
               <el-button v-if="urlParameter.from=='researchObject'" @click="saveReportData" type="primary" :disabled="mainLoading">保 存</el-button>
               <el-button v-if="urlParameter.from=='researchObject'" @click="commitReportData" type="warning" :disabled="commitLoading">提 交</el-button>
-              <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(1)" type="primary" :disabled="mainLoading">保 存</el-button>
-              <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(2)" type="warning" :disabled="commitLoading">提 交</el-button>
-              <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="showStopDialog" type="danger">终止随访或失访</el-button>
+              <el-button v-if="urlParameter.from=='followUpManagement' && !isDisabled" @click="saveFollowUpReportData(1)" type="primary" :disabled="mainLoading">保 存</el-button>
+              <el-button v-if="urlParameter.from=='followUpManagement' && !isDisabled" @click="saveFollowUpReportData(2)" type="warning" :disabled="commitLoading">提 交</el-button>
+              <el-button v-if="urlParameter.from=='followUpManagement' && [2,3].indexOf(urlParameter.status) == -1 && !isDisabled" @click="showStopDialog" type="danger">终止随访或失访</el-button>
               <el-button type="danger" size="mini" @click="closePage" style="background: red;">关闭</el-button>
             </div>
           </div>
@@ -26,7 +26,8 @@
               :patientId="urlParameter.patientId" 
               :pointPatientId='pointPatientId' 
               @sendPoint="getPoint"
-              @changeIsManual="handleIsManual">
+              @changeIsDisabled="handleIsDisabled"
+              @changeNode="handleNode">
               </stageListCom>
             <div ref="top" class="crf-step-content" id="mainContent">
               <div class="formTip flex-start-center" :class="handleType(urlParameter.status)" v-if="urlParameter.from=='followUpManagement' && [2,3,4].indexOf(urlParameter.status) != -1" >
@@ -37,19 +38,18 @@
                 <div class="formTip_content flex-start-start">
                   <div>
                     <p><span class="label">随访员: </span> {{urlParameter.updator}}</p>
-                    <p><span class="label">完成时间: </span> {{urlParameter.updateTime}}</p>
+                    <p><span class="label">{{urlParameter.status==3?'终止':'完成'}}时间: </span> {{urlParameter.updateTime}}</p>
                   </div>
-                  <div>
-                    <p><span class="label">随访员: </span> {{urlParameter.updator}}</p>
-                    <p><span class="label">完成时间: </span> {{urlParameter.updateTime}}</p>
-                    <p v-if="handleStatus(urlParameter.status) == 2 "><span class="label">失访原因: </span> {{urlParameter.note}}</p>
+                  <div v-if="urlParameter.status == 2 ">
+                    <p><span class="label">失访节点: </span> {{node.stageName}} - {{node.pointName}}</p>
+                    <p><span class="label">失访原因: </span> {{urlParameter.note}}</p>
                   </div>
                 </div>
               </div>
               <display-report v-if="crfForm!=null&&report!=null && update" :item="crfForm"  :report="report"></display-report>
             </div>
 
-            <ul v-if="urlParameter.from=='followUpManagement'" class="recordList" v-loading="recordLoading">
+            <ul v-if="urlParameter.from=='followUpManagement' && [2,3,4].indexOf(urlParameter.status) != -1" class="recordList" v-loading="recordLoading">
               <h3>提交记录</h3>
               <li v-for="(item,index) in recordList" :key="index">
                 <p>{{index+1}}、{{item.createTime}} {{item.content}}</p>
@@ -187,7 +187,8 @@ export default {
       scrollTop: 0,
       urlParameter:{},
       pointPatientId:'',  //当前随访点
-      isManual: true,  //当阶段未开始时,为手动触发操作
+      isDisabled: false,  //当阶段未开始时,为手动触发操作
+      node: {},  //当前节点
       dialogStop: {
         type: 1,
         visible: false,
@@ -252,7 +253,7 @@ export default {
       .then(()=>{
         this.update = true;
       })
-      if(this.urlParameter.from=='followUpManagement') {
+      if(this.urlParameter.from=='followUpManagement' && [2,3,4].indexOf(this.urlParameter.status) != -1) {
         this.getRecordLlist();
       }
     },
@@ -521,10 +522,13 @@ export default {
     getContentTop(top) {
       this.scrollTop = top;
     },
-    //改变是否手动触发
-    handleIsManual(val) {
-      console.log(val)
-      this.isManual = val
+    //是否禁用操作按钮
+    handleIsDisabled(val) {
+      this.isDisabled = val
+    },
+    //获取节点
+    handleNode(data) {
+      this.node = data;
     },
     //获取随访点
     getPoint(data) {
@@ -535,7 +539,7 @@ export default {
         status: data.status,
         pointPatientId: data.pointPatientId,
         updateTime: data.updateTime,
-        creator: data.creator,
+        creator: data.creator
       })
       sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
       this.initPage();
@@ -739,17 +743,24 @@ export default {
     }
   }
   .recordList {
-    width: 300px;
+    width: 280px;
     background-color: #fff;
     height: 100%;
-    padding: 10px;
+    padding: 0 10px;
+    border: 1px solid rgb(229,235,236,1);
     h3 {
-      line-height: 30px;
-      border-bottom: 1px solid #999;
+      line-height: 40px;
+      border-bottom: 1px solid rgb(229,235,236,1);
       margin-bottom: 15px;
+      font-weight: bold;
     }
     li {
       margin-bottom: 15px;
+      p {
+        line-height: 1.5;
+        color: #394263;
+        font-size: 13px;
+      }
     }
   }
   .formTip {

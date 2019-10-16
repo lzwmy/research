@@ -62,7 +62,7 @@
                                 end-placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="随访状态:">
+                        <el-form-item label="随访状态: " class="bold">
                             <el-select v-model="form.visitStatus">
                                 <el-option label="全部状态" value=""></el-option>
                                 <el-option label="未开始" value="0"></el-option>
@@ -124,7 +124,6 @@
                                 v-for="(point,poindex) in li.prop" 
                                 :key="'2_'+poindex"
                                 :prop="point.prop" 
-                                :sort-by="String(poindex)"
                                 :label="point.label" 
                                 :width="point.label.length * 15 + 20"
                                 align="center">
@@ -140,12 +139,13 @@
                                                 <p v-if="handlePoint(scope.row[point.prop]).note">备注：{{handlePoint(scope.row[point.prop]).note}}</p>
                                             </div> 
                                         </div>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
-                                        <el-button v-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333; cursor: default;"></el-button> 
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0 && li.startType == 1 && point.prop == li.prop[0].prop"  type="primary" style="background:#00B8DF; font-size:12px;padding:0 5px;"> 开始随访 </el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
+                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
+                                        <el-button v-else-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333; cursor: default;"></el-button> 
                                     </el-tooltip>
                                 </template>
                             </el-table-column>
