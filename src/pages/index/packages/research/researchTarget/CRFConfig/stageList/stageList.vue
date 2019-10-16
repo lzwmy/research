@@ -58,6 +58,7 @@ export default {
             let isDisabled = false;
             //手动触发的阶段: 如果startType==1, 非第一个未开始的随访点则不能操作
             if(stage.startType == 1) {
+                debugger
                 let firstPoint = stage.pointList.find(li=>{
                     return li.status == 0;
                 })
@@ -65,9 +66,12 @@ export default {
                     isDisabled = true;
                 }
             }else {
+                debugger
                 //非手动触发阶段，status为0 不能执行任何操作
-                if(li.status == 0) {
+                if(point.status == 0) {
                     isDisabled = true;
+                }else {
+                    isDisabled = false;
                 }
             }
             //当前节点
@@ -82,7 +86,7 @@ export default {
     },
     methods: {
         selectItem(li,crfId,item) {
-            let isDisabled = false;
+            let isDisabled;
             if(li.status == 5) {
                 isDisabled = true;
             }
@@ -98,6 +102,8 @@ export default {
                 //非手动触发阶段，status为0 不能执行任何操作
                 if(li.status == 0) {
                     isDisabled = true;
+                }else {
+                    isDisabled = false;
                 }
             }
             //当前节点

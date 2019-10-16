@@ -392,7 +392,7 @@
               width="780px"
               class="addPatientDialog"
               @close="onClosePatient('patientRuleForm')">
-              <el-form :model="patientRuleForm" ref="patientRuleForm" :rules="patientRuleFormRules" label-width="100px" @submit.native.prevent>
+              <el-form :model="patientRuleForm" ref="patientRuleForm" :rules="patientRuleFormRules" label-width="100px" style="margin-left: 10px" @submit.native.prevent>
                 <el-form-item label="姓名：" prop="name">
                   <el-input v-model.trim="patientRuleForm.name" maxlength='8'></el-input>
                 </el-form-item>
@@ -826,10 +826,10 @@
                         });
                       });
                     });
-                    setTimeout(() => {
+                    /*setTimeout(() => {
                       // console.log(that.$refs[that.viewName][0])
                       that.$refs[that.viewName][0].doLayout();
-                    }, 500);
+                    }, 500);*/
                   }
                 });
               });
