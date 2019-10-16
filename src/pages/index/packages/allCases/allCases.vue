@@ -1130,7 +1130,10 @@ export default {
   }
   .allCases {
     .el-tabs__item {
-      border-bottom: 1px solid #E4E7ED !important;
+      border-bottom: 1px solid #E4E7ED ;
+    }
+    .is-active{
+      background-color:#ffffff;
     }
     .bigContain {
       box-shadow:0px 8px 8px rgba(78,91,105,0.1);

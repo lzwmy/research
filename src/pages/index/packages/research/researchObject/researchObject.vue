@@ -423,8 +423,8 @@ export default {
         deleteObject(row) {
             console.log(row)
             this.$confirm('确定删除?', '提示', {
-                confirmButtonText: '确定',
                 cancelButtonText: '取消',
+                confirmButtonText: '确定',
                 type: 'warning'
             }).then(async() => {
                 return;

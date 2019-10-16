@@ -170,8 +170,9 @@ export default {
                 height: 60px;
                 line-height: 60px;
                 background-color: #fff;
-                color: #333;
-                font-size: 20px;
+                color: #394263;
+                font-weight: 600;
+                font-size: 18px;
                 border-top: 1px solid #f2f2f2;
                 border-bottom: 1px solid #e8e8e8;
                 position: absolute;

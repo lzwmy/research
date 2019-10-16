@@ -366,6 +366,7 @@ export default {
   },
   watch: {
     crfCurrentControl(newer, older) {
+      console.log(newer,older)
       //当点击不拥有数据绑定的控件时关闭数据参考
       if (!newer.rootBinding) {
         this.showDataBinding = false;

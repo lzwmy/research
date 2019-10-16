@@ -1,9 +1,17 @@
 <template>
     <div class="mask_layer_container">
       <div class="component_head flex-between-center">
-        <p>{{$route.meta.txt}}</p>
+        <!--<p>{{$route.meta.txt}}</p>-->
+        <p>
+          <span class="break_box" @click="close">
+            <i class="iconfont iconfanhui"></i>
+            <span>返回</span>
+            <i class="partition_line"></i>
+          </span>
+          <span class="title">{{$route.meta.txt}}</span>
+        </p>
         <div class="head_content cur_pointer">
-          <i class="iconfont iconguanbi" @click="close"></i>
+<!--          <i class="iconfont iconguanbi" @click="close"></i>-->
         </div>
       </div>
       <div class="mask_layer_body">
@@ -41,7 +49,7 @@
             <div class="model_from_set" >
               <div class="from_name">图表名称</div>
               <el-input v-model="chartName" size="small" placeholder="请输入模板名称"></el-input>
-              <div class="from_name">图表类型</div>
+              <div class="from_name pt_20">图表类型</div>
               <div class="from_chart_type">
                 <el-radio v-model="chartType" label="PIE" @change="changeChartType('PIE')">饼状图</el-radio>
                 <el-radio v-model="chartType" label="BAR" @change="changeChartType('BAR')">柱状图</el-radio>
@@ -1339,7 +1347,8 @@
     display: flex;
     flex-direction: row;
     height: 100%;
-    padding: 0 30px;
+    /*padding: 0 30px;*/
+    padding: 0 15px;
     box-sizing: border-box;
     /*margin-top: 30px;*/
     .mask_layer_left{
@@ -1348,7 +1357,8 @@
       .statistical_analysis_model{
         line-height: 40px;
         font-size: 14px;
-        color:#666666 ;
+        color:#394263 ;
+        font-weight: bold;
         text-align: center;
         /*border-bottom: 1px solid #D8DCE4;*/
         border:1px solid rgba(229,235,236,1);
@@ -1455,7 +1465,7 @@
     }
     .mask_layer_right{
       flex: 1;
-      margin-left: 30px;
+      margin-left: 20px;
       border:1px solid #E5EBEC;
       height: 100%;
       background-color: #ffffff;
@@ -1466,7 +1476,8 @@
       .model_set{
         line-height: 40px;
         font-size: 14px;
-        color:#666666 ;
+        color:#394263 ;
+        font-weight: bold;
         text-align: left;
         border-bottom: 1px solid #E5EBEC;
         padding-left: 20px;
@@ -1491,6 +1502,9 @@
             font-size: 14px;
             padding: 15px 0;
             font-family:MicrosoftYaHei;
+          }
+          .pt_20{
+            padding-top: 20px;
           }
           .from_chart_type{
             display: flex;
@@ -1584,5 +1598,36 @@
   }
   .from_chart_type .el-radio__input.is-checked+.el-radio__label{
     color: #666666;
+  }
+</style>
+<style lang="less" scoped>
+  .component_head{
+    p{
+      .break_box{
+        font-size: 14px;
+        color: #394263;
+        font-weight: 400;
+        cursor: pointer;
+        .iconfont{
+          font-size: 13px;
+          color: #979BAA;
+          padding-right: 5px;
+        }
+        .partition_line{
+          width: 1px;
+          height: 16px;
+          background-color: #979BAA;
+          display: inline-block;
+          margin: 0 20px;
+          position: relative;
+          top: 2px;
+        }
+      }
+      .title{
+        font-size:18px;
+        font-weight:bold;
+        color: #394263;
+      }
+    }
   }
 </style>

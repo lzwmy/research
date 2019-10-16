@@ -827,8 +827,9 @@
                       });
                     });
                     setTimeout(() => {
+                      // console.log(that.$refs[that.viewName][0])
                       that.$refs[that.viewName][0].doLayout();
-                    }, 200);
+                    }, 500);
                   }
                 });
               });
@@ -1754,7 +1755,7 @@
     .el-form-item.address {
       display: block;
       .el-input{
-        width: 100% !important;
+        width: 96.5% !important;
       }
     }
   }

@@ -549,9 +549,34 @@
           this.basicDataInfo.obj.baseProperty.layout.selection = value;
           // this.basicDataInfo.obj.baseProperty.layout.displayChecked = value;
         },
-        'dataSetting.bindingAttr':function (data) {
-          console.log('watch bindingColumn',data);
-        }
+        'dataSetting.bindingDomain':function (data) { //绑定域
+          console.log('watch bindingDomain',data);
+          this.basicDataInfo.obj.baseProperty.bindingInfo.viewId = data;
+        },
+        'dataSetting.bindingColumns':function (data) { //显示列
+          console.log('watch bindingColumns' , data);
+          if(data) {
+            this.basicDataInfo.obj.baseProperty.bindingInfo.viewColumn = data.map(o => o.name).join(',');
+          }
+        },
+        "dataSetting.groupColumns":function (data) { //分组列
+          console.log('watch groupColumns' , data);
+          if(data) {
+            this.basicDataInfo.obj.baseProperty.bindingInfo.groupColumn = data.join(',');
+          }
+        },
+        "dataSetting.keyColumn":function (data) { //key列
+          console.log('watch keyColumn' , data);
+          this.basicDataInfo.obj.baseProperty.bindingInfo.keyColumn = data;
+        },
+        "dataSetting.bindingType":function(data) { //绑定类型
+          console.log('watch bindingType' , data);
+          this.basicDataInfo.obj.baseProperty.bindingInfo.bindingType = data;
+        },
+        "dataSetting.bindingAttr":function (data) { //绑定属性及 父属性名称
+          console.log('watch bindingAttr' , data);
+          this.basicDataInfo.obj.baseProperty.bindingInfo.bindingColumn = data;
+        },
       },
       data() {
         return {
@@ -693,27 +718,6 @@
           newData.obj.baseProperty.fileType = this.UploadType;
           console.log(JSON.stringify(newData.obj));
           this.$emit("basic-click", newData);
-        },
-        dataBinding() {
-          let newData = this.basicDataInfo;
-          newData.obj.baseProperty.bindingInfo.bindingColumn = this.dataSetting.bindingAttr;
-          newData.obj.baseProperty.bindingInfo.bindingType = this.dataSetting.bindingType;
-          if (this.dataSetting.bindingColumns) {
-            newData.obj.baseProperty.bindingInfo.viewColumn = this.dataSetting.bindingColumns
-              .map(o => o.name)
-              .join(",");
-          }
-
-          newData.obj.baseProperty.bindingInfo.viewId = this.dataSetting.bindingDomain;
-          newData.obj.baseProperty.bindingInfo.list = this.dataSetting.filter;
-          newData.obj.binding = this.dataSetting.dataBind ? 1 : 0;
-          //保存分组列和Key列
-          if (this.dataSetting.groupColumns) {
-            newData.obj.baseProperty.bindingInfo.groupColumn = this.dataSetting.groupColumns.join(
-              ","
-            );
-          }
-          newData.obj.baseProperty.bindingInfo.keyColumn = this.dataSetting.keyColumn;
         },
         //tab 标签页
         handClick(tab, event) {
