@@ -62,7 +62,7 @@
                                 end-placeholder="结束日期">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="随访状态:">
+                        <el-form-item label="随访状态: " class="bold">
                             <el-select v-model="form.visitStatus">
                                 <el-option label="全部状态" value=""></el-option>
                                 <el-option label="未开始" value="0"></el-option>

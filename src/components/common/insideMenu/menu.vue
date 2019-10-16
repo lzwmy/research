@@ -32,7 +32,7 @@
         <div class="ment_list">
             <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" ref="menu" :collapse="!$store.state.common.openMenuView" :unique-opened="true">
                 <span v-for="(item, index) in menuList" :key="index">
-                    <p class="line" v-if="item.name=='organizationManagement'" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
+                    <p class="line" v-if="authRoles(item.meta) && item.name=='organizationManagement'" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
                     <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="authRoles(item.meta) && item.children && item.children.length == 0">
                         <i class="icon iconfont" :class="'icon'+item.ico"></i>
                         <span slot="title">{{item.menuName}}</span>
@@ -256,6 +256,7 @@ export default {
                         border-color: #1bbae1;
                     } 
                     span {
+                        padding-left: 8px;
                         color: #dedede;
                         cursor: pointer;
                     }

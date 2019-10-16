@@ -190,35 +190,46 @@ body .el-range-editor.el-input__inner {
 
 
 /* 按钮样式*/
-body .el-button {
-    padding: 0 15px;
-    line-height: 32px;
-    border-radius: 2px;
-    border-color: transparent;
-    border-width: 0;
-    &.el-button--primary {
-        background-color: @themeColor1;
-        &:hover {
-            background-color: #1d85ff;
-          color: #ffffff;
+body {
+    .insideView .el-button {
+        .icon {
+            font-size: 14px;
         }
     }
-    &.el-button--default {
-        border-color: #DCDFE6;
-        border-width: 1px;
-        line-height: 30px;
-        &:active {
+    .el-button {
+        padding: 0 15px;
+        line-height: 32px;
+        border-radius: 2px;
+        border-color: transparent;
+        border-width: 0;
+        &.el-button--primary {
+            background-color: @themeColor1;
+            &:hover {
+                background-color: #1d85ff;
+                color: #ffffff;
+            }
+        }
+        &.el-button--default {
+            border-color: #DCDFE6;
             border-width: 1px;
+            line-height: 30px;
+            &:active {
+                border-width: 1px;
+            }
+        }
+        span {
+            vertical-align: bottom;
+        }
+        &.el-button--default.el-button--primary {
+            color: #fff !important;
+        }
+        .icon {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 6px;
         }
     }
-    &.el-button--default.el-button--primary {
-        color: #fff !important;
-    }
-    .icon {
-        font-size: 14px;
-        margin-right: 4px;
-    }
-}
+} 
 
 /* 输入框样式*/
 body .el-input {

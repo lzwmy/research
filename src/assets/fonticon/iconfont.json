@@ -428,49 +428,49 @@
     {
       "icon_id": "10579582",
       "name": "专病科研",
-      "font_class": "SDResearch",
+      "font_class": "SDResearch11",
       "unicode": "e64a",
       "unicode_decimal": 58954
     },
     {
       "icon_id": "10579583",
       "name": "科研课题",
-      "font_class": "researchTask",
+      "font_class": "researchTask11",
       "unicode": "e64c",
       "unicode_decimal": 58956
     },
     {
       "icon_id": "10579584",
       "name": "科研概览",
-      "font_class": "index",
+      "font_class": "index11",
       "unicode": "e64d",
       "unicode_decimal": 58957
     },
     {
       "icon_id": "10579585",
       "name": "随访任务",
-      "font_class": "patientFollowUp",
+      "font_class": "patientFollowUp11",
       "unicode": "e64e",
       "unicode_decimal": 58958
     },
     {
       "icon_id": "10579586",
       "name": "报告列表",
-      "font_class": "researchReportManage",
+      "font_class": "researchReportManage11",
       "unicode": "e654",
       "unicode_decimal": 58964
     },
     {
       "icon_id": "10579587",
       "name": "全文检索",
-      "font_class": "fullTextSearch",
+      "font_class": "fullTextSearch11",
       "unicode": "e655",
       "unicode_decimal": 58965
     },
     {
       "icon_id": "10579593",
       "name": "系统管理",
-      "font_class": "systemManage",
+      "font_class": "systemManage11",
       "unicode": "e656",
       "unicode_decimal": 58966
     },
@@ -1341,6 +1341,69 @@
       "font_class": "zujian46",
       "unicode": "e6e3",
       "unicode_decimal": 59107
+    },
+    {
+      "icon_id": "11326701",
+      "name": "全部病历",
+      "font_class": "zujian47",
+      "unicode": "e6e4",
+      "unicode_decimal": 59108
+    },
+    {
+      "icon_id": "11326702",
+      "name": "科研课题",
+      "font_class": "researchTask",
+      "unicode": "e6e5",
+      "unicode_decimal": 59109
+    },
+    {
+      "icon_id": "11326703",
+      "name": "远程教学",
+      "font_class": "systemManage22222",
+      "unicode": "e6e6",
+      "unicode_decimal": 59110
+    },
+    {
+      "icon_id": "11326704",
+      "name": "随访任务",
+      "font_class": "patientFollowUp",
+      "unicode": "e6e7",
+      "unicode_decimal": 59111
+    },
+    {
+      "icon_id": "11326705",
+      "name": "科研概览",
+      "font_class": "index",
+      "unicode": "e6e8",
+      "unicode_decimal": 59112
+    },
+    {
+      "icon_id": "11326706",
+      "name": "专病科研",
+      "font_class": "SDResearch",
+      "unicode": "e6e9",
+      "unicode_decimal": 59113
+    },
+    {
+      "icon_id": "11326707",
+      "name": "系统设置",
+      "font_class": "systemManage",
+      "unicode": "e6ea",
+      "unicode_decimal": 59114
+    },
+    {
+      "icon_id": "11326708",
+      "name": "全文检索",
+      "font_class": "fullTextSearch",
+      "unicode": "e6eb",
+      "unicode_decimal": 59115
+    },
+    {
+      "icon_id": "11326709",
+      "name": "报告列表",
+      "font_class": "researchReportManage",
+      "unicode": "e6ec",
+      "unicode_decimal": 59116
     }
   ]
 }

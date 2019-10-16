@@ -44,7 +44,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="" label-width='' class="flex-right">
-                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
+                    <el-button type="primary" icon="icon iconfont iconzujian43" @click="getDataList()">查 询</el-button>
                     <!-- <el-button icon="icon iconfont iconzujian12" type="primary">提交</el-button>
                     <el-button icon="icon iconfont iconzujian16" type="primary">核查</el-button> -->
                 </el-form-item>
