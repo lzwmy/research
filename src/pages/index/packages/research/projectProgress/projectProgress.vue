@@ -116,7 +116,7 @@
       </el-row>
     </div>
     <div class="wrap wrap_group">
-      <h3 class="wrap_title">录入员任务完成情况<span>共<span style="color:red;">{{taskList.length}}</span>位研究对象</span></h3>
+      <h3 class="wrap_title">录入员任务完成情况<span>共<span style="color:red;">{{taskList.length}}</span>位</span></h3>
       <el-row :gutter="30">
         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
           <div class="wrap_box">

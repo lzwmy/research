@@ -444,7 +444,7 @@
     }
     .search_tab_component{
       display: inline-block;
-      width: 81%;
+      width: 82%;
       margin-bottom: 1%;
       float: right;
       margin-left: 5px;

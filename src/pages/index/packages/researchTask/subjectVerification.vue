@@ -1179,7 +1179,7 @@
         let formData = {
           "xaxis": that.xaxis,
           "yaxis": that.yaxis,
-          "zaxis": that.zaxis,
+          "zaxis": "",
           "chartName": that.chartName,
           "chartType": that.chartType,
           "crfId": that.diseaseValue[1],
