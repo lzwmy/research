@@ -76,7 +76,7 @@
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
-            <!--{{basisItem}}-->
+            <!--{{basisItem.baseProperty.bindingInfo}}-->
             <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
           </div>
         </div>
