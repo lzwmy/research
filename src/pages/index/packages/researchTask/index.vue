@@ -116,8 +116,10 @@
       };
     },
     created() {
-      this.judgeAuth();
-      this.getUserInfo();
+      this.judgeAuth()
+      .then(()=>{
+        this.getUserInfo();
+      })
       this.getDataList();
       this.actionUrl = 'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
     },
@@ -159,7 +161,7 @@
         }
       },
       linkTask(item) {
-        if(!this.auth) {
+        if(!this.auth || this.roles.length == 0) {
           this.$mes('info','暂无权限访问!')
           return;
         }
@@ -365,6 +367,8 @@
           let res = await this.$http.researchGetRoles();
           if (res.code == '0') {
             this.roles = res.data;
+          }else {
+            this.roles = [];
           }
         } catch (err) {
           console.log(err)

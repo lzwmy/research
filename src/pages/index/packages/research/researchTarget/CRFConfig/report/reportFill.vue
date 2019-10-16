@@ -4,18 +4,21 @@
     <div class="crfConfig clearfix crffill">
       <div class="crf-main" v-loading="mainLoading" v-if="!showReadComponent">
         <div class="crf-main-content" >
-          <div class="crf-step-header">
-            <i class="header_left"></i>
-            <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
-            <el-button type="danger" size="mini" @click="closePage" style="float:right;">关闭</el-button>
-            <el-button v-if="urlParameter.from=='researchObject'" @click="saveReportData" type="primary" style="float:right;margin-right: 15px" :disabled="mainLoading">保 存</el-button>
-            <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(1)" type="primary" style="float:right;margin-right: 15px" :disabled="mainLoading">保 存</el-button>
-            <el-button v-if="urlParameter.from=='researchObject'" @click="commitReportData" type="warning" style="float:right;margin-right: 5px" :disabled="commitLoading">提 交</el-button>
-            <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(2)" type="warning" style="float:right;margin-right: 5px" :disabled="commitLoading">提 交</el-button>
-            <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="showStopDialog" type="danger" style="float:right;margin-right: 5px">终止随访或失访</el-button>
-            <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
+          <div class="crf-step-header flex-between-center">
+            <div>
+              <i class="header_left icon iconfont iconxitongguanlibeifen"></i>
+              <span style="font-size: 16px; margin-right:20px;font-weight: bold;">{{urlParameter.patientName}}</span>
+            </div>
+            <div>
+              <el-button v-if="urlParameter.from=='researchObject'" @click="saveReportData" type="primary" :disabled="mainLoading">保 存</el-button>
+              <el-button v-if="urlParameter.from=='researchObject'" @click="commitReportData" type="warning" :disabled="commitLoading">提 交</el-button>
+              <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(1)" type="primary" :disabled="mainLoading">保 存</el-button>
+              <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="saveFollowUpReportData(2)" type="warning" :disabled="commitLoading">提 交</el-button>
+              <el-button v-if="urlParameter.from=='followUpManagement' && !isManual" @click="showStopDialog" type="danger">终止随访或失访</el-button>
+              <el-button type="danger" size="mini" @click="closePage" style="background: red;">关闭</el-button>
+            </div>
           </div>
-          <div class="flex-start-start" style="height:100%; margin-top: 8px;">
+          <div class="flex-start-start" style="height:100%; margin: 20px;">
             <!-- 随访列表 -->
             <stageListCom 
               v-if="urlParameter.from=='followUpManagement'" 
@@ -26,16 +29,21 @@
               @changeIsManual="handleIsManual">
               </stageListCom>
             <div ref="top" class="crf-step-content" id="mainContent">
-              <br/>
-              <div class="formTip flex-start-center" v-if="urlParameter.from=='followUpManagement' && [2,3,4].indexOf(urlParameter.status) != -1" >
-                <p class="formTip_title flex-center-center" :class="handleType(urlParameter.status)">
+              <div class="formTip flex-start-center" :class="handleType(urlParameter.status)" v-if="urlParameter.from=='followUpManagement' && [2,3,4].indexOf(urlParameter.status) != -1" >
+                <div class="formTip_title flex-center-center flex-wrap">
                   <i class="icon" :class="handleType(urlParameter.status)"></i>
-                  {{handleStatus(urlParameter.status)}}
-                </p>
-                <div class="formTip_content">
-                  <p><span class="label">随访员: </span> {{urlParameter.updator}}</p>
-                  <p><span class="label">完成时间: </span> {{urlParameter.updateTime}}</p>
-                  <p v-if="handleStatus(urlParameter.status) == 2 "><span class="label">失访原因: </span> {{urlParameter.note}}</p>
+                  <p>{{handleStatus(urlParameter.status)}}</p>
+                </div>
+                <div class="formTip_content flex-start-start">
+                  <div>
+                    <p><span class="label">随访员: </span> {{urlParameter.updator}}</p>
+                    <p><span class="label">完成时间: </span> {{urlParameter.updateTime}}</p>
+                  </div>
+                  <div>
+                    <p><span class="label">随访员: </span> {{urlParameter.updator}}</p>
+                    <p><span class="label">完成时间: </span> {{urlParameter.updateTime}}</p>
+                    <p v-if="handleStatus(urlParameter.status) == 2 "><span class="label">失访原因: </span> {{urlParameter.note}}</p>
+                  </div>
                 </div>
               </div>
               <display-report v-if="crfForm!=null&&report!=null && update" :item="crfForm"  :report="report"></display-report>
@@ -746,42 +754,63 @@ export default {
   }
   .formTip {
     height: 100px;
-    margin: 10px 30px;
-    border-radius: 8px;
-    border: 1px solid #eee;
-    overflow: hidden;
+    padding: 16px 0;
+    &::before {
+      display: none;
+    }
+    &.icon0 {
+      background: rgba(51, 51, 51, .4);
+      .formTip_title { color: #333; }
+    } 
+    &.icon1 {
+      background: rgba(0, 186, 223, 0.1);
+      .formTip_title { color: #00B8DF; }
+    } 
+    &.icon2 {
+      background: rgba(247, 156, 0, 0.1);
+      .formTip_title { color: #F79E00; }
+    } 
+    &.icon3 {
+      background: rgba(219, 84, 82, 0.1);
+      .formTip_title { color: #DB5452; }
+    } 
+    &.icon4 {
+      background: rgba(0, 190, 142, 0.1);
+      .formTip_title { color: #00BE90; }
+    } 
+    &.icon5 {
+      background: rgba(51, 51, 51, .4);
+      .formTip_title { color: #333; }
+    } 
     .formTip_title {
       width: 240px;
       height: 100%;
-      font-size: 24px;
+      font-size: 16px;
       color: #fff;
-      &::before {
-        display: none;
-      }
-      &.icon0 { background-color: #333; }
-      &.icon1 { background-color: #00B8DF; }
-      &.icon2 { background-color: #F79E00; }
-      &.icon3 { background-color: #DB5452; }
-      &.icon4 { background-color: #00BE90; }
-      &.icon5 { background-color: #333; }
       .icon {
-        font-size: 40px;
-        margin-right: 10px;
+        font-size: 32px;
+      }
+      p{
+        width: 100%;
+        text-align: center;
       }
     }
     .formTip_content {
-      padding: 15px;
-      background-color: #fff;
-      flex: 1;
       height: 100%;
-      & > p {
-        line-height: 22px;
-        font-size: 14px;
-      }
-      .label {
-        color: #999;
-        margin-right: 10px;
-      }
+      & > div {
+        margin-right: 50px;
+        > p {
+          color: #394263;
+          line-height: 22px;
+          font-size: 14px;
+          &:first-child {
+            margin-bottom: 20px;
+          }
+        }
+        .label {
+          margin-right: 10px;
+        }
+      } 
     }
   }
 </style>
@@ -820,13 +849,8 @@ export default {
   opacity: 0;
 }
   .header_left{
-    width:2px;
-    border-left: 4px solid #2d8cf0;
-    padding-left: 10px;
-    height: 25px;
-    line-height: 25px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    color:#999;
+    padding-right: 6px;
   }
   .hove_line:hover{
     background-color:rgb(247, 248, 252) ;
@@ -849,11 +873,6 @@ export default {
     background-color:rgb(247, 248, 252);
     /*margin-top: 10px;*/
     /*border-top: 2px solid #2d8cf0;*/
-  }
-  .crf-step-header {
-    display: block !important;
-    border-bottom: 1px dashed #e9eaec !important;
-    padding: 11.5px;
   }
   .break_icon{
     position: absolute;

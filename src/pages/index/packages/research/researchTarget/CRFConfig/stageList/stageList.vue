@@ -1,5 +1,6 @@
 <template>
     <div class="stageList">
+        <h2 class="page_title">随访阶段</h2>
         <el-menu
             ref="refMenu"
             :default-openeds="defaultOpeneds"
@@ -92,10 +93,16 @@ export default {
 
 <style lang="less">
 .stageList {
-    width: 200px;
+    width: 240px;
     background-color: #fff;
     margin-right: 15px;
+    border:1px solid rgba(229,235,236,1);
     height: 100%;
+    h2 {
+        line-height: 40px;
+        text-indent: 15px;
+        border-bottom: 1px solid rgba(229,235,236,1);
+    }
     .el-menu {
         border: none;
         overflow-y: hidden;

@@ -5,7 +5,11 @@
   height: 94.5%;
   position: relative;
 }
-
+#mainContent .displayPage_container .display_title {
+  line-height: 60px;
+  font-weight: bold;
+  height: 60px;
+}
 .crfConfig .crf-left-menu {
   float: left;
   width: 279px;
@@ -50,7 +54,8 @@
 
 .crfConfig .crf-main .crf-step-content {
   overflow: auto;
-  height: calc(100% - 30px);
+  height: calc(100% - 15px);
+  border: 1px solid rgba(229,235,236,1);
   background-color: #fff;
 }
 
@@ -243,13 +248,15 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 }
 
 .crf-main .crf-step-content {
-  padding: 0 10px 10px;
+  padding: 20px;
 }
 
 .crf-main .crf-step-header {
-  border-bottom: 1px solid #e9eaec;
-  padding: 11.5px;
+  height: 64px;
+  padding: 0 20px;
   background-color: #fff; 
+  color: #394263;
+  border-bottom:1px solid rgba(229,235,236,1);
 }
 
 .crf-step .crf-section-title {
@@ -333,11 +340,9 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 }
 
 .crffill .crf-main {
-  left: 10px;
   width: 100%;
   height: 100%;
-  background-color: #f7f8fc;
-  /*top: 10px;*/
+  background-color: #F5F7FA;
 }
 
 .crffill .crf-section-name {
@@ -359,10 +364,6 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 .crffill .refmodule-name {
   display: inline-block;
   width: calc(100% - 60px);
-}
-
-.crffill .crf-main .crf-step-content {
-  height: calc(100% - 15px)
 }
 
 .crffill .crf-main-content {
