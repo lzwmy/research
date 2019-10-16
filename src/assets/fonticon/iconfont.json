@@ -778,7 +778,7 @@
     {
       "icon_id": "10733195",
       "name": "全部病例",
-      "font_class": "allCases",
+      "font_class": "allCases123",
       "unicode": "e676",
       "unicode_decimal": 58998
     },
@@ -1296,7 +1296,7 @@
     {
       "icon_id": "11084125",
       "name": "远程教学",
-      "font_class": "education",
+      "font_class": "education11",
       "unicode": "e6b1",
       "unicode_decimal": 59057
     },
@@ -1345,7 +1345,7 @@
     {
       "icon_id": "11326701",
       "name": "全部病历",
-      "font_class": "zujian47",
+      "font_class": "allCases",
       "unicode": "e6e4",
       "unicode_decimal": 59108
     },
@@ -1359,7 +1359,7 @@
     {
       "icon_id": "11326703",
       "name": "远程教学",
-      "font_class": "systemManage22222",
+      "font_class": "education",
       "unicode": "e6e6",
       "unicode_decimal": 59110
     },

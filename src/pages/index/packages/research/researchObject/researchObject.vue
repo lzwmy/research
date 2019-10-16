@@ -44,22 +44,22 @@
                         </el-form-item>
                         <el-form-item label="入组阶段状态:" class="bold">
                             <el-select v-model="form.formName">
-                                <el-option label="全部表单" value="0"></el-option>
+                                <el-option label="全部表单" value=""></el-option>
                                 <el-option v-for="(item,index) in crfList" :key="index" :label="item.crfName" :value="item.crfId"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label-width="0">
                             <el-select v-model="form.formState">
-                                <el-option label="全部状态" value="0"></el-option>
-                                <el-option label="待录入" value="1"></el-option>
-                                <el-option label="已完成" value="2"></el-option>
+                                <el-option label="全部状态" value=""></el-option>
+                                <el-option label="待录入" value="0"></el-option>
+                                <el-option label="已完成" value="1"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="患者状态:" class="bold">
                             <el-select v-model="form.patientState">
-                                <el-option label="全部状态" value="0"></el-option>
-                                <el-option label="录入中" value="1"></el-option>
-                                <el-option label="已完成" value="2"></el-option>
+                                <el-option label="全部状态" value=""></el-option>
+                                <el-option label="录入中" value="0"></el-option>
+                                <el-option label="已完成" value="1"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-form>
@@ -192,9 +192,9 @@ export default {
             form: {
                 keyword: '',
                 time:[],
-                formName: '0',
-                formState: '0',
-                patientState: '0',
+                formName: '',
+                formState: '',
+                patientState: '',
                 radio: '0'
             },
             activeCrf: null,
@@ -283,9 +283,9 @@ export default {
             this.form = {
                 keyword: '',
                 time:[],
-                formName: '0',
-                formState: '0',
-                patientState: '0',
+                formName: '',
+                formState: '',
+                patientState: '',
                 radio: '0'
             }
         },

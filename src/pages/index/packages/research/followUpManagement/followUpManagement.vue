@@ -131,7 +131,7 @@
                                     <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
                                         <div slot="content">
                                             <p v-if="handlePoint(scope.row[point.prop]).status == 1 && handlePoint(scope.row[point.prop]).planDate">计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
-                                            <p v-if="handlePoint(scope.row[point.prop]) == 1 &&  !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
+                                            <p v-else-if="handlePoint(scope.row[point.prop]).status == 1 && !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
                                             <div v-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
                                                 <p>随访员：{{handlePoint(scope.row[point.prop]).updator}}</p>
                                                 <p>计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>

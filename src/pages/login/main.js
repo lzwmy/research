@@ -19,7 +19,7 @@ let initApp = async () => {
     //同步获取全局配置：
     await Global.getConfigJson();
     //同步验证浏览器自带的session有没有在登录有效期；
-    await utils.validLoginAuthenticated();
+    // await utils.validLoginAuthenticated();
 
     // 初始化根vue
     new Vue({

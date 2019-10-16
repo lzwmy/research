@@ -39,11 +39,14 @@ export default {
     created() {
         this.getStagePointList()
         .then(()=>{
+            //默认不能执行任何操作
+            this.$emit('changeIsDisabled',true)
             this.stageList.forEach(item => {
                 this.defaultOpeneds.push(item.stageId)
             });
             let stage = [];
             let point = [];
+            //找到当前随访点id的阶段和随访点
             this.stageList.forEach(item=>{
                 item.pointList.forEach(li=>{
                     if(this.pointPatientId == li.pointPatientId) {
@@ -52,6 +55,21 @@ export default {
                     }
                 })
             })
+            let isDisabled = false;
+            //手动触发的阶段: 如果startType==1, 非第一个未开始的随访点则不能操作
+            if(stage.startType == 1) {
+                let firstPoint = stage.pointList.find(li=>{
+                    return li.status == 0;
+                })
+                if(point.status == 0 && point.pointPatientId != firstPoint.pointPatientId) {
+                    isDisabled = true;
+                }
+            }else {
+                //非手动触发阶段，status为0 不能执行任何操作
+                if(li.status == 0) {
+                    isDisabled = true;
+                }
+            }
             //当前节点
             let stageName = stage.stageName;
             let pointName = point.name;
@@ -59,11 +77,7 @@ export default {
                 stageName,
                 pointName
             })
-            if(stage.startType == 1 && this.pointPatientId != stage.pointList[0].pointPatientId) {
-                this.$emit('changeIsDisabled',true)
-            }else {
-                this.$emit('changeIsDisabled',false)
-            }
+            this.$emit('changeIsDisabled',isDisabled)
         })
     },
     methods: {
@@ -72,11 +86,20 @@ export default {
             if(li.status == 5) {
                 isDisabled = true;
             }
-            //如果startType==1为手动触发的阶段:  isDisabled为true则不能操作表单（非第一个随访点）
-            if(item.startType == 1 && li.pointPatientId != item.pointList[0].pointPatientId) {
-                isDisabled = true;
+            if(item.startType == 1) {
+                //手动触发的阶段: 如果startType==1, 非第一个未开始的随访点则不能执行任何操作
+                let firstPoint = item.pointList.find(li=>{
+                    return li.status == 0;
+                })
+                if(li.status == 0 && li.pointPatientId != firstPoint.pointPatientId) {
+                    isDisabled = true;
+                }
+            }else {
+                //非手动触发阶段，status为0 不能执行任何操作
+                if(li.status == 0) {
+                    isDisabled = true;
+                }
             }
-            console.log(item)
             //当前节点
             let stageName = item.stageName;
             let pointName = li.name;
