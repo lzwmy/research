@@ -10,6 +10,10 @@
           <span class="title">{{formOptions.title}}</span>
         </p>
         <div class=" cur_pointer head_content flex-start-center">
+          <el-button type="primary" @click="add">
+            <i class="iconfont icontianjia"></i>
+            添加小节
+          </el-button>
           <el-button type="primary" @click="previewCRF">
             <i class="iconfont iconfuhao3"></i>
             预览
@@ -31,7 +35,7 @@
             <input type="text"  v-model="crfName" placeholder="请输入报告名称" @change="FormTitleFill(crfName)">
           </div>
           <div class="report-config_nav">
-            <div class="config-nav_left">
+            <!--<div class="config-nav_left">
               <div class="is-enable">
                 <span>是否启用:</span>
                 <el-switch
@@ -46,13 +50,13 @@
                   <el-option label="随访" :value="2"></el-option>
                 </el-select>
               </div>
-            </div>
-            <div class="config-nav_right">
+            </div>-->
+            <!--<div class="config-nav_right">
               <el-button type="primary" @click="add">
                 <i class="iconfont icontianjia"></i>
                 添加小节
               </el-button>
-            </div>
+            </div>-->
           </div>
         </div>
         <div class="report_body-box">

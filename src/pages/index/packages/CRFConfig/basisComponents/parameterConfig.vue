@@ -549,9 +549,9 @@
           this.basicDataInfo.obj.baseProperty.layout.selection = value;
           // this.basicDataInfo.obj.baseProperty.layout.displayChecked = value;
         },
-        /*"layoutColumn":function (value) {
-          this.basicDataInfo.obj.baseProperty.layout.column = value;
-        }*/
+        'dataSetting.bindingAttr':function (data) {
+          console.log('watch bindingColumn',data);
+        }
       },
       data() {
         return {
@@ -693,6 +693,27 @@
           newData.obj.baseProperty.fileType = this.UploadType;
           console.log(JSON.stringify(newData.obj));
           this.$emit("basic-click", newData);
+        },
+        dataBinding() {
+          let newData = this.basicDataInfo;
+          newData.obj.baseProperty.bindingInfo.bindingColumn = this.dataSetting.bindingAttr;
+          newData.obj.baseProperty.bindingInfo.bindingType = this.dataSetting.bindingType;
+          if (this.dataSetting.bindingColumns) {
+            newData.obj.baseProperty.bindingInfo.viewColumn = this.dataSetting.bindingColumns
+              .map(o => o.name)
+              .join(",");
+          }
+
+          newData.obj.baseProperty.bindingInfo.viewId = this.dataSetting.bindingDomain;
+          newData.obj.baseProperty.bindingInfo.list = this.dataSetting.filter;
+          newData.obj.binding = this.dataSetting.dataBind ? 1 : 0;
+          //保存分组列和Key列
+          if (this.dataSetting.groupColumns) {
+            newData.obj.baseProperty.bindingInfo.groupColumn = this.dataSetting.groupColumns.join(
+              ","
+            );
+          }
+          newData.obj.baseProperty.bindingInfo.keyColumn = this.dataSetting.keyColumn;
         },
         //tab 标签页
         handClick(tab, event) {

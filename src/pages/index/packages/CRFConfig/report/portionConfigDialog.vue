@@ -462,10 +462,14 @@
           .el-tabs__header{
              margin: 0;
           }
+          .el-tabs__nav{
+            background-color: #E5EBEC;
+          }
           .el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
             border-bottom-color: transparent;
-            background-color: #E5EBEC;
-            color: #394263;
+            /*background-color: #E5EBEC;*/
+            /*color: #394263;*/
+            background-color: #ffffff;
           }
           .portions_container{
             display: flex;

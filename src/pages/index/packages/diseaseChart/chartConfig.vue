@@ -1196,7 +1196,7 @@
         let formData = {
           "xaxis": that.xaxis,
           "yaxis": that.yaxis,
-          "zaxis": that.zaxis,
+          "zaxis": "",
           "chartName": that.chartName,
           "chartType": that.chartType,
           "crfId": that.crf,
@@ -1208,7 +1208,7 @@
           // let data = await that.$http.preview2DScatter(fromData);
           let data = await that.$http.chartPreview2DScatterNew(formData);
           if(data.code == 0) {
-            let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.planeOption)));6
+            let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.planeOption)));
             copyOption.title.text = data.data.chartName;
             copyOption.xAxis.title.text = "";
             copyOption.yAxis.title.text = "";

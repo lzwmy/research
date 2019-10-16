@@ -1634,6 +1634,7 @@
     box-sizing: border-box;
   }
 }
+
 </style>
 <style lang="less">
   body {
@@ -1732,6 +1733,9 @@
     padding-left: 0;
     padding-right: 0;
     padding-top: 10px;
+  }
+  .el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
+    background-color: #ffffff;
   }
 </style>
 
