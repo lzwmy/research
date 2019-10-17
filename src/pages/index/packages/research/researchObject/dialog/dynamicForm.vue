@@ -8,11 +8,11 @@
             class="addObject_dialog"
             :visible.sync="dialog.visible">
             <div class="top flex-between-center">
-                <span class="page_title">{{dialog.title}} -- {{groupInfo.subjectGroupName}}</span>
                 <div>
-                    <el-button @click="dialog.visible = false">返 回</el-button>
-                    <el-button v-if="dialog.from=='researchObject'" type="primary" @click="addObject('确认添加')">确认添加</el-button>
+                    <i class="el-icon-close close_icon" @click="dialog.visible = false"></i>
+                    <span class="page_title">{{dialog.title}} -- {{groupInfo.subjectGroupName}}</span>
                 </div>
+                <el-button v-if="dialog.from=='researchObject'" type="primary" @click="addObject('确认添加')">确认添加</el-button>
             </div>
             <div class="content">
                 <div class="wrap">
@@ -21,9 +21,10 @@
                         <el-form-item :label="index+1+'、'+item.controlName" v-for="(item, index) in dataInfo.content" :key="index">
                             <el-input v-if="item.jsonData.controlType=='SINGLE_INPUT'" type="text" v-model="item.value" :placeholder="'请输入'+item.controlName" clearable></el-input>
                             <el-input v-if="item.jsonData.controlType=='MULTI_INPUT'" type="textarea" v-model="item.value" :placeholder="'请输入'+item.controlName" clearable></el-input>
-                            <el-input v-if="item.jsonData.controlType=='NUMBER_INPUT'" type="number" v-model="item.value" :placeholder="'请输入'+item.controlName" clearable></el-input>
-                            <el-date-picker v-if="item.jsonData.controlType=='DATE_TIME'" v-model="item.value" value-format="yyyy-MM-DD HH:mm:ss" type="datetime" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
-                            <el-date-picker v-if="item.jsonData.controlType=='DATE'" v-model="item.value" value-format="yyyy-MM-DD HH:mm:ss" type="date" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
+                            <!-- 数值控件 -->
+                            <numberInput v-if="item.jsonData.controlType=='NUMBER_INPUT'" :dataInfo="item"></numberInput>
+                            <el-date-picker v-if="item.jsonData.controlType=='DATE_TIME'" v-model="item.value" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
+                            <el-date-picker v-if="item.jsonData.controlType=='DATE'" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
                             <el-checkbox-group v-if="item.jsonData.controlType=='CHECKBOX'" v-model="item.value">
                                 <el-checkbox v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="li">{{li}}</el-checkbox>
                             </el-checkbox-group>
@@ -68,6 +69,7 @@
 </template>
 
 <script>
+import numberInput from './numberInput'
 export default {
     name: 'dynamicForm',
     props: ['dataInfo','dialog','groupList'],
@@ -78,7 +80,9 @@ export default {
             groupInfo: {}
         }
     },
-    
+    components: {
+        numberInput
+    },
     methods: {
         addObject(title) {
             this.$confirm('是否'+title+'?', '提示', {

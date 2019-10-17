@@ -135,8 +135,7 @@
                         </div>
                     </div>
                     <div class="wrap">
-                        <el-button v-if="configExists" type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">再次发布</el-button>
-                        <el-button v-else type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">发 布</el-button>
+                        <el-button type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">保 存</el-button>
                     </div>
                 </div>
             </div>
@@ -167,7 +166,7 @@
             </div>
         </el-dialog>
 
-        <refForm ref="refForm" :dialogForm="dialgoCrfForm" @save="handleSave" :options="options"></refForm>
+        <refForm v-if="dialgoCrfForm.visible" ref="refForm" :dialogForm="dialgoCrfForm" @save="handleSave" :options="options"></refForm>
     </div>
 </template>
 
@@ -631,6 +630,7 @@ export default {
                         res = await that.$http.followUpPlanStageAdd(params);
                     }
                     if (res.code == '0') {
+                        // this.activeGroup = res.data;
                         this.dialgoForm.visible = false;
                     }else {
                         this.$mes('success',  res.msg || this.dialgoForm.title+'失败');

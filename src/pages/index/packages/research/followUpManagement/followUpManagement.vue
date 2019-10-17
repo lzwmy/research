@@ -117,6 +117,9 @@
                         :min-width="column.label.length * 15 + 50"
                         show-overflow-tooltip
                         v-if="column.type !='report' && column.type != 'disable'">
+                        <template slot-scope="scope">
+                            <p v-if="column.label=='随访状态'"><i class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
+                        </template>
                     </el-table-column>
                     <span v-for="(li,liIndex) in dataList.header" :key="'1_'+liIndex">
                         <el-table-column v-if="li.type =='report'" :label="li.label" align="center">
@@ -231,6 +234,20 @@ export default {
         formItemCom
     },
     methods: {
+        //操作随访状态样式
+        handleStatus(status) {
+            console.log(status)
+            switch (status) {
+                case '未开始':  return '#e0e0e0'; break;
+                case '录入中':  return '#00B8DF'; break;
+                case '已失访':  return '#F79E00'; break;
+                case '已终止':  return '#DB5452'; break;
+                case '已完成':  return '#00BE90'; break;
+                case '失效':  return '#333'; break;
+                default:
+                    break;
+            }
+        },
         //切换页面刷新操作
         addEventListenervisibilityChange() {
             this.hidden = "";
@@ -260,7 +277,6 @@ export default {
             this.multipleSelection = val;
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
-            
             let that = this;
             this.popoverSearchVisible = false;
             that.tableLoading = true;
@@ -298,7 +314,6 @@ export default {
                         content: res.data.body,
                         header: res.data.header
                     };
-                    console.log(obj)
                     that.dataList = obj;
                 }else {
                     that.dataList = {
@@ -438,7 +453,14 @@ export default {
 <style lang="less" scoped>
     .followUpManagement {
         .el-table {
-                padding: 0;
+            padding: 0;
+            .status-icon {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                margin-right: 6px;
+                border-radius: 50%;
+            }
         }
         
     }

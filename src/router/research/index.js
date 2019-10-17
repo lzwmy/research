@@ -196,7 +196,7 @@ const routes = [
             flag: 'researchTarget',
             belongToGroup: 'researchTask',
             openMode: 2,
-            roles:['1','2']
+            roles:['1']
         },
         component: researchTarget
     },{
@@ -218,7 +218,7 @@ const routes = [
             flag: 'projectGrouping',
             belongToGroup: 'researchTask',
             openMode: 2,
-            roles:['1','2']
+            roles:['1']
         },
         component: projectGrouping
     },{
@@ -240,7 +240,7 @@ const routes = [
             flag: 'followUpPlan',
             belongToGroup: 'researchTask',
             openMode: 2,
-            roles:['1','2']
+            roles:['1']
         },
         component: followUpPlan
     },{
@@ -262,7 +262,7 @@ const routes = [
             flag: 'operationRecord',
             belongToGroup: 'researchTask',
             openMode: 2,
-            roles:['1','2']
+            roles:['1']
         },
         component: operationRecord
     }

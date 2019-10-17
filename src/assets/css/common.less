@@ -90,9 +90,6 @@ body .insideView ~ .el-dialog__wrapper.height_auto .el-dialog {
 
 /* 确认弹框style*/
 body .el-message-box__wrapper {
-    .el-message-box__header {
-        border-bottom: 1px solid rgba(229, 235, 236, 1);
-    }
     .el-message-box__content {
         padding: 35px 15px 35px 50px;
     }
@@ -438,8 +435,8 @@ body {
     }
 }
 
-/* 搜索区域 */
 body {
+    /* 搜索区域 */
     .search_content {
         margin-bottom: 10px;
     }
@@ -530,6 +527,16 @@ body {
     }
     .bottom_20 {
         margin-bottom: 20px;
+    }
+    .close_icon {
+        font-size: 20px;
+        padding: 0 8px;
+        vertical-align: middle;
+        color: #313a46;
+        cursor: pointer;
+        &:hover {
+            color: #1bbae1;
+        }
     }
     .page_title {
         font-size: 15px;

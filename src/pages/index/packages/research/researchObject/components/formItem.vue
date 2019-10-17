@@ -59,7 +59,7 @@ export default {
             selectFormItem: [],
             //回显指标
             previewFormItem:[],
-            maxItem: 10
+            maxItem: 9999
         }
     },
     watch: {

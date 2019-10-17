@@ -17,8 +17,8 @@ const http = {
     researchAuth () {
         return vm.$post(url.permission, null, false);
     },
-    researchGetRoles () {
-        return vm.$get(url.getRoles, null, false);
+    researchGetRoles (params) {
+        return vm.$get(url.getRoles, params, true);
     },
     researchSharegetRoles () {
         return vm.$get(url.sharegetRoles, null, false);

@@ -45,7 +45,7 @@
                 </echarts-contain>
             </div>
         </div>
-
+        <!-- 多中心添加用户 -->
         <el-dialog 
             :title="dialogForm.title" 
             :visible.sync="dialogForm.visible" 
@@ -83,6 +83,33 @@
                 <el-button @click="closeDialog" >取 消</el-button>
             </div>
         </el-dialog>
+
+        <!-- 单中心选择用户 -->
+        <el-dialog 
+            :title="dialogFormSingle.title" 
+            :visible.sync="dialogFormSingle.visible" 
+            :append-to-body="true"
+            @close="closeDialog"
+            width="550px">
+            <el-form 
+                :model="dialogFormSingle" ref="dialogFormSingle" :rules="ruleDialogFormSingle" label-width="80px" class="organizationManagement" 
+                @submit.native.prevent v-loading="dialogFormSingle.loading" label-position="left">
+                <el-form-item label="选择用户:" prop="userName">
+                    <el-select v-model="dialogFormSingle.userName" class="block">
+                        <el-option v-for="(item, index) in userList" :key="index" :label="item.orgName" :value="item.orgName" :disabled="dialogForm.title=='编辑用户'"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="角色:" prop="role">
+                    <el-select v-model="dialogFormSingle.role" multiple class="block">
+                        <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button type="primary" @click="onConfirmSingle" :disabled="dialogFormSingle.loading">确 认</el-button>
+                <el-button @click="closeDialog" >取 消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -96,6 +123,7 @@ export default {
     mixins: [mixins],
     data () {
         return {
+            //多中心添加用户
             dialogForm: {
                 title:'',
                 userName:'',
@@ -108,6 +136,18 @@ export default {
                 visible: false,
                 loading: false,
             },
+            //单中心选择用户
+            dialogFormSingle: {
+                title:'',
+                userName:'',
+                userId: '',
+                organization: '',
+                role:[],
+                visible: false,
+                loading: false,
+            },
+            //单中心用户列表
+            userList: [],
             activeGroup: 0,
             dataList: {},
             orgList: [],
@@ -128,6 +168,10 @@ export default {
                 role: [{required: true, message: '请选择角色', trigger: 'change'}],
                 department: [{required: true, message: '请输入科室', trigger: 'change'}],
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]
+            },
+            ruleDialogFormSingle: {
+                userName: [{required: true, message: '请选择用户', trigger: 'change'}],
+                role: [{required: true, message: '请选择角色', trigger: 'change'}],
             }
         }
     },
@@ -206,7 +250,7 @@ export default {
         async getOrgList() {
             this.orgLoading = true;
             try {
-                let res = await this.$http.ORGgetOrgList();
+                let res = await this.$http.ORGgetOrgList({subjectId: this.$store.state.user.researchInfo.subjectInfoId});
                 if (res.code == '0') {
                     this.orgList = res.data;
                 }else {
@@ -219,20 +263,33 @@ export default {
             }
         },
         showDialog(title, row) {
-            this.dialogForm.title = title;
-            this.dialogForm.visible = true;
-            if(!row) {
-                return;
+            //多中心
+            if(this.$store.state.user.researchInfo.centerModel==2) {
+                this.dialogForm.title = title;
+                this.dialogForm.visible = true;
+                if(!row) {
+                    return;
+                }
+                this.dialogForm.userName = row.userName;
+                this.dialogForm.tel = row.phoneNumber;
+                this.dialogForm.organization = row.orgName;
+                this.dialogForm.id = row.id;
+                this.dialogForm.role = row.roles;
+                this.dialogForm.department = row.deptName;
+                this.dialogForm.position = row.duty;
+                this.dialogForm.userId = row.id;
+            }else {
+                this.dialogFormSingle.title = title;
+                this.dialogFormSingle.visible = true;
+                if(!row) {
+                    return;
+                }
+                this.dialogFormSingle.userName = row.userName;
+                this.dialogFormSingle.organization = row.orgName;
+                this.dialogFormSingle.id = row.id;
+                this.dialogFormSingle.role = row.roles;
+                this.dialogFormSingle.userId = row.id;
             }
-            this.dialogForm.userName = row.userName;
-            this.dialogForm.tel = row.phoneNumber;
-            this.dialogForm.organization = row.orgName;
-            this.dialogForm.id = row.id;
-            this.dialogForm.role = row.roles;
-            this.dialogForm.department = row.deptName;
-            this.dialogForm.position = row.duty;
-            this.dialogForm.userId = row.id;
-                
         },
         closeDialog() {
             this.$refs.dialogForm.resetFields();
@@ -291,6 +348,9 @@ export default {
                 }
             });
         },
+        onConfirmSingle() {
+
+        },
         addOrgInput() {
             this.orgList.push({
                 edit: true,
@@ -317,7 +377,8 @@ export default {
                 return;
             }
             let formData = {
-                orgName: org[0].orgName
+                orgName: org[0].orgName,
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId
             }
             try {
                 let res = await this.$http.ORGaddOrg(formData);

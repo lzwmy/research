@@ -95,7 +95,6 @@
     data() {
       return {
         roles: [], //用户角色
-        auth: false,
         dataList: [],
         actionUrl: '',
         loading: false,
@@ -116,10 +115,6 @@
       };
     },
     created() {
-      this.judgeAuth()
-      .then(()=>{
-        this.getUserInfo();
-      })
       this.getDataList();
       // this.actionUrl = 'http://192.168.1.99:8080/research/subject/info/uploadFile.do';
       this.actionUrl =  JSON.parse(sessionStorage.getItem('Global')).baseURL + '/subject/info/uploadFile.do';
@@ -132,10 +127,6 @@
         })
       },
       createTask() {
-        if(!this.auth) {
-          this.$mes('info','暂无权限访问!')
-          return;
-        }
         this.$router.push({
           name: 'createProject',
           params: {
@@ -162,55 +153,58 @@
         }
       },
       linkTask(item) {
-        if(!this.auth || this.roles.length == 0) {
-          this.$mes('info','暂无权限访问!')
-          return;
-        }
-        if (item.createStatus == 3) {
-          let params = {
-            title: '科研项目',
-            researchId: item.id,
-            fromRouter: {
-              path: this.$route.path,
-              meta: this.$route.meta
-            },
-            menuList: this.$store.state.user.taskMenuList
+        this.getUserInfo(item.id)
+        .then(()=>{
+          if(this.roles.length) {
+            this.$mes('info','暂无访问权限');
+            return;
           }
-          sessionStorage.setItem('insideMenuData', JSON.stringify(params))
-          this.$router.push({
-            name: "projectProgress",
-            params: params
-          })
-          this.$store.commit('saveresearchInfo',{
-            subjectInfoId: item.id,
-            centerModel: item.centerPattern,
-            roles: this.roles
-          });
-          this.btnLoading = false;
-          return;
-        } else {
-          this.getProjectInfo(item.id)
-            .then(() => {
-              let params = {
-                createStatus: 2,
-                projectInfo: {
-                  proType: 'edit',
-                  centerPattern: item.centerPattern,
-                  id: item.id,
-                  description: this.projectInfo.description || '',
-                  purpose: this.projectInfo.purpose || '',
-                  subjectName: this.projectInfo.subjectName,
-                  targetPatientNum: this.projectInfo.targetPatientNum || 0,
-                  fileId: this.projectInfo.fileId || '',
-                  fileName: this.projectInfo.fileName || '',
-                }
-              }
-              this.$router.push({
-                name: "createProject",
-                params: params
-              })
+          if (item.createStatus == 3) {
+            let params = {
+              title: '科研项目',
+              researchId: item.id,
+              fromRouter: {
+                path: this.$route.path,
+                meta: this.$route.meta
+              },
+              menuList: this.$store.state.user.taskMenuList
+            }
+            sessionStorage.setItem('insideMenuData', JSON.stringify(params))
+            this.$router.push({
+              name: "projectProgress",
+              params: params
             })
-        }
+            this.$store.commit('saveresearchInfo',{
+              subjectInfoId: item.id,
+              centerModel: item.centerPattern,
+              roles: this.roles
+            });
+            this.btnLoading = false;
+            return;
+          } else {
+            this.getProjectInfo(item.id)
+              .then(() => {
+                let params = {
+                  createStatus: 2,
+                  projectInfo: {
+                    proType: 'edit',
+                    centerPattern: item.centerPattern,
+                    id: item.id,
+                    description: this.projectInfo.description || '',
+                    purpose: this.projectInfo.purpose || '',
+                    subjectName: this.projectInfo.subjectName,
+                    targetPatientNum: this.projectInfo.targetPatientNum || 0,
+                    fileId: this.projectInfo.fileId || '',
+                    fileName: this.projectInfo.fileName || '',
+                  }
+                }
+                this.$router.push({
+                  name: "createProject",
+                  params: params
+                })
+              })
+          }
+        })
       },
       async getDataList() {
         this.loading = true;
@@ -303,6 +297,7 @@
               } else {
                 this.$mes('error', '编辑失败!');
               }
+              this.getDataList();
             } catch (err) {
               console.log(err)
             }
@@ -349,23 +344,10 @@
           console.log(err)
         }
       },
-      //判断是否有权限进入科研项目
-      async judgeAuth() {
-        try {
-          let res = await this.$http.researchAuth();
-          if (res.code == '0' && res.data) {
-            this.auth = true;
-          }else {
-            this.auth = false;
-          }
-        } catch (err) {
-          console.log(err)
-        }
-      },
       //角色信息
-      async getUserInfo() {
+      async getUserInfo(subjectId) {
         try {
-          let res = await this.$http.researchGetRoles();
+          let res = await this.$http.researchGetRoles({subjectId: subjectId});
           if (res.code == '0') {
             this.roles = res.data;
           }else {

@@ -6,6 +6,8 @@
         <div class="crf-main-content" >
           <div class="crf-step-header flex-between-center">
             <div>
+              <!-- <el-button type="danger" size="mini" @click="closePage" style="background: red;">关闭</el-button> -->
+              <i class="el-icon-close close_icon" @click="closePage"></i>
               <i class="header_left icon iconfont iconxitongguanlibeifen"></i>
               <span style="font-size: 16px; margin-right:20px;font-weight: bold;">{{urlParameter.patientName}}</span>
             </div>
@@ -15,7 +17,6 @@
               <el-button v-if="urlParameter.from=='followUpManagement' && !isDisabled" @click="saveFollowUpReportData(1)" type="primary" :disabled="mainLoading">保 存</el-button>
               <el-button v-if="urlParameter.from=='followUpManagement' && !isDisabled" @click="saveFollowUpReportData(2)" type="warning" :disabled="commitLoading">提 交</el-button>
               <el-button v-if="urlParameter.from=='followUpManagement' && [2,3].indexOf(urlParameter.status) == -1 && !isDisabled" @click="showStopDialog" type="danger">终止随访或失访</el-button>
-              <el-button type="danger" size="mini" @click="closePage" style="background: red;">关闭</el-button>
             </div>
           </div>
           <div class="flex-start-start" style="height:100%; margin: 20px;">

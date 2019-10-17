@@ -23,7 +23,7 @@
             </ul>
             <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
         </el-popover>
-        <p v-show="$route.meta.belongToGroup == 'researchTask'" @click="researchlLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
+        <p v-if="$route.meta.belongToGroup == 'researchTask' && $store.state.user.researchInfo.centerModel == 2" @click="researchlLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
 
         <el-dialog 
             title="" 
@@ -56,7 +56,7 @@ export default {
             dataList: [],   //专病列表
             //项目分享弹框
             dialgoForm: {
-                url: 'http://192.168.1.109:4040/loginResearch.html?id='+ this.researchId,
+                url: window.location.origin+'/loginResearch.html?id='+ this.researchId,
                 visible: false
             },
         };

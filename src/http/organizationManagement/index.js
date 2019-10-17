@@ -21,7 +21,7 @@ const url = {
 
 const http = {
     ORGgetOrgList (params) {
-        return vm.$get(url.getOrgList, params, false);
+        return vm.$get(url.getOrgList, params, true);
     },
     ORGgetUserList (params) {
         return vm.$post(url.getUserList, params, false);
@@ -39,7 +39,7 @@ const http = {
         return vm.$post(url.editUser, params, false);
     },
     ORGaddOrg (params) {
-        return vm.$get(url.addOrg, params, false);
+        return vm.$post(url.addOrg, params, false);
     }
 };
 

@@ -79,7 +79,8 @@ export default {
     handleLogin() {
       let params = {
         code: this.form.validCode,
-        phoneNumber: this.form.phoneNumber
+        phoneNumber: this.form.phoneNumber,
+        subjectId: utils.getQuery('id')
       };
       this.$post('/auth/subject/login.do', this.$format(params), false).then((res) => {
         if (res && res.code == 0 && res.data) {

@@ -3,21 +3,20 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">研究导入数据 </el-button>
+                <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">导入研究数据 </el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
-                <el-dropdown trigger="hover" @command="handleAddObject">
-                    <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang">
-                        添加研究对象
+                <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="addSingleObject" style="padding: 0 0 0 15px">
+                    添加研究对象
+                    <el-dropdown trigger="hover" @command="handleAddObject">
                         <span class="add"><i class="el-icon-caret-bottom el-icon--right"></i></span>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown" class="addresearchObject">
-                        <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
-                        <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
-                        <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-
+                        <el-dropdown-menu slot="dropdown" class="addresearchObject">
+                            <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
+                            <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
+                            <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </el-button>
             </div>
         </div>
         <!-- 搜索区域 -->
@@ -145,7 +144,7 @@
         <table-config ref="refTableConfig" @saveConfig="handleSaveConfig" :dataInfo="confingData"></table-config>
 
         <!-- 添加研究对象 -->
-        <dynamicForm ref="refDynamicForm" :dialog="dialogAddObject" :dataInfo="addObjectData" :groupList="groupList" @successAdd="successAdd"></dynamicForm>
+        <dynamicForm ref="refDynamicForm" v-if="dialogAddObject.visible" :dialog="dialogAddObject" :dataInfo="addObjectData" :groupList="groupList" @successAdd="successAdd"></dynamicForm>
     </div>
 </template>
 
@@ -164,7 +163,7 @@ export default {
     mixins: [mixins],
     data () {
         return {
-            maxItem: 10,
+            maxItem: 9999,
             groupList: [],
             crfList: [],
             allCrfForm: [],
@@ -378,41 +377,53 @@ export default {
             sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
             window.open('./subjectForm.html');
         },
+        //操作添加研究对象下拉项
         handleAddObject(command) {
             switch (command) {
                 case '1':
-                    this.dialogAddObject = {
-                        title: '添加研究对象',
-                        from:'researchObject',
-                        visible: true,
-                        loading: false
-                    }
-                    //生成表单指标
-                    let newArr = [];
-                    this.confingData.dataList.forEach(item=>{
-                        item.formItemRspList.forEach(li=>{
-                            if(li.checked){
-                                let obj = {
-                                    value: JSON.parse(li.jsonData).controlType=='CHECKBOX'?[]:'',
-                                    controlName: li.formItemName,
-                                    path: li.controlName,
-                                    crfId: item.crfId,
-                                    jsonData: JSON.parse(li.jsonData)
-                                }
-                                newArr = newArr.concat(obj)
-                            }
-                        })
-                    })
-                    this.addObjectData = {
-                        formTitle:'基本信息',
-                        content: newArr
-                    }
-                    this.$refs.refDynamicForm.visible = true;
+                    this.addSingleObject();
                     break;
                 default:
                     break;
             }
             
+        },
+        //单个添加研究对象
+        addSingleObject() {
+            //生成表单指标
+            let newArr = [];
+            this.confingData.dataList.forEach(item=>{
+                item.formItemRspList.forEach(li=>{
+                    if(li.checked){
+                        let obj = {
+                            value: JSON.parse(li.jsonData).controlType=='CHECKBOX'?[]:'',
+                            controlName: li.formItemName,
+                            path: li.controlName,
+                            crfId: item.crfId,
+                            jsonData: JSON.parse(li.jsonData)
+                        }
+                        newArr = newArr.concat(obj)
+                    }
+                })
+            })
+            //如果指标为空
+            if(newArr.length == 0) {
+                this.$mes('info','请先勾选研究指标项')
+                return;
+            }
+            this.dialogAddObject = {
+                title: '添加研究对象',
+                from:'researchObject',
+                visible: true,
+                loading: false
+            }
+            this.addObjectData = {
+                formTitle:'基本信息',
+                content: newArr
+            }
+            this.$nextTick(()=>{
+                this.$refs.refDynamicForm.visible = true;
+            })
         },
         //成功添加对象
         successAdd() {
@@ -421,13 +432,11 @@ export default {
         },
         //删除研究对象
         deleteObject(row) {
-            console.log(row)
             this.$confirm('确定删除?', '提示', {
                 cancelButtonText: '取消',
                 confirmButtonText: '确定',
                 type: 'warning'
             }).then(async() => {
-                return;
                 let params = {
                     "subjectId": this.$store.state.user.researchInfo.subjectInfoId,
                     "groupId": this.currentGrounpId,
@@ -486,7 +495,7 @@ export default {
         .el-table {
             padding: 0 !important;
             .setting {
-                font-size: 20px;
+                font-size: 20px !important;
                 color: #999;
                 &:hover {
                     color: #1bbae1;

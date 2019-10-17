@@ -40,11 +40,11 @@ const user = {
     researchInfo: {
       subjectInfoId: CURR_RESEARCH_INFO.subjectInfoId?CURR_RESEARCH_INFO.subjectInfoId:'',
       centerModel: CURR_RESEARCH_INFO.centerModel?CURR_RESEARCH_INFO.centerModel:'',  //1单中心，2多中心
-      roles: CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],    //1、管理员(所有权限)  2、分中心管理员（无权添加中心） 3、数据录入员 4、数据管理员（导出数据）
+      roles: CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],    //1、管理员(所有权限)  2、分中心管理员（无权添加中心,可查看组织管理） 3、数据录入员 4、数据管理员（导入/导出数据）
     },
     //科研项目权限
     researchAuth: {
-      authImport: judgeAuth(CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],['1','2','3']),  //导入授权
+      authImport: judgeAuth(CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],['1','2','3','4']),  //录入授权
       authExport: judgeAuth(CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],['1','2','4']),  //导出授权
       authAddCenter:judgeAuth(CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],['1']),  //添加中心授权
     },
@@ -80,7 +80,7 @@ const user = {
       sessionStorage.setItem('CURR_RESEARCH_INFO', JSON.stringify(data));
       state.researchInfo = data;
       state.researchAuth = {
-        authImport: judgeAuth(data.roles,['1','2','3']),  //导入授权
+        authImport: judgeAuth(data.roles,['1','2','3','4']),  //录入授权
         authExport: judgeAuth(data.roles,['1','2','4']),  //导出授权
         authAddCenter: judgeAuth(data.roles,['1'])  //添加中心授权
       }

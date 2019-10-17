@@ -3,7 +3,7 @@
         <div class="cloud-search flex-between-center">
             <p class="title">创建项目</p>
             <div>
-                <el-button type="primary" @click="create" :disabled="centerPattern != 0 && centerPattern != 1">下一步</el-button>
+                <el-button type="primary" @click="create">下一步</el-button>
             </div>
         </div>
         <div class="main">
