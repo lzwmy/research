@@ -55,7 +55,8 @@ export default {
                 args: this.dataInfo
             };
             try {
-                let res = await that.$http.PFUGetReportDataList(formData);
+                // let res = await that.$http.PFUGetReportDataList(formData);
+              let res = await that.$http.queryFilterReportList(formData);
                 if (res.code == '0') {
                     this.reportDataList = res.data.args;
                 }else {

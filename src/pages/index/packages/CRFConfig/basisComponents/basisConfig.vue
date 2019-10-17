@@ -76,7 +76,7 @@
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
-            <!--{{basisItem.baseProperty.bindingInfo}}-->
+            <!--{{basisItem.baseProperty}}-->
             <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
           </div>
         </div>
@@ -714,6 +714,9 @@
       .btn-right-box{
         .el-button--primary{
           background-color: #1BBAE1;
+          &:hover{
+            background-color: #14aed4;
+          }
         }
         .iconfont{
           font-size: 14px;

@@ -323,6 +323,9 @@
             color: #FFF;
             background-color: #1BBAE1;
             border-color: #1BBAE1;
+            &:hover{
+              background-color: #14aed4;
+            }
           }
           .icondaochu{
             padding-right:3px;

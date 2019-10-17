@@ -57,6 +57,24 @@
         //跳转 到 编辑报告
         jumpModifyReport(data) {
           let diseaseId = this.$route.query.id;
+          let urlParameter={
+            cacheData: false,
+            formId: "",
+            reportId: '',
+            groupId: "",
+            subjectId: "",
+            diseaseId: "",
+            patientName: "",
+            patientId: "",
+            identify: "",
+            from: "caseManage",
+            diseaseName: "",
+            subjectName: "",
+            groupName: "",
+            title: "",
+            isModify:"displayShow"
+          }
+          sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
           this.$router.push({
             path:"/createReport",
             query:{
@@ -146,6 +164,9 @@
     span{
       position: relative;
       left: -5px;
+    }
+    &:hover{
+      background-color: #14aed4;
     }
   }
   .report_config_content{

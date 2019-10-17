@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="portion_body_content-box">
-            <el-tabs v-model="tabName" type="card">
+            <el-tabs v-model="tabName" type="card" @tab-click="handleClick">
               <el-tab-pane label="病种" name="first" class="subDisease_container">
                 <div class="disease-content-box" v-loading="loading" v-if="diseaseList.length!==0">
                   <div class="report_box">
@@ -58,7 +58,7 @@
                         <span>确认添加</span>
                       </div>
                     </div>
-                    <div class="preview_content">
+                    <div class="preview_content" v-loading="portionLoading">
                       <preview-portion v-if="JSON.stringify(diseasePreview)!=='{}'" :item="diseasePreview"></preview-portion>
                     </div>
                   </div>
@@ -81,7 +81,8 @@
                   <div class="portion_add-box">
                     <div class="portion_add-header">
                       <div class="title_box">{{portionName}}</div>
-                      <div class="header_btn" v-if="multipleSelection.length!==0" @click="selectionAdd">
+                      <!--<div class="header_btn" v-if="multipleSelection.length!==0" @click="selectionAdd">-->
+                      <div class="header_btn" v-if="portionId!==''" @click="previewAdd">
                         <i class="iconfont iconquerentianjia"></i>
                         <span>确认添加</span>
                       </div>
@@ -90,8 +91,8 @@
                         <span>确认添加</span>
                       </div>
                     </div>
-                    <div class="portion_table-content">
-                      <el-table v-show="tableList.length!==0"
+                    <div class="portion_table-content" v-loading="portionLoading">
+                      <!--<el-table v-show="tableList.length!==0"
                                 ref="multipleTable"
                                 :data="tableList.formItemList"
                                 tooltip-effect="dark"
@@ -126,7 +127,8 @@
                           </template>
                         </el-table-column>
                         <el-table-column prop="rangeText" label="值域" min-width="5%" show-overflow-tooltip></el-table-column>
-                      </el-table>
+                      </el-table>-->
+                      <preview-portion v-if="JSON.stringify(diseasePreview)!=='{}'" :item="diseasePreview"></preview-portion>
                       <img v-show="tableList.length==0" src="./../basisComponents/image/none_content.png" alt="">
                     </div>
                   </div>
@@ -175,6 +177,7 @@
           tableLoading:false,
           showConfigPortion:false,
           loading:false,
+          portionLoading:false,
           searchType:0,// 搜索类型
           searchName:"",// 搜索名称
           tabName:"first",//切换名称
@@ -212,6 +215,7 @@
           /*this.$nextTick(()=>{
             this.$refs.multipleTable.clearSelection();
           })*/
+          this.searchItem();
         },
         //关闭 弹框
         closeAddDialog() {
@@ -224,6 +228,13 @@
           this.CRFSearchPortion().then(()=>{
             this.loading = false;
           });
+        },
+        handleClick() {
+          this.diseasePreview = {};
+          this.portionId= "";
+          this.dropPortionId = "";
+          this.portionName = "";
+          this.dropPortionName = "";
         },
         //直接添加
         addDirect() {
@@ -251,9 +262,13 @@
         portionActive(data) {
           this.portionId = data.portionId;
           this.portionName = data.portionName;
-          this.$refs.multipleTable.clearSelection();
+          // this.$refs.multipleTable.clearSelection();
           this.multipleSelection = [];
-          this.CRFPreviewTableInfo(data.portionId);
+          this.diseasePreview = {};
+          this.portionLoading = true;
+          this.CRFPreviewTableInfo(data.portionId).then(()=>{
+            this.portionLoading = false;
+          })
         },
         // 小节添加
         selectionAdd() {
@@ -279,7 +294,10 @@
           this.dropPortionId = data.portionId;
           this.dropPortionName = data.portionName;
           this.diseasePreview = {};
-          this.CRFPreviewTableInfo(data.portionId);
+          this.portionLoading = true;
+          this.CRFPreviewTableInfo(data.portionId).then(()=>{
+            this.portionLoading = false;
+          })
         },
         filterData(data) {
           var arr = [];
@@ -312,7 +330,7 @@
           this.$emit('update-add',data);
         },
         // 表格 数据
-        async CRFPreviewTableInfo(value) {
+        async  CRFPreviewTableInfo(value) {
           let that = this;
           let formData = {
             formPortionId:value
@@ -451,6 +469,9 @@
               span{
                 font-size: 14px;
               }
+              &:hover{
+                background-color: #14aed4;
+              }
             }
           }
         }
@@ -541,6 +562,8 @@
                 flex: 1;
                 display: flex;
                 flex-direction: column;
+                width: 900px;
+                /*overflow: auto;*/
                 .portion_add-header{
                   display: flex;
                   flex-direction: row;
@@ -558,12 +581,18 @@
                     font-weight: bold;
                   }
                   .header_btn{
-                    font-size: 14px;
+                    /*font-size: 14px;*/
                     color: #1BBAE1;
                     cursor: pointer;
+                    padding: 5px;
+                    border-radius: 2px;
                     .iconfont{
                       font-size:14px;
                       padding-right: 2px;
+                    }
+                    &:hover{
+                      padding: 5px;
+                      background-color: #F5F7FA;
                     }
                   }
                   .gray{
@@ -575,8 +604,13 @@
                   width: 100%;
                   height: 100%;
                   display: flex;
-                  justify-content: center;
-                  align-items: center;
+                  /*justify-content: center;*/
+                  /*align-items: center;*/
+                  overflow: auto;
+                  position: relative;
+                  .displayPortion_title{
+                    display: none;
+                  }
                   .el-table{
                     padding: 0;
                     .el-table__body-wrapper{
@@ -584,6 +618,13 @@
                       overflow-y: auto;
                       min-height:auto;
                     }
+                  }
+                  img{
+                    height: 120px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
                   }
                 }
               }

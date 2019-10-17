@@ -826,6 +826,8 @@
 
             thead {
               background-color: #f7f9fa;
+              font-size: 14px;
+              font-weight:bold;
             }
             tbody{
               tr{
@@ -855,7 +857,7 @@
       }
 
       .wrap_title {
-        font-size: 18px;
+        font-size: 16px;
         margin-bottom: 20px;
         color: rgba(57, 66, 99, 1);
 
@@ -878,7 +880,7 @@
 
         .wrap_label {
           font-size: 16px;
-          font-weight: bold;
+          /*font-weight: bold;*/
         }
 
         &.wrap_box_3 {
