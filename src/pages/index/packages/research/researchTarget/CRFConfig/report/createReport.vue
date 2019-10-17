@@ -560,18 +560,16 @@
     width: 100%;
     min-height: 100%;
     box-sizing: border-box;
-    padding: 15px;
+    /*padding: 15px;*/
     .report-content-nav{
       display:flex;
       flex-direction:column;
-      /*height: 112px;*/
       background-color: #ffffff;
-      /*padding-top:30px;*/
-      /*padding-left: 20px;*/
-      /*padding-right: 20px;*/
       padding: 30px 20px 10px 20px;
       border: 1px solid #E5EBEC;
       box-sizing: border-box;
+      border-top-color: transparent;
+      border-bottom-color:transparent;
       .report-title{
         display: flex;
         flex-direction: row;
@@ -589,20 +587,34 @@
         }
         /*兼容*/
         input[type=text]::-webkit-input-placeholder { /* WebKit browsers */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
         }
+        input:focus::-webkit-input-placeholder {
+          color: transparent;
+          /* transparent是全透明黑色(black)的速记法，即一个类似rgba(0,0,0,0)这样的值 */
+        }
+
         input[type=text]:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
+        }
+        input:focus:-moz-placeholder {
+          color: transparent;
         }
         input[type=text]::-moz-placeholder { /* Mozilla Firefox 19+ */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
         }
+        input:focus::-moz-placeholder {
+          color: transparent;
+        }
         input[type=text]:-ms-input-placeholder { /* Internet Explorer 10+ */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
+        }
+        input:focus:-ms-input-placeholder {
+          color: transparent;
         }
       }
       .report-config_nav{
@@ -651,13 +663,14 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      border-top-color: transparent;
       img{
         width: 150px;
       }
       .report_body-item{
         display: flex;
         flex-direction: column;
-        min-height: 298px;
+        /*min-height: 298px;*/
         width: 100%;
         box-sizing: border-box;
         margin-bottom: 20px;
@@ -710,7 +723,7 @@
         }
         .report_body-content{
           width: 100%;
-          min-height: 238px;
+          /*min-height: 238px;*/
           background-color: #ffffff;
           /*background-color: #f7f8fc;*/
           border:1px solid #E5EBEC;

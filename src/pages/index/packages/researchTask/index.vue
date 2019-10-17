@@ -155,7 +155,7 @@
       linkTask(item) {
         this.getUserInfo(item.id)
         .then(()=>{
-          if(this.roles.length) {
+          if(!this.roles.length) {
             this.$mes('info','暂无访问权限');
             return;
           }

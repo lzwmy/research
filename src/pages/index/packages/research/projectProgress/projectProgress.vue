@@ -350,23 +350,50 @@
     },
     created() {
       if(!JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).roles) {
-        this.getUserInfo()
+        this.getProjectInfo()
+        .then(pro=>{
+          console.log(pro)
+          this.getUserInfo()
           .then(res=>{
             this.$store.commit('saveresearchInfo',{
               subjectInfoId: JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId,
-              centerModel: 1,
+              centerModel: pro.centerPattern,
               roles: res
             });
           })
+        })
       }
     },
     methods: {
+      //短信登录时项目回显
+      async getProjectInfo() {
+        let params = {
+          subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId
+        }
+        try {
+          let res = await this.$http.RTASKpreviewInfo(params);
+          if (res.code == '0') {
+            return Promise.resolve(res.data);
+          } else {
+            this.$mes('error', '获取项目信息失败');
+            setTimeout(()=>{
+              window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
+            },1000)
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      },
       //角色信息
       async getUserInfo() {
         try {
           let res = await this.$http.researchSharegetRoles();
           if (res.code == '0') {
             return Promise.resolve(res.data);
+          }else {
+            setTimeout(()=>{
+              window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
+            },1000)
           }
         } catch (err) {
           console.log(err)
@@ -826,6 +853,8 @@
 
             thead {
               background-color: #f7f9fa;
+              font-size: 14px;
+              font-weight:bold;
             }
             tbody{
               tr{
@@ -855,7 +884,7 @@
       }
 
       .wrap_title {
-        font-size: 18px;
+        font-size: 16px;
         margin-bottom: 20px;
         color: rgba(57, 66, 99, 1);
 
@@ -878,7 +907,7 @@
 
         .wrap_label {
           font-size: 16px;
-          font-weight: bold;
+          /*font-weight: bold;*/
         }
 
         &.wrap_box_3 {

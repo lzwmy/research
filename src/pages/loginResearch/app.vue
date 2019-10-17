@@ -107,8 +107,13 @@ export default {
       if(this.count != 0) {
         return;
       }
+      if(!this.form.phoneNumber) {
+        this.$mes('info','请输入手机号!')
+        return
+      }
       let params = {
-        phoneNumber: this.form.phoneNumber
+        phoneNumber: this.form.phoneNumber,
+        subjectId: utils.getQuery('id')
       }
       this.$get('/auth/subject/send/code.do', this.$format(params), false).then((res) => {
         if (res.code == 0) {

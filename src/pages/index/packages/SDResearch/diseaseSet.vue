@@ -224,7 +224,9 @@ export default {
         'uterus',
         'small_intestine',
         'spleen',
-        'cerebrum'
+        'cerebrum',
+        'hearingTumor',
+        'Psoriasis'
       ],
 
       // 疾病详情表单

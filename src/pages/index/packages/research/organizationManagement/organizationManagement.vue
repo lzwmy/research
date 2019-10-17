@@ -3,13 +3,14 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button type="primary" icon="el-icon-plus" @click="showDialog('添加用户')">添加用户</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="showDialog('添加用户')">{{$store.state.user.researchInfo.centerModel==1?'添加用户':'新建用户'}}</el-button>
+
             </div>
         </div>
         <div class="box">
             <div class="aside">
                 <ul v-loading="orgLoading" id="orgUl">
-                    <li v-for="(item, index) in orgList" :key="index" :class="index == activeGroup?'active':''" @click="selectGroup(item,index)">
+                    <li v-for="(item, index) in orgList" :key="index" :class="item.orgCode == orgCode?'active':''" @click="selectGroup(item)">
                         <span v-if="!item.edit">{{item.orgName}}</span>
                         <el-input @keyup.enter.native="addOrg" @blur="addOrg" class="addOrg" v-else v-model="item.orgName"></el-input>
                     </li>
@@ -30,7 +31,7 @@
                         <el-table-column prop="createTime" label="创建时间" width="150"></el-table-column>
                         <el-table-column label="角色" min-width="160">
                             <template slot-scope="scope">
-                                <span v-for="(item,index) in scope.row.roleName" :key="index">{{item.name}}</span>
+                                <span v-for="(item,index) in scope.row.roleName" :key="index">{{item.name}}、</span>
                             </template>
                         </el-table-column>
                         <el-table-column label="操作" width="120">
@@ -92,11 +93,11 @@
             @close="closeDialog"
             width="550px">
             <el-form 
-                :model="dialogFormSingle" ref="dialogFormSingle" :rules="ruleDialogFormSingle" label-width="80px" class="organizationManagement" 
+                :model="dialogFormSingle" ref="dialogFormSingle" :rules="ruleDialogFormSingle" label-width="100px" class="organizationManagement" 
                 @submit.native.prevent v-loading="dialogFormSingle.loading" label-position="left">
-                <el-form-item label="选择用户:" prop="userName">
-                    <el-select v-model="dialogFormSingle.userName" class="block">
-                        <el-option v-for="(item, index) in userList" :key="index" :label="item.orgName" :value="item.orgName" :disabled="dialogForm.title=='编辑用户'"></el-option>
+                <el-form-item label="选择用户:" prop="userId">
+                    <el-select v-model="dialogFormSingle.userId" class="block">
+                        <el-option v-for="(item, index) in userList" :key="index" :label="item.userName" :value="item.id" :disabled="dialogFormSingle.title=='编辑用户' || item.id == $store.state.user.userLogin.userId"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
@@ -141,14 +142,13 @@ export default {
                 title:'',
                 userName:'',
                 userId: '',
-                organization: '',
+                id: '',
                 role:[],
                 visible: false,
                 loading: false,
             },
             //单中心用户列表
             userList: [],
-            activeGroup: 0,
             dataList: {},
             orgList: [],
             roleList: [],
@@ -170,7 +170,7 @@ export default {
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]
             },
             ruleDialogFormSingle: {
-                userName: [{required: true, message: '请选择用户', trigger: 'change'}],
+                userId: [{required: true, message: '请选择用户', trigger: 'change'}],
                 role: [{required: true, message: '请选择角色', trigger: 'change'}],
             }
         }
@@ -184,15 +184,26 @@ export default {
     },
     methods: {
         initPage () {
-            this.getOrgList()
-            .then(()=>{
-                this.orgList.length != 0 && this.selectGroup(this.orgList[0],0);
-            })
+            //单中心
+            if(this.$store.state.user.researchInfo.centerModel==1) {
+                this.getAllUsers();
+            }
+            //手机登录时
+            if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {
+                this.getOrgListShare()
+                .then(()=>{
+                    this.orgList.length != 0 && this.selectGroup(this.orgList[0]);
+                })
+            }else {
+                this.getOrgList()
+                .then(()=>{
+                    this.orgList.length != 0 && this.selectGroup(this.orgList[0]);
+                })
+            }
             this.getAllRoles();
         },
         selectGroup(item,index) {
             this.orgCode = item.orgCode;
-            this.activeGroup = index;
             this.getDataList();
         },
         async getAllRoles() {
@@ -202,6 +213,23 @@ export default {
                     this.roleList = res.data;
                 }else {
                     this.$mes('error', res.msg);
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async getAllUsers() {
+            let formData = {
+                account: '',
+                userName: '',
+                status: '',
+                page: 0,
+                size: 9999
+            }
+            try {
+                let res = await this.$http.userFindAllUsers(formData);
+                if (res.code == '0') {
+                    this.userList = res.data.list;
                 }
             } catch (err) {
                 console.log(err)
@@ -247,12 +275,31 @@ export default {
                 console.log(err)
             }
         },
+        //获取机构列表(主页进入)
         async getOrgList() {
             this.orgLoading = true;
             try {
                 let res = await this.$http.ORGgetOrgList({subjectId: this.$store.state.user.researchInfo.subjectInfoId});
                 if (res.code == '0') {
                     this.orgList = res.data;
+                    this.orgCode = this.orgList[0].orgCode;
+                }else {
+                    this.$mes('error', res.msg);
+                }
+                this.orgLoading = false;
+            } catch (err) {
+                this.orgLoading = false;
+                console.log(err)
+            }
+        },
+        //获取机构列表(手机登录)
+        async getOrgListShare() {
+            this.orgLoading = true;
+            try {
+                let res = await this.$http.ORGgetOrgListShare({subjectId: this.$store.state.user.researchInfo.subjectInfoId});
+                if (res.code == '0') {
+                    this.orgList = res.data;
+                    this.orgCode = this.orgList[0].orgCode;
                 }else {
                     this.$mes('error', res.msg);
                 }
@@ -273,7 +320,6 @@ export default {
                 this.dialogForm.userName = row.userName;
                 this.dialogForm.tel = row.phoneNumber;
                 this.dialogForm.organization = row.orgName;
-                this.dialogForm.id = row.id;
                 this.dialogForm.role = row.roles;
                 this.dialogForm.department = row.deptName;
                 this.dialogForm.position = row.duty;
@@ -285,25 +331,40 @@ export default {
                     return;
                 }
                 this.dialogFormSingle.userName = row.userName;
-                this.dialogFormSingle.organization = row.orgName;
-                this.dialogFormSingle.id = row.id;
                 this.dialogFormSingle.role = row.roles;
-                this.dialogFormSingle.userId = row.id;
+                let user = this.userList.find(li=>{
+                    return li.userName == row.userName;
+                })
+                this.dialogFormSingle.userId = user.id;
+                this.dialogFormSingle.id = row.id;
             }
         },
         closeDialog() {
-            this.$refs.dialogForm.resetFields();
-            this.dialogForm = {
-                title:'',
-                userId: '',
-                userName:'',
-                tel: '',
-                organization: '',
-                role:[],
-                department: '',
-                position: '',
-                visible: false,
-                loading: false,
+            if(this.$store.state.user.researchInfo.centerModel==2) {
+                this.$refs.dialogForm.resetFields();
+                this.dialogForm = {
+                    title:'',
+                    userId: '',
+                    userName:'',
+                    tel: '',
+                    organization: '',
+                    role:[],
+                    department: '',
+                    position: '',
+                    visible: false,
+                    loading: false,
+                }
+            }else {
+                this.$refs.dialogFormSingle.resetFields();
+                this.dialogFormSingle = {
+                    title:'',
+                    userName:'',
+                    userId: '',
+                    id: '',
+                    role:[],
+                    visible: false,
+                    loading: false
+                }
             }
         },
         onConfirm() {
@@ -349,7 +410,43 @@ export default {
             });
         },
         onConfirmSingle() {
-
+            this.$refs.dialogFormSingle.validate(async (valid) => {
+                let that = this;
+                if (!valid) {
+                    return false;
+                }
+                that.dialogFormSingle.loading = true;
+                try {
+                    let res, formData;
+                    let organization = that.orgList.find(item=>{
+                        return this.orgCode == item.orgCode;
+                    })
+                    if(that.dialogFormSingle.title == "添加用户"){
+                        formData = {
+                            id: this.dialogFormSingle.userId,
+                            roles: this.dialogFormSingle.role,
+                            orgName: organization.orgName,
+                            orgCode: organization.orgCode
+                        }
+                        res = await that.$http.ORGAddUser(formData);
+                    }else{
+                        formData = {
+                            roles: this.dialogFormSingle.role,
+                            userId: this.dialogFormSingle.id
+                        }
+                        res = await that.$http.ORGeditUser(formData);
+                    }
+                    if (res.code == '0') {
+                        that.$mes('success', that.dialogFormSingle.title +'成功');
+                        that.dialogFormSingle.visible = false;
+                        that.dialogFormSingle.loading = false;
+                        that.getDataList(that.paging.currentPageNo, that.paging.currentPageSize);
+                    }
+                } catch (error) {
+                    console.log(error)
+                    that.dialogFormSingle.visible = false;
+                }
+            });
         },
         addOrgInput() {
             this.orgList.push({

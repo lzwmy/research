@@ -9,7 +9,7 @@
                   <div class="layout_title">
                     <div class="layout_name">布局</div>
                     <div class="layout_item-box">
-                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.wrap==0}" @click="changeColumn(0)">{{$store.state.CRFConfig.basisIndex == 0 ? '不换行' : '上一行'}}</span>
+                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.wrap==0}" @click="changeColumn(0)"><!--{{$store.state.CRFConfig.basisIndex == 0 ? '不换行' : '上一行'}}-->上一行</span>
                       <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===1&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(1)">单列</span>
                       <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===2&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(2)">双列</span>
                       <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===3&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(3)">三列</span>

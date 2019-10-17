@@ -58,8 +58,8 @@
                     :data="dataList.content" v-loading="loading" ref="refTable"
                     :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
                     @row-click="handleClick">
-                    <el-table-column type="expand" width="20">
-                        <template slot-scope="props">
+                    <el-table-column  width="20">
+                        <!--<template slot-scope="props"> type="expand"
                             <el-timeline>
                                 <el-timeline-item
                                     v-for="(item, index) in 5"
@@ -71,7 +71,7 @@
                                     </div>
                                 </el-timeline-item>
                             </el-timeline>
-                        </template>
+                        </template>-->
                     </el-table-column>
                     <el-table-column sortable prop="visitDate" label="就诊时间"></el-table-column>
                     <el-table-column sortable prop="reportName" label="报告名称"></el-table-column>

@@ -249,7 +249,7 @@ export default {
         // let result = await this.$http.reportSaveReport(this.report);
         let result = await this.$http.reportDataSave(this.report);
         if (result && result.code == "0") {
-          this.$notice("保存成功");
+          this.$message.success("保存成功");
           // 保存成功后，强制删除当前的crf填写页面的路由
           this.allRoute.forEach((item, index) => {
             if (item.route.name === this.$route.name) {
@@ -283,7 +283,7 @@ export default {
         }
         this.mainLoading = false;
       } catch (error) {
-        this.$notice("保存表单数据失败");
+        this.$message.info("保存表单数据失败");
         console.log(error);
         this.mainLoading = false;
       }

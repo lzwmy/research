@@ -378,6 +378,18 @@
     }
   }
 }
+.researchTarget .el-tabs__header{
+  margin: 0;
+}
+  .research_form_box{
+    background-color: #ffffff;
+    .create_report-content{
+      padding: 0;
+      .report-content-nav{
+        border-top-color: transparent;
+      }
+    }
+  }
 </style>
 
 

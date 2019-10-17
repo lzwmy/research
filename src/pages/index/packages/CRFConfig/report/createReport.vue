@@ -511,20 +511,34 @@
         }
         /*兼容*/
         input[type=text]::-webkit-input-placeholder { /* WebKit browsers */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
         }
+        input:focus::-webkit-input-placeholder {
+          color: transparent;
+          /* transparent是全透明黑色(black)的速记法，即一个类似rgba(0,0,0,0)这样的值 */
+        }
+
         input[type=text]:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
+        }
+        input:focus:-moz-placeholder {
+          color: transparent;
         }
         input[type=text]::-moz-placeholder { /* Mozilla Firefox 19+ */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
         }
+        input:focus::-moz-placeholder {
+          color: transparent;
+        }
         input[type=text]:-ms-input-placeholder { /* Internet Explorer 10+ */
-          color: #394263;
+          color: #DCDFE6;
           font-weight: normal;
+        }
+        input:focus:-ms-input-placeholder {
+          color: transparent;
         }
       }
       .report-config_nav{
@@ -571,15 +585,20 @@
       /*background-color: #ffffff;*/
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      /*justify-content: center;*/
       align-items: center;
+      position: relative;
       img{
         width: 150px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
       }
       .report_body-item{
         display: flex;
         flex-direction: column;
-        min-height: 298px;
+        /*min-height: 298px;*/
         width: 100%;
         box-sizing: border-box;
         margin-bottom: 20px;
@@ -632,7 +651,7 @@
         }
         .report_body-content{
           width: 100%;
-          min-height: 238px;
+          /*min-height: 238px;*/
           background-color: #ffffff;
           /*background-color: #f7f8fc;*/
           border:1px solid #E5EBEC;

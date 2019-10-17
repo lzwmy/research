@@ -22,9 +22,13 @@
             <div class="personal_card"  v-for="(item,index) in personalList" :key="index">
               <div class="text_model" @click.stop="jumpDetailPage(item)">
                 <p>
-                  <span title="患者数量">{{item.patientCount }}</span>
+                  <span title="患者数量">
+                    {{item.patientCount }}
+                  </span>
                   /
-                  <span title="报告个数">{{item.crfSum}}</span>
+                  <span title="报告个数">
+                    {{item.crfSum}}
+                  </span>
                 </p>
                 <p class="desc">{{item.modelName}}</p>
               </div>
@@ -241,6 +245,9 @@
     span{
       position: relative;
       left: -5px;
+    }
+    &:hover{
+      background-color: #14aed4;
     }
   }
   .create_model_content{

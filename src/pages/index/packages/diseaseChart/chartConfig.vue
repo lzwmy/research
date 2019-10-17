@@ -1459,10 +1459,9 @@
             font-size: 14px;
             padding-right: 10px;
           }
-        }
-        :hover{
-          /*background-color: #F3F3F3;*/
-
+          &:hover{
+            background-color: #14aed4;
+          }
         }
       }
     }
