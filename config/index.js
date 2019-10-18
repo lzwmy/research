@@ -36,6 +36,7 @@ module.exports = {
         // target: 'http://120.77.199.11:8800/', // 原来设置
         // target: 'http://192.168.1.99:8080/', // 赵恒联调
         // target: 'http://192.168.1.189:8080/', // 小武联调
+        // target: 'http://192.168.1.198:8080/', //  逊名联调
         target: 'http://39.108.238.209:8806/', // 测试联调
         changeOrigin: true,
         // https请求需要该设置,当 secure 值为 true 时，cookie 在 HTTP 中是无效，在 HTTPS 中才有效

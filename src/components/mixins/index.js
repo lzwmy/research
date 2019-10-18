@@ -7,7 +7,6 @@ const mixins = {
     };
   },
   activated () { 
-  
     let that = this;
     setTimeout(() => {
       // 清除上个页面的tooltips，以免当切换路由的时候，在下个页面的dom没完全加载的时候，鼠标在上个页面列表中显示出tooltips；

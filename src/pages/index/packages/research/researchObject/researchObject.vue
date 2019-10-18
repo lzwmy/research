@@ -145,8 +145,8 @@
                         </div>
                         <el-button type="primary"  @click="$router.push('/researchTarget')">创建研究指标</el-button>
                         <div class="guide_text">
-                            <p>1、添加对象</p>
-                            <p>2、批量添加对象</p>
+                            <p>1、添加研究指标</p>
+                            <p>2、添加研究对象</p>
                         </div>
                     </div>
                 </div>

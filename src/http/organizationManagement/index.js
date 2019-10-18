@@ -28,7 +28,7 @@ const http = {
         return vm.$get(url.getOrgList, params, true);
     },
     ORGgetOrgListShare (params) {
-        return vm.$get(url.getOrgList, params, true);
+        return vm.$get(url.getOrgListShare, params, true);
     },
     ORGgetUserList (params) {
         return vm.$post(url.getUserList, params, false);
