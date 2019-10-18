@@ -53,6 +53,7 @@
             :title="dialogForm.title" 
             :visible.sync="dialogForm.visible" 
             :append-to-body="true"
+            class="height_auto"
             @close="closeDialog"
             width="550px">
             <el-form 
@@ -92,6 +93,7 @@
             :title="dialogFormSingle.title" 
             :visible.sync="dialogFormSingle.visible" 
             :append-to-body="true"
+            class="height_auto"
             @close="closeDialog"
             width="550px">
             <el-form 

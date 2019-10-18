@@ -53,10 +53,10 @@
             :show-close="false"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
-            width="650px"
+            width="450px"
             class="select_dialog height_auto"
             :visible.sync="visible">
-            <div class="flex-center-center">
+            <div class="flex-center-center flex-wrap">
                 <el-radio-group v-model="radio">
                     <el-radio v-for="(item,index) in groupList" :key="index" :label="item.subjectGroupId">{{item.subjectGroupName}}</el-radio>
                 </el-radio-group>

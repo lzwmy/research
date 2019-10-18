@@ -99,6 +99,7 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table 
+                    v-if="dataList.content.length != 0"
                     ref="refTable" fit border
                     :data="dataList.content"
                     v-loading="tableLoading"
@@ -490,6 +491,7 @@ export default {
         .guide {
             .guide_box {
                 overflow: hidden;
+                margin-top: 80px;
                 width: 400px;
                 height: 400px;
                 box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 12px 0px;

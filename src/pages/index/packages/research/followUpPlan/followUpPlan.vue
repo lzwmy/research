@@ -262,7 +262,7 @@ export default {
                 let currentStage = this.menuList.find(li=>{
                     return li.stages.length != 0;
                 })
-                if(currentStage.length != 0) {
+                if(currentStage && currentStage.length != 0) {
                     this.selectGroup(currentStage.stages[0]);
                 }
             }
