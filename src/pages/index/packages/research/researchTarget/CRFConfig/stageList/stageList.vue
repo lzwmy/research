@@ -58,15 +58,10 @@ export default {
             let isDisabled = false;
             //手动触发的阶段: 如果startType==1, 非第一个未开始的随访点则不能操作
             if(stage.startType == 1) {
-                debugger
-                let firstPoint = stage.pointList.find(li=>{
-                    return li.status == 0;
-                })
-                if(point.status == 0 && point.pointPatientId != firstPoint.pointPatientId) {
+                if(point.status == 0 && point.pointPatientId != stage.pointList[0].pointPatientId) {
                     isDisabled = true;
                 }
             }else {
-                debugger
                 //非手动触发阶段，status为0 不能执行任何操作
                 if(point.status == 0) {
                     isDisabled = true;
@@ -91,11 +86,11 @@ export default {
                 isDisabled = true;
             }
             if(item.startType == 1) {
-                //手动触发的阶段: 如果startType==1, 非第一个未开始的随访点则不能执行任何操作
-                let firstPoint = item.pointList.find(li=>{
-                    return li.status == 0;
-                })
-                if(li.status == 0 && li.pointPatientId != firstPoint.pointPatientId) {
+                // //手动触发的阶段: 如果startType==1, 非第一个未开始的随访点则不能执行任何操作
+                // let firstPoint = item.pointList.find(li=>{
+                //     return li.status == 0;
+                // })
+                if(li.status == 0 && li.pointPatientId != item.pointList[0].pointPatientId) {
                     isDisabled = true;
                 }
             }else {

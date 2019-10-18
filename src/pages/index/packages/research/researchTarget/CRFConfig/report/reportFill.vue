@@ -30,7 +30,7 @@
               @changeIsDisabled="handleIsDisabled"
               @changeNode="handleNode">
               </stageListCom>
-            <div ref="top" class="crf-step-content" id="mainContent">
+            <div ref="top" class="crf-step-content" id="mainContent" :class="isDisabled?'disabled':''">
               <div class="formTip flex-start-center" :class="handleType(urlParameter.status)" v-if="urlParameter.from=='followUpManagement' && [2,3,4].indexOf(urlParameter.status) != -1" >
                 <div class="formTip_title flex-center-center flex-wrap">
                   <i class="icon" :class="handleType(urlParameter.status)"></i>
@@ -249,11 +249,14 @@ export default {
       this.$store.commit("CRF_SET_PATIENTID", this.patientId);
       this.$store.commit("CRF_SET_REPORT_STATUS", false);
       this.$store.commit("CRF_CHANGE_CONTROL", {});
-      this.getForms();
-      this.getReportData()
+      this.getForms()
       .then(()=>{
-        this.update = true;
+        this.getReportData()
+        .then(()=>{
+          this.update = true;
+        })
       })
+
       if(this.urlParameter.from=='followUpManagement' && [2,3,4].indexOf(this.urlParameter.status) != -1) {
         this.getRecordLlist();
       }
@@ -823,6 +826,18 @@ export default {
           margin-right: 10px;
         }
       } 
+    }
+  }
+  #mainContent.disabled {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
     }
   }
 </style>

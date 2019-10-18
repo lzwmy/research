@@ -303,7 +303,8 @@ export default {
                 pointStatus: this.form.pointStatus==''?undefined:this.form.pointStatus,
                 visitStatus: this.form.visitStatus==''?undefined:this.form.visitStatus,
                 searchType: parseInt(this.form.radio),
-                content: this.form.keyword
+                content: this.form.keyword,
+                enterType: sessionStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
             };
             try {
                 let res = await that.$http.followUpManagementTable(formData);

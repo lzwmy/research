@@ -153,10 +153,12 @@
         }
       },
       linkTask(item) {
+        this.loading = true;
         this.getUserInfo(item.id)
         .then(()=>{
           if(!this.roles.length) {
             this.$mes('info','暂无访问权限');
+            this.loading = false;
             return;
           }
           if (item.createStatus == 3) {
@@ -170,6 +172,7 @@
               menuList: this.$store.state.user.taskMenuList
             }
             sessionStorage.setItem('insideMenuData', JSON.stringify(params))
+            this.loading = false;
             this.$router.push({
               name: "projectProgress",
               params: params

@@ -383,6 +383,7 @@ export default {
                     })
                     if(that.dialogForm.title == "添加用户"){
                         formData = {
+                            subjectId: this.$store.state.user.researchInfo.subjectInfoId,
                             userName: this.dialogForm.userName,
                             phoneNumber: this.dialogForm.tel,
                             orgName: this.dialogForm.organization,
@@ -425,6 +426,7 @@ export default {
                     })
                     if(that.dialogFormSingle.title == "添加用户"){
                         formData = {
+                            subjectId: this.$store.state.user.researchInfo.subjectInfoId,
                             id: this.dialogFormSingle.userId,
                             roles: this.dialogFormSingle.role,
                             orgName: organization.orgName,

@@ -13,7 +13,7 @@
                             <span class="title">{{item.groupName}}</span>
                         </template>
                         <el-menu-item-group v-for="(li, liIndex) in item.stages" :key="liIndex"> 
-                            <el-menu-item :index="li.stageId" class="flex-between-center menu_li" :class="li.stageId == activeGroup?'active':''" @click="selectGroup(li,li.stageId,item,liIndex)">
+                            <el-menu-item :index="li.stageId" class="flex-between-center menu_li" :class="li.stageId == activeGroup?'active':''" @click="selectGroup(li,item)">
                                 <span>{{li.stageName}}</span>
                                 <el-popover
                                     v-if="!li.crfId"
@@ -38,7 +38,7 @@
                 </el-menu>
             </div>
             <div class="right" v-loading="infoLoading">
-                <div >
+                <div v-if="isExistStage">
                     <p class="page_title">随访频次</p>
                     <div class="wrap">
                         <el-form label-position="left" label-width="100px" :model="form">
@@ -78,7 +78,7 @@
                                     <el-radio label="1">手动触发开始</el-radio>
                                     <el-radio label="2">入组后开始</el-radio>
                                     <el-radio label="3">入组阶段时间题目触发开始</el-radio>
-                                    <el-radio label="4" :disabled="stageList.length == 0">某个阶段结束后触发开始</el-radio>
+                                    <el-radio label="4">某个阶段结束后触发开始</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                             <el-form-item label="">
@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="frequency flex-start-center" v-show="form.startType=='4'">
                                     <el-select :disabled="configExists" v-model="form.startTimeParam.startParam" placeholder="请选择阶段" style="width:120px;">
-                                        <el-option v-for="(item, index) in stageList" :key="index" :label="item.stageName" :value="item.stageId"></el-option>
+                                        <el-option v-for="(item, index) in releaseStage" :key="index" :label="item.stageName" :value="item.stageId"></el-option>
                                     </el-select>
                                     <span class="right_6 left_6">结束后</span>
                                     <el-input :disabled="configExists" placeholder="请输入内容" v-model="form.startTimeParam.startParam2" style="width:120px;"></el-input>
@@ -137,6 +137,9 @@
                     <div class="wrap">
                         <el-button type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">保 存</el-button>
                     </div>
+                </div>
+                <div v-else class="flex-center-center">
+                    请先添加阶段
                 </div>
             </div>
         </div>
@@ -178,6 +181,7 @@ export default {
     data () {
         return {
             activeGroup: '',
+            isExistStage: false,
             defaultOpeneds: [],
             menuList: [],
             crfList: [],
@@ -204,7 +208,7 @@ export default {
                 crfId:''
             },
             crfName:'',
-            stageList: [],
+            releaseStage:[],  //当前分组下已发布的阶段
             dialgoForm: {
                 groupId: '',
                 stageId: '',
@@ -255,7 +259,7 @@ export default {
                 this.menuList.forEach(item => {
                     this.defaultOpeneds.push(item.groupId)
                 });
-                this.selectGroup(this.menuList[0].stages[0],this.menuList[0].stages[0].stageId);
+                this.selectGroup(this.menuList[0].stages[0]);
             }
         })
         this.getCrfList();
@@ -315,16 +319,15 @@ export default {
         }
     },
     methods: {
-        selectGroup(li,index,item,liIndex) {
+        selectGroup(li,item) {
             this.initFrom();
-            this.activeGroup = index;
+            this.activeGroup = li.stageId;
             this.form.stageId = li.stageId;
             if(item) {
-                //处理选择阶段之前的阶段
-                this.stageList = [];
-                for (let i = 0; i < liIndex; i++) {
-                    this.stageList.push(item.stages[i]);
-                }
+                //处理当前分组下已发布的阶段
+                this.releaseStage =  item.stages.filter(n=>{
+                    return n.crfId && n.stageId != li.stageId;
+                })
             }
             //发布阶段
             if(li.crfId) {
@@ -379,7 +382,7 @@ export default {
                 console.log(err)
             }
         },
-        //发布
+        //保存
         async saveConfig() {
             let pointNamesNull = this.form.pointNames.every(item=>{
                 return item.name
@@ -465,7 +468,10 @@ export default {
                 crfId: this.form.crfId,
                 pointNames: this.form.pointNames
             }
-            // this.form.amount > 20 无限
+            if(this.form.amount > 20) {
+                this.$mes('info','无限次数待完善中...')
+                return;
+            }
             try {
                 let res;
                 if(this.configExists) {
@@ -474,7 +480,7 @@ export default {
                     res = await this.$http.followUpPlanPlanAdd(params);
                 }
                 if (res.code == '0') {
-                    this.$mes('success', this.configExists?'再次发布成功':'发布成功');
+                    this.$mes('success', '保存成功!');
                 }else {
                     this.$mes('error', res.msg);
                 }
@@ -552,16 +558,12 @@ export default {
                 let res = await this.$http.followUpPlanStageList(params);
                 if (res.code == '0') {
                     this.menuList = res.data;
-                    let isExist = this.menuList.some(item=>{
+                    this.isExistStage = this.menuList.some(item=>{
                         return item.stages.length != 0;
                     })
-                    if(!isExist) {
-                        this.configExists = true;
-                    }
                 }else {
                     this.menuList = []
-                    this.configExists = true;
-                    this.$mes('error', res.msg);
+                    this.isExistStage = false;
                 }
                 this.groupLoading = false;
             } catch (err) {
@@ -630,7 +632,9 @@ export default {
                         res = await that.$http.followUpPlanStageAdd(params);
                     }
                     if (res.code == '0') {
-                        // this.activeGroup = res.data;
+                        this.initFrom();
+                        this.activeGroup = res.data;
+                        this.form.stageId = res.data;
                         this.dialgoForm.visible = false;
                     }else {
                         this.$mes('success',  res.msg || this.dialgoForm.title+'失败');
@@ -712,9 +716,9 @@ export default {
                 this.form.crfId = data.data.id;
                 this.getCrfInfo(this.form.crfId)
                 this.dialgoCrfForm.visible = false;
-                this.$mes('success','保存成功!')
+                this.$mes('success','添加成功!')
             }else {
-                this.$mes('error','保存失败!')
+                this.$mes('error','添加失败!')
             }
         },
         //获取crf表单列信息
@@ -730,7 +734,7 @@ export default {
             } catch (err) {
                 console.log(err)
             }
-        },
+        }
     }
 };
 </script>
