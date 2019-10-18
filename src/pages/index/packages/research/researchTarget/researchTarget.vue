@@ -2,7 +2,7 @@
   <div class="cloud-component researchTarget">
     <!-- 研究指标 -->
     <!--<img src="../images/researchTarget.png" alt="" width="100%">-->
-      <el-tabs ref="elTabs" class="research_target-box" v-loading="loading"  v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
+      <el-tabs ref="elTabs" class="research_target-box" v-loading="loading"  v-show="editableTabs.length!==0" v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
         <el-tab-pane
             v-if="displayState"
             :key="index"
@@ -28,6 +28,20 @@
             </div>
           </el-tab-pane>
       </el-tabs>
+    <!-- 引导图 -->
+    <div v-if="editableTabs.length==0" class="guide flex-center-center" style="height: 500px;">
+      <div class="guide_box flex-center-start flex-wrap">
+        <div class="guide_wrap">
+          <p class="text_center">#创建研究指标#</p>
+          <img src="./image/research_target.png" alt="">
+        </div>
+        <el-button type="primary"  @click="handleTabsEdit">点击创建研究指标</el-button>
+        <div class="guide_text">
+          <p>1、点击按钮创建研究指标</p>
+          <!--<p>2、随访方案包括：随访频率、随访内容</p>-->
+        </div>
+      </div>
+    </div>
     <!--编辑弹框-->
     <el-dialog title="编辑CRF" :visible.sync="dialogFormVisible" append-to-body>
       <el-form>
@@ -390,6 +404,37 @@
       }
     }
   }
+.guide {
+  .guide_box {
+    overflow: hidden;
+    width: 400px;
+    height: 400px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 12px 0px;
+    border-radius: 8px;
+    background-color: #fff;
+    .guide_wrap {
+      color: #fff;
+      height: 180px;
+      width: 100%;
+      background-color: #1bbae1;
+      padding: 15px;
+      img {
+        margin: 20px auto 0;
+        display: block;
+      }
+    }
+    .el-button {
+      margin: 30px auto;
+    }
+    .guide_text {
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgb(106, 112, 126);
+      width: 100%;
+      padding: 10px 40px;
+    }
+  }
+}
 </style>
 
 
