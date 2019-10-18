@@ -23,8 +23,7 @@ import Global from 'components/utils/global';
 
 import 'assets/css/crfConfig.css';
 
-// 获取公共的 baseURL
-Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
+
 
 Vue.prototype.GetRequest = function () {
   var url = location.search;   //获取url中"?"符后的字串
@@ -47,7 +46,8 @@ let initApp = async () => {
     await Global.getConfigJson();
     //同步验证浏览器自带的session有没有在登录有效期；
     // await utils.validLoginAuthenticated();
-
+    // 获取公共的 baseURL
+    Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
     // 初始化根vue
     new Vue({
       el: '#app',

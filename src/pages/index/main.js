@@ -53,8 +53,7 @@ Vue.prototype.$mes = function (type, message) {
   })
 }
 
-// 获取公共的 baseURL
- Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
+
 
 Object.keys(filters).forEach(i => Vue.filter(i, filters[i]));
 
@@ -84,7 +83,8 @@ let initApp = async () => {
     await Global.getConfigJson();
     //同步验证浏览器自带的session有没有在登录有效期；
     // await utils.validIndexAuthenticated();
-
+    // 获取公共的 baseURL
+    Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
     //是否为科研项目登录
     let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
     

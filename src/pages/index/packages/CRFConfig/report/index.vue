@@ -183,7 +183,7 @@
       background-color: #ffffff;
       border:1px solid #E5EBEC;
       width: 300px;
-      height: 400px;
+      height: 355px;
       padding: 15px;
       box-sizing: border-box;
       margin-left: 15px;
@@ -196,7 +196,7 @@
         text-align: center;
         img{
           width: 268px;
-          height: 308px;
+          height: 260px;
         }
       }
       .report_card-title{
