@@ -138,8 +138,8 @@
                         <el-button type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">保 存</el-button>
                     </div>
                 </div>
-                <div v-else class="flex-center-center">
-                    请先添加阶段
+                <div v-else class="guide flex-center-center">
+                    <img src="../images/guide_followUpPlan.png" alt="引导图">
                 </div>
             </div>
         </div>
@@ -255,11 +255,16 @@ export default {
     created() {
         this.getGroupList()
         .then(()=>{
-            if(this.menuList.length != 0 && this.menuList[0].stages.length != 0) {
+            if(this.menuList.length != 0) {
                 this.menuList.forEach(item => {
                     this.defaultOpeneds.push(item.groupId)
                 });
-                this.selectGroup(this.menuList[0].stages[0]);
+                let currentStage = this.menuList.find(li=>{
+                    return li.stages.length != 0;
+                })
+                if(currentStage.length != 0) {
+                    this.selectGroup(currentStage.stages[0]);
+                }
             }
         })
         this.getCrfList();
@@ -886,6 +891,9 @@ export default {
                     }
                 }
             }
+        }
+        .guide {
+            height: 100%;
         }
         .el-select .el-input .el-input__inner {
             height: 32px !important;

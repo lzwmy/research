@@ -160,6 +160,22 @@
                 </el-table>
                 <!-- 分页 -->
                 <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
+
+
+                <!-- 引导图 -->
+                <div v-if="showGuide" class="guide flex-center-center" style="height: 500px;">
+                    <div class="guide_box flex-center-start flex-wrap">
+                        <div class="guide_wrap">
+                            <p class="text_center">#我的随访计划#</p>
+                            <img src="../images/guide_followUpManagement.png" alt="">
+                        </div>
+                        <el-button type="primary"  @click="$router.push('/followUpPlan')">创建随访计划</el-button>
+                        <div class="guide_text">
+                            <p>1、支持每个队列设置不同的随访方案</p>
+                            <p>2、随访方案包括：随访频率、随访内容</p>
+                        </div>
+                    </div>
+                </div>
             </echarts-contain>
         </div>
     </div>
@@ -176,6 +192,7 @@ export default {
     mixins: [mixins],
     data () {
         return {
+            showGuide: false,
             groupList: [],
             activeCrf:'',
             popoverSearchVisible: false,
@@ -234,7 +251,6 @@ export default {
     methods: {
         //操作随访状态样式
         handleStatus(status) {
-            console.log(status)
             switch (status) {
                 case '未开始':  return '#e0e0e0'; break;
                 case '录入中':  return '#00B8DF'; break;
@@ -319,6 +335,9 @@ export default {
                         content: [],
                         header: []
                     }
+                }
+                if(that.dataList.content.length == 0) {
+                    this.showGuide = true; 
                 }
                 that.tableLoading = false;
             } catch (err) {
@@ -455,6 +474,9 @@ export default {
 
 <style lang="less" scoped>
     .followUpManagement {
+        .cloud-search-list .bigContain {
+            background-color: #fff;
+        }
         .el-table {
             padding: 0;
             .status-icon {
@@ -465,7 +487,37 @@ export default {
                 border-radius: 50%;
             }
         }
-        
+        .guide {
+            .guide_box {
+                overflow: hidden;
+                width: 400px;
+                height: 400px;
+                box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 12px 0px;
+                border-radius: 8px;
+                background-color: #fff;
+                .guide_wrap {
+                    color: #fff;
+                    height: 180px;
+                    width: 100%;
+                    background-color: #1bbae1;
+                    padding: 15px;
+                    img {
+                        margin: 20px auto 0;
+                        display: block;
+                    }
+                }
+                .el-button {
+                    margin: 30px auto;
+                }
+                .guide_text {
+                    font-size: 14px;
+                    line-height: 1.4;
+                    color: rgb(106, 112, 126);
+                    width: 100%;
+                    padding: 10px 40px;
+                }
+            }
+        } 
     }
 </style>
 

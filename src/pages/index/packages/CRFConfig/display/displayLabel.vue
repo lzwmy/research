@@ -10,7 +10,7 @@
         {{item.baseProperty.labelContent}}
       </div>
       <div v-if="item.baseProperty.labelType=='IMAGE'" :class="item.controlType+'_Image_box'">
-        <img :src="`http://39.108.238.209:8805/research/file/downloadFile/${item.baseProperty.labelImage}`" :style="'width:'+item.baseProperty.controlWidth+'px;'" />
+        <img :src="URl+item.baseProperty.labelImage" :style="'width:'+item.baseProperty.controlWidth+'px;'" />
       </div>
     </div>
   </div>
@@ -23,6 +23,11 @@ export default {
     item: {},
     report: {},
     index: Number
+  },
+  data() {
+    return {
+      URl:this.baseURL+'/file/downloadFile/'
+    }
   }
 };
 </script>

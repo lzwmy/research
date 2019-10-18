@@ -54,7 +54,7 @@ export default {
             form: {
                 name: '',
                 scheme: '',
-                patients: 0,
+                patients: 1,
                 explain: '',
                 files: []
             },

@@ -135,6 +135,21 @@
                 </el-table>
                 <!-- 分页 -->
                 <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
+
+                <!-- 引导图 -->
+                <div v-if="showGuide" class="guide flex-center-center" style="height: 500px;">
+                    <div class="guide_box flex-center-start flex-wrap">
+                        <div class="guide_wrap">
+                            <p class="text_center">#我的研究对象#</p>
+                            <img src="../images/guide_researchObject.png" alt="">
+                        </div>
+                        <el-button type="primary"  @click="$router.push('/researchTarget')">创建研究指标</el-button>
+                        <div class="guide_text">
+                            <p>1、添加对象</p>
+                            <p>2、批量添加对象</p>
+                        </div>
+                    </div>
+                </div>
             </echarts-contain>
         </div>
 
@@ -163,6 +178,7 @@ export default {
     mixins: [mixins],
     data () {
         return {
+            showGuide: false,
             maxItem: 9999,
             groupList: [],
             crfList: [],
@@ -331,6 +347,9 @@ export default {
                         header: []
                     }
                 }
+                if(that.dataList.content.length == 0) {
+                    this.showGuide = true; 
+                }
                 that.tableLoading = false;
             } catch (err) {
                 that.tableLoading = false;
@@ -446,6 +465,7 @@ export default {
                     let res = await this.$http.researchObjectPreviewTableDeleteObject(params);
                     if (res.code == '0') {
                         this.$mes('success','删除成功!')
+                        this.getDataList(0,15);
                     }
                 } catch (err) {
                     console.log(err)
@@ -502,6 +522,37 @@ export default {
                 }
             }
         }
+        .guide {
+            .guide_box {
+                overflow: hidden;
+                width: 400px;
+                height: 400px;
+                box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 12px 0px;
+                border-radius: 8px;
+                background-color: #fff;
+                .guide_wrap {
+                    color: #fff;
+                    height: 180px;
+                    width: 100%;
+                    background-color: #1bbae1;
+                    padding: 15px;
+                    img {
+                        margin: 20px auto 0;
+                        display: block;
+                    }
+                }
+                .el-button {
+                    margin: 30px auto;
+                }
+                .guide_text {
+                    font-size: 14px;
+                    line-height: 1.4;
+                    color: rgb(106, 112, 126);
+                    width: 100%;
+                    padding: 10px 40px;
+                }
+            }
+        } 
     }
 </style>
 
