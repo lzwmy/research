@@ -55,7 +55,7 @@
                     <h3 class="flex-between-center">
                         <span>操作记录</span>
                     </h3>
-                    <el-timeline>
+                    <el-timeline v-if="false">
                         <el-timeline-item 
                             v-for="(item, index) in []" 
                             :key="index" 
@@ -64,6 +64,7 @@
                             <p>{{item.groupName}}</p>
                         </el-timeline-item>
                     </el-timeline>
+                  <img src="./../images/option_info.png" alt="">
                 </div>
             </div>
         </div>
@@ -655,9 +656,16 @@ export default {
                     background-color: #fff;
                     padding: 14px 22px;
                     color: rgba(57, 66, 99, 1);
+                    position: relative;
                     .el-timeline {
                         padding: 20px 10px;
                     }
+                  img{
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+                  }
                 }
             }
         }

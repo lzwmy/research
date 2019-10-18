@@ -1,5 +1,5 @@
 <template>
-    <div class="patientInfoDetail" v-loading='loading'>
+    <div class="patientInfoDetail noneImg" v-loading='loading'>
         <el-timeline>
             <el-timeline-item 
                 v-for="(item, index) in reportDataList" 
@@ -17,6 +17,7 @@
                 </el-card>
             </el-timeline-item>
         </el-timeline>
+      <img v-if="reportDataList.length==0" src="./../images/data_time.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);width: 130px" alt="">
     </div>
 </template>
 

@@ -13,7 +13,7 @@
         <div class="report_config-card" v-for="(item,index) in dataList" :key="index" @click="jumpModifyReport(item)">
           <div class="card_img">
             <img v-if="item.crfImage!==null && item.crfImage!=='null'" :src="item.crfImage" alt="">
-            <img v-else src="./../img/z_w_t.png" alt="">
+            <img v-else src="./../img/report_image.png" alt="">
           </div>
           <div class="report_card-title">{{item.crfDisplayName}}</div>
           <div class="report_card_detail-info">
