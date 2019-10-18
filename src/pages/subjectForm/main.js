@@ -21,14 +21,14 @@ Vue.use(install);
 import store from '../../store';
 import Global from 'components/utils/global';
 
-//获取URL
-Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
+
 
 let initApp = async () => {
   try {
     //同步获取全局配置；
     await Global.getConfigJson();
-
+  //获取URL
+    Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
     // 初始化根vue
     new Vue({
       el: '#app',
