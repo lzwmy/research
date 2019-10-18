@@ -83,11 +83,12 @@
         <pagination :data="dataList" @change="getDataList"></pagination>
       </echarts-contain>
     </div>
-    <!--新增/编辑用户弹框-->
+    <!--新增/编辑用户弹框 -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="500px"
               @close="closeUserDialog" class="userManageDialog">
+      <!--class="el-dialog&#45;&#45;center"-->
       <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="90px"
-              class="el-dialog--center" @submit.native.prevent v-loading="ruleFormDialogLoading">
+               @submit.native.prevent v-loading="ruleFormDialogLoading">
         <el-form-item label="账号：" prop="account">
           <el-input v-model.trim="ruleFormDialog.account" placeholder="请输入账号" :disabled="userOption=='edit'"
                     size="mini"

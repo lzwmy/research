@@ -15,7 +15,7 @@
                         <el-input @keyup.enter.native="addOrg" @blur="addOrg" class="addOrg" v-else v-model="item.orgName"></el-input>
                     </li>
                 </ul>
-                <el-button v-if="$store.state.user.researchAuth.authAddCenter" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加中心</el-button>
+                <el-button v-if="$store.state.user.researchInfo.centerModel==2 && $store.state.user.researchAuth.authAddCenter" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加分中心</el-button>
             </div>
             <div class="content">
                 <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
@@ -28,7 +28,7 @@
                         <el-table-column prop="orgName" label="机构"></el-table-column>
                         <el-table-column prop="deptName" label="科室"></el-table-column>
                         <el-table-column prop="duty" label="职称"></el-table-column>
-                        <el-table-column prop="createTime" label="创建时间" width="150"></el-table-column>
+                        <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
                         <el-table-column label="角色" min-width="160">
                             <template slot-scope="scope">
                                 <span v-for="(item,index) in scope.row.roleName" :key="index">{{item.name}}、</span>
@@ -36,8 +36,10 @@
                         </el-table-column>
                         <el-table-column label="操作" width="120">
                             <template slot-scope="scope">
-                                <el-button type="text" @click="showDialog('编辑用户',scope.row)"><i class="iconfont iconbianji"></i></el-button>
-                                <el-button type="text" @click="onDelete(scope.row)"><i class="iconfont iconshanchu del"></i></el-button>
+                                <div v-if="scope.row.roles.indexOf('1')">
+                                    <el-button type="text" @click="showDialog('编辑用户',scope.row)"><i class="iconfont iconbianji"></i></el-button>
+                                    <el-button type="text" @click="onDelete(scope.row)"><i class="iconfont iconshanchu del"></i></el-button>
+                                </div>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -69,7 +71,7 @@
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
-                        <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        <el-option :disabled="item.name=='管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="科室:" prop="department">
@@ -102,7 +104,7 @@
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogFormSingle.role" multiple class="block">
-                        <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        <el-option :disabled="item.name=='管理员' || item.name=='分中心管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>

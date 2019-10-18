@@ -30,20 +30,18 @@
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="随访点状态:" class="bold">
-                            <el-select v-model="form.stageId" @change="changeStage">
+                            <el-select v-model="form.stageId" size='small' @change="changeStage">
                                 <el-option label="全部阶段" value=""></el-option>
                                 <el-option v-for="(item, index) in stageList" :key="index" :label="item.stageName" :value="item.stageId"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label-width="0">
-                            <el-select v-model="form.pointId">
-                                <el-option label="全部随访点" value=""></el-option>
+                            <el-select :disabled="!form.stageId" size='small' v-model="form.pointId">
                                 <el-option v-for="(item, index) in stagePointList" :key="index" :label="item.name" :value="item.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label-width="0">
-                            <el-select v-model="form.pointStatus">
-                                <el-option label="全部状态" value=""></el-option>
+                            <el-select :disabled="!form.pointId" size='small' v-model="form.pointStatus" clearable>
                                 <el-option label="未开始" value="0"></el-option>
                                 <el-option label="录入中" value="1"></el-option>
                                 <el-option label="已失访" value="2"></el-option>
@@ -64,7 +62,7 @@
                         </el-form-item>
                         <el-form-item label="随访状态: " class="bold">
                             <el-select v-model="form.visitStatus">
-                                <el-option label="全部状态" value=""></el-option>
+                                <!-- <el-option label="全部状态" value=""></el-option> -->
                                 <el-option label="未开始" value="0"></el-option>
                                 <el-option label="录入中" value="1"></el-option>
                                 <el-option label="已终止" value="3"></el-option>
@@ -378,7 +376,11 @@ export default {
         //点击分组
         handleSelectGroup(data) {
             this.currentGrounpId = data;
-            this.getDataList(0,15);
+            //查询两遍，解决table提示框不显示问题
+            this.getDataList(0,15)
+            .then(()=>{
+                this.getDataList(0,15);
+            })
         },
         //获取全部crf表单列表和列表下的所有指标
         handleAllFormItem(data) {

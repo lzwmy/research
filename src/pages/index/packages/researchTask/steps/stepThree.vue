@@ -48,9 +48,10 @@
 
 <script>
 export default {
-    props: ['formData','roles'],
+    props: ['formData'],
     data () {
         return {
+            roles: [],
             loading: false,
             groupList: [{
                 id: 1,
@@ -141,32 +142,53 @@ export default {
                 console.log(err)
             }
         },
+        //角色信息
+        async getUserInfo(subjectId) {
+            try {
+            let res = await this.$http.researchGetRoles({subjectId: subjectId});
+            if (res.code == '0') {
+                this.roles = res.data;
+            }else {
+                this.roles = [];
+            }
+            } catch (err) {
+                console.log(err)
+            }
+        },
         async createProject(formData) {
             try {
                 let res = await this.$http.RTASKcreate(formData);
                 if (res.code == '0') {
                     this.$mes('success','创建成功!');
-                    this.$store.commit('saveresearchInfo',{
-                        subjectInfoId: res.data,
-                        centerModel: this.formData.centerPattern,
-                        roles: this.roles
-                    });
-                    setTimeout(()=>{
-                        let params = {
-                            title: '科研项目',
-                            fromRouter: {
-                                path: this.$route.path,
-                                meta: this.$route.meta
-                            },
-                            menuList: this.$store.state.user.taskMenuList
+                    this.getUserInfo(res.data)
+                    .then(()=>{
+                        if(this.roles.length == 0) {
+                            this.$mes('info','角色权限暂无!');
+                            this.$router.push('/researchTask')
+                            return;
                         }
-                        sessionStorage.setItem('insideMenuData',JSON.stringify(params))
-                        this.loading = false;
-                        this.$router.push({
-                            name: "projectProgress",
-                            params: params
-                        })
-                    },300)
+                        this.$store.commit('saveresearchInfo',{
+                            subjectInfoId: res.data,
+                            centerModel: this.formData.centerPattern,
+                            roles: this.roles
+                        });
+                        setTimeout(()=>{
+                            let params = {
+                                title: '科研项目',
+                                fromRouter: {
+                                    path: this.$route.path,
+                                    meta: this.$route.meta
+                                },
+                                menuList: this.$store.state.user.taskMenuList
+                            }
+                            sessionStorage.setItem('insideMenuData',JSON.stringify(params))
+                            this.loading = false;
+                            this.$router.push({
+                                name: "projectProgress",
+                                params: params
+                            })
+                        },200)
+                    })
                 }
             } catch (err) {
                 console.log(err)
