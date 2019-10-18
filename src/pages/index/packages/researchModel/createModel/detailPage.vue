@@ -23,20 +23,24 @@
         <div class="btn" :class="{'active':tabSwitchId==1}" @click="changeTab(1)">统计分析</div>
       </div>
       <div class="detail_page_body" v-show="tabSwitchId==0" v-loading="loading" element-loading-text="加载中">
-        <div class="relation_form_title">
+        <!--<div class="relation_form_title">
           <span>关联表单：</span>
           <span>{{dynamicTableDataList.crfName}}</span>
-        </div>
+        </div>-->
         <div class="export_nav_box">
           <div class="personal_box">
             <span>
               <i class="iconfont iconbingren1"></i>
               {{dynamicTableDataList.patientCount}}例
             </span>
-            <span>
+            <span style="padding-left: 23px;">
               <i class="iconfont iconbingli"></i>
               {{dynamicTableDataList.crfSum}}例
             </span>
+            <div class="relation_form_title">
+              <span>关联表单：</span>
+              <span>{{dynamicTableDataList.crfName}}</span>
+          </div>
           </div>
           <div class="export_box">
             <div class="privacy_box">
@@ -280,12 +284,12 @@
     background-color: #ffffff;
     border: 1px solid #E5EBEC;
     box-sizing: border-box;
-    padding: 30px;
+    padding: 10px 20px;
     .relation_form_title{
-      font-size: 16px;
+      /*font-size: 16px;
       font-family:PingFang-SC;
       color: #394263;
-      font-weight:bold;
+      font-weight:bold;*/
     }
     .export_nav_box{
       display: flex;
@@ -298,12 +302,13 @@
             color: #04B8DD;
             font-size: 19px;
             padding-right: 8px;
+            vertical-align: middle;
           }
           &:last-child{
             font-size: 14px;
             color: #394263;
             font-weight:400;
-            padding-left: 23px;
+            /*padding-left: 23px;*/
           }
         }
         &:first-child{
@@ -311,6 +316,14 @@
           color: #394263;
           font-weight:400;
           line-height: 32px;
+          display: flex;
+        }
+        .relation_form_title{
+          margin-left: 20px;
+          font-size: 16px;
+          span{
+            font-size: 16px;
+          }
         }
       }
       .export_box{
@@ -348,6 +361,7 @@
       margin-top: 20px;
       .el-table{
         border-top: 1px solid #E5E8EB;
+        padding: 0;
       }
     }
   }

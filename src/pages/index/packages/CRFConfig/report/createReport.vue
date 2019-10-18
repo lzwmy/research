@@ -10,10 +10,10 @@
           <span class="title">{{$route.query.type=='add' ? '新建' :'编辑'}}CRF表单</span>
         </p>
         <div class=" cur_pointer head_content flex-start-center">
-          <el-button type="primary" @click="previewCRF">
+          <!--<el-button type="primary" @click="previewCRF">
             <i class="iconfont iconfuhao3"></i>
             预览
-          </el-button>
+          </el-button>-->
           <el-button type="primary" @click="saveCRF">
             <i class="iconfont iconbaocun"></i>
             保存
@@ -25,7 +25,7 @@
         </div>
       </div>
       <!--主体内容-->
-      <div class="create_report-content" v-loading="loading">
+      <div id="target" class="create_report-content"   v-loading="loading">
         <div class="report-content-nav">
           <div class="report-title">
             <input type="text" v-model="crfName" placeholder="请输入报告名称" >
@@ -78,7 +78,6 @@
                 </div>
               </div>
             </draggable>
-
           </div>
           <img v-else="dataList.length==0" src="./../basisComponents/image/none_content.png" alt="">
         </div>
@@ -135,7 +134,8 @@
           options:{
             scroll:true,
             group:'people'
-          }
+          },
+          htmlImg:"",
         }
       },
       watch:{

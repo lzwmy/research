@@ -213,7 +213,7 @@
                   </el-select>
                 </span>-->
                 </el-form-item>
-                <el-form-item class="mg_10" label="分组列">
+                <el-form-item class="mg_10" style="margin-left: 5px" label="分组列">
                   <!--<el-select
                     collapse-tags
                     v-model="dataSetting.bindingColumns"
@@ -270,7 +270,7 @@
                   </el-select>
                 </span>-->
                 </el-form-item>
-                <el-form-item label="key列">
+                <el-form-item class="mg_10" style="margin-left: 5px" label="key列">
                   <!--<el-select
                     collapse-tags
                     v-model="dataSetting.bindingColumns"
@@ -372,7 +372,7 @@
                   </el-select>
                 </span>-->
                 </el-form-item>
-                <el-form-item class="binding_type-box" label="绑定属性">
+                <el-form-item class="binding_type-box mg_10" style="margin-left: 5px" label="绑定属性">
                   <!--<el-select
                     v-model="dataSetting.bindingType"
                     size="mini"
@@ -417,7 +417,7 @@
                   </el-select>
                 </span>
                 </el-form-item>
-                <el-form-item class="filter-box" label="过滤条件">
+                <el-form-item class="filter-box" style="float: left;width: 100%" label="过滤条件">
                   <div class="add_btn">
                     <i class="iconfont iconfuhao1" @click="addFilter"></i>
                   </div>
@@ -499,7 +499,7 @@
           <el-tab-pane class="range_container" label="值域" name="range"
                        v-if="(controlType=='NUMBER_INPUT'&&basicDataInfo.obj.termUnit.numberIsSwitch == '0')||controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'||controlType=='RADIO_BUTTON'||controlType=='CHECKBOX'||controlType=='GATHER'">
             <el-form class="alignment">
-              <el-form-item label="值域选项">
+              <el-form-item label="值域选项" >
                 <el-input type="textarea" :rows="5" v-model="basicDataInfo.obj.termSet.rangeText" ></el-input>
                 <div class="range_notes">每行代表一个选项，可以添加多个选项，名称和代表分值用“^”隔开，分值不是必填项。例：胸痛^10</div>
               </el-form-item>
@@ -1226,6 +1226,8 @@
 
 <style lang="less" scoped>
 .parameter_config_container{
+  width: 670px;
+  overflow: auto;
   .config_select-content{
     .layout_nav-box{
       display: flex;
@@ -1417,6 +1419,7 @@
   .data_set-box{
     .mg_10{
       margin-bottom: 10px;
+      float: left;
     }
     .mt_10{
       margin-top: 10px;

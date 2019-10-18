@@ -326,7 +326,8 @@ export default {
                 formCrfStatus: parseInt(this.form.formState),
                 patientStatus: parseInt(this.form.patientState),
                 searchType: parseInt(this.form.radio),
-                keyword: this.form.keyword
+                keyword: this.form.keyword,
+                enterType: sessionStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
             };
             try {
                 let res = await that.$http.researchObjectTable(formData);
