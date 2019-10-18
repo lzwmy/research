@@ -14,10 +14,10 @@
             <i class="iconfont icontianjia"></i>
             添加小节
           </el-button>
-          <el-button type="primary" @click="previewCRF">
+          <!--<el-button type="primary" @click="previewCRF">
             <i class="iconfont iconfuhao3"></i>
             预览
-          </el-button>
+          </el-button>-->
           <el-button type="primary" @click="saveCRF">
             <i class="iconfont iconbaocun"></i>
             保存
