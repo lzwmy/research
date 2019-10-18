@@ -23,6 +23,9 @@ import Global from 'components/utils/global';
 
 import 'assets/css/crfConfig.css';
 
+// 获取公共的 baseURL
+Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
+
 Vue.prototype.GetRequest = function () {
   var url = location.search;   //获取url中"?"符后的字串
   var theRequest = new Object();
