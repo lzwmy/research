@@ -53,6 +53,8 @@ Vue.prototype.$mes = function (type, message) {
   })
 }
 
+// 获取公共的 baseURL
+ Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
 
 Object.keys(filters).forEach(i => Vue.filter(i, filters[i]));
 

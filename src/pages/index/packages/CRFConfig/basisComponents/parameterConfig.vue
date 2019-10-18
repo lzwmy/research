@@ -105,7 +105,7 @@
                 <div style="display:inline-block">
                   <el-upload v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'" style="display:inline-block"
                              ref="upload"
-                             action="http://39.108.238.209:8805/research/file/uploadFile.do"
+                             :action="actionURL()"
                              :on-success="handleUploadSuccess"
                              :show-file-list="false"
                   >
@@ -577,6 +577,9 @@
           console.log('watch bindingAttr' , data);
           this.basicDataInfo.obj.baseProperty.bindingInfo.bindingColumn = data;
         },
+        "sliderValue":function(data) { //缩放比例
+          this.progressImgWidth();
+        }
       },
       data() {
         return {
@@ -611,7 +614,7 @@
           conditionOperatorList: [],
           activeName: "first",
           UploadType:'FILE',
-          uploadActionUrl:'http://39.108.238.209:8805/research/file/uploadFiles.do',
+          uploadActionUrl:this.baseURL+'/file/uploadFiles.do',
           fileList:[],
           itemFileRsp:[],
           //布局 设置
@@ -688,6 +691,9 @@
         }
       },
       methods:{
+        actionURL() {
+          return this.baseURL+"/file/uploadFile.do";
+        },
         clickSaveBtn() {
           this.dialogFormVisible = false;
           let newData = this.basicDataInfo;
@@ -722,6 +728,18 @@
         //tab 标签页
         handClick(tab, event) {
           console.log(tab, event);
+        },
+        progressImgWidth() {
+          console.log(this.$refs.cropper.cropInfo.width,this.basicDataInfo.obj.baseProperty.labelType)
+          if(this.basicDataInfo.obj.baseProperty.labelType == 'IMAGE') {
+            let w =(this.$refs.cropper.cropInfo.width*this.sliderValue)/100;
+            let h =(this.$refs.cropper.cropInfo.height*this.sliderValue)/100;
+            this.basicDataInfo.obj.baseProperty.controlWidth = w;
+            this.basicDataInfo.obj.baseProperty.controlHeight = h;
+          }else {
+            this.basicDataInfo.obj.baseProperty.controlWidth = 4;
+            this.basicDataInfo.obj.baseProperty.controlHeight = 0;
+          }
         },
         //选择布局
         changeColumn(data) {
@@ -1060,11 +1078,13 @@
             //清空 labelContent
             data.obj.baseProperty.labelContent = ""
           }
+          this.progressImgWidth();
         },
         // 实时预览函数
         realTime(data) {
           console.log(data);
           this.previews = data;
+          this.progressImgWidth();
         },
         imgLoad(msg) {
           console.log(msg);
@@ -1089,8 +1109,9 @@
               data: param
             }).then(function(response) {
               // console.log('将剪裁后的图片执行上传',response.data.data);
-              that.option.img = "http://39.108.238.209:8805/research/file/downloadFile/" + response.data.data;
+              that.option.img = that.baseURL+"/file/downloadFile/" + response.data.data;
               that.labelImage=response.data.data;
+              this.progressImgWidth()
             });
           });
         },
@@ -1099,7 +1120,7 @@
           let that=this;
           //上传成功后将图片地址赋值给裁剪框显示图片
           this.$nextTick(() => {
-            that.option.img = "http://39.108.238.209:8805/research/file/downloadFile/" + response.data;
+            that.option.img = that.baseURL+"/file/downloadFile/" + response.data;
             that.labelImage=response.data;
           });
         },
@@ -1198,6 +1219,7 @@
         this.searchBindingTypeList();
         this.searchBindingViewList();
         this.getOperators();
+        console.log(this.baseURL)
       }
     }
 </script>
