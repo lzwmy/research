@@ -51,6 +51,7 @@
                   </el-popover>
               </div>
             </div>
+            <img v-if="personalList.length==''"  src="./images/research_module.png" alt="">
           </div>
         </div>
         <!--公共-->
@@ -60,7 +61,7 @@
             公共
           </div>
           <div class="personal_content">
-            <div class="personal_card"  v-for="(item,index) in commonList" :key="index">
+            <div class="personal_card" v-for="(item,index) in commonList" :key="index">
               <div class="text_model" @click.stop="jumpDetailPage(item)">
                 <p>
                   <span title="患者数量">{{item.patientCount }}</span>
@@ -88,6 +89,7 @@
                 </el-popover>
               </div>
             </div>
+            <img v-if="commonList.length==''" src="./images/research_module.png" alt="">
           </div>
         </div>
       </div>
@@ -285,6 +287,7 @@
         flex-wrap: wrap;
         min-height: 250px;
         box-sizing: border-box;
+        position: relative;
         .personal_card{
           width: 235px;
           height: 100px;
@@ -477,6 +480,12 @@
               }
             }
           }*/
+        }
+        img{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
         }
       }
     }
