@@ -1,6 +1,6 @@
 <template>
     <div class="inside_cloud-container">
-        <insideHeader @diseaseSelect="handleDiseaseSelect" :researchId="researchId"></insideHeader>
+        <insideHeader @diseaseSelect="handleDiseaseSelect"></insideHeader>
         <insideMenu :title="title" @changeLoadding="handleLoadding" :menuList="menuList" :fromRouter="fromRouter"></insideMenu>
         <div id="insideContainer" :class="$store.state.common.openMenuView?'open':'close'" v-loading="viewLoading"  
                         element-loading-background="#fff"

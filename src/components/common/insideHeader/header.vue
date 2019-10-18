@@ -47,7 +47,6 @@
 <script>
 import '../../../pages/index/packages/SDResearch/card_bgColor.less';
 export default {
-    props: ['researchId'],
     name: 'insideHeader',
     data () {
         return {
@@ -56,7 +55,7 @@ export default {
             dataList: [],   //专病列表
             //项目分享弹框
             dialgoForm: {
-                url: window.location.origin+'/loginResearch.html?id='+ this.researchId,
+                url: window.location.origin+'/loginResearch.html?id='+ this.$store.state.user.researchInfo.subjectInfoId,
                 visible: false
             },
         };
