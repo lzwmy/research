@@ -24,7 +24,7 @@
 
         <div class="container flex-between-center">
             <div class="content">
-                <patientInfoDetail  v-if="!showReportComponent" class="timeline" :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
+                <patientInfoDetail ref="refPatientInfoDetail"  v-if="!showReportComponent" class="timeline" :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
                 <report-list ref="patientDetail" v-if="showReportComponent" class="reportList" :reportFillData="reportFillData"></report-list>
                 <div class="group_btn">
                     <el-button type="primary" icon="icon iconfont iconzujian19" :class="!showReportComponent?'active':''" @click="handleComponent(false)"></el-button>
@@ -404,10 +404,12 @@ export default {
                     try {
                         if (res.code == 0) {
                             this.$mes('success', "添加报告成功!");
-                          this.$refs.patientDetail.getDataList()
+                            if(this.$refs.patientDetail) {
+                                this.$refs.patientDetail.getDataList()
+                            }else if(this.$refs.refPatientInfoDetail) {
+                                this.$refs.refPatientInfoDetail.getDataList()
+                            }
                             this.dialogReportForm.visible = false;
-                            // this.getDataList();
-
                         }else {
                             this.$mes('error', "添加报告失败!");
                         }

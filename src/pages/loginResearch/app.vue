@@ -80,7 +80,8 @@ export default {
       let params = {
         code: this.form.validCode,
         phoneNumber: this.form.phoneNumber,
-        subjectId: utils.getQuery('id')
+        id: utils.getQuery('id'),
+        enterType: 1
       };
       this.$post('/auth/subject/login.do', this.$format(params), false).then((res) => {
         if (res && res.code == 0 && res.data) {
@@ -113,9 +114,10 @@ export default {
       }
       let params = {
         phoneNumber: this.form.phoneNumber,
-        subjectId: utils.getQuery('id')
+        id: utils.getQuery('id'),
+        enterType: 1
       }
-      this.$get('/auth/subject/send/code.do', this.$format(params), false).then((res) => {
+      this.$post('/auth/subject/send/code.do', this.$format(params), false).then((res) => {
         if (res.code == 0) {
           this.$mes('success','验证码已发送，请注意查收');
           this.count = 59;
