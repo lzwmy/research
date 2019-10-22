@@ -153,10 +153,10 @@
 }
 /*上传*/
 .FILE_UPLOAD{
-
+  display: table;
 }
 .FILE_UPLOAD .FILE_UPLOAD_title{
-  width: 200px;
+  width: 188px;
   display: table-cell;
   vertical-align: middle;
   font-size: 14px;

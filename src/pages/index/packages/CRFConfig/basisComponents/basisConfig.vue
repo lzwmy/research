@@ -77,7 +77,7 @@
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
             <!--{{basisItem}}-->
-            <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
+            <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children" ></basis-component>
           </div>
         </div>
         <div class="basis_content_config blank_page" v-else>
@@ -85,7 +85,7 @@
         </div>
         <!--参数配置-->
         <div class="basis_parameter_config" v-if="JSON.stringify(basisDataInfo)!=='{}'">
-          <parameter-config v-if="JSON.stringify(basisDataInfo)!=='{}'" :basicDataInfo="basisDataInfo"></parameter-config>
+          <parameter-config v-if="JSON.stringify(basisDataInfo)!=='{}'" :basicDataInfo="basisDataInfo" ></parameter-config>
         </div>
         <div class="basis_parameter_config blank_page" v-else>
           <img src="./image/none_content.png" alt="">
@@ -128,7 +128,6 @@
         "$store.state.CRFConfig.basisDataInfo":{
           deep:true,
           handler:function (data) {
-            // console.log('发生改变',data);
             this.basisDataInfo = data;
           }
         }
@@ -191,6 +190,10 @@
               name:"文件上传",
               value:"FILE_UPLOAD"
             },
+            {
+              name:"评分",
+              value:"SCORE"
+            }
             /*{
               name:"超链接",
               value:"linkURL"
@@ -247,6 +250,8 @@
           window.history.go(-1);
         },
         activeConfig(data,index,array) {
+          console.log(data,this.configData)
+
           this.basisDataInfo = {
             obj:data,
             selectType:data.controlType,
@@ -288,6 +293,10 @@
               "selection":[],
               "wrap":1,
               "displayChecked":[]
+            },
+            "scoreInfo":{
+              "scoreName":"",
+              "scoreStatus":false,
             }
           };
           data.termSet= {

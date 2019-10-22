@@ -51,7 +51,11 @@ export default {
           "fileId": "",
           "fileName": ""
         }
-      ]
+      ],
+      "scoreInfo":{
+        "scoreName":"",
+        "scoreStatus":false,
+      },
     },
     "termSet": {
       "termDefaultValue": [],

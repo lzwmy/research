@@ -71,7 +71,11 @@
                 <el-input v-model.number="basicDataInfo.obj.baseProperty.controlHeight" size="mini" placeholder="请输入高度设置"></el-input>
                 <span>&nbsp;&nbsp;行</span>
               </el-form-item>
-
+              <el-form-item v-if="controlType == 'SCORE'" label="评分名称" class="line_block">
+                  <el-select v-model="basicDataInfo.obj.baseProperty.scoreInfo.scoreName">
+                    <el-option label="PASI" value="PASI"></el-option>
+                  </el-select>
+              </el-form-item>
               <el-form-item v-if="controlType!='DATE'&&controlType!='DATE_TIME'&&controlType!=='FILE_UPLOAD'&&controlType!='GATHER'&&controlType!='TABLE'&&controlType!=='LABEL'" label="输入提示" class="line_block">
                 <el-input v-model="basicDataInfo.obj.baseProperty.controlTip" size="mini" placeholder="请输入重要的提示"></el-input>
               </el-form-item>

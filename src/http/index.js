@@ -26,7 +26,9 @@ import researchTarget from './research/researchTaget/index';
 import projectProgress from './research/projectProgress/index';
 //病种概览
 import diseaseChart from './diseaseChart';
+//评分
+import score from './score';
 //CRF 2.0
 import CRFConfig from './CRFConfig';
-const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,projectGrouping,followUpPlan,researchTarget,projectProgress,followUpManagement,sucjectAuth);
+const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,projectGrouping,followUpPlan,researchTarget,projectProgress,followUpManagement,sucjectAuth,score);
 export default http;

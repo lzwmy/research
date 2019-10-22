@@ -46,6 +46,7 @@ export default {
         let newObj = {
           name: element.controlDisplayName,
           value: "",
+          value2:"",
           children: []
         };
         this.report.items.push(newObj);
