@@ -66,8 +66,8 @@
             </span>
           </div>
         </el-upload>
-        <el-dialog class="upload_style" title="图片预览" :visible.sync="dialogVisible">
-          <img width="50%" :src="dialogImageUrl" alt="">
+        <el-dialog class="upload_style" width="70%"  :visible.sync="dialogVisible">
+          <img  :src="dialogImageUrl" alt="">
         </el-dialog>
       </div>
     </div>
@@ -267,6 +267,8 @@
   }
   .upload_style .el-dialog__body{
     text-align: center;
+    overflow: auto;
+    height: 750px;
   }
   .FILE_UPLOAD .el-upload {
     /*display: flex;*/
