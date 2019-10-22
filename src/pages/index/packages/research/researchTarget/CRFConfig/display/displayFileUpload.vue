@@ -167,7 +167,7 @@
         param.append('patientId',urlparameter.patientId);
         param.append('reportId',urlparameter.reportId);
         param.append('desc',that.item.controlDisplayName);
-        param.append('sourceType',1);
+        param.append('sourceType',2);
         that.fileUploadHttp(param).then(res=>{
           if(res.data.code == 0) {
             that.$message.success(res.data.msg);
@@ -224,7 +224,7 @@
         patientId:urlparameter.patientId,
         reportId:urlparameter.reportId,
         desc:this.item.controlDisplayName,
-        sourceType:1
+        sourceType:2
       };
       if(this.report.value2 !==""){
         this.fileList = JSON.parse(this.report.value2);
