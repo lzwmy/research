@@ -44,7 +44,7 @@
               <!--下移-->
               <i class="iconfont iconfuhao6" @click="moveDown(basisDataItem,basisDataIndex,basisData)"></i>
           </div>
-          <basis-component v-if="basisDataItem.children.length!==0" :children="basisDataItem.children"></basis-component>
+          <basis-component v-if="basisDataItem.children.length!==0" :children="basisDataItem.children" ></basis-component>
         </div>
     </div>
 </template>
@@ -125,6 +125,10 @@
               name:"文件上传",
               value:"FILE_UPLOAD"
             },
+            {
+              name:"评分",
+              value:"SCORE"
+            }
             /*{
               name:"超链接",
               value:"linkURL"
@@ -207,7 +211,11 @@
               "selection":[],
               "wrap":1,
               "displayChecked":[]
-            }
+            },
+            "scoreInfo":{
+              "scoreName":"",
+              "scoreStatus":false,
+            },
           };
           data.termSet= {
             "termGroupOid": "", //(代码集OID)

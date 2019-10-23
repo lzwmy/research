@@ -661,7 +661,7 @@
       /*background-color: #ffffff;*/
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      /*justify-content: center;*/
       align-items: center;
       border-top-color: transparent;
       img{

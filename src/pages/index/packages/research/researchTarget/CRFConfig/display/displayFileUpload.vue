@@ -1,12 +1,12 @@
 <template>
-    <!--上传-->
+  <!--上传-->
   <div :class="item.controlType+'_view_box'">
     <div :class="item.controlType" style="font-size: 14px;">
-      <div :class="item.controlType+'_title'">
+      <div :class="item.controlType+'_title'" >
         <span v-if="item.displayIsVisible=='1'">{{item.controlDisplayName}}</span>
       </div>
       <div :class="item.controlType+'_file_box'" v-if="item.baseProperty.fileType=='FILE'">
-        <el-button size="small" style="float: right;" type="primary" @click="uploadFileOrImg">确认上传</el-button>
+        <!--<el-button size="small" style="float: right;" type="success" @click="uploadFileOrImg">确认上传</el-button>
         <el-upload
           class="upload-demo"
           ref="upload"
@@ -17,8 +17,17 @@
           :on-preview="onPreview"
           :file-list="fileList"
           :multiple="true">
-          <!--:before-upload="onBeforeUpload" :http-request="beforeUploadFile"-->
+          &lt;!&ndash;:before-upload="onBeforeUpload" :http-request="beforeUploadFile"&ndash;&gt;
           <el-button size="small">选择文件</el-button>
+        </el-upload>-->
+        <el-upload class="upload-demo"
+                   ref="upload"
+                   :file-list="fileList"
+                   :data="fileData"
+                   :on-change="onChange"
+                   :on-remove="onRemove"
+                   :action="uploadActionUrl">
+          <el-button size="small">点击上传</el-button>
         </el-upload>
       </div>
       <div :class="item.controlType+'_Image_box'" v-if="item.baseProperty.fileType=='IMAGE'">
@@ -33,7 +42,7 @@
           <div slot="file" slot-scope="{file}">
             <img
               class="el-upload-list__item-thumbnail"
-              :src="file.url" alt=""
+              :src="newUrl+'/file/downloadFile/'+file.fileId" alt=""
             >
             <span class="el-upload-list__item-actions">
               <span
@@ -68,144 +77,168 @@
 
 <script>
   import axios from 'axios';
-    export default {
-      name: "displayFileUpload",
-      props:{
-        item: {},
-        report: {},
-        index: Number
-      },
-      data() {
-        return {
-          uploadActionUrl:"http://39.108.238.209:8805/research/file/uploadFiles.do",
-          // uploadActionUrl:"http://192.168.1.108:8080/research/file/uploadFiles.do",
-          fileList:[],
-          dialogImageUrl: '',
-          dialogVisible: false,
-          disabled: false
+  export default {
+    name: "displayFileUpload",
+    props:{
+      item: {},
+      report: {},
+      index: Number
+    },
+    data() {
+      return {
+        newUrl:this.baseURL,
+        // uploadActionUrl:this.baseURL+"/file/uploadFiles.do", // old httpRequest url
+        uploadActionUrl:this.baseURL+"report/bak/save/singleFile.do",
+        fileList:[],
+        dialogImageUrl: '',
+        dialogVisible: false,
+        disabled: false,
+        fileData:{},
+      }
+    },
+    methods:{
+      async downFile(value,name) {
+        let that = this;
+        let fromData = {
+          fileId:value
+        };
+        try {
+          let data = await that.$http.fileDownLoadFile(fromData)
+          let blob = new Blob([data.data], {type: 'application/octet-stream'});
+          /*let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});*/
+          // let fileNmae = data.headers['content-disposition'].split('filename=')[1];
+          that.$download(name, blob);
+        }catch (error) {
+          console.log(error)
         }
       },
-      methods:{
-        async downFile(value,name) {
-          let that = this;
-          let fromData = {
-            fileId:value
-          };
-          try {
-            let data = await that.$http.fileDownLoadFile(fromData)
-            let blob = new Blob([data.data], {type: 'application/octet-stream'});
-            /*let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});*/
-            // let fileNmae = data.headers['content-disposition'].split('filename=')[1];
-            that.$download(name, blob);
-          }catch (error) {
-            console.log(error)
-          }
-        },
-        onChange(file,fileList) {
-          this.fileList = fileList;
-        },
-        onRemove(file,fileList) {
-          this.fileList = fileList;
-        },
-        onPreview(file) {
-          console.log('列表已上传钩子',file)
-        },
-        uploadFileOrImg() {
-          this.beforeUploadFile();
-        },
-        //自定义上传
-        beforeUploadFile() {
-          let that = this;
-          let param = new FormData();
-          if(that.fileList.length!==0){
-            that.fileList.forEach(item => {
-              param.append('files', item.raw);
-            });
-            // param.append('fileType', this.UploadType);
-          }else {
-            return false;
-          }
-          that.fileUploadHttp(param).then(res=>{
-            if(res.data.code==0) {
-              that.$notice(res.data.msg);
-              // that.itemFileRsp = res.data.data;
-            }
-          }).catch(error=>{
-            console.log(error)
-          })
-        },
-        //自定义多文件文件上传接口
-        fileUploadHttp(param) {
-          let url = this.uploadActionUrl;
-          return axios.post(url,param,{
-            headers: {"content-type": "multipart/form-data"}
-          })
-        },
-        //图片上传 事件 ---以下
-        beforeAvatarUpload(file) {
-          let that = this;
-          let param = new FormData();
-          param.append('files',file.raw);
-          that.fileUploadHttp(param).then(res=>{
-            if(res.data.code == 0) {
-              that.$notice(res.data.msg);
-              that.fileList.push({...res.data.data[0],...file})
-            }
-          }).catch(error => {
-            console.log(error)
-          })
-        },
-        handleRemove(file,fileList) {
-          console.log(file,fileList);
-          this.deleteFileId(file.fileId);
-          let copyFileList  = this.fileList;
-          copyFileList.forEach((item,index,array)=>{
-            if(item.fileId == file.fileId) {
-              array.splice(index,1)
-            }
+      onChange(file,fileList) {
+        console.log(file,fileList)
+        this.fileList = fileList;
+        this.report.value2 = JSON.stringify(fileList);
+      },
+      onRemove(file,fileList) {
+        this.fileList = fileList;
+        this.report.value2 = JSON.stringify(fileList);
+        console.log(file)
+        this.deleteFileId(file.response.data[0].fileId)
+      },
+      onPreview(file) {
+        console.log('列表已上传钩子',file)
+      },
+      uploadFileOrImg() {
+        this.beforeUploadFile();
+      },
+      //自定义上传
+      beforeUploadFile() {
+        let that = this;
+        let param = new FormData();
+        if(that.fileList.length!==0){
+          that.fileList.forEach(item => {
+            param.append('file', item.raw);
           });
-          this.fileList = copyFileList;
-        },
-        handlePictureCardPreview(file) {
-          let dialogPreview =JSON.parse(sessionStorage.getItem('dialogPreview'));
-          if(dialogPreview.preview!=='dialogPreview'){
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-          }else{
-            this.$message.info('此窗口不能预览')
+          // param.append('fileType', this.UploadType);
+        }else {
+          return false;
+        }
+        that.fileUploadHttp(param).then(res=>{
+          if(res.data.code==0) {
+            that.$message.success(res.data.msg);
+            // that.itemFileRsp = res.data.data;
           }
-        },
-        handleDownload(file) {
-          console.log(file);
-          this.downFile(file.fileId,file.fileName)
-        },
-        //单个文件删除
-        async deleteFileId(value) {
-          let that = this;
-          let fromData = {
-            file_id:value
-          };
-          try {
-            let data = await that.$http.deleteFileId(fromData)
-            console.log(data)
-            if(data.code ==0) {
-              that.$notice(data.msg);
+        }).catch(error=>{
+          console.log(error)
+        })
+      },
+      //自定义多文件文件上传接口
+      fileUploadHttp(param) {
+        let url = this.uploadActionUrl;
+        return axios.post(url,param,{
+          headers: {"content-type": "multipart/form-data"}
+        })
+      },
+      //图片上传 事件 ---以下
+      beforeAvatarUpload(file) {
+        let that = this;
+        let param = new FormData();
+        let urlparameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+        param.append('file',file.raw);
+        param.append('crfId',urlparameter.formId);
+        param.append('patientId',urlparameter.patientId);
+        param.append('reportId',urlparameter.reportId);
+        param.append('desc',that.item.controlDisplayName);
+        param.append('sourceType',2);
+        that.fileUploadHttp(param).then(res=>{
+          if(res.data.code == 0) {
+            that.$message.success(res.data.msg);
+            that.fileList.push({...res.data.data[0],...file});
+            that.report.value2 = JSON.stringify(that.fileList);
+          }
+        }).catch(error => {
+          console.log(error)
+        })
+      },
+      handleRemove(file,fileList) {
+        console.log(file,fileList);
+        this.deleteFileId(file.fileId);
+        let copyFileList  = this.fileList;
+        copyFileList.forEach((item,index,array)=>{
+          if(item.fileId == file.fileId) {
+            array.splice(index,1)
+          }
+        });
+        this.fileList = copyFileList;
+        this.report.value2 = JSON.stringify(this.fileList);
+      },
+      handlePictureCardPreview(file) {
+        console.log(file)
+        this.dialogImageUrl = this.newUrl+"/file/downloadFile/"+file.fileId;
+        this.dialogVisible = true;
+      },
+      handleDownload(file) {
+        console.log(file);
+        this.downFile(file.fileId,file.fileName)
+      },
+      //单个文件删除
+      async deleteFileId(value) {
+        let that = this;
+        let fromData = {
+          file_id:value
+        };
+        try {
+          let data = await that.$http.deleteFileId(fromData)
+          console.log(data)
+          if(data.code ==0) {
+            that.$notice(data.msg);
 
-            }
-          }catch (error) {
-            console.log(error)
           }
+        }catch (error) {
+          console.log(error)
         }
       }
+    },
+    mounted() {
+      let urlparameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+      this.fileData = {
+        crfId:urlparameter.formId,
+        patientId:urlparameter.patientId,
+        reportId:urlparameter.reportId,
+        desc:this.item.controlDisplayName,
+        sourceType:2
+      };
+      if(this.report.value2 !==""){
+        this.fileList = JSON.parse(this.report.value2);
+      }
     }
+  }
 </script>
 
 <style scoped>
   .FILE_UPLOAD{
-
+    display: table;
   }
   .FILE_UPLOAD .FILE_UPLOAD_title{
-    width: 200px;
+    width: 188px;
     display: table-cell;
     vertical-align: middle;
     font-size: 14px;
@@ -234,5 +267,8 @@
   }
   .upload_style .el-dialog__body{
     text-align: center;
+  }
+  .FILE_UPLOAD .el-upload {
+    /*display: flex;*/
   }
 </style>

@@ -17,6 +17,7 @@
           <display-table v-else-if="item.controlType=='TABLE'" :item="item" :report="report"/>
           <display-number-input v-else-if="item.controlType=='NUMBER_INPUT'" :item="item" :report="report"/>
           <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
+          <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
         </el-col>
       </el-row>
     <el-col  v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
@@ -33,6 +34,7 @@
       <display-table v-else-if="item.controlType=='TABLE'" :item="item" :report="report"/>
       <display-number-input v-else-if="item.controlType=='NUMBER_INPUT'" :item="item" :report="report"/>
       <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
+      <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
     </el-col>
   </div>
 </template>
@@ -51,6 +53,7 @@ import displayRadio from "./displayRadio";
 import displayTable from "./displayTable";
 import displayGather from "./displayGather";
 import displayFileUpload from './displayFileUpload';
+import displayScore from './displayScore';
 import "assets/css/crf.less";
 export default {
   name: "displayItem",
@@ -77,7 +80,8 @@ export default {
     displayRadio,
     displayTable,
     displayGather,
-    displayFileUpload
+    displayFileUpload,
+    displayScore
   },
   methods:{
     formatSpan(item) {
