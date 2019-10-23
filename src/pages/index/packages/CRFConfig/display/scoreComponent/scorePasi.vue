@@ -184,7 +184,7 @@
       <div class="score_title">各部位PASI得分计算</div>
       <div class="score_content">
         <div class="content_item">
-          <div class="item_name sing-input">ASI（头部）=</div>
+          <div class="item_name sing-input">PASI（头部）=</div>
           <div class="item_single-input">
             <el-input v-model="headPASI" readonly></el-input>
           </div>
@@ -239,7 +239,7 @@
         },
         lowerLimbPASI:function () {
           let total = (this.lowerLimb.erythema+this.lowerLimb.infiltration+this.lowerLimb.desquamation)*100;
-          let sum = ((0.3* total) * this.lowerLimb.area)/100;
+          let sum = ((0.4* total) * this.lowerLimb.area)/100;
           return sum
         },
         total:function () {
