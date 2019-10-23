@@ -173,19 +173,6 @@ export default {
     this.title = JSON.parse(sessionStorage.getItem('Global')).title;
   },
   methods: {
-    changeThemeColor (ccstyle = 'theme-blue') {
-      if (ccstyle == 'theme-green') {
-        this.$store.commit({
-          type: 'changeTheme',
-          ccstyle: 'theme-green'
-        });
-      } else if (ccstyle == 'theme-blue') {
-        this.$store.commit({
-          type: 'changeTheme',
-          ccstyle: 'theme-blue'
-        });
-      }
-    },
     submit () {
       let that = this;
       let CURR_USER = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO'));

@@ -9,6 +9,8 @@ const USER_SIGNOUT = 'USER_SIGNOUT'; // 退出登录
 
 //科研项目信息
 let CURR_RESEARCH_INFO =  JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')) || {};
+//专病科研信息
+let CURR_DISEASE_INFO =  JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')) || {};
 
 //权限验证 参数1： 用户角色  参数2：有权限的角色
 const judgeAuth = function(arr1, arr2) {
@@ -48,6 +50,11 @@ const user = {
       authExport: judgeAuth(CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],['1','2','4']),  //导出授权
       authAddCenter:judgeAuth(CURR_RESEARCH_INFO.roles?CURR_RESEARCH_INFO.roles:[],['1']),  //添加中心授权
     },
+    //专病科研数据
+    diseaseInfo: {
+      diseaseId: CURR_DISEASE_INFO.diseaseId?CURR_DISEASE_INFO.diseaseId:'',
+      isAdmin: CURR_DISEASE_INFO.isAdmin?CURR_DISEASE_INFO.isAdmin:false  //是否为管理员
+    },
     session_isDislpayArrow: false
   },
   mutations: {
@@ -59,6 +66,8 @@ const user = {
     [USER_SIGNOUT](state) {
       sessionStorage.removeItem('CURR_USER_RESEARCH_USERINFO');
       sessionStorage.removeItem('CURR_USER_RESEARCH_MENULIST');
+      sessionStorage.removeItem('CURR_DISEASE_INFO');
+      sessionStorage.removeItem('CURR_RESEARCH_INFO');
       utils.delCookie('sessionId');
       window.sessionStorage.removeItem('Global');
       state.userLogin = {};
@@ -85,9 +94,9 @@ const user = {
         authAddCenter: judgeAuth(data.roles,['1'])  //添加中心授权
       }
     },
-    changeTheme(state, payload) {
-      state.ccstyle = payload.ccstyle;
-      localStorage.setItem('research_ccstyle', payload.ccstyle);
+    saveDiseaseInfo(state, data) {
+      sessionStorage.setItem('CURR_DISEASE_INFO', JSON.stringify(data));
+      state.diseaseInfo = data;
     }
   },
   actions: {}

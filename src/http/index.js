@@ -20,6 +20,7 @@ import projectGrouping from './research/projectGrouping/index';
 import followUpPlan from './research/followUpPlan/index';
 import followUpManagement from './research/followUpManagement/index';
 import sucjectAuth from './research/auth/index';
+import organizationManagementDis from './organizationManagementDis/index';
 //科研项目 -- 研究指标
 import researchTarget from './research/researchTaget/index';
 //科研项目 -- 项目进度
@@ -28,5 +29,5 @@ import projectProgress from './research/projectProgress/index';
 import diseaseChart from './diseaseChart';
 //CRF 2.0
 import CRFConfig from './CRFConfig';
-const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,projectGrouping,followUpPlan,researchTarget,projectProgress,followUpManagement,sucjectAuth);
+const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,projectGrouping,followUpPlan,researchTarget,projectProgress,followUpManagement,sucjectAuth,organizationManagementDis);
 export default http;

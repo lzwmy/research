@@ -4,7 +4,7 @@
             <span class="menuBtn" :class="$store.state.common.openMenuView?'el-icon-s-fold':'el-icon-s-unfold'"></span>
         </el-button>
         <el-popover
-            v-show="$route.meta.belongToGroup == 'insideView'"
+            v-if="$route.meta.belongToGroup == 'insideView' && loginType != 'disease'"
             placement="top-start"
             title=""
             :popper-class="'popover_disease ' + $store.state.common.openMenuView"
@@ -23,7 +23,8 @@
             </ul>
             <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
         </el-popover>
-        <p v-if="$route.meta.belongToGroup == 'researchTask' && $store.state.user.researchInfo.centerModel == 2" @click="researchlLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
+        <p v-if="$route.meta.belongToGroup == 'researchTask' && $store.state.user.researchInfo.centerModel == 2" @click="shareLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
+        <p v-if="$route.meta.belongToGroup == 'insideView'" @click="shareLogin" class="researchLogin flex-center-center">专病分享<span class="icon iconfont iconfenxiang left_6"></span></p>
 
         <el-dialog 
             title="" 
@@ -49,18 +50,22 @@ import '../../../pages/index/packages/SDResearch/card_bgColor.less';
 export default {
     name: 'insideHeader',
     data () {
+        let shareUrl = this.$route.meta.belongToGroup == 'researchTask'?'/loginResearch.html?id='+ this.$store.state.user.researchInfo.subjectInfoId:'/loginDisease.html?id='+ this.$store.state.user.diseaseInfo.diseaseId
+        let path = window.location.pathname.split('/index.html')[0]
         return {
+            loginType: '',      //登录类型
             disease: "",
             popoverVisible: false,
             dataList: [],   //专病列表
             //项目分享弹框
             dialgoForm: {
-                url: window.location.origin+'/loginResearch.html?id='+ this.$store.state.user.researchInfo.subjectInfoId,
+                url: window.location.origin+path+shareUrl,
                 visible: false
             },
         };
     },
     created () {
+        this.loginType = sessionStorage.getItem('CURR_LOGIN_TYPE')
         this.getDataList()
         .then(()=>{
             this.dataList.forEach(item => { 
@@ -104,7 +109,7 @@ export default {
                 console.log(error);
             }
         },
-        researchlLogin() {
+        shareLogin() {
             this.dialgoForm.visible = true;
         },
         onCopySuccess(e) {

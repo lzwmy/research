@@ -32,6 +32,7 @@
 <script>
 import insideHeader from 'components/common/insideHeader/header'
 import insideMenu from 'components/common/insideMenu/menu'
+import diseaseRouter from '../insideMenu/diseaseRouter'
 export default {
     name: 'insideView',
     data () {
@@ -58,6 +59,7 @@ export default {
     watch: {
     },
     mounted () {
+        console.log(diseaseRouter)
         this.initView();
         window.onresize = this.initView;
         let headLeft = parseInt($('.component_head').css("left"));
@@ -82,6 +84,11 @@ export default {
                 this.menuList = this.$store.state.user.taskMenuList;
                 this.researchId = JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId;
                 return;
+            }else if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease") {
+                //专病科研模块：分享登录
+                this.title = '专病科研';
+                this.menuList = diseaseRouter;
+                return;
             }
             let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))
             this.fromRouter = insideData.fromRouter;
@@ -90,6 +97,7 @@ export default {
             if(insideData.researchId) {
                 this.researchId = insideData.researchId;
             }
+            
         },
         handlePageHeight () { // 高度自适应处理
             setTimeout(() => {
@@ -120,6 +128,10 @@ export default {
         //切换病种
         handleDiseaseSelect(diseaseId) {
             this.viewLoading = true;
+            this.$store.commit('saveDiseaseInfo',{
+                diseaseId: diseaseId,
+                isAdmin: JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).isAdmin
+            });
             this.$router.push({
                 path: '/' + this.$route.meta.flag,
                 query: {

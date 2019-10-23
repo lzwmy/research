@@ -352,6 +352,8 @@ export default {
                 }
                 if(that.dataList.content.length == 0) {
                     this.showGuide = true; 
+                }else {
+                    this.showGuide = false;
                 }
                 that.tableLoading = false;
             } catch (err) {

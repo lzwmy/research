@@ -81,7 +81,7 @@ export default {
         code: this.form.validCode,
         phoneNumber: this.form.phoneNumber,
         id: utils.getQuery('id'),
-        enterType: 1
+        enterType: 2
       };
       this.$post('/auth/subject/login.do', this.$format(params), false).then((res) => {
         if (res && res.code == 0 && res.data) {
@@ -93,7 +93,7 @@ export default {
             userId: res.data.userId
           };
           this.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-          window.location.href = './index.html#/projectProgress';
+          window.location.href = './index.html#/diseaseChart?id='+ utils.getQuery('id');
           return;
         } else {
           if(res.code == 40) {
@@ -115,7 +115,7 @@ export default {
       let params = {
         phoneNumber: this.form.phoneNumber,
         id: utils.getQuery('id'),
-        enterType: 1
+        enterType: 2
       }
       this.$post('/auth/subject/send/code.do', this.$format(params), false).then((res) => {
         if (res.code == 0) {

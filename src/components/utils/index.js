@@ -349,7 +349,7 @@ const loadMenuInfo = () => {
       let data = response;
       if (data.code == 0) {
         let menuList = data.data.menus;
-        if (menuList.length > 0) {
+        if (menuList.length > 0 || sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease") {
           let handleAfrerMenuList = handleMenuList(menuList);
           store.commit({
             type: 'saveMenuList',

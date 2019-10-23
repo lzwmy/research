@@ -109,17 +109,15 @@ let initApp = async () => {
           //如果是从科研项目入口登录，则不能进入到其它模块
           if(isResearch && to.meta.belongToGroup != 'researchTask') {
             next('/projectProgress');
+          //如果是从专病科研入口登录，则不能进入到其它模块
+          }else if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease" && to.meta.belongToGroup != 'insideView') {
+            next('/diseaseChart?id='+JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId);
           }else {
             next();
           }
         } 
         else {
           utils.ssoLogout();
-          // if(!isResearch) {
-          //   window.location.href = './login.html';
-          // }else {
-          //   window.location.href = './loginResearch.html';
-          // }
         }
       }
     });

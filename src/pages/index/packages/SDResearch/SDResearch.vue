@@ -18,7 +18,7 @@
         <div class="cart">
           <el-row :gutter="14" type="flex" class="flex-wrap">
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" v-for="(item,index) in dataList" :key="index">
-              <router-link tag="a" class="sd-title-wrapper" :to="getMenu(item)">
+              <div class="sd-title-wrapper" @click="toLink(item)">
                 <div class="sd-thumbnail">
                   <div class="sd-thumbnail-content">
                     <img :class="'sd-thumbnail-img ' + item.logo + '_bgColor'"
@@ -35,7 +35,7 @@
                     </router-link>
                   </div>
                 </div>
-              </router-link>
+              </div>
             </el-col>
           </el-row>
         </div>
@@ -107,7 +107,17 @@ export default {
         console.log(error);
       }
     },
-    getMenu(item) {
+    async getUserRoles() {
+      try {
+        let data = await this.$http.ORGDisGetUserRoles();
+        if (data.code == '0') {
+          return Promise.resolve(data.data)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    toLink(item) {
       let list = [];
       let menuPath = '/index';
       let title = "";
@@ -119,7 +129,7 @@ export default {
         }
       })
       if(list.length == 0) {
-        return "";
+        return;
       }
       let params = {
         path: list[0].menuPath,
@@ -132,19 +142,20 @@ export default {
         menuList: list
       }
       sessionStorage.setItem('insideMenuData',JSON.stringify(params))
-      return {
+      this.getUserRoles()
+      .then((res)=>{
+        this.$store.commit('saveDiseaseInfo',{
+          diseaseId: item.id,
+          isAdmin: res
+        });
+        this.$router.push({
           path: list[0].menuPath,
           query: {
             id: item.id
           }
-      }
+        })
+      })
     }
-  },
-  beforeRouteEnter (to, from, next) {
-    next();
-  },
-  beforeRouteLeave (to, from, next) {
-    next();
   }
 };
 </script>
@@ -200,6 +211,7 @@ export default {
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: #8c8c8c;
   }
 
   .sd-title-wrapper .sd-title-tools {
@@ -233,20 +245,6 @@ export default {
     line-height: 350px;
     text-align: center;
     font-size: 15px;
-  }
-
-  body.theme-blue {
-    .sd-title-wrapper .sd-title-tools a:hover {
-      color: #2d8cf0;
-      background: #ffffff;
-    }
-  }
-
-  body.theme-green {
-    .sd-title-wrapper .sd-title-tools a:hover {
-      color: #1dcaaa;
-      background: #ffffff;
-    }
   }
 
 </style>

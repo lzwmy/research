@@ -85,6 +85,17 @@ export default {
     created () {
         this.diseaseId =  this.$route.query.id;
         this.defaultActive = this.$route.path;
+        //专病科研模块显示组织管理页面：非分享登录,且为管理员
+        if( this.$route.meta.belongToGroup == 'insideView' && sessionStorage.getItem('CURR_LOGIN_TYPE') != "disease" && JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).isAdmin) {
+            this.menuList.push({
+                ico: 'organizationManagement',
+                menuName: '组织管理',
+                menuCode: "012907",
+                menuPath: '/organizationManagementDis',
+                children: [],
+                name: 'organizationManagementDis',
+            })
+        }
     },
     methods: {
         //判断是否有权限 

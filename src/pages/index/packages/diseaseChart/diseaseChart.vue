@@ -406,6 +406,13 @@
     },
     created() {
       this.chartListData()
+      //专病分享登录
+      if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease") {
+        this.$store.commit('saveDiseaseInfo',{
+          diseaseId: JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId,
+          isAdmin: false
+        });
+      }
     },
     methods:{
       resize() {
