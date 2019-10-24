@@ -231,9 +231,9 @@ export default {
                     if (res.code == '0') {
                         that.$mes('success', that.dialogForm.title +'成功');
                         that.dialogForm.visible = false;
-                        that.dialogForm.loading = false;
                         that.getDataList(that.paging.currentPageNo, that.paging.currentPageSize);
                     }
+                    that.dialogForm.loading = false;
                 } catch (error) {
                     console.log(error)
                     that.dialogForm.visible = false;

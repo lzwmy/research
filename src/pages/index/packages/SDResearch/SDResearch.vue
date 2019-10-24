@@ -30,9 +30,11 @@
                 </div>
                 <div class="sd-title-tools">
                   <div>
-                    <router-link tag="a" :to="{ name: 'diseaseSet',query:{id:item.id}}" title="病种设置" class="sd-cog-btn">
-                      <span class="name">病种管理</span>
-                    </router-link>
+                    <!-- <router-link tag="a" :to="{ name: 'diseaseSet',query:{id:item.id}}" title="病种设置" class="sd-cog-btn"> -->
+                      <a class="sd-cog-btn" @click.stop="$router.push({name: 'diseaseSet',query:{id:item.id}})">
+                        <span class="name">病种管理</span>
+                      </a>
+                    <!-- </router-link> -->
                   </div>
                 </div>
               </div>
