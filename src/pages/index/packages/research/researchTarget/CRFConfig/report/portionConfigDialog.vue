@@ -661,7 +661,7 @@
                     display: flex;
                     flex-direction: row;
                     width: 100%;
-                    height: 40px;
+                    min-height: 40px;
                     align-items: center;
                     .detail_info{
                       height: 100%;
@@ -704,7 +704,7 @@
                     display: flex;
                     flex-direction: row;
                     width: 100%;
-                    height: 40px;
+                    min-height: 40px;
                     align-items: center;
                     .detail_info{
                       height: 100%;
