@@ -162,6 +162,7 @@
           let that = this;
           let param = new FormData();
           let urlparameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+          console.log(file.row)
           param.append('file',file.raw);
           param.append('crfId',urlparameter.formId);
           param.append('patientId',urlparameter.patientId);
