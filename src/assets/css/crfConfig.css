@@ -328,3 +328,62 @@
   border:none;
   padding: 1px 0;
 }
+/*评分*/
+.SCORE {
+
+}
+
+.SCORE .SCORE_title {
+  width: 188px;
+  display: table-cell;
+  font-size: 14px;
+}
+
+.SCORE .SCORE_box {
+  display: table-cell;
+}
+
+.SCORE .SCORE_box .SCORE_rangeValue {
+  padding-right: 20px;
+  font-size: 14px;
+}
+.dialog_score .el-dialog__body{
+  padding-top: 15px !important;
+  padding-bottom: 70px !important;
+}
+.score_title {
+  font-size: 14px;
+  font-weight: bold;
+  color: #394263;
+}
+
+.score_content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+.score_content .content_item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.score_content .content_item .item_name {
+  width: 120px;
+  color: #394263;
+}
+.score_content .content_item .mr_20 {
+  margin-left: 20px;
+}
+.score_content .content_item .sing-input {
+  width: 100px;
+}
+.score_content .content_item .item_radio_box {
+  flex: 1;
+}
+.score_content .content_item .item_single-input{
+  margin-left: 5px;
+}
