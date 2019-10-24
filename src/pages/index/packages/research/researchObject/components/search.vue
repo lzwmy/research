@@ -74,6 +74,9 @@ export default {
                             crfList: this.crfList,
                             activeCrf:this.activeCrf
                         })
+                        this.$emit('changeShowGuide', false)
+                    }else {
+                        this.$emit('changeShowGuide', true)
                     }
                 }
             } catch (err) {

@@ -5,7 +5,7 @@
             <div class="head_content cur_pointer">
                 <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">导入研究数据 </el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
-                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录{{showGuide}}</el-button>
                 <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="addSingleObject" style="padding: 0 0 0 15px">
                     添加研究对象
                     <el-dropdown trigger="hover" @command="handleAddObject">
@@ -24,6 +24,7 @@
             <div class="search_group flex-start-center">
                 <searchCom 
                     ref="refSearch"
+                    @changeShowGuide='handleGuide'
                     @sendGroupList="getGroupList" 
                     @sendCrfList="getCrfList"
                     @selectGroup="handleSelectGroup">
@@ -93,7 +94,6 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table 
-                    v-if="dataList.content.length != 0"
                     ref="refTable" fit border
                     :data="dataList.content"
                     v-loading="tableLoading"
@@ -138,7 +138,7 @@
                 <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
 
                 <!-- 引导图 -->
-                <div v-if="showGuide" class="guide flex-center-center" style="height: 500px;">
+                <div v-show="showGuide" class="guide flex-center-center" style="height: 500px;">
                     <div class="guide_box flex-center-start flex-wrap">
                         <div class="guide_wrap">
                             <p class="text_center">#我的研究对象#</p>
@@ -263,6 +263,11 @@ export default {
         formItemCom
     },
     methods: {
+        //改变引导图显隐
+        handleGuide(val) {
+            console.log(val)
+            this.showGuide = val;
+        },
         //切换页面刷新操作
         addEventListenervisibilityChange() {
             this.hidden = "";
@@ -349,11 +354,6 @@ export default {
                         content: [],
                         header: []
                     }
-                }
-                if(that.dataList.content.length == 0) {
-                    this.showGuide = true; 
-                }else {
-                    this.showGuide = false;
                 }
                 that.tableLoading = false;
             } catch (err) {
