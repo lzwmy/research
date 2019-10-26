@@ -3,14 +3,14 @@
   <div :class="item.controlType+'_view_box'" >
     <!--<div class="view_title">&lt;!&ndash;预览条目- &ndash;&gt;{{item.controlDisplayName}}</div>-->
     <div :class="item.controlType" style="font-size: 14px;">
-      <div  :class="item.controlType+'_title'">
-         <span v-if="item.displayIsVisible=='1'">{{item.controlDisplayName}}</span>
+      <div v-if="item.displayIsVisible=='1'" :class="item.controlType+'_title'">
+         <span >{{item.controlDisplayName}}</span>
       </div>
       <div v-if="item.baseProperty.labelType=='TEXT'" :class="item.controlType+'_box'">
         {{item.baseProperty.labelContent}}
       </div>
       <div v-if="item.baseProperty.labelType=='IMAGE'" :class="item.controlType+'_Image_box'">
-        <img :src="URl+item.baseProperty.labelImage" :style="'width:'+item.baseProperty.controlWidth+'px;'" />
+        <img :src="URl+item.baseProperty.labelImage" />
       </div>
     </div>
   </div>
