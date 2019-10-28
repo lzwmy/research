@@ -2,9 +2,13 @@
     <!--上传-->
   <div :class="item.controlType+'_view_box'">
     <div :class="item.controlType" style="font-size: 14px;">
-      <div :class="item.controlType+'_title'" >
-        <span v-if="item.displayIsVisible=='1'">{{item.controlDisplayName}}</span>
+      <div v-if="item.displayIsVisible=='1'" :class="item.controlType+'_title'" >
+        <span >{{item.controlDisplayName}}</span>
       </div>
+      <div v-else-if="item.baseProperty.labelImage!=''" :class="item.controlType+'_title'" style="text-align:center">
+        <img :src="this.baseURL+'/file/downloadFile/'+item.baseProperty.labelImage" />
+      </div>
+      
       <div :class="item.controlType+'_file_box'" v-if="item.baseProperty.fileType=='FILE'">
         <!--<el-button size="small" style="float: right;" type="success" @click="uploadFileOrImg">确认上传</el-button>
         <el-upload
@@ -31,6 +35,7 @@
         </el-upload>
       </div>
       <div :class="item.controlType+'_Image_box'" v-if="item.baseProperty.fileType=='IMAGE'">
+        
         <el-upload
           :action="uploadActionUrl"
           list-type="picture-card"

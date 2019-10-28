@@ -101,6 +101,21 @@
                   <div class="el-upload__text" v-if="UploadType=='IMAGE'">将<em>图片</em>拖到此处，或<em>点击上传</em></div>
                 </el-upload>-->
               </el-form-item>
+              <el-form-item v-if="controlType=='FILE_UPLOAD'" label="参考图">
+                <div style="display:inline-block">
+                  <el-upload v-if="basicDataInfo.obj.baseProperty.fileType=='IMAGE'" style="display:inline-block"
+                             ref="upload"
+                             :action="actionURL()"
+                             :on-success="handleUploadSuccess"
+                             :show-file-list="false"
+                  >
+                    <el-button size="small" type="primary">点击上传</el-button>
+                  </el-upload>
+                </div>
+                <div class="Img_width_set" v-if="basicDataInfo.obj.baseProperty.fileType=='IMAGE'">
+                  <img :src="this.baseURL+'/file/downloadFile/'+basicDataInfo.obj.baseProperty.labelImage" />
+                </div>
+              </el-form-item>
               <el-form-item v-if="controlType=='LABEL'" label="标签类型">
                 <el-select v-model="basicDataInfo.obj.baseProperty.labelType" size="mini" @change="changeLabelType(basicDataInfo)">
                   <el-option label="文本" value="TEXT"></el-option>
@@ -115,18 +130,21 @@
                   >
                     <el-button size="small" type="primary">点击上传</el-button>
                   </el-upload>
-                  <el-button v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'" size="small" type="primary" @click="onCubeImg">截图</el-button>
+                  <!-- <el-button v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'" size="small" type="primary" @click="onCubeImg">截图</el-button> -->
                 </div>
                 <div class="Img_width_set" v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'&&controlType=='LABEL'">
-                  <span class="demonstration" style="float: left;display: inline-block">缩放比例</span>
-                  <el-slider class="slider_box" style="width: 80%;padding-left: 9%;display: inline-block;" v-model="sliderValue" :marks="sliderMarks" @change="changeZoom"></el-slider>
+                  
+                  
+                  <!-- <span class="demonstration" style="float: left;display: inline-block">缩放比例</span> -->
+                  <!-- <el-slider class="slider_box" style="width: 80%;padding-left: 9%;display: inline-block;" v-model="sliderValue" :marks="sliderMarks" @change="changeZoom"></el-slider> -->
                 </div>
               </el-form-item>
               <el-form-item v-if="basicDataInfo.obj.baseProperty.labelType=='TEXT'&&controlType=='LABEL'" label="标签内容" class="line_blockLabel">
                 <el-input class="widthSet" v-model="basicDataInfo.obj.baseProperty.labelContent" type="textarea" :rows="5" placeholder="请输入标签内容"></el-input>
               </el-form-item>
-              <div v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'&&controlType=='LABEL'" style="height:340px">
-                <vue-cropper
+              <div v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'&&controlType=='LABEL'" >
+                <img :src="this.baseURL+'/file/downloadFile/'+basicDataInfo.obj.baseProperty.labelImage" />
+                <!-- <vue-cropper
                   ref="cropper"
                   :img="option.img"
                   :autoCrop="true"
@@ -136,8 +154,7 @@
                   @realTime="realTime"
                   @imgLoad="imgLoad"
                   mode="auto"
-                ></vue-cropper>
-                <!--              mode="100%"-->
+                ></vue-cropper> -->
               </div>
             </el-form>
           </el-tab-pane>
