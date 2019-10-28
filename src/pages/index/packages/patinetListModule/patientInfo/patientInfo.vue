@@ -10,14 +10,16 @@
                 size="18">
                 <el-card>
                     <div class="flex-between-center cur_pointer" @click="toReportFill(item)">
-                        <p>{{item.author}}  {{item.createTime}}</p>
+                        <!-- <p>{{item.author}}  {{item.createTime}}</p> -->
+                        <p>报告名称：{{item.reportName}}</p>
                         <span class="state">已审核</span>
                     </div>
-                    <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'初诊':'随访'}}</h4>
+                    <!-- <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'初诊':'随访'}}</h4> -->
+                    <h4 class="cur_pointer" @click="toReportFill(item)">创建医生：{{item.author}} <span style="padding-left: 20px;">创建时间： {{item.createTime}}</span> </h4>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
-      <img v-if="reportDataList.length==0" src="./../images/data_time.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);width: 130px" alt="">
+        <img v-if="reportDataList.length==0" src="./../images/data_time.png" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);width: 130px" alt="">
     </div>
 </template>
 
@@ -163,6 +165,7 @@ export default {
                     h4 {
                         line-height: 30px;
                         color: rgba(57, 66, 99, 1);
+                        font-weight: normal;
                     }
                     .state {
                         display: inline-block;

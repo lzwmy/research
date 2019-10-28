@@ -95,6 +95,9 @@ export default {
                 children: [],
                 name: 'organizationManagementDis',
             })
+        }else {
+            //非管理员,删除crf配置页面
+            this.menuList.pop();
         }
     },
     methods: {
@@ -314,10 +317,16 @@ export default {
                     &:hover {
                         background-color: transparent;
                     }
+                    & > span {
+                        padding-left: 3px;
+                    }
                     .el-submenu__icon-arrow {
                         color: #f8f8f8;
                     }
                     
+                }
+                .el-menu-item{
+                    padding-left: 48px !important;
                 }
                 .el-menu-item.is-active{
                     background-color: #1c2030 !important;

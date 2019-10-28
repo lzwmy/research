@@ -30,14 +30,14 @@ const router = [
         menuPath: '/modelManage',
         children: [],
         name: 'modelManage',
-    },
-    {
-        ico: 'crfConfig',
-        menuName: 'CRF配置',
-        menuCode: "011005",
-        menuPath: '/crfConfig',
-        children: [],
-        name: 'crfConfig',
     }
+    // {
+    //     ico: 'crfConfig',
+    //     menuName: 'CRF配置',
+    //     menuCode: "011005",
+    //     menuPath: '/crfConfig',
+    //     children: [],
+    //     name: 'crfConfig',
+    // }
 ]
 export default router;
