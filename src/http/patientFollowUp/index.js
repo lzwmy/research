@@ -4,9 +4,12 @@ import Vue from 'vue';
 const vm = new Vue();
 const url = {
   // 查询列表
-  getDataList: '/report/visitList.do',
-  //推送消息
+  // getDataList: '/report/visitList.do',
+  getDataList: '/report/remind/task/list.do',
+  //推送微信消息
   associatePush: '/mp/associate/push',
+  //推送短信消息
+  smsPush: '/report/push',
 };
 
 const http = {
@@ -15,6 +18,9 @@ const http = {
   },
   PFUassociatePush (params) {
     return vm.$get(url.associatePush, params, false);
+  },
+  PFUsmsPush (params) {
+    return vm.$get(url.smsPush, params, true);
   }
 };
 

@@ -35,19 +35,21 @@
                 <div class="top">
                     <h3 class="flex-between-center">
                         <span>随访提醒</span>
-                        <i class="icon iconfont iconzujian14"></i>
+                        <i class="icon iconfont iconzujian14 cur_pointer" @click="showDialog"></i>
                     </h3>
                     <div class="li flex-start-start">
                         <p><i class="icon iconfont iconshezhi"></i>设置</p>
                         <div class="cont">
-                            <p>每周一提醒</p>
-                            <p>2019-9-9至2019-9-10</p>
+                            <p>{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
+                            <p>{{remindDetail.remindRsp && remindDetail.remindRsp.startTime}} 
+                                {{remindDetail.remindRsp && remindDetail.remindRsp.endTime?'至 '+remindDetail.remindRsp.endTime:''}}</p>
                         </div>
                     </div>
                     <div class="li flex-start-start">
                         <p><i class="icon iconfont iconxitongguanlibeifen"></i>下次时间</p>
                         <div class="cont">
-                            <p>2019-9-9至2019-9-10</p>
+                            <p class="cur_pointer" @click="toReportFill(remindDetail.remindDataRsp)" v-if="remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate">{{ remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate}}</p>
+                            <em v-else>(空)</em>
                         </div>
                     </div>
                 </div>
@@ -55,16 +57,16 @@
                     <h3 class="flex-between-center">
                         <span>操作记录</span>
                     </h3>
-                    <el-timeline v-if="false">
+                    <el-timeline>
                         <el-timeline-item 
-                            v-for="(item, index) in []" 
+                            v-for="(item, index) in record" 
                             :key="index" 
-                            :timestamp="item.visitDate" 
+                            :timestamp="item.createTime" 
                             placement="top">
-                            <p>{{item.groupName}}</p>
+                            <p>{{item.content}}</p>
                         </el-timeline-item>
                     </el-timeline>
-                  <img src="./../images/option_info.png" alt="">
+                    <img v-show="record.length == 0" src="./../images/option_info.png" alt="">
                 </div>
             </div>
         </div>
@@ -124,6 +126,7 @@
         <!-- 添加报告 -->
         <el-dialog 
             title="添加报告" 
+            :close-on-click-modal='false'
             :visible.sync="dialogReportForm.visible" 
             width="450px"
             :append-to-body="true"
@@ -159,6 +162,111 @@
                 <el-button @click="onClose('dialogReportForm')" size="mini">关 闭</el-button>
             </span>
         </el-dialog>
+
+
+        <!-- 添加提醒 -->
+        <el-dialog 
+            :title="dialogFrom.title" 
+            :close-on-click-modal='false'
+            :visible.sync="dialogFrom.visible" 
+            :append-to-body="true"
+            class="patientInfo"
+            width="750px"
+            @close="onClose('dialogFrom')">
+            <el-form 
+                :model="dialogFrom" 
+                ref="dialogFrom" 
+                :rules="dialogRules" 
+                label-width="96px" 
+                @submit.native.prevent 
+                label-position="left">
+                <el-form-item label="提醒名称:" class="inline" prop="remindDateName">
+                    <el-input v-model="dialogFrom.remindDateName" maxLength="15"></el-input>
+                </el-form-item>
+                <el-form-item label="关联报告:" class="inline" prop="relevantReports">
+                    <el-select v-model="dialogFrom.relevantReports">
+                        <el-option v-for="(item, index) in selectList" :label="item.name" :value="item.id" :key="index"></el-option>
+                    </el-select>
+                </el-form-item>
+                <div class="line">
+                    <el-form-item label="定时模式:" label-width="72px" class="inline top">
+                        <el-select v-model="dialogFrom.model" @change="selectChange">
+                            <el-option v-for="(item, index) in modelTpye" :label="item.label" :value="item.value" :key="index"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <div v-if="dialogFrom.model=='TIME'">
+                        <el-form-item label="提醒日期:" class="block" prop="appointData">
+                            <el-date-picker
+                                v-model="dialogFrom.appointData"
+                                type="date"
+                                value-format="yyyy-MM-dd"
+                                placeholder="选择日期">
+                            </el-date-picker>
+                        </el-form-item>
+                    </div>
+                    <div v-else-if="dialogFrom.model=='DATA'">
+                        <el-form-item label-width="48px" class="block" prop="value1">
+                            每<el-input v-model="dialogFrom.value1" type="number" min='1'></el-input>天
+                        </el-form-item>
+                    </div>
+                    <div v-else-if="dialogFrom.model=='WEEK'" >
+                        <el-form-item label-width="30px" class="inline" prop="value1">
+                            每<el-input v-model="dialogFrom.value1" type="number"  min='1'></el-input>周
+                        </el-form-item>
+                        <el-form-item label-width="10px" class="inline week" prop="value2">
+                            <el-radio v-model="dialogFrom.value2" label="1">周一</el-radio>
+                            <el-radio v-model="dialogFrom.value2" label="2">周二</el-radio>
+                            <el-radio v-model="dialogFrom.value2" label="3">周三</el-radio>
+                            <el-radio v-model="dialogFrom.value2" label="4">周四</el-radio>
+                            <el-radio v-model="dialogFrom.value2" label="5">周五</el-radio>
+                            <el-radio v-model="dialogFrom.value2" label="6">周六</el-radio>
+                            <el-radio v-model="dialogFrom.value2" label="7">周日</el-radio>
+                        </el-form-item>
+                    </div>
+                    <div v-else-if="dialogFrom.model=='MONTH'">
+                        <el-form-item label-width="30px" class="inline" prop="value1">
+                            每<el-input v-model="dialogFrom.value1" type="number"  min='1'></el-input>个月的
+                        </el-form-item>
+                        <el-form-item label-width="0" class="inline" prop="value2">
+                            <el-select v-model="dialogFrom.value2" class="select">
+                                <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1" :key="index"></el-option>
+                            </el-select>号
+                        </el-form-item>
+                    </div>
+                    <div  v-else-if="dialogFrom.model=='YEAR'">
+                        <el-form-item label-width="30px" class="inline year" prop="value1">
+                            每年
+                            <el-select v-model="dialogFrom.value1" class="select">
+                                <el-option v-for="(item, index) in 12" :label="item" :value="index+1" :key="index"></el-option>
+                            </el-select>月
+                        </el-form-item>
+                        <el-form-item label-width="0" class="inline" prop="value2">
+                            <el-select v-model="dialogFrom.value2"  class="select">
+                                <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1" :key="index"></el-option>
+                            </el-select>日
+                        </el-form-item>
+                    </div>
+                </div>
+                <div class="line" v-if="dialogFrom.model!= 'TIME'">
+                    <el-form-item label="提醒范围:" label-width="72px"  class="inline top">
+                    </el-form-item>
+                    <el-form-item label-width="76px" class="block" prop="range">
+                        <el-date-picker
+                            v-model="dialogFrom.range"
+                            type="daterange"
+                            value-format="yyyy-MM-dd"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                </div>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="onSaveRemind('dialogFrom')" size="mini" :disabled="dialogFrom.loading">保 存</el-button>
+                <el-button @click="onClose('dialogFrom')" size="mini">关 闭</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -171,7 +279,18 @@ export default {
     name: 'patientInfo',
     props:['dataInfo','personalInfo','reportFillData'],
     data () {
+        let validatePass = (rule, value, callback) => {
+            if (!value) {
+                callback(new Error('请输入'));
+            } else {
+            if (value <= 0) {
+                callback(new Error('请输入正整数'));
+            }
+                callback();
+            }
+        };
         return {
+            record: [],  //操作记录
             activeName: "first",
             showReportComponent: false,
             activeSelect: false,
@@ -214,6 +333,47 @@ export default {
                 time: "",
                 name: "",
             },
+
+
+            selectList:[],
+            selectDayArr: 31,
+            monthBig:[1,3,5,7,8,10,12],
+            modelTpye: [
+                {
+                    label: '指定日期',
+                    value: 'TIME',
+                },
+                {
+                    label: '按天',
+                    value: 'DATA',
+                },
+                {
+                    label: '按周',
+                    value: 'WEEK',
+                },
+                {
+                    label: '按月',
+                    value: 'MONTH',
+                },
+                {
+                    label: '按年',
+                    value: 'YEAR',
+                }
+            ],
+            remindDetail: {},
+            dialogFrom: {
+                title:'',
+                id:'',
+                loading: false,
+                visible: false,
+                remindDateName:"",
+                relevantReports:"",
+                model: 'TIME',
+                appointData:'',
+                value1:'',
+                value2:'',
+                range:[]
+            },
             reportSelectList: [],
             dialogReportRules: {
                 name: [
@@ -222,6 +382,26 @@ export default {
                 time: [
                     { required: true, message: '请选择就诊时间', trigger: 'change' }
                 ],
+            },
+            dialogRules: {
+                remindDateName: [
+                    { required: true, message: '请输入提醒名称', trigger: ['change','blur'] }
+                ],
+                relevantReports: [
+                    { required: true, message: '请输入关联报告', trigger: ['change','blur'] }
+                ],
+                appointData: [
+                    { required: true, message: '请输入', trigger: ['change','blur'] }
+                ],
+                value1: [
+                    { validator: validatePass, trigger: ['change','blur'] }
+                ],
+                value2: [
+                    { required: true, message: '请选择', trigger: ['change','blur'] }
+                ],
+                range: [
+                    { required: true, message: '请选择日期', trigger:  ['change','blur'] }
+                ],
             }
         };
     },
@@ -229,13 +409,33 @@ export default {
         'dialogReportForm.type': function(newVal) {
             this.dialogReportForm.name = "";
             // this.getReportSelectList();
-          this.getReportList();
+            this.getReportList();
+        },
+        'dialogFrom.value1': function(newVal) {
+            if(this.dialogFrom.model == 'MONTH' || this.dialogFrom.model == 'YEAR'){
+                this.dialogFrom.value2 = ''
+                if(this.dialogFrom.value1 == 2) {
+                    let yearType = new Date().getFullYear();
+                    if(yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
+                        this.selectDayArr = 29;
+                    } else {
+                        this.selectDayArr = 28;
+                    }
+                }else if( this.monthBig.includes(this.dialogFrom.value1) ) {
+                    this.selectDayArr = 31;
+                }else {
+                    this.selectDayArr = 30;
+                }
+            }
         }
     },
     created () {
         // this.getReportSelectList();
         this.getReportList();
         this.getPatientSearch();
+        this.getRemindDetail();
+        this.getLogList();
+        this.getSelectList();
     },
     mounted () {
         this.drawerTitle = this.personalInfo.PATIENT_NAME+"-治疗结果";
@@ -254,7 +454,187 @@ export default {
             let height = $('.el-drawer__body').height();
             $('.quill_style').height(height-330)
         },
-        
+        //添加提醒弹框
+        showDialog() {
+            this.getRemindConfig()
+            .then((res)=>{
+                console.log(res)
+                //已存在配置
+                if(res.exsit) {
+                    this.dialogFrom = {
+                        id:res.data.id,
+                        title: '修改提醒',
+                        visible: true,
+                        loading: false,
+                        remindDateName: res.data.remindName,
+                        relevantReports: res.data.crfId,
+                        model: res.data.timing,
+                        appointData: res.data.startTime,
+                        value1: String(res.data.param),
+                        value2: String(res.data.param2),
+                        range:[res.data.startTime?res.data.startTime:'', res.data.endTime?res.data.endTime:'']
+                    }
+                }else {
+                    this.dialogFrom = {
+                        id:'',
+                        title: '添加提醒',
+                        visible: true,
+                        loading: false,
+                        remindDateName:"",
+                        relevantReports:"",
+                        model: 'TIME',
+                        appointData:'',
+                        value1:'',
+                        value2:'',
+                        range:[]
+                    }
+                }
+            })
+        },
+        //获取添加提醒报告列表
+        async getSelectList() {
+            let formData = {
+                diseaseId: this.dataInfo.diseaseId
+            }
+            try {
+                let res = await this.$http.PFUGetList(formData);
+                if (res.code == 0) {
+                    this.selectList = res.data;
+                }else {
+                    this.$mes('error', "获取关联报告列表失败!");
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        // 查询随访提醒详细信息
+        async getRemindDetail() {
+            let that = this;
+            let fromData = {
+                patientId: that.dataInfo.patientId||"",
+                diseaseId: that.dataInfo.diseaseId||"",
+            };
+            try {
+                let res = await that.$http.PFUremindDetail(fromData)
+                if(res.code == 0) {
+                    this.remindDetail = res.data;
+                }
+            }catch (error) {
+                console.log(error)
+            }
+        },
+        // 查询操作记录
+        async getLogList() {
+            let that = this;
+            let fromData = {
+                patientId: that.dataInfo.patientId||"",
+                diseaseId: that.dataInfo.diseaseId||"",
+            };
+            try {
+                let res = await that.$http.PFUremindLogList(fromData)
+                if(res.code == 0) {
+                    this.record = res.data;
+                }
+            }catch (error) {
+                console.log(error)
+            }
+        },
+        //添加提醒弹框选择定时模式
+        selectChange() {
+            this.dialogFrom.value1 = "";
+            this.dialogFrom.value2 = "";
+        },
+        // 查询已配置提醒信息
+        async getRemindConfig() {
+            this.dialogFrom.visible = true;
+            this.dialogFrom.loading = true;
+            let that = this;
+            let fromData = {
+                patientId:that.dataInfo.patientId||"",
+                diseaseId: that.dataInfo.diseaseId||""
+            };
+            try {
+                let res = await that.$http.PFUGetRemindConfig(fromData)
+                if(res.code == 0) {
+                    return Promise.resolve({data:res.data,exsit:res.data.id?true:false})
+                }
+            }catch (error) {
+                console.log(error)
+            }
+        },
+        //保存添加提醒
+        onSaveRemind(dialogFrom) {
+            this.$refs[dialogFrom].validate(async (valid) => {
+                if (valid) {
+                    let range;
+                    if(!this.dialogFrom.range || JSON.stringify(this.dialogFrom.range) == '[]') {
+                        range = "";
+                    }else {
+                        range = this.dialogFrom.range;
+                    }
+                    let formData = {
+                        id: this.dialogFrom.id?this.dialogFrom.id:undefined,
+                        remindName: this.dialogFrom.remindDateName,
+                        crfId: this.dialogFrom.relevantReports,
+                        timing: this.dialogFrom.model,
+                        param: parseInt(this.dialogFrom.value1),
+                        param2: parseInt(this.dialogFrom.value2),
+                        patientId: this.dataInfo.patientId,
+                        diseaseId: this.dataInfo.diseaseId,
+                        subjectId: this.dataInfo.subjectId,
+                        groupId: this.dataInfo.groupId,
+                        startTime: range?range[0]:this.dialogFrom.appointData,
+                        endTime: range?range[1]:"",
+                        diseaseName: this.dataInfo.diseaseName,
+                        subjectName: this.dataInfo.subjectName,
+                        groupName: this.dataInfo.groupName
+                    }
+                    
+                    try {
+                        let res = await this.$http.PFUAddRemind(formData);
+                        if (res.code == 0) {
+                            this.$mes('success', "添加提醒成功!");
+                            this.dialogFrom.visible = false;
+                            this.getRemindDetail();
+                        }else {
+                            this.$mes('error', "添加提醒失败!");
+                        }
+                    } catch (err) {
+                        console.log(err)
+                    }
+                } else {
+                    return false;
+                }
+            });
+        },
+        toReportFill(row) {
+            console.log(row)
+            let urlParameter={
+                cacheData: false,
+                formId: row.crfId || "",
+                reportId: row.reportId || '',
+                groupId: row.groupId || "",
+                subjectId: row.subjectId || "",
+                diseaseId: row.diseaseId || "",
+                patientName: row.patientName || "",
+                patientId: row.patientId || "",
+                identify: "",
+                from: "patientFollowUp",
+                diseaseName: row.diseaseName || "",
+                subjectName: row.subjectName || "",
+                groupName: row.groupName || "",
+                title: row.reportName,
+                id: row.id,
+                reportName: row.reportName,
+                phoneNumber: row.phoneNumber,
+                genderName: row.genderName,
+                age: row.age,
+                isModify:"displayShow"
+            }
+            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+            let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
+            window.open('./patientForm.html?'+urlParameters);
+        },
         openTreatmentDrawer() {
             this.drawer = true;
             this.$nextTick(function () {
@@ -339,6 +719,7 @@ export default {
                 let data = await that.$http.queryTreatmentInfo(fromData)
                 if(data.code == 0) {
                     that.treatmentStatus = data.data.treatmentStatus;
+                    that.treatmentStatusChange = data.data.treatmentStatus;
                     that.commentInfo = data.data.treatmentComment;
                 }
             }catch (error) {
@@ -425,7 +806,7 @@ export default {
         },
         //关闭报告弹框
         onClose(dialogReportForm) {
-            this.dialogReportForm.visible = false; 
+            this[dialogReportForm].visible = false; 
             this.$refs[dialogReportForm].resetFields();
         },
         //报告列表选项
@@ -470,56 +851,6 @@ export default {
 };
 </script>
 
-<style lang="less">
-    .el-dialog__wrapper {
-        .el-drawer__body {
-            padding: 20px;
-            border-top: 1px solid #EEEEEE;
-        }
-        .el-drawer__header{
-            margin-bottom: 18px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        .demo-drawer__content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .patient_state,.treatment_comment{
-            padding: 20px 0 16px 0;
-            font-size: 14px;
-        }
-        .state_sort{
-            text-align: center;
-            display: flex;
-            justify-content: space-around;
-            span{
-                cursor: pointer;
-                font-size: 14px;
-                display: inline-block;
-                width: 100px;
-                height: 36px;
-                line-height: 36px;
-                color: #ffffff;
-                i{
-                    font-size: 14px;
-                }
-            }
-        }
-    }
-    .patientInfo {
-        .group_btn {
-            .el-button {
-                border-width: 0;
-            }
-            .icon {
-                font-size: 22px;
-                margin: 0;
-            }
-        }
-    }
-</style>
 
 <style lang="less" scoped>
     .patientInfo {
@@ -644,13 +975,20 @@ export default {
                             margin-right: 6px;
                             color: rgba(151, 155, 170, 1);
                         }
-                        p {
-                            width: 150px;
+                        & > p {
+                            width: 130px;
                         }
                         .cont {
                             flex-grow: 1;
+                            line-height: 18px;
                             p:first-child{
                                 margin-bottom: 10px;
+                            }
+                            p:last-child {
+                                &:hover {
+                                    color: #333;
+                                    font-weight: bold;
+                                }
                             }
                         }
                     }
@@ -674,4 +1012,115 @@ export default {
             }
         }
     }
+</style>
+
+
+<style lang="less">
+    .el-dialog__wrapper {
+        .el-drawer__body {
+            padding: 20px;
+            border-top: 1px solid #EEEEEE;
+        }
+        .el-drawer__header{
+            margin-bottom: 18px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .demo-drawer__content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .patient_state,.treatment_comment{
+            padding: 20px 0 16px 0;
+            font-size: 14px;
+        }
+        .state_sort{
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            span{
+                cursor: pointer;
+                font-size: 14px;
+                display: inline-block;
+                width: 100px;
+                height: 36px;
+                line-height: 36px;
+                color: #ffffff;
+                i{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .patientInfo {
+        .group_btn {
+            .el-button {
+                border-width: 0;
+            }
+            .icon {
+                font-size: 22px;
+                margin: 0;
+            }
+        }
+        .el-form {
+            .cell {
+                .el-switch {
+                    height: 22px;
+                }
+            }
+            .el-form-item .el-input{
+                width: 190px;
+            }
+            .line {
+                border: 1px solid #bbb;
+                margin: 20px 0;
+                padding: 0 25px;
+                border-radius: 3px;
+                .select .el-input {
+                    width: 90px;
+                    margin:0 10px;
+                }
+                .week {
+                    margin-left: 10px;
+                    margin-right: 0;
+                    .el-radio__label{
+                        font-size: 12px;
+                        padding-left: 5px;
+                    }
+                    .el-radio {
+                        margin: 0 10px 0 0;
+                    }
+                }
+                .el-form-item__error{
+                    padding-left: 20px;
+                }
+                .year .el-form-item__error{
+                    padding-left: 40px;
+                }
+                .el-form-item.top{
+                    transform: translate(-20px,-15px);
+                    background: #fff;
+                    padding: 0 10px;
+                }
+                .el-form-item.block {
+                    transform: translateY(-10px);
+                }
+                .el-form-item {
+                    margin-right: 0;
+                    .el-input{
+                        width: 80px;
+                        margin: 0 10px;
+                    }
+                    .el-input--suffix{
+                        width: 110px;
+                    }
+                } 
+                .el-date-editor.el-input　{
+                    width: 170px !important;
+                }
+            }
+        } 
+    }
+    
 </style>

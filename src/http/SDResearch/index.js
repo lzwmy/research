@@ -106,6 +106,8 @@ const url = {
   patientReportAddSave:"/report/bak/add.do",
   //根据过滤条件 获取报告列表
   queryFilterReportList:"/report/bak/reportList.do",
+  //获取患者报告记录
+  queryReportListnew:"/report/patient",
   // 获取报告 回显信息
   queryReportDisplayInfo:"/report/bak/findReport",
   // 获取报告 回显信息(科研项目)
@@ -114,6 +116,8 @@ const url = {
   querySubjectCrfDisplayInfo:"/subject/crf/preview.do",
   // 报告 保存 数据
   reportDataSave:"/report/bak/save.do",
+  //保存报告（从随访进来）
+  saveFollowUpReportData: '/report/remind/save/report',
   // 报告 保存 数据(科研项目)
   reportDataSaveSubject:"/subject/report/save.do",
 
@@ -124,6 +128,12 @@ const url = {
   getRemindDataList: '/report/remind/list.do',
   //添加提醒
   addRemind: '/report/remind/save.do',
+  //获取已添加提醒配置
+  getRemindConfig: '/report/remind/info',
+  //随访提醒计划信息
+  remindDetail: '/report/remind/detail/info',
+  //操作报告记录列表
+  remindLogList: '/report/logList.do',
   //改变状态
   changeRemindState: '/report/remind/change.do',
   //删除提醒
@@ -252,11 +262,20 @@ const http = {
   PFUGetList (data) {
     return vm.$get(url.getSelectList, data, false);
   },
+  PFUGetRemindConfig (data) {
+    return vm.$get(url.getRemindConfig, data, true);
+  },
   PFUGetRemindDataList(data) {
     return vm.$post(url.getRemindDataList, data, false);
   },
   PFUAddRemind(data) {
     return vm.$post(url.addRemind, data, false);
+  },
+  PFUremindLogList(data) {
+    return vm.$get(url.remindLogList, data, true);
+  },
+  PFUremindDetail(data) {
+    return vm.$get(url.remindDetail, data, true);
   },
   PFUchangeRemindState(data) {
     return vm.$post(url.changeRemindState, data, false);
@@ -279,6 +298,9 @@ const http = {
   queryFilterReportList(params) {
     return vm.$post(url.queryFilterReportList,params,false);
   },
+  queryReportListnew(params) {
+    return vm.$post(url.queryReportListnew,params,false);
+  },
   previewCrfReportHttp(params) {
     return vm.$post(url.previewCrfReportHttp,params,true);
   },
@@ -293,6 +315,9 @@ const http = {
   },
   reportDataSave(params) {
     return vm.$post(url.reportDataSave,params,false);
+  },
+  saveFollowUpReportData(params) {
+    return vm.$post(url.saveFollowUpReportData,params,false);
   },
   reportDataSaveSubject(params) {
     return vm.$post(url.reportDataSaveSubject,params,false);
