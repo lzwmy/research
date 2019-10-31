@@ -10,10 +10,10 @@
           <span class="title">{{$route.query.type=='add' ? '新建' :'编辑'}}CRF表单</span>
         </p>
         <div class=" cur_pointer head_content flex-start-center">
-          <el-button type="primary" @click="previewCRF">
+          <!--<el-button type="primary" @click="previewCRF">
             <i class="iconfont iconfuhao3"></i>
             预览
-          </el-button>
+          </el-button>-->
           <el-button type="primary" @click="saveCRF">
             <i class="iconfont iconbaocun"></i>
             保存
@@ -28,7 +28,7 @@
       <div id="target" class="create_report-content"   v-loading="loading">
         <div class="report-content-nav">
           <div class="report-title">
-            <input type="text" v-model="crfName" placeholder="请输入报告名称" >
+            <input type="text" v-model="crfName" placeholder="请输入报告名称" @input="crfNameChange">
           </div>
           <div class="report-config_nav">
             <div class="config-nav_left">
@@ -36,12 +36,13 @@
                 <span>是否启用:</span>
                 <el-switch
                   v-model="enable"
+                  @change="enableChange"
                   active-color="#1BBAE1">
                 </el-switch>
               </div>
               <div class="report-type">
                 <span>报告类型</span>
-                <el-select v-model="crfType">
+                <el-select v-model="crfType" @change="crfTypeChange">
                   <el-option label="普通" :value="1"></el-option>
                   <el-option label="随访" :value="2"></el-option>
                 </el-select>
@@ -175,14 +176,15 @@
               window.history.go(-1);
             }).catch(() => {
               console.log('取消保存',this.idsUpdateData);
-              window.history.go(-1);
-              /*let id = this.$route.query.id
+              // window.history.go(-1);
+              let id = this.$route.query.id
+              this.idsUpdateData = 0;
               this.$router.push({
                 path:"/crfConfig",
                 query:{
                   id:id
                 }
-              })*/
+              })
             });
           }else {
             window.history.go(-1);
@@ -216,6 +218,19 @@
           this.formMask = data;
           this.showConfigPortion = data;
         },
+        //表单名称
+        crfNameChange() {
+          this.idsUpdateData = 1;
+        },
+        //是否启用
+        enableChange() {
+          this.idsUpdateData = 1;
+        },
+        //报告类型
+        crfTypeChange() {
+          console.log(this.crfType);
+          this.idsUpdateData = 1;
+        },
         //弹框 选中小节添加
         portionSelectionAdd(data) {
           console.log(data);
@@ -236,44 +251,24 @@
               portionName:data.portionName
             };
             this.$nextTick(()=>{
-              let flag = false;
-              for(let i=0;i<this.dataList.length;i++) {
-                if(this.dataList[i].portionName == data.portionName){
-                  flag = true;
-                }
-              }
-              if(flag) {
-                this.$message.info('不能存在相同的小节名称，添加失败');
-              }else {
-                this.dataList.splice(data.index+1,0,formData);
-                this.dataList.splice(data.index,1);
-              }
+              this.dataList.splice(data.index + 1, 0, formData);
+              this.dataList.splice(data.index, 1);
               this.isReset = true;
             });
           }
         },
         //新增 添加 小节
         updateAdd(data) {
-          console.log('添加 小节',data)
+          console.log('添加 小节', data)
           this.isReset = true;
           this.idsUpdateData = 1;
           let formData = {
-            diseaseId:data.diseaseId,
+            diseaseId: data.diseaseId,
             formItemList: data.formItemList,
-            id:data.id,
-            portionName:data.portionName
+            id: data.id,
+            portionName: data.portionName
           };
-          let flag = false;
-          for(let i=0;i<this.dataList.length;i++) {
-            if(this.dataList[i].portionName == data.portionName){
-              flag = true;
-            }
-          }
-          if(flag) {
-            this.$message.info('不能存在相同的小节名称，添加失败');
-          }else {
-            this.dataList.push(formData);
-          }
+          this.dataList.push(formData);
 
         },
         // CRF 保存
@@ -365,6 +360,20 @@
             "diseaseId":that.$route.query.id,
             "formPortions": that.dataList
           };
+          var find = false;
+          for (var i = 0; i < that.dataList.length; i++) {
+            for (var j = i + 1; j < that.dataList.length; j++) {
+              if (that.dataList[i].portionName == that.dataList[j].portionName) {
+                find = true;
+                break;
+              }
+            }
+            if (find) break;
+          }
+          if(find) {
+            that.$message.info('小节名称重复');
+            return ;
+          }
           try {
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
@@ -394,6 +403,20 @@
             "diseaseId":that.$route.query.id,
             "formPortions": that.dataList
           };
+          var find = false;
+          for (var i = 0; i < that.dataList.length; i++) {
+            for (var j = i + 1; j < that.dataList.length; j++) {
+              if (that.dataList[i].portionName == that.dataList[j].portionName) {
+                find = true;
+                break;
+              }
+            }
+            if (find) break;
+          }
+          if(find) {
+            that.$message.info('小节名称重复');
+            return ;
+          }
           try {
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {

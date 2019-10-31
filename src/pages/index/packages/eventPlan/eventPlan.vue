@@ -325,7 +325,6 @@ export default {
         }
     },
     beforeRouteEnter (to, from, next) {
-        alert(11)
         next();
     },
     beforeRouteLeave (to, from, next) {
