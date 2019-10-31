@@ -92,6 +92,7 @@
       data() {
         return {
           newUrl:this.baseURL,
+          // newUrl:'http://192.168.1.155:8080/research/',
           // uploadActionUrl:this.baseURL+"/file/uploadFiles.do", // old httpRequest url
           uploadActionUrl:this.baseURL+"report/bak/save/singleFile.do",
           fileList:[],
