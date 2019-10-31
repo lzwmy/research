@@ -106,6 +106,7 @@
             groupId: this.reportFillData.groupId || '',
             crfId: '',
             patientName: this.reportFillData.patientName || '',
+            patientId:this.reportFillData.patientId || "",
             startTime: null,
             endTime: null,
             status: ""

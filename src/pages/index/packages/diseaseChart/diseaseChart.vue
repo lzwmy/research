@@ -22,7 +22,7 @@
         </div>
         <div class="all_text">
           <p>治愈</p>
-          <p>{{todoSum}}</p>
+          <p>{{healSum}}</p>
         </div>
       </div>
       <div class="disease_IMPROVE">
@@ -31,7 +31,7 @@
         </div>
         <div class="all_text">
           <p>好转</p>
-          <p>{{healSum}}</p>
+          <p>{{improveSum}}</p>
         </div>
       </div>
       <div class="disease_WORSEN">
@@ -40,7 +40,7 @@
         </div>
         <div class="all_text">
           <p>恶化</p>
-          <p>{{improveSum}}</p>
+          <p>{{worsenSum}}</p>
         </div>
       </div>
       <div class="disease_TODO">
@@ -49,7 +49,7 @@
         </div>
         <div class="all_text">
           <p>待访</p>
-          <p>{{invalidSum}}</p>
+          <p>{{todoSum}}</p>
         </div>
       </div>
       <div class="disease_INVALID">
@@ -58,7 +58,7 @@
         </div>
         <div class="all_text">
           <p>无效</p>
-          <p>{{worsenSum}}</p>
+          <p>{{invalidSum}}</p>
         </div>
       </div>
     </div>
