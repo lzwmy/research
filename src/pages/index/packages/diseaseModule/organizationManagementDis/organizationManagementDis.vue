@@ -88,6 +88,19 @@ export default {
     name: 'organizationManagement',
     mixins: [mixins],
     data () {
+      var checkPhone = (rule, value, callback) =>{
+        if (!value) {
+          return callback(new Error('手机号不能为空'));
+        } else {
+          const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+          console.log(reg.test(value));
+          if (reg.test(value)) {
+            callback();
+          } else {
+            return callback(new Error('请输入正确的手机号'));
+          }
+        }
+      }
         return {
             dialogForm: {
                 title:'',
@@ -113,7 +126,7 @@ export default {
             },
             ruleDialogForm: {
                 userName: [{required: true, message: '请输入用户名', trigger: 'change'}],
-                tel: [{required: true, message: '请输入手机号', trigger: 'change'}],
+                tel: [{validator:checkPhone, trigger: 'blur'}],
                 organization: [{required: true, message: '请选择机构', trigger: 'change'}],
                 department: [{required: true, message: '请输入科室', trigger: 'change'}],
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]

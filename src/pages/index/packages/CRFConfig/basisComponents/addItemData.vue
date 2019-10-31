@@ -37,12 +37,21 @@
             <div class="search_table">
               <div class="search_add-nav">
                 <div class="add-btn" v-if="multipleSelection.length!==0" @click="addTableData">
-                  <i class="iconfont iconquerentianjia"></i>
-                  <span>添加</span>
+                  <!--<span>添加</span>-->
+                  <el-button>
+                    <i class="iconfont iconquerentianjia"></i>
+                    添加
+                  </el-button>
                 </div>
                 <div class="add-btn gray" v-else>
-                  <i class="iconfont iconquerentianjia"></i>
-                  <span>添加</span>
+                  <!--<i class="iconfont iconquerentianjia"></i>
+                  <span>添加</span>-->
+                  <el-tooltip class="item" effect="dark" content="请勾选要添加的内容" placement="left">
+                    <el-button>
+                      <i class="iconfont iconquerentianjia"></i>
+                      添加
+                    </el-button>
+                  </el-tooltip>
                 </div>
               </div>
               <div class="table_content">
@@ -357,6 +366,9 @@
                   span{
                     font-size: 14px;
                     color: #1BBAE1;
+                  }
+                  .el-button.el-button--default{
+                    border-color: transparent;
                   }
                 }
                 .gray{

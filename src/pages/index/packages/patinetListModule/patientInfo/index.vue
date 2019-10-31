@@ -83,23 +83,23 @@
                 <div class="patient_state">病人状态:</div>
                 <div class="state_sort">
                     <span style="background-color: #0190DE;" @click="checkStatus('TODO')">
-                    <i class="iconfont iconxuanzhong" v-show="treatmentStatus=='TODO'"></i>
+                    <i class="iconfont iconxuanzhong" v-show="treatmentStatusChange=='TODO'"></i>
                     待访
                     </span>
                     <span style="background-color: #0FBB93" @click="checkStatus('HEAL')">
-                    <i class="iconfont iconxuanzhong" v-show="treatmentStatus=='HEAL'"></i>
+                    <i class="iconfont iconxuanzhong" v-show="treatmentStatusChange=='HEAL'"></i>
                     治愈
                     </span>
                     <span style="background-color: #8EC466" @click="checkStatus('IMPROVE')">
-                    <i class="iconfont iconxuanzhong" v-show="treatmentStatus=='IMPROVE'"></i>
+                    <i class="iconfont iconxuanzhong" v-show="treatmentStatusChange=='IMPROVE'"></i>
                     好转
                     </span>
                     <span style="background-color: #04B8DD" @click="checkStatus('INVALID')">
-                    <i class="iconfont iconxuanzhong" v-show="treatmentStatus=='INVALID'"></i>
+                    <i class="iconfont iconxuanzhong" v-show="treatmentStatusChange=='INVALID'"></i>
                     无效
                     </span>
                     <span style="background-color: #D95555" @click="checkStatus('WORSEN')">
-                    <i class="iconfont iconxuanzhong" v-show="treatmentStatus=='WORSEN'"></i>
+                    <i class="iconfont iconxuanzhong" v-show="treatmentStatusChange=='WORSEN'"></i>
                     恶化
                     </span>
                 </div>
@@ -177,6 +177,7 @@ export default {
             activeSelect: false,
             openId:"",
             treatmentStatus:"",//治疗状态
+            treatmentStatusChange:"",//抽屉 治疗状态
             //抽屉 参数
             drawer:false,
             drawerTitle:"治疗结果",
@@ -272,12 +273,13 @@ export default {
         },
         //保存功能
         saveDrawer() {
+            this.treatmentStatus = this.treatmentStatusChange;
             this.addTreatmentInfo();
             this.drawer = false;
         },
         // 病人选中 状态
         checkStatus(value) {
-            this.treatmentStatus = value;
+            this.treatmentStatusChange = value;
         },
         //富文本富文本编辑事件
         onEditorBlur(quill){// 失去焦点事件

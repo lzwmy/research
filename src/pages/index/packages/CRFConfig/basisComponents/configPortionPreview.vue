@@ -7,7 +7,7 @@
         :fullscreen="true"
         class="config_portion-preview-dialog"
         @close="closeAddDialog">
-        <div class="preview_content-body" v-if="dialogVisible">
+        <div class="preview_content-body" >
           <!--{{previewData}}-->
           <preview-portion v-if="dialogVisible" :item="previewData"></preview-portion>
         </div>

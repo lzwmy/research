@@ -248,7 +248,16 @@
               portionName:this.searchName || '0',
             }
           })*/
-          this.CRFQueryPortionId();
+          // this.CRFQueryPortionId();
+          this.portionConfigData = {
+            diseaseId:this.$route.query.id,
+            formItemList:[],
+            id:"",
+            portionName:this.searchName,
+            type:"add",
+            index:0
+          };
+          this.showConfigPortion = true;
 
         },
         // 预览 确定添加
@@ -669,6 +678,7 @@
                     display: flex;
                     align-items: center;
                     cursor: pointer;
+                    min-height: 40px;
                     .tab{
                       width: 3px;
                       height: 100%;
@@ -712,6 +722,7 @@
                     display: flex;
                     align-items: center;
                     cursor: pointer;
+                    min-height: 40px;
                     .tab{
                       width: 3px;
                       height: 100%;

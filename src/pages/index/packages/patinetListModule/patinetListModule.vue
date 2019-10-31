@@ -410,6 +410,7 @@
                     v-model="patientRuleForm.birthday"
                     type="date"
                     value-format="yyyy-MM-dd"
+                    :picker-options="pickerDisabled"
                     placeholder="选择日期">
                   </el-date-picker>
                 </el-form-item>
@@ -452,6 +453,19 @@
     name:'patinetListModule',
     mixins: [mixins],
     data () {
+      var checkPhone = (rule, value, callback) =>{
+        if (!value) {
+          return callback(new Error('手机号不能为空'));
+        } else {
+          const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+          console.log(reg.test(value));
+          if (reg.test(value)) {
+            callback();
+          } else {
+            return callback(new Error('请输入正确的手机号'));
+          }
+        }
+      }
       return {
         loading: false,
         pageNo: '',
@@ -554,8 +568,13 @@
             {required: true, message: '出生日期不能为空', trigger: 'blur'}
           ],
           tel: [
-            {required: true, message: '手机号不能为空', trigger: 'blur'}
+            {validator:checkPhone,trigger: 'blur'}
           ],
+        },
+        pickerDisabled:{
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          }
         }
       };
     },
