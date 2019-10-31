@@ -10,10 +10,10 @@
           <span class="title">{{$route.query.type=='add' ? '新建' :'编辑'}}CRF表单</span>
         </p>
         <div class=" cur_pointer head_content flex-start-center">
-          <el-button type="primary" @click="previewCRF">
+          <!--<el-button type="primary" @click="previewCRF">
             <i class="iconfont iconfuhao3"></i>
             预览
-          </el-button>
+          </el-button>-->
           <el-button type="primary" @click="saveCRF">
             <i class="iconfont iconbaocun"></i>
             保存
