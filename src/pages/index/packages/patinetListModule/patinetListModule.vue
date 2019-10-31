@@ -1629,7 +1629,6 @@
             this.$mes('error', "查询患者信息失败!");
           }
         })
-
       },
     },
     beforeRouteEnter (to, from, next) {
