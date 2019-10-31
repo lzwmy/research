@@ -208,7 +208,7 @@ export default {
         //推送微信消息
         async pushAssociate(row) {
             let formData = {
-                reportId: row.reportId
+                remindId: row.id
             }
             try {
                 let res = await this.$http.PFUassociatePush(formData);
@@ -224,7 +224,7 @@ export default {
         //推送短信消息
         async pushNote(row) {
             let formData = {
-                reportId: row.reportId
+                remindId: row.id
             }
             try {
                 let res = await this.$http.PFUsmsPush(formData);
