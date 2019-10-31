@@ -201,6 +201,14 @@
       top: 0;
       left: 0;
       right: 0;
+      .el-table__body-wrapper {
+        position: absolute;
+        bottom: 0;
+        top: 48px;
+        left: 0;
+        right: 0;
+        overflow: auto;
+      }
     }
 
     .cloud-pagination　 {

@@ -13,13 +13,13 @@
                         end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <!-- <el-form-item label="状态:">
+                <el-form-item label="状态:">
                     <el-select v-model="form.state">
                         <el-option label="全部" value=""></el-option>
                         <el-option label="未填写" value="0"></el-option>
                         <el-option label="已填写" value="1"></el-option>
                     </el-select>
-                </el-form-item> -->
+                </el-form-item>
                 <el-form-item class="flex-right">
                     <el-button type="primary" icon="icon iconfont iconzujian46" @click="getDataList">刷 新</el-button>
                 </el-form-item>
@@ -30,7 +30,7 @@
             <ul class="card" v-loading="loading">
                 <el-row :gutter="21">
                     <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
-                        <li class="box flex-start-center" @click="toReportFill(item)">
+                        <li class="box flex-start-center" @click.self="toReportFill(item)">
                             <div class="box_left">
                                 <h3>{{item.patientName}}</h3>
                                 <p>{{item.genderName}}/{{item.age}}</p>
@@ -39,8 +39,12 @@
                                 <div class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已填写':'未填写'}}</span></div>
                                 <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
-                                    <el-button class="flex-center-center" @click.stop="pushNote(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian9"></i>短信随访</el-button>
-                                    <el-button class="flex-center-center" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>微信随访</el-button>
+                                    <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
+                                        {{item.smsVisit==0?'短信随访':'短信已发送'}}
+                                    </el-button>
+                                    <el-button class="flex-center-center" :style="item.mpVisit!=0?'font-size: 12px;':''" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>
+                                    {{item.mpVisit==0?'微信随访':'微信已发送'}}
+                                    </el-button>
                                 </div>
                             </div>
                         </li>
@@ -133,7 +137,7 @@ export default {
                     // patientName: "",
                     startTime: startTime,
                     endTime: endTime,
-                    // status: this.form.state
+                    status: this.form.state
                 }
             };
             try {
@@ -265,7 +269,7 @@ export default {
                 box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
             }
             .box_left {
-                width: 105px;
+                width: 85px;
                 height: 100%;
                 padding: 15px 0 0 5px;
                 border-right: 1px solid #eee;
@@ -330,6 +334,7 @@ export default {
                             font-size: 18px;
                             vertical-align: middle;
                             padding-right: 0;
+                            margin-right: 2px;
                         }
                         &:hover {
                             background:rgba(229, 229, 229, 1);

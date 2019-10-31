@@ -258,6 +258,10 @@ export default {
                     height: 40px;
                     line-height: 40px;
                     border-left: 3px solid transparent;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    width: 100%;
+                    overflow: hidden;
                     cursor: pointer;
                     position: relative;
                     &.active {

@@ -126,7 +126,7 @@ export default {
             },
             ruleDialogForm: {
                 userName: [{required: true, message: '请输入用户名', trigger: 'change'}],
-                tel: [{validator:checkPhone, trigger: 'blur'}],
+                tel: [{required: true, validator:checkPhone, trigger: 'blur'}],
                 organization: [{required: true, message: '请选择机构', trigger: 'change'}],
                 department: [{required: true, message: '请输入科室', trigger: 'change'}],
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]
@@ -340,6 +340,10 @@ export default {
                 li {
                     height: 40px;
                     line-height: 40px;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    width: 100%;
+                    overflow: hidden;
                     padding: 0 20px;
                     border-left: 3px solid transparent;
                     cursor: pointer;

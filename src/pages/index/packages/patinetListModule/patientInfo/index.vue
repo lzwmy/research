@@ -13,10 +13,10 @@
                 </span>
                 <span>性别: {{personalInfo.GENDER_NAME}}</span>
                 <span>就诊年龄: {{personalInfo.AGE}}</span>
-                <span>手机号: </span>
+                <!-- <span>手机号: </span> -->
             </div>
             <div class="right flex-end-center">
-                <el-button :type="openId?'primary':'default'" icon="icon iconfont iconweixin1" class="weChat" @click="sendPatientCode">微信相关</el-button>
+                <!-- <el-button :type="openId?'primary':'default'" icon="icon iconfont iconweixin1" class="weChat" @click="sendPatientCode">微信相关</el-button> -->
                 <el-button type="primary" icon="icon iconfont iconquanjingshitu" class="view" @click="onLinkView360">全景视图</el-button>
                 <el-button type="primary" icon="icon iconfont icontianjia" class="report" @click="showDialogReport">添加报告</el-button>
             </div>
@@ -40,7 +40,8 @@
                     <div class="li flex-start-start">
                         <p><i class="icon iconfont iconshezhi"></i>设置</p>
                         <div class="cont">
-                            <p>{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
+                            <p v-if="remindDetail.remindRsp && remindDetail.remindRsp.timingDesc">{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
+                            <em v-else>(空)</em>
                             <p>{{remindDetail.remindRsp && remindDetail.remindRsp.startTime}} 
                                 {{remindDetail.remindRsp && remindDetail.remindRsp.endTime?'至 '+remindDetail.remindRsp.endTime:''}}</p>
                         </div>

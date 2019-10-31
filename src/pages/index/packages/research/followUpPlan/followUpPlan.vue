@@ -779,6 +779,10 @@ export default {
                     .menu_li {
                         line-height: 36x;
                         height: 36px;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        width: 100%;
+                        overflow: hidden;
                         padding: 0 15px 0 30px !important;
                         border-left: 3px solid transparent;
                         &.active {
