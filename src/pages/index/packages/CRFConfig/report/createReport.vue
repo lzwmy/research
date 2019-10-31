@@ -136,6 +136,7 @@
             group:'people'
           },
           htmlImg:"",
+          idsUpdateData:0, // 0 未刷新 1 刷新，返回提示保存
         }
       },
       watch:{
@@ -144,13 +145,49 @@
           handler:function (value) {
             // this.dataList = value;
           }
-        }
+        },
+       /* "enable":function (data) {
+          this.idsUpdateData = 1;
+        },
+        "crfType":function (data) {
+          this.idsUpdateData = 1;
+        },
+        "crfName":function (data) {
+          this.idsUpdateData = 1;
+        }*/
       },
       methods: {
         init() {
+          this.idsUpdateData = 0;
         },
         breakGo() {
-          window.history.go(-1);
+          if(this.idsUpdateData) {
+            this.$confirm('是否确认保存?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              if(this.$route.query.type == 'add') {
+                this.CRFReportSave();
+              }else if(this.$route.query.type == 'modify') {
+                this.CRFReportModifySave()
+              }
+              window.history.go(-1);
+            }).catch(() => {
+              console.log('取消保存',this.idsUpdateData);
+              window.history.go(-1);
+              /*let id = this.$route.query.id
+              this.$router.push({
+                path:"/crfConfig",
+                query:{
+                  id:id
+                }
+              })*/
+            });
+          }else {
+            window.history.go(-1);
+          }
+
         },
         add() {
           this.displayMask = true;
@@ -183,12 +220,14 @@
         portionSelectionAdd(data) {
           console.log(data);
           this.isReset = true;
+          this.idsUpdateData = 1;
           this.dataList.push(data)
         },
         //编辑或 新增小节 数据更新
         updateData(data) {
           console.log("更新数据",data);
           this.isReset = false;
+          this.idsUpdateData = 1;
           if(data.type == 'modify') {
             let formData = {
               diseaseId:data.diseaseId,
@@ -197,8 +236,18 @@
               portionName:data.portionName
             };
             this.$nextTick(()=>{
-              this.dataList.splice(data.index+1,0,formData);
-              this.dataList.splice(data.index,1);
+              let flag = false;
+              for(let i=0;i<this.dataList.length;i++) {
+                if(this.dataList[i].portionName == data.portionName){
+                  flag = true;
+                }
+              }
+              if(flag) {
+                this.$message.info('不能存在相同的小节名称，添加失败');
+              }else {
+                this.dataList.splice(data.index+1,0,formData);
+                this.dataList.splice(data.index,1);
+              }
               this.isReset = true;
             });
           }
@@ -207,13 +256,25 @@
         updateAdd(data) {
           console.log('添加 小节',data)
           this.isReset = true;
+          this.idsUpdateData = 1;
           let formData = {
             diseaseId:data.diseaseId,
             formItemList: data.formItemList,
             id:data.id,
             portionName:data.portionName
           };
-          this.dataList.push(formData);
+          let flag = false;
+          for(let i=0;i<this.dataList.length;i++) {
+            if(this.dataList[i].portionName == data.portionName){
+              flag = true;
+            }
+          }
+          if(flag) {
+            this.$message.info('不能存在相同的小节名称，添加失败');
+          }else {
+            this.dataList.push(formData);
+          }
+
         },
         // CRF 保存
         saveCRF() {
@@ -232,22 +293,22 @@
           this.formMask = true;
           let crfName = JSON.parse(JSON.stringify(this.crfName));
           let dataList = JSON.parse(JSON.stringify(this.dataList));
-          this.crfPreview = {
+          this.crfPreview =Object.assign({},JSON.parse(JSON.stringify({
             crfDisplayName:crfName || "",
             formPortions:dataList|| []
-          }
+          }))) ;
         },
         //编辑小节
         portionModify(data,index) {
           console.log('编辑 小节',data);
-          this.portionConfigData= {
+          this.portionConfigData= Object.assign({},JSON.parse(JSON.stringify({
             diseaseId:data.diseaseId,
             formItemList:data.formItemList || [],
             id:data.id,
             portionName:data.portionName,
             type:"modify",
             index:index
-          };
+          }))) ;
           console.log(this.portionConfigData);
           this.showConfigPortion = true;
           /*this.directAddSave();
@@ -271,32 +332,36 @@
         },
         //删除小节
         portionDeleteItem(data,index) {
-          this.isReset = false;
           this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
             // this.CRFDeletePortion(data,index);
+            this.isReset = false;
             this.dataList.splice(index,1);
-            this.isReset = true;
-            this.$message.success('删除成功');
+            this.$nextTick(()=>{
+              this.isReset = true;
+              this.idsUpdateData = 1;
+              // this.$message.success('删除成功');
+            })
+
           }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消删除'
-            });
+            // this.$message({
+            //   type: 'info',
+            //   message: '已取消删除'
+            // });
           });
         },
         //CRF 报告 保存
         async CRFReportSave() {
           let that = this;
           let formData = {
-            // "id": "",
+            // "id": 0,
             "crfDisplayName": that.crfName,
             "crfType": that.crfType,
             "crfIsAvailable": that.enable ? 1 : 0,
-            "crfImage": "",
+            // "crfImage": "",
             "diseaseId":that.$route.query.id,
             "formPortions": that.dataList
           };
@@ -309,8 +374,9 @@
                 crfName:"",
               };
               sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
+              that.idsUpdateData = 0;
               //保存成功返回 报告页
-              window.history.go(-1);
+              // window.history.go(-1);
             }
           }catch (error) {
             console.log(error)
@@ -324,7 +390,7 @@
             "crfDisplayName": that.crfName,
             "crfType": that.crfType,
             "crfIsAvailable": that.enable ? 1 : 0,
-            "crfImage": "",
+            // "crfImage": "",
             "diseaseId":that.$route.query.id,
             "formPortions": that.dataList
           };
@@ -337,8 +403,9 @@
                 crfName:"",
               };
               sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
+              that.idsUpdateData = 0;
               //保存成功返回 报告页
-              window.history.go(-1);
+              // window.history.go(-1);
             }
           }catch (error) {
             console.log(error)
@@ -419,18 +486,42 @@
         }
       },
       mounted() {
-        // this.init();
+        this.init();
         if(this.$route.query.type=='modify') {
           this.loading = true;
           this.isReset = false;
           this.previewCRFList().then(()=>{
             this.isReset = true;
           })
-
         }
       },
       destroyed() {
         this.$destroy();
+      },
+      beforeRouteEnter (to, from, next) {
+        next();
+      },
+      beforeRouteLeave (to, from, next) {
+        if(this.idsUpdateData) {
+          this.$confirm('是否确定保存?', '提示', {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            if(this.$route.query.type == 'add') {
+              this.CRFReportSave();
+            }else if(this.$route.query.type == 'modify') {
+              this.CRFReportModifySave()
+            }
+            next();
+          }).catch(() => {
+            console.log('取消保存')
+            next();
+          });
+        }else {
+          next();
+        }
+
       }
     }
 </script>
@@ -552,8 +643,13 @@
           font-size: 14px;
           color: #394263;
           .is-enable{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
             span{
               padding-right: 10px;
+              height: 100%;
             }
           }
           .report-type{
@@ -646,7 +742,6 @@
                 color:#666666;
               }
             }
-
           }
         }
         .report_body-content{
@@ -655,6 +750,7 @@
           background-color: #ffffff;
           /*background-color: #f7f8fc;*/
           border:1px solid #E5EBEC;
+          overflow: auto;
           .displayPortion_title{
             display: none;
           }

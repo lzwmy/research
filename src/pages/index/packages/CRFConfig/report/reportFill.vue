@@ -8,9 +8,14 @@
             <i class="header_left"></i>
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
+<<<<<<< HEAD
+            <el-button @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
+            <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
+=======
             <el-button v-if="urlParameter.from == 'patientFollowUp'" @click="saveFollowUpReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
             <el-button v-else @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
             <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>
+>>>>>>> 8f87172ff9130035bffa7c6fc121b7b4051e5204
           </div>
           <div ref="top" class="crf-step-content" id="mainContent">
             <display-report v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
@@ -23,7 +28,7 @@
       </div>
 
       <!--报告阅读-->
-        <report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>
+        <!--<report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
     </div>
     <!--数据绑定提醒-->
     <transition name="fade">
@@ -224,8 +229,8 @@ export default {
           if(report.data && report.data.portions&&report.data.portions.length==0){
               this.$store.commit("CRF_SET_REPORT_STATUS", true);
           }else{
-            this.showReadComponent=true;
-            // this.showReadComponent=false;
+            // this.showReadComponent=true;
+            this.showReadComponent=false;
           }
         }
       } catch (error) {

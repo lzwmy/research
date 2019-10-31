@@ -18,7 +18,7 @@
             </el-button>
             <el-button type="primary" @click="saveBtn">
               <i class="iconfont iconbaocun"></i>
-              保存
+              确定添加
             </el-button>
             <el-button type="primary" @click="addItem">
               <i class="iconfont icontianjia"></i>
@@ -32,9 +32,11 @@
         <div class="basis_content_config" v-if="basisDataList.length!==0">
           <div class="content-box"  v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
-              <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
-              <span class="content_must-fill">*</span>-->
-              <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" ></el-input>
+              <el-form :model="basisItem" :rules="rules">
+                <el-form-item prop="controlDisplayName" style="margin-bottom: 0;">
+                  <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" ></el-input>
+                </el-form-item>
+              </el-form>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
               <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem,basisIndex,basisDataList)">
@@ -238,6 +240,12 @@
           portionName:"",//小节名称
           portionPreviewData:{},
           activeId:"",
+          // 条目显示名称验证
+          rules:{
+            controlDisplayName:[
+              {required: true, message: '请输入条目名称', trigger: 'blur'}
+            ]
+          }
         }
       },
       methods:{
@@ -365,7 +373,12 @@
         //删除行
         deleteBlock(index) {
           this.basisDataInfo = {};
-          this.basisDataList.splice(index,1);
+          let copyData = JSON.parse(JSON.stringify(this.basisDataList))
+          copyData.splice(index,1);
+          this.basisDataList = [];
+          this.$nextTick(() => {
+            this.basisDataList = copyData;
+          })
         },
         //上移
         moveTop(data,index,array) {
@@ -462,7 +475,7 @@
           // let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
           if(this.configData.type == 'add') {
             console.log('触发')
-            this.portionSave()/*.then(()=>{
+            /*this.portionSave()*//*.then(()=>{
               let formData = {
                 "formCrfId": "",
                 "formPortionId": "",
@@ -471,8 +484,18 @@
                 "formItemList": this.basisDataList||[]
               };
             });*/
+            let formData = {
+              "id": this.configData.id,
+              "portionName": this.portionName,
+              "diseaseId": this.$route.query.id,
+              "formItemList": this.basisDataList||[],
+              "index":this.configData.index,
+              "type":this.configData.type
+            };
+            console.log(formData);
+            this.$emit('portion-callback-add',formData);
           }else if(this.configData.type == 'modify') {
-            this.portionModifySave().then(()=>{
+            /*this.portionModifySave().then(()=>{
               let formData = {
                 "id": this.configData.id,
                 "portionName": this.portionName,
@@ -482,7 +505,16 @@
                 "type":this.configData.type
               };
               this.$emit('portion-callback-data',formData);
-            })
+            })*/
+            let formData = {
+              "id": this.configData.id,
+              "portionName": this.portionName,
+              "diseaseId": this.$route.query.id,
+              "formItemList": this.basisDataList||[],
+              "index":this.configData.index,
+              "type":this.configData.type
+            };
+            this.$emit('portion-callback-data',formData);
           }
         },
         //预览
@@ -499,7 +531,7 @@
             )
           });
           this.portionPreviewData.portionName = JSON.parse(JSON.stringify(this.portionName)) || "";
-          this.portionPreviewData.formItemList = JSON.parse(JSON.stringify(array));
+          this.portionPreviewData.formItemList = array;
         },
         // 配置小节 新增保存
         async portionSave() {
@@ -528,7 +560,6 @@
                 "type":that.configData.type
               };
               console.log(formData);
-              // this.$emit('portion-callback-add',formData);
               this.$emit('portion-callback-add',formData);
             }
           }catch (error) {

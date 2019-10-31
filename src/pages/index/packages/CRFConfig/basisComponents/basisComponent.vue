@@ -2,9 +2,12 @@
     <div class="basis_component_container">
         <div class="basis_component-content" v-for="(basisDataItem,basisDataIndex) in basisData" :key="basisDataIndex">
           <div class="component-content">
-              <!--<el-input placeholder="条目名称" v-model="basisDataItem.controlName" size="mini"></el-input>-->
-              <!--<span class="content_must-fill">*</span>-->
-              <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>
+            <el-form :model="basisDataItem" :rules="rules">
+              <el-form-item prop="controlDisplayName" style="margin-bottom: 0;">
+                <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>
+              </el-form-item>
+            </el-form>
+              <!--<el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>-->
               <span class="content_must-fill">*</span>
               <!--控件类型-->
               <el-select v-model="basisDataItem.controlType" size="mini" @change="changeControlType(basisDataItem,basisDataIndex,basisData)">
@@ -165,7 +168,13 @@
               value:"min"
             }
           ],
-          basisDataInfo:{}
+          basisDataInfo:{},
+          // 条目显示名称验证
+          rules:{
+            controlDisplayName:[
+              {required: true, message: '请输入条目名称', trigger: 'blur'}
+            ]
+          }
         }
       },
       methods:{
@@ -237,7 +246,7 @@
           data.gatherIsVisible=1;
           data.gatherFoldFlag=0;
           // 触发 数据设置
-          this.basisDataInfo = {
+          this.basisDataInfo ={
             obj:data,
             selectType:data.controlType,
             index:index

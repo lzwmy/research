@@ -1,6 +1,7 @@
 <template>
   <div class="displayPortion_container">
     <div class="displayPortion_title">
+      <i class="left-line"></i>
       {{item.portionName}}
     </div>
     <div class="displayPortion_box">

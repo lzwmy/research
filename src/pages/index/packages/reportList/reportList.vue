@@ -270,7 +270,7 @@ export default {
         },
         //表格内容展开
         handleClick(row) {
-            this.$refs.refTable.toggleRowExpansion(row)
+            // this.$refs.refTable.toggleRowExpansion(row)
         }
     },
     beforeRouteEnter (to, from, next) {

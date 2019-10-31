@@ -6,7 +6,7 @@
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" @click="changeExpend(0)"></i>
         <!--减号-->
         <i v-if="!isFold" class="iconfont iconzu2" @click="changeExpend(1)"></i>
-        <strong>{{item.controlDisplayName}}</strong>
+        <strong v-show="item.displayIsVisible">{{item.controlDisplayName}}</strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
       <div class="view_knowType" style="display: inline-block;" v-if="item.gatherKnowType>0">

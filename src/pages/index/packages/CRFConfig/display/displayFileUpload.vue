@@ -47,7 +47,7 @@
           <div slot="file" slot-scope="{file}">
             <img
               class="el-upload-list__item-thumbnail"
-              :src="newUrl+'/file/downloadFile/'+file.fileId" alt=""
+              :src="newUrl+'/file/download/thumbnail/'+file.fileId" alt=""
             >
             <span class="el-upload-list__item-actions">
               <span
