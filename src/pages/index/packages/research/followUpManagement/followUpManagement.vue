@@ -116,8 +116,8 @@
                         :min-width="column.label.length * 15 + 50"
                         show-overflow-tooltip
                         v-if="column.type !='report' && column.type != 'disable'">
-                        <template slot-scope="scope">
-                            <p v-if="column.label=='随访状态'"><i class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
+                        <template slot-scope="scope" v-show="column.prop=='visitStatus'">
+                            <p><i  v-show="column.prop=='visitStatus'" class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
                         </template>
                     </el-table-column>
                     <span v-for="(li,liIndex) in dataList.header" :key="'1_'+liIndex">
@@ -127,7 +127,7 @@
                                 :key="'2_'+poindex"
                                 :prop="point.prop" 
                                 :label="point.label" 
-                                :width="point.label.length * 15 + 20"
+                                :min-width="point.label.length * 15 + 20"
                                 align="center">
                                 <template slot-scope="scope">
                                     <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
@@ -331,6 +331,7 @@ export default {
                         header: res.data.header
                     };
                     that.dataList = obj;
+                    console.log(this.dataList)
                 }else {
                     that.dataList = {
                         content: [],
@@ -402,7 +403,7 @@ export default {
             //查询两遍，解决table提示框不显示问题
             this.getDataList(0,15)
             .then(()=>{
-                this.getDataList(0,15);
+                // this.getDataList(0,15);
             })
         },
         //获取全部crf表单列表和列表下的所有指标
@@ -488,6 +489,9 @@ export default {
                 height: 8px;
                 margin-right: 6px;
                 border-radius: 50%;
+            }
+            p {
+                text-align: center;
             }
         }
         .guide {

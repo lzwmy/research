@@ -37,72 +37,41 @@
         </div>
         <div class="aside">
             <div class="top">
-            <h3 class="flex-between-center">
-                <span>随访提醒</span>
-                <i class="icon iconfont iconzujian14 cur_pointer" @click="showDialog"></i>
-            </h3>
-            <div class="li flex-start-start">
-                <p><i class="icon iconfont iconshezhi"></i>设置</p>
-                <div class="cont">
-                <p>{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
-                <p>{{remindDetail.remindRsp && remindDetail.remindRsp.startTime}}
-                    {{remindDetail.remindRsp && remindDetail.remindRsp.endTime?'至 '+remindDetail.remindRsp.endTime:''}}</p>
-                </div>
-                <div class="aside">
-                    <div class="top">
-                        <h3 class="flex-between-center">
-                            <span>随访提醒</span>
-                            <i class="icon iconfont iconzujian14 cur_pointer" @click="showDialog"></i>
-                        </h3>
-                        <div class="li flex-start-start">
-                            <p><i class="icon iconfont iconshezhi"></i>设置</p>
-                            <div class="cont">
-                                <p v-if="remindDetail.remindRsp && remindDetail.remindRsp.timingDesc">{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
-                                <em v-else>(空)</em>
-                                <p>{{remindDetail.remindRsp && remindDetail.remindRsp.startTime}} 
-                                    {{remindDetail.remindRsp && remindDetail.remindRsp.endTime?'至 '+remindDetail.remindRsp.endTime:''}}</p>
-                            </div>
-                        </div>
-                        <div class="li flex-start-start">
-                            <p><i class="icon iconfont iconxitongguanlibeifen"></i>下次时间</p>
-                            <div class="cont">
-                                <p class="cur_pointer" @click="toReportFill(remindDetail.remindDataRsp)" v-if="remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate">{{ remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate}}</p>
-                                <em v-else>(空)</em>
-                            </div>
-                        </div>
+                <h3 class="flex-between-center">
+                    <span>随访提醒</span>
+                    <i class="icon iconfont iconzujian14 cur_pointer" @click="showDialog"></i>
+                </h3>
+                <div class="li flex-start-start">
+                    <p><i class="icon iconfont iconshezhi"></i>设置</p>
+                    <div class="cont">
+                        <p>{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
+                        <p>{{remindDetail.remindRsp && remindDetail.remindRsp.startTime}}
+                            {{remindDetail.remindRsp && remindDetail.remindRsp.endTime?'至 '+remindDetail.remindRsp.endTime:''}}</p>
                     </div>
-                    <div class="record">
-                        <h3 class="flex-between-center">
-                            <span>操作记录</span>
-                        </h3>
-                        <el-timeline>
-                            <el-timeline-item 
-                                v-for="(item, index) in record" 
-                                :key="index" 
-                                :timestamp="item.createTime" 
-                                placement="top">
-                                <p>{{item.content}}</p>
-                            </el-timeline-item>
-                        </el-timeline>
-                        <img v-show="record.length == 0" src="./../images/option_info.png" alt="">
+                    
+                </div>
+                <div class="li flex-start-start">
+                    <p><i class="icon iconfont iconxitongguanlibeifen"></i>下次时间</p>
+                    <div class="cont">
+                        <p class="cur_pointer" @click="toReportFill(remindDetail.remindDataRsp)" v-if="remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate">{{ remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate}}</p>
+                        <em v-else>(空)</em>
                     </div>
                 </div>
-            </div>
             </div>
             <div class="record">
-            <h3 class="flex-between-center">
-                <span>操作记录</span>
-            </h3>
-            <el-timeline>
-                <el-timeline-item
-                v-for="(item, index) in record"
-                :key="index"
-                :timestamp="item.createTime"
-                placement="top">
-                <p>{{item.content}}</p>
-                </el-timeline-item>
-            </el-timeline>
-            <img v-show="record.length == 0" src="./../images/option_info.png" alt="">
+                <h3 class="flex-between-center">
+                    <span>操作记录</span>
+                </h3>
+                <el-timeline>
+                    <el-timeline-item
+                    v-for="(item, index) in record"
+                    :key="index"
+                    :timestamp="item.createTime"
+                    placement="top">
+                    <p>{{item.content}}</p>
+                    </el-timeline-item>
+                </el-timeline>
+                <img v-show="record.length == 0" src="./../images/option_info.png" alt="">
             </div>
         </div>
         </div>
