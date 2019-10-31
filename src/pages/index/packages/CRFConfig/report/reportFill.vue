@@ -8,7 +8,8 @@
             <i class="header_left"></i>
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
-            <el-button @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
+            <el-button v-if="urlParameter.from == 'patientFollowUp'" @click="saveFollowUpReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
+            <el-button v-else @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
             <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>
           </div>
           <div ref="top" class="crf-step-content" id="mainContent">
@@ -153,7 +154,7 @@ export default {
         this.$notice("页面缺少表单id");
         return false;
       }
-      if (!this.reportId) {
+      if (!this.reportId && this.urlParameter.from != 'patientFollowUp') {
         this.$notice("页面缺少reportId");
         return false;
       }
@@ -232,6 +233,42 @@ export default {
         console.log(error);
       }
     },
+    //保存保存（随访进来）
+    async saveFollowUpReportData() {
+      try {
+        this.mainLoading = true;
+        
+        this.report.groupId = this.groupId;
+        this.report.crfId = this.formId;
+        this.report.patientId = this.patientId;
+
+        this.report.diseaseId = this.urlParameter.diseaseId || '';
+        this.report.diseaseName = this.urlParameter.diseaseName || '';
+        this.report.subjectId = this.urlParameter.subjectId || '';
+        this.report.subjectName = this.urlParameter.subjectName || '';
+        this.report.groupName = this.urlParameter.groupName || '';
+        this.report.patientName = this.urlParameter.patientName || '';
+        this.report.phoneNumber = this.urlParameter.phoneNumber || '';
+        this.report.genderName = this.urlParameter.genderName || '';
+        this.report.age = this.urlParameter.age || '';
+        
+        this.report.id = this.urlParameter.id;
+        this.report.reportName = this.urlParameter.reportName;
+        this.report.sourceType = 'pc';
+        this.report.creatorName = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).name;
+        this.report.creatorId = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).userId;
+        let result = await this.$http.saveFollowUpReportData(this.report); 
+        if (result && result.code == "0") {
+          this.$message.success("保存成功");
+          this.closePage();
+        }
+        this.mainLoading = false;
+      } catch (error) {
+        this.$message.info("保存表单数据失败");
+        console.log(error);
+        this.mainLoading = false;
+      }
+    },
     async saveReportData() {
       try {
         this.mainLoading = true;
@@ -288,7 +325,6 @@ export default {
         this.mainLoading = false;
       }
     },
-   
     //根据英文名获取中文名
     getTitle(title){
       let option=this.referView.subOptions.find(e=>e.name==title);

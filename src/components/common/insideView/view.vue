@@ -1,7 +1,7 @@
 <template>
     <div class="inside_cloud-container">
         <insideHeader @diseaseSelect="handleDiseaseSelect"></insideHeader>
-        <insideMenu :title="title" @changeLoadding="handleLoadding" :menuList="menuList" :fromRouter="fromRouter"></insideMenu>
+        <insideMenu :title="title" @changeLoadding="handleLoadding" :menuList="menuList" :fromRouter="fromRouter" @changeMenuList="handleMenuList"></insideMenu>
         <div id="insideContainer" :class="$store.state.common.openMenuView?'open':'close'" v-loading="viewLoading"  
                         element-loading-background="#fff"
                         element-loading-text="拼命加载中">
@@ -72,6 +72,10 @@ export default {
         });
     },
     methods: {
+        //改变菜单
+        handleMenuList(data) {
+            this.menuList = data;
+        },
         initView() {
             this.handlePageHeight();
             $('.inside_cloud-container').css({'min-height':$('body').height()+'px'})

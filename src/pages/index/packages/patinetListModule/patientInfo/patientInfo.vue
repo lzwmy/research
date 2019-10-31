@@ -15,7 +15,7 @@
                         <span class="state">已审核</span>
                     </div>
                     <!-- <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'初诊':'随访'}}</h4> -->
-                    <h4 class="cur_pointer" @click="toReportFill(item)">创建医生：{{item.author}} <span style="padding-left: 20px;">创建时间： {{item.createTime}}</span> </h4>
+                    <h4 class="cur_pointer" @click="toReportFill(item)">诊断医生：{{item.author}} <span style="padding-left: 20px;">创建时间： {{item.createTime}}</span> </h4>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
@@ -51,17 +51,21 @@ export default {
         async getDataList () {
             let that = this;
             that.loading = true;
-            console.log(this.dataInfo)
             let formData = {
-                offset: 1,
-                limit: 99,
-                args: this.dataInfo
+                // offset: 1,
+                // limit: 99,
+                // args: this.dataInfo
+                "patientId": this.dataInfo.patientId,
+                "diseaseId": this.dataInfo.diseaseId,
+                "subjectId": this.dataInfo.subjectId,
+                "groupId": this.dataInfo.groupId,
             };
+            console.log(formData)
             try {
                 // let res = await that.$http.PFUGetReportDataList(formData);
-              let res = await that.$http.queryFilterReportList(formData);
+                let res = await that.$http.queryReportListnew(formData);
                 if (res.code == '0') {
-                    this.reportDataList = res.data.args;
+                    this.reportDataList = res.data;
                 }else {
                     this.$mes('error', res.msg);
                 }

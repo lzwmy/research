@@ -13,13 +13,13 @@
                         end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="状态:">
+                <!-- <el-form-item label="状态:">
                     <el-select v-model="form.state">
                         <el-option label="全部" value=""></el-option>
                         <el-option label="未填写" value="0"></el-option>
                         <el-option label="已填写" value="1"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item class="flex-right">
                     <el-button type="primary" icon="icon iconfont iconzujian46" @click="getDataList">刷 新</el-button>
                 </el-form-item>
@@ -39,8 +39,8 @@
                                 <div class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已填写':'未填写'}}</span></div>
                                 <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
-                                    <span class="flex-center-center" @click.stop="pushNote(item)"><i class="icon iconfont iconzujian9"></i>短信随访</span>
-                                    <span class="flex-center-center" @click.stop="pushAssociate(item)"><i class="icon iconfont iconzujian11"></i>微信随访</span>
+                                    <el-button class="flex-center-center" @click.stop="pushNote(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian9"></i>短信随访</el-button>
+                                    <el-button class="flex-center-center" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>微信随访</el-button>
                                 </div>
                             </div>
                         </li>
@@ -117,6 +117,8 @@ export default {
             }else {
                 startTime = this.form.time[0].split("-").join('');
                 endTime = this.form.time[1].split("-").join('');
+                // startTime = this.form.time[0];
+                // endTime = this.form.time[1];
             }
             console.log(this.form.time)
             that.loading = true;
@@ -124,14 +126,14 @@ export default {
                 offset: 1,
                 limit: 99,
                 args: {
-                    diseaseId:'',
-                    subjectId: '',
-                    groupId: '',
-                    crfId: "",
-                    patientName: "",
+                    // diseaseId:'',
+                    // subjectId: '',
+                    // groupId: '',
+                    // crfId: "",
+                    // patientName: "",
                     startTime: startTime,
                     endTime: endTime,
-                    status: this.form.state
+                    // status: this.form.state
                 }
             };
             try {
@@ -160,18 +162,23 @@ export default {
                 let urlParameter={
                     cacheData: false,
                     formId: row.crfId || "",
-                    reportId: row.id || '',
+                    reportId: row.reportId || '',
                     groupId: row.groupId || "",
                     subjectId: row.subjectId || "",
                     diseaseId: row.diseaseId || "",
                     patientName: row.patientName || "",
                     patientId: row.patientId || "",
                     identify: this.identify || "",
-                    from: "caseManage",
+                    from: "patientFollowUp",
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",
                     title: row.reportName,
+                    id: row.id,
+                    reportName: row.reportName,
+                    phoneNumber: row.phoneNumber,
+                    genderName: row.genderName,
+                    age: row.age,
                     isModify:"displayShow"
                 }
                 sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
@@ -198,15 +205,31 @@ export default {
         pushNote(){
             return;
         },
-        //推送消息
+        //推送微信消息
         async pushAssociate(row) {
             let formData = {
-                reportId: row.id
+                reportId: row.reportId
             }
             try {
                 let res = await this.$http.PFUassociatePush(formData);
                 if (res.code == 0) {
                     this.$mes('success', "已向"+row.patientName+"推送微信随访消息!");
+                }else {
+                    this.$mes('error', "推送消息失败!");
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //推送短信消息
+        async pushNote(row) {
+            let formData = {
+                reportId: row.reportId
+            }
+            try {
+                let res = await this.$http.PFUsmsPush(formData);
+                if (res.code == 0) {
+                    this.$mes('success', "已向"+row.patientName+"推送短信随访消息!");
                 }else {
                     this.$mes('error', "推送消息失败!");
                 }
@@ -292,8 +315,8 @@ export default {
                     }
                 }
                 .box_btn_group {
-                    span {
-                        cursor: pointer;
+                    .el-button {
+                        border: none;
                         background:rgba(242, 242, 242, 1);
                         width: 90px;
                         margin-left: 10px;
@@ -306,7 +329,7 @@ export default {
                         .icon {
                             font-size: 18px;
                             vertical-align: middle;
-                            padding-right: 6px;
+                            padding-right: 0;
                         }
                         &:hover {
                             background:rgba(229, 229, 229, 1);

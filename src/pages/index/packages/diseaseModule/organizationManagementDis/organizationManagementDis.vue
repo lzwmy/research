@@ -131,6 +131,11 @@ export default {
         initPage () {
             this.getOrgList()
             .then(()=>{
+                if(this.orgList.length == 0) {
+                    this.dataList.content = [];
+                    this.$emit('changeLoadding',false);
+                    return;
+                }
                 this.orgList.length != 0 && this.selectGroup(this.orgList[0]);
                 this.$emit('changeLoadding',false);
             })
@@ -176,7 +181,9 @@ export default {
                 let res = await this.$http.ORGDisGetOrgList({diseaseId: this.$store.state.user.diseaseInfo.diseaseId});
                 if (res.code == '0') {
                     this.orgList = res.data;
-                    this.orgCode = this.orgList[0].orgCode;
+                    if(this.orgList.length) {
+                        this.orgCode = this.orgList[0].orgCode;
+                    }
                 }else {
                     this.$mes('error', res.msg);
                 }
