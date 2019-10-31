@@ -56,7 +56,8 @@ export default {
   },
   methods:{
     changed(){
-      this.report.value=this.inputValue+'|'+this.inputUnit
+      this.report.value=this.inputValue;
+      this.report.value2=this.inputUnit;
     },
     //加载术语集
       async initTermList () {
@@ -102,7 +103,7 @@ export default {
         );
         if (result && result.code == "0") {
            this.inputValue=result.data;
-              this.report.value=this.inputValue+"|"+this.inputUnit;
+            this.report.value=this.inputValue+"|"+this.inputUnit;
         }
       } catch (error) {
         console.log(error);
@@ -113,16 +114,36 @@ export default {
     if (this.item.baseProperty.controlWidth > 0) {
       this.inputWidth = 47 * this.item.baseProperty.controlWidth;
     }
-    if(this.report.value&&this.report.value.indexOf('|')>0){
-      this.inputValue=this.report.value.split('|')[0];
-      this.inputUnit=this.report.value.split('|')[1];
-    }else{
-      if(this.item.termUnit.numberIsSwitch==1){
-          this.inputUnit=this.inputUnit||this.item.termUnit.unitName;
+     /*if(this.report.value&&this.report.value.indexOf('|')>0){
+      /!*if(this.report.value&&this.report.value.indexOf('|')>0){
+        this.inputValue=this.report.value.split('|')[0];
+        this.inputUnit=this.report.value.split('|')[1];*!/
+
       }else{
+       console.log('jindu')
+        if(this.item.termUnit.numberIsSwitch==1){
+          this.inputUnit=this.inputUnit||this.item.termUnit.unitName;
+        }else{
           this.inputUnit=this.inputUnit||this.item.termSet.termDefaultValue[0];
-      }
-    }
+        }
+      }*/
+     if(this.item.termSet.rangeText!==""){
+       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
+         return item !== ""
+       }).map(item=>{
+         return {termItemName:item}
+       });
+       this.item.termSet.termItemList = arrayList;
+     }
+
+     if(this.item.termUnit.numberIsSwitch == 1) {
+       this.inputValue = this.report.value || "";
+       this.inputUnit=this.report.value2||this.item.termUnit.unitName;
+     }else if(this.item.termUnit.numberIsSwitch == 0) {
+       this.inputValue = this.report.value || "";
+       this.inputUnit = this.report.value2 || this.item.termSet.termDefaultValue[0];
+       // this.inputUnit=this.inputUnit||this.item.termSet.termDefaultValue[0];
+     }
     //判断控件是否绑定数据如果绑定则获取绑定数据，如果是继承绑定则进行递归获取父绑定
     //this.$route.query.patientId判断是否是报告编辑模式下
     if(this.item.binding&&JSON.parse(sessionStorage.getItem('reportFill')).urlParameter.patientId){
@@ -141,14 +162,7 @@ export default {
       }
     }
      //判断 值域是否等于空
-     if(this.item.termSet.rangeText!==""){
-       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
-         return item !== ""
-       }).map(item=>{
-         return {termItemName:item}
-       });
-       this.item.termSet.termItemList = arrayList;
-     }
+
   },
   computed:{
     ...mapGetters([
