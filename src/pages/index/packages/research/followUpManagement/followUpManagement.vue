@@ -238,6 +238,9 @@ export default {
             hidden:'',
         }
     },
+    created() {
+        this.getFGroupList();
+    },
     mounted () {
         this.addEventListenervisibilityChange();
     },
@@ -346,14 +349,27 @@ export default {
                         header: []
                     }
                 }
-                if(that.dataList.content.length == 0) {
-                    this.showGuide = true; 
-                }else {
-                    this.showGuide = false;
-                }
                 that.tableLoading = false;
             } catch (err) {
                 that.tableLoading = false;
+                console.log(err)
+            }
+        },
+        //获取随访列表
+        async getFGroupList() {
+            let params = {
+                id: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.followUpPlanStageList(params);
+                if (res.code == '0') {
+                    //判断是否存在随访点
+                    let isExist = res.data.some((li)=>{
+                        return li.stages.length != 0;
+                    })
+                    this.showGuide = !isExist;
+                }
+            } catch (err) {
                 console.log(err)
             }
         },
@@ -401,8 +417,8 @@ export default {
         },
         //获取分组列表
         getGroupList(data) {
-            this.groupList = data.groupList;
-            this.currentGrounpId = data.currentGrounpId;
+            this.groupList = data?data.groupList:[];
+            this.currentGrounpId = data?data.currentGrounpId:'';
             this.getStageList()
         },
         //点击分组
