@@ -108,6 +108,7 @@
                         :key="column.prop" 
                         align="center"
                         :min-width="column.label.length * 15 + 50"
+                        :width="handleWidth(column.label)"
                         v-if="column.type !='report'"
                         show-overflow-tooltip>
                     </el-table-column>
@@ -263,6 +264,13 @@ export default {
         formItemCom
     },
     methods: {
+        handleWidth(label) {
+            let width = '';
+            if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
+                width = 160
+            }
+            return width
+        },
         //改变引导图显隐
         handleGuide(val) {
             console.log(val)

@@ -1404,6 +1404,13 @@
       "font_class": "researchReportManage",
       "unicode": "e6ec",
       "unicode_decimal": 59116
+    },
+    {
+      "icon_id": "11566580",
+      "name": "随访任务",
+      "font_class": "diseasePatientFollowUp",
+      "unicode": "e6ed",
+      "unicode_decimal": 59117
     }
   ]
 }

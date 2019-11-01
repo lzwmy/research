@@ -435,6 +435,7 @@
           }
         },
         patientPhone:"",//患者电话
+        hidden: ''
       };
     },
     watch: {
@@ -472,6 +473,7 @@
     },
     mounted() {
       // console.log(this.personalInfo.PATIENT_ID);
+      this.addEventListenervisibilityChange();
       this.drawerTitle = this.personalInfo.PATIENT_NAME + "-治疗结果";
       this.$nextTick(function () {
         $('.el-drawer__header>span').prepend('<i class="iconfont iconzhiliaoxiaoguo" style="margin-right: 9px;font-size: 18px;font-weight: normal"></i>')
@@ -483,7 +485,40 @@
       patientInfoDetail,
       reportList
     },
+    beforeDestroy(){
+        document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
+    },
     methods: {
+      visibilityChangeHandle() {
+        if (!document[this.hidden]) {
+          this.getRemindDetail();
+          this.getLogList();
+          if (this.$refs.patientDetail) {
+            this.$refs.patientDetail.getDataList()
+          } else if (this.$refs.refPatientInfoDetail) {
+            this.$refs.refPatientInfoDetail.getDataList()
+          }
+        }
+      },
+      //切换页面刷新操作
+      addEventListenervisibilityChange() {
+        this.hidden = "";
+        this.visibilityChange = "";
+        if (typeof document.hidden !== "undefined") {
+            this.hidden = "hidden";
+            this.visibilityChange = "visibilitychange";
+        } else if (typeof document.mozHidden !== "undefined") {
+            this.hidden = "mozHidden";
+            this.visibilityChange = "mozvisibilitychange";
+        } else if (typeof document.msHidden !== "undefined") {
+            this.hidden = "msHidden";
+            this.visibilityChange = "msvisibilitychange";
+        } else if (typeof document.webkitHidden !== "undefined") {
+            this.hidden = "webkitHidden";
+            this.visibilityChange = "webkitvisibilitychange";
+        }
+        document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
+      },
       resize() {
         let height = $('.el-drawer__body').height();
         $('.quill_style').height(height - 330)
@@ -1063,7 +1098,7 @@
                 margin-bottom: 10px;
               }
 
-              p:last-child {
+              p.cur_pointer {
                 &:hover {
                   color: #333;
                   font-weight: bold;

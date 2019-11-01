@@ -1,5 +1,5 @@
 <template>
-    <div class="cloud-component patientFollowUp">
+    <div class="cloud-component diseasePatientFollowUp">
         <!-- 搜索区域 -->
         <div class="cloud-search el-form-item-small">
             <el-form :inline="true" :model="form" class="flex-start-center">
@@ -29,18 +29,18 @@
             </el-form>
         </div>
         <!--搜索结果-->
-        <div class="cloud-search-list">
-            <ul class="card" v-loading="loading">
-                <el-row :gutter="21">
-                    <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
-                        <li class="box flex-start-center">
+        <div class="cloud-search-list" v-loading="loading">
+            <ul class="card" >
+                <!-- <el-row :gutter="21"> -->
+                    <!-- <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5" v-for="(item,index) in dataList" :key="index"> -->
+                        <li class="box flex-start-center" v-for="(item,index) in dataList" :key="index">
                             <div class="box_left" @click="toReportFill(item)">
                                 <h3>{{item.patientName}}</h3>
                                 <p>{{item.genderName}}/{{item.age}}</p>
                             </div>
                             <div class="box_right flex-center-end">
-                                <div @click="toReportFill(item)" class="box_tag"><span v-html="handleStatus(item.status)"></span></div>
-                                <p @click="toReportFill(item)" class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
+                                <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
+                                <p class="box_tel" @click="toReportFill(item)"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
                                     <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
                                         {{item.smsVisit==0?'短信随访':'短信已发送'}}
@@ -51,8 +51,8 @@
                                 </div>
                             </div>
                         </li>
-                    </el-col>
-                </el-row>
+                    <!-- </el-col> -->
+                <!-- </el-row> -->
             </ul>
         </div>
     </div>
@@ -63,7 +63,7 @@ import mixins from 'components/mixins';
 import utils from 'components/utils/index';
 
 export default {
-    name: 'patientFollowUp',
+    name: 'diseasePatientFollowUp',
     mixins: [mixins],
     data () {
         return {
@@ -92,6 +92,12 @@ export default {
         document.removeEventListener(this.visibilityChange)
     },
     methods: {
+        initPage() {
+            this.getDataList()
+            .then(()=>{
+                this.$emit('changeLoadding',false)
+            })
+        },
         addEventListenervisibilityChange() {
             let hidden = "";
             this.visibilityChange = "";
@@ -113,6 +119,16 @@ export default {
                     this.getDataList();
                 }
             }, false);
+        },
+        handleStatus(status) {
+            switch (status) {
+                case 0: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center; color:rgba(102, 102, 102, 1); background:rgba(102, 102, 102, .1);">未填写</span>';
+                case 1: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(0, 184, 223, 1); background:rgba(0, 184, 223, .1);">已填写</span>';
+                case 2: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(247, 158, 0, 1); background:rgba(247, 158, 0, .1);">失访</span>';
+                case 3: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(219, 84, 82, 1); background:rgba(219, 84, 82, .1);">终止</span>';
+                case 4: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(102, 102, 102, 1); background:rgba(102, 102, 102, .1);">失效</span>';
+                default: return;
+            }
         },
         async getDataList() {
             let that = this;
@@ -137,6 +153,7 @@ export default {
                     // groupId: '',
                     // crfId: "",
                     // patientName: "",
+                    diseaseId: JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId,
                     startTime: startTime,
                     endTime: endTime,
                     status: this.form.state
@@ -160,16 +177,6 @@ export default {
             let date = new Date().getTime();
             this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
             this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
-        },
-        handleStatus(status) {
-            switch (status) {
-                case 0: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center; color:rgba(102, 102, 102, 1); background:rgba(102, 102, 102, .1);">未填写</span>';
-                case 1: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(67, 154, 255, 1); background:rgba(67, 154, 255, .1);">已填写</span>';
-                case 2: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(247, 158, 0, 1); background:rgba(247, 158, 0, .1);">失访</span>';
-                case 3: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(219, 84, 82, 1); background:rgba(219, 84, 82, .1);">终止</span>';
-                case 4: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(102, 102, 102, 1); background:rgba(102, 102, 102, .1);">失效</span>';
-                default: return;
-            }
         },
         toReportFill(row) {
             this.getIdentify(row.patientId)
@@ -266,82 +273,96 @@ export default {
 
 
 <style lang="less" scoped>
-    .patientFollowUp .card {
-        flex-wrap: wrap;
-        position: relative;
-        min-height: 600px;
-        li {
-            height: 110px;
-            border-radius: 0px;
-            padding: 10px;
-            background:rgba(255,255,255,1);
-            margin-bottom: 21px;
-            transition: all 300ms;
-            cursor: pointer;
-            &:hover {
-                box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
-            }
-            .box_left {
-                width: 85px;
-                height: 100%;
-                padding: 15px 0 0 5px;
-                border-right: 1px solid #eee;
-                h3 {
-                    font-size: 20px;
-                    font-weight: normal;
-                    line-height: 38px;
-                    color: #090E3E;
+    .diseasePatientFollowUp {
+        .cloud-search-list {
+            min-height: 600px;
+        }
+        .card {
+            flex-wrap: wrap;
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-content: flex-start;
+            li {
+                height: 110px;
+                margin-right: 25px;
+                border-radius: 0px;
+                padding: 10px;
+                background:rgba(255,255,255,1);
+                margin-bottom: 21px;
+                transition: all 300ms;
+                cursor: pointer;
+                
+                &:hover {
+                    box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
                 }
-                p {
-                    color: #9BABB8;
-                    line-height: 30px;
-                }
-            }
-            .box_right {
-                flex: 1;
-                flex-wrap: wrap;
-                flex-direction: column;
-                height: 100%;
-                padding-left: 16px;
-                .box_tag {
-                    display: flex;
-                    justify-content: flex-end;
-                }
-                .box_tel {
-                    width: 100%;
-                    color: rgba(127, 139, 159, 1);
-                    font-size: 14px;
-                    margin-bottom: 16px;
-                    i {
-                        padding-right: 4px;
-                        font-size: 16px;
+                .box_left {
+                    width: 85px;
+                    height: 100%;
+                    padding: 15px 0 0 5px;
+                    border-right: 1px solid #eee;
+                    h3 {
+                        font-size: 20px;
+                        font-weight: normal;
+                        line-height: 38px;
+                        color: #090E3E;
+                    }
+                    p {
+                        color: #9BABB8;
+                        line-height: 30px;
                     }
                 }
-                .box_btn_group {
-                    .el-button {
-                        border: none;
-                        background:rgba(242, 242, 242, 1);
-                        width: 90px;
-                        margin-left: 10px;
-                        height: 32px;
+                .box_right {
+                    flex: 1;
+                    flex-wrap: wrap;
+                    flex-direction: column;
+                    height: 100%;
+                    padding-left: 16px;
+                    .box_tag {
+                        display: flex;
+                        justify-content: flex-end;
+                        font-size: 12px;
+
+                        span {
+                            
+                        }
+                    }
+                    .box_tel {
+                        width: 100%;
                         color: rgba(127, 139, 159, 1);
-                        transition: all 300ms;
-                        &:first-child {
-                            margin-left: 0;
+                        font-size: 14px;
+                        margin-bottom: 16px;
+                        i {
+                            padding-right: 4px;
+                            font-size: 16px;
                         }
-                        .icon {
-                            font-size: 18px;
-                            vertical-align: middle;
-                            padding-right: 0;
-                            margin-right: 2px;
-                        }
-                        &:hover {
-                            background:rgba(229, 229, 229, 1);
-                            color: rgba(93, 113, 145, 1);
+                    }
+                    .box_btn_group {
+                        .el-button {
+                            border: none;
+                            background:rgba(242, 242, 242, 1);
+                            width: 90px;
+                            margin-left: 10px;
+                            height: 32px;
+                            color: rgba(127, 139, 159, 1);
+                            transition: all 300ms;
+                            &:first-child {
+                                margin-left: 0;
+                            }
+                            .icon {
+                                font-size: 18px;
+                                vertical-align: middle;
+                                padding-right: 0;
+                                margin-right: 2px;
+                            }
+                            &:hover {
+                                background:rgba(229, 229, 229, 1);
+                                color: rgba(93, 113, 145, 1);
+                            }
                         }
                     }
                 }
             }
         }
-    }
+    } 
 </style>

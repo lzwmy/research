@@ -140,6 +140,8 @@ const url = {
   deleteRemind: '/report/remind/delete.do',
   //预览CRF表单数据
   previewCrfReportHttp:"/form/crf/bak/preview.do",
+  //随访提醒终止或失访
+  remindChangeStatus:"/report/remind/changeStatus",
 };
 
 const http = {
@@ -321,6 +323,9 @@ const http = {
   },
   reportDataSaveSubject(params) {
     return vm.$post(url.reportDataSaveSubject,params,false);
+  },
+  remindChangeStatus(params) {
+    return vm.$post(url.remindChangeStatus,params,false);
   },
 };
 

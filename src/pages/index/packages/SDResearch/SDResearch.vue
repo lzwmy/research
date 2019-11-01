@@ -5,7 +5,7 @@
         您暂未授权任何病种的权限
         <router-link tag="a" style="color: #2d8cf0;" :to="{ name: 'userManage'}" v-if="isHasUserManageAuth"> 去授权&gt;</router-link>
       </div>
-      <div v-else>
+      <div v-else  style="width:100%;">
         <!-- <div class="search_content flex-between-center">
           <el-input
             placeholder="专病报告"
@@ -15,7 +15,7 @@
           </el-input>
           <el-button icon="el-icon-plus" type="primary">新建病种</el-button>
         </div> -->
-        <div class="cart">
+        <div class="cart" style="width:100%;">
           <el-row :gutter="14" type="flex" class="flex-wrap">
             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" v-for="(item,index) in dataList" :key="index">
               <div class="sd-title-wrapper" @click="toLink(item)">

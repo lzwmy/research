@@ -3,7 +3,7 @@
     <el-table
       :data="dataList.content" v-loading="loading" ref="refTable"
       @row-click="handleClick">
-      <el-table-column  width="20">
+      <!-- <el-table-column  width="20"> -->
         <!--<template slot-scope="props"> type="expand"
           <el-timeline>
             <el-timeline-item
@@ -17,7 +17,7 @@
             </el-timeline-item>
           </el-timeline>
         </template>-->
-      </el-table-column>
+      <!-- </el-table-column> -->
       <el-table-column prop="visitDate" label="就诊时间"></el-table-column>
       <el-table-column prop="reportName" label="报告名称"></el-table-column>
       <el-table-column prop="author" label="创建者"></el-table-column>
@@ -68,13 +68,40 @@
       this.getIdentify(this.reportFillData.patientId);
       this.getDataList();
     },
-    mounted() {
-      this.addEventListenervisibilityChange();
-    },
+    // mounted () {
+    //     this.addEventListenervisibilityChange();
+    // },
+    // beforeDestroy(){
+    //     document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
+    // },
     components: {
       pagination
     },
     methods: {
+      visibilityChangeHandle() {
+        if (!document[this.hidden]) {
+          this.getDataList();
+        }
+      },
+      //切换页面刷新操作
+      addEventListenervisibilityChange() {
+        this.hidden = "";
+        this.visibilityChange = "";
+        if (typeof document.hidden !== "undefined") {
+            this.hidden = "hidden";
+            this.visibilityChange = "visibilitychange";
+        } else if (typeof document.mozHidden !== "undefined") {
+            this.hidden = "mozHidden";
+            this.visibilityChange = "mozvisibilitychange";
+        } else if (typeof document.msHidden !== "undefined") {
+            this.hidden = "msHidden";
+            this.visibilityChange = "msvisibilitychange";
+        } else if (typeof document.webkitHidden !== "undefined") {
+            this.hidden = "webkitHidden";
+            this.visibilityChange = "webkitvisibilitychange";
+        }
+        document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
+      },
       //获取身份证号
       async getIdentify(patientId) {
         let formData = {
@@ -196,30 +223,7 @@
       handleClick(row) {
         this.$refs.refTable.toggleRowExpansion(row)
       },
-      //切换页面刷新操作
-      addEventListenervisibilityChange() {
-        this.hidden = "";
-        this.visibilityChange = "";
-        if (typeof document.hidden !== "undefined") {
-          this.hidden = "hidden";
-          this.visibilityChange = "visibilitychange";
-        } else if (typeof document.mozHidden !== "undefined") {
-          this.hidden = "mozHidden";
-          this.visibilityChange = "mozvisibilitychange";
-        } else if (typeof document.msHidden !== "undefined") {
-          this.hidden = "msHidden";
-          this.visibilityChange = "msvisibilitychange";
-        } else if (typeof document.webkitHidden !== "undefined") {
-          this.hidden = "webkitHidden";
-          this.visibilityChange = "webkitvisibilitychange";
-        }
-        document.addEventListener(this.visibilityChange, this.visibilityChangeHandle);
-      },
-      visibilityChangeHandle() {
-        if (!document[this.hidden]) {
-          this.getDataList();
-        }
-      },
+      
     },
     beforeDestroy(){
       document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)

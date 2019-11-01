@@ -114,6 +114,7 @@
                         :key="index" 
                         align="center"
                         :min-width="column.label.length * 15 + 50"
+                        :widht="handleWidth(column.label)"
                         show-overflow-tooltip
                         v-if="column.type !='report' && column.type != 'disable'">
                         <template slot-scope="scope" v-show="column.prop=='visitStatus'">
@@ -237,6 +238,9 @@ export default {
             hidden:'',
         }
     },
+    created() {
+        this.getFGroupList();
+    },
     mounted () {
         this.addEventListenervisibilityChange();
     },
@@ -250,6 +254,13 @@ export default {
         formItemCom
     },
     methods: {
+        handleWidth(label) {
+            let width = '';
+            if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
+                width = 160
+            }
+            return width
+        },
         //操作随访状态样式
         handleStatus(status) {
             switch (status) {
@@ -338,14 +349,27 @@ export default {
                         header: []
                     }
                 }
-                if(that.dataList.content.length == 0) {
-                    this.showGuide = true; 
-                }else {
-                    this.showGuide = false;
-                }
                 that.tableLoading = false;
             } catch (err) {
                 that.tableLoading = false;
+                console.log(err)
+            }
+        },
+        //获取随访列表
+        async getFGroupList() {
+            let params = {
+                id: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.followUpPlanStageList(params);
+                if (res.code == '0') {
+                    //判断是否存在随访点
+                    let isExist = res.data.some((li)=>{
+                        return li.stages.length != 0;
+                    })
+                    this.showGuide = !isExist;
+                }
+            } catch (err) {
                 console.log(err)
             }
         },
@@ -393,8 +417,8 @@ export default {
         },
         //获取分组列表
         getGroupList(data) {
-            this.groupList = data.groupList;
-            this.currentGrounpId = data.currentGrounpId;
+            this.groupList = data?data.groupList:[];
+            this.currentGrounpId = data?data.currentGrounpId:'';
             this.getStageList()
         },
         //点击分组
@@ -403,7 +427,7 @@ export default {
             //查询两遍，解决table提示框不显示问题
             this.getDataList(0,15)
             .then(()=>{
-                // this.getDataList(0,15);
+                this.getDataList(0,15);
             })
         },
         //获取全部crf表单列表和列表下的所有指标
