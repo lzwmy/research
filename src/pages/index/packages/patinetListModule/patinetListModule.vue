@@ -465,7 +465,7 @@
             return callback(new Error('请输入正确的手机号'));
           }
         }
-      }
+      };
       return {
         loading: false,
         pageNo: '',
