@@ -221,9 +221,6 @@
         //表单名称
         crfNameChange() {
           this.idsUpdateData = 1;
-          if(this.crfName.length == 10) {
-            this.$message.info('名称输入过长');
-          }
         },
         //是否启用
         enableChange() {

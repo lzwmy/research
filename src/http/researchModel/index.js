@@ -46,7 +46,9 @@ const url = {
   //导出动态表Excel
   modelExportExcelNew:"/report/bak/model/export/table.do",
   //即时显示科研建模生成的患者人数和报告数
-  modelRealTimeSearchNew:"/report/bak/model/display/sum.do"
+  modelRealTimeSearchNew:"/report/bak/model/display/sum.do",
+  // 获取当前项病种信息
+  getDiseaseInfo:"/diseasespecies/findDiseaseDetail.do",
 };
 
 const http = {
@@ -115,6 +117,9 @@ const http = {
   },
   modelRealTimeSearchNew(params) {
       return vm.$post(url.modelRealTimeSearchNew,params,false);
+  },
+  getDiseaseInfo(params) {
+      return vm.$get(url.getDiseaseInfo,params,true);
   }
 };
 

@@ -15,7 +15,7 @@
                 <el-option label="普通" :value="1"></el-option>
                 <el-option label="随访" :value="2"></el-option>
               </el-select>-->
-              <el-input class="search_item" v-model="searchName" maxlength="30" @change="lengthLimit" @keyup.enter.native="searchItem(searchName)" placeholder="请输入小节名称">
+              <el-input class="search_item" v-model="searchName" maxlength="30" @keyup.enter.native="searchItem(searchName)" placeholder="请输入小节名称">
                 <i slot="suffix" class="el-input__icon el-icon-search" @click.stop="searchItem(searchName)"></i>
               </el-input>
             </div>
@@ -228,12 +228,6 @@
           this.CRFSearchPortion().then(()=>{
             this.loading = false;
           });
-        },
-        //长度限制
-        lengthLimit() {
-          if(this.searchName.length == 30) {
-            this.$message.info('名称输入过长');
-          }
         },
         handleClick() {
           this.diseasePreview = {};

@@ -414,6 +414,9 @@
                     placeholder="选择日期">
                   </el-date-picker>
                 </el-form-item>
+                <el-form-item label="病人ID：">
+                  <el-input v-model.trim="patientRuleForm.patientId" maxlength='20'></el-input>
+                </el-form-item>
                 <el-form-item label="手机号：" prop="tel">
                   <el-input v-model.trim="patientRuleForm.tel" maxlength='11'></el-input>
                 </el-form-item>
@@ -556,6 +559,7 @@
           IDCard:'',
           tel:'',
           address:'',
+          patientId:"",
         },
         patientRuleFormRules : {
           name: [
@@ -568,7 +572,7 @@
             {required: true, message: '出生日期不能为空', trigger: 'blur'}
           ],
           tel: [
-            {validator:checkPhone,trigger: 'blur'}
+            {required: true,validator:checkPhone,trigger: 'blur'}
           ],
         },
         pickerDisabled:{
@@ -1579,7 +1583,8 @@
                 diseaseName: this.diseaseDetail.name || '',
                 subjectName: subjectName.join() || '',
                 groupName: this.selectLabGroupName || '',
-              }
+                hisPatientId:this.patientRuleForm.patientId||""
+              };
 
             if(this.patientDialogTitle == '添加患者') {
               res = await this.$http.casesAddPatient(formData);
@@ -1773,7 +1778,7 @@
     .el-form-item.address {
       display: block;
       .el-input{
-        width: 96.5% !important;
+        width: 98.5% !important;
       }
     }
   }
