@@ -403,7 +403,7 @@ export default {
             //查询两遍，解决table提示框不显示问题
             this.getDataList(0,15)
             .then(()=>{
-                // this.getDataList(0,15);
+                this.getDataList(0,15);
             })
         },
         //获取全部crf表单列表和列表下的所有指标

@@ -16,7 +16,7 @@
               <el-form :inline="true" @submit.native.prevent>
                 <div class="flex-between-center flex-wrap">
                   <div>
-                    <el-form-item label prop>
+                    <el-form-item label prop class="allCases-panel">
                       <div :class="{'labGroup-section': true,'dropmenuHide': dropmenuHide}" @mouseover="dropmenuHide = false">
                         <div class="selectLabSubjectGroupName" :title="selectLabSubjectGroupName">{{selectLabSubjectGroupName}}
                         </div>
@@ -1652,6 +1652,13 @@
   .list_module_content{
     width: 100%;
     box-sizing: border-box;
+  }
+  .allCases-panel {
+    width: 400px;
+    .el-form-item__content {
+      width: 400px;
+      
+    }
   }
 }
 
