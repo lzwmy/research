@@ -8,11 +8,11 @@
             <i class="header_left"></i>
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
-            <el-button v-if="urlParameter.from == 'patientFollowUp'" @click="saveFollowUpReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
-            <el-button v-else @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
+            <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
+            <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
             <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
           </div>
-          <div ref="top" class="crf-step-content" id="mainContent">
+          <div ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
             <display-report v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
           </div>
           <!--<div class="saveButton">
@@ -464,7 +464,18 @@ body.theme-green {
     overflow: auto;
   }
 }
-
+#mainContent.disabled {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+  }
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;

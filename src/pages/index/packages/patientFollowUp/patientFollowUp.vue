@@ -18,6 +18,9 @@
                         <el-option label="全部" value=""></el-option>
                         <el-option label="未填写" value="0"></el-option>
                         <el-option label="已填写" value="1"></el-option>
+                        <el-option label="失访" value="2"></el-option>
+                        <el-option label="终止" value="3"></el-option>
+                        <el-option label="失效" value="4"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item class="flex-right">
@@ -36,7 +39,7 @@
                                 <p>{{item.genderName}}/{{item.age}}</p>
                             </div>
                             <div class="box_right flex-center-end">
-                                <div @click="toReportFill(item)" class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已填写':'未填写'}}</span></div>
+                                <div @click="toReportFill(item)" class="box_tag"><span v-html="handleStatus(item.status)"></span></div>
                                 <p @click="toReportFill(item)" class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
                                     <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
@@ -158,6 +161,16 @@ export default {
             this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
             this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
         },
+        handleStatus(status) {
+            switch (status) {
+                case 0: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center; color:rgba(102, 102, 102, 1); background:rgba(102, 102, 102, .1);">未填写</span>';
+                case 1: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(67, 154, 255, 1); background:rgba(67, 154, 255, .1);">已填写</span>';
+                case 2: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(247, 158, 0, 1); background:rgba(247, 158, 0, .1);">失访</span>';
+                case 3: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(219, 84, 82, 1); background:rgba(219, 84, 82, .1);">终止</span>';
+                case 4: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center;color:rgba(102, 102, 102, 1); background:rgba(102, 102, 102, .1);">失效</span>';
+                default: return;
+            }
+        },
         toReportFill(row) {
             this.getIdentify(row.patientId)
             .then( ()=>{
@@ -177,6 +190,7 @@ export default {
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",
                     title: row.reportName,
+                    fowwowUpstatus: row.status,
                     id: row.id,
                     reportName: row.reportName,
                     phoneNumber: row.phoneNumber,
@@ -292,20 +306,6 @@ export default {
                 .box_tag {
                     display: flex;
                     justify-content: flex-end;
-                    &.primary span {
-                        color: #439AFF;
-                        background-color: rgba(83, 163, 255, 0.1);
-                    }
-                    span {
-                        width: 58px;
-                        height: 24px;
-                        line-height: 24px;
-                        color: rgba(223, 88, 72, 1);
-                        background-color: rgba(223, 88, 72, 0.1);
-                        text-align: center;
-                        font-size: 12px;
-                        
-                    }
                 }
                 .box_tel {
                     width: 100%;
