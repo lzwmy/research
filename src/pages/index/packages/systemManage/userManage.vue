@@ -87,7 +87,7 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" :append-to-body="true" width="500px"
               @close="closeUserDialog" class="userManageDialog">
       <!--class="el-dialog&#45;&#45;center"-->
-      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="90px"
+      <el-form :model="ruleFormDialog" ref="ruleFormDialog" :rules="dialogRules" label-width="100px"
                @submit.native.prevent v-loading="ruleFormDialogLoading">
         <el-form-item label="账号：" prop="account">
           <el-input v-model.trim="ruleFormDialog.account" placeholder="请输入账号" :disabled="userOption=='edit'"
@@ -104,13 +104,13 @@
           <el-radio v-model="ruleFormDialog.status" label="0" disabled>启用</el-radio>
           <el-radio v-model="ruleFormDialog.status" label="1" disabled>禁用</el-radio>
         </el-form-item>
-        <el-form-item label="身份证号：" prop="idNumber">
-          <el-input v-model.trim="ruleFormDialog.idNumber" placeholder="请输入身份证号" :maxlength="20"
+        <el-form-item label="电话号码：" prop="tel">
+          <el-input v-model.trim="ruleFormDialog.tel" placeholder="请输入电话号码" :maxlength="20"
                     size="mini"
                     :clearable="true"></el-input>
         </el-form-item>
-        <el-form-item label="电话号码：" prop="tel">
-          <el-input v-model.trim="ruleFormDialog.tel" placeholder="请输入电话号码" :maxlength="20"
+        <el-form-item label="身份证号：" prop="idNumber">
+          <el-input v-model.trim="ruleFormDialog.idNumber" placeholder="请输入身份证号" :maxlength="20"
                     size="mini"
                     :clearable="true"></el-input>
         </el-form-item>
@@ -180,6 +180,19 @@ export default {
     'echarts-contain': echartsContain
   },
   data () {
+    var checkPhone = (rule, value, callback) =>{
+      if (!value) {
+        return callback(new Error('手机号不能为空'));
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        console.log(reg.test(value));
+        if (reg.test(value)) {
+          callback();
+        } else {
+          return callback(new Error('请输入正确的手机号'));
+        }
+      }
+    };
     return {
       ruleForm: {
         account: '',
@@ -227,7 +240,7 @@ export default {
           {validator: this.validateIdNumber, trigger: 'blur'}
         ],
         tel: [
-          {validator: this.validateTel, trigger: 'blur'}
+          {required: true,validator:checkPhone, trigger: 'blur'}
         ],
         email: [
           {validator: this.validateEmail, trigger: 'blur'}
