@@ -16,7 +16,7 @@
               <el-button v-if="urlParameter.from=='researchObject'" @click="commitReportData" type="warning" :disabled="commitLoading">提 交</el-button>
               <el-button v-if="urlParameter.from=='followUpManagement' && !isDisabled" @click="saveFollowUpReportData(1)" type="primary" :disabled="mainLoading">保 存</el-button>
               <el-button v-if="urlParameter.from=='followUpManagement' && !isDisabled" @click="saveFollowUpReportData(2)" type="warning" :disabled="commitLoading">提 交</el-button>
-              <el-button v-if="urlParameter.from=='followUpManagement' && [2,3].indexOf(urlParameter.status) == -1 && !isDisabled" @click="showStopDialog" type="danger">终止随访或失访</el-button>
+              <el-button v-if="urlParameter.from=='followUpManagement' && [0, 1].indexOf(urlParameter.status) != -1 && !isDisabled" @click="showStopDialog" type="danger">终止随访或失访</el-button>
             </div>
           </div>
           <div class="flex-start-start" style="height:100%; margin: 20px;">

@@ -24,9 +24,7 @@
                 <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
                     <span class="el-icon-s-tools cur_pointer"></span>
                 </el-tooltip>
-                <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
-                    <span class="el-icon-switch-button cur_pointer"></span>
-                </el-tooltip>
+                <span @click="logout" class="el-icon-switch-button cur_pointer"></span>
             </div>
         </div>
         <div class="ment_list">
@@ -139,6 +137,18 @@ export default {
                     }
                 });
             }
+        },
+        logout () {
+            var that = this;
+            that.$confirm('您确定退出吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                utils.ssoLogout();
+            }).catch((errors) => {
+                console.log(errors);
+            });
         },
         onBack() {
             if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {

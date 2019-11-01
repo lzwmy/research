@@ -25,7 +25,7 @@
                             @click="labGroupSelect({name: diseaseDetail.name+'-全部病例',id: ''})">{{diseaseDetail.name}}-全部病例</span>
                           <table class="dropmenu-table">
                             <tr v-for="subject in subjectDataList" :key="subject.id" v-if="subject.experimentGroups.length !== 0">
-                              <td width="150" :title="subject.name">
+                              <td width="100" :title="subject.name">
                                 {{subject.name.length > 9 ? subject.name.substring(0, 9) + '...' : subject.name}}
                               </td>
                               <td>
@@ -39,13 +39,13 @@
                         </div>
                       </div>
                     </el-form-item>
-                    <el-form-item label="视图列表：" class="change_height">
-                      <multipleCheckBoxSelect ref="multipleCheckBoxSelect" @change="viewChangeHandle" placeholderText="选择视图"
+                    <el-form-item label="视图列表：" class="change_height" >
+                      <multipleCheckBoxSelect style="width: 160px;" ref="multipleCheckBoxSelect" @change="viewChangeHandle" placeholderText="选择视图"
                                               :dataList="viewsList"
                                               :isFilterable="true"></multipleCheckBoxSelect>
                     </el-form-item>
                     <el-form-item label="我的筛选：" class="change_height">
-                      <el-select v-model.trim="currentSelectMySaveConditionId" class="move_top" clearable filterable placeholder="选择我的筛选" size="mini"
+                      <el-select style="width: 160px;" v-model.trim="currentSelectMySaveConditionId" class="move_top" clearable filterable placeholder="选择我的筛选" size="mini"
                                 @change="changeCurrentSelectMySaveCondition" @visible-change="getMySaveCondition">
                         <el-option
                           v-for="item in mySaveConditionViewList"
@@ -68,7 +68,7 @@
                   </div>
                   <div>
                     <el-form-item class="fuzzyQuery rf mt">
-                      <el-input v-model.trim="fuzzyQuery" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
+                      <el-input v-model.trim="fuzzyQuery" style="width: 200px !important;" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
                                 prefix-icon="el-icon-search"
                                 placeholder="请输入搜索内容"></el-input>
                     </el-form-item>
@@ -664,6 +664,7 @@
         this.getOperators();
         this.getDiseaseDetail();
         this.getSubjectDataList();
+        this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
         this.getDataList()
         .then(()=>{
           this.$emit('changeLoadding',false);
@@ -1629,7 +1630,6 @@
             this.$mes('error', "查询患者信息失败!");
           }
         })
-
       },
     },
     beforeRouteEnter (to, from, next) {
@@ -1652,13 +1652,6 @@
   .list_module_content{
     width: 100%;
     box-sizing: border-box;
-  }
-  .allCases-panel {
-    width: 400px;
-    .el-form-item__content {
-      width: 400px;
-      
-    }
   }
 }
 
@@ -1725,6 +1718,18 @@
       margin: 2px 15px 2px 0;
       cursor: pointer;
       text-align: left;
+    }
+  }
+
+  .caseManage {
+    .allCases-panel {
+      width: 382px;
+      .el-form-item__content,
+      .labGroup-section,
+      .labGroup-section .labGroup-dropmenu {
+        width: 382px;
+        min-width: 382px;
+      }
     }
   }
 

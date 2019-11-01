@@ -1,5 +1,5 @@
 <template>
-    <div class="cloud-component patientFollowUp">
+    <div class="cloud-component diseasePatientFollowUp">
         <!-- 搜索区域 -->
         <div class="cloud-search el-form-item-small">
             <el-form :inline="true" :model="form" class="flex-start-center">
@@ -29,15 +29,15 @@
         <div class="cloud-search-list">
             <ul class="card" v-loading="loading">
                 <el-row :gutter="21">
-                    <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
-                        <li class="box flex-start-center">
-                            <div class="box_left" @click="toReportFill(item)">
+                    <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5" v-for="(item,index) in dataList" :key="index">
+                        <li class="box flex-start-center" @click.self="toReportFill(item)">
+                            <div class="box_left">
                                 <h3>{{item.patientName}}</h3>
                                 <p>{{item.genderName}}/{{item.age}}</p>
                             </div>
                             <div class="box_right flex-center-end">
-                                <div @click="toReportFill(item)" class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已填写':'未填写'}}</span></div>
-                                <p @click="toReportFill(item)" class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
+                                <div class="box_tag" :class="item.status?'primary':''"><span>{{item.status?'已填写':'未填写'}}</span></div>
+                                <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
                                     <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
                                         {{item.smsVisit==0?'短信随访':'短信已发送'}}
@@ -60,7 +60,7 @@ import mixins from 'components/mixins';
 import utils from 'components/utils/index';
 
 export default {
-    name: 'patientFollowUp',
+    name: 'diseasePatientFollowUp',
     mixins: [mixins],
     data () {
         return {
@@ -134,6 +134,7 @@ export default {
                     // groupId: '',
                     // crfId: "",
                     // patientName: "",
+                    diseaseId: JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId,
                     startTime: startTime,
                     endTime: endTime,
                     status: this.form.state
@@ -164,7 +165,7 @@ export default {
                 let that = this;
                 let urlParameter={
                     cacheData: false,
-                    formId: parseInt(row.crfId) || null,
+                    formId: row.crfId || "",
                     reportId: row.reportId || '',
                     groupId: row.groupId || "",
                     subjectId: row.subjectId || "",
@@ -252,7 +253,7 @@ export default {
 
 
 <style lang="less" scoped>
-    .patientFollowUp .card {
+    .diseasePatientFollowUp .card {
         flex-wrap: wrap;
         position: relative;
         min-height: 600px;

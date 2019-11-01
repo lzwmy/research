@@ -114,6 +114,7 @@
                         :key="index" 
                         align="center"
                         :min-width="column.label.length * 15 + 50"
+                        :widht="handleWidth(column.label)"
                         show-overflow-tooltip
                         v-if="column.type !='report' && column.type != 'disable'">
                         <template slot-scope="scope" v-show="column.prop=='visitStatus'">
@@ -250,6 +251,13 @@ export default {
         formItemCom
     },
     methods: {
+        handleWidth(label) {
+            let width = '';
+            if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
+                width = 160
+            }
+            return width
+        },
         //操作随访状态样式
         handleStatus(status) {
             switch (status) {
