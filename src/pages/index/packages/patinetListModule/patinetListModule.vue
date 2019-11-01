@@ -99,7 +99,7 @@
                   </div>
                 </div>
                 <el-form-item label prop class="change_height">
-                  <el-select v-model.trim="conditionSet.column" clearable filterable placeholder="选择列名" size="mini">
+                  <el-select v-model.trim="conditionSet.column" clearable filterable placeholder="选择列名" size="mini" style="width: 193px;">
                     <el-option
                       v-for="item in conditionViewList"
                       :key="item.name"
@@ -109,7 +109,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label prop class="change_height">
-                  <el-select v-model.trim="conditionSet.operator" clearable filterable placeholder="选择运算符" size="mini"
+                  <el-select v-model.trim="conditionSet.operator" clearable filterable placeholder="选择运算符" size="mini" style="width: 194px;"
                             @change="changeOperator">
                     <el-option
                       v-for="item in conditionOperatorList"
@@ -1723,12 +1723,12 @@
 
   .caseManage {
     .allCases-panel {
-      width: 382px;
+      width: 400px;
       .el-form-item__content,
       .labGroup-section,
       .labGroup-section .labGroup-dropmenu {
-        width: 382px;
-        min-width: 382px;
+        width: 400px;
+        min-width: 400px;
       }
     }
   }

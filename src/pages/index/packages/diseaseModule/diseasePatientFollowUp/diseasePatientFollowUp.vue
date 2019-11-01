@@ -33,14 +33,14 @@
             <ul class="card" >
                 <!-- <el-row :gutter="21"> -->
                     <!-- <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5" v-for="(item,index) in dataList" :key="index"> -->
-                        <li class="box flex-start-center" @click.self="toReportFill(item)"  v-for="(item,index) in dataList" :key="index">
-                            <div class="box_left">
+                        <li class="box flex-start-center" v-for="(item,index) in dataList" :key="index">
+                            <div class="box_left" @click="toReportFill(item)">
                                 <h3>{{item.patientName}}</h3>
                                 <p>{{item.genderName}}/{{item.age}}</p>
                             </div>
                             <div class="box_right flex-center-end">
-                                <div class="box_tag"><span v-html="handleStatus(item.status)"></span></div>
-                                <p class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
+                                <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
+                                <p class="box_tel" @click="toReportFill(item)"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                                 <div class="box_btn_group flex-start-center">
                                     <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
                                         {{item.smsVisit==0?'短信随访':'短信已发送'}}
@@ -92,6 +92,12 @@ export default {
         document.removeEventListener(this.visibilityChange)
     },
     methods: {
+        initPage() {
+            this.getDataList()
+            .then(()=>{
+                this.$emit('changeLoadding',false)
+            })
+        },
         addEventListenervisibilityChange() {
             let hidden = "";
             this.visibilityChange = "";
@@ -286,9 +292,7 @@ export default {
                 margin-bottom: 21px;
                 transition: all 300ms;
                 cursor: pointer;
-                &:nth-child(5n) {
-                    margin-right: 0;
-                }
+                
                 &:hover {
                     box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
                 }

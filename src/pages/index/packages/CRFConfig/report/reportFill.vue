@@ -8,7 +8,13 @@
             <i class="header_left"></i>
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
-            <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
+            <span v-if="urlParameter.from == 'patientFollowUp'"  style="float: right; margin-right: 10px;">
+              <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
+              <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
+              <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
+            </span>
+
+
             <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
             <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button>-->
           </div>
@@ -136,6 +142,34 @@ export default {
   },
   activated() {},
   methods: {
+    //终止随访/失访随访
+    followUpStop(val) {
+      this.$confirm('确认随访'+val+'?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async() => {
+          let that = this;
+            that.mainLoading = true;
+            try {
+              let result = await this.$http.remindChangeStatus({
+                  "id": this.urlParameter.id,
+                  "status": val == '终止'?3:2,
+                  "userId": JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).userId,
+                  "userName": JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).name
+              });
+              if (result && result.code == "0") {
+                this.$message.success(val+"成功!");
+                this.closePage();
+              }
+              that.mainLoading = false;
+            } catch (error) {
+              that.mainLoading = false;
+              that.$notice("操作失败");
+              console.log(error);
+            }
+        }).catch(() => {});
+    },
     handleScroll() {
       this.getContentTop(document.querySelector("#mainContent").scrollTop);
     },
