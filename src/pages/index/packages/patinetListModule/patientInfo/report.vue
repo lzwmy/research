@@ -36,7 +36,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <pagination :data="dataList" @change="getDataList"></pagination>
+    <!--<pagination :data="dataList" @change="getDataList"></pagination>-->
   </div>
 </template>
 
@@ -91,7 +91,40 @@
           console.log(err)
         }
       },
-      async getDataList(pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+      async getDataList () {
+        let that = this;
+        that.loading = true;
+        let formData = {
+          // offset: 1,
+          // limit: 99,
+          // args: this.dataInfo
+          "patientId": this.reportFillData.patientId,
+          "diseaseId": this.reportFillData.diseaseId,
+          "subjectId": this.reportFillData.subjectId,
+          "groupId": this.reportFillData.groupId,
+        };
+        console.log(formData)
+        try {
+          // let res = await that.$http.PFUGetReportDataList(formData);
+          let res = await that.$http.queryReportListnew(formData);
+          if (res.code == '0') {
+            console.log(res);
+            let obj = {};
+            obj.content = res.data;
+            this.dataList = obj;
+          }else {
+            this.$mes('error', res.msg);
+          }
+          that.loading = false;
+        } catch (err) {
+          that.loading = false;
+          console.log(err)
+        }
+      },
+      // old httpRequest
+      /*async getDataList(pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+        console.log(this.reportFillData);
+        return ;
         let that = this;
         that.loading = true;
         that.paging.currentPageNo = pageNo;
@@ -132,7 +165,7 @@
           that.loading = false;
           console.log(err)
         }
-      },
+      },*/
       toReportFill(row) {
         this.getIdentify(row.patientId)
           .then(() => {
