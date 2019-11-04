@@ -56,7 +56,7 @@
         }
       },
       mounted() {
-        // console.log(this.$route.query.id);
+        // console.log(this.item);
         this.portion = JSON.parse(JSON.stringify(this.item));
         // console.log(this.item)
         // this.crfSectionPreview(this.$route.query.id)

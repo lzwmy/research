@@ -9,7 +9,7 @@
       <div class="basis_nav-box">
         <div class="nav_info-content">
           <div class="portion_input-left">
-            <el-input  placeholder="请输入小节名称"  maxlength="30" v-model="portionName" @input="lengthLimit" size="mini"></el-input>
+            <el-input  placeholder="请输入小节名称"  maxlength="30" v-model="portionName" size="mini"></el-input>
           </div>
           <div class="btn-right-box">
             <el-button type="primary" @click="previewBtn">
@@ -532,12 +532,6 @@
           });
           this.portionPreviewData.portionName = JSON.parse(JSON.stringify(this.portionName)) || "";
           this.portionPreviewData.formItemList = array;
-        },
-        //小节名称长度限制
-        lengthLimit() {
-          if(this.portionName.length == 30) {
-            this.$message.info('名称输入过长');
-          }
         },
         // 配置小节 新增保存
         async portionSave() {

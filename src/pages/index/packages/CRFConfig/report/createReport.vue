@@ -75,7 +75,7 @@
                 <div class="report_body-content" >
                   <!--{{item}}-->
                   <!--<div>暂时无法预览</div>-->
-                  <preview-portion :item="item" ></preview-portion>
+                  <preview-portion v-if="isReset" :item="item" ></preview-portion>
                 </div>
               </div>
             </draggable>
@@ -221,9 +221,6 @@
         //表单名称
         crfNameChange() {
           this.idsUpdateData = 1;
-          if(this.crfName.length == 10) {
-            this.$message.info('名称输入过长');
-          }
         },
         //是否启用
         enableChange() {

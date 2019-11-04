@@ -103,7 +103,8 @@
         return {
           commonList:[],
           personalList:[],
-          loading:false
+          loading:false,
+          diseaseName:""
         }
       },
       methods:{
@@ -122,17 +123,16 @@
         //新建模型
         createModel() {
           let diseaseId = this.$route.query.id;
-          let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
+          /*let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
             return item.id == diseaseId;
-          });
-          // console.log(dataList[0]);
+          });*/
           this.$router.push({
             path:"/modelManage/configModel",
             query:{
               id:diseaseId,
               type:"add",
               modelId:"none",
-              modelName:dataList[0].name,
+              modelName:this.diseaseName,
             }
           })
         },
@@ -214,12 +214,29 @@
           }
           that.modelManageGetDataList();
         },
+        //解决项目分享 获取不到病种名称问题 （临时问题）
+        async getDiseaseInfo() {
+          let that = this;
+          let formData = {
+            diseaseId:that.$route.query.id
+          };
+          try{
+            let data = await that.$http.getDiseaseInfo(formData);
+            console.log(data)
+            if(data.code === 0) {
+              that.diseaseName = data.data.name;
+            }
+          }catch (error) {
+            console.log(error)
+          }
+        }
       },
       deactivated() {
         this.$destroy()
       },
       mounted() {
         this.loading = true;
+        this.getDiseaseInfo()
         this.modelManageGetDataList()
       },
     }
