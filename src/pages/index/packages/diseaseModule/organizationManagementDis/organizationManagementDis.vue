@@ -24,7 +24,7 @@
                         :data="dataList.content"  v-loading="tableLoading" fit>
                         <el-table-column type="index" label="序号" width="90"></el-table-column>
                         <el-table-column prop="userName" label="用户名"></el-table-column>
-                        <el-table-column prop="phoneNumber" label="手机号" width="120"></el-table-column>
+                        <el-table-column prop="phoneNumber" label="手机号"></el-table-column>
                         <el-table-column prop="orgName" label="机构"></el-table-column>
                         <el-table-column prop="deptName" label="科室"></el-table-column>
                         <el-table-column prop="duty" label="职称"></el-table-column>
