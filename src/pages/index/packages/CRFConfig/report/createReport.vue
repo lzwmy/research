@@ -75,7 +75,7 @@
                 <div class="report_body-content" >
                   <!--{{item}}-->
                   <!--<div>暂时无法预览</div>-->
-                  <preview-portion :item="item" ></preview-portion>
+                  <preview-portion v-if="isReset" :item="item" ></preview-portion>
                 </div>
               </div>
             </draggable>
