@@ -219,9 +219,6 @@ export default {
                 console.log(err)
             }
         },
-        pushNote(){
-            return;
-        },
         //推送微信消息
         async pushAssociate(row) {
             let formData = {
@@ -231,6 +228,7 @@ export default {
                 let res = await this.$http.PFUassociatePush(formData);
                 if (res.code == 0) {
                     this.$mes('success', "已向"+row.patientName+"推送微信随访消息!");
+                    this.getDataList();
                 }else {
                     this.$mes('error', "推送消息失败!");
                 }
@@ -247,6 +245,7 @@ export default {
                 let res = await this.$http.PFUsmsPush(formData);
                 if (res.code == 0) {
                     this.$mes('success', "已向"+row.patientName+"推送短信随访消息!");
+                    this.getDataList();
                 }else {
                     this.$mes('error', "推送消息失败!");
                 }
