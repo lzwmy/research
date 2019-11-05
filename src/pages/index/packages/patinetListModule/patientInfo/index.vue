@@ -163,8 +163,8 @@
             v-model="dialogReportForm.time"
             type="date"
             value-format="yyyy-MM-dd"
-            :picker-options="pickerDisabled"
             placeholder="选择日期">
+            <!--:picker-options="pickerDisabled"-->
           </el-date-picker>
         </el-form-item>
       </el-form>

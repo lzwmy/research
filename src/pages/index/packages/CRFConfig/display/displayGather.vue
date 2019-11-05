@@ -38,6 +38,7 @@
               <display-radio v-else-if="it.controlType=='RADIO_BUTTON'" :item="it" :report="getData(it)"/>
               <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
               <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
+              <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
             </el-col>
           </el-row>
           <el-col  v-if="it.baseProperty.layout.wrap == '0'" :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
@@ -53,6 +54,7 @@
             <display-radio v-else-if="it.controlType=='RADIO_BUTTON'" :item="it" :report="getData(it)"/>
             <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
             <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
+            <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
           </el-col>
 <!--          {{it.baseProperty.layout}}-->
         </div>
@@ -88,6 +90,7 @@ import displayRadio from "./displayRadio";
 import displayTable from "./displayTable";
 import displayGather from "./displayGather";
 import displayGatherColumn from "./displayGatherColumn";
+import displayCascader from './displayCascader';
 export default {
   name: "displayGather",
   components: {
@@ -103,7 +106,8 @@ export default {
     displayRadio,
     displayTable,
     displayGather,
-    displayGatherColumn
+    displayGatherColumn,
+    displayCascader
   },
   data() {
     return {

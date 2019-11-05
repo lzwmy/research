@@ -518,10 +518,11 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane class="range_container" label="值域" name="range"
-                       v-if="(controlType=='NUMBER_INPUT'&&basicDataInfo.obj.termUnit.numberIsSwitch == '0')||controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'||controlType=='RADIO_BUTTON'||controlType=='CHECKBOX'||controlType=='GATHER'">
+                       v-if="(controlType=='NUMBER_INPUT'&&basicDataInfo.obj.termUnit.numberIsSwitch == '0')||controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'||controlType=='RADIO_BUTTON'||controlType=='CHECKBOX'||controlType=='GATHER' || controlType == 'CASCADE'">
             <el-form class="alignment">
               <el-form-item label="值域选项" >
-                <el-input type="textarea" :rows="5" v-model="basicDataInfo.obj.termSet.rangeText" ></el-input>
+                <!--v-model="basicDataInfo.obj.termSet.rangeText"-->
+                <el-input type="textarea" :rows="5"  v-model="rangeText"></el-input>
                 <div class="range_notes">每行代表一个选项，可以添加多个选项，名称和代表分值用“^”隔开，分值不是必填项。例：胸痛^10</div>
               </el-form-item>
             </el-form>
@@ -600,6 +601,14 @@
         },
         "sliderValue":function(data) { //缩放比例
           this.progressImgWidth();
+        },
+        "rangeText":function (data) { //值域
+          console.log(eval(data))
+          if(this.controlType == 'CASCADE') {
+            this.basicDataInfo.obj.termSet.rangeText =JSON.stringify(eval(data)) ;
+          }else{
+            this.basicDataInfo.obj.termSet.rangeText = data;
+          }
         }
       },
       data() {
@@ -708,6 +717,7 @@
             75:'75%',
             100:'100%'
           },
+          rangeText:"",// 值域
           basicDataInfo:this.$store.state.CRFConfig.basisDataInfo
         }
       },

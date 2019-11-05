@@ -18,6 +18,7 @@
           <display-number-input v-else-if="item.controlType=='NUMBER_INPUT'" :item="item" :report="report"/>
           <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
           <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
+          <display-cascader v-else-if="item.controlType == 'CASCADE'" :item="item" :report="report"></display-cascader>
         </el-col>
       </el-row>
     <el-col  v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
@@ -35,6 +36,7 @@
       <display-number-input v-else-if="item.controlType=='NUMBER_INPUT'" :item="item" :report="report"/>
       <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
       <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
+      <display-cascader v-else-if="item.controlType == 'CASCADE'" :item="item" :report="report"></display-cascader>
     </el-col>
   </div>
 </template>
@@ -54,6 +56,7 @@ import displayTable from "./displayTable";
 import displayGather from "./displayGather";
 import displayFileUpload from './displayFileUpload';
 import displayScore from './displayScore';
+import displayCascader from './displayCascader';
 import "assets/css/crf.less";
 export default {
   name: "displayItem",
@@ -81,7 +84,8 @@ export default {
     displayTable,
     displayGather,
     displayFileUpload,
-    displayScore
+    displayScore,
+    displayCascader
   },
   methods:{
     formatSpan(item) {

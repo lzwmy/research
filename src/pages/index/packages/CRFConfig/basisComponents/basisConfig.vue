@@ -195,6 +195,10 @@
             {
               name:"评分",
               value:"SCORE"
+            },
+            {
+              name:"级联控件",
+              value:"CASCADE"
             }
             /*{
               name:"超链接",
@@ -677,7 +681,8 @@
     box-sizing: border-box;
     padding: 0 30px;
     .basis_content_config{
-      width: 1120px;
+      /*width: 1120px;*/
+      flex: 1;
       background-color: #ffffff;
       margin-right: 20px;
       border: 1px solid #E5EBEC;
@@ -724,13 +729,14 @@
       }
     }
     .basis_parameter_config{
-      width:490px;
+      /*width:490px;*/
+      width:692px;
       background-color: #ffffff;
       border: 1px solid #E5EBEC;
       box-sizing: border-box;
       padding: 30px 20px 0 20px;
       overflow: auto;
-      flex: 1;
+      /*flex: 1;*/
     }
   }
   .basis_nav-box{

@@ -307,14 +307,14 @@
           exportItem = this.$refs.researchBox.treeDataExportEdit || [];
           displayItem = this.$refs.researchBox.treeDataShowEdit || [];
         }
-        console.log(displayItem)
-        console.log(exportItem)
+        console.log(displayItem);
+        console.log(exportItem);
         let that = this;
         let fromData ={
           "modelId": "",
           "modelName": that.modelName || "",
           "modelDesc": that.modelDesc || "",
-          "modelType": that.shareType || "",
+          "modelType": that.shareType || 0,
           "formRelation": that.relationFrom || "",
           "diseaseId": that.$route.query.id,
           "crfList": that.searchTerm||[],
