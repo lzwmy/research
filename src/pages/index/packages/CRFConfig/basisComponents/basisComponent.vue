@@ -131,6 +131,10 @@
             {
               name:"评分",
               value:"SCORE"
+            },
+            {
+              name:"级联控件",
+              value:"CASCADE"
             }
             /*{
               name:"超链接",
