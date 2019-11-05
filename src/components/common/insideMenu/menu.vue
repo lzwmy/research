@@ -7,7 +7,8 @@
         <div class="cont" v-if="$route.meta.belongToGroup == 'insideView'">
             <div class="userInfo flex-center-center">
                 <div class="img">
-                    <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像">
+                    <!-- <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像"> -->
+                    <img src="../../../../static/img/logo/head.png" alt="头像">
                 </div>
                 <div>
                     <p>{{$store.state.user.account}}</p>

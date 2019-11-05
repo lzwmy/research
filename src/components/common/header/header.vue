@@ -20,7 +20,8 @@
           <el-dropdown class="li systemSet">
             <div class="welcomeText flex-between-center cur_pointer">
               <div class="img_head">
-                <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像">
+                <!-- <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" alt="头像"> -->
+                <img src="../../../../static/img/logo/head.png" alt="头像">
               </div>
               <p>{{username.length > 15 ? username.substring(0, 15)+ '...' : username}}</p>
               <span class="el-icon-arrow-down"></span>
