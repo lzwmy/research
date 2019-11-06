@@ -387,3 +387,15 @@
 .score_content .content_item .item_single-input{
   margin-left: 5px;
 }
+/*级联控件*/
+.CASCADE{
+
+}
+.CASCADE .CASCADE_title{
+  width: 188px;
+  display: table-cell;
+  font-size: 14px;
+}
+.CASCADE .CASCADE_box{
+  display: table-cell;
+}
