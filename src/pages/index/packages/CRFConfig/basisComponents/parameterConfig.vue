@@ -1194,6 +1194,8 @@
           // console.log(newData.obj.baseProperty.layout.selection.includes(newData.obj.baseProperty.layout.displayChecked[0]));
           this.selectList = newData.obj.baseProperty.layout.selection;
           this.layoutColumn = newData.obj.baseProperty.layout.columns;
+          //值域赋值
+          this.rangeText = newData.obj.termSet.rangeText;
           if (!this.dataSetting.filter) {
             this.dataSetting.filter = [];
           }
