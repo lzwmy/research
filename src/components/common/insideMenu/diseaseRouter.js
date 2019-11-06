@@ -16,6 +16,14 @@ const router = [
         name: 'patientListModule',
     },
     {
+        ico: 'diseasePatientFollowUp',
+        menuName: '患者随访',
+        menuCode: "0110033",
+        menuPath: '/diseasePatientFollowUp',
+        children: [],
+        name: 'diseasePatientFollowUp'
+    },
+    {
         ico: 'reportList',
         menuName: '报告列表',
         menuCode: "011003",
