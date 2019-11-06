@@ -187,7 +187,8 @@
         multipleProcessTree(array,data) {
           let arrayIndexOf = this.searchList.map(item=>{
             return item.reportName
-          })
+          });
+          console.log(array[0]);
           if(arrayIndexOf.indexOf(array[0].labelName)!='-1') {
             //匹配状态 选中状态是否 一致 如果是一致就添加 否则就提示信息
             this.matchReportName(this.searchList[arrayIndexOf.indexOf(array[0].labelName)],array)
@@ -317,11 +318,21 @@
                       this.$store.commit('STATE_GRAY',item.query);
                     }
                   });*/
-                  if(this.searchList.length>1){
+
+                  let flag = false;
+                  this.searchList.forEach(item => {
+                    if(item.reportName == result[0].labelName){
+                      flag = true;
+                    }
+                  });
+                  //查询项列表> 0 && 添加选项 存在当前报告
+                  if(this.searchList.length>1 && flag){
                     this.multipleProcessTree(result,copyData)
+                    console.log('触发1')
                   }else{
                     //点击树形结构添加对应的 数据
                     this.processTree(result,copyData);
+                    console.log('触发2')
                   }
             }
           }

@@ -22,13 +22,13 @@
                     <el-table
                         :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                         :data="dataList.content"  v-loading="tableLoading" fit>
-                        <el-table-column type="index" label="序号" min-width="90"></el-table-column>
-                        <el-table-column prop="userName" label="用户名" min-width="120"></el-table-column>
-                        <el-table-column prop="phoneNumber" label="手机号" min-width="110"></el-table-column>
-                        <el-table-column prop="orgName" label="机构"></el-table-column>
-                        <el-table-column prop="deptName" label="科室"></el-table-column>
-                        <el-table-column prop="duty" label="职称"></el-table-column>
-                        <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
+                        <el-table-column type="index" label="序号" min-width="100" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="userName" label="用户名" min-width="90" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="phoneNumber" label="手机号" min-width="110" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="orgName" label="机构" min-width="110" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="deptName" label="科室" min-width="110" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="duty" label="职称" min-width="110" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="createTime" label="创建时间" width="180" show-overflow-tooltip></el-table-column>
                         <el-table-column label="操作" width="120">
                             <template slot-scope="scope">
                                 <div>
