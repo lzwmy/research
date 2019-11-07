@@ -1058,7 +1058,7 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-
+        position: relative;
         h3 {
           height: 50px;
           border-bottom: 1px solid rgba(229, 235, 236, 1);
@@ -1072,7 +1072,7 @@
         .top {
           background-color: #fff;
           padding: 0 22px 15px;
-          min-height: 200px;
+          height: 200px;
           margin-bottom: 30px;
           color: rgba(57, 66, 99, 1);
 
@@ -1113,10 +1113,19 @@
           background-color: #fff;
           padding: 14px 22px;
           color: rgba(57, 66, 99, 1);
-          position: relative;
-
+          position: absolute;
+          top: 230px;
+          left: 0;
+          width: 100%;
+          bottom: 0;
           .el-timeline {
             padding: 20px 10px;
+            overflow: auto;
+            position: absolute;
+            top: 82px;
+            left: 20px;
+            right: 0;
+            bottom: 0;
           }
 
           img {

@@ -30,7 +30,7 @@
         </div>
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <ul class="card" v-loading="loading">
+            <ul class="card" v-loading="loading" v-if="dataList.length != 0">
                 <el-row :gutter="21">
                     <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
                         <li class="box flex-start-center">
@@ -54,6 +54,12 @@
                     </el-col>
                 </el-row>
             </ul>
+            <div v-else class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+                <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
+                    <use xlink:href="#iconzu11"></use>
+                </svg>
+                <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
+            </div>
         </div>
     </div>
 </template>
@@ -337,6 +343,9 @@ export default {
                         &:hover {
                             background:rgba(229, 229, 229, 1);
                             color: rgba(93, 113, 145, 1);
+                        }
+                        &.is-disabled{
+                            color: #c9cdd4;
                         }
                     }
                 }
