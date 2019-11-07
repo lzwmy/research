@@ -92,11 +92,11 @@
 
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" v-loading="tableLoading">
                 <el-table 
                     ref="refTable" fit border
                     :data="dataList.content"
-                    v-loading="tableLoading"
+                    
                     @selection-change="handleSelectionChange"
                     :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
                     <el-table-column type="selection" fixed align="center" width="50"></el-table-column>
@@ -330,7 +330,7 @@ export default {
                 time = this.form.time;
             }
             let formData = {
-                offset: pageNo -1,
+                offset: pageNo,
                 limit: pageSize,
                 subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
                 subjectGroupId: this.currentGrounpId,
@@ -525,6 +525,9 @@ export default {
         }
     }
     .researchObject {
+        .echartsContain {
+            min-height: 600px;
+        }
         .el-table {
             padding: 0 !important;
             .setting {

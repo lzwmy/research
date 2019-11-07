@@ -9,9 +9,10 @@
             </div>
         </div>
         <!-- 搜索区域 -->
-        <div class="cloud-search flex-between-center">
+        <div class="cloud-search flex-between-center" v-if="!showGuide">
             <div class="search_group flex-start-center">
                 <searchCom 
+                    v-if="!showGuide"
                     ref="refSearch"
                     @sendGroupList="getGroupList" 
                     @selectGroup="handleSelectGroup">
@@ -97,12 +98,11 @@
 
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1"  v-loading="tableLoading">
                 <el-table 
-                    v-if="dataList.content.length != 0"
                     ref="refTable" fit border
+                    v-if="dataList.content.length != 0"
                     :data="dataList.content"
-                    v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
                     :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
                     <el-table-column type="selection" align="center" width="50" fixed></el-table-column>
@@ -121,51 +121,56 @@
                             <p><i  v-show="column.prop=='visitStatus'" class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
                         </template>
                     </el-table-column>
-                    <span v-for="(li,liIndex) in dataList.header" :key="'1_'+liIndex">
-                        <el-table-column v-if="li.type =='report'" :label="li.label" align="center">
-                            <el-table-column 
-                                v-for="(point,poindex) in li.prop" 
-                                :key="'2_'+poindex"
-                                :prop="point.prop" 
-                                :label="point.label" 
-                                :min-width="point.label.length * 15 + 20"
-                                align="center">
-                                <template slot-scope="scope">
-                                    <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
-                                        <div slot="content">
-                                            <p v-if="handlePoint(scope.row[point.prop]).status == 1 && handlePoint(scope.row[point.prop]).planDate">计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
-                                            <p v-else-if="handlePoint(scope.row[point.prop]).status == 1 && !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
-                                            <div v-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
-                                                <p>随访员：{{handlePoint(scope.row[point.prop]).updator}}</p>
-                                                <p>计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
-                                                <p>时间：{{handlePoint(scope.row[point.prop]).updateTime}}</p>
-                                                <p v-if="handlePoint(scope.row[point.prop]).note">备注：{{handlePoint(scope.row[point.prop]).note}}</p>
-                                            </div> 
-                                        </div>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0 && li.startType == 1 && point.prop == li.prop[0].prop"  type="primary" style="background:#00B8DF; font-size:12px;padding:0 5px;"> 开始随访 </el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
-                                        <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
-                                        <el-button v-else-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333; cursor: default;"></el-button> 
-                                    </el-tooltip>
-                                </template>
-                            </el-table-column>
+                    <el-table-column  :label="li.label" align="center" v-for="(li,liIndex) in headerReportList" :key="'1_'+liIndex">
+                        <el-table-column 
+                            v-for="(point,poindex) in li.prop" 
+                            :key="'2_'+poindex"
+                            :prop="point.prop" 
+                            :label="point.label" 
+                            :min-width="point.label.length * 15 + 20"
+                            align="center">
+                            <template slot-scope="scope">
+                                <el-tooltip :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
+                                    <div slot="content">
+                                        <p v-if="handlePoint(scope.row[point.prop]).status == 1 && handlePoint(scope.row[point.prop]).planDate">计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
+                                        <p v-else-if="handlePoint(scope.row[point.prop]).status == 1 && !handlePoint(scope.row[point.prop]).planDate">计划时间：无</p>
+                                        <div v-if="parseInt(handlePoint(scope.row[point.prop]).status) >= 2">
+                                            <p>随访员：{{handlePoint(scope.row[point.prop]).updator}}</p>
+                                            <p>计划时间：{{handlePoint(scope.row[point.prop]).planDate}}</p>
+                                            <p>时间：{{handlePoint(scope.row[point.prop]).updateTime}}</p>
+                                            <p v-if="handlePoint(scope.row[point.prop]).note">备注：{{handlePoint(scope.row[point.prop]).note}}</p>
+                                        </div> 
+                                    </div>
+                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0 && li.startType == 1 && point.prop == li.prop[0].prop"  type="primary" style="background:#00B8DF; font-size:12px;padding:0 5px;"> 开始随访 </el-button>
+                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></el-button>
+                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
+                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>
+                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 3"  type="text" icon="icon iconfont iconzhongzhi" style="color: #DB5452;"></el-button>
+                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 4"  type="text" icon="icon iconfont iconwancheng1" style="color: #00BE90;"></el-button>
+                                    <el-button v-else-if="handlePoint(scope.row[point.prop]).status == 5"  type="text" icon="el-icon-minus" style="color: #333; cursor: default;"></el-button> 
+                                </el-tooltip>
+                            </template>
                         </el-table-column>
-                    </span>
+                    </el-table-column>
                     <el-table-column label="操作" width="60" align="center" fixed="right">
                         <template slot-scope="scope">
                             <el-button @click="" type="text" icon="el-icon-message"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
+
+                <div v-show="dataList.content.length == 0 && !showGuide" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+                    <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
+                        <use xlink:href="#iconzu11"></use>
+                    </svg>
+                    <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
+                </div>
                 <!-- 分页 -->
                 <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
 
 
                 <!-- 引导图 -->
-                <div v-if="showGuide" class="guide flex-center-center" style="height: 500px;">
+                <div v-show="showGuide"  class="guide flex-center-center" style="height: 500px;">
                     <div class="guide_box flex-center-start flex-wrap">
                         <div class="guide_wrap">
                             <p class="text_center">#我的随访计划#</p>
@@ -238,6 +243,13 @@ export default {
             hidden:'',
         }
     },
+    computed: {
+        headerReportList() {
+            return this.dataList.header.filter(item=>{
+                return item.type == 'report'
+            })
+        }
+    },
     created() {
         this.getFGroupList();
     },
@@ -303,6 +315,9 @@ export default {
             this.multipleSelection = val;
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+            if (this.showGuide) {
+                return;
+            }
             let that = this;
             this.popoverSearchVisible = false;
             that.tableLoading = true;
@@ -336,7 +351,7 @@ export default {
             };
             try {
                 let res = await that.$http.followUpManagementTable(formData);
-                if (res.code == '0') {
+                if (res.code == '0' && res.data.body.length != 0) {
                     let obj = {
                         content: res.data.body,
                         header: res.data.header
@@ -364,10 +379,10 @@ export default {
                 let res = await this.$http.followUpPlanStageList(params);
                 if (res.code == '0') {
                     //判断是否存在随访点
-                    let isExist = res.data.some((li)=>{
-                        return li.stages.length != 0;
+                    let isExist = res.data.every((li)=>{
+                        return li.stages.length == 0;
                     })
-                    this.showGuide = !isExist;
+                    this.showGuide = isExist;
                 }
             } catch (err) {
                 console.log(err)
@@ -426,9 +441,9 @@ export default {
             this.currentGrounpId = data;
             //查询两遍，解决table提示框不显示问题
             this.getDataList(0,15)
-            .then(()=>{
-                this.getDataList(0,15);
-            })
+            // .then(()=>{
+                // this.getDataList(0,15);
+            // })
         },
         //获取全部crf表单列表和列表下的所有指标
         handleAllFormItem(data) {
@@ -504,6 +519,9 @@ export default {
     .followUpManagement {
         .cloud-search-list .bigContain {
             background-color: #fff;
+        }
+        .echartsContain {
+            min-height: 600px;
         }
         .el-table {
             padding: 0;

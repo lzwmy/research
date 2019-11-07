@@ -30,30 +30,32 @@
         </div>
         <!--搜索结果-->
         <div class="cloud-search-list" v-loading="loading">
-            <ul class="card" >
-                <!-- <el-row :gutter="21"> -->
-                    <!-- <el-col :xs="5" :sm="5" :md="5" :lg="5" :xl="5" v-for="(item,index) in dataList" :key="index"> -->
-                        <li class="box flex-start-center" v-for="(item,index) in dataList" :key="index">
-                            <div class="box_left" @click="toReportFill(item)">
-                                <h3>{{item.patientName}}</h3>
-                                <p>{{item.genderName}}/{{item.age}}</p>
-                            </div>
-                            <div class="box_right flex-center-end">
-                                <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
-                                <p class="box_tel" @click="toReportFill(item)"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
-                                <div class="box_btn_group flex-start-center">
-                                    <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
-                                        {{item.smsVisit==0?'短信随访':'短信已发送'}}
-                                    </el-button>
-                                    <el-button class="flex-center-center" :style="item.mpVisit!=0?'font-size: 12px;':''" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>
-                                    {{item.mpVisit==0?'微信随访':'微信已发送'}}
-                                    </el-button>
-                                </div>
-                            </div>
-                        </li>
-                    <!-- </el-col> -->
-                <!-- </el-row> -->
+            <ul v-if="dataList.length != 0" class="card" >
+                <li class="box flex-start-center" v-for="(item,index) in dataList" :key="index">
+                    <div class="box_left" @click="toReportFill(item)">
+                        <h3>{{item.patientName}}</h3>
+                        <p>{{item.genderName}}/{{item.age}}</p>
+                    </div>
+                    <div class="box_right flex-center-end">
+                        <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
+                        <p class="box_tel" @click="toReportFill(item)"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
+                        <div class="box_btn_group flex-start-center">
+                            <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
+                                {{item.smsVisit==0?'短信随访':'短信已发送'}}
+                            </el-button>
+                            <el-button class="flex-center-center" :style="item.mpVisit!=0?'font-size: 12px;':''" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>
+                            {{item.mpVisit==0?'微信随访':'微信已发送'}}
+                            </el-button>
+                        </div>
+                    </div>
+                </li>
             </ul>
+            <div v-else class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+                <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
+                    <use xlink:href="#iconzu11"></use>
+                </svg>
+                <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
+            </div>
         </div>
     </div>
 </template>
@@ -324,10 +326,6 @@ export default {
                         display: flex;
                         justify-content: flex-end;
                         font-size: 12px;
-
-                        span {
-                            
-                        }
                     }
                     .box_tel {
                         width: 100%;
@@ -360,6 +358,9 @@ export default {
                             &:hover {
                                 background:rgba(229, 229, 229, 1);
                                 color: rgba(93, 113, 145, 1);
+                            }
+                            &.is-disabled{
+                                color: #c9cdd4;
                             }
                         }
                     }

@@ -315,11 +315,12 @@ export default {
                     let data = await that.$http.ORGDisDeleteUser(formData);
                     if (data.code == '0') {
                         this.$mes('success',data.message || '删除成功');
-                        if(that.paging.currentPageNo > 1) {
-                            that.getDataList(that.paging.currentPageNo -1 , that.paging.currentPageSize);
-                        }else {
-                            that.getDataList(that.paging.currentPageNo, that.paging.currentPageSize);
-                        }
+                        that.getDataList(that.paging.currentPageNo, that.paging.currentPageSize)
+                        .then(()=>{
+                            if(this.dataList.content.length == 0 && that.paging.currentPageNo > 1) {
+                                that.getDataList(that.paging.currentPageNo -1 , that.paging.currentPageSize);
+                            }
+                        })
                     }
                 } catch (error) {
                     console.log(error)
