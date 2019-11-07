@@ -9,6 +9,7 @@
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
       <!--:class="['view_type_radio_btn',{'width_auto_type':item.controlType=='RADIO_BUTTON'}]"-->
+      <!--{{item.baseProperty.layout}}-->
       <div :class="item.controlType+'_box'" @click="onFocus">
         <el-radio-group v-model="report.value">
           <el-radio
