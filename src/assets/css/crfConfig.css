@@ -344,7 +344,8 @@
 }
 
 .SCORE .SCORE_box .SCORE_rangeValue {
-  padding-right: 20px;
+  /*padding-right: 20px;*/
+  padding-right: 45px;
   font-size: 14px;
 }
 .dialog_score .el-dialog__body{

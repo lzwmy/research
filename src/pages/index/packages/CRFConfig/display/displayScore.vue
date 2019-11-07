@@ -5,8 +5,8 @@
       <span>{{item.controlDisplayName}}</span>
     </div>
     <div :class="item.controlType+'_box'">
-      <span :class="item.controlType+'_rangeValue'">{{report.value}}</span>
-      <el-button type="primary" @click="item.baseProperty.scoreInfo.scoreStatus = true">评分</el-button>
+      <span :class="item.controlType+'_rangeValue'">{{report.value || '0.00'}}</span>
+      <el-button type="primary" @click="item.baseProperty.scoreInfo.scoreStatus = true" style="width: 120px;">评分</el-button>
     </div>
     <el-dialog :visible.sync="item.baseProperty.scoreInfo.scoreStatus"
                class="dialog_score"
@@ -97,7 +97,8 @@
   }
 
   .SCORE .SCORE_box .SCORE_rangeValue {
-    padding-right: 20px;
+    /*padding-right: 20px;*/
+    padding-right: 45px;
     font-size: 14px;
   }
 

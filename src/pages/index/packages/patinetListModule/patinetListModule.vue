@@ -209,7 +209,7 @@
                         :label="column.label" 
                         sortable 
                         v-for="column in conditionViewList" 
-                        :width="column.name == 'GENDER_NAME'?'80px':'' || column.name == 'AGE'?'80px':'' "
+                        :min-width="column.name == 'GENDER_NAME'?'50px':'' || column.name == 'AGE'?'80px':'' "
                         :key="column.name" 
                         show-overflow-tooltip>
                       </el-table-column>
@@ -1773,6 +1773,11 @@
   }
   .el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
     background-color: #ffffff;
+  }
+
+  .patient_list_module .el-table--scrollable-y .el-table__body-wrapper{
+    overflow-y: auto;
+    overflow-x:auto;
   }
 </style>
 

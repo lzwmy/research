@@ -603,7 +603,6 @@
           this.progressImgWidth();
         },
         "rangeText":function (data) { //值域
-          console.log(eval(data))
           if(this.controlType == 'CASCADE') {
             this.basicDataInfo.obj.termSet.rangeText =JSON.stringify(eval(data)) ;
           }else{
