@@ -76,6 +76,18 @@ export default {
         }
       });
     },
+    async getUserRoles() {
+        try {
+            let res = await this.$http.ORGDisShareUserRole();
+            if (res.code == '0') {
+                return Promise.resolve(res)
+            }else {
+                this.$mes('error', res.msg);
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    },
     handleLogin() {
       let params = {
         code: this.form.validCode,
@@ -93,7 +105,14 @@ export default {
             userId: res.data.userId
           };
           this.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-          window.location.href = './index.html#/diseaseChart?id='+ utils.getQuery('id');
+          this.getUserRoles().then((res)=>{
+            this.$store.commit('saveDiseaseInfo',{
+              diseaseId: JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId,
+              isAdmin: false,
+              roles: res.data || []
+            });
+            window.location.href = './index.html#/diseaseChart?id='+ utils.getQuery('id');
+          })
           return;
         } else {
           if(res.code == 40) {

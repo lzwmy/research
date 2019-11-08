@@ -3,7 +3,8 @@
     <div class="sd-main-wrapper flex-start-center" v-loading="loading">
       <div class="nodata zwarning" v-if="dataList.length === 0">
         您暂未授权任何病种的权限
-        <router-link tag="a" style="color: #2d8cf0;" :to="{ name: 'userManage'}" v-if="isHasUserManageAuth"> 去授权&gt;</router-link>
+        <!-- <router-link tag="a" style="color: #2d8cf0;" :to="{ path: '/userManage'}" v-if="isHasUserManageAuth"> 去授权&gt;</router-link> -->
+        <span class="cur_pointer" style="color: #2d8cf0;" @click="toAuthorize" v-if="isHasUserManageAuth"> 去授权&gt;</span>
       </div>
       <div v-else  style="width:100%;">
         <!-- <div class="search_content flex-between-center">
@@ -119,6 +120,20 @@ export default {
         console.log(error);
       }
     },
+    //去授权
+    toAuthorize() {
+      let menuList = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_MENULIST')).find(li=>{return li.menuName == '系统管理'})
+      let data = {
+        fromRouter: {
+            path: this.$route.path,
+            meta: this.$route.meta
+        },
+        menuList: menuList.children,
+        title: '系统管理',
+      }
+      sessionStorage.setItem('insideMenuData',JSON.stringify(data))
+      this.$router.push('/userManage')
+    },
     toLink(item) {
       let list = [];
       let menuPath = '/index';
@@ -148,7 +163,8 @@ export default {
       .then((res)=>{
         this.$store.commit('saveDiseaseInfo',{
           diseaseId: item.id,
-          isAdmin: res
+          isAdmin: res,
+          roles: []
         });
         this.$router.push({
           path: list[0].menuPath,

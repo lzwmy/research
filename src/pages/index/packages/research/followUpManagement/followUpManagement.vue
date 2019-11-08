@@ -5,14 +5,14 @@
             <div class="head_content cur_pointer">
                 <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="">批量导入随访数据</el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">导出随访阶段数据</el-button>
-                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录{{showGuide}}</el-button>
             </div>
         </div>
         <!-- 搜索区域 -->
-        <div class="cloud-search flex-between-center" v-if="!showGuide">
+        <div class="cloud-search flex-between-center" v-if="showGuide">
             <div class="search_group flex-start-center">
                 <searchCom 
-                    v-if="!showGuide"
+                    v-if="showGuide"
                     ref="refSearch"
                     @sendGroupList="getGroupList" 
                     @selectGroup="handleSelectGroup">
@@ -159,7 +159,7 @@
                     </el-table-column>
                 </el-table>
 
-                <div v-show="dataList.content.length == 0 && !showGuide" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+                <div v-show="dataList.content.length == 0 && showGuide" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
                     <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
                         <use xlink:href="#iconzu11"></use>
                     </svg>
@@ -170,7 +170,7 @@
 
 
                 <!-- 引导图 -->
-                <div v-show="showGuide"  class="guide flex-center-center" style="height: 500px;">
+                <div v-show="!showGuide"  class="guide flex-center-center" style="height: 500px;">
                     <div class="guide_box flex-center-start flex-wrap">
                         <div class="guide_wrap">
                             <p class="text_center">#我的随访计划#</p>
@@ -315,7 +315,7 @@ export default {
             this.multipleSelection = val;
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
-            if (this.showGuide) {
+            if (!this.showGuide) {
                 return;
             }
             let that = this;
@@ -379,10 +379,9 @@ export default {
                 let res = await this.$http.followUpPlanStageList(params);
                 if (res.code == '0') {
                     //判断是否存在随访点
-                    let isExist = res.data.every((li)=>{
-                        return li.stages.length == 0;
+                    this.showGuide = res.data.some((li)=>{
+                        return li.stages.length != 0;
                     })
-                    this.showGuide = isExist;
                 }
             } catch (err) {
                 console.log(err)

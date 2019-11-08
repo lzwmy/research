@@ -138,7 +138,7 @@
                         <el-button type="primary" icon="icon iconfont iconzujian38" @click="saveConfig">保 存</el-button>
                     </div>
                 </div>
-                <div v-else class="guide flex-center-center">
+                <div v-show="!isExistStage" class="guide flex-center-center">
                     <img src="../images/guide_followUpPlan.png" alt="引导图">
                 </div>
             </div>
@@ -181,7 +181,7 @@ export default {
     data () {
         return {
             activeGroup: '',
-            isExistStage: false,
+            isExistStage: true,
             defaultOpeneds: [],
             menuList: [],
             crfList: [],

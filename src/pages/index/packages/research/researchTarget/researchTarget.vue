@@ -29,7 +29,7 @@
           </el-tab-pane>
       </el-tabs>
     <!-- 引导图 -->
-    <div v-if="editableTabs.length==0" class="guide flex-center-center" style="height: 500px;">
+    <div v-if="isExsit" class="guide flex-center-center" style="height: 500px;">
       <div class="guide_box flex-center-start flex-wrap">
         <div class="guide_wrap">
           <p class="text_center">#创建研究指标#</p>
@@ -79,6 +79,7 @@
         addStatus:this.tabAddStatus || true,
         editableTabsValue: 0,
         editableTabs: [],
+        isExsit: false,
         tabIndex: 0,
         crfNames:"",
         options:{
@@ -254,6 +255,11 @@
           let data = await that.$http.queryResearchForm(formData);
           if(data.code === 0) {
             that.editableTabs = data.data;
+          }
+          if(that.editableTabs.length == 0) {
+            this.isExsit = true;
+          }else {
+            this.isExsit = false;
           }
         }catch (error) {
           console.log(error)

@@ -53,7 +53,8 @@ const user = {
     //专病科研数据
     diseaseInfo: {
       diseaseId: CURR_DISEASE_INFO.diseaseId?CURR_DISEASE_INFO.diseaseId:'',
-      isAdmin: CURR_DISEASE_INFO.isAdmin?CURR_DISEASE_INFO.isAdmin:false  //是否为管理员
+      isAdmin: CURR_DISEASE_INFO.isAdmin?CURR_DISEASE_INFO.isAdmin:false,  //是否为管理员
+      roles: CURR_DISEASE_INFO.roles
     },
     session_isDislpayArrow: false
   },

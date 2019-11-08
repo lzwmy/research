@@ -1411,6 +1411,13 @@
       "font_class": "diseasePatientFollowUp",
       "unicode": "e6ed",
       "unicode_decimal": 59117
+    },
+    {
+      "icon_id": "11584549",
+      "name": "暂无内容",
+      "font_class": "zu11",
+      "unicode": "e6ee",
+      "unicode_decimal": 59118
     }
   ]
 }

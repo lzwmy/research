@@ -86,8 +86,8 @@ export default {
         this.defaultActive = this.$route.path;
         //专病科研模块显示组织管理页面：
         if( this.$route.meta.belongToGroup == 'insideView') {
-            //非分享登录,且为管理员
-            if(sessionStorage.getItem('CURR_LOGIN_TYPE') != "disease" && JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).isAdmin) {
+            //非分享登录,为管理员 or 分享登录为分中心管理员
+            if(this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1 || this.$store.state.user.diseaseInfo.isAdmin) {
                 this.menuList.push({
                     ico: 'organizationManagement',
                     menuName: '组织管理',
