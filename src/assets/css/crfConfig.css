@@ -54,6 +54,12 @@
   display: table-cell;
   /*vertical-align: middle;*/
 }
+.SINGLE_INPUT .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+}
 .SINGLE_INPUT .SINGLE_INPUT_box .el-input {
   min-width: 188px;
 }
@@ -71,10 +77,23 @@
   /*padding-left: 1%;*/
   font-size: 14px;
 }
+.MULTI_INPUT .MULTI_INPUT_title {
+  width: 188px;
+  display: table-cell;
+  vertical-align: middle;
+  /*padding-left: 1%;*/
+  font-size: 14px;
+}
 .CHECKBOX .CHECKBOX_box {
   min-width: 164px;
   max-width: 800px;
   display: table-cell;
+}
+.CHECKBOX .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .CHECKBOX .CHECKBOX_box .el-checkbox-group {
   min-width: 164px;
@@ -104,6 +123,13 @@
   width: 188px;
   display: table-cell;
 }
+.SINGLE_COMBOX .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+}
+
 .SINGLE_COMBOX .SINGLE_COMBOX_box .el-input {
   width: 188px;
 }
@@ -120,6 +146,12 @@
   display: table-cell;
   /*padding-left: 1%;*/
   font-size: 14px;
+}
+.DATE .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .DATE .DATE_box {
   width: 188px;
@@ -141,6 +173,12 @@
   font-size: 14px;
   /*padding-left: 1%;*/
 }
+.DATE_TIME .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+}
 .DATE_TIME .DATE_TIME_box {
   width: 188px;
   display: table-cell;
@@ -160,6 +198,12 @@
   display: table-cell;
   vertical-align: middle;
   font-size: 14px;
+}
+.FILE_UPLOAD .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .FILE_UPLOAD .FILE_UPLOAD_file_box {
   display: table-cell;
@@ -215,6 +259,12 @@
   vertical-align: middle;
   font-size: 14px;
 }
+.LABEL .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+}
 .LABEL .LABEL_box{
   width: 188px;
   display:table-cell;
@@ -231,6 +281,12 @@
   display: table-cell;
   /*padding-left: 1%;*/
   font-size: 14px;
+}
+.MULTI_COMBOX .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .MULTI_COMBOX .MULTI_COMBOX_box {
   width: 188px;
@@ -249,6 +305,12 @@
   /*padding-left: 1%;*/
   font-size: 14px;
 }
+.MULTI_INPUT .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+}
 .MULTI_INPUT .MULTI_INPUT_box {
   display: table-cell;
 }
@@ -263,6 +325,12 @@
   display: table-cell;
   /*padding-left: 1%;*/
   font-size: 14px;
+}
+.NUMBER_INPUT .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .NUMBER_INPUT .NUMBER_INPUT_box{
   min-width: 188px;
@@ -293,6 +361,13 @@
   font-size: 14px;
   vertical-align: middle;
   /*padding-left: 1%;*/
+}
+.RADIO_BUTTON .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+  vertical-align: top;
 }
 .RADIO_BUTTON .RADIO_BUTTON_box {
   min-width: 164px;
@@ -338,7 +413,12 @@
   display: table-cell;
   font-size: 14px;
 }
-
+.SCORE .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+}
 .SCORE .SCORE_box {
   display: table-cell;
 }
@@ -396,6 +476,12 @@
   width: 188px;
   display: table-cell;
   font-size: 14px;
+}
+.CASCADE .singleColumn{
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .CASCADE .CASCADE_box{
   display: table-cell;

@@ -1,6 +1,6 @@
 <template>
     <div :class="item.controlType">
-        <div v-if="item.displayIsVisible=='1'" :class="item.controlType+'_title'">
+        <div v-if="item.displayIsVisible=='1'" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
           <span >{{item.controlDisplayName}}</span>
         </div>
       <div :class="item.controlType+'_box'">
@@ -146,5 +146,14 @@
   }
   .CASCADE .CASCADE_box{
     display: table-cell;
+  }
+  .CASCADE .singleColumn{
+    width: auto;
+    min-width: 188px;
+    max-width: 500px;
+    padding-right: 5px;
+  }
+  .CASCADE .CASCADE_box .el-select{
+    width: 188px;
   }
 </style>

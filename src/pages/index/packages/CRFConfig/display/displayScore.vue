@@ -1,7 +1,7 @@
 <template>
   <div :class="item.controlType">
     <!--{{item.baseProperty}}-->
-    <div :class="item.controlType+'_title'">
+    <div v-if="item.displayIsVisible=='1'" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
       <span>{{item.controlDisplayName}}</span>
     </div>
     <div :class="item.controlType+'_box'">
@@ -95,10 +95,15 @@
   .SCORE .SCORE_box {
     display: table-cell;
   }
-
+  .SCORE .singleColumn {
+    width: auto;
+    min-width: 188px;
+    max-width: 500px;
+    padding-right: 5px;
+  }
   .SCORE .SCORE_box .SCORE_rangeValue {
     /*padding-right: 20px;*/
-    padding-right: 45px;
+    padding-right: 35px;
     font-size: 14px;
   }
 

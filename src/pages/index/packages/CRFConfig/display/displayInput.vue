@@ -2,7 +2,7 @@
   <!--单行文本框-->
   <div :class="item.controlType">
     <!--style="width:200px;display:inline-block;font-size: 14px;" -->
-    <div  v-if="item.displayIsVisible=='1'&&showLabel" :class="item.controlType+'_title'">
+    <div  v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
       <i v-if="crfCurrentControl.item==item" class="el-icon-edit"  style="color:#3b81f0"/>
       <span >{{item.controlDisplayName}}</span>
       <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
@@ -152,6 +152,12 @@ export default {
   /*padding-left: 1%;*/
   font-size: 14px;
   /*vertical-align: middle;*/
+}
+.SINGLE_INPUT .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .SINGLE_INPUT .SINGLE_INPUT_box {
   /* width: 188px; */

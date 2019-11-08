@@ -29,7 +29,7 @@
       </div>
       <div class="basis_body-content">
         <!--内容配置-->
-        <div class="basis_content_config" v-if="basisDataList.length!==0">
+        <div class="basis_content_config" v-if="basisDataList.length!==0 && refreshView">
           <div class="content-box"  v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
               <el-form :model="basisItem" :rules="rules">
@@ -138,6 +138,7 @@
         return {
           displayMask:false,//添加条目弹框
           portionMask:false,
+          refreshView:true,// 是否刷新当前视图
           //下拉 数据 有集合
           selectShowList:[
             {
@@ -399,6 +400,7 @@
           };
           array.splice(index-1,0,copyLine);
           array.splice(index+1,1);
+
           this.basisDataInfo = {};
           // 清除 当前一下 所有 layOut 布局数据
           for(let i=index;i<array.length;i++) {
@@ -409,6 +411,11 @@
               "displayChecked":[]
             }
           }
+          //更新视图，避免子组件不刷新
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          })
         },
         //下移
         moveDown(data,index,array) {
@@ -436,6 +443,11 @@
               "displayChecked":[]
             }
           }
+          //更新视图，避免子组件不刷新
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          })
         },
         //添加条目 -- 显示弹框
         addItem() {
@@ -474,9 +486,27 @@
           };
           this.basisDataList.push(copyData)
         },
+        verificationData(data) {
+          let flag = true;
+            data.forEach(item=>{
+                if(item.controlDisplayName !=="" && item.children.length!==0) {
+                    this.verificationData(item.children)
+                }else if(item.controlDisplayName !=="" && item.children.length!==0) {
+                  flag = true;
+                }else if(item.controlDisplayName == "") {
+                  flag = false;
+                }
+            });
+          return flag;
+        },
         //保存
         saveBtn() {
           // let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+          // 验证表单名称是否填写完成
+            if(this.verificationData(this.basisDataList) == false) {
+              this.$message.info('表单名称不能为空');
+              return ;
+            }
           if(this.configData.type == 'add') {
             console.log('触发')
             /*this.portionSave()*//*.then(()=>{

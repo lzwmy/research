@@ -5,7 +5,7 @@
       <div v-if="item.displayIsVisible=='1'" :class="item.controlType+'_title'" >
         <span >{{item.controlDisplayName}}</span>
       </div>
-      <div v-else-if="item.baseProperty.labelImage!=''" :class="item.controlType+'_title'" style="text-align:center">
+      <div v-else-if="item.baseProperty.labelImage!=''" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]" style="text-align:center">
         <img :src="this.baseURL+'/file/downloadFile/'+item.baseProperty.labelImage" />
       </div>
       
@@ -249,6 +249,12 @@
     display: table-cell;
     vertical-align: middle;
     font-size: 14px;
+  }
+  .FILE_UPLOAD .singleColumn {
+    width: auto;
+    min-width: 188px;
+    max-width: 500px;
+    padding-right: 5px;
   }
   .FILE_UPLOAD .FILE_UPLOAD_file_box {
     display: table-cell;

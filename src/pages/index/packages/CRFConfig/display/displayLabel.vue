@@ -3,7 +3,7 @@
   <div :class="item.controlType+'_view_box'" >
     <!--<div class="view_title">&lt;!&ndash;预览条目- &ndash;&gt;{{item.controlDisplayName}}</div>-->
     <div :class="item.controlType" style="font-size: 14px;">
-      <div v-if="item.displayIsVisible=='1'" :class="item.controlType+'_title'">
+      <div v-if="item.displayIsVisible=='1'" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
          <span >{{item.controlDisplayName}}</span>
       </div>
       <div v-if="item.baseProperty.labelType=='TEXT'" :class="item.controlType+'_box'">
@@ -46,6 +46,12 @@ export default {
     /*padding-left: 1%;*/
     vertical-align: middle;
     font-size: 14px;
+  }
+  .LABEL .singleColumn {
+    width: auto;
+    min-width: 188px;
+    max-width: 500px;
+    padding-right: 5px;
   }
   .LABEL .LABEL_box{
     width: 188px;

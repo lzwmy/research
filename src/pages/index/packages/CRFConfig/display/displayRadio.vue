@@ -3,7 +3,7 @@
   <div class="view_box">
     <div :class="item.controlType">
       <!--style="width:200px;font-size: 14px;"-->
-      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="item.controlType+'_title'">
+      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
         <i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />
         <span>{{item.controlDisplayName}}</span>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
@@ -153,6 +153,14 @@ export default {
   vertical-align: middle;
   /*padding-left: 1%;*/
 }
+/*情况为单列时文字过长*/
+.RADIO_BUTTON .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
+  vertical-align: top;
+}
 .RADIO_BUTTON .RADIO_BUTTON_box {
   min-width: 164px;
   max-width: 800px;
@@ -172,6 +180,7 @@ export default {
   display: table-cell;
   color: #3c81f0;
   cursor: pointer;
-  vertical-align: middle;
+  /*vertical-align: middle;*/
+  vertical-align: top;
 }
 </style>
