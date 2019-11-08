@@ -3,7 +3,7 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button type="primary" icon="el-icon-plus" @click="showDialog('添加用户')">新建用户</el-button>
+                <el-button :disabled="orgList.length == 0" type="primary" icon="el-icon-plus" @click="showDialog('添加用户')">新建用户</el-button>
 
             </div>
         </div>
@@ -15,7 +15,7 @@
                         <el-input @keyup.enter.native="addOrg" @blur="addOrg" class="addOrg" v-else v-model="item.orgName"></el-input>
                     </li>
                 </ul>
-                <el-button class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加分中心</el-button>
+                <el-button v-if="loginType=='local'" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加分中心</el-button>
             </div>
             <div class="content">
                 <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
@@ -28,6 +28,11 @@
                         <el-table-column prop="orgName" label="机构" min-width="110" show-overflow-tooltip></el-table-column>
                         <el-table-column prop="deptName" label="科室" min-width="110" show-overflow-tooltip></el-table-column>
                         <el-table-column prop="duty" label="职称" min-width="110" show-overflow-tooltip></el-table-column>
+                        <el-table-column label="角色" min-width="160">
+                            <template slot-scope="scope">
+                                <span v-for="(item,index) in scope.row.roles" :key="index">{{item}}<span v-show="index!=scope.row.roles.length-1">、</span></span>
+                            </template>
+                        </el-table-column>
                         <el-table-column prop="createTime" label="创建时间" width="180" show-overflow-tooltip></el-table-column>
                         <el-table-column label="操作" width="120">
                             <template slot-scope="scope">
@@ -64,6 +69,11 @@
                         <el-option v-for="(item, index) in orgList" :key="index" :label="item.orgName" :value="item.orgName" :disabled="dialogForm.title=='编辑用户'"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="角色:" prop="role">
+                    <el-select v-model="dialogForm.role" multiple class="block">
+                        <el-option :disabled="item.name=='管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="科室:" prop="department">
                     <el-input v-model.trim="dialogForm.department" placeholder="请输入科室" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
                 </el-form-item>
@@ -88,25 +98,26 @@ export default {
     name: 'organizationManagement',
     mixins: [mixins],
     data () {
-      var checkPhone = (rule, value, callback) =>{
-        if (!value) {
-          return callback(new Error('手机号不能为空'));
-        } else {
-          const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-          console.log(reg.test(value));
-          if (reg.test(value)) {
-            callback();
-          } else {
-            return callback(new Error('请输入正确的手机号'));
-          }
+        var checkPhone = (rule, value, callback) =>{
+            if (!value) {
+            return callback(new Error('手机号不能为空'));
+            } else {
+            const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+            console.log(reg.test(value));
+            if (reg.test(value)) {
+                callback();
+            } else {
+                return callback(new Error('请输入正确的手机号'));
+            }
+            }
         }
-      }
         return {
             dialogForm: {
                 title:'',
                 userName:'',
                 userId: '',
                 tel: '',
+                role:[],
                 organization: '',
                 department: '',
                 position: '',
@@ -118,6 +129,7 @@ export default {
             orgLoading: false,
             orgCode: '',
             tableLoading: false,
+            roleList: [],
             paging: {
                 pageNo: 1,
                 pageSize: 10,
@@ -127,10 +139,12 @@ export default {
             ruleDialogForm: {
                 userName: [{required: true, message: '请输入用户名', trigger: 'change'}],
                 tel: [{required: true, validator:checkPhone, trigger: 'blur'}],
+                role: [{required: true, message: '请选择角色', trigger: 'change'}],
                 organization: [{required: true, message: '请选择机构', trigger: 'change'}],
                 department: [{required: true, message: '请输入科室', trigger: 'change'}],
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]
-            }
+            },
+            loginType: sessionStorage.getItem('CURR_LOGIN_TYPE') == 'disease'?'share':'local'
         }
     },
     components: {
@@ -151,6 +165,7 @@ export default {
                 }
                 this.orgList.length != 0 && this.selectGroup(this.orgList[0]);
                 this.$emit('changeLoadding',false);
+                this.getAllRoles();
             })
         },
         selectGroup(item,index) {
@@ -187,11 +202,27 @@ export default {
                 console.log(err)
             }
         },
+        //获取角色列表
+        async getAllRoles() {
+            try {
+                let res = await this.$http.ORGDisRoleList();
+                if (res.code == '0') {
+                    this.roleList = res.data;
+                }else {
+                    this.$mes('error', res.msg);
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
         //获取机构列表
         async getOrgList() {
             this.orgLoading = true;
             try {
-                let res = await this.$http.ORGDisGetOrgList({diseaseId: this.$store.state.user.diseaseInfo.diseaseId});
+                let res = await this.$http.ORGDisGetOrgList({
+                    diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
+                    source: this.loginType
+                });
                 if (res.code == '0') {
                     this.orgList = res.data;
                     if(this.orgList.length) {
@@ -245,6 +276,7 @@ export default {
                             orgCode: organization[0].orgCode,
                             deptName: this.dialogForm.department,
                             duty: this.dialogForm.position,
+                            roles: this.dialogForm.role
                         }
                         res = await that.$http.ORGDisCreateUser(formData);
                     }

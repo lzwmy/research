@@ -31,7 +31,7 @@
                         <el-table-column prop="createTime" label="创建时间" width="180"></el-table-column>
                         <el-table-column label="角色" min-width="160">
                             <template slot-scope="scope">
-                                <span v-for="(item,index) in scope.row.roleName" :key="index">{{item.name}}、</span>
+                                <span v-for="(item,index) in scope.row.roleName" :key="index">{{item.name}}<span v-show="index!=scope.row.roleName.length-1">、</span></span>
                             </template>
                         </el-table-column>
                         <el-table-column label="操作" width="120">

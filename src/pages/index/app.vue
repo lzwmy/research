@@ -45,6 +45,7 @@ export default {
   #app {
     background-color: #f0f2f7;
     min-height: 100%;
+    
   }
   #main {
     margin: 24px auto 0;

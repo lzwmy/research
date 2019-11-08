@@ -1,7 +1,5 @@
 <template>
     <div class="cloud-component myTasks">
-        <!-- 我的任务 -->
-        <!-- <img src="../images/myTasks.png" alt="" width="100%"> -->
         <div class="box">
             <div class="aside">
                 <p class="aside_title">随访任务</p>
@@ -16,12 +14,28 @@
             <div class="content">
                 <h2>全部<span>3个任务</span> </h2>
                 <div class="form flex-start-center">
-                    <el-select v-model="form.queue" placeholder="请选择" class="right_6" style="width: 140px;">
+                    <el-select v-model="form.groupId" placeholder="请选择" class="right_6" style="width: 140px;" @clear="changeQueueListGroup" @change="changeQueueListGroup" clearable>
                         <el-option
-                        v-for="item in queueList"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        v-for="(item,index) in queueListGroup"
+                        :key="index"
+                        :label="item.groupName"
+                        :value="item.groupId">
+                        </el-option>
+                    </el-select>
+                    <el-select v-show="form.groupId" v-model="form.stageId" placeholder="请选择" class="right_6" style="width: 140px;" @change="changeQueueListStage">
+                        <el-option
+                        v-for="(item,index) in queueListStage"
+                        :key="index"
+                        :label="item.stageName"
+                        :value="item.stageId">
+                        </el-option>
+                    </el-select>
+                    <el-select v-show="form.groupId" v-model="form.pointId" placeholder="请选择" class="right_6" style="width: 140px;">
+                        <el-option
+                        v-for="(item,index) in queueListPoint"
+                        :key="index"
+                        :label="item.name"
+                        :value="item.id">
                         </el-option>
                     </el-select>
                     <el-input
@@ -79,11 +93,13 @@ export default {
             ],
             activeGroup: 0,
             groupLoading: false,
-            queueList: [
-                {label:'全部任务',value: 0}
-            ],
+            queueListGroup: [],
+            queueListStage: [],
+            queueListPoint: [],
             form: {
-                queue:'',
+                groupId:'',
+                stageId:'',
+                pointId:'',
                 keywords: ''
             },
             activeCollapse: 1,
@@ -107,8 +123,8 @@ export default {
             ]
         }
     },
-    watch: {
-        
+    created() {
+        // this.getQuereList()
     },
     components: {
         pagination
@@ -122,7 +138,54 @@ export default {
         },
         async getDataList() {
 
-        }
+        },
+        changeQueueListGroup(id) {
+            this.form.stageId = '';
+            this.form.pointId = '';
+            if(!id) {
+                return;
+            }
+            let data = this.queueListGroup.find(li=>{
+                return li.groupId == id;
+            })
+            this.queueListStage = data.stages;
+        },
+        changeQueueListStage(id) {
+            if(!id) {
+                return;
+            }
+            let data = this.queueListStage.find(li=>{
+                return li.stageId == id;
+            })
+            this.queueListPoint = data.pointList;
+        },
+        //获取查询列表
+        async getQuereList() {
+            try {
+                let res = await this.$http.myTasksGetQuereList({
+                    subjectId: this.$store.state.user.researchInfo.subjectInfoId
+                });
+                if (res.code == '0') {
+                    this.queueListGroup = res.data;
+                    this.queueListGroup.forEach(group => {
+                        group.stages.forEach(stages=>{
+                            stages.unshift({
+                                stageId: '',
+                                stageName: '全部阶段'
+                            })
+                            stage.pointList.forEach(pointList => {
+                                pointList.unshift({
+                                    id: '',
+                                    name: '全部随访点'
+                                })
+                            });
+                        })
+                    });
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
     }
 };
 </script>

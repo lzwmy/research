@@ -15,6 +15,10 @@ const url = {
     createUser: '/disease/user/create',
     // 添加分中心
     addOrg: '/disease/org/add',
+    // 角色列表
+    roleList: '/disease/role/list',
+    // 获取分享进来角色信息
+    shareUserRole: '/disease/user/role',
 };
 
 const http = {
@@ -35,6 +39,12 @@ const http = {
     },
     ORGDisAddOrg (params) {
         return vm.$post(url.addOrg, params, false);
+    },
+    ORGDisRoleList (params) {
+        return vm.$post(url.roleList, params, false);
+    },
+    ORGDisShareUserRole (params) {
+        return vm.$post(url.shareUserRole, params, false);
     }
 };
 

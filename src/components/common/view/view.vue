@@ -1,11 +1,13 @@
 <template>
     <div class="cloud-container">
-        <transition :name="transitionName.indexOf($route.meta.belongToGroup) != -1 ?'':'el-fade-in-linear'" mode="out-in">
-            <keep-alive exclude="insideView" v-if="$route.meta.isKeepAlive">
-                <router-view @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
-            </keep-alive>
-            <router-view v-if="!$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
-        </transition>
+        <!-- <transition class="no-animation" :name="transitionName.indexOf($route.meta.belongToGroup) != -1 ?'no-animation':'el-fade-in-linear'"> -->
+            <!-- <div :class="transitionName.indexOf($route.meta.belongToGroup) != -1 ?'':'transition'"> -->
+                <keep-alive exclude="insideView" v-if="$route.meta.isKeepAlive">
+                    <router-view @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
+                </keep-alive>
+                <router-view v-if="!$route.meta.isKeepAlive" @handlePageHeight="handlePageHeight" ref="routercomponent"></router-view>
+            <!-- </div> -->
+        <!-- </transition> -->
     </div>
 </template>
 <script>
@@ -83,6 +85,29 @@ export default {
                 $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
             });
         }
-    }
+    },
+    // beforeRouteEnter (to, from, next) {
+    //     console.log('进入')
+    // },
+    // beforeRouteLeave (to, from, next) {
+    //     console.log('离开')
+    // }
 };
 </script>   
+
+<style lang="less">
+    // .transition > div{
+    //     animation: fade 800ms;
+    // }
+    @keyframes fade {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 0.7;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+</style>
