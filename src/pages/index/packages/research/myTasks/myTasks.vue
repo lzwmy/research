@@ -124,6 +124,7 @@ export default {
         }
     },
     created() {
+        // this.getStatusList();
         // this.getQuereList()
     },
     components: {
@@ -159,6 +160,20 @@ export default {
             })
             this.queueListPoint = data.pointList;
         },
+        
+        //获取状态列表
+        async getStatusList() {
+            try {
+                let res = await this.$http.myTasksGetStatusList({
+                    subjectId: this.$store.state.user.researchInfo.subjectInfoId
+                });
+                if (res.code == '0') {
+                    // this.queueListGroup = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
         //获取查询列表
         async getQuereList() {
             try {
@@ -168,17 +183,21 @@ export default {
                 if (res.code == '0') {
                     this.queueListGroup = res.data;
                     this.queueListGroup.forEach(group => {
+                        group.stages.unshift({
+                            stageId: '',
+                            stageName: '全部阶段'
+                        })
                         group.stages.forEach(stages=>{
-                            stages.unshift({
+                            stages.pointList.unshift({
                                 stageId: '',
-                                stageName: '全部阶段'
+                                stageName: '全部随访点'
                             })
-                            stage.pointList.forEach(pointList => {
-                                pointList.unshift({
-                                    id: '',
-                                    name: '全部随访点'
-                                })
-                            });
+                            // stage.pointList.forEach(pointList => {
+                            //     pointList.unshift({
+                            //         id: '',
+                            //         name: '全部随访点'
+                            //     })
+                            // });
                         })
                     });
                 }

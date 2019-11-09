@@ -40,11 +40,11 @@
                         <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
                         <p class="box_tel" @click="toReportFill(item)"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
                         <div class="box_btn_group flex-start-center">
-                            <el-button class="flex-center-center" :style="item.smsVisit!=0?'font-size: 12px;':''" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
-                                {{item.smsVisit==0?'短信随访':'短信已发送'}}
+                            <el-button class="flex-center-center" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
+                                {{item.smsVisit==0?'短信随访':'已发送'}}
                             </el-button>
-                            <el-button class="flex-center-center" :style="item.mpVisit!=0?'font-size: 12px;':''" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>
-                            {{item.mpVisit==0?'微信随访':'微信已发送'}}
+                            <el-button class="flex-center-center"  @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>
+                            {{item.mpVisit==0?'微信随访':'已发送'}}
                             </el-button>
                         </div>
                     </div>

@@ -85,13 +85,7 @@ export default {
                 $('#main').css({'min-height': $('body').height() - otherHeihgt +'px'})
             });
         }
-    },
-    // beforeRouteEnter (to, from, next) {
-    //     console.log('进入')
-    // },
-    // beforeRouteLeave (to, from, next) {
-    //     console.log('离开')
-    // }
+    }
 };
 </script>   
 
