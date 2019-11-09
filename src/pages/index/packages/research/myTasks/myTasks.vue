@@ -22,36 +22,64 @@
                         :value="item.groupId">
                         </el-option>
                     </el-select>
-                    <el-select v-show="form.groupId" v-model="form.stageId" placeholder="请选择" class="right_6" style="width: 140px;" @change="changeQueueListStage">
-                        <el-option
-                        v-for="(item,index) in queueListStage"
-                        :key="index"
-                        :label="item.stageName"
-                        :value="item.stageId">
-                        </el-option>
+                    <el-select 
+                        v-show="form.groupId" 
+                        v-model="form.stageId" 
+                        placeholder="请选择" 
+                        class="right_6" 
+                        @clear="form.stageId='全部阶段'; queueListPoint = []" 
+                        style="width: 140px;" 
+                        @change="changeQueueListStage" 
+                        :clearable="form.stageId=='全部阶段'?false:true">
+                            <el-option
+                            v-for="(item,index) in queueListStage"
+                            :key="index"
+                            :label="item.stageName"
+                            :value="item.stageId">
+                            </el-option>
                     </el-select>
-                    <el-select v-show="form.groupId" v-model="form.pointId" placeholder="请选择" class="right_6" style="width: 140px;">
-                        <el-option
-                        v-for="(item,index) in queueListPoint"
-                        :key="index"
-                        :label="item.name"
-                        :value="item.id">
-                        </el-option>
+                    <el-select 
+                        v-show="form.groupId" 
+                        v-model="form.pointId" 
+                        placeholder="请选择" 
+                        class="right_6" 
+                        @clear="form.pointId='全部随访点'" 
+                        style="width: 140px;" 
+                        :clearable="form.pointId=='全部随访点'?false:true">
+                            <el-option
+                            v-for="(item,index) in queueListPoint"
+                            :key="index"
+                            :label="item.name"
+                            :value="item.id">
+                            </el-option>
                     </el-select>
                     <el-input
                         style="width: 300px;"
                         placeholder="请输入本人姓名或者住院号搜索"
-                        v-model="form.keywords">
+                        v-model="form.keywords"
+                        @keydown.enter.native="getDataList">
                         <i slot="prefix" class="icon el-icon-search"></i>
                     </el-input>
                 </div>
                 <el-collapse v-model="activeCollapse" @change="handleChangeCollapse" accordion>
                     <el-collapse-item :name="index+'aaaa'" v-for="(item,index) in collapseList" :key="index">
                         <template slot="title">
-                            <span class="number">2个任务</span>
-                            <p class="title">{{item.date}}</p>
+                            <span class="number">{{item.patientCount}}个任务</span>
+                            <p class="title">{{item.planDate}}</p>
                         </template>
-                        <el-table 
+                        <el-table-column 
+                            v-for="(column,index) in item.header"
+                            :prop="column.prop" 
+                            :label="column.label" 
+                            sortable 
+                            :key="item.planDate+column.prop+'-'+index" 
+                            align="center"
+                            :min-width="column.label.length * 15 + 50"
+                            :width="handleWidth(column.label)"
+                            v-if="column.type =='normal'"
+                            show-overflow-tooltip>
+                        </el-table-column>
+                        <!-- <el-table 
                             ref="refTable" fit
                             :data="item.content"
                             :v-loading="'tableLoading'+(index+1)">
@@ -67,7 +95,7 @@
                                     <el-button @click=";" type="text" icon="icon iconfont iconzanting danger"></el-button>
                                 </template>
                             </el-table-column>
-                        </el-table>
+                        </el-table> -->
                         <!-- 分页 -->
                         <pagination :data="item" @change="getDataList"></pagination>    
                     </el-collapse-item>
@@ -98,8 +126,8 @@ export default {
             queueListPoint: [],
             form: {
                 groupId:'',
-                stageId:'',
-                pointId:'',
+                stageId:'全部阶段',
+                pointId:'全部随访点',
                 keywords: ''
             },
             activeCollapse: 1,
@@ -131,6 +159,13 @@ export default {
         pagination
     },
     methods: {
+        handleWidth(label) {
+            let width = '';
+            if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
+                width = 160
+            }
+            return width
+        },
         selectGroup(item,index) {
             this.activeGroup = index;
         },
@@ -138,11 +173,25 @@ export default {
             console.log(val)
         },
         async getDataList() {
-
+            try {
+                let res = await this.$http.myTasksGetTableList({
+                    "subjectId": this.$store.state.user.researchInfo.subjectInfoId,
+                    "status": 1,
+                    "groupId": this.form.groupId,
+                    "stageId": this.form.stageId=='全部阶段'?'':this.form.stageId,
+                    "pointId": this.form.pointId=='全部随访点'?'':this.form.pointId,
+                    "enterType": sessionStorage.getItem('CURR_LOGIN_TYPE') == "research"?0:1
+                });
+                if (res.code == '0') {
+                    this.collapseList = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
         },
         changeQueueListGroup(id) {
-            this.form.stageId = '';
-            this.form.pointId = '';
+            this.form.stageId = '全部阶段';
+            this.form.pointId = '全部随访点';
             if(!id) {
                 return;
             }
@@ -159,8 +208,7 @@ export default {
                 return li.stageId == id;
             })
             this.queueListPoint = data.pointList;
-        },
-        
+        },    
         //获取状态列表
         async getStatusList() {
             try {
@@ -168,7 +216,11 @@ export default {
                     subjectId: this.$store.state.user.researchInfo.subjectInfoId
                 });
                 if (res.code == '0') {
-                    // this.queueListGroup = res.data;
+                    // this.groupList = res.data;
+                    // this.groupList.forEach(ele => {
+                    //     this.groupList[ele.visitStatus] = ele.statusCount;
+                    // });
+                    console.log(this.groupList)
                 }
             } catch (err) {
                 console.log(err)
@@ -182,24 +234,6 @@ export default {
                 });
                 if (res.code == '0') {
                     this.queueListGroup = res.data;
-                    this.queueListGroup.forEach(group => {
-                        group.stages.unshift({
-                            stageId: '',
-                            stageName: '全部阶段'
-                        })
-                        group.stages.forEach(stages=>{
-                            stages.pointList.unshift({
-                                stageId: '',
-                                stageName: '全部随访点'
-                            })
-                            // stage.pointList.forEach(pointList => {
-                            //     pointList.unshift({
-                            //         id: '',
-                            //         name: '全部随访点'
-                            //     })
-                            // });
-                        })
-                    });
                 }
             } catch (err) {
                 console.log(err)

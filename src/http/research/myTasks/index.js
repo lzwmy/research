@@ -7,6 +7,8 @@ const url = {
     myTasksGetQuereList: '/subject/visit/task/subject/quereList',
     // 查询状态任务数
     getStatusList: '/subject/visit/task/subject/statusList',
+    // 查询状态任务数
+    getTableList: '/subject/visit/task/subject/list',
 };
 
 const http = {
@@ -15,6 +17,9 @@ const http = {
     },
     myTasksGetStatusList (params) {
         return vm.$post(url.getStatusList, params, true);
+    },
+    myTasksGetTableList (params) {
+        return vm.$post(url.getTableList, params, false);
     }
 };
 
