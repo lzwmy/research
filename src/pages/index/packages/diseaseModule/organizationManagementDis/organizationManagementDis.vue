@@ -71,7 +71,8 @@
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
-                        <el-option :disabled="item.name=='管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        <!-- <el-option :disabled="item.name=='管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option> -->
+                        <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="科室:" prop="department">
@@ -207,7 +208,15 @@ export default {
             try {
                 let res = await this.$http.ORGDisRoleList();
                 if (res.code == '0') {
-                    this.roleList = res.data;
+                    if(this.loginType=='share') {
+                        this.roleList = res.data.filter(li=>{
+                            return li.id != 1 || li.id != 2; 
+                        })
+                    }else {
+                        this.roleList = res.data.filter(li=>{
+                            return li.id != 1; 
+                        })
+                    }
                 }else {
                     this.$mes('error', res.msg);
                 }

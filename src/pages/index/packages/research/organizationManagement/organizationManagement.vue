@@ -72,7 +72,7 @@
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
-                        <el-option :disabled="item.name=='管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="科室:" prop="department">
@@ -106,7 +106,7 @@
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogFormSingle.role" multiple class="block">
-                        <el-option :disabled="item.name=='管理员' || item.name=='分中心管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                        <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -214,7 +214,16 @@ export default {
             try {
                 let res = await this.$http.ORGgetRoleListAll();
                 if (res.code == '0') {
-                    this.roleList = res.data;
+                    //为管理员
+                    if(this.$store.state.user.researchInfo.roles.indexOf('1') != -1) {
+                        this.roleList = res.data.filter(li=>{
+                            return li.id != 1;
+                        })
+                    }else {
+                        this.roleList = res.data.filter(li=>{
+                            return li.id != 2 || li.id != 1;
+                        })
+                    }
                 }else {
                     this.$mes('error', res.msg);
                 }
