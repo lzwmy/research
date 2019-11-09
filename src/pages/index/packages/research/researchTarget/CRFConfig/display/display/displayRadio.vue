@@ -14,9 +14,9 @@
         <el-radio-group v-model="report.value">
           <el-radio
             v-for="(it,index) in item.termSet.termItemList"
-            :label="precessData(it.termItemName)"
+            :label="it.termItemName"
             :key="index"
-          >{{precessData(it.termItemName)}}</el-radio>
+          >{{it.termItemName}}</el-radio>
         </el-radio-group>
       </div>
       <div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>
@@ -86,15 +86,7 @@ export default {
           return this.item;
         }
       }
-    },
-    //处理 ^
-    precessData(data) {
-      if(data.indexOf('^')!=='-1') {
-        return data.split('^')[0]
-      }else {
-        return data
-      }
-    },
+    }
   },
   created() {
     this.report.value =

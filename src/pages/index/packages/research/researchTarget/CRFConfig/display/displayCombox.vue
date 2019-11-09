@@ -2,7 +2,7 @@
   <!--单选下拉-->
   <div :class="item.controlType">
     <!--style="width:200px;display:inline-block;font-size: 14px;"-->
-    <div v-if="item.displayIsVisible=='1'&&showLabel" :class="item.controlType+'_title'">
+    <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
       <i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />
       <span>{{item.controlDisplayName}}</span>
       <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
@@ -23,7 +23,7 @@
         <el-option
           v-for="it in item.termSet.termItemList"
           :key="it.termItemName"
-          :label="it.termItemName"
+          :label="precessData(it.termItemName)"
           :value="it.termItemName"
         ></el-option>
       </el-select>
@@ -41,7 +41,7 @@
         <el-option
           v-for="it in item.termSet.termItemList"
           :key="it.termItemName"
-          :label="it.termItemName"
+          :label="precessData(it.termItemName)"
           :value="it.termItemName"
         ></el-option>
       </el-select>
@@ -114,6 +114,14 @@ export default {
         }
       }
     },
+    //处理 ^
+    precessData(data) {
+      if(data.indexOf('^')!=='-1') {
+        return data.split('^')[0]
+      }else {
+        return data
+      }
+    },
     //自动获取数据
     async setAutoData(params) {
       try {
@@ -155,7 +163,9 @@ export default {
     }
     //判断 值域是否等于空
     if(this.item.termSet.rangeText!==""){
-      let arrayList = this.item.termSet.rangeText.split('\n').map(item=>{
+      let arrayList = this.item.termSet.rangeText.split('\n').filter(item =>{
+        return item !== ""
+      }).map(item=>{
         return {termItemName:item}
       });
       this.item.termSet.termItemList = arrayList;
@@ -215,6 +225,12 @@ export default {
 .SINGLE_COMBOX .SINGLE_COMBOX_box {
   width: 188px;
   display: table-cell;
+}
+.SINGLE_COMBOX .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .SINGLE_COMBOX .SINGLE_COMBOX_box .el-input {
   width: 188px;

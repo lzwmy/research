@@ -3,7 +3,7 @@
   <div class="view_box">
     <div :class="item.controlType">
       <!--style="width:200px;font-size: 14px;"-->
-      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="item.controlType+'_title'">
+      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
         <i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />
         <span>{{item.controlDisplayName}}</span>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
@@ -13,7 +13,7 @@
         <el-checkbox-group v-model="checkList">
           <el-checkbox
             v-for="(it,index) in item.termSet.termItemList"
-            :label="it.termItemName"
+            :label="precessData(it.termItemName)"
             :key="index"
           ></el-checkbox>
         </el-checkbox-group>
@@ -88,7 +88,15 @@ export default {
           return this.item;
         }
       }
-    }
+    },
+    //处理 ^
+    precessData(data) {
+      if(data.indexOf('^')!=='-1') {
+        return data.split('^')[0]
+      }else {
+        return data
+      }
+    },
   },
   created() {
     // this.termValue=this.item.termSet.termDefaultValue;
@@ -107,7 +115,9 @@ export default {
     // }
     //判断 值域是否等于空
     if(this.item.termSet.rangeText!==""){
-      let arrayList = this.item.termSet.rangeText.split('\n').map(item=>{
+      let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
+        return item !== ""
+      }).map(item=>{
         return {termItemName:item}
       });
       this.item.termSet.termItemList = arrayList;
@@ -149,7 +159,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .CHECKBOX {
-  line-height: 32px;
+  /*line-height: 32px;*/
 }
 .CHECKBOX .CHECKBOX_title {
   width: 188px;
@@ -162,6 +172,12 @@ export default {
   min-width: 164px;
   max-width: 800px;
   display: table-cell;
+}
+.CHECKBOX .singleColumn {
+  width: auto;
+  min-width: 188px;
+  max-width: 500px;
+  padding-right: 5px;
 }
 .CHECKBOX .CHECKBOX_box .el-checkbox-group {
   min-width: 164px;

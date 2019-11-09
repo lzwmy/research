@@ -1,48 +1,24 @@
 <template>
-  <!--多选下拉-->
-  <div :class="item.controlType">
-    <!--style="width:200px;display:inline-block;font-size: 14px;"-->
-    <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
-      <i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />
-      <span >{{item.controlDisplayName}}</span>
-      <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
-    </div>
-    <!--style="display:inline-block"-->
-    <div :class="item.controlType+'_box'" v-if="item.baseProperty.controlIsExtend=='1'">
-      <el-select
-        :style="`width:${inputWidth}px`"
-        v-model="checkList"
-        allow-create
-        filterable
-        default-first-option
-        multiple
-        size="small"
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="item in item.termSet.termItemList"
-          :key="item.termItemName"
-          :label="item.termItemName"
-          :value="item.termItemName"
-        ></el-option>
-      </el-select>
-    </div>
-    <!--style="display:inline-block"-->
-    <div :class="item.controlType+'_box'" v-if="item.baseProperty.controlIsExtend=='0'">
-      <el-select
-        :style="`width:${inputWidth}px`"
-        v-model="report.value"
-        size="small"
-        multiple
-        placeholder="请选择"
-      >
-        <el-option
-          v-for="it in item.termSet.termItemList"
-          :key="it.termItemName"
-          :label="it.termItemName"
-          :value="it.termItemName"
-        ></el-option>
-      </el-select>
+  <!--多选框-->
+  <div class="view_box">
+    <div :class="item.controlType">
+      <!--style="width:200px;font-size: 14px;"-->
+      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+        <i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />
+        <span>{{item.controlDisplayName}}</span>
+        <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
+      </div>
+      <!--['view_type_checkBox_btn',{'width_auto_type':item.controlType=='CHECKBOX'}]-->
+      <div :class="item.controlType+'_box'" @click="onFocus">
+        <el-checkbox-group v-model="checkList">
+          <el-checkbox
+            v-for="(it,index) in item.termSet.termItemList"
+            :label="it.termItemName"
+            :key="index"
+          ></el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <div :class="item.controlType+'_empty'" @click="()=>{checkList=[];report.value='';}">清空</div>
     </div>
   </div>
 </template>
@@ -50,10 +26,9 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "displayMultiCombox",
+  name: "displayCheckBox",
   data() {
     return {
-      inputWidth: 188,
       checkList: [],
       termList: [],
       rootBinding: null //父元素绑定信息
@@ -72,7 +47,7 @@ export default {
     change() {
       this.report.value = this.checkList.join("|");
     },
-    //加载术语集
+    //初始化术语代码集
     async initTermList() {
       try {
         let params = { termGroupId: this.item.termSet.termGroupOid };
@@ -84,23 +59,50 @@ export default {
         this.$notice("获取" + this.item.controlDisplayName + "术语字典集失败");
         console.log(error);
       }
+    },
+    onFocus() {
+      //如果上次获取焦点控件为当前控件则直接返回,this.crfCurrentControl.index用来判断表格行数的
+      if (
+        this.item == this.crfCurrentControl.item &&
+        this.index == this.crfCurrentControl.index
+      ) {
+        return;
+      }
+      //先进行数据初始化操作
+      this.$store.commit("CRF_CHANGE_CONTROL", null);
+      this.$store.commit("CRF_SET_DATA", null);
+      //将当前控件传递进去
+      let ctrl = {
+        item: this.item,
+        index: this.index,
+        bindingInfo: this.rootBinding
+      };
+      this.$store.commit("CRF_CHANGE_CONTROL", ctrl);
+    },
+    //递归获取
+    recureBindingInfo() {
+      if (this.item.binding == 1) {
+        if (this.item.baseProperty.bindingInfo.bindingType == "INHERIT") {
+          return this.$parent.recureBindingInfo();
+        } else {
+          return this.item;
+        }
+      }
     }
   },
   created() {
-    if (this.item.baseProperty.controlWidth > 0) {
-      this.inputWidth = 47 * this.item.baseProperty.controlWidth;
+    // this.termValue=this.item.termSet.termDefaultValue;
+    this.checkList = this.item.termSet.termDefaultValue;
+    if (this.report.value) {
+      
+      this.checkList = this.report.value.split("|");
     }
-    if (!this.report.value) {
-      this.checkList = this.item.termSet.termDefaultValue;
-      this.report.value = this.checkList.join("|");
-    }
-
     //判断控件是否绑定数据如果绑定则获取绑定数据，如果是继承绑定则进行递归获取父绑定
     if (this.item.binding) {
       this.rootBinding = this.recureBindingInfo();
     }
-    //加载术语集
-    //  if(this.item.termSet.termGroupOid){
+    //初始化术语代码集
+    // if(this.item.termSet.termGroupOid){
     //   this.initTermList();
     // }
     //判断 值域是否等于空
@@ -140,32 +142,48 @@ export default {
           this.checkList = newer[this.item.bindingColumn].split("|");
         }
       }
-    }
+    },
+    checkList: "change"
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.MULTI_COMBOX {
+.CHECKBOX {
+  /*line-height: 32px;*/
 }
-.MULTI_COMBOX .MULTI_COMBOX_title {
+.CHECKBOX .CHECKBOX_title {
   width: 188px;
   display: table-cell;
+  vertical-align: middle;
   /*padding-left: 1%;*/
   font-size: 14px;
 }
-.MULTI_COMBOX .singleColumn {
+.CHECKBOX .CHECKBOX_box {
+  min-width: 164px;
+  max-width: 800px;
+  display: table-cell;
+}
+.CHECKBOX .singleColumn {
   width: auto;
   min-width: 188px;
   max-width: 500px;
   padding-right: 5px;
 }
-.MULTI_COMBOX .MULTI_COMBOX_box {
-  width: 188px;
-  display: table-cell;
+.CHECKBOX .CHECKBOX_box .el-checkbox-group {
+  min-width: 164px;
+  max-width: 800px;
 }
-.MULTI_COMBOX .MULTI_COMBOX_box .el-input .el-input__inner {
-  width: 188px;
+.CHECKBOX .CHECKBOX_box .el-checkbox-group .el-checkbox {
+  margin-right: 10px;
+  margin-left: 0;
+}
+.CHECKBOX .CHECKBOX_empty {
+  min-width: 24px;
+  display: table-cell;
+  color: #3c81f0;
+  cursor: pointer;
+  vertical-align: middle;
 }
 </style>
