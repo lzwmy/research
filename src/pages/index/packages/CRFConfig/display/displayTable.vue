@@ -7,7 +7,7 @@
         <!--减号-->
         <i v-if="!isFold" class="iconfont iconzu2" @click="changeExpend(1)"></i>
         <!-- <span style="font-weight:font-size:14px;bold;color:#333333;font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{item.controlDisplayName}}</span> -->
-        <strong>{{item.controlDisplayName}}</strong>
+        <strong v-if="item.displayIsVisible=='1'">{{item.controlDisplayName}}</strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
 
