@@ -412,7 +412,7 @@
   }
 </script>
 
-<style lang="less">
+<!--<style lang="less">
   .portions_config_dialog_box{
     .el-dialog{
       min-height: 554px;
@@ -485,7 +485,7 @@
           }
           .portion_body_content-box{
             margin-top: 30px;
-            .el-tabs--card>.el-tabs__header{
+            .el-tabs&#45;&#45;card>.el-tabs__header{
               border-bottom: 1px solid transparent;
             }
             .el-tabs__header{
@@ -494,7 +494,7 @@
             .el-tabs__nav{
               background-color: #E5EBEC;
             }
-            .el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
+            .el-tabs&#45;&#45;card>.el-tabs__header .el-tabs__item.is-active{
               border-bottom-color: transparent;
               /*background-color: #E5EBEC;*/
               /*color: #394263;*/
@@ -727,6 +727,411 @@
                       display: flex;
                       align-items: center;
                       cursor: pointer;
+                      .tab{
+                        width: 3px;
+                        height: 100%;
+                      }
+                      .active{
+                        background-color: #04B8DD;
+                      }
+                      span{
+                        font-size: 14px;
+                        font-family:MicrosoftYaHei;
+                        color: #394263;
+                        padding-left: 15px;
+                      }
+                    }
+                    .active{
+                      background-color: #F5F7FA;
+                    }
+                    :hover{
+                      background-color: #F5F7FA;
+                      .tab{
+                        background-color: #04B8DD;
+                      }
+                    }
+                  }
+                }
+                .preview_box{
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  .preview_header{
+                    display: flex;
+                    width: 100%;
+                    height: 40px;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0 20px;
+                    border-bottom:1px solid #E5EBEC;
+                    box-sizing: border-box;
+                    font-size: 14px;
+                    .header-title{
+                      font-family:MicrosoftYaHei;
+                      font-weight:bold;
+                      color:rgba(57,66,99,1);
+                    }
+                    .header-btn{
+                      color: #1BBAE1;
+                      cursor: pointer;
+                      padding: 5px;
+                      border-radius: 2px;
+                      span{
+                        padding-left: 2px;
+                      }
+                      &:hover{
+                        padding: 5px;
+                        background-color: #F5F7FA;
+                      }
+                    }
+                    .gray{
+                      color: #394263;
+                      cursor: default;
+                    }
+                  }
+                  .preview_content{
+                    min-width: 850px;
+                    width: 850px;
+                    height: 384px;
+                    overflow: auto;
+                    .displayPortion_title{
+                      display: none;
+                    }
+                  }
+                }
+              }
+              .blank_page{
+                width: 100%;
+                height: 426px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .tipInfo{
+                  height: 150px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+</style>-->
+<style lang="less">
+  .portions_config_dialog_box{
+    .el-dialog{
+      min-height: 554px;
+      .el-dialog__header{
+        border-bottom: 1px solid transparent;
+        padding: 20px 30px 35px 30px;
+        height: auto;
+        .el-dialog__title{
+          font-size: 16px;
+          color: #394263;
+          font-weight: bold;
+          font-family:MicrosoftYaHei;
+        }
+      }
+      .el-dialog__body{
+        &:last-child{
+          padding: 15px 35px 40px 35px;
+        }
+        .portion_config_content{
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          box-sizing: border-box;
+          .search_term-box{
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .search_term-left{
+              display: flex;
+              flex-direction: row;
+              .search_type-box{
+                width: 120px;
+                .el-input__inner{
+                  border-top-right-radius: 0;
+                  border-bottom-right-radius: 0;
+                }
+              }
+              .search_item{
+                width: 1008px;
+                .el-input__inner{
+                  border-top-left-radius: 2px;
+                  border-bottom-left-radius: 2px;
+                }
+                .el-input__suffix{
+                  cursor: pointer;
+                  .el-input__icon{
+                    font-size: 18px;
+                    line-height: 40px;
+                  }
+                }
+              }
+              .el-input__inner{
+                height: 42px;
+              }
+            }
+            .search_term-right{
+              .el-button{
+                height: 40px;
+                .iconfont{
+                  font-size: 14px;
+                }
+                span{
+                  font-size: 14px;
+                }
+                &:hover{
+                  background-color: #14aed4;
+                }
+              }
+            }
+          }
+          .portion_body_content-box{
+            margin-top: 30px;
+            .el-tabs--card>.el-tabs__header{
+              border-bottom: 1px solid transparent;
+            }
+            .el-tabs__header{
+              margin: 0;
+            }
+            .el-tabs__nav{
+              background-color: #E5EBEC;
+            }
+            .el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
+              border-bottom-color: transparent;
+              /*background-color: #E5EBEC;*/
+              /*color: #394263;*/
+              background-color: #ffffff;
+            }
+            .portions_container{
+              display: flex;
+              width: 100%;
+              box-sizing: border-box;
+              .portion_tab-container{
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                height: 426px;
+                box-sizing: border-box;
+                overflow: auto;
+                border:1px solid #E5EBEC;
+                .portion_display-item{
+                  width: 240px;
+                  height: 100%;
+                  border-right:1px solid #E5EBEC;
+                  box-sizing: border-box;
+                  display: flex;
+                  flex-direction: column;
+                  position: relative;
+                  overflow: auto;
+                  img{
+                    width: 100px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%,-50%);
+                  }
+                  .display_detail_info-item-box{
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+
+                    min-height: 40px;
+                    .detail_info{
+                      height: 100%;
+                      width: 100%;
+                      display: flex;
+                      align-items: center;
+                      cursor: pointer;
+                      .tab{
+                        width: 3px;
+                        height: 100%;
+                      }
+                      .active{
+                        background-color: #04B8DD;
+                      }
+                      span{
+                        font-size: 14px;
+                        font-family:MicrosoftYaHei;
+                        color: #394263;
+                        padding: 0 15px;
+                        display: inline-block;
+                        width: 100%;
+                        align-items: center;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      }
+                    }
+                    .active{
+                      background-color: #F5F7FA;
+                    }
+                    :hover{
+                      background-color: #F5F7FA;
+                      .tab{
+                        background-color: #04B8DD;
+                      }
+                    }
+                  }
+                }
+                .portion_add-box{
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  width: 900px;
+                  /*overflow: auto;*/
+                  .portion_add-header{
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    height: 40px;
+                    align-items:center;
+                    justify-content: space-between;
+                    box-sizing: border-box;
+                    border-bottom: 1px solid #E5E8EB;
+                    padding: 0 20px;
+                    .title_box{
+                      color: #394263;
+                      font-size: 14px;
+                      font-family:'MicrosoftYaHei';
+                      font-weight: bold;
+                    }
+                    .header_btn{
+                      /*font-size: 14px;*/
+                      color: #1BBAE1;
+                      cursor: pointer;
+                      padding: 5px;
+                      border-radius: 2px;
+                      .iconfont{
+                        font-size:14px;
+                        padding-right: 2px;
+                      }
+                      &:hover{
+                        padding: 5px;
+                        background-color: #F5F7FA;
+                      }
+                    }
+                    .gray{
+                      color: #394263;
+                      cursor: default;
+                    }
+                  }
+                  .portion_table-content{
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    /*justify-content: center;*/
+                    /*align-items: center;*/
+                    overflow: auto;
+                    position: relative;
+                    .displayPortion_title{
+                      display: none;
+                    }
+                    .el-table{
+                      padding: 0;
+                      .el-table__body-wrapper{
+                        height: 338px;
+                        overflow-y: auto;
+                        min-height:auto;
+                      }
+                    }
+                    img{
+                      height: 120px;
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%,-50%);
+                    }
+                  }
+                }
+              }
+              .blank_page{
+                width: 100%;
+                height: 426px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .tipInfo{
+                  height: 150px;
+                }
+              }
+            }
+            .subDisease_container{
+              display: flex;
+              width: 100%;
+              box-sizing: border-box;
+              .disease-content-box{
+                width: 100%;
+                height: 426px;
+                display: flex;
+                flex-direction: row;
+                box-sizing: border-box;
+                border: 1px solid #E5EBEC;
+                .report_box{
+                  width: 138px;
+                  height: 100%;
+                  border-right: 1px solid #E5EBEC;
+                  box-sizing: border-box;
+                  overflow: auto;
+                  .display_detail_info-item-box{
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    min-height: 40px;
+                    align-items: center;
+                    .detail_info{
+                      height: 100%;
+                      width: 100%;
+                      display: flex;
+                      align-items: center;
+                      cursor: pointer;
+                      min-height: 40px;
+                      .tab{
+                        width: 3px;
+                        height: 100%;
+                      }
+                      .active{
+                        background-color: #04B8DD;
+                      }
+                      span{
+                        font-size: 14px;
+                        font-family:MicrosoftYaHei;
+                        color: #394263;
+                        padding-left: 15px;
+                      }
+                    }
+                    .active{
+                      background-color: #F5F7FA;
+                    }
+                    :hover{
+                      background-color: #F5F7FA;
+                      .tab{
+                        background-color: #04B8DD;
+                      }
+                    }
+                  }
+                }
+                .portion_box{
+                  width: 140px;
+                  height: 100%;
+                  border-right: 1px solid #E5EBEC;
+                  box-sizing: border-box;
+                  overflow: auto;
+                  .display_detail_info-item-box{
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    min-height: 40px;
+                    align-items: center;
+                    .detail_info{
+                      height: 100%;
+                      width: 100%;
+                      display: flex;
+                      align-items: center;
+                      cursor: pointer;
+                      min-height: 40px;
                       .tab{
                         width: 3px;
                         height: 100%;
