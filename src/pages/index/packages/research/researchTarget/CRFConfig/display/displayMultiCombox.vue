@@ -22,7 +22,7 @@
         <el-option
           v-for="item in item.termSet.termItemList"
           :key="item.termItemName"
-          :label="item.termItemName"
+          :label="precessData(item.termItemName)"
           :value="item.termItemName"
         ></el-option>
       </el-select>
@@ -39,7 +39,7 @@
         <el-option
           v-for="it in item.termSet.termItemList"
           :key="it.termItemName"
-          :label="it.termItemName"
+          :label="precessData(it.termItemName)"
           :value="it.termItemName"
         ></el-option>
       </el-select>
@@ -71,6 +71,14 @@ export default {
   methods: {
     change() {
       this.report.value = this.checkList.join("|");
+    },
+    //处理 ^
+    precessData(data) {
+      if(data.indexOf('^')!=='-1') {
+        return data.split('^')[0]
+      }else {
+        return data
+      }
     },
     //加载术语集
     async initTermList() {
