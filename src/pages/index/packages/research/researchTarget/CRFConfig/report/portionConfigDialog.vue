@@ -248,8 +248,16 @@
             portionName:this.searchName || '0',
           }
         })*/
-        this.CRFQueryPortionId();
-
+        // this.CRFQueryPortionId();
+        this.portionConfigData = {
+          diseaseId:this.$route.query.id,
+          formItemList:[],
+          id:"",
+          portionName:this.searchName,
+          type:"add",
+          index:0
+        };
+        this.showConfigPortion = true;
       },
       // 预览 确定添加
       previewAdd() {

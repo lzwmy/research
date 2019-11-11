@@ -48,7 +48,6 @@
         resize() {
           // let height = $(".portion_container-dialog-box").height();
           let height = $(".el-popup-parent--hidden").height();
-          console.log(height)
           if(height==null || height === 'null') {
             $(".basis_body-content").css({
               minHeight:"500px"

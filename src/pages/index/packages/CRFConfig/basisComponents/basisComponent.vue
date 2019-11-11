@@ -287,6 +287,10 @@
         //删除行
         deleteLine(index) {
           this.basisData.splice(index,1);
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          });
         },
         // 数值 切换
         switchType(data) {

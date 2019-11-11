@@ -280,14 +280,14 @@
         //编辑小节
         portionModify(data,index) {
           console.log('编辑 小节',data);
-          this.portionConfigData= {
+          this.portionConfigData=Object.assign({},JSON.parse(JSON.stringify({
             diseaseId:data.diseaseId,
             formItemList:data.formItemList || [],
             id:data.id,
             portionName:data.portionName,
             type:"modify",
             index:index
-          };
+          }))) ;
           console.log(this.portionConfigData);
           this.showConfigPortion = true;
           /*this.directAddSave();
@@ -341,21 +341,24 @@
         },
         //删除小节
         portionDeleteItem(data,index) {
-          this.isReset = false;
+
           this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
             // this.CRFDeletePortion(data,index);
+            this.isReset = false;
             this.dataList.splice(index,1);
-            this.isReset = true;
-            this.$message.success('删除成功');
+            this.$nextTick(()=>{
+              this.isReset = true;
+              // this.$message.success('删除成功');
+            });
           }).catch(() => {
-            this.$message({
+            /*this.$message({
               type: 'info',
               message: '已取消删除'
-            });
+            });*/
           });
         },
         //CRF 报告 保存

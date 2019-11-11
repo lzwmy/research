@@ -29,7 +29,7 @@
           </el-tab-pane>
       </el-tabs>
     <!-- 引导图 -->
-    <div v-if="isExsit" class="guide flex-center-center" style="height: 500px;">
+    <div v-if="editableTabs.length==0" class="guide flex-center-center" style="height: 500px;">
       <div class="guide_box flex-center-start flex-wrap">
         <div class="guide_wrap">
           <p class="text_center">#创建研究指标#</p>
@@ -173,13 +173,18 @@
           /*if(data.id !=="") {*/
             this.deleteFormData(data.id).then(()=>{
               this.editableTabs.splice(index,1);
+              this.$nextTick(()=>{
+                this.editableTabsValue = String(this.editableTabs.length-1);
+                this.tabIndex = this.editableTabs.length-1;
+                this.displayState = true;
+              });
             });
           /*}else {
             this.editableTabs.splice(index,1);
           }*/
-          this.$nextTick(()=>{
+          /*this.$nextTick(()=>{
             this.displayState = true;
-          });
+          });*/
         }).catch(() => {
           this.$message({
             type: 'info',

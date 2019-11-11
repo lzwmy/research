@@ -44,7 +44,7 @@
               <!--下移-->
               <i class="iconfont iconfuhao6" @click="moveDown(basisDataItem,basisDataIndex,basisData)"></i>
           </div>
-          <basis-component v-if="basisDataItem.children.length!==0" :children="basisDataItem.children"></basis-component>
+          <basis-component v-if="basisDataItem.children.length!==0 && refreshView" :children="basisDataItem.children"></basis-component>
         </div>
     </div>
 </template>
@@ -70,6 +70,7 @@
       },*/
       data() {
         return {
+          refreshView:true,//刷新子组件视图
           basisData:this.children,
           //控件选择类型
           selectShowList:[
@@ -265,6 +266,10 @@
         //删除行
         deleteLine(index) {
           this.basisData.splice(index,1);
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          });
         },
         // 数值 切换
         switchType(data) {
@@ -292,6 +297,10 @@
               "displayChecked":[]
             }
           }
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          });
         },
         //下移
         moveDown(data,index,array) {
@@ -311,6 +320,10 @@
               "displayChecked":[]
             }
           }
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          });
         },
         //获取单位列表
         async UnitListOrg() {

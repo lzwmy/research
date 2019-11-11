@@ -18,7 +18,7 @@
             </el-button>
             <el-button type="primary" @click="saveBtn">
               <i class="iconfont iconbaocun"></i>
-              保存
+              确定添加
             </el-button>
             <el-button type="primary" @click="addItem">
               <i class="iconfont icontianjia"></i>
@@ -29,7 +29,7 @@
       </div>
       <div class="basis_body-content">
         <!--内容配置-->
-        <div class="basis_content_config" v-if="basisDataList.length!==0">
+        <div class="basis_content_config" v-if="basisDataList.length!==0 && refreshView">
           <div class="content-box"  v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
               <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
@@ -137,6 +137,7 @@
         return {
           displayMask:false,//添加条目弹框
           portionMask:false,
+          refreshView:true,// 是否刷新当前视图
           //下拉 数据 有集合
           selectShowList:[
             {
@@ -355,8 +356,15 @@
         },
         //删除行
         deleteBlock(index) {
+          /*this.basisDataInfo = {};
+          this.basisDataList.splice(index,1);*/
           this.basisDataInfo = {};
-          this.basisDataList.splice(index,1);
+          let copyData = JSON.parse(JSON.stringify(this.basisDataList))
+          copyData.splice(index,1);
+          this.basisDataList = [];
+          this.$nextTick(() => {
+            this.basisDataList = copyData;
+          })
         },
         //上移
         moveTop(data,index,array) {
@@ -383,6 +391,11 @@
               "displayChecked":[]
             }
           }
+          //更新视图，避免子组件不刷新
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          })
         },
         //下移
         moveDown(data,index,array) {
@@ -410,6 +423,11 @@
               "displayChecked":[]
             }
           }
+          //更新视图，避免子组件不刷新
+          this.refreshView = false;
+          this.$nextTick(()=>{
+            this.refreshView = true;
+          })
         },
         //添加条目 -- 显示弹框
         addItem() {
@@ -451,9 +469,10 @@
         //保存
         saveBtn() {
           // let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+
           if(this.configData.type == 'add') {
             console.log('触发')
-            this.portionSave()/*.then(()=>{
+            /*this.portionSave()*//*.then(()=>{
               let formData = {
                 "formCrfId": "",
                 "formPortionId": "",
@@ -462,8 +481,18 @@
                 "formItemList": this.basisDataList||[]
               };
             });*/
+            let formData = {
+              "id": this.configData.id,
+              "portionName": this.portionName,
+              "diseaseId": this.$route.query.id,
+              "formItemList": this.basisDataList||[],
+              "index":this.configData.index,
+              "type":this.configData.type
+            };
+            console.log(formData);
+            this.$emit('portion-callback-add',formData);
           }else if(this.configData.type == 'modify') {
-            this.portionModifySave().then(()=>{
+            /*this.portionModifySave().then(()=>{
               let formData = {
                 "id": this.configData.id,
                 "portionName": this.portionName,
@@ -473,7 +502,16 @@
                 "type":this.configData.type
               };
               this.$emit('portion-callback-data',formData);
-            })
+            })*/
+            let formData = {
+              "id": this.configData.id,
+              "portionName": this.portionName,
+              "diseaseId": this.$route.query.id,
+              "formItemList": this.basisDataList||[],
+              "index":this.configData.index,
+              "type":this.configData.type
+            };
+            this.$emit('portion-callback-data',formData);
           }
         },
         //预览
@@ -490,7 +528,7 @@
             )
           });
           this.portionPreviewData.portionName = JSON.parse(JSON.stringify(this.portionName)) || "";
-          this.portionPreviewData.formItemList = JSON.parse(JSON.stringify(array));
+          this.portionPreviewData.formItemList = array;
         },
         // 配置小节 新增保存
         async portionSave() {
