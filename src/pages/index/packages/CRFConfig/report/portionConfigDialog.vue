@@ -73,7 +73,7 @@
                     <div class="display_detail_info-item-box" v-if="portionList.length!==0" v-for="(item,index) in portionList" :key="index" @click.stop="portionActive(item,index)">
                       <div class="detail_info" :class="{'active':item.portionId==portionId}" >
                         <i class="tab" :class="{'active':item.portionId==portionId}"></i>
-                        <span>{{item.portionName}}</span>
+                        <span :title="item.portionName">{{item.portionName}}</span>
                       </div>
                     </div>
                     <img v-if="portionList.length==0" src="./../basisComponents/image/none_content.png" alt="">
@@ -533,9 +533,8 @@
                   display: flex;
                   flex-direction: row;
                   width: 100%;
+                
                   min-height: 40px;
-                  align-items: center;
-                  /*overflow: auto;*/
                   .detail_info{
                     height: 100%;
                     width: 100%;
@@ -553,7 +552,13 @@
                       font-size: 14px;
                       font-family:MicrosoftYaHei;
                       color: #394263;
-                      padding-left: 15px;
+                      padding: 0 15px;
+                      display: inline-block;
+                      width: 100%;
+                      align-items: center;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
                     }
                   }
                   .active{

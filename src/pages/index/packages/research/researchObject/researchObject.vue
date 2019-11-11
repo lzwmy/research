@@ -101,7 +101,7 @@
                     :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
                     <el-table-column type="selection" fixed align="center" width="50"></el-table-column>
                     <el-table-column 
-                        v-for="column in dataList.header"
+                        v-for="column in filterHeader"
                         :prop="column.prop" 
                         :label="column.label" 
                         sortable 
@@ -109,7 +109,6 @@
                         align="center"
                         :min-width="column.label.length * 15 + 50"
                         :width="handleWidth(column.label)"
-                        v-if="column.type !='report'"
                         show-overflow-tooltip>
                     </el-table-column>
                     <el-table-column label="研究内容" align="center">
@@ -242,6 +241,11 @@ export default {
         headerReportList() {
             return this.dataList.header.filter(item=>{
                 return item.type == 'report'
+            })
+        },
+        filterHeader() {
+            return this.dataList.header.filter(li=>{
+                return li.type != 'report'
             })
         }
     },

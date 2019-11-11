@@ -107,7 +107,7 @@
                     :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
                     <el-table-column type="selection" align="center" width="50" fixed></el-table-column>
                     <el-table-column 
-                        v-for="(column,index) in dataList.header"
+                        v-for="(column,index) in filterHeader"
                         :prop="column.prop" 
                         :label="column.label" 
                         sortable 
@@ -115,8 +115,7 @@
                         align="center"
                         :min-width="column.label.length * 15 + 50"
                         :widht="handleWidth(column.label)"
-                        show-overflow-tooltip
-                        v-if="column.type !='report' && column.type != 'disable'">
+                        show-overflow-tooltip>
                         <template slot-scope="scope" v-show="column.prop=='visitStatus'">
                             <p><i  v-show="column.prop=='visitStatus'" class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
                         </template>
@@ -247,6 +246,11 @@ export default {
         headerReportList() {
             return this.dataList.header.filter(item=>{
                 return item.type == 'report'
+            })
+        },
+        filterHeader() {
+            return this.dataList.header.filter(item=>{
+                return item.type !='report' && item.type != 'disable'
             })
         }
     },
