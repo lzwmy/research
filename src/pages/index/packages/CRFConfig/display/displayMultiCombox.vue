@@ -18,6 +18,7 @@
         multiple
         size="small"
         placeholder="请选择"
+        @change="change"
       >
         <el-option
           v-for="item in item.termSet.termItemList"
@@ -31,10 +32,11 @@
     <div :class="item.controlType+'_box'" v-if="item.baseProperty.controlIsExtend=='0'">
       <el-select
         :style="`width:${inputWidth}px`"
-        v-model="report.value"
+        v-model="checkList"
         size="small"
         multiple
         placeholder="请选择"
+        @change="change"
       >
         <el-option
           v-for="it in item.termSet.termItemList"
@@ -90,9 +92,14 @@ export default {
     if (this.item.baseProperty.controlWidth > 0) {
       this.inputWidth = 47 * this.item.baseProperty.controlWidth;
     }
+
     if (!this.report.value) {
       this.checkList = this.item.termSet.termDefaultValue;
       this.report.value = this.checkList.join("|");
+    }else if(this.report.value !== "") {
+      if(this.report.value.indexOf('|')!== '-1') {
+        this.checkList = this.report.value.split('|');
+      }
     }
 
     //判断控件是否绑定数据如果绑定则获取绑定数据，如果是继承绑定则进行递归获取父绑定
