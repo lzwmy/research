@@ -96,7 +96,7 @@ export default {
       }else {
         return data
       }
-    },
+    }
   },
   created() {
     // this.termValue=this.item.termSet.termDefaultValue;
