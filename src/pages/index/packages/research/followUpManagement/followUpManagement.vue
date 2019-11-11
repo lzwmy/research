@@ -5,7 +5,7 @@
             <div class="head_content cur_pointer">
                 <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="">批量导入随访数据</el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">导出随访阶段数据</el-button>
-                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录{{showGuide}}</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
             </div>
         </div>
         <!-- 搜索区域 -->

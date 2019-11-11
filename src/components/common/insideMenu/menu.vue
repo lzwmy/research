@@ -29,17 +29,23 @@
             </div>
         </div>
         <div class="ment_list">
-            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" mode="vertical" ref="menu" :collapse="!$store.state.common.openMenuView" :unique-opened="true">
+            <el-menu 
+            :default-active="defaultActive" 
+            class="el-menu-vertical-demo" 
+            mode="vertical" 
+            ref="menu" 
+            :collapse="!$store.state.common.openMenuView" 
+            :unique-opened="true">
                 <span v-for="(item, index) in menuList" :key="index">
-                    <p class="line" v-if="authRoles(item.meta) && item.name=='organizationManagement'" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
+                    <p class="line" v-if="authRoles(item.meta) && item.menuPath=='/organizationManagement'" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
                     <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="authRoles(item.meta) && item.children && item.children.length == 0">
                         <i class="icon iconfont" :class="'icon'+item.ico"></i>
                         <span slot="title">{{item.menuName}}</span>
                     </el-menu-item>
-                    <el-submenu :index="item.menuCode" v-if="item.children && item.children.length != 0">
+                    <el-submenu :index="'2-'+item.menuPath" v-if="item.children && item.children.length != 0">
                         <template slot="title">
-                            <i class="icon iconfont" :class="'icon'+item.ico"></i>
-                            <span slot="title">{{item.menuName}}</span>
+                            <i @click="routerLink(item)" class="icon iconfont" :class="'icon'+item.ico"></i>
+                            <span @click="routerLink(item)" slot="title">{{item.menuName}}</span>
                         </template>
                         <el-menu-item-group v-for="(li, indexli) in item.children" :key="indexli">
                             <el-menu-item :index="li.menuPath"  @click="routerLink(li)">{{li.menuName}}</el-menu-item>
@@ -76,6 +82,7 @@ export default {
     },
     watch: {
         $route(to, from) {
+            console.log(to)
             this.$nextTick(()=>{
                 this.defaultActive = '/' + to.meta.flag;
             })
@@ -93,7 +100,14 @@ export default {
                     menuName: '组织管理',
                     menuCode: "012907",
                     menuPath: '/organizationManagementDis',
-                    children: [],
+                    children: [{
+                        ico: '',
+                        menuName: '录入统计',
+                        menuCode: "012905",
+                        menuPath: '/inputStatistics',
+                        name: 'inputStatistics',
+                        children: []
+                    }],
                     name: 'organizationManagementDis',
                 })
             }else {
@@ -104,6 +118,8 @@ export default {
                 this.$emit('changeMenuList',menuList)
             }
         }     
+        console.warn(this.menuList)
+
     },
     methods: {
         //判断是否有权限 

@@ -5,18 +5,18 @@
             <div class="head_content cur_pointer">
                 <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">导入研究数据 </el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
-                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录{{showGuide}}</el-button>
-                <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="addSingleObject" style="padding: 0 0 0 15px">
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
+                <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="addSingleObject" style="padding: 0 15px 0 15px;border-radius:2px 0 0 2px;">
                     添加研究对象
-                    <el-dropdown trigger="hover" @command="handleAddObject">
-                        <span class="add"><i class="el-icon-caret-bottom el-icon--right"></i></span>
-                        <el-dropdown-menu slot="dropdown" class="addresearchObject">
-                            <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
-                            <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
-                            <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
                 </el-button>
+                <el-dropdown trigger="hover" @command="handleAddObject" class="addDropdown">
+                    <span class="add"><i class="el-icon-caret-bottom el-icon--right"></i></span>
+                    <el-dropdown-menu slot="dropdown" class="addresearchObject">
+                        <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
+                        <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
+                        <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
         </div>
         <!-- 搜索区域 -->
@@ -425,7 +425,7 @@ export default {
             
         },
         //单个添加研究对象
-        addSingleObject() {
+        addSingleObject(val) {
             //生成表单指标
             let newArr = [];
             this.confingData.dataList.forEach(item=>{
@@ -531,6 +531,16 @@ export default {
     .researchObject {
         .echartsContain {
             min-height: 600px;
+        }
+        .addDropdown.el-dropdown {
+            margin-left: 0;
+            height: 34px;
+            width: 40px;
+            .add {
+                line-height: 34px;
+                position: absolute !important;
+                top: 0;
+            }
         }
         .el-table {
             padding: 0 !important;

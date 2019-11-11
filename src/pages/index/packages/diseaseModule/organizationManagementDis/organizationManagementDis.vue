@@ -376,9 +376,16 @@ export default {
     .organizationManagement {
         .box {
             position: relative;
+            width: 100%;
+            height: 100%;
             color: #394263;
             .aside {                
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0; 
                 width: 220px;
+                overflow: auto;
                 #orgUl {
                     background-color: #fff;
                     border: 1px solid rgba(229, 235, 236, .7);

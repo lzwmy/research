@@ -534,8 +534,15 @@ export default {
         .box {
             position: relative;
             color: #394263;
+            height: 100%;
             .aside {                
                 width: 220px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0; 
+                width: 220px;
+                overflow: auto;
                 #orgUl {
                     background-color: #fff;
                     border: 1px solid rgba(229, 235, 236, .7);

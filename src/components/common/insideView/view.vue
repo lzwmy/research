@@ -59,7 +59,6 @@ export default {
     watch: {
     },
     mounted () {
-        console.log(diseaseRouter)
         this.initView();
         window.onresize = this.initView;
         let headLeft = parseInt($('.component_head').css("left"));
@@ -101,7 +100,6 @@ export default {
             if(insideData.researchId) {
                 this.researchId = insideData.researchId;
             }
-            
         },
         handlePageHeight () { // 高度自适应处理
             setTimeout(() => {

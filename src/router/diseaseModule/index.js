@@ -1,6 +1,8 @@
 
 //组织管理
 const organizationManagementDis = r => require.ensure([], () => r(require('packages/diseaseModule/organizationManagementDis/organizationManagementDis')), 'organizationManagementDis');
+//录入统计
+const inputStatistics = r => require.ensure([], () => r(require('packages/diseaseModule/organizationManagementDis/inputStatistics')), 'inputStatistics');
 
 const routes = [
     {
@@ -24,6 +26,28 @@ const routes = [
             openMode: 2,
         },
         component: organizationManagementDis
+    },
+    {
+        ico: 'inputStatistics',
+        menuLevel: 4,
+        menuName: '录入统计',
+        menuOrder: 7,
+        menuPath: '/organizationManagementDis',
+        superiorMenu: '0107',
+        menuCode: "010707",
+        states: 0,
+        children: [],
+        path: '/inputStatistics',
+        name: 'inputStatistics',
+        meta: {
+            requireAuth: true,
+            isKeepAlive: false,
+            txt: '录入统计',
+            flag: 'inputStatistics',
+            belongToGroup: 'insideView',
+            openMode: 2,
+        },
+        component: inputStatistics
     }
 ];
 
