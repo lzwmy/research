@@ -563,10 +563,12 @@
       //获取添加提醒报告列表
       async getSelectList() {
         let formData = {
+          crfType: 2,
           diseaseId: this.dataInfo.diseaseId
-        }
+        };
         try {
-          let res = await this.$http.PFUGetList(formData);
+          // let res = await this.$http.PFUGetList(formData);
+          let res = await this.$http.getReportList(formData);
           if (res.code == 0) {
             this.selectList = res.data;
           } else {
