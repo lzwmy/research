@@ -17,7 +17,7 @@
       </div>
       <div class="right flex-end-center">
         <!-- <el-button :type="openId?'primary':'default'" icon="icon iconfont iconweixin1" class="weChat" @click="sendPatientCode">微信相关</el-button> -->
-        <el-button type="primary" icon="icon iconfont iconquanjingshitu" class="view" @click="onLinkView360">全景视图
+        <el-button type="primary" icon="icon iconfont iconquanjingshitu" class="view" disabled @click="onLinkView360">全景视图
         </el-button>
         <el-button type="primary" icon="icon iconfont icontianjia" class="report" @click="showDialogReport">添加报告
         </el-button>

@@ -1418,6 +1418,34 @@
       "font_class": "zu11",
       "unicode": "e6ee",
       "unicode_decimal": 59118
+    },
+    {
+      "icon_id": "11720085",
+      "name": "科研灵感",
+      "font_class": "keyanlinggan",
+      "unicode": "e6ef",
+      "unicode_decimal": 59119
+    },
+    {
+      "icon_id": "11729506",
+      "name": "下载",
+      "font_class": "xiazai",
+      "unicode": "e70a",
+      "unicode_decimal": 59146
+    },
+    {
+      "icon_id": "11729507",
+      "name": "查看源代码",
+      "font_class": "chakanyuandaima",
+      "unicode": "e70b",
+      "unicode_decimal": 59147
+    },
+    {
+      "icon_id": "11729508",
+      "name": "在线阅读",
+      "font_class": "zaixianyuedu",
+      "unicode": "e70c",
+      "unicode_decimal": 59148
     }
   ]
 }
