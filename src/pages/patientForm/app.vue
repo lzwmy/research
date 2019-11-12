@@ -6,7 +6,7 @@
 
 <script>
   import utils from 'components/utils';
-  import reportFill from './../index/packages/CRFConfig/report/reportFill';
+  import reportFill from './../index/packages/diseaseModule/CRFConfig/report/reportFill';
     export default {
       name:"patientForm",
       components:{

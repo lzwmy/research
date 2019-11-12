@@ -13,7 +13,7 @@
           <el-input v-model="ruleForm.code" @keyup.enter.native="getDataList()" size="mini" placeholder="请输入显示代码" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item label="包含的显示名：">
-          <el-input v-model="ruleForm.name" @keyup.enter.native="getDataList()" size="mini" placeholder="请输入显示名称" class="search-input" :clearable="true"></el-input>
+          <el-input v-model="ruleForm.name" v-focus @keyup.enter.native="getDataList()" size="mini" placeholder="请输入显示名称" class="search-input" :clearable="true"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getDataList()" icon="el-icon-search">查询</el-button>

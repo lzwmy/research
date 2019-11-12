@@ -13,7 +13,7 @@
             v-model="popoverVisible"
             :visible-arrow="false"
             trigger="click">
-            <ul class="disease_content flex-start-center">
+            <ul class="disease_content flex-start-center flex-wrap">
                 <li v-for="(item,index) in dataList" :key="index" @click="handleSelect(item)"> 
                     <div class="disease_img" :class="'thumbnail-img ' + item.logo + '_bgColor'">
                         <img :src="'./static/img/disease-logo/' + item.logo+ '.svg'">
@@ -200,6 +200,7 @@ export default {
                 padding: 15px 20px;
                 li {
                     margin-right: 15px;
+                    margin-bottom: 10px;
                     box-shadow:2px 2px 6px 0px rgba(211,214,217,0.53);
                     border-radius: 3px;
                     border: 1px solid rgba(229,235,236,1);

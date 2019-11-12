@@ -3,11 +3,11 @@
 // const modelAside = r => require.ensure([], () => r(require('packages/researchModel/modelAside')), 'modelAside');
 
 //科研建模 2.0
-const createModel = r => require.ensure([], () => r(require('packages/researchModel/createModel/createModel')), 'createModel');
+const createModel = r => require.ensure([], () => r(require('packages/diseaseModule/researchModel/createModel/createModel')), 'createModel');
 //详细页面
-const detailPage = r => require.ensure([], () => r(require('packages/researchModel/createModel/detailPage')), 'detailPage');
+const detailPage = r => require.ensure([], () => r(require('packages/diseaseModule/researchModel/createModel/detailPage')), 'detailPage');
 //新建 or 编辑
-const configModel = r => require.ensure([], () => r(require('packages/researchModel/createModel/configModel')), 'configModel');
+const configModel = r => require.ensure([], () => r(require('packages/diseaseModule/researchModel/createModel/configModel')), 'configModel');
 
 const routes = [
   {

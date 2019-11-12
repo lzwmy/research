@@ -10,7 +10,7 @@
 import 'assets/css/crfStyle.less'
 import viewpage from "./component/preview/view";
 import displayItem from "./component/display/displayItem";
-import mixins from "./../../../../components/mixins";
+import mixins from 'components/mixins';
 
 export default {
   name: "preview",

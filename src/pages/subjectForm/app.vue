@@ -6,7 +6,7 @@
 
 <script>
   import utils from 'components/utils';
-  import reportFill from './../index/packages/research/researchTarget/CRFConfig/report/reportFill';
+  import reportFill from './../index/packages/researchModule/researchTarget/CRFConfig/report/reportFill';
 
     export default {
       name:"subjectForm",

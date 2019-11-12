@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import mixins from './../../../../components/mixins';
+  import mixins from 'components/mixins';
   // import displayItem from "./component/display/displayItem";
   import displayReport from  "./component/display/displayReport";
   import 'assets/css/crfStyle.less';

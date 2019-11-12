@@ -42,7 +42,7 @@ const routes = [
         meta: {
             requireAuth: true,
             isKeepAlive: false,
-            txt: '录入统计',
+            txt: '多中心录入统计',
             flag: 'inputStatistics',
             belongToGroup: 'insideView',
             openMode: 2,

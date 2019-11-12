@@ -1,32 +1,32 @@
 // CRF管理 crfManage
 
 // CRF配置 CRFConfig
-const crfConfig = r => require.ensure([], () => r(require('packages/crfManage/CRFConfig')), 'crfConfig');
+const crfConfig = r => require.ensure([], () => r(require('packages/diseaseModule/crfManage/CRFConfig')), 'crfConfig');
 // CRF表单填写 crfFill
-const crfFill = r => require.ensure([], () => r(require('packages/crfManage/crfFill')), 'crfFill');
+const crfFill = r => require.ensure([], () => r(require('packages/diseaseModule/crfManage/crfFill')), 'crfFill');
 
 //CDF 表单 配置入口
-const CDRFromConfig = r => require.ensure([], () => r(require('packages/CDRFormManage/index')), 'CDRFromConfig');
+const CDRFromConfig = r => require.ensure([], () => r(require('packages/diseaseModule/CDRFormManage/index')), 'CDRFromConfig');
 //CDF 预览页面
-const CDFPreviewPage = r => require.ensure([], () => r(require('packages/CDRFormManage/preview')), 'CDFPreviewPage');
+const CDFPreviewPage = r => require.ensure([], () => r(require('packages/diseaseModule/CDRFormManage/preview')), 'CDFPreviewPage');
 // 小节预览
-const CDFSectionPreviewPage = r => require.ensure([], () => r(require('packages/CDRFormManage/sectionPreview')), 'CDFSectionPreviewPage');
+const CDFSectionPreviewPage = r => require.ensure([], () => r(require('packages/diseaseModule/CDRFormManage/sectionPreview')), 'CDFSectionPreviewPage');
 //单页预览
-const CDFSinglePagePreview = r => require.ensure([], () => r(require('packages/CDRFormManage/singlePagePreview')), 'CDFSinglePagePreview');
+const CDFSinglePagePreview = r => require.ensure([], () => r(require('packages/diseaseModule/CDRFormManage/singlePagePreview')), 'CDFSinglePagePreview');
 //报告预览
-const CDFReportPagePreview = r => require.ensure([], () => r(require('packages/CDRFormManage/reportPreview')), 'CDFReportPagePreview');
+const CDFReportPagePreview = r => require.ensure([], () => r(require('packages/diseaseModule/CDRFormManage/reportPreview')), 'CDFReportPagePreview');
 
-const reportFill = r => require.ensure([], () => r(require('packages/CDRFormManage/reportFill')), 'reportFill');
+const reportFill = r => require.ensure([], () => r(require('packages/diseaseModule/CDRFormManage/reportFill')), 'reportFill');
 
 /**
  * *   crf 2.0
  */
-const reportConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/report/index')),"reportConfig");
+const reportConfig = r => require.ensure([],()=>r(require('packages/diseaseModule/CRFConfig/report/index')),"reportConfig");
 
 //新建小节
-const CRFBasisConfig = r => require.ensure([],()=>r(require('packages/CRFConfig/basisComponents/basisConfig')),"CRFBasisConfig");
+const CRFBasisConfig = r => require.ensure([],()=>r(require('packages/diseaseModule/CRFConfig/basisComponents/basisConfig')),"CRFBasisConfig");
 //配置报告
-const createReport = r => require.ensure([],()=>r(require('packages/CRFConfig/report/createReport')),"createReport");
+const createReport = r => require.ensure([],()=>r(require('packages/diseaseModule/CRFConfig/report/createReport')),"createReport");
 
 const routes = [
   {

@@ -1,5 +1,5 @@
 //病人列表模块
-const patientListModule = r => require.ensure([], () => r(require('packages/patinetListModule/patinetListModule')), 'patientListModule');
+const patientListModule = r => require.ensure([], () => r(require('packages/diseaseModule/patinetListModule/patinetListModule')), 'patientListModule');
 
 const routes = [
   {

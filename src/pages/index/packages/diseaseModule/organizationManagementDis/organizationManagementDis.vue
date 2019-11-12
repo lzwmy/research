@@ -62,7 +62,7 @@
                     <el-input v-model.trim="dialogForm.userName" placeholder="请输入用户名" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
                 </el-form-item>
                 <el-form-item label="手机号:" prop="tel">
-                    <el-input v-model.trim="dialogForm.tel" placeholder="请输入用户名" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
+                    <el-input v-model.trim="dialogForm.tel" placeholder="请输入手机号" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
                 </el-form-item>
                 <el-form-item label="机构:" prop="organization">
                     <el-select v-model="dialogForm.organization" class="block">
@@ -103,7 +103,7 @@ export default {
             if (!value) {
             return callback(new Error('手机号不能为空'));
             } else {
-            const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+            const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/
             console.log(reg.test(value));
             if (reg.test(value)) {
                 callback();

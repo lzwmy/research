@@ -310,7 +310,7 @@
 </template>
 
 <script>
-  import mixins from './../../../../../../components/mixins';
+  import mixins from 'components/mixins';
   import viewItem from './viewItem';
   import Vue from 'vue';
     export default {

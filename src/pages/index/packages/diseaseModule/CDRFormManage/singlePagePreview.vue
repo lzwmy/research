@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import mixins from "./../../../../components/mixins";
+import mixins from 'components/mixins';
 import displayPage from "./component/display/displayPage";
 export default {
   name: "singlePagePreview",

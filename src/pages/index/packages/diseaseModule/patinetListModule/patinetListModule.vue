@@ -441,8 +441,8 @@
 
 <script type="text/javascript">
   import './patientListModule.css';
-  import '../SDResearch/SDResearch.less';
-  import '../SDResearch/card_bgColor.less'
+  import '../../SDResearch/SDResearch.less';
+  import '../../SDResearch/card_bgColor.less';
   import echartsContain from 'components/packages/echartsContain/echartsContain';
   import multipleCheckBoxSelect from 'components/packages/multipleCheckBoxSelect/multipleCheckBoxSelect';
   import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';

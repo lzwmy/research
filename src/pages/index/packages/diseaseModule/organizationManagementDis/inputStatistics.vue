@@ -49,7 +49,7 @@ import utils from 'components/utils/index';
 
 
 export default {
-    name: 'reportList',
+    name: 'inputStatistics',
     mixins: [mixins],
     data () {
         return {
@@ -75,7 +75,6 @@ export default {
         };
     },
     created () {
-        
     },
     components: {
         pagination,

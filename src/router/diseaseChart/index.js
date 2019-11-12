@@ -1,5 +1,5 @@
-const diseaseChart = r => require.ensure([], () => r(require('packages/diseaseChart/diseaseChart')), 'diseaseChart');
-const chartConfig = r => require.ensure([],()=> r(require('packages/diseaseChart/chartConfig')), 'chartConfig');
+const diseaseChart = r => require.ensure([], () => r(require('packages/diseaseModule/diseaseChart/diseaseChart')), 'diseaseChart');
+const chartConfig = r => require.ensure([],()=> r(require('packages/diseaseModule/diseaseChart/chartConfig')), 'chartConfig');
 
 const routes = [
   {

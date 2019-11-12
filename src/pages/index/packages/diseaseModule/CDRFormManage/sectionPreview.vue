@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import mixins from './../../../../components/mixins';
+  import mixins from 'components/mixins';
   import displayPortion from "./component/display/displayPortion";
     export default {
       name: "sectionPreview",

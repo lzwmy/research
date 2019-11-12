@@ -199,7 +199,7 @@ export default {
 </script>
 
 <style lang="less"> 
-    @import url('../../research/css/common.less');
+    @import url('../../researchModule/css/common.less');
     .stepThree {
         .box {
             height: 430px;

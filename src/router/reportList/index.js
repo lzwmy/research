@@ -1,4 +1,4 @@
-const reportList = r => require.ensure([], () => r(require('packages/reportList/reportList')), 'reportList');
+const reportList = r => require.ensure([], () => r(require('packages/diseaseModule/reportList/reportList')), 'reportList');
 
 const routes = [
     {
