@@ -46,9 +46,10 @@
           <div class="li flex-start-start">
             <p><i class="icon iconfont iconshezhi"></i>设置</p>
             <div class="cont">
-              <p>{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
-              <p>{{remindDetail.remindRsp && remindDetail.remindRsp.startTime}}
+              <p v-if="remindDetail.remindRsp && remindDetail.remindRsp.timingDesc">{{remindDetail.remindRsp && remindDetail.remindRsp.timingDesc}}</p>
+              <p v-else-if="remindDetail.remindRsp && remindDetail.remindRsp.startTime">{{remindDetail.remindRsp && remindDetail.remindRsp.startTime}}
                 {{remindDetail.remindRsp && remindDetail.remindRsp.endTime?'至 '+remindDetail.remindRsp.endTime:''}}</p>
+              <em v-else>(空)</em>
             </div>
 
           </div>
