@@ -215,8 +215,13 @@ export default {
           case 2 : //2列
             //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+
+              let sum = currentItemList[0]-prevItemList[0];
               if(currentSelection.length==1) {
                 preData.wrap = 0
+              }
+              if(sum == 0) { // 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
+                preData.wrap = 1
               }
             }
             else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
@@ -240,10 +245,13 @@ export default {
                 item.baseProperty.layout.offset = 0;
               }else if(sum == 2) {
                 item.baseProperty.layout.offset = 8;
+              }else if(sum == 0) {// 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
+                preData.wrap = 1
               }
               //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
             }
             else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              preData.wrap =1
               if(currentItemList[0] == 2) {
                 item.baseProperty.layout.offset = 8;
               }else if(currentItemList[0] == 3) {
@@ -264,19 +272,17 @@ export default {
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
               preData.wrap = 0;
               let sum = Math.abs(currentItemList[0] - prevItemList[0]);
-
               if(sum == 1) {
                 item.baseProperty.layout.offset = 0;
               }else if(sum == 2) {
                 item.baseProperty.layout.offset = 6;
               }else if(sum == 3) {
-                //判断 当前一个 和上一个 差别为 -1 ，重置offset
                 if(currentItemList[0] - prevItemList[0]>0){
                   item.baseProperty.layout.offset = 12;
                 }
+              }else if(sum == 0) {
+                preData.wrap = 1;
               }
-              /*console.log(currentItemList[0] - prevItemList[0]);
-              console.log(item.controlDisplayName+"--"+item.baseProperty.layout.offset)*/
               //如果 当前行 columns 与 上一行 columns 相等 && 当前行 wrap !==1 ,设置当前行 offset
             }
             else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
@@ -312,11 +318,11 @@ export default {
                 }
               }else if(currentItemList.length == 2) {
                 if(currentItemList[0] == 2) {
-                  item.baseProperty.layout.offset = 0;
-                }else if(currentItemList[0] == 3) {
                   item.baseProperty.layout.offset = 6;
-                }else if(currentItemList[0] == 4) {
+                }else if(currentItemList[0] == 3) {
                   item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
                 }
               }else if(currentItemList.length == 3) {
                 if(currentItemList[0] == 2) {
@@ -461,11 +467,11 @@ export default {
       if(item.columns == 1) {
         span = 24;
       }else if(item.columns == 2) {
-        span = 12*item.selection.length;
+        span = 12 * (item.selection.length || 1);
       }else if(item.columns == 3) {
-        span = 8 * item.selection.length;
+        span = 8 * (item.selection.length || 1);
       }else if(item.columns == 4) {
-        span = 6 * item.selection.length;
+        span = 6 * (item.selection.length || 1);
       }
       return span;
     }
