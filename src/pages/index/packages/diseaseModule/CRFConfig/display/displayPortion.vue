@@ -344,7 +344,8 @@ export default {
     font-size: 14px;
     height: 30px;
     line-height: 30px;
-    background-color: #ddd;
+    /*background-color: #ddd;*/
+    background-color: #E9E9E9;
     padding-left: 15px;
   }
   .displayPortion_box{
