@@ -21,12 +21,12 @@
 }
 
 /*表单输入框样式修改*/
-.displayPortion_box .el-input .el-input__inner {
+/*.displayPortion_box .el-input .el-input__inner {
   border: 1px solid #ccc;
   border-radius: 2px;
-}
+}*/
 /*表单多选框 样式修改*/
-.displayPortion_box .el-checkbox__inner::after{
+/*.displayPortion_box .el-checkbox__inner::after{
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
   content: "";
@@ -53,15 +53,21 @@
 .displayPortion_box .el-checkbox__input.is-focus .el-checkbox__inner{
   border-color: #cccccc;
 }
+.displayPortion_box .el-checkbox__label {
+  color: #333333;
+}
 .displayPortion_box .el-checkbox__input.is-checked+.el-checkbox__label {
   color: #606266;
+}
+.displayPortion_box .el-checkbox__inner{
+  border: 1px solid #ccc;
 }
 .displayPortion_box .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
   background-color: transparent;
   border-color: #DCDFE6;
-}
+}*/
 /*表单 单选框样式修改*/
-.displayPortion_box .el-radio__input.is-checked .el-radio__inner{
+/*.displayPortion_box .el-radio__input.is-checked .el-radio__inner{
   border-color: #DCDFE6;
   background: transparent;
 }
@@ -89,7 +95,7 @@
 }
 .displayPortion_box .el-radio__input.is-checked+.el-radio__label{
   color: #606266;
-}
+}*/
 /***********************************************/
 .arrangement_lr .icon {
   font-size: 14px;
