@@ -1,8 +1,8 @@
 /*eslint-disable*/
-import Vue from 'vue';
+// import Vue from 'vue';
 import App from './app';
 import utils from 'components/utils';
-import ElementUI from 'element-ui';
+// import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'assets/fonticon/iconfont.css';
 import 'assets/css/crf.less';
@@ -12,7 +12,7 @@ import 'assets/css/crfStyle.less';
 
 Vue.use(VueRouter)*/
 
-Vue.use(ElementUI);
+// Vue.use(ElementUI);
 import install from 'components/utils/install';
 
 Vue.use(install);

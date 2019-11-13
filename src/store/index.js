@@ -1,8 +1,8 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+// import Vue from 'vue';
+// import Vuex from 'vuex';
 import utils from 'components/utils';
 
-Vue.use(Vuex);
+// Vue.use(Vuex);
 
 const USER_SIGNIN = 'USER_SIGNIN'; // 登录成功
 const USER_SIGNOUT = 'USER_SIGNOUT'; // 退出登录

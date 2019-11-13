@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import utils from 'components/utils';
 import qs from 'qs';
 import { MessageBox, Message } from 'element-ui';

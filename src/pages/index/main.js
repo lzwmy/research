@@ -1,12 +1,12 @@
 /*eslint-disable*/
-import Vue from 'vue';
+// import Vue from 'vue';
 import App from './app';
 import utils from 'components/utils';
 import Global from 'components/utils/global';
 import 'babel-polyfill'
-import ElementUI from 'element-ui';
+// import ElementUI from 'element-ui';
 import { Loading, MessageBox,Message } from 'element-ui';
-import VueRouter from 'vue-router';
+// import VueRouter from 'vue-router';
 
 import routes from '../../router';
 import store from '../../store';
@@ -40,8 +40,8 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 Vue.use(VueQuillEditor)
 Vue.use(install);
-Vue.use(VueRouter);
-Vue.use(ElementUI);
+// Vue.use(VueRouter);
+// Vue.use(ElementUI);
 
 window.eventBus = new Vue();
 Vue.prototype.$message = Message;
@@ -67,7 +67,7 @@ Vue.directive('focus', {
 Object.keys(filters).forEach(i => Vue.filter(i, filters[i]));
 
 
-let Highcharts = require('highcharts');
+// let Highcharts = require('highcharts');
 Vue.prototype.$Highcharts = Highcharts;
 
 

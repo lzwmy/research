@@ -5,9 +5,14 @@ var config = require('../config');
 var vueLoaderConfig = require('./vue-loader.conf');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+
 //循环所有页面入口文件main.js
 var entryConfig = {};
 var HtmlPlugins = [];
+//可分析打包文件详情
+// HtmlPlugins.push(new BundleAnalyzerPlugin());
 
 //默认路径为webpack.config.js所在的路径，这里通过npm run 运行方式，引用的根路径为package.json, 开发环境，文件构成至内存中，webpack-dev-middleware根路径指向'/'
 var entryArray = fs.readdirSync(path.join(__dirname, '../src/pages'));
@@ -50,6 +55,16 @@ module.exports = {
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : './',
     chunkFilename: utils.assetsPath('[name].js')
+  },
+  externals: {
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex':'Vuex',
+    'element-ui': 'ElementUI',
+    'axios': 'axios',
+    'jspdf': 'JsPDF',
+    'html2canvas':'html2Canvas',
+    'highcharts': 'highcharts'
   },
   resolve: {
     extensions: ['.js', '.vue', '.css', '.json'],

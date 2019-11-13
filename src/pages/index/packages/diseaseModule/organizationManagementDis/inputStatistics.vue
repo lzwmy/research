@@ -25,13 +25,14 @@
                 <el-table
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                     :data="dataList.content" v-loading="loading" ref="refTable" fit>
-                    <el-table-column type="index" label='序号'></el-table-column>
-                    <el-table-column prop="visitDate" label="机构名称"></el-table-column>
-                    <el-table-column prop="reportName" label="病人总数"></el-table-column>
-                    <el-table-column prop="patientName" label="初诊次数"></el-table-column>
-                    <el-table-column prop="genderName" label="最新录入时间"></el-table-column>
-                    <el-table-column prop="author" label="机构负责人"></el-table-column>
-                    <el-table-column prop="groupName" label="负责人电话"></el-table-column>
+                    <el-table-column type="index" label='序号' width="80"></el-table-column>
+                    <el-table-column prop="orgName" label="机构名称" min-width="140" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="patientCount" label="病人总数" min-width="100" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="firstVisitCount" label="初诊次数" min-width="100" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="reviewCount" label="复诊次数" min-width="100" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="newRecordTime" label="最新录入时间" min-width="160" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="orgPrincipal" label="机构负责人" min-width="100" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="orgPrincipalPhoneNum" label="负责人电话" min-width="120" show-overflow-tooltip></el-table-column>
                 </el-table>
                 <!-- 分页 -->
                 <pagination :data="dataList" @change="getDataList"></pagination>
@@ -42,7 +43,6 @@
 
 <script>
 import echartsContain from 'components/packages/echartsContain/echartsContain';
-import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
 import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
 import utils from 'components/utils/index';
@@ -75,12 +75,19 @@ export default {
         };
     },
     created () {
+        this.getDataList();
     },
     components: {
         pagination,
         echartsContain,
     },
     methods: {
+        initPage() {
+            this.getDataList()
+            .then(()=>{
+                this.$emit('changeLoadding',false);
+            })
+        },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
             that.loading = true;
@@ -92,32 +99,24 @@ export default {
                 startTime = null
                 endTime = null
             }else {
-                startTime = this.form.time[0].split("-").join('');
-                endTime = this.form.time[1].split("-").join('');
+                startTime = this.form.time[0];
+                endTime = this.form.time[1];
             }
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
-                args: {
-                    // diseaseId: this.form.diseaseSubjectGroup.disease || '',
-                    diseaseId: this.$route.query.id || '',
-                    subjectId: this.form.diseaseSubjectGroup.subject || '',
-                    groupId: this.form.diseaseSubjectGroup.group || '',
-                    crfId: "",
-                    patientName: "",
-                    startTime: startTime,
-                    endTime: endTime,
-                    status: this.form.state
-                }
+                diseaseId: this.$route.query.id || '',
+                startTime: startTime,
+                endTime: endTime
             };
             try {
-                let res = await that.$http.RRMgetDataList(formData);
+                let res = await that.$http.ORGDisGetStatisticsData(formData);
                 if (res.code == '0') {
                     let obj = {};
-                    obj.content = res.data.args;
+                    obj.content = res.data.list;
                     obj.pageNo = pageNo;
                     obj.pageSize = pageSize;
-                    obj.totalCount = parseInt(res.data.totalElements);
+                    obj.totalCount = parseInt(res.data.sum);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
                 }else {

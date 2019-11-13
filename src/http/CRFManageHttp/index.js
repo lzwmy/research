@@ -1,5 +1,5 @@
 // CRF 请求管理
-import Vue from 'vue';
+// import Vue from 'vue';
 
 const vm = new Vue();
 const url = {

@@ -1,5 +1,5 @@
 // CRF管理 crfManage
-import Vue from 'vue';
+// import Vue from 'vue';
 
 const vm = new Vue();
 const url = {

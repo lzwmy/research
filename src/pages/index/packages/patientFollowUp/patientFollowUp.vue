@@ -20,7 +20,6 @@
                         <el-option label="已填写" value="1"></el-option>
                         <el-option label="失访" value="2"></el-option>
                         <el-option label="终止" value="3"></el-option>
-                        <el-option label="失效" value="4"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item class="flex-right">

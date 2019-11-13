@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import Highcharts from 'highcharts/highstock';
+  // import Highcharts from 'highcharts/highstock';
   import  Wordcloud    from  'highcharts/modules/wordcloud';
   Wordcloud(Highcharts)
     export default {

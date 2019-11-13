@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import Vue from 'vue';
+// import Vue from 'vue';
 import App from './app';
 import utils from 'components/utils';
 import { Form,FormItem,Input, Button, MessageBox } from 'element-ui';

@@ -47,7 +47,9 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: false,
+        drop_console: true,
+        drop_debugger: true
       },
       sourceMap: true
     }),
@@ -112,6 +114,7 @@ if (config.build.productionGzip) {
         ')$'
       ),
       threshold: 10240,
+      // deleteOriginalAssets:true, //删除源文件，不建议
       minRatio: 0.8
     })
   );

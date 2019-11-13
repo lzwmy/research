@@ -1,5 +1,5 @@
 
-import Vue from 'vue';
+// import Vue from 'vue';
 
 const vm = new Vue();
 const url = {
@@ -19,6 +19,9 @@ const url = {
     roleList: '/disease/role/list',
     // 获取分享进来角色信息
     shareUserRole: '/disease/user/role',
+
+    // 获取录入统计数据
+    getStatisticsData: '/disease/org/input/statistics',
 };
 
 const http = {
@@ -45,6 +48,9 @@ const http = {
     },
     ORGDisShareUserRole (params) {
         return vm.$post(url.shareUserRole, params, false);
+    },
+    ORGDisGetStatisticsData (params) {
+        return vm.$post(url.getStatisticsData, params, true);
     }
 };
 

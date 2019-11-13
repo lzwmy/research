@@ -1,5 +1,5 @@
-import html2Canvas from 'html2canvas'
-import JsPDF from 'jspdf'
+// import html2Canvas from 'html2canvas'
+// import JsPDF from 'jspdf'
 
 let domToPDF = function(dom,title) {
     var title = title;

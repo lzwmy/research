@@ -41,6 +41,13 @@
           </li>
         </el-col>
       </el-row>
+
+      <div v-show="emptyData" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+          <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
+              <use xlink:href="#iconzu11"></use>
+          </svg>
+          <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
+      </div>
     </ul>
 
     <el-dialog
@@ -94,6 +101,7 @@
     name: 'researchTask',
     data() {
       return {
+        emptyData: false,
         roles: [], //用户角色
         dataList: [],
         actionUrl: '',
@@ -222,6 +230,11 @@
           let res = await this.$http.RTASKgetDataList(params);
           if (res.code == '0') {
             this.dataList = res.data;
+            if(this.dataList.length==0) {
+              this.emptyData = true;
+            }else {
+              this.emptyData = false;
+            }
           } else {
             this.$mes('error', res.msg);
           }

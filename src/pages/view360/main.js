@@ -1,7 +1,7 @@
 /*eslint-disable*/
-import Vue from 'vue';
+// import Vue from 'vue';
 import App from './app';
-import ElementUI from 'element-ui';
+// import ElementUI from 'element-ui';
 import { Loading, MessageBox,Message } from 'element-ui';
 
 import 'element-ui/lib/theme-chalk/index.css';
@@ -10,7 +10,7 @@ import 'assets/css/normalize.less';
 import 'assets/css/common.less';
 
 
-let Highcharts = require('highcharts');
+// let Highcharts = require('highcharts');
 Vue.prototype.$Highcharts = Highcharts;
 
 
@@ -23,7 +23,7 @@ Vue.prototype.$mes = function (type, message) {
 }
 
 
-Vue.use(ElementUI);
+// Vue.use(ElementUI);
 import install from 'components/utils/install';
 
 Vue.use(install);
