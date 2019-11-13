@@ -70,7 +70,7 @@
                 </p>
                 <p class="desc">{{item.modelName}}</p>
               </div>
-              <div class="img_model">
+              <div class="img_model" @click.stop="jumpDetailPage(item)">
                 <i class="iconfont iconshuju"></i>
               </div>
               <div class="modify_model">
