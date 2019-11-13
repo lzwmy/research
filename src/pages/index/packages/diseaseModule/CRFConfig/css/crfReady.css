@@ -56,7 +56,8 @@
 .crfConfig .crf-main .crf-step-content {
   overflow: auto;
   height: calc(100% - 30px);
-  background-color: #f7f8fc;
+  /*background-color: #f7f8fc;*/
+  background-color: #FCFCFC;
 }
 
 .crfConfig .menu-panel .el-collapse-item__arrow {

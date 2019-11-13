@@ -20,6 +20,77 @@
   display: none;
 }
 
+/*表单输入框样式修改*/
+.displayPortion_box .el-input .el-input__inner {
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+/*表单多选框 样式修改*/
+.displayPortion_box .el-checkbox__inner::after{
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  content: "";
+  border: 2px solid #333;
+  border-left: 0;
+  border-top: 0;
+  height: 7px;
+  left: 4px;
+  position: absolute;
+  top: 1px;
+  -webkit-transform: rotate(45deg) scaleY(0);
+  transform: rotate(45deg) scaleY(0);
+  width: 3px;
+  -webkit-transition: -webkit-transform .15s ease-in .05s;
+  transition: -webkit-transform .15s ease-in .05s;
+  transition: transform .15s ease-in .05s;
+  transition: transform .15s ease-in .05s,-webkit-transform .15s ease-in .05s;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+}
+.displayPortion_box .el-checkbox__inner:hover {
+  border-color: #cccccc;
+}
+.displayPortion_box .el-checkbox__input.is-focus .el-checkbox__inner{
+  border-color: #cccccc;
+}
+.displayPortion_box .el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #606266;
+}
+.displayPortion_box .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+  background-color: transparent;
+  border-color: #DCDFE6;
+}
+/*表单 单选框样式修改*/
+.displayPortion_box .el-radio__input.is-checked .el-radio__inner{
+  border-color: #DCDFE6;
+  background: transparent;
+}
+.displayPortion_box .el-radio__inner::after{
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  background-color: #333;
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%) scale(0);
+  transform: translate(-50%,-50%) scale(0);
+  -webkit-transition: -webkit-transform .15s ease-in;
+  transition: -webkit-transform .15s ease-in;
+  transition: transform .15s ease-in;
+  transition: transform .15s ease-in,-webkit-transform .15s ease-in;
+}
+.displayPortion_box .el-radio__input.is-checked .el-radio__inner::after{
+  transform: translate(-50%,-50%) scale(1.5);
+}
+.displayPortion_box .el-radio__inner:hover{
+  border-color: #cccccc;
+}
+.displayPortion_box .el-radio__input.is-checked+.el-radio__label{
+  color: #606266;
+}
+/***********************************************/
 .arrangement_lr .icon {
   font-size: 14px;
   cursor: pointer;
@@ -349,6 +420,7 @@
   padding-left: 1%;
   min-width: 104px;
   font-size: 13px;
+  color: #717375;
 }
 .NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_select{
   width: 104px;
