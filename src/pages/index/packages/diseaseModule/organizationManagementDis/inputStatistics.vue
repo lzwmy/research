@@ -115,8 +115,8 @@ export default {
                 offset: pageNo,
                 limit: pageSize,
                 diseaseId: this.$route.query.id || '',
-                startTime: startTime,
-                endTime: endTime
+                start: startTime,
+                end: endTime
             };
             try {
                 let res = await that.$http.ORGDisGetStatisticsData(formData);
