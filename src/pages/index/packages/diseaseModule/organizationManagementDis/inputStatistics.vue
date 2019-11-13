@@ -26,13 +26,14 @@
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                     :data="dataList.content" v-loading="loading" ref="refTable" fit>
                     <el-table-column type="index" label='序号' width="80"></el-table-column>
-                    <el-table-column prop="orgName" label="机构名称" min-width="140" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="patientCount" label="病人总数" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="firstVisitCount" label="初诊次数" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="reviewCount" label="复诊次数" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="newRecordTime" label="最新录入时间" min-width="160" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="orgPrincipal" label="机构负责人" min-width="100" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="orgPrincipalPhoneNum" label="负责人电话" min-width="120" show-overflow-tooltip></el-table-column>
+                    <el-table-column 
+                        v-for="(column,index) in dataList.header"
+                        :key="index"
+                        :prop="column.prop" 
+                        :label="column.label" 
+                        :width="handleWidth(column.label)" 
+                        show-overflow-tooltip>
+                    </el-table-column>
                 </el-table>
                 <!-- 分页 -->
                 <pagination :data="dataList" @change="getDataList"></pagination>
@@ -60,7 +61,8 @@ export default {
                 report: ""
             },
             dataList: {
-                content: []
+                content: [],
+                header: []
             },
             loading: false,
             identify:"",
@@ -82,6 +84,13 @@ export default {
         echartsContain,
     },
     methods: {
+        handleWidth(label) {
+            let width = '';
+            if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
+                width = 160
+            }
+            return width
+        },
         initPage() {
             this.getDataList()
             .then(()=>{
@@ -113,7 +122,8 @@ export default {
                 let res = await that.$http.ORGDisGetStatisticsData(formData);
                 if (res.code == '0') {
                     let obj = {};
-                    obj.content = res.data.list;
+                    obj.content = res.data.body;
+                    obj.header = res.data.header;
                     obj.pageNo = pageNo;
                     obj.pageSize = pageSize;
                     obj.totalCount = parseInt(res.data.sum);

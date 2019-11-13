@@ -82,7 +82,6 @@ export default {
     },
     watch: {
         $route(to, from) {
-            console.log(to)
             this.$nextTick(()=>{
                 this.defaultActive = '/' + to.meta.flag;
             })
@@ -118,7 +117,6 @@ export default {
                 this.$emit('changeMenuList',menuList)
             }
         }     
-        console.warn(this.menuList)
 
     },
     methods: {

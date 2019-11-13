@@ -11,6 +11,7 @@ const url = {
     getUserList: '/subject/user/list',
     // 删除人员列表项
     deleteUserList: '/subject/user/delete',
+    
     // 查询所有角色列表
     getRoleListAll: '/subject/role/list',
     // 新建用户(单中心)
@@ -36,6 +37,7 @@ const http = {
     ORGdeleteUserList (params) {
         return vm.$get(url.deleteUserList, params, false);
     },
+
     ORGgetRoleListAll (params) {
         return vm.$get(url.getRoleListAll, params, false);
     },

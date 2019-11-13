@@ -37,6 +37,7 @@
                         <el-table-column label="操作" width="120">
                             <template slot-scope="scope">
                                 <div>
+                                    <el-button type="text" @click="showDialog('编辑用户',scope.row)"><i class="iconfont iconbianji"></i></el-button>
                                     <el-button type="text" @click="onDelete(scope.row)"><i class="iconfont iconshanchu del"></i></el-button>
                                 </div>
                             </template>
@@ -59,10 +60,10 @@
                 :model="dialogForm" ref="dialogForm" :rules="ruleDialogForm" label-width="80px" class="organizationManagement" 
                 @submit.native.prevent v-loading="dialogForm.loading" label-position="left">
                 <el-form-item label="用户名:" prop="userName">
-                    <el-input v-model.trim="dialogForm.userName" placeholder="请输入用户名" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
+                    <el-input v-model.trim="dialogForm.userName" placeholder="请输入用户名" :maxlength="30" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="手机号:" prop="tel">
-                    <el-input v-model.trim="dialogForm.tel" placeholder="请输入手机号" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
+                    <el-input v-model.trim="dialogForm.tel" placeholder="请输入手机号" :maxlength="30" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="机构:" prop="organization">
                     <el-select v-model="dialogForm.organization" class="block">
@@ -76,10 +77,10 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="科室:" prop="department">
-                    <el-input v-model.trim="dialogForm.department" placeholder="请输入科室" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
+                    <el-input v-model.trim="dialogForm.department" placeholder="请输入科室" :maxlength="30" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="职称:" prop="position">
-                    <el-input v-model.trim="dialogForm.position" placeholder="请输入职称" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
+                    <el-input v-model.trim="dialogForm.position" placeholder="请输入职称" :maxlength="30" clearable></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer">
@@ -167,6 +168,7 @@ export default {
                 this.$emit('changeLoadding',false);
                 this.getAllRoles();
             })
+
         },
         selectGroup(item,index) {
             this.orgCode = item.orgCode;
@@ -245,7 +247,21 @@ export default {
                 console.log(err)
             }
         },
-        showDialog(title) {
+        showDialog(title,row) {
+            if(row) {
+                this.dialogForm = {
+                    title: title,
+                    userName: row.userName,
+                    userId: row.id,
+                    tel: row.phoneNumber,
+                    role: row.roles,
+                    organization: row.orgName,
+                    department: row.deptName,
+                    position: row.duty,
+                    visible: true,
+                    loading: false,
+                }
+            }
             this.dialogForm.title = title;
             this.dialogForm.visible = true;
         },
@@ -287,6 +303,19 @@ export default {
                             roles: this.dialogForm.role
                         }
                         res = await that.$http.ORGDisCreateUser(formData);
+                    }else {
+                        formData = {
+                            diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
+                            userName: this.dialogForm.userName,
+                            phoneNumber: this.dialogForm.tel,
+                            orgName: this.dialogForm.organization,
+                            orgCode: organization[0].orgCode,
+                            deptName: this.dialogForm.department,
+                            duty: this.dialogForm.position,
+                            roles: this.dialogForm.role,
+                            id: this.dialogForm.userId
+                        }
+                        res = await that.$http.ORGDisupdateUserList(formData);
                     }
                     if (res.code == '0') {
                         that.$mes('success', that.dialogForm.title +'成功');

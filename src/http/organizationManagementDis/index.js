@@ -13,6 +13,8 @@ const url = {
     deleteUser: '/disease/user/delete',
     // 新建用户
     createUser: '/disease/user/create',
+    // 编辑人员列表项
+    updateUserList: '/disease/user/update',
     // 添加分中心
     addOrg: '/disease/org/add',
     // 角色列表
@@ -39,6 +41,9 @@ const http = {
     },
     ORGDisCreateUser (params) {
         return vm.$post(url.createUser, params, false);
+    },
+    ORGDisupdateUserList (params) {
+        return vm.$post(url.updateUserList, params, false);
     },
     ORGDisAddOrg (params) {
         return vm.$post(url.addOrg, params, false);
