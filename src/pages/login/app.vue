@@ -108,6 +108,7 @@ export default {
     handleLogin() {
       let that = this;
       let rand = (CryptoJS.MD5(Math.random() + '') + '').substring(0, 16);
+
       let encrypt = new JSEncrypt();
       encrypt.setPublicKey('MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCD+2TvohQ2mE+Xmzj2OIhvHFaLlanIWdbZP+ysk9kNioY5vphI/Q1Etow5zbHCSy9m4MNpPi68NDJcY7zn8JPjEnjzxKUTP6U4+EjJj9TeP9HiYnaWMYZeDG7pqxs2FLo4Mxz5YdRkTWuLWztybXmmAENzk88srZlGjRcRGDqmkQIDAQAB');
       let consumerId = encrypt.encrypt(rand);

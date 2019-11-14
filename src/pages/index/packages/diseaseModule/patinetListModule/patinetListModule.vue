@@ -92,7 +92,7 @@
                           <el-dropdown-item command="exportAll" v-if="selectLabGroupId">导出所有</el-dropdown-item>
                           <el-dropdown-item command="caseStorage">病例入库</el-dropdown-item>
                           <el-dropdown-item command="edit" :disabled="selectRow.length != 1">编辑患者</el-dropdown-item>
-                          <el-dropdown-item command="delete" :disabled="selectRow.length == 0">删除患者</el-dropdown-item>
+                          <el-dropdown-item command="delete" :disabled="selectRow.length != 1 ">删除患者</el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
                     </el-form-item>

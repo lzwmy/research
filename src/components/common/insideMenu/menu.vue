@@ -121,18 +121,18 @@ export default {
                     children: [
                         {
                             ico: '',
-                            menuName: '录入统计',
-                            menuCode: "012905",
-                            menuPath: '/inputStatistics',
-                            name: 'inputStatistics',
-                            children: []
-                        },
-                        {
-                            ico: '',
                             menuName: '机构管理',
                             menuCode: "012906",
                             menuPath: '/organizationManagementDis',
                             name: 'organizationManagementDis',
+                            children: []
+                        },
+                        {
+                            ico: '',
+                            menuName: '录入统计',
+                            menuCode: "012905",
+                            menuPath: '/inputStatistics',
+                            name: 'inputStatistics',
                             children: []
                         }
                     ],

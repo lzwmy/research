@@ -244,6 +244,7 @@ export default {
             border-left: 1px solid #fff;
             line-height: 24px;
             margin-left: 15px;
+            min-width: 200px;
             font-size: 20px;
             font-weight: bold;
             padding-left: 15px;
