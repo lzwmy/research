@@ -44,8 +44,9 @@
                     </el-menu-item>
                     <el-submenu :index="'2-'+item.menuPath" v-if="item.children && item.children.length != 0">
                         <template slot="title">
-                            <i @click="routerLink(item)" class="icon iconfont" :class="'icon'+item.ico"></i>
-                            <span @click="routerLink(item)" slot="title">{{item.menuName}}</span>
+                          <!--@click="routerLink(item)"-->
+                            <i  class="icon iconfont" :class="'icon'+item.ico"></i>
+                            <span  slot="title">{{item.menuName}}</span>
                         </template>
                         <el-menu-item-group v-for="(li, indexli) in item.children" :key="indexli">
                             <el-menu-item :index="li.menuPath"  @click="routerLink(li)">{{li.menuName}}</el-menu-item>
@@ -112,8 +113,8 @@ export default {
                         ico: '',
                         menuName: '机构管理',
                         menuCode: "012906",
-                        menuPath: '/agencyManagement',
-                        name: 'agencyManagement',
+                        menuPath: '/organizationManagementDis',
+                        name: 'organizationManagementDis',
                         children: []
                       }
                     ],
