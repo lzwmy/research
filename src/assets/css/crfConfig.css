@@ -65,10 +65,12 @@
 .displayPortion_box .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
   background-color: transparent;
   border-color: #DCDFE6;
+  !*border-color: #333;*!
 }*/
 /*表单 单选框样式修改*/
 /*.displayPortion_box .el-radio__input.is-checked .el-radio__inner{
   border-color: #DCDFE6;
+  !*border-color: #333;*!
   background: transparent;
 }
 .displayPortion_box .el-radio__inner::after{
