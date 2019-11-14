@@ -52,7 +52,7 @@ const routes = [
         component: inputStatistics
     },
   {
-    ico: 'inputStatistics',
+    ico: 'agencyManagement',
     menuLevel: 4,
     menuName: '机构管理',
     menuOrder: 7,
@@ -67,7 +67,7 @@ const routes = [
       requireAuth: true,
       isKeepAlive: false,
       txt: '机构管理',
-      flag: 'inputStatistics',
+      flag: 'agencyManagement',
       belongToGroup: 'insideView',
       openMode: 2,
     },
