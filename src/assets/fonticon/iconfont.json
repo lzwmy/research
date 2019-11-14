@@ -27,6 +27,13 @@
       "unicode_decimal": 58959
     },
     {
+      "icon_id": "8405864",
+      "name": "时间",
+      "font_class": "shijian",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
       "icon_id": "8701936",
       "name": "单选框_选中",
       "font_class": "danxuankuang_xuanzhong",

@@ -32,23 +32,35 @@
             <ul class="card" v-loading="loading" v-if="dataList.length != 0">
                 <el-row :gutter="21">
                     <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
-                        <li class="box flex-start-center">
+                      <!--flex-start-center-->
+                        <li class="box ">
+                          <div class="dateTime-box" style="display: flex;justify-content: space-between;border-bottom: 1px solid #f2f2f2;padding-bottom: 5px;padding-left: 10px;padding-right: 10px;">
+                            <div class="planVisitDate" style="display: flex;align-items: center;color: #9BABB8;">
+                              <i class="iconfont iconshijian" style="padding-right: 10px;vertical-align: middle;font-size:13px;"></i>
+                              <span style="font-size:13px; ">{{item.planVisitDate}}</span>
+                            </div>
+                            <div class="fill-info">
+                              <div @click="toReportFill(item)" class="box_tag"><span v-html="handleStatus(item.status)"></span></div>
+                            </div>
+                          </div>
+                          <div class="box" style="display: flex;margin-top: 6px;padding: 0 10px;">
                             <div class="box_left" @click="toReportFill(item)">
-                                <h3>{{item.patientName}}</h3>
-                                <p>{{item.genderName}}/{{item.age}}</p>
+                              <h3>{{item.patientName}}</h3>
+                              <p>{{item.genderName}}/{{item.age}}</p>
                             </div>
                             <div class="box_right flex-center-end">
-                                <div @click="toReportFill(item)" class="box_tag"><span v-html="handleStatus(item.status)"></span></div>
-                                <p @click="toReportFill(item)" class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
-                                <div class="box_btn_group flex-start-center">
-                                    <el-button class="flex-center-center" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
-                                        {{item.smsVisit==0?'短信随访':'已发送'}}
-                                    </el-button>
-                                    <el-button class="flex-center-center" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>
-                                    {{item.mpVisit==0?'微信随访':'已发送'}}
-                                    </el-button>
-                                </div>
+                              <!--<div @click="toReportFill(item)" class="box_tag"><span v-html="handleStatus(item.status)"></span></div>-->
+                              <p @click="toReportFill(item)" class="box_tel"><i class="icon iconfont iconzujian10"></i>{{item.phoneNumber | emptyString}}</p>
+                              <div class="box_btn_group flex-start-center">
+                                <el-button class="flex-center-center" @click.stop="pushNote(item)" :disabled="item.smsVisit!=0"><i class="icon iconfont iconzujian9"></i>
+                                  {{item.smsVisit==0?'短信随访':'已发送'}}
+                                </el-button>
+                                <el-button class="flex-center-center" @click.stop="pushAssociate(item)" :disabled="item.mpVisit!=0"><i class="icon iconfont iconzujian11"></i>
+                                  {{item.mpVisit==0?'微信随访':'已发送'}}
+                                </el-button>
+                              </div>
                             </div>
+                          </div>
                         </li>
                     </el-col>
                 </el-row>
@@ -275,9 +287,9 @@ export default {
         position: relative;
         min-height: 600px;
         li {
-            height: 110px;
+            height: 120px;
             border-radius: 0px;
-            padding: 10px;
+            padding: 10px 0;
             background:rgba(255,255,255,1);
             margin-bottom: 21px;
             transition: all 300ms;
@@ -288,8 +300,10 @@ export default {
             .box_left {
                 width: 85px;
                 height: 100%;
-                padding: 15px 0 0 5px;
+                /*padding: 15px 0 0 5px;*/
+                padding: 0px 15px 0 5px;
                 border-right: 1px solid #eee;
+                text-align: center;
                 h3 {
                     font-size: 20px;
                     font-weight: normal;
@@ -315,7 +329,9 @@ export default {
                     width: 100%;
                     color: rgba(127, 139, 159, 1);
                     font-size: 14px;
-                    margin-bottom: 16px;
+                    /*margin-bottom: 16px;*/
+                    margin-bottom: 10px;
+                    margin-top: 5px;
                     i {
                         padding-right: 4px;
                         font-size: 16px;
