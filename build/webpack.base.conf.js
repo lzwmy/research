@@ -62,8 +62,7 @@ module.exports = {
     'vuex':'Vuex',
     'element-ui': 'ElementUI',
     'axios': 'axios',
-    'jspdf': 'JsPDF',
-    'html2canvas':'html2Canvas',
+    // 'jspdf': 'JsPDF',
     'highcharts': 'highcharts'
   },
   resolve: {

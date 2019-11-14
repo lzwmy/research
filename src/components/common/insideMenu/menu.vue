@@ -94,7 +94,25 @@ export default {
         //专病科研模块显示组织管理页面：
         if( this.$route.meta.belongToGroup == 'insideView') {
             //非分享登录,为管理员 or 分享登录为分中心管理员
-            if(this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1 || this.$store.state.user.diseaseInfo.isAdmin) {
+            if(this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1) {
+                this.menuList.push({
+                    ico: 'organizationManagement',
+                    menuName: '组织管理',
+                    menuCode: "012907",
+                    menuPath: '/organizationManagementDis',
+                    children: [
+                        {
+                            ico: '',
+                            menuName: '机构管理',
+                            menuCode: "012906",
+                            menuPath: '/organizationManagementDis',
+                            name: 'organizationManagementDis',
+                            children: []
+                        }
+                    ],
+                    name: 'organizationManagementDis',
+                })
+            }else if(this.$store.state.user.diseaseInfo.isAdmin) {
                 this.menuList.push({
                     ico: 'organizationManagement',
                     menuName: '组织管理',
@@ -120,7 +138,7 @@ export default {
                     ],
                     name: 'organizationManagementDis',
                 })
-            }else {
+            } else {
                 //非管理员,删除crf配置页面
                 let menuList = this.menuList.filter(li=>{
                     return li.menuPath != '/crfConfig';
