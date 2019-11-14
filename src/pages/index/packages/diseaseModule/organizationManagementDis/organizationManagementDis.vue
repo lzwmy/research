@@ -30,7 +30,7 @@
                         <el-table-column prop="duty" label="职称" min-width="110" show-overflow-tooltip></el-table-column>
                         <el-table-column label="角色" min-width="160">
                             <template slot-scope="scope">
-                                <span v-for="(item,index) in scope.row.roles" :key="index">{{item}}<span v-show="index!=scope.row.roles.length-1">、</span></span>
+                                <span v-for="(item,index) in scope.row.roles" :key="index">{{item.name}}<span v-show="index!=scope.row.roles.length-1">、</span></span>
                             </template>
                         </el-table-column>
                         <el-table-column prop="createTime" label="创建时间" width="180" show-overflow-tooltip></el-table-column>
@@ -249,12 +249,15 @@ export default {
         },
         showDialog(title,row) {
             if(row) {
+                let roles = row.roles.map(li=>{
+                    return li.id;
+                })
                 this.dialogForm = {
                     title: title,
                     userName: row.userName,
                     userId: row.id,
                     tel: row.phoneNumber,
-                    role: row.roles,
+                    role: roles,
                     organization: row.orgName,
                     department: row.deptName,
                     position: row.duty,
