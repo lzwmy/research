@@ -99,14 +99,24 @@ export default {
                     menuName: '组织管理',
                     menuCode: "012907",
                     menuPath: '/organizationManagementDis',
-                    children: [{
+                    children: [
+                      {
                         ico: '',
                         menuName: '录入统计',
                         menuCode: "012905",
                         menuPath: '/inputStatistics',
                         name: 'inputStatistics',
                         children: []
-                    }],
+                      },
+                      {
+                        ico: '',
+                        menuName: '机构管理',
+                        menuCode: "012906",
+                        menuPath: '/agencyManagement',
+                        name: 'agencyManagement',
+                        children: []
+                      }
+                    ],
                     name: 'organizationManagementDis',
                 })
             }else {
