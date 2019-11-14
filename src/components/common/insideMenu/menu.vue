@@ -44,8 +44,9 @@
                     </el-menu-item>
                     <el-submenu :index="'2-'+item.menuPath" v-if="item.children && item.children.length != 0">
                         <template slot="title">
-                            <i @click="routerLink(item)" class="icon iconfont" :class="'icon'+item.ico"></i>
-                            <span @click="routerLink(item)" slot="title">{{item.menuName}}</span>
+                          <!--@click="routerLink(item)"-->
+                            <i  class="icon iconfont" :class="'icon'+item.ico"></i>
+                            <span  slot="title">{{item.menuName}}</span>
                         </template>
                         <el-menu-item-group v-for="(li, indexli) in item.children" :key="indexli">
                             <el-menu-item :index="li.menuPath"  @click="routerLink(li)">{{li.menuName}}</el-menu-item>
@@ -112,12 +113,12 @@ export default {
                             ico: '',
                             menuName: '机构管理',
                             menuCode: "012906",
-                            menuPath: '/organizationManagement',
-                            name: 'organizationManagement',
+                            menuPath: '/organizationManagementDis',
+                            name: 'organizationManagementDis',
                             children: []
                         }
                     ],
-                    name: 'organizationManagement',
+                    name: 'organizationManagementDis',
                 })
             }else {
                 //非管理员,删除crf配置页面
@@ -136,6 +137,7 @@ export default {
             if(this.$route.meta.belongToGroup != 'researchTask') {
                 return true;
             }
+            console.log(meta)
             let isExist = false;
             meta.roles.forEach(item=>{
                 this.$store.state.user.researchInfo.roles.forEach(li=>{
