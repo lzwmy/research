@@ -4,6 +4,7 @@
     </div>
 </template>
 
+
 <script>
   import utils from 'components/utils';
   import reportFill from './../index/packages/diseaseModule/CRFConfig/report/reportFill';
