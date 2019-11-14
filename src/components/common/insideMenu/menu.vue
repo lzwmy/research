@@ -100,24 +100,24 @@ export default {
                     menuCode: "012907",
                     menuPath: '/organizationManagementDis',
                     children: [
-                      {
-                        ico: '',
-                        menuName: '录入统计',
-                        menuCode: "012905",
-                        menuPath: '/inputStatistics',
-                        name: 'inputStatistics',
-                        children: []
-                      },
-                      {
-                        ico: '',
-                        menuName: '机构管理',
-                        menuCode: "012906",
-                        menuPath: '/agencyManagement',
-                        name: 'agencyManagement',
-                        children: []
-                      }
+                        {
+                            ico: '',
+                            menuName: '录入统计',
+                            menuCode: "012905",
+                            menuPath: '/inputStatistics',
+                            name: 'inputStatistics',
+                            children: []
+                        },
+                        {
+                            ico: '',
+                            menuName: '机构管理',
+                            menuCode: "012906",
+                            menuPath: '/organizationManagement',
+                            name: 'organizationManagement',
+                            children: []
+                        }
                     ],
-                    name: 'organizationManagementDis',
+                    name: 'organizationManagement',
                 })
             }else {
                 //非管理员,删除crf配置页面
