@@ -32,6 +32,9 @@
         <div class="basis_content_config" v-if="basisDataList.length!==0 && refreshView">
           <div class="content-box"  v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
+              <span style="display: inline-block;min-width: 34px;">
+                <i class="iconfont iconbianji" v-if="$store.state.CRFConfig.activeModifyState == basisItem"></i>
+              </span>
               <el-form :model="basisItem" :rules="rules">
                 <el-form-item prop="controlDisplayName" style="margin-bottom: 0;">
                   <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" ></el-input>
@@ -263,8 +266,7 @@
           window.history.go(-1);
         },
         activeConfig(data,index,array) {
-          console.log(data,this.configData)
-
+          // console.log(data,this.configData);
           this.basisDataInfo = {
             obj:data,
             selectType:data.controlType,
@@ -273,6 +275,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //控件类型
         changeControlType(data,index,array) {
@@ -339,6 +342,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //集合 or 表格添加
         add(data) {
@@ -357,6 +361,7 @@
           }else{
             data.displayIsVisible = 1;
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         // 设置 参数配置
         changeParameterConfig(data) {
@@ -374,16 +379,18 @@
           }else{
             data.termUnit.numberIsSwitch  = 1
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //删除行
         deleteBlock(index) {
           this.basisDataInfo = {};
-          let copyData = JSON.parse(JSON.stringify(this.basisDataList))
+          let copyData = JSON.parse(JSON.stringify(this.basisDataList));
           copyData.splice(index,1);
           this.basisDataList = [];
           this.$nextTick(() => {
             this.basisDataList = copyData;
-          })
+          });
+          this.$store.commit('SET_MODIFY_STATE',{});
         },
         //上移
         moveTop(data,index,array) {
@@ -400,7 +407,6 @@
           };
           array.splice(index-1,0,copyLine);
           array.splice(index+1,1);
-
           this.basisDataInfo = {};
           // 清除 当前一下 所有 layOut 布局数据
           for(let i=index;i<array.length;i++) {
@@ -415,6 +421,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           })
         },
         //下移
@@ -423,6 +430,7 @@
             this.$notice('已经置底了，请往上移！');
             return ;
           }
+
           let copyLine = Object.assign({},data);
           copyLine.baseProperty.layout = {
             "columns":1,
@@ -433,7 +441,7 @@
           array.splice(index+2,0,copyLine);
           array.splice(index,1);
           this.basisDataInfo = {};
-          console.log(array[index]);
+          // console.log(array[index]);
           //清空向下移所有 layout 布局信息
           for(let i=index+1;i<array.length;i++) {
             array[i].baseProperty.layout = {
@@ -447,6 +455,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           })
         },
         //添加条目 -- 显示弹框

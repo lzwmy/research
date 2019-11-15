@@ -8,7 +8,7 @@
         class="crf_form-preview-dialog"
         @close="closeAddDialog">
         <div class="crf_report-title">{{preview.crfDisplayName}}</div>
-        <div class="crf-report_content" >
+        <div class="crf-report_content" v-if="dialogVisible">
           <!--v-if="JSON.stringify(preview)!=='{}'"-->
           <reportPreview v-if="dialogVisible"  v-for="(portion,index) in preview.formPortions" :item='portion' :key="index"></reportPreview>
         </div>

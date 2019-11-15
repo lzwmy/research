@@ -164,6 +164,7 @@ const CRFConfig = {
     layouts:"",
     basisDataList:[],
     basisIndex:0,
+    activeModifyState:{},
   },
   mutations:{
     'CRF_SET_OBJECT':function (state,obj) {
@@ -178,6 +179,9 @@ const CRFConfig = {
     },
     'SET_INDEX':function (state,obj) {
       state.basisIndex = obj;
+    },
+    'SET_MODIFY_STATE':function (state,obj) {
+      state.activeModifyState = obj;
     }
   },
   actions: {}

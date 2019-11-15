@@ -467,7 +467,6 @@
     methods:{
       //初始化
       initPage() {
-        console.log('初始化');
         this.blankImg = false;
         this.chartName = "";
         this.crf = "";
@@ -601,7 +600,6 @@
       },
       //保存
       saveFromChart() {
-        console.log('保存 按钮');
         this.loading = true;
         if(this.bgColor==""){ //保存方法
           this.saveCustomChart();
@@ -732,11 +730,9 @@
           "compareValuePath": that.compareValuePath || "",
           "charts":[],
         };
-        console.log(formData)
         try {
           // let data = await that.$http.saveCustomChart(formData);
           let data = await that.$http.chartCustomChartSave(formData);
-          console.log(data);
           if(data.code == 0) {
             this.dialogVisible  = false;
             that.$message({
@@ -790,11 +786,9 @@
           "compareValuePath": that.compareValuePath || "",
           "charts":[],
         };
-        console.log(formData)
         try {
           // let data = await that.$http.saveCustomChart(fromData);
           let data = await that.$http.chartCustomChartSave(formData);
-          console.log(data);
           if(data.code == 0) {
             this.dialogVisible  = false;
             that.$message({
@@ -817,7 +811,6 @@
         try{
           // let data = await that.$http.simpleChartPreview(fromData);
           let data = await that.$http.chartSimpleChartPreviewNew(fromData);
-          console.log(data);
           if(data.code == 0) {
             that.chartName = data.data.chartName;
             that.chartType = data.data.chartType;
@@ -930,7 +923,6 @@
         try{
           // let data = await that.$http.getBarData(formData);
           let data = await that.$http.chartGetBarNew(formData);
-          console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.histogramOption)));
             copyOption.title.text = data.data.chartName;
@@ -957,7 +949,6 @@
         try {
           // let data = await that.$http.getLineData(fromData);
           let data = await that.$http.chartGetLineNew(fromData);
-          console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.lineOption)));
             copyOption.title.text = data.data.chartName;
@@ -979,7 +970,6 @@
         try {
           // let data = await that.$http.get2DScatter(fromData);
           let data = await that.$http.chartGet2DScatterNew(fromData);
-          console.log(data)
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.planeOption)));6
             copyOption.title.text = data.data.chartName;
@@ -1015,7 +1005,6 @@
         try {
           // let data = await that.$http.get3DScatter(fromData);
           let data = await that.$http.chartGet3DScatterNew(fromData);
-          console.log(data);
           if(data.code ==0 ){
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.threeDimensionalOption)));
             copyOption.title.text = data.data.chartName;
@@ -1121,7 +1110,6 @@
         try {
           // let data = await that.$http.previewBar(fromData);
           let data = await that.$http.chartPreviewBarNew(formData);
-          console.log(data);
           if(data.code == 0) {
             let copyOption = Object.assign({},JSON.parse(JSON.stringify(that.histogramOption)));
             copyOption.title.text = data.data.chartName;

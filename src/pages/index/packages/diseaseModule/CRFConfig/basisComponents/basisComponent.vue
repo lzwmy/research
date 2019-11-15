@@ -2,6 +2,9 @@
     <div class="basis_component_container">
         <div class="basis_component-content"  v-for="(basisDataItem,basisDataIndex) in basisData" :key="basisDataIndex">
           <div class="component-content">
+            <span style="display: inline-block;min-width: 34px;">
+                <i class="iconfont iconbianji" v-if="$store.state.CRFConfig.activeModifyState == basisDataItem"></i>
+              </span>
             <el-form :model="basisDataItem" :rules="rules">
               <el-form-item prop="controlDisplayName" style="margin-bottom: 0;">
                 <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>
@@ -192,6 +195,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //控件类型
         changeControlType(data,index,array) {
@@ -259,6 +263,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //是否可见
         isVisible(data) {
@@ -267,6 +272,7 @@
           }else{
             data.displayIsVisible = 1;
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //添加行
         addLine(data,index) {
@@ -291,6 +297,7 @@
           this.$nextTick(()=>{
             this.refreshView = true;
           });
+          this.$store.commit('SET_MODIFY_STATE',{});
         },
         // 数值 切换
         switchType(data) {
@@ -299,6 +306,7 @@
           }else{
             data.termUnit.numberIsSwitch  = 1
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //上移
         moveTop(data,index,array) {
@@ -321,6 +329,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           });
         },
         //下移
@@ -344,6 +353,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           });
         },
         //获取单位列表
