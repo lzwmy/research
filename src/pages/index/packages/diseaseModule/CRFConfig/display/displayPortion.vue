@@ -88,11 +88,13 @@ export default {
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
 
               let sum = currentItemList[0]-prevItemList[0];
-              if(currentSelection.length==1) {
+              /*if(currentSelection.length==1) {
                 preData.wrap = 0
-              }
+              }*/
               if(sum == 0) { // 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
                 preData.wrap = 1
+              }else {
+                preData.wrap = 0
               }
             }
             else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
@@ -221,6 +223,7 @@ export default {
           case 2 : //2列
             //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              let sum = currentItemList[0]-prevItemList[0];
               if(currentSelection.length==1) {
                 preData.wrap = 0
               }

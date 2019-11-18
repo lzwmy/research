@@ -442,18 +442,19 @@
           };
           try {
             let data = await that.$http.CRFReportPreview(formData);
+            console.log(data)
             if(data.code == 0) {
               that.crfName = data.data.crfDisplayName;
               that.enable =  data.data.crfIsAvailable==1 ? true :false;
               that.crfType = data.data.crfType;
               that.dataList = data.data.formPortions;
             }
-            this.loading = false;
+            that.loading = false;
           }catch (error) {
             console.log(data);
-            this.loading = false;
+            that.loading = false;
           }
-          this.loading = false;
+          that.loading = false;
         },
         // CRF 报告 删除小节
         async CRFDeletePortion(data,index) {
