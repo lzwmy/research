@@ -8,6 +8,10 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 var serverconfig = require('../config/serverconfig');
+var ParallelUglifyPlugin = require('webpack-parallel-uglify-plugin');
+const HappyPack = require('happypack');
+const os = require('os');
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 // 用了generate-asset-webpack-plugin 这个插件，
 // 在webpack.prod.conf.js中去生成configServer.json文件，让其在build的时候输出：
@@ -45,13 +49,39 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    new webpack.optimize.UglifyJsPlugin({
+    /*new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
         drop_console: true,
         drop_debugger: true
       },
       sourceMap: true
+    }),*/
+    // 打包 速度优化
+    new ParallelUglifyPlugin({
+      cacheDir: '.cache/',
+      uglifyJS:{
+        output: {
+          comments: false
+        },
+        warnings: false,
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        },
+      }
+    }),
+    new HappyPack({
+      //用id来标识 happypack处理那里类文件
+      id: 'happyBabel',
+      //如何处理  用法和loader 的配置一样
+      loaders: [{
+        loader: 'babel-loader?cacheDirectory=true',
+      }],
+      //共享进程池
+      threadPool: happyThreadPool,
+      //允许 HappyPack 输出日志
+      verbose: true,
     }),
     // extract css into its own file
     new ExtractTextPlugin({

@@ -34,6 +34,18 @@ entryArray.forEach((page) => {
       },
       chunksSortMode: 'dependency'
     });
+   /*var Html =  new HappyPack({
+       //用id来标识 happypack处理那里类文件
+       id: 'happyBabel',
+       //如何处理  用法和loader 的配置一样
+       loaders: [{
+         loader: 'babel-loader?cacheDirectory=true',
+       }],
+       //共享进程池
+       threadPool: happyThreadPool,
+       //允许 HappyPack 输出日志
+       verbose: true,
+     })*/
   } else {
     var Html = new HtmlWebpackPlugin({
       filename: page + '.html',
@@ -93,8 +105,15 @@ module.exports = {
         options: vueLoaderConfig
       }, {
         test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        loader:process.env.NODE_ENV === 'production'? ['happypack/loader?id=happyBabel'] : 'babel-loader',
+        // include: [resolve('src'), resolve('test')],
+        // use: ['babel-loader?cacheDirectory'] 之前是使用这种方式直接使用 loader
+        // 现在用下面的方式替换成 happypack/loader，并使用 id 指定创建的 HappyPack 插件
+        /*use: ['happypack/loader?id=babel'],
+        exclude: /node_modules/,*/
+        include: [resolve('src')],
+        //排除node_modules 目录下的文件
+        exclude: /node_modules/
       }, {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
