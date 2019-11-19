@@ -18,7 +18,7 @@
                   <i slot="prefix" class="icon iconfont iconzujian29"></i>
                   <!-- <el-button @click="getValidCode" class="validCode" slot='suffix'>获取手机验证码</el-button> -->
                 </el-input>
-                <el-button type='text' v-if="count==0"  @click="getValidCode" class="validCode">获取验证码</el-button>
+                <el-button type='text' v-if="count==0"  @click="getValidCode" class="validCode" :loading="btnLoading">获取验证码</el-button>
                 <el-button type='text' v-else class="validCode">{{count}} s</el-button>
               </div>
             </el-form-item>
@@ -40,6 +40,7 @@ export default {
   name: 'login',
   data () {
     return {
+      btnLoading: false,
       count: 0,
       timer: null,
       form: {
@@ -112,12 +113,14 @@ export default {
         this.$mes('info','请输入手机号!')
         return
       }
+      this.btnLoading = true;
       let params = {
         phoneNumber: this.form.phoneNumber,
         id: utils.getQuery('id'),
         enterType: 1
       }
       this.$post('/auth/subject/send/code.do', this.$format(params), false).then((res) => {
+        this.btnLoading = false;
         if (res.code == 0) {
           this.$mes('success','验证码已发送，请注意查收');
           this.count = 59;

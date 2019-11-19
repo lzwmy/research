@@ -2,7 +2,7 @@
   <div class="cloud-component patientInfo">
     <div class="component_head flex-between-center">
       <div class="left flex-start-center">
-        <el-button @click="$emit('back')" icon='el-icon-back' type="text">返回</el-button>
+        <el-button @click="$router.push({path:'/patientListModule',query:{id:diseaseId}})" icon='el-icon-back' type="text">返回</el-button>
         <i class="line"></i>
         <span class="name">{{personalInfo.PATIENT_NAME}}
                         <span class="showTreatmentStatus"
@@ -13,7 +13,7 @@
                     </span>
         <span>性别: {{personalInfo.GENDER_NAME}}</span>
         <span>就诊年龄: {{personalInfo.AGE}}</span>
-         <span v-show="patientPhone">手机号: {{patientPhone}}</span>
+        <span v-show="patientPhone">手机号: {{patientPhone}}</span>
       </div>
       <div class="right flex-end-center">
         <!-- <el-button :type="openId?'primary':'default'" icon="icon iconfont iconweixin1" class="weChat" @click="sendPatientCode">微信相关</el-button> -->
@@ -198,7 +198,7 @@
         </el-form-item>
         <el-form-item label="关联报告:" class="inline" prop="relevantReports">
           <el-select v-model="dialogFrom.relevantReports">
-            <el-option v-for="(item, index) in selectList" :label="item.name" :value="item.id" :key="index"></el-option>
+            <el-option v-for="(item, index) in selectList" :label="item.name" :value="String(item.id)" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <div class="line">
@@ -304,7 +304,7 @@
 
   export default {
     name: 'patientInfo',
-    props: ['dataInfo', 'personalInfo', 'reportFillData'],
+    // props: ['dataInfo', 'personalInfo', 'reportFillData'],
     data() {
       let validatePass = (rule, value, callback) => {
         if (!value) {
@@ -317,6 +317,10 @@
         }
       };
       return {
+        diseaseId: '',
+        dataInfo: {},
+        personalInfo: {},
+        reportFillData: {},
         record: [],  //操作记录
         activeName: "first",
         showReportComponent: false,
@@ -465,6 +469,11 @@
     },
     created() {
       // this.getReportSelectList();
+      console.log(this.$route)
+      this.dataInfo = this.$route.params.dataInfo;
+      this.personalInfo = this.$route.params.personalInfo;
+      this.reportFillData = this.$route.params.reportFillData;
+      this.diseaseId = this.$route.params.diseaseId;
       this.getReportList();
       this.getPatientSearch();
       this.getRemindDetail();

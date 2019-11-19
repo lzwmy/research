@@ -155,7 +155,6 @@ export default {
             if(this.$route.meta.belongToGroup != 'researchTask') {
                 return true;
             }
-            console.log(meta)
             let isExist = false;
             meta.roles.forEach(item=>{
                 this.$store.state.user.researchInfo.roles.forEach(li=>{
@@ -172,7 +171,7 @@ export default {
         routerLink(item) {
             this.$router.push({
                 path: item.menuPath,
-                query: {id: this.diseaseId}
+                query: {id: this.$route.query.id}
             })
             //关闭菜单其它展开项
             if(item.menuLevel == 3) {

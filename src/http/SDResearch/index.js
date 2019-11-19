@@ -142,9 +142,28 @@ const url = {
   previewCrfReportHttp:"/form/crf/bak/preview.do",
   //随访提醒终止或失访
   remindChangeStatus:"/report/remind/changeStatus",
+  /**
+   * 导入和导出
+   */
+  //获取报告下的表单
+  patientListCrf: '/disease/excel/select/crf',
+  //导出患者报告模版
+  patientListExportTemplate: '/disease/excel/create/report',
+  //导出患者报告模版
+  patientListExportCheck: '/subject/excel/download',
+  
 };
 
 const http = {
+  patientListExportCheck (params) {
+    return vm.$postDown(url.patientListExportCheck, params, true);
+  },
+  patientListExportTemplate (params) {
+    return vm.$postDown(url.patientListExportTemplate, params, true);
+  },
+  patientListCrf (params) {
+    return vm.$post(url.patientListCrf, params, false);
+  },
   findAllDiseaseSpecies () {
     return vm.$post(url.findAllDiseaseSpecies, {}, false);
   },
