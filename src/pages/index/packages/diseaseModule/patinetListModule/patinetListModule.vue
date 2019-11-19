@@ -18,6 +18,7 @@
                       :on-change="successFile"
                       :auto-upload="false"
                       :show-file-list='false'
+                      accept=".xls, .xlsx"
                       :file-list="fileList">
                       批量添加
                     </el-upload>
@@ -29,7 +30,7 @@
         </div>
       </div>
 
-      <div class="list_module_content">
+      <div class="list_module_content" v-loading="importPatinetLoading" element-loading-text="正在添加患者数据...">
         <div>
           <!-- 病例管理 cloud-component-->
           <div class="cloud-component caseManage">
@@ -460,7 +461,7 @@
       </div>
 
       <!-- 导入数据弹窗 -->
-        <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData'></import-dialog>
+        <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData' @updata="getDataList"></import-dialog>
 
       <!-- 导入数据不通过 -->
       <el-dialog
@@ -496,7 +497,7 @@
   import utils from 'components/utils/index';
   import validation from 'components/utils/validation';
   import patientInfo from "./patientInfo/index";
-  import importDialog from './ImportDialog'
+  import importDialog from './importcom/ImportDialog'
 
   export default {
     name:'patinetListModule',
@@ -531,6 +532,7 @@
           param: '',
           param2: ''
         },
+        importPatinetLoading: false,
         importDataDialog: false,
         showPatientInfo: false,  //报告随访组件
         reportFollowiUpData: {},  //报告随访组件数据
@@ -775,6 +777,7 @@
       },
       //批量导入
       async importPatinetData(file) {
+        this.importPatinetLoading = true;
         try{
             let param = new FormData();
             param.append('file',file.raw);
@@ -788,16 +791,19 @@
                 withCredentials: true
             }).then((res)=>{
                 if(res.data.code==0) {
-                    this.$mes('success','导入成功')
+                    this.$mes('success','导入成功');
+                    this.getDataList();
                 }else if(res.data.data) {
                     this.handleCheckData(res.data.data)
                 }else {
                   this.$mes('error', res.data.msg ||'导入失败')
                 }
+                this.importPatinetLoading = false;
             })
         }catch (error) {
-            console.log(error)
-            this.$mes('error','导入失败')
+          this.importPatinetLoading = false;
+          console.log(error)
+          this.$mes('error','导入失败')
         }
       },
       async getFindViews () {

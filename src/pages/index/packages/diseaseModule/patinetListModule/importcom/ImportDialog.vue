@@ -21,15 +21,8 @@
                         <li v-for="(item,index) in crfList" :key="index" class="flex-between-center">
                             <p>{{item.crfDisplayName}}</p>
                             <div class="btn_group">
-                                <el-button icon="icon iconfont iconxiazaimoban" @click="downloadExcelTemp(item)" :loading="item.loading">下载excel模版</el-button>
-                                <el-upload
-                                    class="upload"
-                                    :on-change="successFile"
-                                    :auto-upload="false"
-                                    :show-file-list='false'
-                                    :file-list="fileList">
-                                    <el-button icon="icon iconfont icondaochu" class="upload" @click="selectCrf(item)">上传数据</el-button>
-                                </el-upload>
+                                <exportBtn :row="item"></exportBtn>
+                                <importBtn :row="item" @updata="$emit('updata')" :visible="visible" @checkData="checkDataDownLoad"></importBtn>
                             </div>
                         </li>
                     </ul>
@@ -42,17 +35,21 @@
 </template>
 
 <script>
+import exportBtn from './exportBtn'
+import importBtn from './importBtn'
 export default {
     name: 'importDialog',
     props: ['dataInfo'],
     data () {
         return {
             activeGroup: 1,
-            currentCrfId: '',
-            importLoading: false,
             crfListLoading: false,
             crfList: [],
         }
+    },
+    components: {
+        exportBtn,
+        importBtn
     },
     watch: {
         dataInfo: function(newVal) {
@@ -65,57 +62,6 @@ export default {
         select(val) {
             this.activeGroup = val;
             this.getCrfList();
-        },
-        selectCrf(row) {
-            this.currentCrfId = row.crfId
-        },
-        //下载模版
-        async downloadExcelTemp(row) {
-            row.loading = true;
-            try{
-                let res = await this.$http.patientListExportTemplate({
-                    diseaseId: this.$route.query.id,
-                    crfId: row.crfId
-                });
-                let blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
-                // let filename = decodeURI(res.headers['content-disposition'].split('filename=')[1]);
-                this.$download(row.crfDisplayName+'模版.xlsx', blob);
-                row.loading = false;
-            }catch (error) {
-                row.loading = false;
-                console.log(error)
-                this.$notice('导出失败')
-            }
-        },
-        //文件选中
-        successFile(file,fileList) {
-            this.importData(file);
-        },
-        //导入数据
-        async importData(file) {
-            try{
-                let param = new FormData();
-                param.append('file',file.raw);
-                param.append('diseaseId',this.$route.query.id);
-                param.append('crfId',this.currentCrfId);
-                let url = this.baseURL + "disease/excel/import/patientReports"
-                axios.defaults.withCredentials = true;
-                axios.post(url,param,{
-                    headers: {"content-type": "multipart/form-data"},
-                    withCredentials: true
-                }).then((res)=>{
-                    if(res.data.code==0) {
-                        this.$mes('success','导入成功')
-                    }else if(res.data.data) {
-                        this.$emit('checkData',res.data.data)
-                    }else {
-                        this.$mes('error', res.data.msg ||'导入失败')
-                    }
-                })
-            }catch (error) {
-                console.log(error)
-                this.$mes('error','导入失败')
-            }
         },
         //获取表单列表
         async getCrfList() {
@@ -138,6 +84,9 @@ export default {
                 console.log(err)
             }
         },
+        checkDataDownLoad(id) {
+            this.$emit('checkData',id)
+        }
     }
 };
 </script>
