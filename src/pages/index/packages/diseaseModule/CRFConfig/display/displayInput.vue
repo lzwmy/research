@@ -1,14 +1,19 @@
 <template>
   <!--单行文本框-->
-  <div :class="item.controlType">
+  <div :class="item.controlType" style="position: relative">
     <!--style="width:200px;display:inline-block;font-size: 14px;" -->
-    <div  v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+    <div  v-show="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+      <span v-show="item.baseProperty.isRequired"
+            style="color: red;">*</span>
       <i v-if="crfCurrentControl.item==item" class="el-icon-edit"  style="color:#3b81f0"/>
       <span >{{item.controlDisplayName}}</span>
       <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
     </div>
     <!--style="display:inline-block"-->
-    <div :class="item.controlType+'_box'" :style="`width:${inputWidth}px`">
+    <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired}]"
+         :data-type="item.controlType"
+         :data-value="report.value"
+         :style="`width:${inputWidth}px`">
       <el-input
         size="small"
         v-model="report.value"

@@ -13,7 +13,7 @@
         <el-checkbox-group v-model="checkList">
           <el-checkbox
             v-for="(it,index) in item.termSet.termItemList"
-            :label="it.termItemName"
+            :label="precessData(it.termItemName)"
             :key="index"
           ></el-checkbox>
         </el-checkbox-group>
@@ -87,6 +87,14 @@ export default {
         } else {
           return this.item;
         }
+      }
+    },
+    //处理 ^
+    precessData(data) {
+      if(data.indexOf('^')!=='-1') {
+        return data.split('^')[0]
+      }else {
+        return data
       }
     }
   },

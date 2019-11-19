@@ -1,5 +1,5 @@
 <template>
-  <div class="report_container">
+  <div class="report_container" style="position: relative">
     <!--<div class="report_title">{{item.crfDisplayName}}</div>-->
     <!--<display-page
       v-for="(child,index) in item.formPortions"
@@ -9,6 +9,7 @@
       :report="getData(child)"
     ></display-page>-->
     <display-page :item="item" :report="report"></display-page>
+
   </div>
 </template>
 

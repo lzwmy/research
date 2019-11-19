@@ -1,9 +1,13 @@
 <template>
     <div :class="item.controlType">
         <div v-if="item.displayIsVisible=='1'" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+          <span v-show="item.baseProperty.isRequired"
+                style="color: red;">*</span>
           <span >{{item.controlDisplayName}}</span>
         </div>
-      <div :class="item.controlType+'_box'">
+      <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired}]"
+           :data-type="item.controlType"
+           :data-value="report.value">
         <el-select v-model="optionValue" @change="oneSelect(optionValue)">
           <el-option
             v-for="(item,index) in options"
@@ -114,7 +118,7 @@
         }
       },
       mounted() {
-        this.options = JSON.parse(this.item.termSet.rangeText);
+        this.options = JSON.parse(this.item.termSet.rangeText || '[]') ;
         if(this.report.value !== "") {
           let array = JSON.parse(this.report.value);
           switch (array.length) {

@@ -442,7 +442,6 @@
           };
           try {
             let data = await that.$http.CRFReportPreview(formData);
-            console.log(data)
             if(data.code == 0) {
               that.crfName = data.data.crfDisplayName;
               that.enable =  data.data.crfIsAvailable==1 ? true :false;

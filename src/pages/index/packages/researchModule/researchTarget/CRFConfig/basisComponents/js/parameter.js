@@ -10,6 +10,7 @@ export default {
       "controlWidth": 4,
       "controlHeight": 0,
       "controlTip": "",
+      "isRequired":false, //表单是否必填项
       "controlIsDefaultDateTime": 0,
       "controlIsExtend": 0,
       "labelType": "TEXT",

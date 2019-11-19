@@ -219,7 +219,7 @@ export default {
         }).sort((a,b)=>{
           return b-a;
         });
-        switch (currentColumns) {
+        /*switch (currentColumns) {
           case 2 : //2列
             //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
@@ -332,7 +332,7 @@ export default {
             break;
           default:
             break
-        }
+        }*/
       }
       return item;
     }

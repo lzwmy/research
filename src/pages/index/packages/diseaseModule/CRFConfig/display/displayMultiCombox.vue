@@ -3,12 +3,18 @@
   <div :class="item.controlType">
     <!--style="width:200px;display:inline-block;font-size: 14px;"-->
     <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+      <span v-show="item.baseProperty.isRequired"
+            style="color: red;">*</span>
       <i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />
       <span >{{item.controlDisplayName}}</span>
       <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
     </div>
     <!--style="display:inline-block"-->
-    <div :class="item.controlType+'_box'" v-if="item.baseProperty.controlIsExtend=='1'">
+    <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired}]"
+         v-if="item.baseProperty.controlIsExtend=='1'"
+         :data-IsExtend="item.baseProperty.controlIsExtend"
+         :data-type="item.controlType"
+         :data-value="report.value">
       <el-select
         :style="`width:${inputWidth}px`"
         v-model="checkList"
@@ -23,13 +29,17 @@
         <el-option
           v-for="item in item.termSet.termItemList"
           :key="item.termItemName"
-          :label="item.termItemName"
+          :label="precessData(item.termItemName)"
           :value="item.termItemName"
         ></el-option>
       </el-select>
     </div>
     <!--style="display:inline-block"-->
-    <div :class="item.controlType+'_box'" v-if="item.baseProperty.controlIsExtend=='0'">
+    <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired}]"
+         v-if="item.baseProperty.controlIsExtend=='0'"
+         :data-IsExtend="item.baseProperty.controlIsExtend"
+         :data-type="item.controlType"
+         :data-value="report.value">
       <el-select
         :style="`width:${inputWidth}px`"
         v-model="checkList"
@@ -41,7 +51,7 @@
         <el-option
           v-for="it in item.termSet.termItemList"
           :key="it.termItemName"
-          :label="it.termItemName"
+          :label="precessData(it.termItemName)"
           :value="it.termItemName"
         ></el-option>
       </el-select>
@@ -73,6 +83,14 @@ export default {
   methods: {
     change() {
       this.report.value = this.checkList.join("|");
+    },
+    //处理 ^
+    precessData(data) {
+      if(data.indexOf('^')!=='-1') {
+        return data.split('^')[0]
+      }else {
+        return data
+      }
     },
     //加载术语集
     async initTermList() {

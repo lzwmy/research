@@ -33,6 +33,13 @@
                   </div>
                 </div>
               </el-form-item>
+              <el-form-item label="是否必填" v-if="controlType!=='GATHER'&&controlType!=='TABLE'&&controlType!=='FILE_UPLOAD'&&controlType!=='FILE_UPLOAD'&&controlType!=='SCORE'&&controlType!=='TABLE'&&controlType!=='RADIO_BUTTON'&&controlType!=='CHECKBOX'">
+                <el-switch
+                  v-model="basicDataInfo.obj.baseProperty.isRequired"
+                  active-color="#13ce66"
+                  inactive-color="#DCDFE6">
+                </el-switch>
+              </el-form-item>
               <el-form-item
                 v-if="controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'"
                 label="可手动录入"

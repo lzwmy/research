@@ -13,8 +13,6 @@
               <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
               <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
             </span>
-
-
             <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
             <!-- <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button> -->
           </div>
@@ -86,6 +84,7 @@
     <div  class="break_icon" @click="backTop" :class="scrollTop == 0?'hide':''">
       <i class="el-icon-caret-top"></i>
     </div>
+
   </div>
 </template>
 <script type="text/javascript">
@@ -94,6 +93,7 @@ import displayReport from "./../display/displayReport";
 import reportRead from "./reportRead";
 import mixins from "components/mixins";
 import { mapGetters } from "vuex";
+import { getDom } from './js/verificationForm';
 export default {
   name: "crfConfig",
   mixins: [mixins],
@@ -269,6 +269,11 @@ export default {
     },
     //保存保存（随访进来）
     async saveFollowUpReportData() {
+      let flag = getDom();
+      if(flag) {
+        this.$message.info('有必填项未填写');
+        return ;
+      }
       try {
         this.mainLoading = true;
         
@@ -304,6 +309,11 @@ export default {
       }
     },
     async saveReportData() {
+      let flag = getDom();
+      if(flag) {
+        this.$message.info('有必填项未填写');
+        return ;
+      }
       try {
         this.mainLoading = true;
         if (!this.report.id) {

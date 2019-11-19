@@ -289,6 +289,7 @@
             "controlTip": "", //(控件输入提示)
             "controlIsDefaultDateTime": 0, //(是否使用默认时间或日期)
             "controlIsExtend":0, //(下拉框是否可扩展)
+            "isRequired":false, ////表单是否必填项
             "labelType":'TEXT',
             "labelContent":"",
             "labelImage":"",
