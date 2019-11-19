@@ -1,8 +1,8 @@
 <template>
-  <div class="cloud-component researchTarget">
+  <div class="cloud-component researchTarget" v-loading="loading">
     <!-- 研究指标 -->
     <!--<img src="../images/researchTarget.png" alt="" width="100%">-->
-      <el-tabs ref="elTabs" class="research_target-box" v-loading="loading"  v-show="editableTabs.length!==0" v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
+      <el-tabs ref="elTabs" class="research_target-box"   v-show="editableTabs.length!==0" v-model="editableTabsValue" type="card"  :closable="false" :addable="addStatus"  @tab-add="handleTabsEdit" @tab-click="handleClick">
         <el-tab-pane
             v-if="displayState"
             :key="index"

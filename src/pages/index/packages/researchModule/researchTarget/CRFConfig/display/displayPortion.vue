@@ -112,19 +112,21 @@ export default {
           case 3 : //3列
             // 如果 当前行 columns 与 上一列 columns 相等，判断当前行是否引用上一行，如果引用，就把上一行 wrap = 0，设置当前行 offset
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
-              preData.wrap = 0
               let sum = currentItemList[0]-prevItemList[0];
               if(sum ==1) {
+                preData.wrap = 0
                 item.baseProperty.layout.offset = 0;
               }else if(sum == 2) {
+                preData.wrap = 0
                 item.baseProperty.layout.offset = 8;
               }else if(sum == 0) {// 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
-                preData.wrap = 1
+                preData.wrap = 1;
+              }else {
+                preData.wrap = 0;
               }
               //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
             }
             else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
-              preData.wrap =1
               if(currentItemList[0] == 2) {
                 item.baseProperty.layout.offset = 8;
               }else if(currentItemList[0] == 3) {
@@ -219,7 +221,7 @@ export default {
         }).sort((a,b)=>{
           return b-a;
         });
-        /*switch (currentColumns) {
+        switch (currentColumns) {
           case 2 : //2列
             //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
@@ -332,7 +334,7 @@ export default {
             break;
           default:
             break
-        }*/
+        }
       }
       return item;
     }
