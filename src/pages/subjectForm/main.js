@@ -9,6 +9,7 @@ import 'assets/fonticon/iconfont.css';
 import 'assets/css/crf.less';
 import 'assets/css/crfStyle.less';
 import 'assets/css/common.less';
+import 'assets/css/crfConfig.css'
 
 /*import VueRouter from 'vue-router';
 
