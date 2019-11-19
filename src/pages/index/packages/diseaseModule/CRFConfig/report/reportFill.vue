@@ -16,7 +16,7 @@
 
 
             <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
-            <!-- <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 5px">阅读</el-button> -->
+            <!-- <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button> -->
           </div>
           <div ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
             <display-report v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>

@@ -27,9 +27,24 @@ const url = {
     addresearch: '/subject/patient/add/research.do',
     //删除研究对象
     deleteObject: '/subject/patient/delete/patient.do',
+    //导出添加研究对象模版
+    objectExportData: '/subject/excel/create/patients/templateExcel',
+    //导出导入研究对象模版
+    objectExportTempData: '/subject/excel/create/research/templateExcel',
+    //导入研究数据
+    objectImportData: '/subject/excel/import/researchExcel',
 };
 
 const http = {
+    researchObjectImportData (params) {
+        return vm.$post(url.objectImportData, params, true);
+    },
+    researchObjectExportData (params) {
+        return vm.$postDown(url.objectExportData, params, true);
+    },
+    researchObjectExportTempData (params) {
+        return vm.$postDown(url.objectExportTempData, params, true);
+    },
     researchObjectTable (params) {
         return vm.$post(url.table, params, false);
     },

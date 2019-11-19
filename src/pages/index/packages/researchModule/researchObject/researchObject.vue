@@ -4,9 +4,9 @@
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
                 <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">导入研究数据 </el-button>
-                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="">入组阶段数据导出</el-button>
+                <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="exportData">入组阶段数据导出</el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
-                <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="addSingleObject" style="padding: 0 15px 0 15px;border-radius:2px 0 0 2px;">
+                <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="" style="padding: 0 15px 0 15px;border-radius:2px 0 0 2px;">
                     添加研究对象
                 </el-button>
                 <el-dropdown trigger="hover" @command="handleAddObject" class="addDropdown">
@@ -277,7 +277,6 @@ export default {
         },
         //改变引导图显隐
         handleGuide(val) {
-            console.log(val)
             this.showGuide = val;
         },
         //切换页面刷新操作
@@ -302,6 +301,27 @@ export default {
         visibilityChangeHandle() {
             if(!document[this.hidden]) {
                 this.getDataList(0,15);
+            }
+        },
+        //导出
+        async exportData() {
+            
+        },
+        //下载添加研究对象模版
+        async downloadTempObject() {
+            try{
+                let data = await this.$http.researchObjectExportData({
+                    subjectId: this.$store.state.user.researchInfo.subjectInfoId
+                });
+                let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
+                // let dateTitle = utils.formateDate(new Date().getTime());
+                // console.log(dateTitle)
+                // let fileNmae = data.headers['content-disposition'].split('filename=')[1];
+                // this.$download(fileNmae, blob);
+                this.$download('添加研究对象模版.xlsx', blob);
+            }catch (error) {
+                console.log(error)
+                this.$notice('导出失败')
             }
         },
         //表格多选项
@@ -418,6 +438,9 @@ export default {
             switch (command) {
                 case '1':
                     this.addSingleObject();
+                    break;
+                case '3':
+                    this.downloadTempObject();
                     break;
                 default:
                     break;

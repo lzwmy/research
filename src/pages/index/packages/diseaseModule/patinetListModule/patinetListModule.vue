@@ -3,12 +3,34 @@
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
         <div class=" cur_pointer head_content flex-start-center">
-          <el-button type="primary"  icon="el-icon-plus" @click="showaddPatientDialog('添加患者')">添加患者</el-button>
+          <el-button type="primary" icon="icon iconfont icondaochu" @click="importDataDialog = true">导入患者数据 </el-button>
+          <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="showaddPatientDialog('添加患者')" style="height: 32px; padding: 0 15px 0 15px;border-radius:2px 0 0 2px;">
+              添加患者
+          </el-button>
+          <el-dropdown trigger="hover" @command="handleAddCommand" class="addDropdown">
+              <span class="add"><i class="el-icon-caret-bottom el-icon--right"></i></span>
+              <el-dropdown-menu slot="dropdown" class="addresearchObject">
+                  <el-dropdown-item command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
+                  <el-dropdown-item command="2" icon="el-icon-plus">
+                    <el-upload
+                      class="upload"
+                      style="display:inline-block"
+                      :on-change="successFile"
+                      :auto-upload="false"
+                      :show-file-list='false'
+                      :file-list="fileList">
+                      批量添加
+                    </el-upload>
+                  </el-dropdown-item>
+                  <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
+              </el-dropdown-menu>
+          </el-dropdown>
+          <!-- <el-button type="primary"  icon="el-icon-plus" @click="showaddPatientDialog('添加患者')">添加患者</el-button> -->
         </div>
       </div>
 
       <div class="list_module_content">
-        <div v-if="!showPatientInfo">
+        <div>
           <!-- 病例管理 cloud-component-->
           <div class="cloud-component caseManage">
             <!-- 搜索区域 -->
@@ -434,8 +456,30 @@
             </el-dialog>
           </div>
         </div>
-        <patientInfo v-else @back="hideReportFollowiUp" :dataInfo="reportFollowiUpData" :personalInfo="reportFollowiUpInfo" :reportFillData="reportFillData"></patientInfo>
+        <!-- <patientInfo v-else @back="hideReportFollowiUp" :dataInfo="reportFollowiUpData" :personalInfo="reportFollowiUpInfo" :reportFillData="reportFillData"></patientInfo> -->
       </div>
+
+      <!-- 导入数据弹窗 -->
+        <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData'></import-dialog>
+
+      <!-- 导入数据不通过 -->
+      <el-dialog
+        title="数据不通过"
+        :visible.sync="notPassDialogVisible"
+        width="400px"
+        v-loading="notPassDialogLoading"
+        :append-to-body="true">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <p class="text-center">点击确定按钮下载检验后的数据文件</p>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="handleDownloadCheckData">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
 </template>
 
@@ -452,6 +496,8 @@
   import utils from 'components/utils/index';
   import validation from 'components/utils/validation';
   import patientInfo from "./patientInfo/index";
+  import importDialog from './ImportDialog'
+
   export default {
     name:'patinetListModule',
     mixins: [mixins],
@@ -475,6 +521,9 @@
         pageSize: '',
         emptyText: '',
         elementLoadingText: '',
+        notPassDialogVisible: false,
+        notPassDialogLoading: false,
+        currentFileId: '',
         conditionSet: {
           viewName: '',
           column: '',
@@ -482,6 +531,7 @@
           param: '',
           param2: ''
         },
+        importDataDialog: false,
         showPatientInfo: false,  //报告随访组件
         reportFollowiUpData: {},  //报告随访组件数据
         reportFollowiUpInfo: {},  //报告随访组件个人信息
@@ -586,7 +636,8 @@
       pagination,
       echartsContain,
       multipleCheckBoxSelect,
-      patientInfo
+      patientInfo,
+      importDialog
     },
     watch: {
       selectLabGroupId (val) {
@@ -644,8 +695,6 @@
     created () {
       this.initPage();
     },
-    mounted () {
-    },
     methods: {
       async initPage () {
         this.pageNo = pageNo;
@@ -673,6 +722,83 @@
         .then(()=>{
           this.$emit('changeLoadding',false);
         })
+      },
+      //文件选中
+      successFile(file,fileList) {
+        this.importPatinetData(file);
+      },
+      //点击确定下载校验的文件
+      handleDownloadCheckData() {
+        this.downloadCheckData(this.currentFileId);
+      },
+      //当导入数据校验不成功时
+      handleCheckData(data) {
+        this.currentFileId = data;
+        this.notPassDialogVisible = true;
+      },
+      //下载校验的文件
+      async downloadCheckData(id) {
+        this.notPassDialogLoading = true;
+        let params = {
+          fileId: id
+        }
+        try {
+            let res = await this.$http.patientListExportCheck(params);
+            let blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
+            // let filename = decodeURI(res.headers['content-disposition'].split('filename=')[1]);
+            this.$download('检验后文件.xlsx', blob);
+            this.notPassDialogLoading = false;
+            this.notPassDialogVisible = false;
+        } catch (err) {
+          this.notPassDialogVisible = false;
+          this.notPassDialogLoading = false;
+          console.log(error)
+          this.$mes('error','导出失败')
+        }
+      },
+      //添加患者下拉 
+      handleAddCommand(val) {
+        switch (val) {
+          case '1':
+            this.showaddPatientDialog('添加患者');
+            break;
+          case '3':
+            window.open(this.baseURL+'upload/excel/患者信息导入模板.xlsx')
+            break;
+          default:
+            break;
+        }
+      },
+      //导入导出弹窗
+      handleDialog(val) {
+        this.importDataDialog = val
+      },
+      //批量导入
+      async importPatinetData(file) {
+        try{
+            let param = new FormData();
+            param.append('file',file.raw);
+            param.append('diseaseId',this.$route.query.id);
+            let url = this.baseURL + "disease/excel/import/patientInfos";
+            axios.defaults.withCredentials=true;
+            axios.post(url,param,{
+                headers: {
+                  "content-type": "multipart/form-data"
+                },
+                withCredentials: true
+            }).then((res)=>{
+                if(res.data.code==0) {
+                    this.$mes('success','导入成功')
+                }else if(res.data.data) {
+                    this.handleCheckData(res.data.data)
+                }else {
+                  this.$mes('error', res.data.msg ||'导入失败')
+                }
+            })
+        }catch (error) {
+            console.log(error)
+            this.$mes('error','导入失败')
+        }
       },
       async getFindViews () {
         let that = this;
@@ -1368,6 +1494,7 @@
           }
         })
         console.log(row)
+        
         let that = this;
         that.reportFollowiUpData = {
           patientId: row.PATIENT_ID || '',
@@ -1394,12 +1521,21 @@
           from: that.$route.name,
           isModify:"displayShow"
         }
-        that.showPatientInfo = true;
+        // that.showPatientInfo = true;
+        this.$router.push({
+          name: 'patientInfo',
+          params: {
+            dataInfo: this.reportFollowiUpData,
+            personalInfo: row,
+            reportFillData: this.reportFillData,
+            diseaseId: this.currentDiseaseId
+          }
+        })
         return;
-        if (that.selectLabGroupId) {
-          sessionStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
-          window.open('./patientForm.html');
-        }
+        // if (that.selectLabGroupId) {
+        //   sessionStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
+        //   window.open('./patientForm.html');
+        // }
       },
       getCurrentColumnsdataType () {
         this.conditionViewList.forEach(item => {
@@ -1657,6 +1793,26 @@
   .list_module_content{
     width: 100%;
     box-sizing: border-box;
+  }
+  .addDropdown.el-dropdown {
+      margin-left: 0;
+      margin-right: 10px;
+      height: 32px;
+      width: 40px;
+      background-color: #17aed3;
+      .add {
+          line-height: 32px;
+          position: absolute !important;
+          top: 0;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          text-align: center;
+          i {
+            margin:0;
+            color: #fff;
+          }
+      }
   }
 }
 

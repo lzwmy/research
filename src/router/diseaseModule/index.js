@@ -48,7 +48,7 @@ const routes = [
             openMode: 2,
         },
         component: inputStatistics
-      }
+    }
 ];
 
 export default routes;
