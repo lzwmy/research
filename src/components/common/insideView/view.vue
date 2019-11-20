@@ -57,6 +57,7 @@ export default {
         this.getMenuList();
     },
     watch: {
+        
     },
     mounted () {
         this.initView();

@@ -783,8 +783,8 @@
             param.append('file',file.raw);
             param.append('diseaseId',this.$route.query.id);
             let url = this.baseURL + "disease/excel/import/patientInfos";
-            axios.defaults.withCredentials=true;
-            axios.post(url,param,{
+            this.$axios.defaults.withCredentials=true;
+            this.$axios.post(url,param,{
                 headers: {
                   "content-type": "multipart/form-data"
                 },
@@ -805,6 +805,29 @@
           console.log(error)
           this.$mes('error','导入失败')
         }
+
+        // try {
+        //     let param = new FormData();
+        //     param.append('file',file.raw);
+        //     param.append('diseaseId',this.$route.query.id);
+        //     let config = {
+        //       headers: {
+        //         "content-type": "multipart/form-data"
+        //       }
+        //     }
+        //     let res = await this.$http.patientListImportData(param,config);
+        //     console.log(res)
+        //     if(res.code==0) {
+        //         this.$mes('success','导入成功');
+        //         this.getDataList();
+        //     }else if(res.data) {
+        //         this.handleCheckData(res.data)
+        //     }else {
+        //       this.$mes('error', res.msg ||'导入失败')
+        //     }
+        // } catch (err) {
+        //   console.log(err)
+        // }
       },
       async getFindViews () {
         let that = this;
@@ -1536,6 +1559,9 @@
             personalInfo: row,
             reportFillData: this.reportFillData,
             diseaseId: this.currentDiseaseId
+          },
+          query: {
+            id: this.$route.query.id
           }
         })
         return;

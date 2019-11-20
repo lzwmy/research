@@ -151,10 +151,15 @@ const url = {
   patientListExportTemplate: '/disease/excel/create/report',
   //导出患者报告模版
   patientListExportCheck: '/subject/excel/download',
+  //批量导入患者信息
+  patientListImportData: '/disease/excel/import/patientInfos',
   
 };
 
 const http = {
+  patientListImportData (params,config) {
+    return vm.$post(url.patientListImportData, params, true,config);
+  },
   patientListExportCheck (params) {
     return vm.$postDown(url.patientListExportCheck, params, true);
   },

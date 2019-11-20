@@ -665,14 +665,17 @@
       color: #ffffff;
       /*justify-content: space-between;*/
       box-sizing: border-box;
+      & > div > div:last-child {
+        // min-width: 70px;
+      }
       .disease_TODO{
         /*background-color: rgb(1, 144, 222);*/
         background-color: #ffffff;
-        padding: 0 10px;
+        padding: 0 20px;
         border-radius: 4px;
         margin-left: 1%;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -706,15 +709,18 @@
           }
         }
       }
+      .all_text {
+        width: auto;
+      }
       .disease_HEAL{
         /*background-color: rgb(15, 187, 147);*/
         background-color: #ffffff;
-        padding: 0 10px;
+        padding: 0 20px;
         border-radius: 4px;
         margin-left: 0;
         margin-right: 0;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -751,11 +757,11 @@
       .disease_IMPROVE{
         /*background-color: rgb(142, 196, 102);*/
         background-color: #ffffff;
-        padding: 0 10px;
+        padding: 0 20px;
         border-radius: 4px;
         /*margin-left: 0.6%;*/
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -792,11 +798,11 @@
       .disease_INVALID{
         /*background-color: rgb(4, 184, 221);*/
         background-color: #ffffff;
-        padding: 0 10px;
+        padding: 0 20px;
         border-radius: 4px;
         margin-left: 0;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -833,12 +839,12 @@
       .disease_WORSEN {
         /*background-color: rgb(217, 85, 85);*/
         background-color: #ffffff;
-        padding: 0 10px;
+        padding: 0 20px;
         border-radius: 4px;
         margin-left: 0;
         margin-right: 0;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -875,11 +881,11 @@
       .disease_all{
         /*background-color: #3F51B5;*/
         background-color: #ffffff;
-        padding: 0 10px;
+        padding: 0 20px;
         border-radius: 4px;
         margin-left: 0 ;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
