@@ -72,8 +72,6 @@ export default {
                     this.$emit('updata');
                 }else if(res.data) {
                     this.$emit('checkData',res.data);
-                }else {
-                    this.$mes('error', res.msg ||'导入失败')
                 }
                 this.loading = false;
             } catch (err) {

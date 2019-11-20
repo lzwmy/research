@@ -817,8 +817,6 @@
                 this.getDataList();
             }else if(res.data) {
                 this.handleCheckData(res.data)
-            }else {
-              this.$mes('error', res.msg ||'导入失败')
             }
             this.importPatinetLoading = false;
         } catch (err) {

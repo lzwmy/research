@@ -695,6 +695,7 @@
           justify-content: center;
           p{
             color: #0190DE;
+            text-align: center;
           }
           :last-child{
             font-size: 40px;
@@ -711,6 +712,7 @@
       }
       .all_text {
         width: auto;
+        text-align: center;
       }
       .disease_HEAL{
         /*background-color: rgb(15, 187, 147);*/
