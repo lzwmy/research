@@ -14,7 +14,7 @@
 
 <script>
 export default {
-    props: ['row','visible'],
+    props: ['row'],
     data() {
         return {
             loading: false,
@@ -45,11 +45,9 @@ export default {
                 }).then((res)=>{
                     if(res.data.code==0) {
                         this.$mes('success','导入成功');
-                        this.visible = false;
                         this.$emit('updata');
                     }else if(res.data.data) {
                         this.$emit('checkData',res.data.data);
-                        this.visible = false;
                     }else {
                         this.$mes('error', res.data.msg ||'导入失败')
                     }

@@ -22,7 +22,7 @@
                             <p>{{item.crfDisplayName}}</p>
                             <div class="btn_group">
                                 <exportBtn :row="item"></exportBtn>
-                                <importBtn :row="item" @updata="$emit('updata')" :visible="visible" @checkData="checkDataDownLoad"></importBtn>
+                                <importBtn :row="item" @updata="$emit('updata')" @checkData="checkDataDownLoad"></importBtn>
                             </div>
                         </li>
                     </ul>

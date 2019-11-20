@@ -916,6 +916,7 @@
         this.getDataList();
       },
       async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
+        this.importDataDialog = false;
         let that = this;
         // 存储当前视图的页码page及每页多少条size
         if (this.view) {
