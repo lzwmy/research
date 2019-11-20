@@ -675,7 +675,7 @@
         border-radius: 4px;
         margin-left: 1%;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -708,6 +708,7 @@
           :first-child{
             font-size: 14px;
             white-space: nowrap;
+            padding-top: 12px;
           }
         }
       }
@@ -723,7 +724,7 @@
         margin-left: 0;
         margin-right: 0;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -755,6 +756,7 @@
           :first-child{
             font-size: 14px;
             white-space: nowrap;
+            padding-top: 12px;
           }
         }
       }
@@ -765,7 +767,7 @@
         border-radius: 4px;
         /*margin-left: 0.6%;*/
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -797,6 +799,7 @@
           :first-child{
             font-size: 14px;
             white-space: nowrap;
+            padding-top: 12px;
           }
         }
       }
@@ -807,7 +810,7 @@
         border-radius: 4px;
         margin-left: 0;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -839,6 +842,7 @@
           :first-child{
             font-size: 14px;
             white-space: nowrap;
+            padding-top: 12px;
           }
         }
       }
@@ -850,7 +854,7 @@
         margin-left: 0;
         margin-right: 0;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -882,6 +886,7 @@
           :first-child{
             font-size: 14px;
             white-space: nowrap;
+            padding-top: 12px;
           }
         }
       }
@@ -892,7 +897,7 @@
         border-radius: 4px;
         margin-left: 0 ;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         border:1px solid rgba(229,235,236,1);
         .all_img{
@@ -924,6 +929,7 @@
           :first-child{
             font-size: 14px;
             white-space: nowrap;
+            padding-top: 12px;
           }
         }
       }
@@ -956,7 +962,7 @@
       height: 64px;
       background-color: #ffffff;
       align-items: center;
-      justify-content: space-between;
+      justify-content: space-around;
       border-bottom: 1px solid #E5EBEC;
       .disease_title{
         font-size:18px;
