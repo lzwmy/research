@@ -109,6 +109,22 @@ export default {
         }
       );
     };
+    Vue.prototype.$fileUpload = function (url, params) {
+      return axios.post(url,params,
+        {
+          headers: {
+            "content-type": "multipart/form-data"
+          }
+      }).then(
+        (response) => {
+          return checkStatus(response);
+        }
+      ).then(
+        (res) => {
+          return checkCode(res);
+        }
+      );
+    };
     // 只需要经过checkStatus处理
     Vue.prototype.$postDown = function (url, params = {}, IsFormData = true, config = {}) {
       return axios(Object.assign({

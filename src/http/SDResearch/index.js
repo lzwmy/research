@@ -153,12 +153,17 @@ const url = {
   patientListExportCheck: '/subject/excel/download',
   //批量导入患者信息
   patientListImportData: '/disease/excel/import/patientInfos',
+   //批量导入患者报告信息
+  patientListImportReportData: '/disease/excel/import/patientReports',
   
 };
 
 const http = {
+  patientListImportReportData (params,config) {
+    return vm.$fileUpload(url.patientListImportReportData, params);
+  },
   patientListImportData (params,config) {
-    return vm.$post(url.patientListImportData, params, true,config);
+    return vm.$fileUpload(url.patientListImportData, params);
   },
   patientListExportCheck (params) {
     return vm.$postDown(url.patientListExportCheck, params, true);

@@ -777,57 +777,55 @@
       },
       //批量导入
       async importPatinetData(file) {
-        this.importPatinetLoading = true;
-        try{
-            let param = new FormData();
-            param.append('file',file.raw);
-            param.append('diseaseId',this.$route.query.id);
-            let url = this.baseURL + "disease/excel/import/patientInfos";
-            this.$axios.defaults.withCredentials=true;
-            this.$axios.post(url,param,{
-                headers: {
-                  "content-type": "multipart/form-data"
-                },
-                withCredentials: true
-            }).then((res)=>{
-                if(res.data.code==0) {
-                    this.$mes('success','导入成功');
-                    this.getDataList();
-                }else if(res.data.data) {
-                    this.handleCheckData(res.data.data)
-                }else {
-                  this.$mes('error', res.data.msg ||'导入失败')
-                }
-                this.importPatinetLoading = false;
-            })
-        }catch (error) {
-          this.importPatinetLoading = false;
-          console.log(error)
-          this.$mes('error','导入失败')
-        }
-
-        // try {
+        // this.importPatinetLoading = true;
+        // try{
         //     let param = new FormData();
         //     param.append('file',file.raw);
         //     param.append('diseaseId',this.$route.query.id);
-        //     let config = {
-        //       headers: {
-        //         "content-type": "multipart/form-data"
-        //       }
-        //     }
-        //     let res = await this.$http.patientListImportData(param,config);
-        //     console.log(res)
-        //     if(res.code==0) {
-        //         this.$mes('success','导入成功');
-        //         this.getDataList();
-        //     }else if(res.data) {
-        //         this.handleCheckData(res.data)
-        //     }else {
-        //       this.$mes('error', res.msg ||'导入失败')
-        //     }
-        // } catch (err) {
-        //   console.log(err)
+        //     let url = this.baseURL + "disease/excel/import/patientInfos";
+        //     this.$axios.defaults.withCredentials=true;
+        //     this.$axios.post(url,param,{
+        //         headers: {
+        //           "content-type": "multipart/form-data"
+        //         },
+        //         withCredentials: true
+        //     }).then((res)=>{
+        //         if(res.data.code==0) {
+        //             this.$mes('success','导入成功');
+        //             this.getDataList();
+        //         }else if(res.data.data) {
+        //             this.handleCheckData(res.data.data)
+        //         }else {
+        //           this.$mes('error', res.data.msg ||'导入失败')
+        //         }
+        //         this.importPatinetLoading = false;
+        //     })
+        // }catch (error) {
+        //   this.importPatinetLoading = false;
+        //   console.log(error)
+        //   this.$mes('error','导入失败')
         // }
+
+        this.importPatinetLoading = true;
+        try {
+            let params = new FormData();
+            params.append('file',file.raw);
+            params.append('diseaseId',this.$route.query.id);
+            let res = await this.$http.patientListImportData(params);
+            if(res.code==0) {
+                this.$mes('success','导入成功');
+                this.getDataList();
+            }else if(res.data) {
+                this.handleCheckData(res.data)
+            }else {
+              this.$mes('error', res.msg ||'导入失败')
+            }
+            this.importPatinetLoading = false;
+        } catch (err) {
+          this.importPatinetLoading = false;
+          console.log(err)
+          this.$mes('error','导入失败')
+        }
       },
       async getFindViews () {
         let that = this;
