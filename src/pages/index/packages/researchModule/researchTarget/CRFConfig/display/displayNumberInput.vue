@@ -3,6 +3,8 @@
   <div :class="item.controlType">
     <!--style="width:200px;display:inline-block;font-size: 14px;"-->
     <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]" >
+      <span v-show="item.baseProperty.isRequired"
+            style="color: red;">*</span>
       <i v-if="crfCurrentControl.item==item" class="el-icon-edit"  style="color:#3b81f0"/>
       <span >{{item.controlDisplayName}}</span>
       <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
@@ -10,7 +12,10 @@
     <!--style="display:inline-block" :style="`width:${inputWidth}px`"-->
     <div :class="item.controlType+'_box'"  >
       <!--style="display:inline-block;width:50%"-->
-      <div :class="item.controlType+'_box_number'" >
+      <div :class="[item.controlType+'_box_number',{isRequired:item.baseProperty.isRequired}]"
+           :data-switch="item.termUnit.numberIsSwitch"
+           :data-type="item.controlType"
+           :data-value="report.value">
         <el-input @change="changed" @focus="onFocus" size="small" placeholder="请输入" v-model.trim="inputValue"></el-input>
       </div>
       <!--style="display:inline-block;width:48%"-->
@@ -18,7 +23,10 @@
         {{inputUnit}}
       </div>
       <!--style="display:inline-block"-->
-      <div :class="item.controlType+'_box_select'"  v-if="item.termUnit.numberIsSwitch=='0'">
+      <div :class="[item.controlType+'_box_select',{isRequired:item.baseProperty.isRequired}]"  v-if="item.termUnit.numberIsSwitch=='0'"
+           :data-switch="item.termUnit.numberIsSwitch"
+           :data-type="item.controlType"
+           :data-value2="report.value2">
         <el-select @change="changed" v-model="inputUnit" size="small" @focus="onFocus" placeholder="请选择">
           <el-option
             v-for="it in item.termSet.termItemList"

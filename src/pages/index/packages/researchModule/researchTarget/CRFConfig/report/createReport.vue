@@ -730,6 +730,7 @@
           background-color: #ffffff;
           /*background-color: #f7f8fc;*/
           border:1px solid #E5EBEC;
+          overflow: auto;
           .displayPortion_title{
             display: none;
           }
