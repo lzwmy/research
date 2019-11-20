@@ -694,9 +694,8 @@ export default {
           console.log(error);
           that.$notice('删除出错');
         }
-      }).catch((error) => {
-        console.log(error);
-        that.$notice('删除出错');
+      }).catch(() => {
+        // that.$notice('删除出错');
       });
     },
     async validateAccount (rule, value, callback) {

@@ -693,6 +693,7 @@
           height: 100%;
           flex-direction: column-reverse;
           justify-content: center;
+          text-align: center;
           p{
             color: #0190DE;
             text-align: center;
@@ -740,6 +741,7 @@
           height: 100%;
           flex-direction: column-reverse;
           justify-content: center;
+          text-align: center;
           p{
             color: #00BC92;
           }
@@ -781,6 +783,7 @@
           height: 100%;
           flex-direction: column-reverse;
           justify-content: center;
+          text-align: center;
           p{
             color: #8EC466;
           }
@@ -822,6 +825,7 @@
           height: 100%;
           flex-direction: column-reverse;
           justify-content: center;
+          text-align: center;
           p{
             color: #04B8DD;
           }
@@ -864,6 +868,7 @@
           height: 100%;
           flex-direction: column-reverse;
           justify-content: center;
+          text-align: center;
           p{
             color: #D95555;
           }
@@ -905,6 +910,7 @@
           height: 100%;
           flex-direction: column-reverse;
           justify-content: center;
+          text-align: center;
           p{
             color: #636E9B;
           }
