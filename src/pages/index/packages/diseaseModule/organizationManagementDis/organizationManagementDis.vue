@@ -13,6 +13,16 @@
                     <li v-for="(item, index) in orgList" :key="index" :class="item.orgCode == orgCode?'active':''" @click="selectGroup(item)">
                         <span v-if="!item.edit">{{item.orgName}}</span>
                         <el-input @keyup.enter.native="addOrg" @blur="addOrg" class="addOrg" v-else v-model="item.orgName"></el-input>
+                        <!-- <el-popover
+                            placement="bottom"
+                            popper-class="more_popper"
+                            trigger="hover">
+                            <i  slot="reference" class="icon el-icon-more"></i>
+                            <ul class="stepThree_ul">
+                                <li @click="showAddDialog('编辑分组',item)">编辑</li>
+                                <li @click="deleteGroup(item,index)">删除</li>
+                            </ul>
+                        </el-popover> -->
                     </li>
                 </ul>
                 <el-button v-if="loginType=='local'" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加分中心</el-button>
@@ -455,6 +465,19 @@ export default {
                 right: 0;
                 bottom: 0;
                 // padding: 15px;
+            }
+        }
+    }
+    .more_popper {
+        padding: 0;
+        min-width: 80px;
+        ul li {
+            line-height: 36px;
+            text-align: center;
+            cursor: pointer;
+            &:hover {
+                background-color: #e9f6ff;
+                color: #4db3fe;
             }
         }
     }

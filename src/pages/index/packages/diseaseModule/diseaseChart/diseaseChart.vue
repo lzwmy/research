@@ -696,6 +696,7 @@
           text-align: center;
           p{
             color: #0190DE;
+            text-align: center;
           }
           :last-child{
             font-size: 40px;

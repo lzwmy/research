@@ -4,7 +4,7 @@ import qs from 'qs';
 import { MessageBox, Message } from 'element-ui';
 import http from 'src/http';
 
-// axios.defaults.timeout = 2000;
+axios.defaults.timeout = 0;
 // `withCredentials` 表示跨域请求时是否需要使用凭证
 axios.defaults.withCredentials = true;
 
