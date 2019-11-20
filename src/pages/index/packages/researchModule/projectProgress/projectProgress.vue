@@ -29,7 +29,7 @@
           </div>
         </el-col>
         <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-          <div class="wrap_box wrap_box_3 flex-start-center">
+          <div class="wrap_box wrap_box_3 flex-start-center" style="justify-content: space-between">
             <div class="finish flex-center-center flex-wrap">
               <p>今日完成</p>
               <span>{{todayFinish}}</span>
@@ -903,10 +903,10 @@
         background-color: #fff;
         height: 244px;
         color: rgba(57, 66, 99, 1);
-        padding: 15px;
-
+        padding-top: 15px;
         .wrap_label {
           font-size: 16px;
+          padding-left: 15px;
           /*font-weight: bold;*/
         }
 
@@ -932,9 +932,9 @@
           }
 
           ul {
-            margin-left: 2vw;
-            flex: 1;
-
+            margin-left: 0.5vw;
+            /*flex: 1;*/
+            width: 60%;
             li {
               font-size: 14px;
               width: 33%;

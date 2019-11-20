@@ -32,7 +32,7 @@ export default {
     },
     methods: {
         initHighcharts() {
-            this.$Highcharts.chart(this.$el, this.chartData);
+            this.$Highcharts.chart(this.$el, this.chartData).reflow();
         }
     },
         
