@@ -94,7 +94,7 @@ export default {
       }else {
         return data
       }
-    },
+    }
   },
   created() {
     this.report.value =

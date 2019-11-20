@@ -160,6 +160,7 @@ import stageListCom from '../stageList/stageList'
 // import reportRead from "./../report/reportRead";
 import mixins from "components/mixins";
 import { mapGetters } from "vuex";
+import { getDom } from './js/verificationForm';
 export default {
   name: "crfConfig",
   mixins: [mixins],
@@ -324,6 +325,7 @@ export default {
       }
     },
     async saveReportData() {
+
       try {
         this.mainLoading = true;
         if (!this.report.id) {
@@ -382,6 +384,11 @@ export default {
     },
     //保存或提交随访管理报告
     async saveFollowUpReportData(type) {
+      let flag = getDom();
+      if(flag) {
+        this.$message.info('有必填项未填写');
+        return ;
+      }
       try {
         this.mainLoading = true;
         let params = {
@@ -430,6 +437,11 @@ export default {
       }
     },
     async commitReportData() {
+      let flag = getDom();
+      if(flag) {
+        this.$message.info('有必填项未填写');
+        return ;
+      }
       try {
         this.commitLoading = true;
         if (!this.report.id) {

@@ -9,7 +9,7 @@
       <div class="basis_nav-box">
         <div class="nav_info-content">
           <div class="portion_input-left">
-            <el-input  placeholder="请输入小节名称" v-model="portionName" size="mini"></el-input>
+            <el-input  placeholder="请输入小节名称"  maxlength="30" v-model="portionName" size="mini"></el-input>
           </div>
           <div class="btn-right-box">
             <el-button type="primary" @click="previewBtn">
@@ -32,9 +32,14 @@
         <div class="basis_content_config" v-if="basisDataList.length!==0 && refreshView">
           <div class="content-box"  v-for="(basisItem,basisIndex) in basisDataList" :key="basisIndex">
             <div class="content-line">
-              <!--<el-input placeholder="条目名称" v-model="basisData.controlName" size="mini" @change="changeControlName(basisData,basisData.controlName)"></el-input>
-              <span class="content_must-fill">*</span>-->
-              <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" ></el-input>
+              <span style="display: inline-block;min-width: 34px;">
+                <i class="iconfont iconbianji" v-if="$store.state.CRFConfig.activeModifyState == basisItem"></i>
+              </span>
+              <el-form :model="basisItem" :rules="rules">
+                <el-form-item prop="controlDisplayName" style="margin-bottom: 0;">
+                  <el-input v-focus placeholder="条目显示名称" v-model="basisItem.controlDisplayName" size="mini" @focus="activeConfig(basisItem,basisIndex,basisDataList)" ></el-input>
+                </el-form-item>
+              </el-form>
               <span class="content_must-fill">*</span>
               <!--控件类型-->
               <el-select v-model="basisItem.controlType" size="mini" @change="changeControlType(basisItem,basisIndex,basisDataList)">
@@ -76,8 +81,8 @@
               <!--删除-->
               <i class="iconfont iconfuhao4 del" @click="deleteBlock(basisIndex)"></i>
             </div>
-            <!--{{basisDataInfo}}-->
-            <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children"></basis-component>
+            <!--{{basisItem}}-->
+            <basis-component v-if="basisItem.children.length!==0" :children="basisItem.children" ></basis-component>
           </div>
         </div>
         <div class="basis_content_config blank_page" v-else>
@@ -85,7 +90,7 @@
         </div>
         <!--参数配置-->
         <div class="basis_parameter_config" v-if="JSON.stringify(basisDataInfo)!=='{}'">
-          <parameter-config v-if="JSON.stringify(basisDataInfo)!=='{}'" :basicDataInfo="basisDataInfo"></parameter-config>
+          <parameter-config v-if="JSON.stringify(basisDataInfo)!=='{}'" :basicDataInfo="basisDataInfo" ></parameter-config>
         </div>
         <div class="basis_parameter_config blank_page" v-else>
           <img src="./image/none_content.png" alt="">
@@ -128,7 +133,6 @@
         "$store.state.CRFConfig.basisDataInfo":{
           deep:true,
           handler:function (data) {
-            // console.log('发生改变',data);
             this.basisDataInfo = data;
           }
         }
@@ -192,6 +196,14 @@
               name:"文件上传",
               value:"FILE_UPLOAD"
             },
+            {
+              name:"评分",
+              value:"SCORE"
+            },
+            {
+              name:"级联控件",
+              value:"CASCADE"
+            }
             /*{
               name:"超链接",
               value:"linkURL"
@@ -236,6 +248,12 @@
           portionName:"",//小节名称
           portionPreviewData:{},
           activeId:"",
+          // 条目显示名称验证
+          rules:{
+            controlDisplayName:[
+              {required: true, message: '请输入条目名称', trigger: 'blur'}
+            ]
+          }
         }
       },
       methods:{
@@ -248,6 +266,7 @@
           window.history.go(-1);
         },
         activeConfig(data,index,array) {
+          // console.log(data,this.configData);
           this.basisDataInfo = {
             obj:data,
             selectType:data.controlType,
@@ -256,6 +275,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //控件类型
         changeControlType(data,index,array) {
@@ -269,6 +289,7 @@
             "controlTip": "", //(控件输入提示)
             "controlIsDefaultDateTime": 0, //(是否使用默认时间或日期)
             "controlIsExtend":0, //(下拉框是否可扩展)
+            "isRequired":false, ////表单是否必填项
             "labelType":'TEXT',
             "labelContent":"",
             "labelImage":"",
@@ -289,6 +310,10 @@
               "selection":[],
               "wrap":1,
               "displayChecked":[]
+            },
+            "scoreInfo":{
+              "scoreName":"",
+              "scoreStatus":false,
             }
           };
           data.termSet= {
@@ -318,6 +343,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //集合 or 表格添加
         add(data) {
@@ -336,6 +362,7 @@
           }else{
             data.displayIsVisible = 1;
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         // 设置 参数配置
         changeParameterConfig(data) {
@@ -353,18 +380,18 @@
           }else{
             data.termUnit.numberIsSwitch  = 1
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //删除行
         deleteBlock(index) {
-          /*this.basisDataInfo = {};
-          this.basisDataList.splice(index,1);*/
           this.basisDataInfo = {};
-          let copyData = JSON.parse(JSON.stringify(this.basisDataList))
+          let copyData = JSON.parse(JSON.stringify(this.basisDataList));
           copyData.splice(index,1);
           this.basisDataList = [];
           this.$nextTick(() => {
             this.basisDataList = copyData;
-          })
+          });
+          this.$store.commit('SET_MODIFY_STATE',{});
         },
         //上移
         moveTop(data,index,array) {
@@ -395,6 +422,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           })
         },
         //下移
@@ -403,6 +431,7 @@
             this.$notice('已经置底了，请往上移！');
             return ;
           }
+
           let copyLine = Object.assign({},data);
           copyLine.baseProperty.layout = {
             "columns":1,
@@ -413,7 +442,7 @@
           array.splice(index+2,0,copyLine);
           array.splice(index,1);
           this.basisDataInfo = {};
-          console.log(array[index]);
+          // console.log(array[index]);
           //清空向下移所有 layout 布局信息
           for(let i=index+1;i<array.length;i++) {
             array[i].baseProperty.layout = {
@@ -427,6 +456,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           })
         },
         //添加条目 -- 显示弹框
@@ -466,10 +496,27 @@
           };
           this.basisDataList.push(copyData)
         },
+        verificationData(data) {
+          let flag = true;
+            data.forEach(item=>{
+                if(item.controlDisplayName !=="" && item.children.length!==0) {
+                    this.verificationData(item.children)
+                }else if(item.controlDisplayName !=="" && item.children.length!==0) {
+                  flag = true;
+                }else if(item.controlDisplayName == "") {
+                  flag = false;
+                }
+            });
+          return flag;
+        },
         //保存
         saveBtn() {
           // let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
-
+          // 验证表单名称是否填写完成
+            if(this.verificationData(this.basisDataList) == false) {
+              this.$message.info('表单名称不能为空');
+              return ;
+            }
           if(this.configData.type == 'add') {
             console.log('触发')
             /*this.portionSave()*//*.then(()=>{
@@ -557,7 +604,6 @@
                 "type":that.configData.type
               };
               console.log(formData);
-              // this.$emit('portion-callback-add',formData);
               this.$emit('portion-callback-add',formData);
             }
           }catch (error) {
@@ -675,7 +721,8 @@
     box-sizing: border-box;
     padding: 0 30px;
     .basis_content_config{
-      width: 1120px;
+      /*width: 1120px;*/
+      flex: 1;
       background-color: #ffffff;
       margin-right: 20px;
       border: 1px solid #E5EBEC;
@@ -722,13 +769,14 @@
       }
     }
     .basis_parameter_config{
-      width:490px;
+      /*width:490px;*/
+      width:692px;
       background-color: #ffffff;
       border: 1px solid #E5EBEC;
       box-sizing: border-box;
       padding: 30px 20px 0 20px;
       overflow: auto;
-      flex: 1;
+      /*flex: 1;*/
     }
   }
   .basis_nav-box{
@@ -752,6 +800,9 @@
       .btn-right-box{
         .el-button--primary{
           background-color: #1BBAE1;
+          &:hover{
+            background-color: #14aed4;
+          }
         }
         .iconfont{
           font-size: 14px;

@@ -1,10 +1,16 @@
 <template>
     <div class="basis_component_container">
-        <div class="basis_component-content" v-for="(basisDataItem,basisDataIndex) in basisData" :key="basisDataIndex">
+        <div class="basis_component-content"  v-for="(basisDataItem,basisDataIndex) in basisData" :key="basisDataIndex">
           <div class="component-content">
-              <!--<el-input placeholder="条目名称" v-model="basisDataItem.controlName" size="mini"></el-input>-->
-              <!--<span class="content_must-fill">*</span>-->
-              <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>
+            <span style="display: inline-block;min-width: 34px;">
+                <i class="iconfont iconbianji" v-if="$store.state.CRFConfig.activeModifyState == basisDataItem"></i>
+              </span>
+            <el-form :model="basisDataItem" :rules="rules">
+              <el-form-item prop="controlDisplayName" style="margin-bottom: 0;">
+                <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>
+              </el-form-item>
+            </el-form>
+              <!--<el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>-->
               <span class="content_must-fill">*</span>
               <!--控件类型-->
               <el-select v-model="basisDataItem.controlType" size="mini" @change="changeControlType(basisDataItem,basisDataIndex,basisData)">
@@ -44,7 +50,7 @@
               <!--下移-->
               <i class="iconfont iconfuhao6" @click="moveDown(basisDataItem,basisDataIndex,basisData)"></i>
           </div>
-          <basis-component v-if="basisDataItem.children.length!==0 && refreshView" :children="basisDataItem.children"></basis-component>
+          <basis-component v-if="basisDataItem.children.length!==0 && refreshView" :children="basisDataItem.children" ></basis-component>
         </div>
     </div>
 </template>
@@ -126,6 +132,14 @@
               name:"文件上传",
               value:"FILE_UPLOAD"
             },
+            {
+              name:"评分",
+              value:"SCORE"
+            },
+            {
+              name:"级联控件",
+              value:"CASCADE"
+            }
             /*{
               name:"超链接",
               value:"linkURL"
@@ -162,7 +176,13 @@
               value:"min"
             }
           ],
-          basisDataInfo:{}
+          basisDataInfo:{},
+          // 条目显示名称验证
+          rules:{
+            controlDisplayName:[
+              {required: true, message: '请输入条目名称', trigger: 'blur'}
+            ]
+          }
         }
       },
       methods:{
@@ -175,6 +195,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //控件类型
         changeControlType(data,index,array) {
@@ -188,6 +209,7 @@
             "controlTip": "", //(控件输入提示)
             "controlIsDefaultDateTime": 0, //(是否使用默认时间或日期)
             "controlIsExtend":0, //(下拉框是否可扩展)
+            "isRequired":false, //表单是否必填项
             "labelType":'TEXT',
             "labelContent":"",
             "labelImage":"",
@@ -208,7 +230,11 @@
               "selection":[],
               "wrap":1,
               "displayChecked":[]
-            }
+            },
+            "scoreInfo":{
+              "scoreName":"",
+              "scoreStatus":false,
+            },
           };
           data.termSet= {
             "termGroupOid": "", //(代码集OID)
@@ -230,7 +256,7 @@
           data.gatherIsVisible=1;
           data.gatherFoldFlag=0;
           // 触发 数据设置
-          this.basisDataInfo = {
+          this.basisDataInfo ={
             obj:data,
             selectType:data.controlType,
             index:index
@@ -238,6 +264,7 @@
           this.$store.commit('CRF_SET_OBJECT',this.basisDataInfo);
           this.$store.commit('SET_ARRAY',array);
           this.$store.commit('SET_INDEX',index);
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //是否可见
         isVisible(data) {
@@ -246,6 +273,7 @@
           }else{
             data.displayIsVisible = 1;
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //添加行
         addLine(data,index) {
@@ -270,6 +298,7 @@
           this.$nextTick(()=>{
             this.refreshView = true;
           });
+          this.$store.commit('SET_MODIFY_STATE',{});
         },
         // 数值 切换
         switchType(data) {
@@ -278,6 +307,7 @@
           }else{
             data.termUnit.numberIsSwitch  = 1
           }
+          this.$store.commit('SET_MODIFY_STATE',data);
         },
         //上移
         moveTop(data,index,array) {
@@ -300,6 +330,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           });
         },
         //下移
@@ -323,6 +354,7 @@
           this.refreshView = false;
           this.$nextTick(()=>{
             this.refreshView = true;
+            this.$store.commit('SET_MODIFY_STATE',copyLine);
           });
         },
         //获取单位列表

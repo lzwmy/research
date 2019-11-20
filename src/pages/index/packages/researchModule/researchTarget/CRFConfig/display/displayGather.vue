@@ -249,13 +249,14 @@ export default {
                 preData.wrap = 0
                 item.baseProperty.layout.offset = 8;
               }else if(sum == 0) {// 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
-                preData.wrap = 1;
+                preData.wrap = 1
               }else {
-                preData.wrap = 0;
+                preData.wrap = 0
               }
               //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
             }
             else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              preData.wrap =1
               if(currentItemList[0] == 2) {
                 item.baseProperty.layout.offset = 8;
               }else if(currentItemList[0] == 3) {
@@ -523,7 +524,8 @@ export default {
   color:gray
 }
   .GATHER_bg_color{
-    background-color: rgb(247, 248, 252);
+    /*background-color: rgb(247, 248, 252);*/
+    background-color: #FCFCFC;
   }
   .view_box .view_title .iconfont{
     font-size: 16px;

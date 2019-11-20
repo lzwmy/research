@@ -120,13 +120,14 @@ export default {
                 preData.wrap = 0
                 item.baseProperty.layout.offset = 8;
               }else if(sum == 0) {// 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
-                preData.wrap = 1;
+                preData.wrap = 1
               }else {
-                preData.wrap = 0;
+                preData.wrap = 0
               }
-              //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
+            //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
             }
             else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              preData.wrap =1
               if(currentItemList[0] == 2) {
                 item.baseProperty.layout.offset = 8;
               }else if(currentItemList[0] == 3) {
@@ -343,13 +344,14 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less">
+<style lang="less" scoped>
   .displayPortion_title{
     width: 100%;
     font-size: 14px;
     height: 30px;
     line-height: 30px;
-    background-color: #ddd;
+    /*background-color: #ddd;*/
+    background-color: #E9E9E9;
     padding-left: 15px;
   }
   .displayPortion_box{
