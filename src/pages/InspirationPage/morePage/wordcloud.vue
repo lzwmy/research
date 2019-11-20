@@ -22,7 +22,6 @@
       methods:{
         initHighCharts() {
           this.chart = new Highcharts.Chart(this.$el, this.data);
-          this.chart.reflow();
         }
       },
       mounted() {
