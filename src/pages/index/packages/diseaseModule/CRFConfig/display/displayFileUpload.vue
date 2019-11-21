@@ -159,9 +159,10 @@
         //自定义多文件文件上传接口
         fileUploadHttp(param) {
           let url = this.uploadActionUrl;
-          return axios.post(url,param,{
-            headers: {"content-type": "multipart/form-data"}
-          })
+          // return axios.post(url,param,{
+          //   headers: {"content-type": "multipart/form-data"}
+          // })
+          return this.$fileUpload(url,param)
         },
         //图片上传 事件 ---以下
         beforeAvatarUpload(file) {

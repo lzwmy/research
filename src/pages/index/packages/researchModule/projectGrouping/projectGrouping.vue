@@ -279,13 +279,13 @@ export default {
                         font-size: 14px;
                     }
                     .icon {
-                            position: absolute;
-                            top: 6px;
-                            right: 2px;
-                            transform: rotate(90deg);
-                            font-size: 16px;
-                            color: #666;
-                        }
+                        position: absolute;
+                        top: 6px;
+                        right: 2px;
+                        transform: rotate(90deg);
+                        font-size: 16px;
+                        color: #666;
+                    }
                 }
                 .plus {
                     margin: 20px auto;

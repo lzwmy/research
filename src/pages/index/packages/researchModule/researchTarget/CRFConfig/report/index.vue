@@ -131,15 +131,15 @@
   height: 100%;
   .create_model_btn{
     width: 120px;
-    height: 36px;
+    height: 32px;
     font-size:14px;
     color: #ffffff;
     background-color: #1BBAE1;
-    line-height: 36px;
+    line-height: 32px;
     text-align: center;
     border-radius:2px;
     i{
-      font-size: 14px;
+      font-size: 13px;
       position: relative;
       left: -10px;
     }

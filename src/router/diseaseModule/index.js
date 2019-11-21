@@ -3,12 +3,15 @@
 const organizationManagementDis = r => require.ensure([], () => r(require('packages/diseaseModule/organizationManagementDis/organizationManagementDis')), 'organizationManagementDis');
 //录入统计
 const inputStatistics = r => require.ensure([], () => r(require('packages/diseaseModule/organizationManagementDis/inputStatistics')), 'inputStatistics');
+//质控管理
+const qualityManage = r => require.ensure([], () => r(require('packages/diseaseModule/qualityManage/qualityManage')), 'qualityManage');
+
 
 const routes = [
     {
         ico: 'organizationManagement',
         menuLevel: 3,
-        menuName: '组织管理',
+        menuName: '机构管理',
         menuOrder: 7,
         menuPath: '/organizationManagementDis',
         superiorMenu: '0107',
@@ -20,7 +23,7 @@ const routes = [
         meta: {
             requireAuth: true,
             isKeepAlive: false,
-            txt: '组织管理',
+            txt: '机构管理',
             flag: 'organizationManagementDis',
             belongToGroup: 'insideView',
             openMode: 2,
@@ -48,6 +51,28 @@ const routes = [
             openMode: 2,
         },
         component: inputStatistics
+    },
+    {
+        ico: 'qualityManage',
+        menuLevel: 4,
+        menuName: '质控管理',
+        menuOrder: 8,
+        menuPath: '/qualityManage',
+        superiorMenu: '0107',
+        menuCode: "010708",
+        states: 0,
+        children: [],
+        path: '/qualityManage',
+        name: 'qualityManage',
+        meta: {
+            requireAuth: true,
+            isKeepAlive: false,
+            txt: '质控管理',
+            flag: 'qualityManage',
+            belongToGroup: 'insideView',
+            openMode: 2,
+        },
+        component: qualityManage
     }
 ];
 

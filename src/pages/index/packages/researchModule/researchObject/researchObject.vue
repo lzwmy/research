@@ -557,10 +557,10 @@ export default {
         }
         .addDropdown.el-dropdown {
             margin-left: 0;
-            height: 34px;
+            height: 32px;
             width: 40px;
             .add {
-                line-height: 34px;
+                line-height: 32px;
                 position: absolute !important;
                 top: 0;
             }

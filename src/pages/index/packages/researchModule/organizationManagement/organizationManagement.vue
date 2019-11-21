@@ -572,6 +572,7 @@ export default {
                     margin: 20px auto;
                     width: 100%;
                     line-height: 38px;
+                    height: 38px;
                 }
             }
             .content {

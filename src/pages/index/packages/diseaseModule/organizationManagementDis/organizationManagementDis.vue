@@ -13,16 +13,17 @@
                     <li v-for="(item, index) in orgList" :key="index" :class="item.orgCode == orgCode?'active':''" @click="selectGroup(item)">
                         <span v-if="!item.edit">{{item.orgName}}</span>
                         <el-input @keyup.enter.native="addOrg" @blur="addOrg" class="addOrg" v-else v-model="item.orgName"></el-input>
-                        <!-- <el-popover
+                        <el-popover
+                            v-if="$store.state.user.diseaseInfo.isAdmin===true"
                             placement="bottom"
                             popper-class="more_popper"
                             trigger="hover">
                             <i  slot="reference" class="icon el-icon-more"></i>
                             <ul class="stepThree_ul">
-                                <li @click="showAddDialog('编辑分组',item)">编辑</li>
-                                <li @click="deleteGroup(item,index)">删除</li>
+                                <li @click="showOrgDialog(item)">编辑</li>
+                                <li @click="deleteOrg(item)">删除</li>
                             </ul>
-                        </el-popover> -->
+                        </el-popover>
                     </li>
                 </ul>
                 <el-button v-if="loginType=='local'" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加分中心</el-button>
@@ -98,6 +99,31 @@
                 <el-button @click="closeDialog" >取 消</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog 
+            title="编辑机构" 
+            :append-to-body="true"
+            class="height_auto"
+            @close="closeDialog"
+            :visible.sync="dialgOrgForm.visible" 
+            width="45%">
+            <el-form :model="dialgOrgForm" ref="dialgOrgForm" :rules="dialgoOrgFormRules" label-width="110px"
+                    class="ruleFormDialog" @submit.native.prevent v-loading="dialgOrgForm.loading" label-position="left">
+                <el-form-item label="机构名称：" prop="orgName">
+                    <el-input 
+                        v-model.trim="dialgOrgForm.orgName" 
+                        placeholder="请输入机构名称"
+                        :maxlength="20"
+                        @keyup.enter.native='editOrg'
+                        clearable>
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button type="primary" @click="editOrg" :loading="dialgOrgForm.loading">保 存</el-button>
+                <el-button @click="closeDialog">关 闭</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -135,6 +161,12 @@ export default {
                 visible: false,
                 loading: false,
             },
+            dialgOrgForm: {
+                visible: false,
+                orgName: '',
+                orgCode:'',
+                loading: false
+            },
             dataList: {},
             orgList: [],
             orgLoading: false,
@@ -154,6 +186,9 @@ export default {
                 organization: [{required: true, message: '请选择机构', trigger: 'change'}],
                 department: [{required: true, message: '请输入科室', trigger: 'change'}],
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]
+            },
+            dialgoOrgFormRules: {
+                orgName: [{required: true, message:'请输入机构名称',trigger:'change'}]
             },
             loginType: sessionStorage.getItem('CURR_LOGIN_TYPE') == 'disease'?'share':'local'
         }
@@ -279,7 +314,8 @@ export default {
             this.dialogForm.visible = true;
         },
         closeDialog() {
-            this.$refs.dialogForm.resetFields();
+            this.$refs.dialogForm && this.$refs.dialogForm.resetFields();
+            this.$refs.dialgOrgForm && this.$refs.dialgOrgForm.resetFields();
             this.dialogForm = {
                 title:'',
                 userId: '',
@@ -290,6 +326,12 @@ export default {
                 position: '',
                 visible: false,
                 loading: false,
+            };
+            this.dialgOrgForm = {
+                visible: false,
+                orgCode: '',
+                orgName: '',
+                loading: false
             }
         },
         onConfirm() {
@@ -383,6 +425,7 @@ export default {
                 console.log(err)
             }
         },
+        //删除用户
         onDelete (row) {
             let that = this;
             that.$confirm('确认删除该用户？', '提示', {
@@ -408,12 +451,67 @@ export default {
                     console.log(error)
                 }
             }).catch((error) => {});
-            },
-        }
+        },
+        async editOrg() {
+            this.$refs['dialgOrgForm'].validate(async(valid) => {
+                if (valid) {
+                    this.dialgOrgForm.loading = true;
+                    try {
+                        let res = await this.$http.ORGDisEditOrg({
+                            orgCode: this.dialgOrgForm.orgCode,
+                            orgName: this.dialgOrgForm.orgName
+                        });
+                        if (res.code == '0') {
+                            this.$mes('success', '保存成功!');
+                            this.orgCode = res.data
+                            this.dialgOrgForm.visible = false;
+                            this.getOrgList();
+                        }
+                        this.dialgOrgForm.loading = false;
+                    } catch (err) {
+                        this.dialgOrgForm.visible = false;
+                        this.dialgOrgForm.loading = false;
+                        console.log(err)
+                    }
+                } else {
+                    return false;
+                }
+            });
+        },
+        //删除机构
+        deleteOrg(item) {
+            this.$confirm('确认删除'+item.orgName+'机构？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(async () => {
+                try {
+                    let res = await this.$http.ORGDisDeleteOrg({
+                        orgCode: item.orgCode
+                    });
+                    if (res.code == '0') {
+                        this.$mes('success', '删除成功!');
+                        this.getOrgList();
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            }).catch((error) => {});
+        },
+        //编辑机构名
+        showOrgDialog(item) {
+            this.dialgOrgForm = {
+                visible: true,
+                orgCode: item.orgCode,
+                orgName: item.orgName,
+                loading: false
+            }
+        },
+    }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     .organizationManagement {
         .box {
             position: relative;
@@ -441,6 +539,7 @@ export default {
                     padding: 0 20px;
                     border-left: 3px solid transparent;
                     cursor: pointer;
+                    position: relative;
                     &.active {
                         background-color: rgba(245, 247, 250, .7);
                         border-left: 3px solid #1bbae1;
@@ -450,12 +549,25 @@ export default {
                         background-color: rgba(245, 247, 250, .7);
                         border-left: 3px solid #1bbae1;
                         color: #1bbae1;
+                        .icon {
+                            display: block;
+                        }
+                    }
+                    .icon {
+                        display: none;
+                        position: absolute;
+                        top: 6px;
+                        right: 2px;
+                        transform: rotate(90deg);
+                        font-size: 16px;
+                        color: #666;
                     }
                 }
                 .plus {
                     margin: 20px auto;
                     width: 100%;
                     line-height: 38px;
+                    height: 38px;
                 }
             }
             .content {

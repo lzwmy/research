@@ -8,7 +8,7 @@ const vm  = new Vue();
  * **/
 const url = {
   //查找所有的病种和病种关联的小节列表
-  CRFBakSearchAll:"/form/portion/bak/search.do",
+  // CRFBakSearchAll:"/form/portion/bak/search.do",
   //预览小节
   CRFPreviewPortion:'/form/portion/bak/preview.do',
   //预览CRF 表单
@@ -32,9 +32,9 @@ const url = {
 };
 
 const http = {
-  CRFBakSearchAll(params) {
-    return vm.$post(url.CRFBakSearchAll,params,false);
-  },
+  // CRFBakSearchAll(params) {
+  //   return vm.$post(url.CRFBakSearchAll,params,false);
+  // },
   CRFPreviewPortion(params) {
     return vm.$post(url.CRFPreviewPortion,params,true);
   },

@@ -548,7 +548,7 @@
     }
     .head_content{
       .el-button{
-        height: 34px;
+        height: 32px;
         font-size: 14px;
       }
       .iconfont{

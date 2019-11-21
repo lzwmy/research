@@ -3,7 +3,7 @@
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
         <div class=" cur_pointer head_content flex-start-center">
-          <el-button type="primary" icon="icon iconfont icondaochu" @click="importDataDialog = true">导入患者数据 </el-button>
+          <el-button type="primary" icon="icon iconfont icondaochu" @click="importDataDialog = true" style="height: 32px;">导入患者数据 </el-button>
           <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="showaddPatientDialog('添加患者')" style="height: 32px; padding: 0 15px 0 15px;border-radius:2px 0 0 2px;">
               添加患者
           </el-button>

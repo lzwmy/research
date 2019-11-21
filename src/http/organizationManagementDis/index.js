@@ -17,6 +17,10 @@ const url = {
     updateUserList: '/disease/user/update',
     // 添加分中心
     addOrg: '/disease/org/add',
+    // 编辑分中心
+    editOrg: '/disease/org/edit',
+    // 删除分中心
+    deleteOrg: '/disease/org/delete',
     // 角色列表
     roleList: '/disease/role/list',
     // 获取分享进来角色信息
@@ -47,6 +51,12 @@ const http = {
     },
     ORGDisAddOrg (params) {
         return vm.$post(url.addOrg, params, false);
+    },
+    ORGDisEditOrg (params) {
+        return vm.$post(url.editOrg, params, false);
+    },
+    ORGDisDeleteOrg (params) {
+        return vm.$post(url.deleteOrg, params, true);
     },
     ORGDisRoleList (params) {
         return vm.$post(url.roleList, params, false);

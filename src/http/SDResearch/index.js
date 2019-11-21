@@ -5,7 +5,7 @@ const vm = new Vue();
 const url = {
   /** 专病科研 */
   // 获取病种课题实验组信息
-  findAllDiseaseSpecies: '/diseasespecies/findAllDiseaseSpecies.do',
+  // findAllDiseaseSpecies: '/diseasespecies/findAllDiseaseSpecies.do',
   // 专病查询
   findDiseaseSpecies: '/diseasespecies/findDiseaseSpecies.do',
   // 通过专病ID查询专病详细信息
@@ -35,7 +35,7 @@ const url = {
 
   /** 病例管理 */
   // 查询列列名
-  casesFindColumns: '/cases/findColumns.do',
+  // casesFindColumns: '/cases/findColumns.do',
   // 查询运算符
   casesFindOperators: '/cases/findOperators.do',
   // 条件筛选病例
@@ -174,9 +174,9 @@ const http = {
   patientListCrf (params) {
     return vm.$post(url.patientListCrf, params, false);
   },
-  findAllDiseaseSpecies () {
-    return vm.$post(url.findAllDiseaseSpecies, {}, false);
-  },
+  // findAllDiseaseSpecies () {
+  //   return vm.$post(url.findAllDiseaseSpecies, {}, false);
+  // },
   findDiseaseSpecies () {
     return vm.$post(url.findDiseaseSpecies, {}, false);
   },
@@ -211,9 +211,9 @@ const http = {
   findSubjectStudies (params) {
     return vm.$post(url.findSubjectStudies, params, false);
   },
-  casesFindColumns (params) {
-    return vm.$post(url.casesFindColumns, params, false);
-  },
+  // casesFindColumns (params) {
+  //   return vm.$post(url.casesFindColumns, params, false);
+  // },
   casesFindOperators () {
     return vm.$post(url.casesFindOperators, {}, false);
   },
