@@ -25,7 +25,7 @@
                                 <span class="title">{{item.title}}</span>
                             </template>
                             <el-menu-item-group v-for="(li, liIndex) in item.children" :key="liIndex">
-                                <el-menu-item :index="li.title"><a style="display:inline-block;width:100%;" :href="'#'+item.title">{{li.title}}</a></el-menu-item>
+                                <el-menu-item :index="li.title"><a style="display:inline-block;width:100%;" :href="'#'+li.title">{{li.title}}</a></el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
                     </span>
@@ -38,8 +38,8 @@
                     <el-input type="textarea" v-else-if="!item.children" :rows="item.rows" :placeholder="'请输入'+item.title" class="text" v-model="item.text"></el-input>
                     <div v-if="item.children">
                         <span v-for="(li,index) in item.children" :key="index">
-                            <p class="label2">{{li.title}}</p>
-                            <el-input  :id="li.title" type="textarea"  :rows="li.rows" :placeholder="'请输入'+li.title" class="text" v-model="li.text"></el-input>
+                            <p :id="li.title" class="label2">{{li.title}}</p>
+                            <el-input type="textarea"  :rows="li.rows" :placeholder="'请输入'+li.title" class="text" v-model="li.text"></el-input>
                         </span>
                     </div>
                 </div>
@@ -174,6 +174,7 @@ export default {
             .label2 {
                 font-size: 13px;
                 margin-bottom: 12px;
+                padding-top: 12px;
                 color:#394263;
             }
             h1 {
