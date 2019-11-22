@@ -37,13 +37,13 @@ import 'assets/css/crfConfig.css';
 
 import VueClipboard from 'vue-clipboard2'
 
-// import dynamicRouter from '../../router/dynamicRouter'
+// import {staticRouter} from '../../router/dynamicRouter'
+// console.log(staticRouter)
 
 Vue.use(VueClipboard)
 Vue.use(VueQuillEditor)
 Vue.use(install);
 Vue.use(VueRouter);
-// Vue.use(ElementUI);
 
 window.eventBus = new Vue();
 Vue.prototype.$message = Message;
@@ -89,21 +89,18 @@ let initApp = async () => {
     Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
     //是否为科研项目登录
     let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
+    let  isDisease = sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease";
     
     //同步获取菜单；(非科研项目登录)
-    if(!isResearch) {
+    if(!isResearch || !isDisease) {
       await utils.loadMenuInfo();
-      // store.commit({
-      //   type: 'saveMenuList',
-      //   params: menuConfig
-      // });
     }
     loadingInstance.close();// 在获取权限后关闭loading
     // 初始化路由
     let router = new VueRouter({
       routes
+      // staticRouter
     });
-    
     // 跳转路由前进行登录校验
     router.beforeEach((to, from, next) => {
       // 校验路由元信息是否有权限要求

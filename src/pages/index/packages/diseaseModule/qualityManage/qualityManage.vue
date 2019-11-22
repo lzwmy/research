@@ -26,8 +26,8 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
-                    :height="(dataList && dataList.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
-                    :data="dataList" v-loading="loading" ref="refTable" fit>
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
+                    :data="dataList.content" v-loading="loading" ref="refTable" fit>
                     <el-table-column label='字段名称' prop=""></el-table-column>
                     <el-table-column label='有效值名称' prop=""></el-table-column>
                     <el-table-column label='总人数' prop=""></el-table-column>
@@ -62,7 +62,9 @@ export default {
                 crfFrom:"",
                 minutia: ""
             },
-            dataList: [{},{}],
+            dataList: {
+                content:[]
+            },
             loading: false,
             identify:"",
             paging: {

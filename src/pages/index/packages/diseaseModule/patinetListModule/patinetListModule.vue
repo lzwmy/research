@@ -18,8 +18,8 @@
                       :on-change="successFile"
                       :auto-upload="false"
                       :show-file-list='false'
-                      accept=".xls, .xlsx"
-                      :file-list="fileList">
+                      action=""
+                      accept=".xls, .xlsx">
                       批量添加
                     </el-upload>
                   </el-dropdown-item>
@@ -215,7 +215,7 @@
                     :key="item.name"
                     :label="item.label"
                     :name="item.name">
-                    <el-table style="width:100%;" :ref="item.name"
+                    <el-table style="width:100%;padding:0;" :ref="item.name"
                               :height="(item.dataList && item.dataList.length>0)?(routerViewHeight*1-35-38-55):(routerViewHeight*1-38-55)"
                               :data="item.dataList.content" @row-dblclick="dblclickHandle"
                               v-loading="loading"
@@ -361,7 +361,7 @@
             <el-dialog title="查找到的病例" :visible.sync="caseListDialogVisible" :append-to-body="true"
                        @close="closeCaseListDialog" class="caseListDialog" fullscreen>
               <el-table :height="routerViewHeight"
-                        :data="caseList" style="width: 100%" :empty-text="emptyText" :element-loading-text="elementLoadingText"
+                        :data="caseList" style="width: 100%;" :empty-text="emptyText" :element-loading-text="elementLoadingText"
                         @selection-change="handleSelectionCaseList" highlight-current-row>
                 <el-table-column type="selection"></el-table-column>
                 <el-table-column type="index" label="序号" width="80px"></el-table-column>

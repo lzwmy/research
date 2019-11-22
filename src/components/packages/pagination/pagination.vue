@@ -56,14 +56,14 @@ export default {
     pageSizesConfig: {// Props with type Object/Array must use a factory function to return the default value.
       type: Array,
       default () {
-        return [10, 15, 20, 30];
+        return [20, 30, 50, 100];
       }
     }
   },
   data () {
     return {
       currentPage: 1, // 当前第几页
-      currentSize: 10// 当前每页多少条
+      currentSize: 20// 当前每页多少条
     };
   },
   computed: {

@@ -391,32 +391,41 @@ const ssoLogout = () => {
   //是否为科研项目登录
   // return;
   let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
+  let  isDisease = sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease";
   try {
     vm.$get('/auth/logout.do?t=' + (+new Date()))
     then(function (response) {
       store.commit('USER_SIGNOUT');
-      if(!isResearch) {
-        window.location.href = './login.html';
+      if(isDisease) {
+        window.location.href = './loginDisease.html?id='+this.$store.state.user.researchInfo.diseaseId;
+      }
+      if(isResearch) {
+        window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
       }else {
-        window.location.href = './loginResearch.html';
+        window.location.href = './login.html';
       }
     })
     .catch(function (error) {
       console.log(error);
       store.commit('USER_SIGNOUT');
-      if(!isResearch) {
-        window.location.href = './login.html';
+      if(isDisease) {
+        window.location.href = './loginDisease.html?id='+this.$store.state.user.researchInfo.diseaseId;
+      }
+      if(isResearch) {
+        window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
       }else {
-        window.location.href = './loginResearch.html';
+        window.location.href = './login.html';
       }
     });
   } catch (err) {
     store.commit('USER_SIGNOUT');
-    window.location.href = './login.html';
-    if(!isResearch) {
-      window.location.href = './login.html';
+    if(isDisease) {
+      window.location.href = './loginDisease.html?id='+this.$store.state.user.researchInfo.diseaseId;
+    }
+    if(isResearch) {
+      window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
     }else {
-      window.location.href = './loginResearch.html';
+      window.location.href = './login.html';
     }
   }
 };

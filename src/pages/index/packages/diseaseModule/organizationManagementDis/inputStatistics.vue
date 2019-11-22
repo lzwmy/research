@@ -32,6 +32,7 @@
                         :prop="column.prop" 
                         :label="column.label" 
                         :width="handleWidth(column.label)" 
+                        :min-width="column.label.length * 15 + 20" 
                         show-overflow-tooltip>
                     </el-table-column>
                 </el-table>
@@ -68,7 +69,7 @@ export default {
             identify:"",
             paging: {
                 pageNo: 1,
-                pageSize: 10,
+                pageSize: 20,
                 currentPageNo: '',
                 currentPageSize: '',
             },
@@ -87,7 +88,9 @@ export default {
         handleWidth(label) {
             let width = '';
             if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
-                width = 160
+                width = 180
+            }else if(label.indexOf('数') == -1) {
+                width = 180
             }
             return width
         },

@@ -5,8 +5,7 @@
             :on-change="successFile"
             :auto-upload="false"
             :show-file-list='false'
-            accept=".xls, .xlsx"
-            :file-list="fileList">
+            accept=".xls, .xlsx">
             <el-button :loading="loading" icon="icon iconfont icondaochu" class="upload" @click="selectCrf(row)">上传数据</el-button>
         </el-upload>
     </div>

@@ -27,6 +27,13 @@
       "unicode_decimal": 58959
     },
     {
+      "icon_id": "1271961",
+      "name": "操作-编辑",
+      "font_class": "caozuo-bianji",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "8405864",
       "name": "时间",
       "font_class": "shijian",
@@ -1453,6 +1460,13 @@
       "font_class": "zaixianyuedu",
       "unicode": "e70c",
       "unicode_decimal": 59148
+    },
+    {
+      "icon_id": "11910286",
+      "name": "质控管理",
+      "font_class": "qualityManage",
+      "unicode": "e6f1",
+      "unicode_decimal": 59121
     }
   ]
 }

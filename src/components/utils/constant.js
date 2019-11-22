@@ -1,5 +1,5 @@
 // 每页显示条
-export const pageSize = 10;
+export const pageSize = 20;
 // 默认当前页
 export const pageNo = 1;
 // 暂无数据
