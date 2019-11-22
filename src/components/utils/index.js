@@ -392,15 +392,16 @@ const ssoLogout = () => {
   // return;
   let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
   let  isDisease = sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease";
+  let subjectInfoId =  JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')) && JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId;
+  let diseaseId = JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')) && JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId;
   try {
     vm.$get('/auth/logout.do?t=' + (+new Date()))
     then(function (response) {
       store.commit('USER_SIGNOUT');
       if(isDisease) {
-        window.location.href = './loginDisease.html?id='+this.$store.state.user.researchInfo.diseaseId;
-      }
-      if(isResearch) {
-        window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
+        window.location.href = './loginDisease.html?id='+diseaseId;
+      }else if(isResearch) {
+        window.location.href = './loginResearch.html?id='+subjectInfoId;
       }else {
         window.location.href = './login.html';
       }
@@ -409,10 +410,9 @@ const ssoLogout = () => {
       console.log(error);
       store.commit('USER_SIGNOUT');
       if(isDisease) {
-        window.location.href = './loginDisease.html?id='+this.$store.state.user.researchInfo.diseaseId;
-      }
-      if(isResearch) {
-        window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
+        window.location.href = './loginDisease.html?id='+diseaseId;
+      }else if(isResearch) {
+        window.location.href = './loginResearch.html?id='+subjectInfoId;
       }else {
         window.location.href = './login.html';
       }
@@ -420,10 +420,9 @@ const ssoLogout = () => {
   } catch (err) {
     store.commit('USER_SIGNOUT');
     if(isDisease) {
-      window.location.href = './loginDisease.html?id='+this.$store.state.user.researchInfo.diseaseId;
-    }
-    if(isResearch) {
-      window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
+      window.location.href = './loginDisease.html?id='+diseaseId;
+    }else if(isResearch) {
+      window.location.href = './loginResearch.html?id='+subjectInfoId;
     }else {
       window.location.href = './login.html';
     }

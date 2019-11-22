@@ -91,8 +91,8 @@ let initApp = async () => {
     let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
     let  isDisease = sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease";
     
-    //同步获取菜单；(非科研项目登录)
-    if(!isResearch || !isDisease) {
+    //同步获取菜单；(非科研项目登录非专病登录)
+    if(!isResearch && !isDisease) {
       await utils.loadMenuInfo();
     }
     loadingInstance.close();// 在获取权限后关闭loading
