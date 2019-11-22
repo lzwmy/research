@@ -142,6 +142,23 @@ export default {
         }
       );
     };
+    // 只需要经过checkStatus处理
+    Vue.prototype.$getDown = function (url, params = {}, IsFormData = true, config = {}) {
+      return axios(Object.assign({
+        method: 'get',
+        responseType: 'blob',
+        url: url + (url.indexOf('?') === -1 ? '?' : '&') + 't=' + (+new Date()),
+        params: IsFormData !== true ? params : qs.stringify(params)
+      }, config)).then(
+        (response) => {
+          return checkStatus(response);
+        }
+      ).then(
+        (res) => {
+          return res;
+        }
+      );
+    };
     // 经过checkStatus、checkCode处理
     Vue.prototype.$get = function (url, params = {}, config = {}) {
       return axios(Object.assign({

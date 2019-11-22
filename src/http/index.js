@@ -32,5 +32,7 @@ import diseaseChart from './diseaseChart';
 import score from './score';
 //CRF 2.0
 import CRFConfig from './CRFConfig';
-const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,projectGrouping,followUpPlan,researchTarget,projectProgress,followUpManagement,sucjectAuth,score,organizationManagementDis,myTasks);
+// 科研灵感
+import researchInspiration from './researchInspiration/index';
+const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,projectGrouping,followUpPlan,researchTarget,projectProgress,followUpManagement,sucjectAuth,score,organizationManagementDis,myTasks,researchInspiration);
 export default http;

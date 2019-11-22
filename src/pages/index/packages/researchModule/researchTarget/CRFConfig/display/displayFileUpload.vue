@@ -71,8 +71,8 @@
             </span>
           </div>
         </el-upload>
-        <el-dialog class="upload_style" width="70%"  :visible.sync="dialogVisible">
-          <img  :src="dialogImageUrl" alt="">
+        <el-dialog class="upload_style"   :visible.sync="dialogVisible">
+          <img  width="100%" v-if="dialogVisible" :src="dialogImageUrl" alt="">
         </el-dialog>
       </div>
     </div>
@@ -169,7 +169,6 @@
           let that = this;
           let param = new FormData();
           let urlparameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
-          console.log(file.row)
           param.append('file',file.raw);
           param.append('crfId',urlparameter.formId);
           param.append('patientId',urlparameter.patientId);
@@ -177,9 +176,9 @@
           param.append('desc',that.item.controlDisplayName);
           param.append('sourceType',1);
           that.fileUploadHttp(param).then(res=>{
-            if(res.data.code == 0) {
-              that.$message.success(res.data.msg);
-              that.fileList.push({...res.data.data[0],...file});
+            if(res.code == 0) {
+              that.$message.success(res.msg);
+              that.fileList.push({...res.data[0],...file});
               that.report.value2 = JSON.stringify(that.fileList);
             }
           }).catch(error => {

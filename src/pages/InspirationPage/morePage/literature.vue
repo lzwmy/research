@@ -3,8 +3,8 @@
     <div class="basis-search" v-show="switchSearch">
       <span class="search_title">文献搜索</span>
       <div class="search-condition">
-        <el-input placeholder=""></el-input>
-        <el-button type="primary">
+        <el-input v-model="keyword" @keyup.enter.native="literatureKeywordSearchList"></el-input>
+        <el-button type="primary" @click="literatureKeywordSearchList">
           <i class="iconfont iconsousuo_fuzhi"></i>
           搜索
         </el-button>
@@ -15,13 +15,23 @@
       <div class="search_info-box">
         <div class="info-title">检索信息</div>
         <div class="info_content-box">
-          <div class="content-item">
-            <div class="option-method">
-              <span>+</span>
-              <span>-</span>
+          <div class="content-item" v-for="(item,index) in criterias" :key="index">
+            <div class="option-method" v-if="index == 0">
+              <span @click="addLine">+</span>
+              <span @click="deleteLine">-</span>
+            </div>
+            <div class="check_method" v-else>
+              <el-select v-model="item.operator" @change="changeMethod(item)">
+                <el-option
+                  v-for="item in checkList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </div>
             <div class="filter-condition">
-              <el-select v-model="themeCondition">
+              <el-select v-model="item.column" @change="changeCondition(item)">
                 <el-option
                   v-for="item in checkThemeList"
                   :key="item.value"
@@ -31,10 +41,10 @@
               </el-select>
             </div>
             <div class="entry-condition">
-              <el-input></el-input>
+              <el-input v-model="item.param"></el-input>
             </div>
-            <div class="filter-match">
-              <el-select v-model="matchValue">
+            <div class="filter-match" >
+              <el-select v-model="item.type" @change="changeMatch(item)">
                 <el-option
                   v-for="item in matchList"
                   :key="item.value"
@@ -44,11 +54,11 @@
               </el-select>
             </div>
           </div>
-          <div class="content-item">
-            <!--<div class="option-method">
+          <!--<div class="content-item">
+            &lt;!&ndash;<div class="option-method">
               <span>+</span>
               <span>-</span>
-            </div>-->
+            </div>&ndash;&gt;
             <div class="check_method">
               <el-select v-model="checkValue">
                 <el-option
@@ -82,11 +92,11 @@
                 </el-option>
               </el-select>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="search_btn">
-        <el-button type="primary">
+        <el-button type="primary" @click="literatureHighSearchList">
           <i class="iconfont iconsousuo_fuzhi"></i>
           搜索
         </el-button>
@@ -97,38 +107,45 @@
       <div class="content_show-box">
         <div class="search-result">搜索结果</div>
         <el-tabs class="result-tab" v-model="activeName">
-          <el-tab-pane label="全部文献（297768）" name="first">
+          <el-tab-pane :label="`全部文献（${allTotal}）`" name="first">
             <div class="children-body">
-              <div class="children-item">
+              <div class="children-item" v-loading="AllLoading" v-for="(item,index) in allList" :key="index">
                 <div class="item-tag">
-                  <span>万方</span>
+                  <span>{{item.srcDataBase}}</span>
                 </div>
                 <div class="item-info">
-                  <div class="item_title" @click="jumpPrint">重度颅脑损伤术中应用阶梯式减压技术的疗效分析</div>
-                  <div class="item_basic-info">发布时间: 2019-11-9   丨   作者: 符招泉、陈伟明、夏鹰   丨   作者单位: 海南省昌江县人民医院外三科海南省海口市人民医院神经外科</div>
-                  <div class="Summary">摘要:目的探讨急性重度颅脑损伤患者术中应用阶梯式减压技术的疗效。方法2014年12月-2017年12月,我院行标准大骨瓣减压术的重型颅脑损伤患者356例,依据术中有无采用阶梯式减压技术,随机分成两组:阶梯式减压组(n=187),传统减压组(n=169),观察两组患者的围手术期并发症发生率及术后6个月时GOS评分并行统计分析。结果阶梯式减压组急性脑膨出以及迟发性血肿的发生率低于传统减压组(P<0.05);阶梯式减压组术后6个月时预后好于传统减压组(P<0.05)。结论重型颅脑损伤患者术中采用阶梯式减压技术能够降低围术期并发症的发生并能改善患者预后。</div>
+                  <div class="item_title" @click="jumpPrint(item)">{{item.title}}</div>
+                  <div class="item_basic-info">发布时间: {{item.pubTime || '暂无'}}   丨   作者: {{item.author || '暂无'}}   丨   作者单位: {{item.organ || '暂无'}}</div>
+                  <div class="Summary">摘要:{{item.summary || '暂无'}}</div>
                 </div>
               </div>
-              <div class="children-item">
-                <div class="item-tag">
-                  <span>万方</span>
-                </div>
-                <div class="item-info">
-                  <div class="item_title">重度颅脑损伤术中应用阶梯式减压技术的疗效分析</div>
-                  <div class="item_basic-info">发布时间: 2019-11-9   丨   作者: 符招泉、陈伟明、夏鹰   丨   作者单位: 海南省昌江县人民医院外三科海南省海口市人民医院神经外科</div>
-                  <div class="Summary">摘要:目的探讨急性重度颅脑损伤患者术中应用阶梯式减压技术的疗效。方法2014年12月-2017年12月,我院行标准大骨瓣减压术的重型颅脑损伤患者356例,依据术中有无采用阶梯式减压技术,随机分成两组:阶梯式减压组(n=187),传统减压组(n=169),观察两组患者的围手术期并发症发生率及术后6个月时GOS评分并行统计分析。结果阶梯式减压组急性脑膨出以及迟发性血肿的发生率低于传统减压组(P<0.05);阶梯式减压组术后6个月时预后好于传统减压组(P<0.05)。结论重型颅脑损伤患者术中采用阶梯式减压技术能够降低围术期并发症的发生并能改善患者预后。</div>
-                </div>
+              <!--分页-->
+              <el-pagination
+                style="text-align: right"
+                v-if="allTotal!=0"
+                background
+                layout="prev, pager, next"
+                @current-change="handleCurrentChange"
+                :total="allTotal">
+              </el-pagination>
+            </div>
+            <div class="blank_page" v-show="allList.length === 0">
+              <div class="page">
+                <img src="./../image/blank_page.png" >
+                <p>暂无内容</p>
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="诊疗指南（1885）" name="second">诊疗指南（1885）</el-tab-pane>
+          <!--<el-tab-pane label="诊疗指南（1885）" name="second">诊疗指南（1885）</el-tab-pane>
           <el-tab-pane label="META分析（3252）" name="third">META分析（3252）</el-tab-pane>
-          <el-tab-pane label="病例报告（24575）" name="fourth">病例报告（24575）</el-tab-pane>
+          <el-tab-pane label="病例报告（24575）" name="fourth">病例报告（24575）</el-tab-pane>-->
         </el-tabs>
       </div>
       <div class="wordcloud-box">
         <div class="search-results">文献热点</div>
-        <chart :option="option"></chart>
+        <div v-loading="wordcloudLoading">
+          <chart v-if="option.series[0].data.length!==0" :option="option"></chart>
+        </div>
       </div>
     </div>
   </div>
@@ -144,37 +161,62 @@
     data() {
       return {
         switchSearch: true,
+        AllLoading:false,
+        wordcloudLoading:false,
         themeCondition: "",
         matchValue: "",
         checkValue: "",
+        keyword:"",
+        allTotal:0,
+        pageNo:1,
+        allList:[],
+        criterias:[
+          {
+            "column": "",
+            "columnName": "",
+            "operator": "and",
+            "operatorName": "与",
+            "param": "",
+            "type": "",
+            "typeName": ""
+          }
+        ],//
         checkThemeList: [
           {
-            value: '主题',
+            value: 'title',
             label: '主题'
           },
           {
-            value: '作者',
+            value: 'author',
             label: '作者'
+          },
+          {
+            value: 'organ',
+            label: '作者单位'
           }
         ],
         matchList: [
           {
-            value: '0',
+            value: 'like',
             label: '模糊'
           },
           {
-            value: '1',
+            value: 'equal',
             label: '精确'
           }
         ],
         checkList: [
           {
-            value: '0',
+            value: 'and',
             label: '与'
           },
           {
-            value: '1',
+            value: 'or',
             label: '或'
+          },
+          {
+            value:"not",
+            label:"非"
           }
         ],
         //文献热点 配置
@@ -185,290 +227,7 @@
               rotation: {
                 orientations: 0
               },
-              data: [{
-                name: "creativity",
-                weight: 31
-              }, {
-                name: "creative",
-                weight: 22
-              }, {
-                name: "intelligence",
-                weight: 15
-              }, {
-                name: "more",
-                weight: 12
-              }, {
-                name: "people",
-                weight: 12
-              }, {
-                name: "theory",
-                weight: 11
-              }, {
-                name: "problem",
-                weight: 11
-              }, {
-                name: "thinking",
-                weight: 11
-              }, {
-                name: "been",
-                weight: 11
-              }, {
-                name: "can",
-                weight: 11
-              }, {
-                name: "process",
-                weight: 11
-              }, {
-                name: "new",
-                weight: 10
-              }, {
-                name: "individual",
-                weight: 10
-              }, {
-                name: "model",
-                weight: 10
-              }, {
-                name: "ideas",
-                weight: 9
-              }, {
-                name: "levels",
-                weight: 9
-              }, {
-                name: "processes",
-                weight: 9
-              }, {
-                name: "different",
-                weight: 9
-              }, {
-                name: "high",
-                weight: 9
-              }, {
-                name: "motivation",
-                weight: 9
-              }, {
-                name: "research",
-                weight: 9
-              }, {
-                name: "work",
-                weight: 8
-              }, {
-                name: "cognitive",
-                weight: 8
-              }, {
-                name: "team",
-                weight: 8
-              }, {
-                name: "divergent",
-                weight: 8
-              }, {
-                name: "tests",
-                weight: 8
-              }, {
-                name: "study",
-                weight: 8
-              }, {
-                name: "measures",
-                weight: 8
-              }, {
-                name: "theories",
-                weight: 8
-              }, {
-                name: "found",
-                weight: 8
-              }, {
-                name: "solving",
-                weight: 7
-              }, {
-                name: "knowledge",
-                weight: 7
-              }, {
-                name: "iq",
-                weight: 7
-              }, {
-                name: "working",
-                weight: 7
-              }, {
-                name: "positive",
-                weight: 7
-              }, {
-                name: "idea",
-                weight: 7
-              }, {
-                name: "studies",
-                weight: 7
-              }, {
-                name: "number",
-                weight: 7
-              }, {
-                name: "person",
-                weight: 7
-              }, {
-                name: "researchers",
-                weight: 7
-              }, {
-                name: "task",
-                weight: 7
-              }, {
-                name: "affect",
-                weight: 7
-              }, {
-                name: "group",
-                weight: 7
-              }, {
-                name: "memory",
-                weight: 7
-              }, {
-                name: "creation",
-                weight: 7
-              }, {
-                name: "individuals",
-                weight: 7
-              }, {
-                name: "concept",
-                weight: 7
-              }, {
-                name: "learning",
-                weight: 7
-              }, {
-                name: "given",
-                weight: 7
-              }, {
-                name: "ability",
-                weight: 7
-              }, {
-                name: "approach",
-                weight: 7
-              }, {
-                name: "innovation",
-                weight: 7
-              }, {
-                name: "malevolent",
-                weight: 7
-              }, {
-                name: "most",
-                weight: 7
-              }, {
-                name: "frontal",
-                weight: 6
-              }, {
-                name: "related",
-                weight: 6
-              }, {
-                name: "data",
-                weight: 6
-              }, {
-                name: "reported",
-                weight: 6
-              }, {
-                name: "incubation",
-                weight: 6
-              }, {
-                name: "thought",
-                weight: 6
-              }, {
-                name: "intrinsic",
-                weight: 6
-              }, {
-                name: "used",
-                weight: 6
-              }, {
-                name: "implicit",
-                weight: 6
-              }, {
-                name: "increase",
-                weight: 6
-              }, {
-                name: "general",
-                weight: 6
-              }, {
-                name: "mental",
-                weight: 6
-              }, {
-                name: "early",
-                weight: 6
-              }, {
-                name: "economic",
-                weight: 6
-              }, {
-                name: "level",
-                weight: 6
-              }, {
-                name: "students",
-                weight: 6
-              }, {
-                name: "human",
-                weight: 6
-              }, {
-                name: "constructs",
-                weight: 6
-              }, {
-                name: "problems",
-                weight: 6
-              }, {
-                name: "elements",
-                weight: 6
-              }, {
-                name: "proposed",
-                weight: 6
-              }, {
-                name: "lobe",
-                weight: 6
-              }, {
-                name: "participants",
-                weight: 6
-              }, {
-                name: "according",
-                weight: 6
-              }, {
-                name: "key",
-                weight: 6
-              }, {
-                name: "century",
-                weight: 6
-              }, {
-                name: "type",
-                weight: 6
-              }, {
-                name: "skills",
-                weight: 6
-              }, {
-                name: "relationship",
-                weight: 6
-              }, {
-                name: "will",
-                weight: 6
-              }, {
-                name: "environment",
-                weight: 6
-              }, {
-                name: "time",
-                weight: 6
-              }, {
-                name: "view",
-                weight: 6
-              }, {
-                name: "create",
-                weight: 6
-              }, {
-                name: "worldview",
-                weight: 6
-              }, {
-                name: "processing",
-                weight: 6
-              }, {
-                name: "seen",
-                weight: 6
-              }, {
-                name: "aggression",
-                weight: 6
-              }, {
-                name: "result",
-                weight: 6
-              }, {
-                name: "correlation",
-                weight: 6
-              }
-              ]
+              data: []
             }],
           title: {
             text: ''
@@ -485,19 +244,173 @@
     },
     methods: {
       changeSearch(value) {
-        console.log(value)
         this.switchSearch = value;
+        this.pageNo = 1;
+        if(value == false) {
+          this.criterias = [
+            {
+              "column": "",
+              "columnName": "",
+              "operator": "and",
+              "operatorName": "与",
+              "param": "",
+              "type": "",
+              "typeName": ""
+            }
+          ]
+        }else if(value == true) {
+          this.keyword = ""
+        }
       },
-      jumpPrint() {
+      jumpPrint(data) {
+        sessionStorage.setItem('content',JSON.stringify(data));
         window.open("./printPage.html");
+      },
+      handleCurrentChange(val) {
+        this.pageNo = val;
+        this.AllLoading = true;
+        if(this.switchSearch) {
+          this.literatureKeywordSearchList()
+        }else {
+          this.literatureHighSearchList()
+        }
+      },
+      changeCondition(data) {
+        let columnName = this.checkThemeList.filter(item => {
+          if(item.value == data.column) {
+            return item;
+          }
+        });
+        data.columnName = columnName[0].label;
+      },
+      changeMatch(data) {
+        let columnName = this.matchList.filter(item => {
+          if(item.value == data.type) {
+            return item;
+          }
+        });
+        data.typeName = columnName[0].label;
+      },
+      changeMethod(data) {
+        let columnName = this.checkList.filter(item => {
+          if(item.value == data.operator) {
+            return item;
+          }
+        });
+        data.operatorName = columnName[0].label;
+      },
+      addLine() {
+        this.criterias .push({
+          "column": "",
+          "columnName": "",
+          "operator": "",
+          "operatorName": "",
+          "param": "",
+          "type": "",
+          "typeName": ""
+        })
+      },
+      deleteLine() {
+        if(this.criterias.length>1) {
+          this.criterias.splice(this.criterias.length-1,1)
+        }
+      },
+      // 普通搜索
+      async literatureKeywordSearchList() {
+        let that = this;
+        that.AllLoading = true;
+        let formData = {
+          "offset": that.pageNo,
+          "limit": 10,
+          "args" :{
+            "categoryName":"",//分类名称
+            "criterias":[],
+            "keyword":that.keyword || "",
+          }
+        };
+        try {
+          let data = await that.$http.literatureKeywordSearchList(formData);
+          if(data.code === 0 && data.data) {
+            this.allTotal = data.data.totalElements;
+            this.allList = data.data.args;
+          }else if(data.code === 1) {
+            that.$message.info('查询失败')
+          }
+          that.AllLoading = false;
+        }catch (error) {
+          console.log(error);
+          that.AllLoading = false;
+        }
+        that.AllLoading = false;
+      },
+      //高级查询
+      async literatureHighSearchList() {
+        let that = this;
+        that.AllLoading = true;
+        let formData = {
+          "offset": that.pageNo,
+          "limit": 10,
+          "args" :{
+            "categoryName":"",//分类名称
+            "criterias":that.criterias,
+            "keyword":"",
+          }
+        };
+        try{
+          let data = await that.$http.literatureHighSearchList(formData);
+          if(data.code === 0 && data.data) {
+            this.allTotal = data.data.totalElements;
+            this.allList = data.data.args;
+          }else if(data.code === 1) {
+            that.$message.info('查询失败')
+          }
+          that.AllLoading = false;
+        }catch (error) {
+          console.log(error)
+          that.AllLoading = false;
+        }
+        that.AllLoading = false;
+      },
+      //文献热点
+      async subjectDocumentList() {
+        let that = this;
+        that.wordcloudLoading = true;
+        try {
+          let data = await that.$http.subjectDocumentList();
+          if(data.code === 0 && data.data) {
+            let array = [];
+            data.data.forEach(item=>{
+              array.push({
+                name: item.name,
+                weight: item.count
+              })
+            });
+            that.option.series[0].data = array;
+          }else if(data.code === 1) {
+            that.$message.info('文献热点查询失败')
+          }
+          that.wordcloudLoading = false;
+        }catch (error) {
+          console.log(error)
+          that.wordcloudLoading = false;
+        }
+        that.wordcloudLoading = false;
       }
     },
     mounted() {
+      this.subjectDocumentList()
     }
   }
 </script>
 
 <style lang="less">
+  .icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
   .literature-container {
     .basis-search {
       width: 100%;
@@ -619,6 +532,7 @@
                 line-height: 18px;
                 color: #999999;
                 font-size: 25px;
+                cursor: pointer;
               }
             }
 
@@ -718,7 +632,7 @@
         border-radius: 4px;
         padding: 30px;
         box-shadow: 5px 5px 10px rgba(78, 91, 105, 0.2);
-
+        overflow: auto;
         .search-result {
           font-size: 18px;
           font-weight: bold;
@@ -757,7 +671,7 @@
               justify-content: flex-start;
               margin-bottom: 30px;
               .item-tag{
-                width: 10%;
+                width: 42px;
                 justify-content: center;
                 text-align: center;
                 margin-right: 14px;
@@ -796,6 +710,25 @@
                   font-size:14px;
                   line-height:22px;
                 }
+              }
+            }
+          }
+          .blank_page{
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            .page{
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              img {
+                width: 170px;
+              }
+              p{
+                color: #666666;
+                padding-top: 10px;
               }
             }
           }
