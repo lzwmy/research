@@ -18,30 +18,30 @@
         <div class="content_item">
           <div class="item_name">脱屑</div>
           <div class="item_radio_box">
+            <el-radio v-model="head.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="head.desquamation" :label="1">轻度</el-radio>
             <el-radio v-model="head.desquamation" :label="2">中度</el-radio>
             <el-radio v-model="head.desquamation" :label="3">重度</el-radio>
-            <el-radio v-model="head.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="head.desquamation" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">红斑</div>
           <div class="item_radio_box">
+            <el-radio v-model="head.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="head.erythema" :label="1">轻度</el-radio>
             <el-radio v-model="head.erythema" :label="2">中度</el-radio>
             <el-radio v-model="head.erythema" :label="3">重度</el-radio>
-            <el-radio v-model="head.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="head.erythema" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">浸润</div>
           <div class="item_radio_box">
+            <el-radio v-model="head.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="head.infiltration" :label="1">轻度</el-radio>
             <el-radio v-model="head.infiltration" :label="2">中度</el-radio>
             <el-radio v-model="head.infiltration" :label="3">重度</el-radio>
-            <el-radio v-model="head.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="head.infiltration" :label="4">极其严重</el-radio>
           </div>
         </div>
@@ -63,30 +63,30 @@
         <div class="content_item">
           <div class="item_name">脱屑</div>
           <div class="item_radio_box">
+            <el-radio v-model="torso.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="torso.desquamation" :label="1">轻度</el-radio>
             <el-radio v-model="torso.desquamation" :label="2">中度</el-radio>
             <el-radio v-model="torso.desquamation" :label="3">重度</el-radio>
-            <el-radio v-model="torso.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="torso.desquamation" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">红斑</div>
           <div class="item_radio_box">
+            <el-radio v-model="torso.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="torso.erythema" :label="1">轻度</el-radio>
             <el-radio v-model="torso.erythema" :label="2">中度</el-radio>
             <el-radio v-model="torso.erythema" :label="3">重度</el-radio>
-            <el-radio v-model="torso.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="torso.erythema" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">浸润</div>
           <div class="item_radio_box">
+            <el-radio v-model="torso.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="torso.infiltration" :label="1">轻度</el-radio>
             <el-radio v-model="torso.infiltration" :label="2">中度</el-radio>
             <el-radio v-model="torso.infiltration" :label="3">重度</el-radio>
-            <el-radio v-model="torso.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="torso.infiltration" :label="4">极其严重</el-radio>
           </div>
         </div>
@@ -108,30 +108,30 @@
         <div class="content_item">
           <div class="item_name">脱屑</div>
           <div class="item_radio_box">
+            <el-radio v-model="upperLimb.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="upperLimb.desquamation" :label="1">轻度</el-radio>
             <el-radio v-model="upperLimb.desquamation" :label="2">中度</el-radio>
             <el-radio v-model="upperLimb.desquamation" :label="3">重度</el-radio>
-            <el-radio v-model="upperLimb.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="upperLimb.desquamation" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">红斑</div>
           <div class="item_radio_box">
+            <el-radio v-model="upperLimb.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="upperLimb.erythema" :label="1">轻度</el-radio>
             <el-radio v-model="upperLimb.erythema" :label="2">中度</el-radio>
             <el-radio v-model="upperLimb.erythema" :label="3">重度</el-radio>
-            <el-radio v-model="upperLimb.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="upperLimb.erythema" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">浸润</div>
           <div class="item_radio_box">
+            <el-radio v-model="upperLimb.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="upperLimb.infiltration" :label="1">轻度</el-radio>
             <el-radio v-model="upperLimb.infiltration" :label="2">中度</el-radio>
             <el-radio v-model="upperLimb.infiltration" :label="3">重度</el-radio>
-            <el-radio v-model="upperLimb.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="upperLimb.infiltration" :label="4">极其严重</el-radio>
           </div>
         </div>
@@ -153,30 +153,30 @@
         <div class="content_item">
           <div class="item_name">脱屑</div>
           <div class="item_radio_box">
+            <el-radio v-model="lowerLimb.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="lowerLimb.desquamation" :label="1">轻度</el-radio>
             <el-radio v-model="lowerLimb.desquamation" :label="2">中度</el-radio>
             <el-radio v-model="lowerLimb.desquamation" :label="3">重度</el-radio>
-            <el-radio v-model="lowerLimb.desquamation" :label="0">无症状</el-radio>
             <el-radio v-model="lowerLimb.desquamation" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">红斑</div>
           <div class="item_radio_box">
+            <el-radio v-model="lowerLimb.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="lowerLimb.erythema" :label="1">轻度</el-radio>
             <el-radio v-model="lowerLimb.erythema" :label="2">中度</el-radio>
             <el-radio v-model="lowerLimb.erythema" :label="3">重度</el-radio>
-            <el-radio v-model="lowerLimb.erythema" :label="0">无症状</el-radio>
             <el-radio v-model="lowerLimb.erythema" :label="4">极其严重</el-radio>
           </div>
         </div>
         <div class="content_item">
           <div class="item_name">浸润</div>
           <div class="item_radio_box">
+            <el-radio v-model="lowerLimb.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="lowerLimb.infiltration" :label="1">轻度</el-radio>
             <el-radio v-model="lowerLimb.infiltration" :label="2">中度</el-radio>
             <el-radio v-model="lowerLimb.infiltration" :label="3">重度</el-radio>
-            <el-radio v-model="lowerLimb.infiltration" :label="0">无症状</el-radio>
             <el-radio v-model="lowerLimb.infiltration" :label="4">极其严重</el-radio>
           </div>
         </div>

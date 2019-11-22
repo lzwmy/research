@@ -13,6 +13,12 @@
           default: () => ({})
         },
       },
+      watch:{
+        "option":function (value) {
+          this.data = value;
+          this.initHighCharts();
+        }
+      },
       data() {
         return {
           chart:null,
