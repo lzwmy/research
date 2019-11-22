@@ -100,72 +100,13 @@ export default {
             }else if (this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1 && !this.$store.state.user.diseaseInfo.isAdmin) {
                 //多中心管理员
                 this.$emit('changeMenuList',this.menuList.concat(otherMenu.centerAdminMenu))
-            }else if(!this.$store.state.user.diseaseInfo.isAdmin){
+            }else if(sessionStorage.getItem('CURR_LOGIN_TYPE') == 'disease' && this.$store.state.user.diseaseInfo.roles.indexOf('1') == -1){
                 //分享登录，非管理员,删除crf配置页面
                 let menuList = this.menuList.filter(li=>{
                     return li.menuPath != '/crfConfig';
                 })
                 this.$emit('changeMenuList',menuList)
             }
-            // //非分享登录,为管理员 or 分享登录为分中心管理员
-            // if(this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1) {
-            //     // this.menuList.push({
-            //     //     ico: 'organizationManagement',
-            //     //     menuName: '组织管理',
-            //     //     menuCode: "012907",
-            //     //     menuPath: '/organizationManagementDis',
-            //     //     children: [
-            //     //         {
-            //     //             ico: '',
-            //     //             menuName: '机构管理',
-            //     //             menuCode: "012906",
-            //     //             menuPath: '/organizationManagementDis',
-            //     //             name: 'organizationManagementDis',
-            //     //             children: []
-            //     //         }
-            //     //     ],
-            //     //     name: 'organizationManagementDis',
-            //     // })
-            // }else if(this.$store.state.user.diseaseInfo.isAdmin) {
-            //     this.menuList.push({
-            //         ico: 'qualityManage',
-            //         menuName: '质控管理',
-            //         menuCode: "0129011",
-            //         menuPath: '/qualityManage',
-            //         name: 'qualityManage',
-            //     })
-            //     this.menuList.push({
-            //         ico: 'organizationManagement',
-            //         menuName: '组织管理',
-            //         menuCode: "012907",
-            //         menuPath: '/organizationManagementDis',
-            //         children: [
-            //             {
-            //                 ico: '',
-            //                 menuName: '机构管理',
-            //                 menuCode: "012906",
-            //                 menuPath: '/organizationManagementDis',
-            //                 name: 'organizationManagementDis',
-            //                 children: []
-            //             },
-            //             {
-            //                 ico: '',
-            //                 menuName: '录入统计',
-            //                 menuCode: "012905",
-            //                 menuPath: '/inputStatistics',
-            //                 name: 'inputStatistics',
-            //                 children: []
-            //             }
-            //         ],
-            //         name: 'organizationManagementDis',
-            //     })
-            // } else {
-            //     //非管理员,删除crf配置页面
-            //     let menuList = this.menuList.filter(li=>{
-            //         return li.menuPath != '/crfConfig';
-            //     })
-            //     this.$emit('changeMenuList',menuList)
-            // }
         }     
 
     },

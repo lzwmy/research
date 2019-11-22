@@ -108,4 +108,5 @@ store.commit({
   type: 'saveTaskMenuList',
   params: research
 });
+
 export default route;
