@@ -6,7 +6,7 @@
                 <el-button v-if="$store.state.user.researchAuth.authImport" type="primary" icon="icon iconfont icondaochu" @click="showImportDataDialog">导入研究数据 </el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont iconxiazaimoban" @click="exportData">入组阶段数据导出</el-button>
                 <el-button v-if="$store.state.user.researchAuth.authExport" type="primary" icon="icon iconfont icondaochujilu" @click="">导出记录</el-button>
-                <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="" style="padding: 0 15px 0 15px;border-radius:2px 0 0 2px;">
+                <el-button type="primary" icon="icon iconfont icontianjiayanjiuduixiang" @click="addSingleObject" style="padding: 0 15px 0 15px;border-radius:2px 0 0 2px;">
                     添加研究对象
                 </el-button>
                 <el-dropdown trigger="hover" @command="handleAddObject" class="addDropdown">

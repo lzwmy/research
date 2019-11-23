@@ -750,6 +750,7 @@ export default {
         height: 100%;
         .left {
             width: 240px;
+            overflow: auto;
             height: 100%;
             margin-right: 20px;
             padding: 6px 0;

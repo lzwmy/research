@@ -1,7 +1,7 @@
 <template>
     <div id="navbar">
         <el-tabs v-model="activeMenuIndex" @tab-click="toRouter">
-            <el-tab-pane v-for="(item, index) in menuList" :key="index" :name="item.path">
+            <el-tab-pane v-for="(item, index) in menuList" :key="index" :name="item.menuPath">
                 <span slot="label"><i class="icon iconfont" :class="'icon'+item.ico"></i>{{item.menuName}}</span>
             </el-tab-pane>
         </el-tabs>

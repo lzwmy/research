@@ -243,6 +243,8 @@ export default {
             color: #394263;
             .aside {                
                 width: 220px;
+                height: 100%;
+                overflow: auto;
                 .aside_title {
                     font-size: 14px;
                     font-weight: bold;

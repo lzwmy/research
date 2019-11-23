@@ -48,7 +48,8 @@ export default {
             activeGroup: '',
             downloadLoading: false,
             importLoading: false,
-            groupLoading: false
+            groupLoading: false,
+            groupList: []
         }
     },
     created() {
