@@ -86,8 +86,8 @@
               <el-form-item v-if="controlType!='DATE'&&controlType!='DATE_TIME'&&controlType!=='FILE_UPLOAD'&&controlType!='GATHER'&&controlType!='TABLE'&&controlType!=='LABEL'" label="输入提示" class="line_block">
                 <el-input v-model="basicDataInfo.obj.baseProperty.controlTip" size="mini" placeholder="请输入重要的提示"></el-input>
               </el-form-item>
-              <el-form-item v-if="controlType=='FILE_UPLOAD'" label="上传类型" class="line_block">
-                <el-select v-model="basicDataInfo.obj.baseProperty.fileType">
+              <el-form-item v-if="controlType=='FILE_UPLOAD'" label="上传类型" class="line_block" >
+                <el-select v-model="basicDataInfo.obj.baseProperty.fileType" @change="changeFileType(basicDataInfo)">
                   <el-option label="文件" value="FILE"></el-option>
                   <el-option label="图片" value="IMAGE"></el-option>
                 </el-select>
@@ -119,7 +119,7 @@
                     <el-button size="small" type="primary">点击上传</el-button>
                   </el-upload>
                 </div>
-                <div class="Img_width_set" v-if="basicDataInfo.obj.baseProperty.fileType=='IMAGE'">
+                <div class="Img_width_set" v-if="basicDataInfo.obj.baseProperty.fileType=='IMAGE'&& basicDataInfo.obj.baseProperty.labelImage">
                   <img :src="this.baseURL+'/file/downloadFile/'+basicDataInfo.obj.baseProperty.labelImage" />
                 </div>
               </el-form-item>
@@ -1116,6 +1116,12 @@
             data.obj.baseProperty.labelContent = ""
           }
           this.progressImgWidth();
+        },
+        // 文件类型判断
+        changeFileType(data) {
+          if(data.obj.baseProperty.fileType == 'FILE') {
+            data.obj.baseProperty.labelImage = ''
+          }
         },
         // 实时预览函数
         realTime(data) {

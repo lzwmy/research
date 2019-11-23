@@ -15,7 +15,7 @@
               </button>
             </a>
 <!--          <a :href="`http://192.168.1.100:8080/research/file/downloadFile/5dd685ae53bbd6162c1699cd`" target="_blank">-->
-          <a :href="`${baseURL}subject/document/download/?fileId=5dd685ae53bbd6162c1699cd`" target="_blank">
+          <a :href="`${baseURL}subject/document/download/?fileId=${pdfId}`" target="_blank">
             <button>
               <i class="iconfont iconzaixianyuedu"></i>
               在线阅读
@@ -116,12 +116,17 @@
         summary:"",
         title: "",
         url:"",
+        pdfId:"",
         similarList:[],
       }
     },
     methods: {
       downFile() {
         // this.downFilePDF('5dd72ef053bbd61630a54455','测试PDF下载.pdf')
+        if(this.pdfId == "" ) {
+          this.$message.info('无文件内容下载');
+          return ;
+        }
         this.downFilePDF('5dd685ae53bbd6162c1699cd','测试PDF下载.pdf')
       },
       jumpPrint(data) {
@@ -186,6 +191,7 @@
         this.summary=result.summary;
         this.title = result.title;
         this.url =result.url;
+        this.pdfId = result.pdfId;
       }
       this.subjectKeywordSimilar();
     }
