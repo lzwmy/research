@@ -2,7 +2,7 @@
     <!--上传-->
   <div :class="item.controlType+'_view_box'">
     <div :class="item.controlType" style="font-size: 14px;">
-      <div v-if="item.displayIsVisible=='1'" :class="item.controlType+'_title'" >
+      <div v-if="item.displayIsVisible=='1'&&item.baseProperty.labelImage==''" :class="item.controlType+'_title'" >
         <span >{{item.controlDisplayName}}</span>
       </div>
       <div v-else-if="item.baseProperty.labelImage!=''" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]" style="text-align:center">
