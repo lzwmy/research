@@ -13,11 +13,12 @@
               <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
               <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
             </span>
-            <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading">保 存</el-button>
+            <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
+            <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
             <!-- <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button> -->
           </div>
           <div ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
-            <display-report v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
+            <display-report id="pdfForm" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
           </div>
           <!--<div class="saveButton">
             <el-button @click="backingOut">返回</el-button>
@@ -89,11 +90,13 @@
 </template>
 <script type="text/javascript">
 import "./../css/crfReady.css";
+import utils from 'components/utils/domToPDF';
 import displayReport from "./../display/displayReport";
 import reportRead from "./reportRead";
 import mixins from "components/mixins";
 import { mapGetters } from "vuex";
 import { getDom } from './js/verificationForm';
+
 export default {
   name: "crfConfig",
   mixins: [mixins],
@@ -222,6 +225,18 @@ export default {
         window.open("", "_self");
         window.close();
       }
+    },
+    downPDF() {
+      $(".crfConfig").addClass("heightAuto");
+      $("#pdfForm").addClass("pdf")
+      this.pdfLoading = true;
+      let that = this;
+      setTimeout(function(){
+        utils.domToPDF("#pdfForm", that.report.reportName);
+        that.pdfLoading = false;
+        $(".crfConfig").removeClass("heightAuto");
+        $("#pdfForm").removeClass("pdf")
+      },600)
     },
     async getForms(item) {
       let that = this;
@@ -593,4 +608,20 @@ body.theme-green {
       opacity: 1;
     }
   }
+
+.crfConfig.heightAuto {
+  height: auto !important;
+  #pdfDom.pdf {
+    height: auto;
+    .head_fixed,
+    .content {
+      position: sticky;
+      overflow: visible;
+      left:0;
+    }
+    .content {
+      top: 11px;
+    }
+  }
+}
 </style>

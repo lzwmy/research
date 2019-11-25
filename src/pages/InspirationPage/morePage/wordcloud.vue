@@ -28,7 +28,7 @@
       methods:{
         initHighCharts() {
           this.chart = new Highcharts.Chart(this.$el, this.data);
-          this.keyword = $('.chartContent').attr('data-keyWord') || "";
+          // this.keyword = $('.chartContent').attr('data-keyWord') || "";
         },
       },
       mounted() {
