@@ -27,11 +27,15 @@ let domToPDF = function(dom,title) {
     context.webkitImageSmoothingEnabled = false;
     context.msImageSmoothingEnabled = false;
     context.imageSmoothingEnabled = false;
-    context.scale(5, 5);
-    context.translate(-offsetLeft-abs,-offsetTop);    
+    // context.scale(5, 5);
+    context.scale(2, 2);
+    context.translate(-offsetLeft-abs,-offsetTop);
     // 这里默认横向没有滚动条的情况，因为offset.left(),有无滚动条的时候存在差值，因此        
     // translate的时候，要把这个差值去掉
-    html2Canvas(element[0]).then(function(canvas) {
+    html2Canvas(element[0],{
+      useCORS:true,
+      backgroundColor:null,
+    }).then(function(canvas) {
         var contentWidth = canvas.width;
         var contentHeight = canvas.height;
         //一页pdf显示html页面生成的canvas高度;
@@ -44,8 +48,7 @@ let domToPDF = function(dom,title) {
         var imgWidth = 595.28;
         var imgHeight = 592.28/contentWidth * contentHeight;
     
-        var pageData = canvas.toDataURL('image/jpeg', 1.0);
-    
+        var pageData = canvas.toDataURL('image/jpeg', 1.0).replace("image/png","image/octet-stream");
         var pdf = new JsPDF('', 'pt', 'a4');
     
         //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)

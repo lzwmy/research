@@ -144,7 +144,7 @@
       <div class="wordcloud-box">
         <div class="search-results">文献热点</div>
         <div v-loading="wordcloudLoading">
-          <chart v-if="option.series[0].data.length!==0" :option="option"></chart>
+          <chart v-if="option.series[0].data.length!==0" :on-keyWord="onKeyword" :option="option"></chart>
         </div>
       </div>
     </div>
@@ -221,6 +221,16 @@
         ],
         //文献热点 配置
         option: {
+          plotOptions: {
+            series: {
+              cursor: 'pointer',
+              events: {
+                click: function(e) {
+                  document.getElementsByClassName('chartContent')[0].setAttribute('data-keyWord',e.point.name);
+                }
+              }
+            }
+          },
           series: [
             {
               type: 'wordcloud',
@@ -315,6 +325,9 @@
           this.criterias.splice(this.criterias.length-1,1)
         }
       },
+      onKeyword(data) {
+        console.log(data)
+      },
       // 普通搜索
       async literatureKeywordSearchList() {
         let that = this;
@@ -399,6 +412,18 @@
     },
     mounted() {
       this.subjectDocumentList()
+      window.addEventListener('click',(e)=>{
+        let wordcloudData = $('.chartContent').attr('data-keyWord') || "";
+        if(wordcloudData) {
+          this.switchSearch = true;
+          this.keyword = wordcloudData ;
+          this.literatureKeywordSearchList();
+        }
+
+      })
+    },
+    destroyed() {
+      window.removeEventListener('click');
     }
   }
 </script>

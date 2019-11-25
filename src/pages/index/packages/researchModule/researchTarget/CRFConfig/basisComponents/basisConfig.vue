@@ -513,10 +513,14 @@
         saveBtn() {
           // let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
           // 验证表单名称是否填写完成
-            if(this.verificationData(this.basisDataList) == false) {
-              this.$message.info('表单名称不能为空');
-              return ;
-            }
+          if(this.verificationData(this.basisDataList) == false || this.portionName == "") {
+            this.$message.info('表单名称不能为空');
+            return ;
+          }
+          if(this.basisDataList.length === 0) {
+            this.$message.info('请添加条目');
+            return ;
+          }
           if(this.configData.type == 'add') {
             console.log('触发')
             /*this.portionSave()*//*.then(()=>{
