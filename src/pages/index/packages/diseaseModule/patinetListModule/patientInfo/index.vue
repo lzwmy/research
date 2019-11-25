@@ -193,9 +193,9 @@
         label-width="96px"
         @submit.native.prevent
         label-position="left">
-        <el-form-item label="提醒名称:" class="inline" prop="remindDateName">
+        <!-- <el-form-item label="提醒名称:" class="inline" prop="remindDateName">
           <el-input v-model="dialogFrom.remindDateName" maxLength="15"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="关联报告:" class="inline" prop="relevantReports">
           <el-select v-model="dialogFrom.relevantReports">
             <el-option v-for="(item, index) in selectList" :label="item.name" :value="String(item.id)" :key="index"></el-option>
@@ -415,9 +415,9 @@
           ],
         },
         dialogRules: {
-          remindDateName: [
-            {required: true, message: '请输入提醒名称', trigger: ['change', 'blur']}
-          ],
+          // remindDateName: [
+          //   {required: true, message: '请输入提醒名称', trigger: ['change', 'blur']}
+          // ],
           relevantReports: [
             {required: true, message: '请输入关联报告', trigger: ['change', 'blur']}
           ],
@@ -553,6 +553,7 @@
                 value2: String(res.data.param2),
                 range: [res.data.startTime ? res.data.startTime : '', res.data.endTime ? res.data.endTime : '']
               }
+              
             } else {
               this.dialogFrom = {
                 id: '',
@@ -669,6 +670,10 @@
               diseaseName: this.dataInfo.diseaseName,
               subjectName: this.dataInfo.subjectName,
               groupName: this.dataInfo.groupName
+            }
+            //定时模式：指定日期
+            if(this.dialogFrom.model == 'TIME' && this.dialogFrom.appointData) {
+              formData.startTime = this.dialogFrom.appointData;
             }
 
             try {

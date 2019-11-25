@@ -140,7 +140,7 @@
                                             <p v-if="handlePoint(scope.row[point.prop]).note">备注：{{handlePoint(scope.row[point.prop]).note}}</p>
                                         </div> 
                                     </div>
-                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0 && li.startType == 1 && point.prop == li.prop[0].prop"  type="primary" style="background:#00B8DF; height: 15px; font-size:12px;padding:0 5px;"> 开始随访 </el-button>
+                                    <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-if="handlePoint(scope.row[point.prop]).status == 0 && li.startType == 1 && point.prop == li.prop[0].prop"  type="primary" style="background:#00B8DF; height: 18px; line-height: 18px; font-size:12px;padding:0 2px;"> 开始随访 </el-button>
                                     <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 0"  type="text" icon="icon iconfont iconiconfontgengduo" style="color: #e0e0e0;"></el-button>
                                     <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 1"  type="text" icon="icon iconfont icondaifang" style="color: #00B8DF;"></el-button>
                                     <el-button @click="toReportFill(scope.row,handlePoint(scope.row[point.prop]),li.crfId)" v-else-if="handlePoint(scope.row[point.prop]).status == 2"  type="text" icon="icon iconfont iconshifang" style="color: #F79E00;"></el-button>

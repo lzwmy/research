@@ -710,7 +710,7 @@
           return item.name === 'BASIC_INFO';
         });
         // 初始化的时候列应该是基线病例的列
-        this.conditionViewList = this.currentSelectViewsList[0].subOptions;
+        this.conditionViewList = this.currentSelectViewsList[0] && this.currentSelectViewsList[0].subOptions;
         this.viewName = 'BASIC_INFO';
         this.view = this.currentSelectViewsList[0];
         this.conditionSet.viewName = this.viewName;

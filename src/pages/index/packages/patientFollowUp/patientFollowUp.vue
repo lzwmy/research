@@ -35,12 +35,15 @@
                         <!--flex-start-center-->
                             <li class="box ">
                             <div class="dateTime-box" style="display: flex;justify-content: space-between;border-bottom: 1px solid #f2f2f2;padding-bottom: 5px;padding-left: 10px;padding-right: 10px;">
-                                <div class="planVisitDate" style="display: flex;align-items: center;color: #9BABB8;">
-                                <i class="iconfont iconshijian" style="padding-right: 10px;vertical-align: middle;font-size:13px;"></i>
-                                <span style="font-size:13px; ">{{item.planVisitDate}}</span>
+                                <div @click="toReportFill(item)" class="planVisitDate flex-start-center" style="flex:1; color: #9BABB8;">
+                                    <i class="iconfont iconshijian" style="padding-right: 10px;vertical-align: middle;font-size:13px;"></i>
+                                    <span style="font-size:13px; ">{{item.planVisitDate}}&nbsp;{{item.reportName}}</span>
                                 </div>
-                                <div class="fill-info">
-                                <div @click="toReportFill(item)" class="box_tag"><span v-html="handleStatus(item.status)"></span></div>
+                                <div class="fill-info flex-between-center">
+                                    <div @click="toReportFill(item)" class="box_tag">
+                                        <span v-html="handleStatus(item.status)"></span>
+                                    </div>
+                                    <i @click="dialgoForm.visible = true;dialgoForm.url=item.mobileUrl" class="icon iconfont iconfenxiang copy"></i>
                                 </div>
                             </div>
                             <div class="box" style="display: flex;margin-top: 6px;padding: 0 10px;">
@@ -72,6 +75,24 @@
                 <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
             </div>
         </div>
+
+        <!-- 复制 -->
+        <el-dialog 
+            title="" 
+            :append-to-body="true"
+            :visible.sync="dialgoForm.visible" 
+            class="projectShare"
+            width="950px">
+            <el-form :model="dialgoForm" label-width="110px" label-position="left">
+                <el-form-item label="分享地址:">
+                    <el-input v-model.trim="dialgoForm.url" ></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button type="primary" v-clipboard:copy="dialgoForm.url"  v-clipboard:success="onCopySuccess" v-clipboard:error="onCopyError">复 制</el-button>
+                <el-button @click="dialgoForm.visible = false">关 闭</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -84,21 +105,39 @@ export default {
     mixins: [mixins],
     data () {
         return {
-        form: {
-            time:[],
-            state:""
-        },
-        dataList: [],
-        loading: false,
-        identify: "",
+            form: {
+                time:[],
+                state:""
+            },
+            dataList: [],
+            loading: false,
+            identify: "",
+            //项目分享弹框
+            dialgoForm: {
+                url: '',
+                visible: false
+            },
         };
     },
     watch: {},
     computed: {},
     created () {
-        let date = new Date().getTime();
-        this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
-        this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
+        let date = new Date();
+        this.form.time[0] = utils.formateDate(date).substring(0,7) + '-01';
+        let lastDay = '';
+        if ((date.getMonth() + 1) == 2) {
+            let yearType = date.getFullYear();
+            if (yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
+                lastDay = 29;
+            } else {
+                lastDay = 28;
+            }
+        } else if ([1,3,5,7,8,10,12].indexOf((date.getMonth() + 1)) != -1) {
+            lastDay = 31;
+        } else {
+            lastDay = 30;
+        }
+        this.form.time[1] = utils.formateDate(date).substring(0,7) + '-' + lastDay;
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
         this.getDataList();
     },
@@ -131,10 +170,18 @@ export default {
                 }
             }, false);
         },
+        onCopySuccess(e) {
+            this.$mes('success', '复制成功！');
+            setTimeout(()=>{
+                this.dialgoForm.visible = false;
+            },500)
+        },
+        onCopyError(e) {
+            this.$mes('error', '复制失败,请手动复制！');
+        },
         async getDataList() {
             let that = this;
             let startTime, endTime;
-            console.log(this.form.time)
             if(!this.form.time || this.form.time && this.form.time.length == 0) {
                 startTime = null
                 endTime = null
@@ -144,7 +191,6 @@ export default {
                 // startTime = this.form.time[0];
                 // endTime = this.form.time[1];
             }
-            console.log(this.form.time)
             that.loading = true;
             let formData = {
                 offset: 1,
@@ -297,6 +343,13 @@ export default {
             &:hover {
                 box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
             }
+            .copy {
+                color: #9BABB8;
+                padding-left: 5px;
+                &:hover {
+                    color: rgba(0, 184, 223, 1);
+                }
+            }
             .box_left {
                 width: 85px;
                 height: 100%;
@@ -366,5 +419,8 @@ export default {
                 }
             }
         }
+    }
+    .projectShare .el-dialog{
+        min-height: 200px;
     }
 </style>

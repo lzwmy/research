@@ -69,7 +69,7 @@
         <div class="crf-main-box" v-loading="loading">
           <component ref="resetClear" :is="componentName" :dynamicTableData="dynamicTableData" :title="title" :modelData="modelData" @backModel="backModel"></component>
           <div v-if="componentName==''" style="text-align: center;padding-top: 10%">
-            <img src="./../../images/display_model_none.png" >
+            <!-- <img src="./../../images/display_model_none.png" > -->
             <p style="font-size: 16px;color: #ccc;padding-top: 1%">请选择模板</p>
           </div>
         </div>
@@ -94,7 +94,7 @@
 <script>
   import mixins from 'components/mixins';
   import researchTable from "./researchTable";
-  import addResearchModel from "./addResearchModel";
+  // import addResearchModel from "./addResearchModel";
   import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
   import './../crfManage/crf.css';
     export default {
@@ -102,7 +102,7 @@
       mixins:[mixins],
       components:{
         researchTable,
-        addResearchModel
+        // addResearchModel
       },
       data() {
         return {
@@ -172,7 +172,7 @@
             obj:item,
             type:'modify'
           };
-          this.componentName = addResearchModel;
+          // this.componentName = addResearchModel;
           this.$nextTick(function() {
             this.$refs.resetClear.$refs.researchBox.getDataList(item.modelId);
           })
@@ -199,7 +199,7 @@
             obj:item,
             type:'add'
           };
-          this.componentName = addResearchModel;
+          // this.componentName = addResearchModel;
           this.$nextTick(function(){
             this.$refs.resetClear.init();
           })

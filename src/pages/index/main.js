@@ -37,8 +37,8 @@ import 'assets/css/crfConfig.css';
 
 import VueClipboard from 'vue-clipboard2'
 
-// import {staticRouter} from '../../router/dynamicRouter'
-// console.log(staticRouter)
+// import '../../router/dynamicRouter'
+// import router from '../../router/router'
 
 Vue.use(VueClipboard)
 Vue.use(VueQuillEditor)
@@ -99,7 +99,6 @@ let initApp = async () => {
     // 初始化路由
     let router = new VueRouter({
       routes
-      // staticRouter
     });
     // 跳转路由前进行登录校验
     router.beforeEach((to, from, next) => {

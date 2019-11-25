@@ -120,9 +120,22 @@ export default {
     watch: {},
     computed: {},
     created () {
-        let date = new Date().getTime();
-        this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
-        this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
+        let date = new Date();
+        this.form.time[0] = utils.formateDate(date).substring(0,7) + '-01';
+        let lastDay = '';
+        if ((date.getMonth() + 1) == 2) {
+            let yearType = date.getFullYear();
+            if (yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
+                lastDay = 29;
+            } else {
+                lastDay = 28;
+            }
+        } else if ([1,3,5,7,8,10,12].indexOf((date.getMonth() + 1)) != -1) {
+            lastDay = 31;
+        } else {
+            lastDay = 30;
+        }
+        this.form.time[1] = utils.formateDate(date).substring(0,7) + '-' + lastDay;
         this.getDataList()
         .then(()=>{
             this.$emit('changeLoadding',false)

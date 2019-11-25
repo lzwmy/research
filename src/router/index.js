@@ -104,6 +104,7 @@ for(let i = 0; i < route.length; i++) {
   }
 }
 
+//科研项目菜单列表
 store.commit({
   type: 'saveTaskMenuList',
   params: research
