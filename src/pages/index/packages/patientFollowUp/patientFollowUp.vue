@@ -22,6 +22,11 @@
                         <el-option label="终止" value="3"></el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="病种">
+                  <el-select v-model="form.diseaseId" clearable>
+                    <el-option v-for="(item,index) in diseaseList" :label="item.name" :value="item.id" :key="index"></el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item class="flex-right">
                     <el-button type="primary" icon="icon iconfont iconzujian46" @click="getDataList">刷 新</el-button>
                 </el-form-item>
@@ -86,11 +91,13 @@ export default {
         return {
         form: {
             time:[],
-            state:""
+            state:"",
+          diseaseId:"",
         },
         dataList: [],
         loading: false,
         identify: "",
+        diseaseList:[],
         };
     },
     watch: {},
@@ -99,6 +106,7 @@ export default {
         let date = new Date().getTime();
         this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
         this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
+        this.diseaseList = JSON.parse(sessionStorage.getItem('researchList'));
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
         this.getDataList();
     },

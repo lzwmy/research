@@ -71,9 +71,9 @@
             </span>
           </div>
         </el-upload>
-        <el-dialog class="upload_style"   :visible.sync="dialogVisible">
+        <!--<el-dialog class="upload_style"   :visible.sync="dialogVisible">
           <img width="100%"  v-if="dialogVisible" :src="dialogImageUrl" alt="">
-        </el-dialog>
+        </el-dialog>-->
         <!--<el-image-viewer v-if="dialogVisible"
                          :on-close="closeViewer"
                          :url-list="[dialogImageUrl]">
