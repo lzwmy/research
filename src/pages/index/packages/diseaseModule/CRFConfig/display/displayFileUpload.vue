@@ -71,9 +71,13 @@
             </span>
           </div>
         </el-upload>
-        <el-dialog class="upload_style"   :visible.sync="dialogVisible">
+        <!--<el-dialog class="upload_style"   :visible.sync="dialogVisible">
           <img width="100%"  v-if="dialogVisible" :src="dialogImageUrl" alt="">
-        </el-dialog>
+        </el-dialog>-->
+        <el-image-viewer v-if="dialogVisible"
+                         :on-close="closeViewer"
+                         :url-list="[dialogImageUrl]">
+        </el-image-viewer>
       </div>
     </div>
   </div>
@@ -82,8 +86,12 @@
 
 <script>
   import axios from 'axios';
+  import ElImageViewer from 'element-ui/packages/image/src/image-viewer';
     export default {
       name: "displayFileUpload",
+      components:{
+        ElImageViewer
+      },
       props:{
         item: {},
         report: {},
@@ -197,6 +205,9 @@
           });
           this.fileList = copyFileList;
           this.report.value2 = JSON.stringify(this.fileList);
+        },
+        closeViewer() {
+          this.dialogVisible = false;
         },
         handlePictureCardPreview(file) {
           console.log(file)

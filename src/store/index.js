@@ -182,7 +182,7 @@ const CRFConfig = {
     },
     'SET_MODIFY_STATE':function (state,obj) {
       state.activeModifyState = obj;
-    }
+    },
   },
   actions: {}
 }

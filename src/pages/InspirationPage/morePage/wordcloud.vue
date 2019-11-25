@@ -22,13 +22,14 @@
       data() {
         return {
           chart:null,
-          data:this.option
+          data:this.option,
         }
       },
       methods:{
         initHighCharts() {
           this.chart = new Highcharts.Chart(this.$el, this.data);
-        }
+          this.keyword = $('.chartContent').attr('data-keyWord') || "";
+        },
       },
       mounted() {
         this.$nextTick(() => {

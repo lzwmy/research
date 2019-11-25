@@ -20,7 +20,36 @@ Vue.use(install);
 import store from '../../store';
 import Global from 'components/utils/global';
 
-
+// 如果报prototype无法被识别的错误，可以把原型方法挂在到__proto__
+Vue.prototype.$addStorageEvent = function (type, key, data) {
+  if (type === 1) {
+    // 创建一个StorageEvent事件
+    var newStorageEvent = document.createEvent('StorageEvent');
+    const storage = {
+      setItem: function (k, val) {
+        localStorage.setItem(k, val);
+        // 初始化创建的事件
+        newStorageEvent.initStorageEvent('setItem', false, false, k, null, val, null, null);
+        // 派发对象
+        window.dispatchEvent(newStorageEvent);
+      }
+    }
+    return storage.setItem(key, data);
+  } else {
+    // 创建一个StorageEvent事件
+    var newStorageEvent = document.createEvent('StorageEvent');
+    const storage = {
+      setItem: function (k, val) {
+        sessionStorage.setItem(k, val);
+        // 初始化创建的事件
+        newStorageEvent.initStorageEvent('setItem', false, false, k, null, val, null, null);
+        // 派发对象
+        window.dispatchEvent(newStorageEvent);
+      }
+    }
+    return storage.setItem(key, data);
+  }
+}
 
 let initApp = async () => {
   try {
