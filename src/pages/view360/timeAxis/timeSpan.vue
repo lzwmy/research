@@ -40,21 +40,21 @@ export default {
                 day: Number(endTimeArr[2].slice(0,2))
             } 
             $("#costRange").ionRangeSlider({
-                type: "double",        //双个滑块
+       type: "double",  //双个滑块
                 min: this.dateToTS(new Date(startTime.year, startTime.month, startTime.day)),
                 max: this.dateToTS(new Date(endTime.year, endTime.month, endTime.day)),
                 from: this.dateToTS(new Date(startTime.year, startTime.month, startTime.day)),
                 to: this.dateToTS(new Date(endTime.year, endTime.month, endTime.day)),
                 prettify: this.tsToDate,  
                 grid_num: 12,  //单元格数
-                grid: true,//滑块上方显示网格
+       grid: true,//滑块上方显示网格
                 onFinish: function (data) {
                     that.$emit('changeTimeSpan',{
                         startTime: data.from,
                         endTime: data.to
                     })
                 },
-            });
+      });
             Array.from($('.irs-grid .irs-grid-text')).forEach( item=>{
                 $(item).text($(item).text().slice(5));
             })
