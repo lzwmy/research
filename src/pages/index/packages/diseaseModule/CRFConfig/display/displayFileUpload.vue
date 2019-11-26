@@ -71,9 +71,9 @@
             </span>
           </div>
         </el-upload>
-        <!--<el-dialog class="upload_style"   :visible.sync="dialogVisible">
+        <el-dialog class="upload_style"   :visible.sync="dialogVisible">
           <img width="100%"  v-if="dialogVisible" :src="dialogImageUrl" alt="">
-        </el-dialog>-->
+        </el-dialog>
         <!--<el-image-viewer v-if="dialogVisible"
                          :on-close="closeViewer"
                          :url-list="[dialogImageUrl]">
@@ -134,7 +134,6 @@
         onRemove(file,fileList) {
           this.fileList = fileList;
           this.report.value2 = JSON.stringify(fileList);
-          console.log(file)
           this.deleteFileId(file.response.data[0].fileId)
         },
         onPreview(file) {
@@ -143,7 +142,7 @@
         uploadFileOrImg() {
           this.beforeUploadFile();
         },
-        //自定义上传
+        //自定义上传`
         beforeUploadFile() {
           let that = this;
           let param = new FormData();
