@@ -145,7 +145,9 @@ export default {
             lastDay = 30;
         }
         this.form.time[1] = utils.formateDate(date).substring(0,7) + '-' + lastDay;
-        this.diseaseList = JSON.parse(sessionStorage.getItem('researchList'));
+        this.getDataListDisearch().then(()=>{
+          this.diseaseList = JSON.parse(sessionStorage.getItem('researchList'));
+        });
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
         this.getDataList();
     },
@@ -319,6 +321,17 @@ export default {
                 console.log(err)
             }
         },
+      async getDataListDisearch () {
+        let that = this;
+        try {
+          let data = await that.$http.findDiseaseSpecies();
+          if (data.code == '0') {
+            sessionStorage.setItem('researchList',JSON.stringify(that.dataList));
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
     },
     beforeRouteEnter (to, from, next) {
         next();
