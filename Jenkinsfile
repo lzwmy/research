@@ -13,7 +13,6 @@ pipeline {
 						env.PATH = "${nodejsHome}/bin:${env.PATH}"
 					}
 					sh "npm install"
-					sh "npm install wangeditor"
 					sh "npm run build"
 					script {
 						projectArchiveDir="../archive/${currentBuild.projectName}/"
