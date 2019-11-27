@@ -71,13 +71,11 @@
             </span>
           </div>
         </el-upload>
-        <el-dialog class="upload_style"   :visible.sync="dialogVisible">
-          <img width="100%"  v-if="dialogVisible" :src="dialogImageUrl" alt="">
-        </el-dialog>
-        <!--<el-image-viewer v-if="dialogVisible"
-                         :on-close="closeViewer"
-                         :url-list="[dialogImageUrl]">
-        </el-image-viewer>-->
+        <image-view v-if="dialogVisible"
+                    ref="imageView"
+                    @on-close="closeViewer"
+                    :state="dialogVisible"
+                    :url="images"></image-view>
       </div>
     </div>
   </div>
@@ -85,12 +83,11 @@
 
 
 <script>
-  import axios from 'axios';
-  // import ElImageViewer from 'element-ui/packages/image/src/image-viewer';
+  import imageView from 'components/packages/ImagePreview/imageView';
   export default {
     name: "displayFileUpload",
     components:{
-      // ElImageViewer
+      imageView
     },
     props:{
       item: {},
@@ -108,6 +105,7 @@
         dialogVisible: false,
         disabled: false,
         fileData:{},
+        images:[]
       }
     },
     methods:{
@@ -134,7 +132,6 @@
       onRemove(file,fileList) {
         this.fileList = fileList;
         this.report.value2 = JSON.stringify(fileList);
-        console.log(file)
         this.deleteFileId(file.response.data[0].fileId)
       },
       onPreview(file) {
@@ -143,7 +140,7 @@
       uploadFileOrImg() {
         this.beforeUploadFile();
       },
-      //自定义上传
+      //自定义上传`
       beforeUploadFile() {
         let that = this;
         let param = new FormData();
@@ -210,9 +207,13 @@
         this.dialogVisible = false;
       },
       handlePictureCardPreview(file) {
-        console.log(file)
         this.dialogImageUrl = this.newUrl+"/file/downloadFile/"+file.fileId;
         this.dialogVisible = true;
+        this.images[0] = this.dialogImageUrl;
+        this.$nextTick(()=>{
+          this.$refs.imageView.show();
+
+        });
       },
       handleDownload(file) {
         console.log(file);
@@ -247,7 +248,8 @@
       };
       if(this.report.value2 !==""){
         this.fileList = JSON.parse(this.report.value2);
-      }
+      };
+
     }
   }
 </script>

@@ -165,7 +165,7 @@
               </div>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="数据设置" name="second">
+          <el-tab-pane label="数据设置" v-if="false" name="second">
             <el-form class="alignment data_set_container" label-width="80px">
               <el-checkbox v-model="dataSetting.dataBind" v-if="controlType=='FILE_UPLOAD'||controlType=='LABEL'" disabled>启动数据绑定</el-checkbox>
               <el-checkbox v-model="dataSetting.dataBind"  v-else>启动数据绑定</el-checkbox>
