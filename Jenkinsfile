@@ -4,6 +4,7 @@ pipeline {
 			fixedEmailList = 'stirling.li@emhi.cn'
 			dockerProject = 'research-web'
 			copyFiles = 'docker/'
+			relatedProjects = ' '
 	}
 	stages{
 			stage('Build') {
@@ -44,7 +45,6 @@ pipeline {
 				gitCommitEmail=sh(script:'git --no-pager show -s --format=\'%ae\'',returnStdout:true)
 				emailList=fixedEmailList.contains(gitCommitEmail)?fixedEmailList:fixedEmailList+','+gitCommitEmail
 			}
-			cleanWs()
 			emailext body: '$DEFAULT_CONTENT', subject: '$DEFAULT_SUBJECT', to: emailList
 		}
 	}
