@@ -15,7 +15,7 @@
               </button>
             </a>
 <!--          <a :href="`http://192.168.1.100:8080/research/file/downloadFile/5dd685ae53bbd6162c1699cd`" target="_blank">-->
-          <a :href="`${baseURL}subject/document/download/?fileId=${pdfId}`" target="_blank">
+          <a :href="`${baseURL}subject/document/download/?fileId=5dd685ae53bbd6162c1699cd`" target="_blank">
             <button>
               <i class="iconfont iconzaixianyuedu"></i>
               在线阅读

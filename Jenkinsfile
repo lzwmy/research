@@ -35,7 +35,7 @@ pipeline {
 							}
 					  }
 					}
-					sshPublisher failOnError: true, publishers: [sshPublisherDesc(configName: 'DevelopmentEnviroment', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '~/deploy_tomcat' + " ${dockerProject}", execTimeout: 300000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "./", remoteDirectorySDF: false, removePrefix: '', sourceFiles: "${dockerProject}/")], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)]
+					sshPublisher failOnError: true, publishers: [sshPublisherDesc(configName: 'DevelopmentEnviroment', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 300000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "./", remoteDirectorySDF: false, removePrefix: '', sourceFiles: "${dockerProject}/")], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)]
 				}
 			}
 	}

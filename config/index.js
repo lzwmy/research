@@ -38,8 +38,8 @@ module.exports = {
         // target: 'http://192.168.1.100:8080/', // 小武联调
         // target: 'http://192.168.1.198:8080/', //  逊名联调
         // target: 'http://192.168.1.155:8080/', //  强哥联调
-        // target: 'http://39.108.238.209:8806/', // 开发环境
-        target: 'http://120.77.199.11:8801/', // 线上环境
+        target: 'http://39.108.238.209:8806/', // 开发环境
+        // target: 'http://120.77.199.11:8801/', // 线上环境
         changeOrigin: true,
         // https请求需要该设置,当 secure 值为 true 时，cookie 在 HTTP 中是无效，在 HTTPS 中才有效
         secure: false,

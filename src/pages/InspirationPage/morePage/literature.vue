@@ -412,14 +412,17 @@
     },
     mounted() {
       this.subjectDocumentList()
+      let that = this;
       window.addEventListener('click',(e)=>{
         let wordcloudData = $('.chartContent').attr('data-keyWord') || "";
-        if(wordcloudData) {
-          this.switchSearch = true;
-          this.keyword = wordcloudData ;
-          this.literatureKeywordSearchList();
+        if(wordcloudData) { //普通
+          // this.switchSearch = true;
+          that.literatureKeywordSearchList().then(()=>{
+            that.keyword = wordcloudData ;
+            //清空自定义属性
+            $('.chartContent').attr('data-keyWord',"")
+          });
         }
-
       })
     },
     destroyed() {
