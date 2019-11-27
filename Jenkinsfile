@@ -23,16 +23,6 @@ pipeline {
 					}
 				}
 			}
-			stage('CodeScan') {
-				steps {
-					script {
-						scannerHome = tool 'sonar'
-					}
-					withSonarQubeEnv('SonarQube') {
-						sh "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonar-project.properties"
-					}
-				}
-			}
 			stage('Deploy') {
 				steps {
 					script {
