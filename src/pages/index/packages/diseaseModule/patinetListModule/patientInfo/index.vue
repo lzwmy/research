@@ -41,7 +41,10 @@
         <div class="top">
           <h3 class="flex-between-center">
             <span>随访提醒</span>
-            <i class="icon iconfont iconzujian14 cur_pointer" @click="showDialog"></i>
+            <div>
+              <i class="icon iconfont iconshezhi1 cur_pointer" @click="showDialog"></i>
+              <!-- <i class="icon iconfont iconshanchu1 cur_pointer"></i> -->
+            </div>
           </h3>
           <div class="li flex-start-start">
             <p><i class="icon iconfont iconshezhi"></i>设置</p>
@@ -155,8 +158,7 @@
         </el-form-item>
         <el-form-item label="报告名称：" class="fill" prop="name">
           <el-select v-model="dialogReportForm.name">
-            <el-option v-for="(item, index) in reportSelectList" :label="item.name" :value="item.id"
-                       :key="index"></el-option>
+            <el-option v-for="(item, index) in reportSelectList" :label="item.name" :value="item.id" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="就诊时间：" class="fill" prop="time">
@@ -1082,7 +1084,12 @@
           font-size: 16px;
 
           i {
-            color: rgba(151, 155, 170, 1)
+            color: #979BAA;
+            font-size: 18px;
+            padding-left: 10px;
+            &:hover {
+              color: #00bae3;
+            }
           }
         }
 

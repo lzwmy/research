@@ -227,12 +227,6 @@ export default {
                 console.log(err)
             }
         },
-        reset () {
-            this.form.state = '';
-            let date = new Date().getTime();
-            this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
-            this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
-        },
         handleStatus(status) {
             switch (status) {
                 case 0: return '<span style="padding:3px 10px;height:24px;line-height:24px;text-align:center; color:rgba(102, 102, 102, 1); background:rgba(102, 102, 102, .1);">未填写</span>';

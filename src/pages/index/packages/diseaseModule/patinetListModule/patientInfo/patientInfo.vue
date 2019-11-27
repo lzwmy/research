@@ -11,12 +11,15 @@
                 <el-card>
                     <div class="flex-between-center cur_pointer" @click="toReportFill(item)">
                         <!-- <p>{{item.author}}  {{item.createTime}}</p> -->
-                        <p>报告名称：{{item.reportName}}</p>
-                        <span class="state" v-if="item.status==0">未完成</span>
-                        <span class="state" v-else style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已完成</span>
+                        <p>{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
+                        <div>
+                            <!-- <el-button type="danger" icon="icon iconfont iconshanchu1"></el-button> -->
+                            <span class="state" v-if="item.status==0">未完成</span>
+                            <span class="state" v-else style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已完成</span>
+                        </div>
                     </div>
                     <!-- <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'初诊':'随访'}}</h4> -->
-                    <h4 class="cur_pointer" @click="toReportFill(item)">诊断医生：{{item.author}} <span style="padding-left: 20px;">创建时间： {{item.createTime}}</span> </h4>
+                    <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}医生：{{item.author}} <span style="padding-left: 20px;">创建时间： {{item.createTime}}</span> </h4>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
@@ -164,8 +167,15 @@ export default {
                         line-height: 30px;
                     }
                     .el-button {
-                        height: 26px;
-                        line-height: 26px;
+                        height: 24px;
+                        line-height: 24px;
+                        padding: 0 10px;
+                        margin-right: 15px;
+                        background:rgba(239,63,73,0.1);
+                        .icon {
+                            margin: 0;
+                            color: #DB5452;
+                        }
                     }
                     h4 {
                         line-height: 30px;
@@ -175,8 +185,7 @@ export default {
                     .state {
                         display: inline-block;
                         width:66px;
-                        height:24px;
-                        line-height: 24px;
+                        line-height: 22px;
                         text-align: center;
                         background:rgba(27,186,225,0.1);
                         border-radius:2px;

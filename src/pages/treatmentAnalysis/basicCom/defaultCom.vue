@@ -4,7 +4,7 @@
         {{reportName.crfDisplayName}}
       </div>
       <div class="treatment_comment" v-if="commentState">治疗评论</div>
-      <default-page v-for="(pageItem,pageIndex) in reportName.formPages" :item="pageItem" :index="pageIndex"></default-page>
+      <default-page v-for="(pageItem,pageIndex) in reportName.formPages" :key="pageIndex" :item="pageItem" :index="pageIndex"></default-page>
     </div>
 </template>
 
@@ -14,19 +14,19 @@
       components:{
         defaultPage
       },
-     props:{
-       reportName:{
-         type:Object,
-         default:null
-       },
-       commentState:{
-         type:Boolean
-       }
-     },
+      props:{
+        reportName:{
+          type:Object,
+          default:null
+        },
+        commentState:{
+          type:Boolean
+        }
+      },
       data() {
-       return {
+        return {
 
-       }
+        }
       },
       methods:{
 

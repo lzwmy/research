@@ -1,6 +1,6 @@
 <template>
     <div>
-      <patient-portion v-for="(portionItem,portionIndex) in item.formPortions" :item="portionItem" :index="portionIndex" :report="getData(portionItem,portionIndex)"></patient-portion>
+      <patient-portion v-for="(portionItem,portionIndex) in item.formPortions" :key="portionIndex" :item="portionItem" :index="portionIndex" :report="getData(portionItem,portionIndex)"></patient-portion>
     </div>
 </template>
 

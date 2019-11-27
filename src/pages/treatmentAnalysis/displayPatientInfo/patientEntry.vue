@@ -1,7 +1,7 @@
 <template>
     <div>
       <div class="entry_gather" v-if="item.controlType!=='GATHER'&&item.controlType!=='TABLE'">{{report.name}} -- {{report.value}}</div>
-      <patient-gather v-if="item.controlType=='GATHER'" v-for="(gatherItem,gatherIndex) in item.children" :item="gatherItem" :index="gatherIndex" :report="getData(gatherItem)"></patient-gather>
+      <patient-gather v-if="item.controlType=='GATHER'" v-for="(gatherItem,gatherIndex) in item.children" :key="gatherIndex" :item="gatherItem" :index="gatherIndex" :report="getData(gatherItem)"></patient-gather>
       <div v-if="item.controlType=='TABLE'" :style="`height: ${height* 25}px;overflow:auto`">
         <!--{{item.controlDisplayName}}&#45;&#45;{{report.name}}-->
         <!--v-for="(gatherItem,gatherIndex) in item.children"-->
