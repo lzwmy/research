@@ -325,8 +325,8 @@ export default {
         let that = this;
         try {
           let data = await that.$http.findDiseaseSpecies();
-          if (data.code == '0') {
-            sessionStorage.setItem('researchList',JSON.stringify(that.dataList));
+          if (data.code == '0' && data.data) {
+            sessionStorage.setItem('researchList',JSON.stringify(data.data.diseaseSpecieses));
           }
         } catch (error) {
           console.log(error);
