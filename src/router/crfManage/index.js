@@ -1,9 +1,9 @@
 // CRF管理 crfManage
 
 // CRF配置 CRFConfig
-const crfConfig = r => require.ensure([], () => r(require('packages/diseaseModule/crfManage/CRFConfig')), 'crfConfig');
+// const crfConfig = r => require.ensure([], () => r(require('packages/diseaseModule/crfManage/CRFConfig')), 'crfConfig');
 // CRF表单填写 crfFill
-const crfFill = r => require.ensure([], () => r(require('packages/diseaseModule/crfManage/crfFill')), 'crfFill');
+// const crfFill = r => require.ensure([], () => r(require('packages/diseaseModule/crfManage/crfFill')), 'crfFill');
 
 //CDF 表单 配置入口
 const CDRFromConfig = r => require.ensure([], () => r(require('packages/diseaseModule/CDRFormManage/index')), 'CDRFromConfig');
