@@ -192,16 +192,22 @@
           })
         },
         handleRemove(file,fileList) {
-          console.log(file,fileList);
-          this.deleteFileId(file.fileId);
-          let copyFileList  = this.fileList;
-          copyFileList.forEach((item,index,array)=>{
-            if(item.fileId == file.fileId) {
-              array.splice(index,1)
-            }
+          this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.deleteFileId(file.fileId);
+            let copyFileList  = this.fileList;
+            copyFileList.forEach((item,index,array)=>{
+              if(item.fileId == file.fileId) {
+                array.splice(index,1)
+              }
+            });
+            this.fileList = copyFileList;
+            this.report.value2 = JSON.stringify(this.fileList);
+          }).catch(() => {
           });
-          this.fileList = copyFileList;
-          this.report.value2 = JSON.stringify(this.fileList);
         },
         closeViewer() {
           this.dialogVisible = false;
