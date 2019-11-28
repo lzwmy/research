@@ -494,7 +494,7 @@
   import mixins from 'components/mixins';
   import utils from 'components/utils/index';
   import validation from 'components/utils/validation';
-  import patientInfo from "./patientInfo/index";
+  // import patientInfo from "./patientInfo/index";
   import importDialog from './importcom/ImportDialog'
 
   export default {
@@ -636,7 +636,7 @@
       pagination,
       echartsContain,
       multipleCheckBoxSelect,
-      patientInfo,
+      // patientInfo,
       importDialog
     },
     watch: {

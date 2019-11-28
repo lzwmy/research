@@ -43,7 +43,7 @@
             <span>随访提醒</span>
             <div>
               <i class="icon iconfont iconshezhi1 cur_pointer" @click="showDialog"></i>
-              <!-- <i class="icon iconfont iconshanchu1 cur_pointer"></i> -->
+              <i class="icon iconfont iconshanchu1 cur_pointer" v-if="remindDetail.remindRsp && remindDetail.remindRsp.id" @click="deleteRemind" style="font-size:17px;"></i>
             </div>
           </h3>
           <div class="li flex-start-start">
@@ -469,12 +469,25 @@
         }
       }
     },
+    beforeRouteEnter (to, from, next) {
+      //从病人列表进入
+      if(to.params.diseaseId) {
+        next()
+      }else {
+        //当前页面刷新
+        next({
+          path:'/patientListModule',
+          query: {
+            id: to.query.id
+          }
+        })
+      }
+    },
     created() {
       // this.getReportSelectList();
-      console.log(this.$route)
-      this.dataInfo = this.$route.params.dataInfo;
-      this.personalInfo = this.$route.params.personalInfo;
-      this.reportFillData = this.$route.params.reportFillData;
+      this.dataInfo = this.$route.params.dataInfo || {};
+      this.personalInfo = this.$route.params.personalInfo || {};
+      this.reportFillData = this.$route.params.reportFillData || {};
       this.diseaseId = this.$route.params.diseaseId;
       this.getReportList();
       this.getPatientSearch();
@@ -573,6 +586,31 @@
             }
           })
       },
+      //删除提醒
+      deleteRemind(){
+        this.$confirm('确定删除提醒?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.getRemindConfig()
+          .then(async(res)=>{
+            let formData = {
+              remindId: res.data.id,
+              patientId: this.$route.params.personalInfo && this.$route.params.personalInfo.PATIENT_ID 
+            };
+            try {
+              let res = await this.$http.PFUdeleteRemind(formData);
+              if (res.code == 0) {
+                this.$mes('success', "删除成功");
+                this.getRemindDetail();
+              } 
+            } catch (err) {
+              console.log(err)
+            }
+          })
+        }).catch(() => {});
+      },
       //获取添加提醒报告列表
       async getSelectList() {
         let formData = {
@@ -600,6 +638,7 @@
         };
         try {
           let res = await that.$http.PFUremindDetail(fromData)
+          console.log(res)
           if (res.code == 0) {
             this.remindDetail = res.data;
           }
@@ -630,8 +669,7 @@
       },
       // 查询已配置提醒信息
       async getRemindConfig() {
-        this.dialogFrom.visible = true;
-        this.dialogFrom.loading = true;
+        
         let that = this;
         let fromData = {
           patientId: that.dataInfo.patientId || "",
