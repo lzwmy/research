@@ -27,7 +27,7 @@
       },
       methods:{
         initHighCharts() {
-          this.chart = new Highcharts.Chart(this.$el, this.data);
+          this.chart = new Highcharts.Chart(this.$el, this.data).reflow();
           // this.keyword = $('.chartContent').attr('data-keyWord') || "";
         },
       },

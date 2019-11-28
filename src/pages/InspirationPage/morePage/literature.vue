@@ -4,11 +4,11 @@
       <span class="search_title">文献搜索</span>
       <div class="search-condition">
         <el-input v-model="keyword" @keyup.enter.native="literatureKeywordSearchList"></el-input>
-        <el-button type="primary" @click="literatureKeywordSearchList">
-          <i class="iconfont iconsousuo_fuzhi"></i>
-          搜索
-        </el-button>
       </div>
+      <el-button type="primary" @click="literatureKeywordSearchList">
+        <i class="iconfont iconsousuo_fuzhi"></i>
+        搜索
+      </el-button>
       <i class="high-search" @click="changeSearch(false)">高级搜索</i>
     </div>
     <div class="high-search_box" v-show="!switchSearch">
@@ -143,7 +143,7 @@
       </div>
       <div class="wordcloud-box">
         <div class="search-results">文献热点</div>
-        <div v-loading="wordcloudLoading">
+        <div class="chart-box" v-loading="wordcloudLoading">
           <chart v-if="option.series[0].data.length!==0" :on-keyWord="onKeyword" :option="option"></chart>
         </div>
       </div>
@@ -398,6 +398,7 @@
                 weight: item.count
               })
             });
+            that.keyword = array[0].name;
             that.option.series[0].data = array;
           }else if(data.code === 1) {
             that.$message.info('文献热点查询失败')
@@ -411,14 +412,16 @@
       }
     },
     mounted() {
-      this.subjectDocumentList()
+      this.subjectDocumentList().then(()=>{
+        this.literatureKeywordSearchList();
+      });
       let that = this;
       window.addEventListener('click',(e)=>{
         let wordcloudData = $('.chartContent').attr('data-keyWord') || "";
         if(wordcloudData) { //普通
           // this.switchSearch = true;
+          that.keyword = wordcloudData ;
           that.literatureKeywordSearchList().then(()=>{
-            that.keyword = wordcloudData ;
             //清空自定义属性
             $('.chartContent').attr('data-keyWord',"")
           });
@@ -442,7 +445,7 @@
   .literature-container {
     .basis-search {
       width: 100%;
-      height: 110px;
+      height: 6.5vw;
       background-color: #ffffff;
       border-radius: 4px;
       display: flex;
@@ -453,6 +456,7 @@
       box-shadow: 5px 5px 10px rgba(78, 91, 105, 0.2);
 
       .search_title {
+        min-width: 72px;
         font-size: 18px;
         font-weight: bold;
         color: #424767;
@@ -464,7 +468,7 @@
         height: 48px;
 
         .el-input {
-          width: 90%;
+          width: 100%;
           height: 48px;
           line-height: 48px;
 
@@ -475,29 +479,30 @@
           }
         }
 
-        .el-button {
-          width: 107px;
-          height: 48px;
-          line-height: 48px;
-          position: relative;
-          top: 1px;
-          left: -5px;
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
 
-          i {
-            font-size: 20px;
-            padding-right: 10px;
-            vertical-align: middle;
-          }
+      }
+      .el-button {
+        width: 107px;
+        height: 48px;
+        line-height: 48px;
+        position: relative;
+        top: 0;
+        left: -5px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
 
-          span {
-            font-size: 16px;
-          }
+        i {
+          font-size: 20px;
+          padding-right: 10px;
+          vertical-align: middle;
+        }
+
+        span {
+          font-size: 16px;
         }
       }
-
       .high-search {
+        min-width: 68px;
         color: #3D98FF;
         font-weight: 400;
         font-size: 14px;
@@ -649,7 +654,7 @@
 
     .search-content {
       width: 100%;
-      height: 702px;
+      height: 685px;
       display: flex;
       margin-top: 20px;
 
@@ -777,7 +782,36 @@
           color: rgba(66, 71, 103, 1);
           padding: 30px 30px 0 30px;
         }
+        .chart-box{
+          min-width: 310px;
+          max-width: 800px;
+          margin: 0 auto;
+          height:353px;
+        }
       }
+    }
+  }
+  @media screen and (max-width: 1360px){
+    .literature-container .search-content .wordcloud-box{
+      width: 450px;
+      height: 340px;
+    }
+    .literature-container .search-content .wordcloud-box .chart-box{
+      height: 340px;
+    }
+  }
+  @media screen and (min-width: 1360px) and (max-width:1440px){
+    .literature-container .search-content .wordcloud-box{
+      width: 450px;
+      height: 340px;
+    }
+    .literature-container .search-content .wordcloud-box .chart-box{
+      height: 340px;
+    }
+  }
+  @media screen and (min-width: 1440px) and (max-width: 1660px) {
+    .literature-container .search-content .wordcloud-box .chart-box{
+      height: 340px;
     }
   }
 </style>
