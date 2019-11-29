@@ -35,7 +35,7 @@
                     <div class="dateTime-box" style="display: flex;justify-content: space-between;border-bottom: 1px solid #f2f2f2;padding:10px 10px 5px;">
                         <div @click="toReportFill(item)" class="planVisitDate flex-start-center" style="flex:1;color: #9BABB8;">
                         <i class="iconfont iconshijian" style="padding-right: 10px;vertical-align: middle;font-size:13px;"></i>
-                        <span style="font-size:13px; ">{{item.planVisitDate}}&nbsp;{{item.reportName}}</span>
+                        <span style="font-size:13px;max-width: 180px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden; ">{{item.planVisitDate}}&nbsp;{{item.reportName}}</span>
                         </div>
                         <div class="fill-info flex-between-center">
                             <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
