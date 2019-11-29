@@ -459,7 +459,7 @@
       </div>
 
       <!-- 导入数据弹窗 -->
-        <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData' @updata="getDataList"></import-dialog>
+      <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData' @updata="getDataList"></import-dialog>
 
       <!-- 导入数据不通过 -->
       <el-dialog
@@ -775,35 +775,6 @@
       },
       //批量导入
       async importPatinetData(file) {
-        // this.importPatinetLoading = true;
-        // try{
-        //     let param = new FormData();
-        //     param.append('file',file.raw);
-        //     param.append('diseaseId',this.$route.query.id);
-        //     let url = this.baseURL + "disease/excel/import/patientInfos";
-        //     this.$axios.defaults.withCredentials=true;
-        //     this.$axios.post(url,param,{
-        //         headers: {
-        //           "content-type": "multipart/form-data"
-        //         },
-        //         withCredentials: true
-        //     }).then((res)=>{
-        //         if(res.data.code==0) {
-        //             this.$mes('success','导入成功');
-        //             this.getDataList();
-        //         }else if(res.data.data) {
-        //             this.handleCheckData(res.data.data)
-        //         }else {
-        //           this.$mes('error', res.data.msg ||'导入失败')
-        //         }
-        //         this.importPatinetLoading = false;
-        //     })
-        // }catch (error) {
-        //   this.importPatinetLoading = false;
-        //   console.log(error)
-        //   this.$mes('error','导入失败')
-        // }
-
         this.importPatinetLoading = true;
         try {
             let params = new FormData();

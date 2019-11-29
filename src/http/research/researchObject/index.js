@@ -27,24 +27,41 @@ const url = {
     addresearch: '/subject/patient/add/research.do',
     //删除研究对象
     deleteObject: '/subject/patient/delete/patient.do',
+
+    //导出添加研究数据模版
+    objectExportData: '/subject/excel/create/research/template',
     //导出添加研究对象模版
-    objectExportData: '/subject/excel/create/patients/templateExcel',
-    //导出导入研究对象模版
-    objectExportTempData: '/subject/excel/create/research/templateExcel',
-    //导入研究数据
-    objectImportData: '/subject/excel/import/researchExcel',
+    objectExportObject: '/subject/excel/create/patients/template',
+    //导入弹窗表单列表
+    objectListCrf: '/subject/excel/select/crf',
+    //批量导入研究对象
+    importBatchObject: '/subject/excel/import/patients',
+    //批量导入研究对数据 
+    importBatchData: '/subject/excel/import/research',
+    //下载检验后的文件
+    checkFile: '/subject/excel/download',
 };
 
 const http = {
-    researchObjectImportData (params) {
-        return vm.$post(url.objectImportData, params, true);
-    },
-    researchObjectExportData (params) {
+    researchObjectExportTemplate (params) {
         return vm.$postDown(url.objectExportData, params, true);
     },
-    researchObjectExportTempData (params) {
-        return vm.$postDown(url.objectExportTempData, params, true);
+    researchObjectExportObject (params) {
+        return vm.$postDown(url.objectExportObject, params, true);
     },
+    researchObjectListCrf (params) {
+        return vm.$post(url.objectListCrf, params, true);
+    },
+    researchObjectImportBatchObject (params) {
+        return vm.$fileUpload(url.importBatchObject, params, true);
+    },
+    researchObjectImportBatchData (params) {
+        return vm.$fileUpload(url.importBatchData, params, true);
+    },
+    researchObjectCheckFile (params) {
+        return vm.$postDown(url.checkFile, params, true);
+    },
+
     researchObjectTable (params) {
         return vm.$post(url.table, params, false);
     },

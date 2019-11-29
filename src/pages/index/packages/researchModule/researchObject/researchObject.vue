@@ -13,7 +13,19 @@
                     <span class="add"><i class="el-icon-caret-bottom el-icon--right"></i></span>
                     <el-dropdown-menu slot="dropdown" class="addresearchObject">
                         <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="1" icon="el-icon-plus">单个添加</el-dropdown-item>
-                        <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="2" icon="el-icon-plus">批量添加</el-dropdown-item>
+                        <!-- <el-dropdown-item v-if="$store.state.user.researchAuth.authImport" command="2" icon="el-icon-plus">批量添加</el-dropdown-item> -->
+                        <el-dropdown-item command="2" icon="el-icon-plus">
+                            <el-upload
+                                class="upload"
+                                style="display:inline-block"
+                                :on-change="successFile"
+                                :auto-upload="false"
+                                :show-file-list='false'
+                                action=""
+                                accept=".xls, .xlsx">
+                                批量添加
+                            </el-upload>
+                        </el-dropdown-item>
                         <el-dropdown-item command="3" icon="icon iconfont iconxiazaimoban">下载模版</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -155,10 +167,10 @@
         </div>
 
         <!-- 导入数据弹窗 -->
-        <import-dialog :dataInfo="importData"></import-dialog>
+        <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData' @updata="handleUpData"></import-dialog>
         <!-- 动态列配置弹窗 -->
         <table-config ref="refTableConfig" @saveConfig="handleSaveConfig" :dataInfo="confingData"></table-config>
-
+        
         <!-- 添加研究对象 -->
         <dynamicForm 
             ref="refDynamicForm" 
@@ -168,6 +180,25 @@
             :groupList="groupList" 
             @successAdd="handleSuccessAdd">
         </dynamicForm>
+
+        <!-- 导入数据不通过 -->
+        <el-dialog
+            title="数据不通过"
+            :visible.sync="notPassDialogVisible"
+            width="400px"
+            v-loading="notPassDialogLoading"
+            :append-to-body="true">
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <p class="text-center">点击确定按钮下载检验后的数据文件</p>
+            <span slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="downloadCheckData(currentFileId)">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -175,9 +206,10 @@
 import echartsContain from 'components/packages/echartsContain/echartsContain';
 import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
-import importDialog from './dialog/ImportDialog'
+// import importDialog from './dialog/ImportDialog'
 import tableConfig from './dialog/tableConfig'
 import dynamicForm from './dialog/dynamicForm'
+import importDialog from './importcom/ImportDialog'
 import searchCom from './components/search'
 import formItemCom from './components/formItem'
 import utils from 'components/utils/index';
@@ -196,6 +228,7 @@ export default {
                 header: [],
                 content: []
             },
+            importDataDialog: false,
             importData: {
                 title: "批量导入研究数据",
                 visible: false
@@ -242,6 +275,9 @@ export default {
                 content: []
             },
             hidden: '',
+            notPassDialogVisible: false,
+            notPassDialogLoading: false,
+            currentFileId: '',  //当前选中文件
         }
     },
     computed: {
@@ -314,17 +350,51 @@ export default {
         async exportData() {
             
         },
+        //当导入数据校验不成功时
+        handleCheckData(data) {
+            this.currentFileId = data;
+            this.notPassDialogVisible = true;
+        },
+        //下载校验的文件
+        async downloadCheckData(id) {
+            this.notPassDialogLoading = true;
+            let params = {
+                fileId: id
+            }
+            try {
+                let res = await this.$http.researchObjectCheckFile(params);
+                let blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
+                this.$download('检验后文件.xlsx', blob);
+                this.notPassDialogLoading = false;
+                this.notPassDialogVisible = false;
+            } catch (err) {
+                this.notPassDialogVisible = false;
+                this.notPassDialogLoading = false;
+                console.log(error)
+                this.$mes('error','导出失败')
+            }
+        },
+        //导入导出研究数据弹窗
+        handleDialog(val) {
+            this.importDataDialog = val
+        },
+        //导入研究数据成功之后的回调
+        handleUpData(currentGrounpId) {
+            this.importDataDialog = false;
+            this.$refs.refSearch.getGroupList()
+            .then(()=>{
+                this.$refs.refSearch.selectGroup(currentGrounpId);
+                this.currentGrounpId = currentGrounpId;
+                this.getDataList(0,15);
+            })
+        },
         //下载添加研究对象模版
         async downloadTempObject() {
             try{
-                let data = await this.$http.researchObjectExportData({
+                let data = await this.$http.researchObjectExportObject({
                     subjectId: this.$store.state.user.researchInfo.subjectInfoId
                 });
                 let blob = new Blob([data.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
-                // let dateTitle = utils.formateDate(new Date().getTime());
-                // console.log(dateTitle)
-                // let fileNmae = data.headers['content-disposition'].split('filename=')[1];
-                // this.$download(fileNmae, blob);
                 this.$download('添加研究对象模版.xlsx', blob);
             }catch (error) {
                 console.log(error)
@@ -401,7 +471,7 @@ export default {
             }
         },
         showImportDataDialog() {
-            this.importData.visible = true;
+            this.importDataDialog = true;
         },
         showConfigDialog() {
             this.confingData.visible = true;
@@ -490,6 +560,32 @@ export default {
             this.$nextTick(()=>{
                 this.$refs.refDynamicForm.visible = true;
             })
+        },
+        //批量添加研究对象
+        async importBatchObject(file) {
+            this.importPatinetLoading = true;
+            try {
+                let params = new FormData();
+                params.append('file',file.raw);
+                params.append('subjectGroupId',this.currentGrounpId);
+                params.append('subjectInfoId',this.$store.state.user.researchInfo.subjectInfoId);
+                let res = await this.$http.researchObjectImportBatchObject(params);
+                if(res.code==0) {
+                    this.$mes('success','导入成功');
+                    this.getDataList();
+                }else if(res.data) {
+                    this.handleCheckData(res.data)
+                }
+                this.importPatinetLoading = false;
+            } catch (err) {
+            this.importPatinetLoading = false;
+            console.log(err)
+            this.$mes('error','导入失败')
+            }
+        },
+        //批量添加研究对象文件选中
+        successFile(file,fileList) {
+            this.importBatchObject(file);
         },
         //成功添加对象
         handleSuccessAdd(currentGrounpId) {
