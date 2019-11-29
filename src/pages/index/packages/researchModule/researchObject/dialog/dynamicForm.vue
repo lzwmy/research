@@ -158,7 +158,6 @@ export default {
         }
         .content {
             margin: 25px 30px 0;
-            background-color: #fff;
             position: absolute;
             top: 65px;
             bottom: 0;
@@ -166,6 +165,7 @@ export default {
             right: 0;
             .wrap {
                 padding: 0 70px;
+                background-color: #fff;
                 overflow: auto;
                 h1 {
                     text-align: center;

@@ -563,8 +563,9 @@ export default {
         }
     }
     .researchObject {
-        .echartsContain {
-            min-height: 600px;
+        .echartsContain .bigContain{
+            overflow: auto;
+            // min-height: 600px;
         }
         .addDropdown.el-dropdown {
             margin-left: 0;
@@ -588,7 +589,6 @@ export default {
         }
         .guide {
             .guide_box {
-                margin-top: 80px;
                 overflow: hidden;
                 width: 400px;
                 height: 400px;

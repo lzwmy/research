@@ -42,7 +42,9 @@
                             <div class="dateTime-box" style="display: flex;justify-content: space-between;border-bottom: 1px solid #f2f2f2;padding-bottom: 5px;padding-left: 10px;padding-right: 10px;">
                                 <div @click="toReportFill(item)" class="planVisitDate flex-start-center" style="flex:1; color: #9BABB8;">
                                     <i class="iconfont iconshijian" style="padding-right: 10px;vertical-align: middle;font-size:13px;"></i>
-                                    <span style="font-size:13px; ">{{item.planVisitDate}}&nbsp;{{item.reportName}}</span>
+                                    <p style="font-size:13px; ">{{item.planVisitDate}}&nbsp;
+                                        <p style="width:100px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;">{{item.reportName}}</p> 
+                                    </p>
                                 </div>
                                 <div class="fill-info flex-between-center">
                                     <div @click="toReportFill(item)" class="box_tag">
@@ -146,7 +148,7 @@ export default {
         }
         this.form.time[1] = utils.formateDate(date).substring(0,7) + '-' + lastDay;
         this.getDataListDisearch().then(()=>{
-          this.diseaseList = JSON.parse(sessionStorage.getItem('researchList'));
+            this.diseaseList = JSON.parse(sessionStorage.getItem('researchList'));
         });
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
         this.getDataList();
@@ -321,17 +323,17 @@ export default {
                 console.log(err)
             }
         },
-      async getDataListDisearch () {
-        let that = this;
-        try {
-          let data = await that.$http.findDiseaseSpecies();
-          if (data.code == '0' && data.data) {
-            sessionStorage.setItem('researchList',JSON.stringify(data.data.diseaseSpecieses));
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      },
+        async getDataListDisearch () {
+            let that = this;
+            try {
+            let data = await that.$http.findDiseaseSpecies();
+            if (data.code == '0' && data.data) {
+                sessionStorage.setItem('researchList',JSON.stringify(data.data.diseaseSpecieses));
+            }
+            } catch (error) {
+            console.log(error);
+            }
+        },
     },
     beforeRouteEnter (to, from, next) {
         next();
