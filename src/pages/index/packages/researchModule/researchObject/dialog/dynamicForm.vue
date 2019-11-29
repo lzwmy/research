@@ -110,7 +110,7 @@ export default {
                     try {
                         let res = await this.$http.researchObjectPreviewAddresearch(params);
                         if (res.code == '0') {
-                            this.$emit('successAdd')
+                            this.$emit('successAdd',this.radio)
                             this.dialog.visible = false;
                         }
                         this.dialog.loading = false;

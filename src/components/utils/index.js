@@ -857,6 +857,13 @@ const translateDataToTree = function(data = []) {
   return parents
 }
 
+const isEffectiveDate = function(date) {
+  if(!date){
+    return
+  }
+  return (new Date(date).getDate()==date.substring(date.length-2));
+}
+
 export default {
   getQuery,
   getQueryString,
@@ -897,5 +904,6 @@ export default {
   deleteFileId,     //单文件删除
   isRepeat,     //数组里值是否重复
   arrayExistAttr,    //判断两数组里是否包括相同元素key
-  translateDataToTree
+  translateDataToTree,  //将有父子关系的数组转换成树形结构数据
+  isEffectiveDate,    //判断日期是否有效
 };
