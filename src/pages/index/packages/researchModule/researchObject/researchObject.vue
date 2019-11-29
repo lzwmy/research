@@ -160,7 +160,14 @@
         <table-config ref="refTableConfig" @saveConfig="handleSaveConfig" :dataInfo="confingData"></table-config>
 
         <!-- 添加研究对象 -->
-        <dynamicForm ref="refDynamicForm" v-if="dialogAddObject.visible" :dialog="dialogAddObject" :dataInfo="addObjectData" :groupList="groupList" @successAdd="successAdd"></dynamicForm>
+        <dynamicForm 
+            ref="refDynamicForm" 
+            v-if="dialogAddObject.visible" 
+            :dialog="dialogAddObject" 
+            :dataInfo="addObjectData" 
+            :groupList="groupList" 
+            @successAdd="handleSuccessAdd">
+        </dynamicForm>
     </div>
 </template>
 
@@ -485,9 +492,13 @@ export default {
             })
         },
         //成功添加对象
-        successAdd() {
-            this.getDataList(0,15);
-            this.$refs.refSearch.getGroupList();
+        handleSuccessAdd(currentGrounpId) {
+            this.$refs.refSearch.getGroupList()
+            .then(()=>{
+                this.$refs.refSearch.selectGroup(currentGrounpId);
+                this.currentGrounpId = currentGrounpId;
+                this.getDataList(0,15);
+            })
         },
         //删除研究对象
         deleteObject(row) {
@@ -523,8 +534,8 @@ export default {
             this.activeCrf = data.activeCrf;
         },
         //点击分组
-        handleSelectGroup(data) {
-            this.currentGrounpId = data;
+        handleSelectGroup(currentGrounpId) {
+            this.currentGrounpId = currentGrounpId;
             this.getDataList(0,15);
         },
         //获取全部crf表单列表和列表下的所有指标

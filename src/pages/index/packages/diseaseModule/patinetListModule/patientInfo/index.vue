@@ -207,7 +207,7 @@
           <el-form-item label="定时模式:" label-width="72px" class="inline top">
             <el-select v-model="dialogFrom.model" @change="selectChange">
               <el-option v-for="(item, index) in modelTpye" :label="item.label" :value="item.value"
-                         :key="index"></el-option>
+                        :key="index"></el-option>
             </el-select>
           </el-form-item>
           <div v-if="dialogFrom.model=='TIME'">
@@ -252,7 +252,7 @@
             <el-form-item label-width="0" class="inline" prop="value2">
               <el-select v-model="dialogFrom.value2" class="select">
                 <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1"
-                           :key="index"></el-option>
+                          :key="index"></el-option>
               </el-select>
               号
             </el-form-item>
@@ -268,7 +268,7 @@
             <el-form-item label-width="0" class="inline" prop="value2">
               <el-select v-model="dialogFrom.value2" class="select">
                 <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1"
-                           :key="index"></el-option>
+                          :key="index"></el-option>
               </el-select>
               日
             </el-form-item>
@@ -291,7 +291,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="onSaveRemind('dialogFrom')" size="mini"
-                               :disabled="dialogFrom.loading">保 存</el-button>
+                              :disabled="dialogFrom.loading">保 存</el-button>
                     <el-button @click="onClose('dialogFrom')" size="mini">关 闭</el-button>
                 </span>
     </el-dialog>
@@ -453,14 +453,9 @@
       },
       'dialogFrom.value1': function (newVal) {
         if (this.dialogFrom.model == 'MONTH' || this.dialogFrom.model == 'YEAR') {
-          this.dialogFrom.value2 = ''
+          // this.dialogFrom.value2 = ''
           if (this.dialogFrom.value1 == 2) {
-            let yearType = new Date().getFullYear();
-            if (yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
-              this.selectDayArr = 29;
-            } else {
-              this.selectDayArr = 28;
-            }
+            this.selectDayArr = 29;
           } else if (this.monthBig.includes(this.dialogFrom.value1)) {
             this.selectDayArr = 31;
           } else {
@@ -688,6 +683,7 @@
       onSaveRemind(dialogFrom) {
         this.$refs[dialogFrom].validate(async (valid) => {
           if (valid) {
+            //判断日期是否有效
             let range;
             if (!this.dialogFrom.range || JSON.stringify(this.dialogFrom.range) == '[]') {
               range = "";
