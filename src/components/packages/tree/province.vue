@@ -73,15 +73,15 @@ export default {
         return false;
       }
       if (areaLevel === 0 && !areaLevelZeroRefresh) {
-        let AREALEVEL_ZERO = JSON.parse(sessionStorage.getItem(that.regionVersion + '_AREALEVEL_ZERO'));
+        let AREALEVEL_ZERO = JSON.parse(localStorage.getItem(that.regionVersion + '_AREALEVEL_ZERO'));
         // console.log(AREALEVEL_ZERO);
         if (AREALEVEL_ZERO && AREALEVEL_ZERO.length > 0) {
           this.dataList = AREALEVEL_ZERO;
           return false;
         }
       }
-      let Global = JSON.parse(sessionStorage.getItem('Global'));
-      let CONSUMER_ID = sessionStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
+      let Global = JSON.parse(localStorage.getItem('Global'));
+      let CONSUMER_ID = localStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
       let SERVICE_CODES = 'bull.BasePlatInterface.Get_tb_admindivision_cascade';
       that.$axios({
         method: 'get',
@@ -103,7 +103,7 @@ export default {
           }
           if (areaLevel === 0) {
             that.dataList = list;
-            sessionStorage.setItem(that.regionVersion + '_AREALEVEL_ZERO', JSON.stringify(list));
+            localStorage.setItem(that.regionVersion + '_AREALEVEL_ZERO', JSON.stringify(list));
           } else {
             callback(list);
           }

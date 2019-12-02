@@ -28,7 +28,7 @@ let initApp = async () => {
     //同步获取全局配置；
     await Global.getConfigJson();
     //获取URL
-    Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
+    Vue.prototype.baseURL = JSON.parse(localStorage.getItem('Global')).baseURL;
     // 初始化根vue
     new Vue({
       el: '#app',

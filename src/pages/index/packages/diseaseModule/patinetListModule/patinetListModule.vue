@@ -1532,7 +1532,7 @@
 
         }
         that.reportFollowiUpInfo = row;
-        sessionStorage.setItem('caseManage',JSON.stringify(this.$route.query));
+        localStorage.setItem('caseManage',JSON.stringify(this.$route.query));
         that.reportFillData = {
           cacheData: false,
           formId: that.selectLabGroupFormId,
@@ -1560,7 +1560,7 @@
         })
         return;
         // if (that.selectLabGroupId) {
-        //   sessionStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
+        //   localStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
         //   window.open('./patientForm.html');
         // }
       },

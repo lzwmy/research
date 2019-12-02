@@ -251,7 +251,7 @@ export default {
   },
   methods: {
     initPage () {
-    //        let provinceArr = JSON.parse(sessionStorage.getItem(this.regionVersion+'_AREALEVEL_ZERO'));
+    //        let provinceArr = JSON.parse(localStorage.getItem(this.regionVersion+'_AREALEVEL_ZERO'));
     //        if (provinceArr && provinceArr.length > 0) {
     //          this.provinceArr = provinceArr
     //        } else {
@@ -302,8 +302,8 @@ export default {
       if (!that.regionVersion) {
         return false;
       }
-      let Global = JSON.parse(sessionStorage.getItem('Global'));
-      let CONSUMER_ID = sessionStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
+      let Global = JSON.parse(localStorage.getItem('Global'));
+      let CONSUMER_ID = localStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
       let SERVICE_CODE = 'bull.MedCoreInterface.Code_Regional_Info';
       let data = {
         'VERSION_CODE': that.regionVersion,
@@ -325,7 +325,7 @@ export default {
           // console.log(data.BODY.data)
           if (region === 'province') {
             that[region + 'Arr'] = data.BODY.data;
-          // sessionStorage.setItem(that.regionVersion+'_AREALEVEL_ZERO', JSON.stringify(data.BODY.data))
+          // localStorage.setItem(that.regionVersion+'_AREALEVEL_ZERO', JSON.stringify(data.BODY.data))
           }
           that.ruleForm[region + 'Arr'] = data.BODY.data;
           that.$emit('select', that.ruleForm);

@@ -63,13 +63,13 @@
         let preview = {
           preview:''
         }
-        sessionStorage.setItem('dialogPreview',JSON.stringify(preview))
+        localStorage.setItem('dialogPreview',JSON.stringify(preview))
       },
       closePreviewBtn() {
         let preview = {
           preview:''
         }
-        sessionStorage.setItem('dialogPreview',JSON.stringify(preview))
+        localStorage.setItem('dialogPreview',JSON.stringify(preview))
         this.dialogFormVisible = false;
       }
     },

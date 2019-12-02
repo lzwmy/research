@@ -176,7 +176,7 @@
       beforeAvatarUpload(file) {
         let that = this;
         let param = new FormData();
-        let urlparameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+        let urlparameter = JSON.parse(localStorage.getItem('reportFill')).urlParameter;
         param.append('file',file.raw);
         param.append('crfId',urlparameter.formId);
         param.append('patientId',urlparameter.patientId);
@@ -237,7 +237,7 @@
       }
     },
     mounted() {
-      let urlparameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+      let urlparameter = JSON.parse(localStorage.getItem('reportFill')).urlParameter;
       this.fileData = {
         crfId:urlparameter.formId,
         patientId:urlparameter.patientId,

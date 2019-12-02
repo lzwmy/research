@@ -145,7 +145,7 @@ export default {
             lastDay = 30;
         }
         this.form.time[1] = utils.formateDate(date).substring(0,7) + '-' + lastDay;
-        this.diseaseList = JSON.parse(sessionStorage.getItem('researchList'));
+        this.diseaseList = this.$store.state.user.diseaseList;
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
         this.getDataList();
     },
@@ -218,20 +218,12 @@ export default {
                 let res = await that.$http.PFUPgetDataList(formData);
                 if (res.code == '0') {
                     this.dataList = res.data.args;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.loading = false;
             } catch (err) {
                 that.loading = false;
                 console.log(err)
             }
-        },
-        reset () {
-            this.form.state = '';
-            let date = new Date().getTime();
-            this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
-            this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
         },
         handleStatus(status) {
             switch (status) {
@@ -270,7 +262,7 @@ export default {
                     age: row.age,
                     isModify:"displayShow"
                 }
-                sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+                localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
                 let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
                 window.open('./patientForm.html?'+urlParameters);
             })

@@ -22,7 +22,8 @@
     "vue": "^2.5.2",
     "vue-clipboard2": "^0.3.1",
     "vue-cropper": "^0.4.9",
-    "vue-router": "^2.2.0"
+    "vue-router": "^2.2.0",
+    "vuex-persistedstate": "^2.7.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

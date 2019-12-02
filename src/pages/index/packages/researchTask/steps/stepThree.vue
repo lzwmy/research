@@ -181,7 +181,7 @@ export default {
                                 },
                                 menuList: this.$store.state.user.taskMenuList
                             }
-                            sessionStorage.setItem('insideMenuData',JSON.stringify(params))
+                            this.$store.commit('saveInsideData',params)
                             this.loading = false;
                             this.$router.push({
                                 name: "projectProgress",

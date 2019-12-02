@@ -24,7 +24,7 @@ import Global from 'components/utils/global';
 let initApp = async () => {
   try {
     store.commit('USER_SIGNOUT');
-    sessionStorage.setItem('CURR_LOGIN_TYPE', 'research');
+    localStorage.setItem('CURR_LOGIN_TYPE', 'research');
     //同步获取全局配置：
     await Global.getConfigJson();
 

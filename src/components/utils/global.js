@@ -28,7 +28,7 @@ const getConfigJson = async () => {
   try {
     let response = await getGlobal();
     document.title = response.data.title ? response.data.title : '专病科研平台';
-    sessionStorage.setItem('Global', JSON.stringify(response.data));
+    localStorage.setItem('Global', JSON.stringify(response.data));
     // 从配置文件中获取请求baseURL，如果注销了这段，那请求baseURL被代理或者是根路径；
 
     if (process.env.NODE_ENV === 'production') { // 打包的时候生产环境下

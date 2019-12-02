@@ -50,7 +50,8 @@ export default {
                     },
                     menuList: item.children
                 }
-                sessionStorage.setItem('insideMenuData',JSON.stringify(params))
+                this.$store.commit('saveInsideData',params)
+                console.log(this.findFirstChildren(item.children).menuPath.slice(1))
                 this.$router.push({
                     name: this.findFirstChildren(item.children).menuPath.slice(1),
                     params: params

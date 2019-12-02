@@ -82,19 +82,19 @@ export default {
         },
         getMenuList() {
             //如果从科研项目入口录入
-            if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {
+            if(localStorage.getItem('CURR_LOGIN_TYPE') == "research") {
                 this.fromRouter = {};
                 this.title = '科研项目';
                 this.menuList = this.$store.state.user.taskMenuList;
-                this.researchId = JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId;
+                this.researchId = this.$store.state.user.researchInfo.subjectInfoId
                 return;
-            }else if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease") {
+            }else if(localStorage.getItem('CURR_LOGIN_TYPE') == "disease") {
                 //专病科研模块：分享登录
                 this.title = '专病科研';
                 this.menuList = diseaseRouter;
                 return;
             }
-            let insideData = JSON.parse(sessionStorage.getItem('insideMenuData'))
+            let insideData = this.$store.state.insideData.insideData;
             this.fromRouter = insideData.fromRouter;
             this.title = insideData.title;
             this.menuList = insideData.menuList;
@@ -131,10 +131,12 @@ export default {
         //切换病种
         handleDiseaseSelect(diseaseId) {
             this.viewLoading = true;
-            this.$store.commit('saveDiseaseInfo',{
-                diseaseId: diseaseId,
-                isAdmin: JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).isAdmin
-            });
+            this.$store.commit('saveDiseaseInfo',
+                Object.assign(this.this.$store.state.user.diseaseInfo,{
+                    diseaseId: diseaseId,
+                })
+            );
+            
             this.$router.push({
                 path: '/' + this.$route.meta.flag,
                 query: {

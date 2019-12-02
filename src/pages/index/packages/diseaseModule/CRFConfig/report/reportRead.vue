@@ -146,7 +146,7 @@ export default {
       // this.reportOjb = JSON.stringify(this.report) != '{}' && this.report.pages;
       this.reportOjb = JSON.stringify(this.report) != '{}' && this.report.portions;
     }
-    this.urlParameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+    this.urlParameter = JSON.parse(localStorage.getItem('reportFill')).urlParameter;
   },
   mounted() {
     this.backTop = document.querySelector('#content');
@@ -196,7 +196,7 @@ export default {
       },600)
     },
     onBackCaseManage() {
-      let backInfo = JSON.parse(sessionStorage.getItem('caseManage'))
+      let backInfo = JSON.parse(localStorage.getItem('caseManage'))
       this.$router.push({
         name:'caseManage',
         query:{

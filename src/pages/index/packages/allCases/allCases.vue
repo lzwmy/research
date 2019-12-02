@@ -729,7 +729,7 @@ export default {
         orgCode: row.orgCode,
         patientId: row.PATIENT_ID
       };
-      sessionStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
+      localStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
       window.open('./view360.html?patientId='+row.PATIENT_ID, '_blank');
     },
     openEnterGroupDialog () {

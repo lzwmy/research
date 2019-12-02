@@ -363,7 +363,7 @@ y
           let preview = {
             preview:'dialogPreview'
           }
-          sessionStorage.setItem('dialogPreview',JSON.stringify(preview))
+          localStorage.setItem('dialogPreview',JSON.stringify(preview))
         },
         //条目名称
         changeEntryName(obj,value,index){

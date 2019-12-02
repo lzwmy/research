@@ -104,7 +104,8 @@ export default {
         that.loading = false;
         if (data.code == '0') {
           that.dataList = data.data.diseaseSpecieses;
-          sessionStorage.setItem('researchList',JSON.stringify(that.dataList));
+          // localStorage.setItem('researchList',JSON.stringify(that.dataList));
+          that.$store.commit('saveDiseaseList',that.dataList)
         }
       } catch (error) {
         console.log(error);
@@ -122,7 +123,7 @@ export default {
     },
     //去授权
     toAuthorize() {
-      let menuList = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_MENULIST')).find(li=>{return li.menuName == '系统管理'})
+      let menuList = this.$store.state.user.menuList.find(li=>{return li.menuName == '系统管理'})
       let data = {
         fromRouter: {
             path: this.$route.path,
@@ -131,7 +132,7 @@ export default {
         menuList: menuList.children,
         title: '系统管理',
       }
-      sessionStorage.setItem('insideMenuData',JSON.stringify(data))
+      this.$store.commit('saveInsideData',params)
       this.$router.push('/userManage')
     },
     toLink(item) {
@@ -158,7 +159,7 @@ export default {
         },
         menuList: list
       }
-      sessionStorage.setItem('insideMenuData',JSON.stringify(params))
+      this.$store.commit('saveInsideData',params)
       this.getUserRoles()
       .then((res)=>{
         this.$store.commit('saveDiseaseInfo',{

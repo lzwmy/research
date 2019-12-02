@@ -106,7 +106,7 @@
             title:row.reportName,
             isModify:"displayShow"
           };
-          sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+          localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
           window.open('./patientForm.html');
         },
         //导出excel

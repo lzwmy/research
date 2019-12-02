@@ -190,7 +190,7 @@ export default {
             dialgoOrgFormRules: {
                 orgName: [{required: true, message:'请输入机构名称',trigger:'change'}]
             },
-            loginType: sessionStorage.getItem('CURR_LOGIN_TYPE') == 'disease'?'share':'local'
+            loginType: localStorage.getItem('CURR_LOGIN_TYPE') == 'disease'?'share':'local'
         }
     },
     components: {

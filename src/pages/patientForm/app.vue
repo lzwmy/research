@@ -26,7 +26,7 @@
         }
       },
       mounted() {
-        let titleName = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+        let titleName = JSON.parse(localStorage.getItem('reportFill')).urlParameter;
         document.getElementsByTagName('title')[0].innerHTML=titleName.patientName+titleName.title;
         this.$nextTick(function () {
           this.resize();

@@ -40,7 +40,7 @@ Vue.prototype.$addStorageEvent = function (type, key, data) {
     var newStorageEvent = document.createEvent('StorageEvent');
     const storage = {
       setItem: function (k, val) {
-        sessionStorage.setItem(k, val);
+        localStorage.setItem(k, val);
         // 初始化创建的事件
         newStorageEvent.initStorageEvent('setItem', false, false, k, null, val, null, null);
         // 派发对象
@@ -56,7 +56,7 @@ let initApp = async () => {
     //同步获取全局配置；
     await Global.getConfigJson();
     //获取URL
-    Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
+    Vue.prototype.baseURL = JSON.parse(localStorage.getItem('Global')).baseURL;
     // 初始化根vue
     new Vue({
       el: '#app',

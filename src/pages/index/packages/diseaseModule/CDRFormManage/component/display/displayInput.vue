@@ -47,7 +47,7 @@ export default {
     //判断控件是否绑定数据如果绑定则获取绑定数据，如果是继承绑定则进行递归获取父绑定
     //this.$route.query.patientId判断是否是报告编辑模式下
     // if(this.item.binding&&this.$route.query.patientId){
-    if(this.item.binding&&JSON.parse(sessionStorage.getItem('reportFill')).urlParameter.patientId){
+    if(this.item.binding&&JSON.parse(localStorage.getItem('reportFill')).urlParameter.patientId){
       this.rootBinding=this.recureBindingInfo();
       //判断是否自动获取数据
       if(this.crfIsNewReport){

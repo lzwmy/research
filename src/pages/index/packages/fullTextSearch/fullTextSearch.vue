@@ -272,7 +272,7 @@ export default {
         title:val.reportName,
         isModify:'displayNone'
       };
-      sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+      localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
       console.log(urlParameter);
       window.open('./patientForm.html');
     },

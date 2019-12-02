@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     renderTree (data) {
-      let USER_TYPE = JSON.parse(sessionStorage.getItem('BasePlatform_USERINFO')).USER_TYPE;
+      let USER_TYPE = JSON.parse(localStorage.getItem('BasePlatform_USERINFO')).USER_TYPE;
       let treeNode = [];// 存放根节点
       let treeArr = [];// 存放根节点
       let selectNodesArr = [];

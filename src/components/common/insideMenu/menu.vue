@@ -100,7 +100,7 @@ export default {
             }else if (this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1 && !this.$store.state.user.diseaseInfo.isAdmin) {
                 //多中心管理员
                 this.$emit('changeMenuList',this.menuList.concat(otherMenu.centerAdminMenu))
-            }else if(sessionStorage.getItem('CURR_LOGIN_TYPE') == 'disease' && this.$store.state.user.diseaseInfo.roles.indexOf('1') == -1){
+            }else if(localStorage.getItem('CURR_LOGIN_TYPE') == 'disease' && this.$store.state.user.diseaseInfo.roles.indexOf('1') == -1){
                 //分享登录，非管理员,删除crf配置页面
                 let menuList = this.menuList.filter(li=>{
                     return li.menuPath != '/crfConfig';
@@ -157,7 +157,7 @@ export default {
             });
         },
         onBack() {
-            if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {
+            if(localStorage.getItem('CURR_LOGIN_TYPE') == "research") {
                 return;
             }
             if(!this.fromRouter.path) {
@@ -176,7 +176,7 @@ export default {
                     path: this.fromRouter.path
                 })
             }
-            sessionStorage.removeItem('insideData');
+            localStorage.removeItem('insideData');
         }
     }
 };

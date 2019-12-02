@@ -172,8 +172,8 @@ export default {
 
     getFixedAssets1 () {
       let that = this;
-      let Global = JSON.parse(sessionStorage.getItem('Global'));
-      let CONSUMER_ID = sessionStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
+      let Global = JSON.parse(localStorage.getItem('Global'));
+      let CONSUMER_ID = localStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
       let data = {
         'BASEDATACLASS_CODE': that.BASEDATACLASS_CODE,
         //          "ITEM_CODE": that.ruleForm.ITEM_CODE1,
@@ -204,8 +204,8 @@ export default {
     },
     getFixedAssetsN (size, value) {
       let that = this;
-      let Global = JSON.parse(sessionStorage.getItem('Global'));
-      let CONSUMER_ID = sessionStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
+      let Global = JSON.parse(localStorage.getItem('Global'));
+      let CONSUMER_ID = localStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
       let data = {
         'BASEDATACLASS_CODE': that.BASEDATACLASS_CODE,
         'ITEM_CODE': value,

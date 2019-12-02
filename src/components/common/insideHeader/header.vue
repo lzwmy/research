@@ -65,7 +65,7 @@ export default {
         };
     },
     created () {
-        this.loginType = sessionStorage.getItem('CURR_LOGIN_TYPE')
+        this.loginType = localStorage.getItem('CURR_LOGIN_TYPE')
         this.getDataList()
         .then(()=>{
             this.dataList.forEach(item => { 

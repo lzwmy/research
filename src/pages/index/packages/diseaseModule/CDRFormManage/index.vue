@@ -196,7 +196,7 @@ export default {
       title:"",
       isModify:""
     };
-    sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+    localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
   }
 };
 </script>

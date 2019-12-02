@@ -367,7 +367,7 @@ export default {
                 title: row.reportName,
                 isModify:"displayShow"
             })
-            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter: data}));
+            localStorage.setItem('reportFill',JSON.stringify({urlParameter: data}));
             window.open('./patientForm.html');
         },
         async onChangeState(row) {

@@ -3,17 +3,21 @@ import utils from 'components/utils';
 import qs from 'qs';
 import { MessageBox, Message } from 'element-ui';
 import http from 'src/http';
+import store from '../../store/index'
 
 axios.defaults.timeout = 0;
 // `withCredentials` 表示跨域请求时是否需要使用凭证
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 // 默认情况下，axios将JavaScript对象序列化为JSON。 要以应用程序/ x-www-form-urlencoded格式发送数据，您可以使用以下选项之一。
 // 可以使用qs库对数据进行编码
 
 // http请求拦截器
 axios.interceptors.request.use(config => {
-  // loading
+  //请求头带上token 凭证
+  if (store.state.user.token) {
+    config.headers.common['token'] = utils.decrypt(store.state.user.token);
+  }
   return config;
 }, error => {
   return Promise.reject(error);
@@ -32,46 +36,58 @@ function checkStatus (response) {
     return response;
   }
   // 异常状态下，把错误信息返回去
+  Message({
+    type: 'error',
+    message: '网络异常 '+response.status,
+    duration: 2000
+  });
   return {
     status: -404,
     msg: '网络异常'
   };
 }
 
+/**
+ * SUCCESS(0, "Success"),
+  ERROR(1, "System error"),
+  AUTHZ_ERR(10, "Authz err"),
+  AUTHC_ERR(11, "Authc err"),
+  NO_TOKEN(12, "缺少凭证"),
+  TOKEN_INVALID(13, "凭证非法"),
+  NO_RIGHT(14, "权限不足"),
+  TOKEN_NOT_EXIST(15, "凭证无效"),
+  NO_AUTH(16, "未授权"),
+  ILLEGAL_REQ(19, "非法请求"),
+  ILLEGAL_PARAM(20, "Illegal param"),
+  UN_AUTHEN(30, "未经认证"),
+  BUSINESS_ERR(40, "业务异常");
+ */
 function checkCode (res) {
-  // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
-  if (res.status === -404) {
-    MessageBox.confirm(res.msg, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-      showCancelButton: false
-    }).then(() => {
+  switch(String(res.data.code)){
+    case '0': 
+      return res.data;
+    case '1': 
+      Message({message: '系统开小差了',duration: 2000});
+      return res.data;
+    case '20': 
+      Message({message: '接口参数异常',duration: 2000});
+      return res.data;
+    case '40': 
+      Message({message: '业务异常',duration: 2000});
+      return res.data;
+    default:  
+      // MessageBox.confirm(res.data.message, '提示', {
+      //   confirmButtonText: '确定',
+      //   type: 'warning',
+      //   showCancelButton: false,
+      //   callback: action => {
+      //     utils.ssoLogout();
+      //   }
+      // }).catch(() => {
+      //   utils.ssoLogout();
+      // }); 
       utils.ssoLogout();
-    }).catch((errors) => {
-      console.log(errors);
-      utils.ssoLogout();
-    });
-  } else if (res.data && res.data.code == '10') { // 登录超时的拦截
-    MessageBox.confirm(res.data.msg, '提示', {
-      confirmButtonText: '确定',
-      type: 'warning',
-      showCancelButton: false,
-      callback: action => {
-        utils.ssoLogout();
-      }
-    }).catch(() => {
-      utils.ssoLogout();
-    });
-  } else if (res.data && (res.data.code != 0)) { // 其他情况错误代码的拦截
-    Message({
-      message: res.data.msg,
-      duration: res.data.msg.length < 5 ? 1000 : res.data.msg.length * 60000 / 450
-    });
-    return res.data;
-  } else {
-    // 如果不需要除了data之外的数据，可以直接 return response.data
-    return res.data;
+      break ;
   }
 }
 
@@ -102,6 +118,7 @@ export default {
       }, config)).then(
         (response) => {
           return checkStatus(response);
+          // return checkCode(response);
         }
       ).then(
         (res) => {

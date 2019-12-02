@@ -123,9 +123,6 @@
         //新建模型
         createModel() {
           let diseaseId = this.$route.query.id;
-          /*let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
-            return item.id == diseaseId;
-          });*/
           this.$router.push({
             path:"/modelManage/configModel",
             query:{
@@ -152,7 +149,7 @@
         //跳转到编辑页面
         modifyModel(data) {
           let diseaseId = this.$route.query.id;
-          let dataList = JSON.parse(sessionStorage.getItem('researchList')).filter(item =>{
+          let dataList = this.$store.state.user.diseaseList.filter(item =>{
             return item.id == diseaseId;
           });
           // console.log(dataList[0]);

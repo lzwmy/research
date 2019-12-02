@@ -27,21 +27,24 @@
     <div class="container flex-between-center">
       <div class="content">
         <patientInfoDetail ref="refPatientInfoDetail" v-if="!showReportComponent" class="timeline"
-                           :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
+                          :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
         <report-list ref="patientDetail" v-if="showReportComponent" class="reportList"
-                     :reportFillData="reportFillData"></report-list>
+                    :reportFillData="reportFillData"></report-list>
         <div class="group_btn">
           <el-button type="primary" icon="icon iconfont iconzujian19" :class="!showReportComponent?'active':''"
-                     @click="handleComponent(false)"></el-button>
+                    @click="handleComponent(false)"></el-button>
           <el-button type="primary" icon="icon iconfont iconzujian18" :class="showReportComponent?'active':''"
-                     @click="handleComponent(true)"></el-button>
+                    @click="handleComponent(true)"></el-button>
         </div>
       </div>
       <div class="aside">
         <div class="top">
           <h3 class="flex-between-center">
             <span>随访提醒</span>
-            <i class="icon iconfont iconzujian14 cur_pointer" @click="showDialog"></i>
+            <div>
+              <i class="icon iconfont iconshezhi1 cur_pointer" @click="showDialog"></i>
+              <!-- <i class="icon iconfont iconshanchu1 cur_pointer"></i> -->
+            </div>
           </h3>
           <div class="li flex-start-start">
             <p><i class="icon iconfont iconshezhi"></i>设置</p>
@@ -57,7 +60,7 @@
             <p><i class="icon iconfont iconxitongguanlibeifen"></i>下次时间</p>
             <div class="cont">
               <p class="cur_pointer" @click="toReportFill(remindDetail.remindDataRsp)"
-                 v-if="remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate">{{
+                v-if="remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate">{{
                 remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate}}</p>
               <em v-else>(空)</em>
             </div>
@@ -155,8 +158,7 @@
         </el-form-item>
         <el-form-item label="报告名称：" class="fill" prop="name">
           <el-select v-model="dialogReportForm.name">
-            <el-option v-for="(item, index) in reportSelectList" :label="item.name" :value="item.id"
-                       :key="index"></el-option>
+            <el-option v-for="(item, index) in reportSelectList" :label="item.name" :value="item.id" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="就诊时间：" class="fill" prop="time">
@@ -204,8 +206,7 @@
         <div class="line">
           <el-form-item label="定时模式:" label-width="72px" class="inline top">
             <el-select v-model="dialogFrom.model" @change="selectChange">
-              <el-option v-for="(item, index) in modelTpye" :label="item.label" :value="item.value"
-                         :key="index"></el-option>
+              <el-option v-for="(item, index) in modelTpye" :label="item.label" :value="item.value" :key="index"></el-option>
             </el-select>
           </el-form-item>
           <div v-if="dialogFrom.model=='TIME'">
@@ -249,8 +250,7 @@
             </el-form-item>
             <el-form-item label-width="0" class="inline" prop="value2">
               <el-select v-model="dialogFrom.value2" class="select">
-                <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1"
-                           :key="index"></el-option>
+                <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1" :key="index"></el-option>
               </el-select>
               号
             </el-form-item>
@@ -265,11 +265,24 @@
             </el-form-item>
             <el-form-item label-width="0" class="inline" prop="value2">
               <el-select v-model="dialogFrom.value2" class="select">
-                <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1"
-                           :key="index"></el-option>
+                <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1" :key="index"></el-option>
               </el-select>
               日
             </el-form-item>
+          </div>
+          <div v-else-if="dialogFrom.model=='UNEVEN'">
+          <el-form-item label-width="30px" class="inline year" prop="value1">
+            间隔
+            <el-input v-model="dialogFrom.value1" style="width: 200px;" placeholder="以逗号分隔,如: 1,2,3"></el-input>
+          </el-form-item>
+          <el-form-item label-width="0" class="inline" prop="value2">
+            <el-select v-model="dialogFrom.value2" class="select">
+              <el-option label="天" value="DAY"></el-option>   
+              <el-option label="周" value="WEEK"></el-option>
+              <el-option label="月" value="MONTH"></el-option>
+              <el-option label="年" value="YEAR"></el-option>
+            </el-select>
+          </el-form-item>
           </div>
         </div>
         <div class="line" v-if="dialogFrom.model!= 'TIME'">
@@ -288,10 +301,9 @@
         </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="onSaveRemind('dialogFrom')" size="mini"
-                               :disabled="dialogFrom.loading">保 存</el-button>
-                    <el-button @click="onClose('dialogFrom')" size="mini">关 闭</el-button>
-                </span>
+        <el-button type="primary" @click="onSaveRemind('dialogFrom')" size="mini" :disabled="dialogFrom.loading">保 存</el-button>
+        <el-button @click="onClose('dialogFrom')" size="mini">关 闭</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -389,6 +401,10 @@
           {
             label: '按年',
             value: 'YEAR',
+          },
+          {
+            label: '非均匀随访',
+            value: 'UNEVEN', 
           }
         ],
         remindDetail: {},
@@ -654,6 +670,8 @@
             } else {
               range = this.dialogFrom.range;
             }
+            // console.log()
+            // return;
             let formData = {
               id: this.dialogFrom.id ? this.dialogFrom.id : undefined,
               remindName: this.dialogFrom.remindDateName,
@@ -717,7 +735,7 @@
           age: row.age,
           isModify: "displayShow"
         }
-        sessionStorage.setItem('reportFill', JSON.stringify({urlParameter}));
+        localStorage.setItem('reportFill', JSON.stringify({urlParameter}));
         let urlParameters = "cacheData=" + false + "&formId=" + row.crfId + "&reportId=" + row.id + "&groupId=" + row.groupId + "&subjectId=" + row.subjectId + "&diseaseId=" + row.diseaseId + "&patientName=" + row.patientName + "&patientId=" + row.patientId + "&identify=" + this.identify + "&from=" + 'caseManage' + "&diseaseName=" + row.diseaseName + "&subjectName=" + row.subjectName + "&groupName=" + row.groupName + "&title=" + row.reportName + "&isModify=" + "displayShow";
         window.open('./patientForm.html?' + urlParameters);
       },
@@ -734,7 +752,7 @@
           patientId: this.dataInfo.patientId,
           diseaseId: this.dataInfo.diseaseId,
         };
-        sessionStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
+        localStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
         window.open('./view360.html?patientId=' + this.dataInfo.patientId, '_blank');
       },
       //保存功能
@@ -1082,7 +1100,12 @@
           font-size: 16px;
 
           i {
-            color: rgba(151, 155, 170, 1)
+            color: #979BAA;
+            font-size: 18px;
+            padding-left: 10px;
+            &:hover {
+              color: #00bae3;
+            }
           }
         }
 
@@ -1278,7 +1301,7 @@
           }
 
           .el-input--suffix {
-            width: 110px;
+            width: 120px;
           }
         }
 

@@ -158,8 +158,8 @@ export default {
               let result = await this.$http.remindChangeStatus({
                   "id": this.urlParameter.id,
                   "status": val == '终止'?3:2,
-                  "userId": JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).userId,
-                  "userName": JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).name
+                  "userId": this.$store.state.user.userLogin.userId,
+                  "userName": this.$store.state.user.userLogin.name
               });
               if (result && result.code == "0") {
                 this.$message.success(val+"成功!");
@@ -182,7 +182,7 @@ export default {
       // $(".binding-box").max-height($(window).height()-160);
     },
     initPage() {
-      this.urlParameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+      this.urlParameter = JSON.parse(localStorage.getItem('reportFill')).urlParameter;
       this.patientId = "";
       this.groupId = "";
       this.formId = this.urlParameter.formId;
@@ -206,7 +206,7 @@ export default {
     },
     //返回上一级
     backingOut() {
-      let backInfo = JSON.parse(sessionStorage.getItem('caseManage'));
+      let backInfo = JSON.parse(localStorage.getItem('caseManage'));
       this.$router.push({
         name:'caseManage',
         query:{
@@ -309,8 +309,8 @@ export default {
         this.report.id = this.urlParameter.id;
         this.report.reportName = this.urlParameter.reportName;
         this.report.sourceType = 'pc';
-        this.report.creatorName = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).name;
-        this.report.creatorId = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).userId;
+        this.report.creatorName = this.$store.state.user.userLogin.name;
+        this.report.creatorId = this.$store.state.user.userLogin.userId;
         let result = await this.$http.saveFollowUpReportData(this.report); 
         if (result && result.code == "0") {
           this.$message.success("保存成功");

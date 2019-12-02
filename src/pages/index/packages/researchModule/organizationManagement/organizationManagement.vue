@@ -193,7 +193,7 @@ export default {
                 this.getAllUsers();
             }
             //手机登录时
-            if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "research") {
+            if(localStorage.getItem('CURR_LOGIN_TYPE') == "research") {
                 this.getOrgListShare()
                 .then(()=>{
                     this.orgList.length != 0 && this.selectGroup(this.orgList[0]);

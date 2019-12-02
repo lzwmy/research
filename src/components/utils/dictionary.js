@@ -22,7 +22,7 @@ dictionaryCache.set('GENDER', [
 
 // 请求公用方法
 const getOption = (datas, options, resolve, reject) => {
-  let Global = JSON.parse(sessionStorage.getItem('Global'));
+  let Global = JSON.parse(localStorage.getItem('Global'));
   let sendAxios = (datas, options, resolve, reject) => {
     axios({
       method: 'post',
@@ -38,7 +38,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'DOSAGE', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'DOSAGE', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'DEFAULTUSAGE' && datas && datas.length > 0) {
@@ -46,7 +46,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'DEFAULTUSAGE', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'DEFAULTUSAGE', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'STATISTICSCATEGORY' && datas && datas.length > 0) {
@@ -54,7 +54,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'STATISTICSCATEGORY', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'STATISTICSCATEGORY', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'STD_TYPE' && datas && datas.length > 0) {
@@ -62,7 +62,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'STD_TYPE', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'STD_TYPE', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'STD_CATEGORY' && datas && datas.length > 0) {
@@ -70,7 +70,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'STD_CATEGORY', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'STD_CATEGORY', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'DEPT_CATEGORY' && datas && datas.length > 0) {
@@ -78,7 +78,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'DEPT_CATEGORY', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'DEPT_CATEGORY', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'GENERAL_CATEGORY' && datas && datas.length > 0) {
@@ -86,7 +86,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'GENERAL_CATEGORY', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'GENERAL_CATEGORY', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'MEDICAL_RESOURCE' && datas && datas.length > 0) {
@@ -94,7 +94,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'MEDICAL_RESOURCE', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'MEDICAL_RESOURCE', JSON.stringify(itemCache));
           resolve(itemCache);
         }
         if (options == 'STD_GROUP' && datas && datas.length > 0) {
@@ -102,7 +102,7 @@ const getOption = (datas, options, resolve, reject) => {
           for (let i = 0, len = datas.length; i < len; i++) {
             itemCache.push({'code': datas[i].ITEM_CODE, 'desc': datas[i].ITEM_NAME});
           }
-          sessionStorage.setItem(Global.iam_clientid + 'STD_GROUP', JSON.stringify(itemCache));
+          localStorage.setItem(Global.iam_clientid + 'STD_GROUP', JSON.stringify(itemCache));
           resolve(itemCache);
         }
       }
@@ -112,7 +112,7 @@ const getOption = (datas, options, resolve, reject) => {
     });
   };
   if (options == 'DOSAGE') {
-    let PRINCIPAL_TITLE_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'DOSAGE'));
+    let PRINCIPAL_TITLE_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'DOSAGE'));
     if (PRINCIPAL_TITLE_LIST && PRINCIPAL_TITLE_LIST.length > 0) {
       resolve(PRINCIPAL_TITLE_LIST);
     } else {
@@ -120,7 +120,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'DEFAULTUSAGE') {
-    let PRINCIPAL_TITLE_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'DEFAULTUSAGE'));
+    let PRINCIPAL_TITLE_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'DEFAULTUSAGE'));
     if (PRINCIPAL_TITLE_LIST && PRINCIPAL_TITLE_LIST.length > 0) {
       resolve(PRINCIPAL_TITLE_LIST);
     } else {
@@ -128,7 +128,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'STATISTICSCATEGORY') {
-    let PRINCIPAL_TITLE_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'STATISTICSCATEGORY'));
+    let PRINCIPAL_TITLE_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'STATISTICSCATEGORY'));
     if (PRINCIPAL_TITLE_LIST && PRINCIPAL_TITLE_LIST.length > 0) {
       resolve(PRINCIPAL_TITLE_LIST);
     } else {
@@ -136,7 +136,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'STD_TYPE') {
-    let STD_TYPE_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'STD_TYPE'));
+    let STD_TYPE_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'STD_TYPE'));
     if (STD_TYPE_LIST && STD_TYPE_LIST.length > 0) {
       resolve(STD_TYPE_LIST);
     } else {
@@ -144,7 +144,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'STD_CATEGORY') {
-    let STD_CATEGORY_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'STD_CATEGORY'));
+    let STD_CATEGORY_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'STD_CATEGORY'));
     if (STD_CATEGORY_LIST && STD_CATEGORY_LIST.length > 0) {
       resolve(STD_CATEGORY_LIST);
     } else {
@@ -152,7 +152,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'DEPT_CATEGORY') {
-    let DEPT_CATEGORY_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'DEPT_CATEGORY'));
+    let DEPT_CATEGORY_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'DEPT_CATEGORY'));
     if (DEPT_CATEGORY_LIST && DEPT_CATEGORY_LIST.length > 0) {
       resolve(DEPT_CATEGORY_LIST);
     } else {
@@ -160,7 +160,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'GENERAL_CATEGORY') {
-    let GENERAL_CATEGORY_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'GENERAL_CATEGORY'));
+    let GENERAL_CATEGORY_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'GENERAL_CATEGORY'));
     if (GENERAL_CATEGORY_LIST && GENERAL_CATEGORY_LIST.length > 0) {
       resolve(GENERAL_CATEGORY_LIST);
     } else {
@@ -168,7 +168,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'MEDICAL_RESOURCE') {
-    let MEDICAL_RESOURCE_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'MEDICAL_RESOURCE'));
+    let MEDICAL_RESOURCE_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'MEDICAL_RESOURCE'));
     if (MEDICAL_RESOURCE_LIST && MEDICAL_RESOURCE_LIST.length > 0) {
       resolve(MEDICAL_RESOURCE_LIST);
     } else {
@@ -176,7 +176,7 @@ const getOption = (datas, options, resolve, reject) => {
     }
   }
   if (options == 'STD_GROUP') {
-    let STD_GROUP_LIST = JSON.parse(sessionStorage.getItem(Global.iam_clientid + 'STD_GROUP'));
+    let STD_GROUP_LIST = JSON.parse(localStorage.getItem(Global.iam_clientid + 'STD_GROUP'));
     if (STD_GROUP_LIST && STD_GROUP_LIST.length > 0) {
       resolve(STD_GROUP_LIST);
     } else {
@@ -188,8 +188,8 @@ const getOption = (datas, options, resolve, reject) => {
 // 药物剂型
 const GET_DOSAGE = () => {
   return new Promise((resolve, reject) => {
-    let Global = JSON.parse(sessionStorage.getItem('Global'));
-    let CONSUMER_ID = sessionStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
+    let Global = JSON.parse(localStorage.getItem('Global'));
+    let CONSUMER_ID = localStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
     let data = {
       'BASEDATACLASS_CODE': 'CV08.50.002',
       'SERVICE_CODE': 'bull.MedBaseInterface.Base_Data_Detail_Info',
@@ -202,8 +202,8 @@ const GET_DOSAGE = () => {
 // 默认用法
 const GET_DEFAULTUSAGE = () => {
   return new Promise((resolve, reject) => {
-    let Global = JSON.parse(sessionStorage.getItem('Global'));
-    let CONSUMER_ID = sessionStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
+    let Global = JSON.parse(localStorage.getItem('Global'));
+    let CONSUMER_ID = localStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
     let data = {
       'BASEDATACLASS_CODE': 'CV06.00.102',
       'SERVICE_CODE': 'bull.MedBaseInterface.Base_Data_Detail_Info',
@@ -216,8 +216,8 @@ const GET_DEFAULTUSAGE = () => {
 // 统计分类
 const GET_STATISTICSCATEGORY = () => {
   return new Promise((resolve, reject) => {
-    let Global = JSON.parse(sessionStorage.getItem('Global'));
-    let CONSUMER_ID = sessionStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
+    let Global = JSON.parse(localStorage.getItem('Global'));
+    let CONSUMER_ID = localStorage.getItem(Global.iam_clientid + '_CONSUMER_ID');
     let data = {
       'BASEDATACLASS_CODE': 'ZDY_MEDICATION_CATEGORY',
       'SERVICE_CODE': 'bull.MedBaseInterface.Base_Data_Detail_Info',

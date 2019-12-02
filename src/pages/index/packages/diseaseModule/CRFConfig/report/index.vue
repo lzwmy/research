@@ -74,7 +74,7 @@
             title: "",
             isModify:"displayShow"
           }
-          sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+          localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
           this.$router.push({
             path:"/createReport",
             query:{

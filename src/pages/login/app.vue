@@ -68,8 +68,8 @@ export default {
     };
   },
   beforeCreate () {
-    if (JSON.parse(window.sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO'))) {
-      if (JSON.parse(window.sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO')).sessionId) {
+    if (this.$store.state.user.userLogin) {
+      if (this.$store.state.user.userLogin.sessionId) {
         let url = utils.getQuery('url');
         if (url) {
           window.location.href = url;
@@ -80,8 +80,8 @@ export default {
     }
   },
   created () {
-    this.logo = JSON.parse(sessionStorage.getItem('Global')).logo;
-    this.title = JSON.parse(sessionStorage.getItem('Global')).title;
+    this.logo = JSON.parse(localStorage.getItem('Global')).logo;
+    this.title = JSON.parse(localStorage.getItem('Global')).title;
   },
   mounted () {
     this.changeValidCode();
@@ -127,16 +127,21 @@ export default {
         password: encPassword,
         validCode: that.form.validCode
       };
-      that.$post('/auth/login.do', that.$format(params), false).then((response) => {
-        let data = response;
-        if (data && data.code == 0 && data.data) {
+
+      this.$axios({
+        method: 'post',
+        url: '/auth/login.do',
+        data: that.$format(params)
+      }).then((res)=>{
+        if(res.data && res.data.code == 0) {
           let userLogin = {
-            name: data.data.name,
-            permissionCodes: data.data.permissionCodes,
-            roleCodes: data.data.roleCodes,
-            sessionId: data.data.sessionId,
-            userId: data.data.userId
+            name: res.data.data.name,
+            permissionCodes:  res.data.data.permissionCodes,
+            roleCodes:  res.data.data.roleCodes,
+            sessionId:  res.data.data.sessionId,
+            userId:  res.data.data.userId,
           };
+          that.$store.commit('saveToken',res.data.data.token) 
           that.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
           let url = utils.getQuery('url');
           if (url) {
@@ -144,10 +149,15 @@ export default {
           } else {
             window.location.href = './index.html#/index';
           }
-        } else {
-          if(data.code == 40) {
+        }else {
+          //验证码错误
+          if(res.data.code == 40) {
             document.querySelector('#validCode').focus();
           }
+          this.$message({
+            message: res.data.msg || '登录失败',
+            type: 'warning'
+          });
           that.changeValidCode();
         }
       }).catch(function (error) {

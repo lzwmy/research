@@ -349,16 +349,15 @@
       charts
     },
     created() {
-      if(!JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).roles) {
+      if(!this.$store.state.user.researchInfo.roles) {
         this.getProjectInfo()
         .then(pro=>{
-          console.log(pro)
           this.getUserInfo()
           .then(res=>{
             this.$store.commit('saveresearchInfo',{
-              subjectInfoId: JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId,
+              subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId,
               centerModel: pro.centerPattern,
-              roles: res
+              roles: res? res: []
             });
           })
         })

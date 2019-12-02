@@ -1351,7 +1351,7 @@ export default {
       }
       console.log(row)
       that.reportFollowiUpInfo = row;
-      sessionStorage.setItem('caseManage',JSON.stringify(this.$route.query));
+      localStorage.setItem('caseManage',JSON.stringify(this.$route.query));
       that.reportFillData = {
         cacheData: false,
         formId: that.selectLabGroupFormId,
@@ -1367,7 +1367,7 @@ export default {
       that.showReportFollowiUp = true;
       return;
       if (that.selectLabGroupId) {
-        sessionStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
+        localStorage.setItem('reportFill',JSON.stringify({urlParameter:this.reportFillData}));
         window.open('./patientForm.html');
       }
     },
@@ -1506,7 +1506,7 @@ export default {
         patientId: row.PATIENT_ID,
         diseaseId: this.currentDiseaseId,
       };
-      sessionStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
+      localStorage.setItem('VIEW360_QUERY', JSON.stringify(obj));
       window.open('./view360.html?patientId='+row.PATIENT_ID, '_blank');
     },
     //显示添加患者弹框

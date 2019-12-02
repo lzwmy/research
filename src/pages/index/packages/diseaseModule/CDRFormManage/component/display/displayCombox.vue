@@ -137,7 +137,7 @@ export default {
     //this.$route.query.patientId判断是否是报告编辑模式下
 
     // if(this.item.binding&&this.$route.query.patientId){
-    if(this.item.binding&&JSON.parse(sessionStorage.getItem('reportFill')).urlParameter.patientId){
+    if(this.item.binding&&JSON.parse(localStorage.getItem('reportFill')).urlParameter.patientId){
       this.rootBinding=this.recureBindingInfo();
       //判断是否自动获取数据
       if(this.crfIsNewReport){

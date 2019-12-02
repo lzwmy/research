@@ -56,9 +56,9 @@ export default {
     };
   },
   created () {
-    this.logo = JSON.parse(sessionStorage.getItem('Global')).logo;
-    this.title = JSON.parse(sessionStorage.getItem('Global')).title;
-    sessionStorage.setItem('CURR_DISEASE_INFO', JSON.stringify({ diseaseId: utils.getQuery('id')}));
+    this.logo = JSON.parse(localStorage.getItem('Global')).logo;
+    this.title = JSON.parse(localStorage.getItem('Global')).title;
+    localStorage.setItem('CURR_DISEASE_INFO', JSON.stringify({ diseaseId: utils.getQuery('id')}));
   },
   mounted () {
   },
@@ -78,30 +78,44 @@ export default {
       });
     },
     handleLogin() {
+      let that = this;
       let params = {
         code: this.form.validCode,
         phoneNumber: this.form.phoneNumber,
         id: utils.getQuery('id'),
         enterType: 1
       };
-      this.$post('/auth/subject/login.do', this.$format(params), false).then((res) => {
-        if (res && res.code == 0 && res.data) {
+
+      this.$axios({
+        method: 'post',
+        url: '/auth/subject/login.do',
+        data: that.$format(params)
+      }).then((res)=>{
+        if(res.data && res.data.code == 0) {
           let userLogin = {
-            name: res.data.name,
-            permissionCodes: res.data.permissionCodes,
-            roleCodes: res.data.roleCodes,
-            sessionId: res.data.sessionId,
-            userId: res.data.userId
+            name: res.data.data.name,
+            permissionCodes:  res.data.data.permissionCodes,
+            roleCodes:  res.data.data.roleCodes,
+            sessionId:  res.data.data.sessionId,
+            userId:  res.data.data.userId,
           };
-          this.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
+          that.$store.commit('saveToken',res.data.data.token) 
+          that.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
           window.location.href = './index.html#/projectProgress';
-          return;
-        } else {
-          if(res.code == 40) {
+          return
+        }else {
+          //验证码错误
+          if(res.data.code == 40) {
             document.querySelector('#validCode').focus();
           }
+          this.$message({
+            message: res.data.msg || '登录失败',
+            type: 'warning'
+          });
+          that.changeValidCode();
         }
       }).catch(function (error) {
+        that.changeValidCode();
         console.log(error);
       });
     },
@@ -132,7 +146,7 @@ export default {
             }
           }, 1000);
         } else {
-          if(data.code == 40) {
+          if(res.code == 40) {
             document.querySelector('#validCode').focus();
           }
           this.$mes('error','验证码发送失败');

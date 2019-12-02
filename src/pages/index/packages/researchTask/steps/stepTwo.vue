@@ -65,7 +65,7 @@ export default {
         }
     },
     created() {
-        this.actionUrl =  JSON.parse(sessionStorage.getItem('Global')).baseURL + '/subject/info/uploadFile.do';
+        this.actionUrl =  JSON.parse(localStorage.getItem('Global')).baseURL + '/subject/info/uploadFile.do';
 
         //项目回显数据 
         if(this.formData.proType == 'edit') {

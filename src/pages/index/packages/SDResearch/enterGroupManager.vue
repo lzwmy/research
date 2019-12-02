@@ -416,7 +416,7 @@ export default {
         title:row.formName,
         isModify:'displayShow'
       };
-      sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+      localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
       let urlParameters = "cacheData="+false+"&formId="+row.formId+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+that.ruleForm.patientName+"&patientId="+that.ruleForm.patientId+"&identify="+that.ruleForm.identify+"&from="+'caseManage'+"&title="+row.formName+"&isModify="+"displayShow";
       // window.open('./patientForm.html?'+urlParameters);
       window.open('./patientForm.html');

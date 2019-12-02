@@ -105,7 +105,7 @@ export default {
   },
   computed: {},
   created () {
-    let query = JSON.parse(sessionStorage.getItem('VIEW360_QUERY'));
+    let query = JSON.parse(localStorage.getItem('VIEW360_QUERY'));
     this.recordType = this.recordType1;
     this.dynamicCom.comData = {
       orgCode: query?query.orgCode:"",
@@ -126,7 +126,7 @@ export default {
     })
   },
   beforeDestroy() {
-    // sessionStorage.removeItem('VIEW360_QUERY');
+    // localStorage.removeItem('VIEW360_QUERY');
   },
   mounted () {
   },

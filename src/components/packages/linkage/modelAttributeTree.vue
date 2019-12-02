@@ -88,7 +88,7 @@ export default {
       }
 
       if (typeLevel === 0 && !typeLevelZeroRefresh) {
-        let TREE_ZERO = JSON.parse(sessionStorage.getItem('TREE_ZERO'));
+        let TREE_ZERO = JSON.parse(localStorage.getItem('TREE_ZERO'));
         if (TREE_ZERO && TREE_ZERO.length > 0) {
           this.dataList = TREE_ZERO;
           return false;
@@ -108,7 +108,7 @@ export default {
           }
           if (typeLevel === 0) {
             that.dataList = list;
-            sessionStorage.setItem('TREE_ZERO', JSON.stringify(list));
+            localStorage.setItem('TREE_ZERO', JSON.stringify(list));
           } else if (typeLevel === 2) {
             list.forEach(item => {
               item.leaf = true;

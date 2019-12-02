@@ -313,7 +313,7 @@
             dataList:this.dataList||[],
             crfName:this.crfName || "",
           };
-          sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));
+          localStorage.setItem('temporarySave',JSON.stringify(temporarySave));
           this.$router.push({
             path:'/basisConfig',
             query:{
@@ -382,7 +382,7 @@
                 dataList:[],
                 crfName:"",
               };
-              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
+              localStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
               that.idsUpdateData = 0;
               //保存成功返回 报告页
               // window.history.go(-1);
@@ -425,7 +425,7 @@
                 dataList:[],
                 crfName:"",
               };
-              sessionStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
+              localStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
               that.idsUpdateData = 0;
               //保存成功返回 报告页
               // window.history.go(-1);

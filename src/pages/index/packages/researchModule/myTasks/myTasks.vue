@@ -180,7 +180,7 @@ export default {
                     "groupId": this.form.groupId,
                     "stageId": this.form.stageId=='全部阶段'?'':this.form.stageId,
                     "pointId": this.form.pointId=='全部随访点'?'':this.form.pointId,
-                    "enterType": sessionStorage.getItem('CURR_LOGIN_TYPE') == "research"?0:1
+                    "enterType": localStorage.getItem('CURR_LOGIN_TYPE') == "research"?0:1
                 });
                 if (res.code == '0') {
                     this.collapseList = res.data;

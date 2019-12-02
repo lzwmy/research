@@ -170,13 +170,13 @@ export default {
   },
   watch: {},
   created () {
-    this.logo = JSON.parse(sessionStorage.getItem('Global')).logo;
-    this.title = JSON.parse(sessionStorage.getItem('Global')).title;
+    this.logo = JSON.parse(localStorage.getItem('Global')).logo;
+    this.title = JSON.parse(localStorage.getItem('Global')).title;
   },
   methods: {
     submit () {
       let that = this;
-      let CURR_USER = JSON.parse(sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO'));
+      let CURR_USER = this.$store.state.user.userLogin;
       this.$refs.ruleForm.validate(async (valid) => {
         if (!valid) {
           return false;

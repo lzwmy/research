@@ -86,13 +86,13 @@ let initApp = async () => {
     //同步验证浏览器自带的session有没有在登录有效期；
     // await utils.validIndexAuthenticated();
     // 获取公共的 baseURL
-    Vue.prototype.baseURL = JSON.parse(sessionStorage.getItem('Global')).baseURL;
+    Vue.prototype.baseURL = JSON.parse(localStorage.getItem('Global')).baseURL;
     //是否为科研项目登录
-    let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
-    let  isDisease = sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease";
+    let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
+    let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
     
     //同步获取菜单；(非科研项目登录非专病登录)
-    if(!isResearch && !isDisease) {
+    if(!isResearch && !isDisease && store.state.user.token) {
       await utils.loadMenuInfo();
     }
     loadingInstance.close();// 在获取权限后关闭loading
@@ -107,14 +107,13 @@ let initApp = async () => {
         next();
       } else {
         // 该路由需要登录权限，所以校验是否登录，如登录则模拟登录
-        if (JSON.parse(window.sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO'))) {
-          store.commit('USER_SIGNIN', window.sessionStorage.getItem('CURR_USER_RESEARCH_USERINFO'));
+        if (store.state.user.token) {
           //如果是从科研项目入口登录，则不能进入到其它模块
           if(isResearch && to.meta.belongToGroup != 'researchTask') {
             next('/projectProgress');
           //如果是从专病科研入口登录，则不能进入到其它模块
-          }else if(sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease" && to.meta.belongToGroup != 'insideView') {
-            next('/diseaseChart?id='+JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId);
+          }else if(localStorage.getItem('CURR_LOGIN_TYPE') == "disease" && to.meta.belongToGroup != 'insideView') {
+            next('/diseaseChart?id='+store.state.user.diseaseInfo.diseaseId);
           }else {
             next();
           }
@@ -132,7 +131,7 @@ let initApp = async () => {
       render: h => h(App)
     });
   } catch (err) {
-    // 关闭loading;
+    //关闭loading;
     loadingInstance.close();
     MessageBox.confirm('系统错误，请联系管理员！', '提示', {
       confirmButtonText: '确定',
@@ -142,7 +141,6 @@ let initApp = async () => {
     }).then(() => {
       utils.ssoLogout();
     }).catch((errors) => {
-      console.log(errors);
       utils.ssoLogout();
     });
   }

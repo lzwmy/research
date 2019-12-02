@@ -365,7 +365,7 @@ export default {
                 patientStatus: parseInt(this.form.patientState),
                 searchType: parseInt(this.form.radio),
                 keyword: this.form.keyword,
-                enterType: sessionStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
+                enterType: localStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
             };
             try {
                 let res = await that.$http.researchObjectTable(formData);
@@ -430,7 +430,7 @@ export default {
                 title: crfName,
                 isModify:"displayShow"
             }
-            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+            localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
             window.open('./subjectForm.html');
         },
         //操作添加研究对象下拉项

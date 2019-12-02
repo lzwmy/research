@@ -62,7 +62,7 @@
           lowerLimb:this.$refs.pasi.lowerLimb
         };
         let formData = {
-          reportId:JSON.parse(sessionStorage.getItem('reportFill')).urlParameter.reportId,
+          reportId:JSON.parse(localStorage.getItem('reportFill')).urlParameter.reportId,
           jsonData:JSON.stringify(jsonData),
           scoreName:this.item.baseProperty.scoreInfo.scoreName,
           score:this.$refs.pasi.total

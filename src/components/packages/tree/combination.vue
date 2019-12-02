@@ -25,7 +25,7 @@ export default {
     };
   },
   created () {
-    // let list = sessionStorage.getItem("combinationList")
+    // let list = localStorage.getItem("combinationList")
     // if (list && JSON.parse(list).length > 0) {
     //    this.allDataList = JSON.parse(list)
     //    this.dataList = this.getChildren(this.allDataList, 'area_')

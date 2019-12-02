@@ -160,7 +160,7 @@
             title:row.reportName,
             isModify:"displayShow"
           };
-          sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+          localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
           let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&groupId="+null+"&subjectId="+null+"&diseaseId="+this.$route.query.id+"&patientName="+row.patientName+"&patientId="+row.reportId+"&identify="+null+"&reportId="+row.reportId+"&from="+'caseManage'+"&title="+row.reportName+"&isModify="+"displayShow";
           window.open('./patientForm.html?'+urlParameters);
         },

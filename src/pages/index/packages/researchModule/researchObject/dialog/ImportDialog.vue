@@ -80,23 +80,6 @@ export default {
                 this.$notice('导出失败')
             }
         },
-        //导入数据
-        async importData() {
-            this.importLoading = true;
-            // try{
-            //     let res = await this.$http.researchObjectImportData({
-            //         subjectId: this.$store.state.user.researchInfo.subjectInfoId,
-            //         crfId: '',
-            //         subjectGroupId: '',
-            //         file: ''
-            //     });
-            //     this.importLoading = false;
-            // }catch (error) {
-            //     this.importLoading = false;
-            //     console.log(error)
-            //     this.$notice('导入失败')
-            // }
-        },
         //获取分组列表
         async getGroupList() {
             this.groupLoading = true;

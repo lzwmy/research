@@ -273,7 +273,7 @@
         }
       },
       jumpPrint(data) {
-        sessionStorage.setItem('content',JSON.stringify(data));
+        localStorage.setItem('content',JSON.stringify(data));
         window.open("./printPage.html");
       },
       handleCurrentChange(val) {

@@ -511,7 +511,7 @@
         },
         //保存
         saveBtn() {
-          // let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+          // let temporarySave = JSON.parse(localStorage.getItem('temporarySave'));
           // 验证表单名称是否填写完成
           if(this.verificationData(this.basisDataList) == false || this.portionName == "") {
             this.$message.info('表单名称不能为空');
@@ -687,7 +687,7 @@
           if(this.$route.query.portionId!=='0') {
             this.previewPortionData();
           }else{
-            let temporarySave = JSON.parse(sessionStorage.getItem('temporarySave'));
+            let temporarySave = JSON.parse(localStorage.getItem('temporarySave'));
             let i = this.$route.query.i;
             let portionObj = temporarySave.dataList[i];
             console.log(portionObj)

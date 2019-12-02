@@ -351,7 +351,7 @@ export default {
                 visitStatus: this.form.visitStatus==''?undefined:this.form.visitStatus,
                 searchType: parseInt(this.form.radio),
                 content: this.form.keyword,
-                enterType: sessionStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
+                enterType: localStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
             };
             try {
                 let res = await that.$http.followUpManagementTable(formData);
@@ -501,7 +501,7 @@ export default {
                 updateTime: point.updateTime || '',
                 updator: point.updator || '',
             }
-            sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+            localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
             window.open('./subjectForm.html');
         },
         //表单编辑成功回调

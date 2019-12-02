@@ -1,6 +1,7 @@
 // import Vue from 'vue';
-import store from '../../store';
+import store from '../../store/index';
 import { MessageBox, Menu } from 'element-ui';
+import CryptoJS from '../../../static/js/crypto-js'
 
 const vm = new Vue();
 
@@ -339,47 +340,33 @@ const menuLevel3 = function(menuList,arr) {
       })
     })
   })
-
+  
 };
 
 // 获取菜单列表
 const loadMenuInfo = () => {
-  return new Promise((resolve, reject) => {
-    vm.$post('/auth/menus.do').then((response) => {
-      let data = response;
-      if (data.code == 0) {
-        let menuList = data.data.menus;
-        if (menuList.length > 0 || sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease") {
-          let handleAfrerMenuList = handleMenuList(menuList);
-          store.commit({
-            type: 'saveMenuList',
-            params: handleAfrerMenuList
-          });
-          resolve(handleAfrerMenuList);
+    return new Promise((resolve, reject) => {
+      vm.$post('/auth/menus.do').then((response) => {
+        let data = response;
+        if (data.code == 0) {
+          let menuList = data.data.menus;
+          if (menuList.length > 0) {
+            let handleAfrerMenuList = handleMenuList(menuList);
+            store.commit({
+              type: 'saveMenuList',
+              params: handleAfrerMenuList
+            });
+            resolve(handleAfrerMenuList);
+          } 
         } else {
-          handleSsoLogout();
+          ssoLogout();
         }
-      } else {
-        handleSsoLogout();
-      }
-    }).catch(() => {
-      handleSsoLogout();
-    });
+      }).catch((err) => {
+        ssoLogout();
+      });
   });
 };
 
-const handleSsoLogout = () =>{
-  MessageBox.confirm('系统错误，请联系系统管理员！', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-    showCancelButton: false
-  }).then(() => {
-    ssoLogout();
-  }).catch((errors) => {
-    ssoLogout();
-  });
-}
 
 /**
  * Created by hh on 18/01/03.
@@ -388,12 +375,11 @@ const handleSsoLogout = () =>{
  *@return {Object} [返回对象]
  */
 const ssoLogout = () => {
-  //是否为科研项目登录
-  // return;
-  let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
-  let  isDisease = sessionStorage.getItem('CURR_LOGIN_TYPE') == "disease";
-  let subjectInfoId =  JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')) && JSON.parse(sessionStorage.getItem('CURR_RESEARCH_INFO')).subjectInfoId;
-  let diseaseId = JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')) && JSON.parse(sessionStorage.getItem('CURR_DISEASE_INFO')).diseaseId;
+  //登录来源
+  let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
+  let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
+  let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
+  let diseaseId = store.state.user.diseaseInfo.diseaseId
   try {
     vm.$get('/auth/logout.do?t=' + (+new Date()))
     then(function (response) {
@@ -431,11 +417,11 @@ const ssoLogout = () => {
 
 const getOrgData = () => {
   return new Promise((resolve, reject) => {
-    if (sessionStorage.getItem('ORGDATA') && sessionStorage.getItem('ORGDATA').length > 0) {
-      resolve(JSON.parse(sessionStorage.getItem('ORGDATA')));
+    if (localStorage.getItem('ORGDATA') && localStorage.getItem('ORGDATA').length > 0) {
+      resolve(JSON.parse(localStorage.getItem('ORGDATA')));
     } else {
-      let CURR_USER = JSON.parse(sessionStorage.getItem('CURR_USER_PRESCRIPTION_SUPERVISE'));
-      let Global = JSON.parse(sessionStorage.getItem('Global'));
+      let CURR_USER = JSON.parse(localStorage.getItem('CURR_USER_PRESCRIPTION_SUPERVISE'));
+      let Global = JSON.parse(localStorage.getItem('Global'));
       let params = {
         'ORG_CODE': 'ZTEICT_ROOT_ORG',
         'esblover': false,
@@ -464,8 +450,8 @@ const getOrgData = () => {
           if (!isHasAll) {
             itemCache.unshift({'code': '', 'desc': '全部'});
           }
-          sessionStorage.setItem('ORGDATA', JSON.stringify(itemCache));
-          resolve(JSON.parse(sessionStorage.getItem('ORGDATA')));
+          localStorage.setItem('ORGDATA', JSON.stringify(itemCache));
+          resolve(JSON.parse(localStorage.getItem('ORGDATA')));
           // console.log(itemCache)
         } else {
           reject(new Error());
@@ -720,7 +706,7 @@ const validIndexAuthenticated = function () {
     } catch (err) {
       store.commit('USER_SIGNOUT');
       //是否为科研项目登录
-      let  isResearch = sessionStorage.getItem('CURR_LOGIN_TYPE') == "research";
+      let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
       if(!isResearch) {
         window.location.href = './login.html';
       }else {
@@ -857,6 +843,25 @@ const translateDataToTree = function(data = []) {
   return parents
 }
 
+const key = CryptoJS.enc.Utf8.parse("1234123412ABCDEF");  //十六位十六进制数作为密钥
+const iv = CryptoJS.enc.Utf8.parse('ABCDEF1234123412');   //十六位十六进制数作为密钥偏移量
+
+//解密方法
+function decrypt(word) {
+    let encryptedHexStr = CryptoJS.enc.Hex.parse(word);
+    let srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+    let decrypt = CryptoJS.AES.decrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+    let decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+    return decryptedStr.toString();
+}
+
+//加密方法
+function encrypt(word) {
+    let srcs = CryptoJS.enc.Utf8.parse(word);
+    let encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+    return encrypted.ciphertext.toString().toUpperCase();
+}
+
 export default {
   getQuery,
   getQueryString,
@@ -897,5 +902,7 @@ export default {
   deleteFileId,     //单文件删除
   isRepeat,     //数组里值是否重复
   arrayExistAttr,    //判断两数组里是否包括相同元素key
-  translateDataToTree
+  translateDataToTree,
+  decrypt,  //解密
+  encrypt   //加密
 };

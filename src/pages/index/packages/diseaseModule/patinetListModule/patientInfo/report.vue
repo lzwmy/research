@@ -30,8 +30,8 @@
       </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click.stop="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i>
-          </el-button>
+          <el-button size="mini" @click.stop="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
+          <!-- <el-button class="danger" size="mini" @click.stop=""><i class="icon iconfont iconshanchu1"></i></el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -214,7 +214,7 @@
               title: row.reportName,
               isModify: "displayShow"
             };
-            sessionStorage.setItem('reportFill', JSON.stringify({urlParameter}));
+            localStorage.setItem('reportFill', JSON.stringify({urlParameter}));
             let urlParameters = "cacheData=" + false + "&formId=" + row.crfId + "&reportId=" + row.id + "&groupId=" + row.groupId + "&subjectId=" + row.subjectId + "&diseaseId=" + row.diseaseId + "&patientName=" + row.patientName + "&patientId=" + row.patientId + "&identify=" + this.identify + "&from=" + 'caseManage' + "&diseaseName=" + row.diseaseName + "&subjectName=" + row.subjectName + "&groupName=" + row.groupName + "&title=" + row.reportName + "&isModify=" + "displayShow";
             window.open('./patientForm.html?' + urlParameters);
           })

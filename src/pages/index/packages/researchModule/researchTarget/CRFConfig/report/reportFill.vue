@@ -230,7 +230,7 @@ export default {
       // $(".binding-box").max-height($(window).height()-160);
     },
     initPage() {
-      this.urlParameter = JSON.parse(sessionStorage.getItem('reportFill')).urlParameter;
+      this.urlParameter = JSON.parse(localStorage.getItem('reportFill')).urlParameter;
       this.pointPatientId = this.urlParameter.pointPatientId;
       this.patientId = "";
       this.groupId = "";
@@ -264,7 +264,7 @@ export default {
     },
     //返回上一级
     backingOut() {
-      let backInfo = JSON.parse(sessionStorage.getItem('caseManage'));
+      let backInfo = JSON.parse(localStorage.getItem('caseManage'));
       this.$router.push({
         name:'caseManage',
         query:{
@@ -549,7 +549,7 @@ export default {
     //获取随访点
     getPoint(data) {
       this.update = false;
-      let urlParameter = Object.assign(JSON.parse(sessionStorage.getItem('reportFill')).urlParameter,{
+      let urlParameter = Object.assign(JSON.parse(localStorage.getItem('reportFill')).urlParameter,{
         formId: data.crfId,
         reportId: data.reportId,
         status: data.status,
@@ -557,7 +557,7 @@ export default {
         updateTime: data.updateTime,
         creator: data.creator
       })
-      sessionStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+      localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
       this.initPage();
     },
     //显示终止随访弹框

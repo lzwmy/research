@@ -130,7 +130,7 @@
         this.downFilePDF('5dd685ae53bbd6162c1699cd','测试PDF下载.pdf')
       },
       jumpPrint(data) {
-        sessionStorage.setItem('content',JSON.stringify(data));
+        localStorage.setItem('content',JSON.stringify(data));
         window.open("./printPage.html");
       },
       async downFilePDF(value,name) {
@@ -169,7 +169,7 @@
       }
     },
     mounted() {
-      let result =JSON.parse(sessionStorage.getItem('content'));
+      let result =JSON.parse(localStorage.getItem('content'));
       if(result) {
         this.author=result.author;
         this.doi=result.doi;

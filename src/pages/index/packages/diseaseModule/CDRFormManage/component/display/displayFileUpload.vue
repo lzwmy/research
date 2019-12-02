@@ -167,7 +167,7 @@
           this.fileList = copyFileList;
         },
         handlePictureCardPreview(file) {
-          let dialogPreview =JSON.parse(sessionStorage.getItem('dialogPreview'));
+          let dialogPreview =JSON.parse(localStorage.getItem('dialogPreview'));
           if(dialogPreview.preview!=='dialogPreview'){
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
