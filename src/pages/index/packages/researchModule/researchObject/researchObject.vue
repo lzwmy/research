@@ -167,7 +167,7 @@
         </div>
 
         <!-- 导入数据弹窗 -->
-        <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData' @updata="handleUpData"></import-dialog>
+        <import-dialog :dataInfo="importDataDialog" @changeDialog="handleDialog" @checkData='handleCheckData' @updata="handleSuccessAdd"></import-dialog>
         <!-- 动态列配置弹窗 -->
         <table-config ref="refTableConfig" @saveConfig="handleSaveConfig" :dataInfo="confingData"></table-config>
         
@@ -378,16 +378,7 @@ export default {
         handleDialog(val) {
             this.importDataDialog = val
         },
-        //导入研究数据成功之后的回调
-        handleUpData(currentGrounpId) {
-            this.importDataDialog = false;
-            this.$refs.refSearch.getGroupList()
-            .then(()=>{
-                this.$refs.refSearch.selectGroup(currentGrounpId);
-                this.currentGrounpId = currentGrounpId;
-                this.getDataList(0,15);
-            })
-        },
+        
         //下载添加研究对象模版
         async downloadTempObject() {
             try{
@@ -422,6 +413,7 @@ export default {
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
             this.popoverSearchVisible = false;
+            this.importDataDialog = false;
             that.tableLoading = true;
             that.paging.currentPageNo = pageNo;
             that.paging.currentPageSize = pageSize;
@@ -587,7 +579,7 @@ export default {
         successFile(file,fileList) {
             this.importBatchObject(file);
         },
-        //成功添加对象
+        //成功添加回调
         handleSuccessAdd(currentGrounpId) {
             this.$refs.refSearch.getGroupList()
             .then(()=>{
