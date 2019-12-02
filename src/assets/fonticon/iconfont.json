@@ -1467,6 +1467,13 @@
       "font_class": "qualityManage",
       "unicode": "e6f1",
       "unicode_decimal": 59121
+    },
+    {
+      "icon_id": "11980297",
+      "name": "设置",
+      "font_class": "shezhi1",
+      "unicode": "e6f5",
+      "unicode_decimal": 59125
     }
   ]
 }

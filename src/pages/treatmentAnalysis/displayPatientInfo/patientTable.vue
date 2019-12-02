@@ -1,7 +1,7 @@
 <template>
     <div>
       {{item.controlDisplayName}}
-      <div v-for="(tableItem,tableIndex) in dataJoin()">{{tableIndex+1}}、{{tableItem}}</div>
+      <div v-for="(tableItem,tableIndex) in dataJoin()" :key="tableIndex">{{tableIndex+1}}、{{tableItem}}</div>
     </div>
 </template>
 

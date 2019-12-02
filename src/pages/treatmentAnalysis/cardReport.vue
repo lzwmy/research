@@ -1,6 +1,6 @@
 <template>
     <div class="card_report">
-      <card-portion v-for="(portionItem,portionIndex) in item.portions" :item="portionItem" :index="portionIndex" :displayName="displayName"></card-portion>
+      <card-portion v-for="(portionItem,portionIndex) in item.portions" :key="portionIndex" :item="portionItem" :index="portionIndex" :displayName="displayName"></card-portion>
     </div>
 </template>
 

@@ -120,6 +120,8 @@ const url = {
   saveFollowUpReportData: '/report/remind/save/report',
   // 报告 保存 数据(科研项目)
   reportDataSaveSubject:"/subject/report/save.do",
+  //报告删除
+  reportDelete: '/report/bak/delete',
 
   /**
    * 提醒
@@ -321,6 +323,9 @@ const http = {
   //获取 报告列表
   getReportList(params) {
     return vm.$get(url.getReportList,params,true);
+  },
+  reportDelete(params) {
+    return vm.$get(url.reportDelete,params,true);
   },
   //患者页 添加报告 保存接口
   patientReportAddSave(params) {

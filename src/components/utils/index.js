@@ -833,6 +833,36 @@ const arrayExistAttr = function(arr1, arr2,key) {
   }
   return false;
 }
+//将有父子关系的数组转换成树形结构数据
+const translateDataToTree = function(data = []) {
+  let parents = data.filter(li=>{ return li.menuLevel == 1});
+  let childrens = data.filter(li=>{ return li.menuLevel > 1});
+  let translatorFun = (parents, childrens)=>{
+      parents.forEach(p=>{
+          p.children = [];
+          childrens.forEach((c,cIndex)=>{
+              if(p.menuCode === c.superiorMenu) {
+                  let temp = JSON.parse(JSON.stringify(childrens));
+                  temp.splice(cIndex, 1);
+                  translatorFun([c],temp)
+                  p.children.push(c);
+              }
+          })
+      })
+  }
+  //调用转换方法
+  translatorFun(parents, childrens)
+    
+  //返回最终的结果
+  return parents
+}
+
+const isEffectiveDate = function(date) {
+  if(!date){
+    return
+  }
+  return (new Date(date).getDate()==date.substring(date.length-2));
+}
 
 export default {
   getQuery,
@@ -874,4 +904,6 @@ export default {
   deleteFileId,     //单文件删除
   isRepeat,     //数组里值是否重复
   arrayExistAttr,    //判断两数组里是否包括相同元素key
+  translateDataToTree,  //将有父子关系的数组转换成树形结构数据
+  isEffectiveDate,    //判断日期是否有效
 };

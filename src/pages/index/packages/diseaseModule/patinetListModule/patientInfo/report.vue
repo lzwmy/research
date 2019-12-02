@@ -30,8 +30,8 @@
       </el-table-column>
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
-          <el-button size="mini" @click.stop="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i>
-          </el-button>
+          <el-button size="mini" @click.stop="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
+          <el-button class="danger" size="mini" @click.stop="onDeleteReport(scope.row)"><i class="icon iconfont iconshanchu1"></i></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -223,7 +223,29 @@
       handleClick(row) {
         this.$refs.refTable.toggleRowExpansion(row)
       },
-      
+      //删除报告
+      onDeleteReport(row){
+        console.log(row)
+        this.$confirm('确定删除这条报告?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+        }).then(async() => {
+            let formData = {
+                reportId: row.id,
+                crfId: row.crfId,
+            };
+            try {
+                let res = await this.$http.reportDelete(formData);
+                if (res.code == 0) {
+                    this.$mes('success', "删除成功");
+                    this.getDataList();
+                } 
+            } catch (err) {
+                console.log(err)
+            }
+        }).catch(() => {});
+      },
     },
     beforeDestroy(){
       document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)

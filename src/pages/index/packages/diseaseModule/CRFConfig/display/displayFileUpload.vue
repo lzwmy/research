@@ -71,13 +71,11 @@
             </span>
           </div>
         </el-upload>
-        <el-dialog class="upload_style"   :visible.sync="dialogVisible">
-          <img width="100%"  v-if="dialogVisible" :src="dialogImageUrl" alt="">
-        </el-dialog>
-        <!--<el-image-viewer v-if="dialogVisible"
-                         :on-close="closeViewer"
-                         :url-list="[dialogImageUrl]">
-        </el-image-viewer>-->
+        <image-view v-if="dialogVisible"
+                    ref="imageView"
+                    @on-close="closeViewer"
+                    :state="dialogVisible"
+                    :url="images"></image-view>
       </div>
     </div>
   </div>
@@ -85,12 +83,11 @@
 
 
 <script>
-  import axios from 'axios';
-  // import ElImageViewer from 'element-ui/packages/image/src/image-viewer';
+  import imageView from 'components/packages/ImagePreview/imageView';
     export default {
       name: "displayFileUpload",
       components:{
-        // ElImageViewer
+        imageView
       },
       props:{
         item: {},
@@ -108,6 +105,7 @@
           dialogVisible: false,
           disabled: false,
           fileData:{},
+          images:[]
         }
       },
       methods:{
@@ -194,24 +192,34 @@
           })
         },
         handleRemove(file,fileList) {
-          console.log(file,fileList);
-          this.deleteFileId(file.fileId);
-          let copyFileList  = this.fileList;
-          copyFileList.forEach((item,index,array)=>{
-            if(item.fileId == file.fileId) {
-              array.splice(index,1)
-            }
+          this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.deleteFileId(file.fileId);
+            let copyFileList  = this.fileList;
+            copyFileList.forEach((item,index,array)=>{
+              if(item.fileId == file.fileId) {
+                array.splice(index,1)
+              }
+            });
+            this.fileList = copyFileList;
+            this.report.value2 = JSON.stringify(this.fileList);
+          }).catch(() => {
           });
-          this.fileList = copyFileList;
-          this.report.value2 = JSON.stringify(this.fileList);
         },
         closeViewer() {
           this.dialogVisible = false;
         },
         handlePictureCardPreview(file) {
-          console.log(file)
-            this.dialogImageUrl = this.newUrl+"/file/downloadFile/"+file.fileId;
-            this.dialogVisible = true;
+          this.dialogImageUrl = this.newUrl+"/file/downloadFile/"+file.fileId;
+          this.dialogVisible = true;
+          this.images[0] = this.dialogImageUrl;
+          this.$nextTick(()=>{
+              this.$refs.imageView.show();
+
+            });
         },
         handleDownload(file) {
           console.log(file);
@@ -246,7 +254,8 @@
         };
         if(this.report.value2 !==""){
           this.fileList = JSON.parse(this.report.value2);
-        }
+        };
+
       }
     }
 </script>

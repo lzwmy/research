@@ -1,7 +1,7 @@
 <template>
     <div>
 <!--        {{item.portionDisplayName}}-->
-      <default-entry v-for="(entryItem,entryIndex) in item.formItems" :item="entryItem" :index="entryIndex"></default-entry>
+      <default-entry v-for="(entryItem,entryIndex) in item.formItems" :key="entryIndex" :item="entryItem" :index="entryIndex"></default-entry>
     </div>
 </template>
 

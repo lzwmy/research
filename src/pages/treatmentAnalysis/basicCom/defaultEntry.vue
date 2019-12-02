@@ -3,7 +3,7 @@
       <div class="entry_gather" v-if="item.controlType!=='GATHER'&&item.controlType!=='TABLE'">{{item.controlDisplayName}}</div>
       <!--&#45;&#45;{{item.controlType}}-->
       <!--如何等于集合 就处理集合 的方法-->
-      <default-gather v-if="item.controlType=='GATHER'" v-for="(gatherItem,gatherIndex) in item.children" :item="gatherItem" :index="gatherIndex"></default-gather>
+      <default-gather v-if="item.controlType=='GATHER'" v-for="(gatherItem,gatherIndex) in item.children" :key="gatherIndex" :item="gatherItem" :index="gatherIndex"></default-gather>
       <div v-if="item.controlType=='TABLE'" :style="`height: ${height* 25}px;line-height:${height*25}px`">
         <default-table v-if="item.controlType=='TABLE'" :item="item"></default-table>
       </div>

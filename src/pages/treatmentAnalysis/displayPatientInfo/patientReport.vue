@@ -1,6 +1,6 @@
 <template>
     <div>
-      <patient-page v-for="(formPageItem,formPageIndex) in item.formPages" :item="formPageItem" :index="formPageIndex" :report="getData(formPageItem)"></patient-page>
+      <patient-page v-for="(formPageItem,formPageIndex) in item.formPages" :key="formPageIndex" :item="formPageItem" :index="formPageIndex" :report="getData(formPageItem)"></patient-page>
     </div>
 </template>
 

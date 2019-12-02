@@ -35,7 +35,10 @@
                     <div class="dateTime-box" style="display: flex;justify-content: space-between;border-bottom: 1px solid #f2f2f2;padding:10px 10px 5px;">
                         <div @click="toReportFill(item)" class="planVisitDate flex-start-center" style="flex:1;color: #9BABB8;">
                         <i class="iconfont iconshijian" style="padding-right: 10px;vertical-align: middle;font-size:13px;"></i>
-                        <span style="font-size:13px; ">{{item.planVisitDate}}&nbsp;{{item.reportName}}</span>
+                        <!-- <span style="font-size:13px; ">{{item.planVisitDate}}&nbsp;{{item.reportName}}</span> -->
+                        <p style="font-size:13px; ">{{item.planVisitDate}}&nbsp;
+                            <p style="width:100px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;">{{item.reportName}}</p> 
+                        </p>
                         </div>
                         <div class="fill-info flex-between-center">
                             <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
@@ -112,14 +115,10 @@ export default {
             }
         };
     },
-    watch: {},
-    computed: {},
     created () {
-        let date = new Date().getTime();
-        this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
-        this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
+        this.initDate()
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
-        this.getDataList();
+        // this.getDataList();
     },
     mounted () {
         this.addEventListenervisibilityChange();
@@ -128,6 +127,24 @@ export default {
         document.removeEventListener(this.visibilityChange)
     },
     methods: {
+        initDate() {
+            let date = new Date();
+            this.form.time[0] = utils.formateDate(date).substring(0,7) + '-01';
+            let lastDay = '';
+            if ((date.getMonth() + 1) == 2) {
+                let yearType = date.getFullYear();
+                if (yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
+                    lastDay = 29;
+                } else {
+                    lastDay = 28;
+                }
+            } else if ([1,3,5,7,8,10,12].indexOf((date.getMonth() + 1)) != -1) {
+                lastDay = 31;
+            } else {
+                lastDay = 30;
+            }
+            this.form.time[1] = utils.formateDate(date).substring(0,7) + '-' + lastDay;
+        },
         onCopySuccess(e) {
             this.$mes('success', '复制成功！');
             setTimeout(()=>{
@@ -138,6 +155,7 @@ export default {
             this.$mes('error', '复制失败,请手动复制！');
         },
         initPage() {
+            this.initDate()
             this.getDataList()
             .then(()=>{
                 this.$emit('changeLoadding',false)
@@ -178,17 +196,13 @@ export default {
         async getDataList() {
             let that = this;
             let startTime, endTime;
-            console.log(this.form.time)
             if(!this.form.time || this.form.time && this.form.time.length == 0) {
                 startTime = null
                 endTime = null
             }else {
                 startTime = this.form.time[0].split("-").join('');
                 endTime = this.form.time[1].split("-").join('');
-                // startTime = this.form.time[0];
-                // endTime = this.form.time[1];
             }
-            console.log(this.form.time)
             that.loading = true;
             let formData = {
                 offset: 1,
@@ -208,20 +222,12 @@ export default {
                 let res = await that.$http.PFUPgetDataList(formData);
                 if (res.code == '0') {
                     this.dataList = res.data.args;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.loading = false;
             } catch (err) {
                 that.loading = false;
                 console.log(err)
             }
-        },
-        reset () {
-            this.form.state = '';
-            let date = new Date().getTime();
-            this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30)).split("-").join('');
-            this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24)).split("-").join('');
         },
         toReportFill(row) {
             this.getIdentify(row.patientId)
@@ -271,9 +277,6 @@ export default {
                 console.log(err)
             }
         },
-        pushNote(){
-            return;
-        },
         //推送微信消息
         async pushAssociate(row) {
             let formData = {
@@ -308,12 +311,6 @@ export default {
                 console.log(err)
             }
         },
-    },
-    beforeRouteEnter (to, from, next) {
-        next();
-    },
-    beforeRouteLeave (to, from, next) {
-        next();
     }
 };
 </script>

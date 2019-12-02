@@ -41,7 +41,10 @@
         <div class="top">
           <h3 class="flex-between-center">
             <span>随访提醒</span>
-            <i class="icon iconfont iconzujian14 cur_pointer" @click="showDialog"></i>
+            <div>
+              <i class="icon iconfont iconshezhi1 cur_pointer" @click="showDialog"></i>
+              <i class="icon iconfont iconshanchu1 cur_pointer" v-if="remindDetail.remindRsp && remindDetail.remindRsp.id" @click="deleteRemind" style="font-size:17px;"></i>
+            </div>
           </h3>
           <div class="li flex-start-start">
             <p><i class="icon iconfont iconshezhi"></i>设置</p>
@@ -155,8 +158,7 @@
         </el-form-item>
         <el-form-item label="报告名称：" class="fill" prop="name">
           <el-select v-model="dialogReportForm.name">
-            <el-option v-for="(item, index) in reportSelectList" :label="item.name" :value="item.id"
-                       :key="index"></el-option>
+            <el-option v-for="(item, index) in reportSelectList" :label="item.name" :value="item.id" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="就诊时间：" class="fill" prop="time">
@@ -205,7 +207,7 @@
           <el-form-item label="定时模式:" label-width="72px" class="inline top">
             <el-select v-model="dialogFrom.model" @change="selectChange">
               <el-option v-for="(item, index) in modelTpye" :label="item.label" :value="item.value"
-                         :key="index"></el-option>
+                        :key="index"></el-option>
             </el-select>
           </el-form-item>
           <div v-if="dialogFrom.model=='TIME'">
@@ -250,7 +252,7 @@
             <el-form-item label-width="0" class="inline" prop="value2">
               <el-select v-model="dialogFrom.value2" class="select">
                 <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1"
-                           :key="index"></el-option>
+                          :key="index"></el-option>
               </el-select>
               号
             </el-form-item>
@@ -266,7 +268,7 @@
             <el-form-item label-width="0" class="inline" prop="value2">
               <el-select v-model="dialogFrom.value2" class="select">
                 <el-option v-for="(item, index) in selectDayArr" :label="item" :value="index+1"
-                           :key="index"></el-option>
+                          :key="index"></el-option>
               </el-select>
               日
             </el-form-item>
@@ -289,7 +291,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="onSaveRemind('dialogFrom')" size="mini"
-                               :disabled="dialogFrom.loading">保 存</el-button>
+                              :disabled="dialogFrom.loading">保 存</el-button>
                     <el-button @click="onClose('dialogFrom')" size="mini">关 闭</el-button>
                 </span>
     </el-dialog>
@@ -451,14 +453,9 @@
       },
       'dialogFrom.value1': function (newVal) {
         if (this.dialogFrom.model == 'MONTH' || this.dialogFrom.model == 'YEAR') {
-          this.dialogFrom.value2 = ''
+          // this.dialogFrom.value2 = ''
           if (this.dialogFrom.value1 == 2) {
-            let yearType = new Date().getFullYear();
-            if (yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
-              this.selectDayArr = 29;
-            } else {
-              this.selectDayArr = 28;
-            }
+            this.selectDayArr = 29;
           } else if (this.monthBig.includes(this.dialogFrom.value1)) {
             this.selectDayArr = 31;
           } else {
@@ -467,12 +464,25 @@
         }
       }
     },
+    beforeRouteEnter (to, from, next) {
+      //从病人列表进入
+      if(to.params.diseaseId) {
+        next()
+      }else {
+        //当前页面刷新
+        next({
+          path:'/patientListModule',
+          query: {
+            id: to.query.id
+          }
+        })
+      }
+    },
     created() {
       // this.getReportSelectList();
-      console.log(this.$route)
-      this.dataInfo = this.$route.params.dataInfo;
-      this.personalInfo = this.$route.params.personalInfo;
-      this.reportFillData = this.$route.params.reportFillData;
+      this.dataInfo = this.$route.params.dataInfo || {};
+      this.personalInfo = this.$route.params.personalInfo || {};
+      this.reportFillData = this.$route.params.reportFillData || {};
       this.diseaseId = this.$route.params.diseaseId;
       this.getReportList();
       this.getPatientSearch();
@@ -571,6 +581,31 @@
             }
           })
       },
+      //删除提醒
+      deleteRemind(){
+        this.$confirm('确定删除提醒?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.getRemindConfig()
+          .then(async(res)=>{
+            let formData = {
+              remindId: res.data.id,
+              patientId: this.$route.params.personalInfo && this.$route.params.personalInfo.PATIENT_ID 
+            };
+            try {
+              let res = await this.$http.PFUdeleteRemind(formData);
+              if (res.code == 0) {
+                this.$mes('success', "删除成功");
+                this.getRemindDetail();
+              } 
+            } catch (err) {
+              console.log(err)
+            }
+          })
+        }).catch(() => {});
+      },
       //获取添加提醒报告列表
       async getSelectList() {
         let formData = {
@@ -598,6 +633,7 @@
         };
         try {
           let res = await that.$http.PFUremindDetail(fromData)
+          console.log(res)
           if (res.code == 0) {
             this.remindDetail = res.data;
           }
@@ -628,8 +664,7 @@
       },
       // 查询已配置提醒信息
       async getRemindConfig() {
-        this.dialogFrom.visible = true;
-        this.dialogFrom.loading = true;
+        
         let that = this;
         let fromData = {
           patientId: that.dataInfo.patientId || "",
@@ -648,6 +683,7 @@
       onSaveRemind(dialogFrom) {
         this.$refs[dialogFrom].validate(async (valid) => {
           if (valid) {
+            //判断日期是否有效
             let range;
             if (!this.dialogFrom.range || JSON.stringify(this.dialogFrom.range) == '[]') {
               range = "";
@@ -1082,7 +1118,12 @@
           font-size: 16px;
 
           i {
-            color: rgba(151, 155, 170, 1)
+            color: #979BAA;
+            font-size: 18px;
+            padding-left: 10px;
+            &:hover {
+              color: #00bae3;
+            }
           }
         }
 

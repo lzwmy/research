@@ -18,6 +18,7 @@
             <i class="iconfont iconbaocun"></i>
             保存
           </el-button>
+          <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
           <!--<el-button type="primary">
             <i class="iconfont icontijiao"></i>
             发布
@@ -56,14 +57,14 @@
             </div>
           </div>
         </div>
-        <div class="report_body-box">
+        <div id="pdfForm" class="report_body-box">
           <div style="width: 100%" v-if="isReset&&dataList.length!==0">
             <draggable v-model="dataList" :options="options" @start="drag" @end="drop" :move="checkMove">
               <div class="report_body-item" v-for="(item,index) in dataList" :key="index">
                 <div class="report_header-content">
                   <div class="display_line"></div>
                   <div class="header-title">{{item.portionName}}</div>
-                  <div class="header-btn">
+                  <div class="header-btn" >
                     <span>
                       <i class="iconfont iconzujian14" @click="portionModify(item,index)"></i>
                     </span>
@@ -104,6 +105,7 @@
 </template>
 
 <script>
+  import utils from 'components/utils/domToPDF';
   import './../css/crfLayoutStyle.less';
   import portionConfigDialog from './portionConfigDialog';
   import previewPortion from './../preview/sectionPreview';
@@ -282,6 +284,18 @@
           }else if(this.$route.query.type == 'modify') {
             this.CRFReportModifySave()
           }
+        },
+        downPDF() {
+          $(".crfConfig").addClass("heightAuto");
+          $("#pdfForm").addClass("pdf")
+          this.pdfLoading = true;
+          let that = this;
+          setTimeout(function(){
+            utils.domToPDF("#pdfForm", that.crfName);
+            that.pdfLoading = false;
+            $(".crfConfig").removeClass("heightAuto");
+            $("#pdfForm").removeClass("pdf")
+          },600)
         },
         //CRF 预览
         previewCRF() {
