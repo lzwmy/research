@@ -111,20 +111,6 @@ const insideData = {
   }
 }
 
-//
-// const insideData = {
-//   state: {
-//     //内页数据
-//     insideData: {}
-//   },
-//   mutations: {
-//     saveInsideData(state, data) {
-//       console.log(data)
-//       state.insideData = data;
-//     },
-//   }
-// }
-
 const crf = {
   state: {
     crfCurrentControl: {},

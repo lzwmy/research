@@ -31,7 +31,6 @@ export default {
     },
     created () {
         this.menuList = this.$store.state.user.menuList;
-        console.log(this.menuList)
     },
     methods: {
         toRouter(data) {
@@ -51,14 +50,7 @@ export default {
                     },
                     menuList: item.children
                 }
-<<<<<<< HEAD
                 this.$store.commit('saveInsideData',params)
-                console.log(this.findFirstChildren(item.children).menuPath.slice(1))
-=======
-                sessionStorage.setItem('insideMenuData',JSON.stringify(params))
-                console.log(this.findFirstChildren(item.children).menuPath.slice(1))
-                console.log(params)
->>>>>>> b6e00540b0f315626e30a0772e7adceaff5483cc
                 this.$router.push({
                     name: this.findFirstChildren(item.children).menuPath.slice(1),
                     params: params

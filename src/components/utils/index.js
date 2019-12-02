@@ -843,7 +843,6 @@ const translateDataToTree = function(data = []) {
   return parents
 }
 
-<<<<<<< HEAD
 
 
 const key = CryptoJS.enc.Utf8.parse("FBI5384332412AOF");  //十六位十六进制数作为密钥
@@ -862,13 +861,12 @@ function encrypt(word) {
     let srcs = CryptoJS.enc.Utf8.parse(word);
     let encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
     return encrypted.ciphertext.toString().toUpperCase();
-=======
+}
 const isEffectiveDate = function(date) {
   if(!date){
     return
   }
   return (new Date(date).getDate()==date.substring(date.length-2));
->>>>>>> b6e00540b0f315626e30a0772e7adceaff5483cc
 }
 
 export default {
@@ -911,12 +909,9 @@ export default {
   deleteFileId,     //单文件删除
   isRepeat,     //数组里值是否重复
   arrayExistAttr,    //判断两数组里是否包括相同元素key
-<<<<<<< HEAD
   translateDataToTree,
   decrypt,  //解密
-  encrypt   //加密
-=======
+  encrypt,   //加密
   translateDataToTree,  //将有父子关系的数组转换成树形结构数据
   isEffectiveDate,    //判断日期是否有效
->>>>>>> b6e00540b0f315626e30a0772e7adceaff5483cc
 };

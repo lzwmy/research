@@ -58,7 +58,6 @@ export default {
                 "subjectId": this.dataInfo.subjectId,
                 "groupId": this.dataInfo.groupId,
             };
-            console.log(formData)
             try {
                 // let res = await that.$http.PFUGetReportDataList(formData);
                 let res = await that.$http.queryReportListnew(formData);
