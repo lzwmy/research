@@ -95,11 +95,11 @@ let initApp = async () => {
     if(!isResearch && !isDisease && store.state.user.token) {
       await utils.loadMenuInfo();
     }
-    loadingInstance.close();// 在获取权限后关闭loading
     // 初始化路由
     let router = new VueRouter({
       routes
     });
+    loadingInstance.close();// 在获取权限后关闭loading
     // 跳转路由前进行登录校验
     router.beforeEach((to, from, next) => {
       // 校验路由元信息是否有权限要求
@@ -132,7 +132,7 @@ let initApp = async () => {
     });
   } catch (err) {
     //关闭loading;
-    loadingInstance.close();
+    utils.ssoLogout();
     MessageBox.confirm('系统错误，请联系管理员！', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',

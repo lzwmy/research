@@ -843,9 +843,10 @@ const translateDataToTree = function(data = []) {
   return parents
 }
 
-const key = CryptoJS.enc.Utf8.parse("1234123412ABCDEF");  //十六位十六进制数作为密钥
-const iv = CryptoJS.enc.Utf8.parse('ABCDEF1234123412');   //十六位十六进制数作为密钥偏移量
 
+
+const key = CryptoJS.enc.Utf8.parse("FBI5384332412AOF");  //十六位十六进制数作为密钥
+const iv  = CryptoJS.enc.Utf8.parse("QWERAAA56564HAHA");   //十六位十六进制数作为密钥偏移量
 //解密方法
 function decrypt(word) {
     let encryptedHexStr = CryptoJS.enc.Hex.parse(word);

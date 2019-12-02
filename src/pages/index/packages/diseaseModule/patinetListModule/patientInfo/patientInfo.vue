@@ -39,17 +39,11 @@ export default {
             identify: ""
         };
     },
-    watch: {
-        
-    },
-    computed: {},
     created () {
         this.getDataList();
     },
     mounted () {
         this.getIdentify(this.reportFillData.patientId);
-    },
-    components: {
     },
     methods: {
         async getDataList () {
