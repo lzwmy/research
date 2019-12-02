@@ -1,6 +1,6 @@
 <template>
     <div class="card_portion">
-      <card-setion v-for="(sectionItem,sectionIndex) in item.items" :item="sectionItem" :index="sectionIndex" :displayName="displayName"></card-setion>
+      <card-setion v-for="(sectionItem,sectionIndex) in item.items" :key="sectionIndex" :item="sectionItem" :index="sectionIndex" :displayName="displayName"></card-setion>
     </div>
 </template>
 

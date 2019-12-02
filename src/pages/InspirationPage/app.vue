@@ -6,16 +6,24 @@
       </div>
       <div class="content_body-container">
         <el-tabs v-model="activeName" class="header-body">
-          <el-tab-pane label="首页" name="home">首页</el-tab-pane>
+          <el-tab-pane label="首页" name="home"></el-tab-pane>
           <el-tab-pane label="文献" name="literature">
             <literature></literature>
           </el-tab-pane>
-          <el-tab-pane label="指南共识" name="GuidelineConsensus">指南共识</el-tab-pane>
-          <el-tab-pane label="临床路径" name="ClinicalPathway">临床路径</el-tab-pane>
-          <el-tab-pane label="药品说明书" name="drugInstructions">药品说明书</el-tab-pane>
-          <el-tab-pane label="临床试验" name="clinicalTrials">临床试验</el-tab-pane>
-          <el-tab-pane label="误诊误治" name="misdiagnosis">误诊误治</el-tab-pane>
+          <el-tab-pane label="指南共识" name="GuidelineConsensus"></el-tab-pane>
+          <el-tab-pane label="临床路径" name="ClinicalPathway"></el-tab-pane>
+          <el-tab-pane label="药品说明书" name="drugInstructions"></el-tab-pane>
+          <el-tab-pane label="临床试验" name="clinicalTrials"></el-tab-pane>
+          <el-tab-pane label="误诊误治" name="misdiagnosis"></el-tab-pane>
         </el-tabs>
+        <div class="blank_page" v-if="activeName!=='literature'">
+          <div class="blank-center">
+            <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
+              <use xlink:href="#iconzu11"></use>
+            </svg>
+            <p style="text-align: center">暂无内容</p>
+          </div>
+        </div>
       </div>
     </div>
 </template>
@@ -35,6 +43,7 @@
 
       },
       mounted() {
+        document.title = '科研灵感'
       }
     }
 </script>
@@ -89,6 +98,21 @@
               }
             }
           }
+        }
+      }
+    }
+    .blank_page{
+      min-height: 700px;
+      position: relative;
+      .blank-center {
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        p{
+          color: #666666;
+          font-size: 18px;
+          padding-top:10px
         }
       }
     }

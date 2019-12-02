@@ -2,7 +2,7 @@
     <div class="card_section">
       <div v-if="processTableData(item)&&displayName!=='value'">{{item[displayName]}}</div>
 <!--      <div v-if="processTableData(item)">{{item.children}}</div>-->
-      <card-entry v-else v-for="(entryItem,entryIndex) in item.children" :item="entryItem" :index="entryIndex" :displayName="displayName"></card-entry>
+      <card-entry v-else v-for="(entryItem,entryIndex) in item.children" :key="entryIndex" :item="entryItem" :index="entryIndex" :displayName="displayName"></card-entry>
       <!--<cardTable v-for="(tableItem,tableIndex) in item.children" v-if="processTableData(item)&&displayName=='value'" :item="tableItem.children" :index="tableIndex" :key="tableIndex"></cardTable>-->
     </div>
 </template>

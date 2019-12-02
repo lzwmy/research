@@ -43,7 +43,7 @@
             <span>随访提醒</span>
             <div>
               <i class="icon iconfont iconshezhi1 cur_pointer" @click="showDialog"></i>
-              <!-- <i class="icon iconfont iconshanchu1 cur_pointer"></i> -->
+              <i class="icon iconfont iconshanchu1 cur_pointer" v-if="remindDetail.remindRsp && remindDetail.remindRsp.id" @click="deleteRemind" style="font-size:17px;"></i>
             </div>
           </h3>
           <div class="li flex-start-start">
@@ -467,14 +467,9 @@
       },
       'dialogFrom.value1': function (newVal) {
         if (this.dialogFrom.model == 'MONTH' || this.dialogFrom.model == 'YEAR') {
-          this.dialogFrom.value2 = ''
+          // this.dialogFrom.value2 = ''
           if (this.dialogFrom.value1 == 2) {
-            let yearType = new Date().getFullYear();
-            if (yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
-              this.selectDayArr = 29;
-            } else {
-              this.selectDayArr = 28;
-            }
+            this.selectDayArr = 29;
           } else if (this.monthBig.includes(this.dialogFrom.value1)) {
             this.selectDayArr = 31;
           } else {
@@ -483,12 +478,25 @@
         }
       }
     },
+    beforeRouteEnter (to, from, next) {
+      //从病人列表进入
+      if(to.params.diseaseId) {
+        next()
+      }else {
+        //当前页面刷新
+        next({
+          path:'/patientListModule',
+          query: {
+            id: to.query.id
+          }
+        })
+      }
+    },
     created() {
       // this.getReportSelectList();
-      console.log(this.$route)
-      this.dataInfo = this.$route.params.dataInfo;
-      this.personalInfo = this.$route.params.personalInfo;
-      this.reportFillData = this.$route.params.reportFillData;
+      this.dataInfo = this.$route.params.dataInfo || {};
+      this.personalInfo = this.$route.params.personalInfo || {};
+      this.reportFillData = this.$route.params.reportFillData || {};
       this.diseaseId = this.$route.params.diseaseId;
       this.getReportList();
       this.getPatientSearch();
@@ -587,6 +595,31 @@
             }
           })
       },
+      //删除提醒
+      deleteRemind(){
+        this.$confirm('确定删除提醒?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.getRemindConfig()
+          .then(async(res)=>{
+            let formData = {
+              remindId: res.data.id,
+              patientId: this.$route.params.personalInfo && this.$route.params.personalInfo.PATIENT_ID 
+            };
+            try {
+              let res = await this.$http.PFUdeleteRemind(formData);
+              if (res.code == 0) {
+                this.$mes('success', "删除成功");
+                this.getRemindDetail();
+              } 
+            } catch (err) {
+              console.log(err)
+            }
+          })
+        }).catch(() => {});
+      },
       //获取添加提醒报告列表
       async getSelectList() {
         let formData = {
@@ -614,6 +647,7 @@
         };
         try {
           let res = await that.$http.PFUremindDetail(fromData)
+          console.log(res)
           if (res.code == 0) {
             this.remindDetail = res.data;
           }
@@ -644,8 +678,7 @@
       },
       // 查询已配置提醒信息
       async getRemindConfig() {
-        this.dialogFrom.visible = true;
-        this.dialogFrom.loading = true;
+        
         let that = this;
         let fromData = {
           patientId: that.dataInfo.patientId || "",
@@ -664,6 +697,7 @@
       onSaveRemind(dialogFrom) {
         this.$refs[dialogFrom].validate(async (valid) => {
           if (valid) {
+            //判断日期是否有效
             let range;
             if (!this.dialogFrom.range || JSON.stringify(this.dialogFrom.range) == '[]') {
               range = "";

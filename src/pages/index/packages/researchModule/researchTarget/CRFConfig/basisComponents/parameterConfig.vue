@@ -165,7 +165,7 @@
               </div>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="数据设置" name="second">
+          <el-tab-pane label="数据设置" v-if="false" name="second">
             <el-form class="alignment data_set_container" label-width="80px">
               <el-checkbox v-model="dataSetting.dataBind" v-if="controlType=='FILE_UPLOAD'||controlType=='LABEL'" disabled>启动数据绑定</el-checkbox>
               <el-checkbox v-model="dataSetting.dataBind"  v-else>启动数据绑定</el-checkbox>
@@ -579,32 +579,26 @@
           // this.basicDataInfo.obj.baseProperty.layout.displayChecked = value;
         },
         'dataSetting.bindingDomain':function (data) { //绑定域
-          console.log('watch bindingDomain',data);
-          this.basicDataInfo.obj.baseProperty.bindingInfo.viewId = data;
+          // this.basicDataInfo.obj.baseProperty.bindingInfo.viewId = data;
         },
         'dataSetting.bindingColumns':function (data) { //显示列
-          console.log('watch bindingColumns' , data);
-          if(data) {
+          /*if(data) {
             this.basicDataInfo.obj.baseProperty.bindingInfo.viewColumn = data.map(o => o.name).join(',');
-          }
+          }*/
         },
         "dataSetting.groupColumns":function (data) { //分组列
-          console.log('watch groupColumns' , data);
-          if(data) {
+          /*if(data) {
             this.basicDataInfo.obj.baseProperty.bindingInfo.groupColumn = data.join(',');
-          }
+          }*/
         },
         "dataSetting.keyColumn":function (data) { //key列
-          console.log('watch keyColumn' , data);
-          this.basicDataInfo.obj.baseProperty.bindingInfo.keyColumn = data;
+          // this.basicDataInfo.obj.baseProperty.bindingInfo.keyColumn = data;
         },
         "dataSetting.bindingType":function(data) { //绑定类型
-          console.log('watch bindingType' , data);
-          this.basicDataInfo.obj.baseProperty.bindingInfo.bindingType = data;
+          // this.basicDataInfo.obj.baseProperty.bindingInfo.bindingType = data;
         },
         "dataSetting.bindingAttr":function (data) { //绑定属性及 父属性名称
-          console.log('watch bindingAttr' , data);
-          this.basicDataInfo.obj.baseProperty.bindingInfo.bindingColumn = data;
+          // this.basicDataInfo.obj.baseProperty.bindingInfo.bindingColumn = data;
         },
         "sliderValue":function(data) { //缩放比例
           this.progressImgWidth();

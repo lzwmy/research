@@ -15,13 +15,13 @@
               </button>
             </a>
 <!--          <a :href="`http://192.168.1.100:8080/research/file/downloadFile/5dd685ae53bbd6162c1699cd`" target="_blank">-->
-          <a :href="`${baseURL}subject/document/download/?fileId=${pdfId}`" target="_blank">
+          <a v-show="pdfId" :href="`${baseURL}subject/document/download/?fileId=${pdfId}`" target="_blank">
             <button>
               <i class="iconfont iconzaixianyuedu"></i>
               在线阅读
             </button>
           </a>
-          <button @click="downFile">
+          <button v-show="pdfId" @click="downFile">
             <i class="iconfont iconxiazai"></i>
             下载
           </button>
@@ -56,7 +56,7 @@
             <div class="title">所属期刊栏目</div>
             <div class="title-info">{{journalColumn || '暂无'}}</div>
           </div>
-          <div class="list-box">
+          <div class="list-box" v-show="year&&volume&&period">
             <div class="title">年、卷（期）</div>
             <div class="title-info">{{year}}{{volume}}{{period}}</div>
           </div>
@@ -169,6 +169,7 @@
       }
     },
     mounted() {
+      document.title = '科研灵感';
       let result =JSON.parse(localStorage.getItem('content'));
       if(result) {
         this.author=result.author;

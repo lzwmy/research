@@ -5,7 +5,8 @@
       <a class="special_btn_a" target="_blank" href="https://research.yiducloud.com.cn/dpapservice/#/knowledge/home?customization=1&given_disease=%5B%22%E5%86%85%E7%A7%91ICU%22%5D&from=prdb&title=%E7%A7%91%E7%A0%94%E5%8D%8F%E4%BD%9C%E5%B9%B3%E5%8F%B0&callback=https%3A%2F%2Fresearch.yiducloud.com.cn%2F">
         <el-button type="text" class="special_btn">科研灵感</el-button>
       </a>
-      <!-- <el-button type="text" class="special_btn" @click="jumpInspiration">科研灵感</el-button> -->
+      <el-button type="text" class="special_btn" @click="constructTool">构建工具</el-button>
+      <el-button type="text" class="special_btn" @click="jumpInspiration">科研灵感</el-button>
       <el-button type="text" class="special_btn" @click="jumpSubject">课题验证</el-button>
       <el-button icon="icon iconfont iconzujian45" type="primary" @click="createTask">创建项目</el-button>
     </div>
@@ -130,6 +131,9 @@
     methods: {
       jumpInspiration() {
         window.open("./InspirationPage.html")
+      },
+      constructTool() {
+        window.open('./constructTool.html')
       },
       //课题验证
       jumpSubject() {

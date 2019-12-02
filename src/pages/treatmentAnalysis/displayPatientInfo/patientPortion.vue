@@ -1,7 +1,7 @@
 <template>
     <div>
       <!--{{item.portionDisplayName}}-->
-      <patient-entry v-for="(entryItem,entryIndex) in item.formItems" :item="entryItem" :index="entryIndex" :report="getData(entryItem,entryIndex)"></patient-entry>
+      <patient-entry v-for="(entryItem,entryIndex) in item.formItems" :key="entryIndex" :item="entryItem" :index="entryIndex" :report="getData(entryItem,entryIndex)"></patient-entry>
     </div>
 </template>
 

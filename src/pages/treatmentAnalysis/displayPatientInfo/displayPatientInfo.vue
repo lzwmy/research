@@ -1,6 +1,6 @@
 <template>
     <div >
-      <div class="patient_container" v-for="(reportItem,reportIndex) in item" :index="reportIndex">
+      <div class="patient_container" v-for="(reportItem,reportIndex) in item" :key="reportIndex" :index="reportIndex">
         <div class="patient_title" :class="[{TODO:reportItem.treatmentStatus=='TODO',HEAL:reportItem.treatmentStatus=='HEAL',IMPROVE:reportItem.treatmentStatus=='IMPROVE',INVALID:reportItem.treatmentStatus=='INVALID',WORSEN:reportItem.treatmentStatus=='WORSEN'}]">
           {{reportItem.patientName}}
           <span>{{reportItem.treatmentStatus=='TODO'?'待访':reportItem.treatmentStatus=='HEAL'?'治愈':reportItem.treatmentStatus=='IMPROVE'?'好转':reportItem.treatmentStatus=='INVALID'?'无效':reportItem.treatmentStatus=='WORSEN'?'恶化':'无'}}</span>

@@ -4,8 +4,8 @@
       <div v-if="displayName=='name'">{{item.report.reportName}}</div>
       <div v-if="displayName=='name'">治疗评语</div>
       <div class="treatment_comment" v-if="displayName=='value'">{{item.treatmentTxtComment}}</div>
-      <card-report v-if="displayName=='value'" v-for="(reportItem,reportIndex) in item.report.pages"  :item="reportItem" :index="reportIndex" :key="index" :displayName="displayName"></card-report>
-      <card-report v-if="displayName=='name'" v-for="(reportItem,reportIndex) in item.report.pages"  :item="reportItem" :index="reportIndex" :key="index" :displayName="displayName"></card-report>
+      <card-report v-if="displayName=='value'" v-for="(reportItem,reportIndex) in item.report.pages"  :item="reportItem" :index="reportIndex" :key="reportIndex" :displayName="displayName"></card-report>
+      <card-report v-if="displayName=='name'" v-for="(reportItem,reportIndex) in item.report.pages"  :item="reportItem" :index="reportIndex" :key="reportIndex" :displayName="displayName"></card-report>
     </div>
 </template>
 

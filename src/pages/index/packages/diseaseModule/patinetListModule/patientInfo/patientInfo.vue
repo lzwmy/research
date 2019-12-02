@@ -9,11 +9,11 @@
                 :icon="item.reportType==1?'icon iconfont iconshijianzhoubeifen diagnosis':'icon iconfont iconzujian20 followUp'"
                 size="18">
                 <el-card>
-                    <div class="flex-between-center cur_pointer" @click="toReportFill(item)">
+                    <div class="flex-between-center cur_pointer">
                         <!-- <p>{{item.author}}  {{item.createTime}}</p> -->
-                        <p>{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
+                        <p @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
                         <div>
-                            <!-- <el-button type="danger" icon="icon iconfont iconshanchu1"></el-button> -->
+                            <el-button type="danger" icon="icon iconfont iconshanchu1" @click="onDeleteReport(item)"></el-button>
                             <span class="state" v-if="item.status==0">未完成</span>
                             <span class="state" v-else style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已完成</span>
                         </div>
@@ -114,7 +114,29 @@ export default {
               let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
               window.open('./patientForm.html?'+urlParameters);
             })
-        }
+        },
+        //删除报告
+        onDeleteReport(row){
+            this.$confirm('确定删除这条报告?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+            }).then(async() => {
+                let formData = {
+                    reportId: row.id,
+                    crfId: row.crfId,
+                };
+                try {
+                    let res = await this.$http.reportDelete(formData);
+                    if (res.code == 0) {
+                        this.$mes('success', "删除成功");
+                        this.getDataList();
+                    } 
+                } catch (err) {
+                    console.log(err)
+                }
+            }).catch(() => {});
+        },
     },
 };
 </script>
@@ -159,6 +181,7 @@ export default {
                     p {
                         color: rgba(89, 101, 144, 1);
                         line-height: 30px;
+                        flex: 1;
                     }
                     .el-button {
                         height: 24px;

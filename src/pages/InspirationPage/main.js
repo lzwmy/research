@@ -19,7 +19,12 @@ import install from 'components/utils/install';
 Vue.use(install);
 import store from '../../store';
 import Global from 'components/utils/global';
+import 'assets/fonticon/iconfont.css';
+import 'assets/fonticon/iconfont.js';
+import 'assets/css/common.less';
 
+require('zrender/lib/vml/vml');
+require('zrender/lib/svg/svg');
 // 如果报prototype无法被识别的错误，可以把原型方法挂在到__proto__
 Vue.prototype.$addStorageEvent = function (type, key, data) {
   if (type === 1) {

@@ -110,7 +110,7 @@ export default {
                     try {
                         let res = await this.$http.researchObjectPreviewAddresearch(params);
                         if (res.code == '0') {
-                            this.$emit('successAdd')
+                            this.$emit('successAdd',this.radio)
                             this.dialog.visible = false;
                         }
                         this.dialog.loading = false;
@@ -158,7 +158,6 @@ export default {
         }
         .content {
             margin: 25px 30px 0;
-            background-color: #fff;
             position: absolute;
             top: 65px;
             bottom: 0;
@@ -166,6 +165,7 @@ export default {
             right: 0;
             .wrap {
                 padding: 0 70px;
+                background-color: #fff;
                 overflow: auto;
                 h1 {
                     text-align: center;
