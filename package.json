@@ -23,8 +23,7 @@
     "vue": "^2.5.2",
     "vue-clipboard2": "^0.3.1",
     "vue-cropper": "^0.4.9",
-    "vue-router": "^2.2.0",
-    "vuex-persistedstate": "^2.7.0"
+    "vue-router": "^2.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -94,6 +93,7 @@
     "vue-template-compiler": "^2.5.2",
     "vuedraggable": "^2.9.0",
     "vuex": "^2.2.1",
+    "vuex-persistedstate": "^2.7.0",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-deploy2war": "^0.1.1",
