@@ -39,7 +39,7 @@
             'movable': true,
             'zoomable': true,
             'rotatable': true,
-            'scalable': true,
+            'scalable': false,
             'transition': true,
             'fullscreen': true,
             'keyboard': true,

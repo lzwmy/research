@@ -570,3 +570,18 @@
 .CASCADE .CASCADE_box{
   display: table-cell;
 }
+
+/*图片控件 隐藏不需要显示项*/
+.viewer-toolbar > ul > li.viewer-prev {
+  display: none;
+}
+.viewer-toolbar > ul > li.viewer-play {
+  display: none;
+}
+.viewer-toolbar > ul > li.viewer-next {
+  display: none;
+}
+.viewer-toolbar > ul > li.viewer-one-to-one {
+  display: none;
+}
+
