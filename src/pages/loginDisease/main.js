@@ -19,15 +19,23 @@ Vue.prototype.$mes = function (type, message) {
 import install from 'components/utils/install';
 Vue.use(install);
 import store from '../../store';
+import utils from 'components/utils';
 import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
-    store.commit('USER_SIGNOUT');
     localStorage.setItem('CURR_LOGIN_TYPE', 'disease');
+    store.commit('saveDiseaseInfo',{
+      diseaseId: utils.getQuery('id'), 
+      isAdmin: false,
+      roles: []
+    });
     //同步获取全局配置：
     await Global.getConfigJson();
-
+    // 同步验证缓存的token有没有在登录有效期；
+    if(store.state.user.token) {
+      await utils.checkToken();
+    }
     // 初始化根vue
     new Vue({
       el: '#app',

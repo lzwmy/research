@@ -83,10 +83,8 @@ let initApp = async () => {
   try {
     //同步获取全局配置；
     await Global.getConfigJson();
-    //同步验证浏览器自带的session有没有在登录有效期；
-    // await utils.validIndexAuthenticated();
     // 获取公共的 baseURL
-    Vue.prototype.baseURL = JSON.parse(localStorage.getItem('Global')).baseURL;
+    Vue.prototype.baseURL = localStorage.getItem('Global') && JSON.parse(localStorage.getItem('Global')).baseURL;
     //是否为科研项目登录
     let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
     let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
@@ -131,6 +129,7 @@ let initApp = async () => {
       render: h => h(App)
     });
   } catch (err) {
+    console.log(err)
     //关闭loading;
     utils.ssoLogout();
     MessageBox.confirm('系统错误，请联系管理员！', '提示', {

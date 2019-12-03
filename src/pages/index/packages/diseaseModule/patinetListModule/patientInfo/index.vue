@@ -402,10 +402,10 @@
             label: '按年',
             value: 'YEAR',
           },
-          {
-            label: '非均匀随访',
-            value: 'UNEVEN', 
-          }
+          // {
+          //   label: '非均匀随访',
+          //   value: 'UNEVEN', 
+          // }
         ],
         remindDetail: {},
         dialogFrom: {
@@ -727,7 +727,6 @@
             if(this.dialogFrom.model == 'TIME' && this.dialogFrom.appointData) {
               formData.startTime = this.dialogFrom.appointData;
             }
-
             try {
               let res = await this.$http.PFUAddRemind(formData);
               if (res.code == 0) {
@@ -919,6 +918,7 @@
               subjectName: this.dataInfo.subjectName,
               groupName: this.dataInfo.groupName
             }
+            
             // let res = await this.$http.PFUaddReport(formData);
             // 新2.0 保存接口
             let res = await this.$http.patientReportAddSave(formData);

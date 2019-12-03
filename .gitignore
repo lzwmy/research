@@ -6,3 +6,4 @@ npm-debug.log
 num-debug.*
 .idea/
 docker/
+.cache/

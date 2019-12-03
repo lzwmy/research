@@ -193,7 +193,7 @@ export default {
       );
     };
     // 经过checkStatus处理，不需要超时code = 10 的提示，所以不需要checkCode处理处理
-    Vue.prototype.$getValidLoginAuthenticated = function (url, params = {}, config = {}) {
+    Vue.prototype.$getValidAuthenticated = function (url, params = {}, config = {}) {
       return axios(Object.assign({
         method: 'get',
         url: url + (url.indexOf('?') === -1 ? '?' : '&') + 't=' + (+new Date()),

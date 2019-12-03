@@ -13,7 +13,7 @@
                         <!-- <p>{{item.author}}  {{item.createTime}}</p> -->
                         <p @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
                         <div>
-                            <el-button type="danger" icon="icon iconfont iconshanchu1" @click="onDeleteReport(item)"></el-button>
+                            <el-button type="danger" class="delete_btn" icon="icon iconfont iconshanchu1" @click="onDeleteReport(item)"></el-button>
                             <span class="state" v-if="item.status==0">未完成</span>
                             <span class="state" v-else style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已完成</span>
                         </div>
@@ -207,7 +207,13 @@ export default {
                         border-radius:2px;
                         border:1px solid rgba(27,186,225,1);
                         color: rgba(27, 186, 225, 1);
-                    }   
+                    }
+                    .delete_btn {
+                        display: none;
+                    }
+                    &:hover .delete_btn {
+                        display: inline-block;
+                    }
                 }
             }
             .reportList {

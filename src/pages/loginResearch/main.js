@@ -18,16 +18,17 @@ Vue.prototype.$mes = function (type, message) {
 }
 import install from 'components/utils/install';
 Vue.use(install);
+import utils from 'components/utils';
 import store from '../../store';
 import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
-    store.commit('USER_SIGNOUT');
     localStorage.setItem('CURR_LOGIN_TYPE', 'research');
     //同步获取全局配置：
-    await Global.getConfigJson();
-
+    if(store.state.user.token) {
+      await utils.checkToken();
+    }
     // 初始化根vue
     new Vue({
       el: '#app',

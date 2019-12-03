@@ -42,7 +42,8 @@ const getConfigJson = async () => {
           showCancelButton: false
         }).then(() => {
           utils.ssoLogout();
-        }).catch((errors) => {
+        }).catch((err) => {
+          console.log(err)
           utils.ssoLogout();
         });
       }
@@ -65,7 +66,7 @@ const getConfigJson = async () => {
         }).then(() => {
           utils.ssoLogout();
         }).catch((errors) => {
-          console.log(errors);
+          console.log(err);
           utils.ssoLogout();
         });
       }

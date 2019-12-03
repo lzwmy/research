@@ -7,8 +7,8 @@ const url = {
     myTasksGetQuereList: '/subject/visit/task/subject/quereList',
     // 查询状态任务数
     getStatusList: '/subject/visit/task/subject/statusList',
-    // 查询状态任务数
-    getTableList: '/subject/visit/task/subject/list',
+    // 查询状态任务
+    getTableList: '/subject/visit/task',
 };
 
 const http = {

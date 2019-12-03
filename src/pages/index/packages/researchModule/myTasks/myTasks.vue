@@ -64,41 +64,42 @@
                 <el-collapse v-model="activeCollapse" @change="handleChangeCollapse" accordion>
                     <el-collapse-item :name="index+'aaaa'" v-for="(item,index) in collapseList" :key="index">
                         <template slot="title">
-                            <span class="number">{{item.patientCount}}个任务</span>
-                            <p class="title">{{item.planDate}}</p>
+                            <span class="number">{{item.count}}个任务</span>
+                            <p class="title">{{item.visitTime}}</p>
                         </template>
-                        <el-table-column 
-                            v-for="(column,index) in item.header"
-                            :prop="column.prop" 
-                            :label="column.label" 
-                            sortable 
-                            :key="item.planDate+column.prop+'-'+index" 
-                            align="center"
-                            :min-width="column.label.length * 15 + 50"
-                            :width="handleWidth(column.label)"
-                            v-if="column.type =='normal'"
-                            show-overflow-tooltip>
-                        </el-table-column>
-                        <!-- <el-table 
-                            ref="refTable" fit
-                            :data="item.content"
-                            :v-loading="'tableLoading'+(index+1)">
-                            <el-table-column prop="a" label="随访状态"></el-table-column>
-                            <el-table-column prop="a" label="首次录入时间"></el-table-column>
-                            <el-table-column prop="b" label="所在中心"></el-table-column>
-                            <el-table-column prop="c" label="是否血液净化治疗"></el-table-column>
-                            <el-table-column prop="d" label="阶段-随访点"></el-table-column>
-                            <el-table-column label="操作" width="120">
+                        <el-table v-if="item.tableRsp"  :data="item.tableRsp.body">
+                            <el-table-column 
+                                v-for="(column,columnIndex) in item.tableRsp.header"
+                                :prop="column.prop" 
+                                :label="column.label" 
+                                sortable 
+                                :key="item.visitTime+column.prop+'-'+columnIndex" 
+                                align="center"
+                                :min-width="column.label.length * 15 + 50"
+                                :width="handleWidth(column.label)"
+                                v-if="column.type =='normal'"
+                                show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column label="操作" width="86" align="center" fixed="right">
                                 <template slot-scope="scope">
-                                    <el-button @click=";" type="text" icon="iconfont iconshanchu iconzujian41 info"></el-button>
-                                    <el-button @click=";" type="text" icon="icon iconfont iconduanxin info"></el-button>
-                                    <el-button @click=";" type="text" icon="icon iconfont iconzanting danger"></el-button>
+                                    <el-button @click="" type="text" icon="icon iconfont iconzujian22"></el-button>
+                                    <!-- <div :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
+                                        <div slot="content">
+                                            <el-button @click="" type="text" icon="icon iconfont iconbianji"></el-button>
+                                        </div>
+                                    </el-tooltip> -->
                                 </template>
                             </el-table-column>
-                        </el-table> -->
-                        <!-- 分页 -->
+                        </el-table>
                         <pagination :data="item" @change="getDataList"></pagination>    
                     </el-collapse-item>
+
+                    <div v-if="emtpyData" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+                        <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
+                            <use xlink:href="#iconzu11"></use>
+                        </svg>
+                        <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
+                    </div>
                 </el-collapse>
             </div>
         </div>
@@ -131,29 +132,15 @@ export default {
                 keywords: ''
             },
             activeCollapse: 1,
-            collapseList: [
-                {
-                    date: '2019-09-05',
-                    content:[
-                        {
-                            a: ''
-                        }
-                    ]
-                },
-                {
-                    date: '2019-09-01',
-                    content:[
-                        {
-                            a: ''
-                        }
-                    ]
-                }
-            ]
+            //折叠表格数据
+            collapseList: [],
+            emtpyData: false
         }
     },
     created() {
         // this.getStatusList();
-        // this.getQuereList()
+        this.getDataList()
+        this.getfollowUpList()
     },
     components: {
         pagination
@@ -178,12 +165,13 @@ export default {
                     "subjectId": this.$store.state.user.researchInfo.subjectInfoId,
                     "status": 1,
                     "groupId": this.form.groupId,
+                    "patientName": this.form.keywords,
                     "stageId": this.form.stageId=='全部阶段'?'':this.form.stageId,
                     "pointId": this.form.pointId=='全部随访点'?'':this.form.pointId,
-                    "enterType": localStorage.getItem('CURR_LOGIN_TYPE') == "research"?0:1
                 });
                 if (res.code == '0') {
                     this.collapseList = res.data;
+                    this.emtpyData = this.collapseList.length == 0;
                 }
             } catch (err) {
                 console.log(err)
@@ -207,7 +195,7 @@ export default {
             let data = this.queueListStage.find(li=>{
                 return li.stageId == id;
             })
-            this.queueListPoint = data.pointList;
+            this.queueListPoint = data.pointList || [];
         },    
         //获取状态列表
         async getStatusList() {
@@ -226,11 +214,12 @@ export default {
                 console.log(err)
             }
         },
-        //获取查询列表
-        async getQuereList() {
+        //获取随访点列表
+        async getfollowUpList() {
             try {
-                let res = await this.$http.myTasksGetQuereList({
-                    subjectId: this.$store.state.user.researchInfo.subjectInfoId
+                // let res = await this.$http.myTasksGetQuereList({
+                let res = await this.$http.followUpPlanStageList({
+                    id: this.$store.state.user.researchInfo.subjectInfoId
                 });
                 if (res.code == '0') {
                     this.queueListGroup = res.data;

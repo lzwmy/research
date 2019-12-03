@@ -1,6 +1,7 @@
 // import Vue from 'vue';
 import store from '../../store/index';
 import { MessageBox, Menu } from 'element-ui';
+import Global from 'components/utils/global';
 import CryptoJS from '../../../static/js/crypto-js'
 
 const vm = new Vue();
@@ -368,53 +369,6 @@ const loadMenuInfo = () => {
 };
 
 
-/**
- * Created by hh on 18/01/03.
- *退出
- *@param {} [] []
- *@return {Object} [返回对象]
- */
-const ssoLogout = () => {
-  //登录来源
-  let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
-  let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
-  let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
-  let diseaseId = store.state.user.diseaseInfo.diseaseId
-  try {
-    vm.$get('/auth/logout.do?t=' + (+new Date()))
-    then(function (response) {
-      store.commit('USER_SIGNOUT');
-      if(isDisease) {
-        window.location.href = './loginDisease.html?id='+diseaseId;
-      }else if(isResearch) {
-        window.location.href = './loginResearch.html?id='+subjectInfoId;
-      }else {
-        window.location.href = './login.html';
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-      store.commit('USER_SIGNOUT');
-      if(isDisease) {
-        window.location.href = './loginDisease.html?id='+diseaseId;
-      }else if(isResearch) {
-        window.location.href = './loginResearch.html?id='+subjectInfoId;
-      }else {
-        window.location.href = './login.html';
-      }
-    });
-  } catch (err) {
-    store.commit('USER_SIGNOUT');
-    if(isDisease) {
-      window.location.href = './loginDisease.html?id='+diseaseId;
-    }else if(isResearch) {
-      window.location.href = './loginResearch.html?id='+subjectInfoId;
-    }else {
-      window.location.href = './login.html';
-    }
-  }
-};
-
 const getOrgData = () => {
   return new Promise((resolve, reject) => {
     if (localStorage.getItem('ORGDATA') && localStorage.getItem('ORGDATA').length > 0) {
@@ -658,62 +612,78 @@ const defineArrayFind = function () {
   }
 };
 
-const validLoginAuthenticated = function () {
+const checkToken = function () {
   return new Promise(async (resolve, reject) => {
     try {
-      let data = await vm.$http.authLoginValidAuthenticated();
-      data = data.data;
-      if (data && data.code == '0' && data.data) {
-        let userLogin = {
-          name: data.data.name,
-          permissionCodes: data.data.permissionCodes,
-          roleCodes: data.data.roleCodes,
-          sessionId: data.data.sessionId,
-          userId: data.data.userId
-        };
-        store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-        let url = getQuery('url');
-        if (url) {
-          window.location.href = url;
-        } else {
-          window.location.href = './index.html#/index';
+      let res = await vm.$http.ckeckTokenAPI();
+      if (res.data.code == '0' && res.data.data) {
+        //跳转至主页
+        let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
+        let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
+        let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
+        let diseaseId = store.state.user.diseaseInfo.diseaseId;
+        if(isDisease) {
+          window.location.href = './#/diseaseChart?id='+diseaseId;
+        }else if(isResearch) {
+          window.location.href = './#/projectProgress';
+        }else {
+          window.location.href = './#/index';
         }
-      } else {
         resolve();
+      } else {
+        ssoLogout();
+        reject();
       }
     } catch (err) {
-      store.commit('USER_SIGNOUT');
-      reject(err);
+      ssoLogout();
+      reject();
     }
   });
 };
 
-const validIndexAuthenticated = function () {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let data = await vm.$http.authIndexValidAuthenticated();
-      if (data && data.code == '0' && data.data) {
-        let userLogin = {
-          name: data.data.name,
-          permissionCodes: data.data.permissionCodes,
-          roleCodes: data.data.roleCodes,
-          sessionId: data.data.sessionId,
-          userId: data.data.userId
-        };
-        store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-        resolve(userLogin);
-      }
-    } catch (err) {
-      store.commit('USER_SIGNOUT');
-      //是否为科研项目登录
-      let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
-      if(!isResearch) {
-        window.location.href = './login.html';
+/**
+ * Created by hh on 18/01/03.
+ *退出
+ *@param {} [] []
+ *@return {Object} [返回对象]
+ */
+const ssoLogout = async() => {
+  //登录来源
+  let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
+  let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
+  let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
+  let diseaseId = store.state.user.diseaseInfo.diseaseId
+  try {
+    store.commit('USER_SIGNOUT');
+    vm.$get('/auth/logout.do?t=' + (+new Date()))
+    then(function (response) {
+      if(isDisease) {
+        window.location.href = './loginDisease.html?id='+diseaseId;
+      }else if(isResearch) {
+        window.location.href = './loginResearch.html?id='+subjectInfoId;
       }else {
-        window.location.href = './loginResearch.html';
+        window.location.href = './login.html';
       }
+    })
+    .catch(function (error) {
+      console.log(error);
+      if(isDisease) {
+        window.location.href = './loginDisease.html?id='+diseaseId;
+      }else if(isResearch) {
+        window.location.href = './loginResearch.html?id='+subjectInfoId;
+      }else {
+        window.location.href = './login.html';
+      }
+    });
+  } catch (err) {
+    if(isDisease) {
+      window.location.href = './loginDisease.html?id='+diseaseId;
+    }else if(isResearch) {
+      window.location.href = './loginResearch.html?id='+subjectInfoId;
+    }else {
+      window.location.href = './login.html';
     }
-  });
+  }
 };
 
 
@@ -900,8 +870,7 @@ export default {
   getWeek, // 获取某一天属于一年的第几周
   throttle, // 函数节流，有些执行的函数会执行很多次
   defineArrayFind, // 为旧浏览器提供它没有原生支持的数组查找某个对象的方法findIndex，返回索引；
-  validIndexAuthenticated, // 验证首页浏览器自带的session有没有在登录有效期
-  validLoginAuthenticated, // 验证登录页浏览器自带的session有没有在登录有效期
+  checkToken, // 验证登录页浏览器缓存的token有没有在登录有效期
   calculationAge,    //根据出生年月日计算周岁
   deepCopy,   //深克隆
   handleTableScorll,   //操作表格滚动
