@@ -1,13 +1,25 @@
 <template>
     <div class="statisticalAnalysis_content">
-        <p class="page_title text_center">XXX关于xxx的单因素分析</p>
+        <p v-if="statisticsData.list.length != 0" class="page_title text_center">{{targetElemnt.itemName+'的'+ activeTag==0?'描述性统计':'单因素分析'}}</p>
         <el-table 
+            v-if="activeTag==0 && statisticsData.list.length != 0"
             ref="refTable" fit
-            :data="dataList"
+            :data="statisticsData.list"
             v-loading="tableLoading">
-            <el-table-column prop="a" label="总频数"></el-table-column>
-            <el-table-column prop="c" label="有效频数"></el-table-column>
-            <el-table-column prop="d" label="缺失数"></el-table-column>
+            <!-- <el-table-column prop="dynamicName" :label="targetElemnt"></el-table-column> -->
+            <el-table-column prop="totalFrequency" label="总频数"></el-table-column>
+            <el-table-column prop="validCount" label="有效频数"></el-table-column>
+            <el-table-column prop="missingCount" label="缺失数"></el-table-column>
+            <el-table-column prop="percentage" label="占比(%)"></el-table-column>
+        </el-table>
+        <el-table 
+            v-if="activeTag==1 && statisticsData.list.length != 0"
+            ref="refTable" fit
+            :data="statisticsData.list"
+            v-loading="tableLoading">
+            <el-table-column prop="e" label="总频数"></el-table-column>
+            <el-table-column prop="e" label="有效频数"></el-table-column>
+            <el-table-column prop="e" label="缺失数"></el-table-column>
             <el-table-column prop="e" label="标准差"></el-table-column>
             <el-table-column prop="e" label="最小值"></el-table-column>
             <el-table-column prop="e" label="Q1"></el-table-column>
@@ -16,12 +28,18 @@
             <el-table-column prop="e" label="最大值"></el-table-column>
             <el-table-column prop="e" label="正态值检验p值"></el-table-column>
         </el-table>
+        <div v-if="statisticsData.list.length == 0" class="empty flex-center-center flex-wrap" style="margin: 50px 0;">
+            <svg class="icon" aria-hidden="true" style="font-size: 30px;width:100%; text-align:center;">
+                <use xlink:href="#iconzu11"></use>
+            </svg>
+            <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
+        </div>
         <br/>
         <p class="page_title bottom_10">统计结果解读</p>
         <el-input
             type="textarea"
             :rows="3"
-            v-model="textarea"
+            v-model="statisticsData.textList"
             disabled>
         </el-input>
         <br/>
@@ -42,6 +60,7 @@
 <script>
 import charts from './charts'
 export default {
+    props: ['statisticsData','targetElemnt','activeTag'],
     name: 'contentAnalysis',
     data () {
         return {
@@ -87,9 +106,6 @@ export default {
                 }
             },
         }
-    },
-    watch: {
-        
     },
     components: {
         charts

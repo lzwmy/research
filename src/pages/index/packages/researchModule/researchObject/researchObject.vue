@@ -1,5 +1,5 @@
 <template>
-    <div class="cloud-component researchObject cloud_common_search">
+    <div class="cloud-component researchObject cloud_common_search" v-loading="importMask"  element-loading-text="数据正在导入中。。。。">
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
@@ -239,6 +239,8 @@ export default {
                 visible: false,
                 dataList: []
             },
+            //文件导入loading蒙板
+            importMask: false,
             //回显指标
             previewFormItem:[],
             //已选指标数组
@@ -555,7 +557,7 @@ export default {
         },
         //批量添加研究对象
         async importBatchObject(file) {
-            this.importPatinetLoading = true;
+            this.importMask = true;
             try {
                 let params = new FormData();
                 params.append('file',file.raw);
@@ -568,18 +570,18 @@ export default {
                 }else if(res.data) {
                     this.handleCheckData(res.data)
                 }
-                this.importPatinetLoading = false;
+                this.importMask = false;
             } catch (err) {
-            this.importPatinetLoading = false;
-            console.log(err)
-            this.$mes('error','导入失败')
+                this.importMask = false;
+                console.log(err)
+                this.$mes('error','导入失败')
             }
         },
         //批量添加研究对象文件选中
         successFile(file,fileList) {
             this.importBatchObject(file);
         },
-        //成功添加回调
+        //成功添加对象回调
         handleSuccessAdd(currentGrounpId) {
             this.$refs.refSearch.getGroupList()
             .then(()=>{

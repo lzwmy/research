@@ -73,7 +73,7 @@ function checkCode (res) {
       Message({message: '接口参数异常',duration: 2000});
       return res.data;
     case '40': 
-      Message({message: '业务异常',duration: 2000});
+      Message({message: res.data.msg || '业务异常',duration: 2000});
       return res.data;
     default:  
       // MessageBox.confirm(res.data.message, '提示', {

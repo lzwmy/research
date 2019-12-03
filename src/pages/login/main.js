@@ -16,6 +16,7 @@ import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
+    localStorage.setItem('CURR_LOGIN_TYPE', null);
     //同步获取全局配置：
     await Global.getConfigJson();
     // 同步验证缓存的token有没有在登录有效期；

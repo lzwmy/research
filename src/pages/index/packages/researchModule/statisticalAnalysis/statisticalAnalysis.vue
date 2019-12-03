@@ -3,29 +3,29 @@
         <!-- <img src="../images/statisticalAnalysis.png" alt="" width="100%"> -->
         <aside>
             <div class="top">
-                <el-select v-model="selectGroup" placeholder="请选择">
+                <el-select v-model="currentGroupId" placeholder="请选择" @change="changeSelectGroup">
                     <el-option
                         v-for="(item,index) in selectGroupList"
                         :key="index"
-                        :label="item.label"
-                        :value="item.label">
+                        :label="item.groupName"
+                        :value="item.groupId">
                     </el-option>
                 </el-select>
-                <p class="color_1">290585个研究对象</p>
+                <p class="color_1">{{selectGroup.patientCount}} 个研究对象</p>
             </div>
             <div class="content">
                 <div class="select flex-between-center">
                     <p class="label font_14 color_1" style="width: 90px;">指标列表</p>
-                    <el-select v-model="selectTarget" placeholder="请选择">
+                    <el-select v-model="selectTarget" @change="changeSelectTarget" placeholder="请选择">
                         <el-option
                             v-for="(item,index) in selectTargetList"
                             :key="index"
                             :label="item.label"
-                            :value="item.label">
+                            :value="item.value">
                         </el-option>
                     </el-select>
                 </div>
-                <ul>
+                <ul v-loading="selectTargetLoading">
                     <!-- :move="draggableRemoveCallBack" -->
                     <draggable 
                     v-model="targetList" 
@@ -34,8 +34,8 @@
                     @end="onEndCallBack" 
                     :move="draggableRemoveCallBack">
                             <li class="flex-between-center" v-for="(item, index) in targetList" :key="index">
-                                <p class="color_1">{{item.label}}</p>
-                                <span>{{item.type == 1?'分类':'连续'}}</span>
+                                <p class="color_1">{{item.itemName}}</p>
+                                <span>{{item.controlType  == 'NUMBER_INPUT'?'连续':'分类'}}</span>
                             </li>
                     </draggable>
                 </ul>
@@ -61,13 +61,13 @@
                                             :data-id="index" v-model="item.draggableList" 
                                             :group='{name: "menu",put: true, pull: "clone"}' 
                                             :sort="false">
-                                            <div class="li" v-for="(li, index) in item.draggableList" :key="index">{{li.label}}</div>
+                                            <div class="li" v-for="(li, index) in item.draggableList" :key="index">{{li.itemName}}</div>
                                         </draggable>
                                     </div>
                             </div>
                             <el-button type="primary" icon="icon iconfont iconzujian38" @click="">保存到项目</el-button>
                         </div>
-                        <contentAnalysis></contentAnalysis>
+                        <contentAnalysis v-loading="statisticsLoading" :statisticsData="statisticsData" :activeTag="activeTag" :targetElemnt="targetElemnt"></contentAnalysis>
                     </div>
                 </div>
                 <div class="right">
@@ -91,32 +91,23 @@ export default {
     data () {
         return {
             activeTag: 0,
-            selectGroupList:[
-                {label:'分组1'},
-                {label:'分组2'},
-                {label:'分组3'},
-                {label:'分组4'}
-            ],
-            selectGroup: '',
-            selectTarget: '',
+            selectGroupList:[],    
+            selectGroup: {},
+            selectTarget: undefined,
+            selectTargetLoading: false,
+            statisticsLoading: false,
             selectTargetList: [
-                {label:'分部'},
-                {label:'分类'},
-                {label:'连续'}
+                {label:'全部',value:undefined},
+                {label:'分类',value:'TYPE'},
+                {label:'连续',value:'NUMBER'}
             ],
-            targetList: [
-                { label: '性别1', type: 1},
-                { label: '民族2', type: 2},
-                { label: '性别3', type: 1},
-                { label: '民族4', type: 2},
-                { label: '性别5', type: 1},
-                { label: '民族6', type: 2},
-                { label: '性别7', type: 1},
-                { label: '民族8', type: 2},
-                { label: '性别9', type: 1},
-                { label: '民族10', type: 2},
-                { label: '性别11', type: 1}
-            ],
+            //统计信息
+            statisticsData: {
+                list: [],
+                textList: []
+            },
+            //指标列表
+            targetList: [],
             domainList: [
                 {type: 0, label: '将变量拖入此区可进行新的分析', draggableList: []},
                 {type: 1, label: '分组变量拖拽区域', draggableList: []},
@@ -134,9 +125,65 @@ export default {
         draggable,
         contentAnalysis
     },
+    computed: {
+        currentGroupId: function() {
+            return this.selectGroup.groupId;
+        }
+    },
+    created() {
+        this.getGroupList();
+        this.getTargetItemList(undefined);
+    },
     methods: {
         selectTag(val) {
             this.activeTag = val;
+        },
+        //分组选择框改变
+        changeSelectGroup(val) {
+            this.selectGroup = this.selectGroupList.find(li=>{
+                return li.groupId == val;
+            })
+            console.log(this.selectGroup)
+        },
+        //指标下拉选择
+        changeSelectTarget(val) {
+            this.getTargetItemList(val);
+        },
+        //指标列表
+        async getTargetItemList(type) {
+            this.selectTargetLoading = true;
+            let params = {
+                variableType: type,
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisTargetList(params);
+                if (res.code == '0') {
+                    this.targetList = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            this.selectTargetLoading = false;
+        },
+        //统计数据
+        async getAnalysisData(targetElemnt) {
+            this.statisticsLoading = true;
+            let params = {
+                "rangeText": targetElemnt.valueRange,
+                "crfId": targetElemnt.crfId,
+                "path": targetElemnt.path,
+                "subjectId": this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisTanalysisData(params);
+                if (res.code == '0') {
+                    this.statisticsData = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            this.statisticsLoading = false;
         },
         //拖拽后的回调
         onEndCallBack(data) {
@@ -152,6 +199,7 @@ export default {
         //获取拖拽的对象
         draggableRemoveCallBack(data) {
             this.targetElemnt = data.draggedContext.element;
+            this.getAnalysisData(data.draggedContext.element);
         },
         //删除已保存的统计结果
         onDeleteResult(item) {
@@ -173,7 +221,24 @@ export default {
                 //     this.$mes('error', '删除出错');
                 // }
             }).catch((error) => {});
-        }
+        },
+        //获取分组列表
+        async getGroupList() {
+            let params = {
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisGroup(params);
+                if (res.code == '0') {
+                    this.selectGroupList = res.data;
+                    if(this.selectGroupList.length != 0) {
+                        this.selectGroup = this.selectGroupList[0];
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
     }
 };
 </script>
