@@ -24,7 +24,7 @@ import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
-    localStorage.setItem('CURR_LOGIN_TYPE', 'disease');
+    
     store.commit('saveDiseaseInfo',{
       diseaseId: utils.getQuery('id'), 
       isAdmin: false,
@@ -32,10 +32,11 @@ let initApp = async () => {
     });
     //同步获取全局配置：
     await Global.getConfigJson();
-    // 同步验证缓存的token有没有在登录有效期；
-    if(store.state.user.token) {
+    // 同步验证缓存的token有没有在登录有效期 和 是否是在专病下登录
+    if(store.state.user.token && localStorage.getItem('CURR_LOGIN_TYPE') == 'disease') {
       await utils.checkToken();
     }
+    localStorage.setItem('CURR_LOGIN_TYPE', 'disease');
     // 初始化根vue
     new Vue({
       el: '#app',

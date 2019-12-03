@@ -132,7 +132,7 @@ export default {
         handleDiseaseSelect(diseaseId) {
             this.viewLoading = true;
             this.$store.commit('saveDiseaseInfo',
-                Object.assign(this.this.$store.state.user.diseaseInfo,{
+                Object.assign(this.$store.state.user.diseaseInfo,{
                     diseaseId: diseaseId,
                 })
             );

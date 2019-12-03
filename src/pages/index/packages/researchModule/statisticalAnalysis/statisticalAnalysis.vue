@@ -3,25 +3,25 @@
         <!-- <img src="../images/statisticalAnalysis.png" alt="" width="100%"> -->
         <aside>
             <div class="top">
-                <el-select v-model="selectGroup" placeholder="请选择">
+                <el-select v-model="currentGroupId" placeholder="请选择" @change="changeSelectGroup">
                     <el-option
                         v-for="(item,index) in selectGroupList"
                         :key="index"
-                        :label="item.label"
-                        :value="item.label">
+                        :label="item.groupName"
+                        :value="item.groupId">
                     </el-option>
                 </el-select>
-                <p class="color_1">290585个研究对象</p>
+                <p class="color_1">{{selectGroup.patientCount}} 个研究对象</p>
             </div>
             <div class="content">
                 <div class="select flex-between-center">
                     <p class="label font_14 color_1" style="width: 90px;">指标列表</p>
-                    <el-select v-model="selectTarget" placeholder="请选择">
+                    <el-select v-model="selectTarget" @change="changeSelectTarget" placeholder="请选择">
                         <el-option
                             v-for="(item,index) in selectTargetList"
                             :key="index"
                             :label="item.label"
-                            :value="item.label">
+                            :value="item.value">
                         </el-option>
                     </el-select>
                 </div>
@@ -91,18 +91,13 @@ export default {
     data () {
         return {
             activeTag: 0,
-            selectGroupList:[
-                {label:'分组1'},
-                {label:'分组2'},
-                {label:'分组3'},
-                {label:'分组4'}
-            ],
-            selectGroup: '',
+            selectGroupList:[],    
+            selectGroup: {},
             selectTarget: '',
             selectTargetList: [
-                {label:'分部'},
-                {label:'分类'},
-                {label:'连续'}
+                {label:'分部',value:undefined},
+                {label:'分类',value:'TYPE'},
+                {label:'连续',value:'NUMBER'}
             ],
             targetList: [
                 { label: '性别1', type: 1},
@@ -134,9 +129,46 @@ export default {
         draggable,
         contentAnalysis
     },
+    computed: {
+        currentGroupId: function() {
+            return this.selectGroup.groupId;
+        }
+    },
+    created() {
+        this.getGroupList();
+    },
     methods: {
         selectTag(val) {
             this.activeTag = val;
+        },
+        //分组选择框改变
+        changeSelectGroup(val) {
+            this.selectGroup = this.selectGroupList.find(li=>{
+                return li.groupId == val;
+            })
+            console.log(this.selectGroup)
+        },
+        //指标下拉选择
+        changeSelectTarget(val) {
+            // this.getTargetItemList();
+        },
+        //指标列表
+        async getTargetItemList(type) {
+            let params = {
+                variableType: type,
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisGroup(params);
+                if (res.code == '0') {
+                    this.selectGroupList = res.data;
+                    if(this.selectGroupList.length != 0) {
+                        this.selectGroup = this.selectGroupList[0];
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
         },
         //拖拽后的回调
         onEndCallBack(data) {
@@ -173,7 +205,24 @@ export default {
                 //     this.$mes('error', '删除出错');
                 // }
             }).catch((error) => {});
-        }
+        },
+        //获取分组列表
+        async getGroupList() {
+            let params = {
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisGroup(params);
+                if (res.code == '0') {
+                    this.selectGroupList = res.data;
+                    if(this.selectGroupList.length != 0) {
+                        this.selectGroup = this.selectGroupList[0];
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
     }
 };
 </script>

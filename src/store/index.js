@@ -65,8 +65,8 @@ const user = {
     },
     [USER_SIGNOUT](state) {
       state.token = '';
-      // localStorage.clear();
-      // sessionStorage.clear();
+      localStorage.clear();
+      sessionStorage.clear();
     },
     saveMenuList(state, payload) {
       state.menuList = payload.params;

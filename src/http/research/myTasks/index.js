@@ -8,7 +8,7 @@ const url = {
     // 查询状态任务数
     getStatusList: '/subject/visit/task/subject/statusList',
     // 查询状态任务
-    getTableList: '/subject/visit/task',
+    getTableList: '/subject/visit/task/info',
 };
 
 const http = {
