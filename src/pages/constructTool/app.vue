@@ -40,7 +40,7 @@
               <p>文章段落生成</p>
             </div>
           </div>
-          <div class="content-item" >
+          <div class="content-item" @click="jumpURL('http://dev.emhi.cn:18685/#/home/ruleEngine/ruleMgnt')">
             <div class="content_aligned">
               <img src="./images/Quality_control.png" alt="">
               <p>数据质控</p>
@@ -135,7 +135,7 @@
     align-items: center;
     width: 100%;
     height: 180px;
-    box-shadow: 5px 9px 8px -2px rgba(0, 0, 0, 0.16);
+    /*box-shadow: 5px 9px 8px -2px rgba(0, 0, 0, 0.16);*/
   }
   .content-item .content_aligned{
     text-align: center;
