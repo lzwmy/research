@@ -26,18 +26,18 @@
                             <el-date-picker v-if="item.jsonData.controlType=='DATE_TIME'" v-model="item.value" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
                             <el-date-picker v-if="item.jsonData.controlType=='DATE'" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
                             <el-checkbox-group v-if="item.jsonData.controlType=='CHECKBOX'" v-model="item.value">
-                                <el-checkbox v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="li">{{li}}</el-checkbox>
+                                <el-checkbox v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="precessData(li)">{{precessData(li)}}</el-checkbox>
                             </el-checkbox-group>
                             <div v-if="item.jsonData.controlType=='RADIO_BUTTON'">
                                 <el-radio-group v-model="item.value">
-                                    <el-radio v-for="(li, index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="li">{{li}}</el-radio>
+                                    <el-radio v-for="(li, index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="precessData(li)">{{precessData(li)}}</el-radio>
                                 </el-radio-group>
                             </div>
                             <el-select v-if="item.jsonData.controlType=='SINGLE_COMBOX' || item.jsonData.controlType=='MULTI_COMBOX' " clearable :multiple="item.jsonData.controlType=='MULTI_COMBOX'?true:false" v-model="item.value" :placeholder="'请选择'+item.controlName">
                                 <el-option
                                     v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')"
                                     :key="index"
-                                    :label="li"
+                                    :label="precessData(li)"
                                     :value="li">
                                 </el-option>
                             </el-select>
@@ -129,7 +129,15 @@ export default {
             }else {
                 this.$mes('info','请先选择分组')
             }
+        },
+      //处理 ^
+      precessData(data) {
+        if(data.indexOf('^')!=='-1') {
+          return data.split('^')[0]
+        }else {
+          return data
         }
+      }
     }
 };
 </script>
