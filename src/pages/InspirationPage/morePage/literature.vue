@@ -395,7 +395,8 @@
             data.data.forEach(item=>{
               array.push({
                 name: item.name,
-                weight: item.count
+                weight: item.count,
+                // color:"#00B8DF",
               })
             });
             that.keyword = array[0].name;
