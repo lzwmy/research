@@ -150,7 +150,6 @@ export default {
         }
       } catch (error) {
         that.loading = false;
-        this.$mes('error','获取医学分类列表失败');
       }
     },
     reset () {
@@ -177,7 +176,6 @@ export default {
             that.getDataList(that.currentPageNo, that.currentPageSize);
           }
         } catch (error) {
-          this.$mes('error', '删除出错');
         }
       }).catch((error) => {});
     },
@@ -212,7 +210,6 @@ export default {
           }
           that.ruleFormDialog.loading = false;
         } catch (error) {
-          this.$mes('error', data.msg);
           that.ruleFormDialog.loading = false;
         }
       });

@@ -505,7 +505,7 @@
         if (!value) {
           return callback(new Error('手机号不能为空'));
         } else {
-          const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/
+          const reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
           console.log(reg.test(value));
           if (reg.test(value)) {
             callback();
@@ -753,7 +753,6 @@
           this.notPassDialogVisible = false;
           this.notPassDialogLoading = false;
           console.log(error)
-          this.$mes('error','导出失败')
         }
       },
       //添加患者下拉 
@@ -791,7 +790,6 @@
         } catch (err) {
           this.importPatinetLoading = false;
           console.log(err)
-          this.$mes('error','导入失败')
         }
       },
       async getFindViews () {
@@ -1731,8 +1729,6 @@
                 this.$mes('success', this.patientDialogTitle+"成功!");
                 this.patientDialogVisible = false;
                 this.getDataList();
-              }else {
-                this.$mes('error', this.patientDialogTitle+"失败!");
               }
             } catch (err) {
               console.log(err)

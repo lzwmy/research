@@ -374,7 +374,6 @@
           if (res.code == '0') {
             return Promise.resolve(res.data);
           } else {
-            this.$mes('error', '获取项目信息失败');
             setTimeout(()=>{
               window.location.href = './loginResearch.html?id='+this.$store.state.user.researchInfo.subjectInfoId;
             },1000)

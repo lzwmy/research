@@ -270,8 +270,6 @@ export default {
                 let res = await this.$http.casesSearchPatient(formData);
                 if (res.code == 0) {
                     this.identify = res.data.identitycardno || "";
-                }else {
-                    this.$mes('error', "获取基本信息失败!");
                 }
             } catch (err) {
                 console.log(err)
@@ -287,8 +285,6 @@ export default {
                 if (res.code == 0) {
                     this.$mes('success', "已向"+row.patientName+"推送微信随访消息!");
                     this.getDataList();
-                }else {
-                    this.$mes('error', "推送消息失败!");
                 }
             } catch (err) {
                 console.log(err)
@@ -304,8 +300,6 @@ export default {
                 if (res.code == 0) {
                     this.$mes('success', "已向"+row.patientName+"推送短信随访消息!");
                     this.getDataList();
-                }else {
-                    this.$mes('error', "推送消息失败!");
                 }
             } catch (err) {
                 console.log(err)

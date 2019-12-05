@@ -111,8 +111,6 @@
           let res = await this.$http.casesSearchPatient(formData);
           if (res.code == 0) {
             this.identify = res.data.identitycardno || "";
-          } else {
-            this.$mes('error', "获取基本信息失败!");
           }
         } catch (err) {
           console.log(err)
@@ -139,8 +137,6 @@
             let obj = {};
             obj.content = res.data;
             this.dataList = obj;
-          }else {
-            this.$mes('error', res.msg);
           }
           that.loading = false;
         } catch (err) {

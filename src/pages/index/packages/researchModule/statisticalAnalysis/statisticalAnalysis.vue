@@ -67,7 +67,13 @@
                             </div>
                             <el-button type="primary" icon="icon iconfont iconzujian38" @click="">保存到项目</el-button>
                         </div>
-                        <contentAnalysis v-loading="statisticsLoading" :statisticsData="statisticsData" :activeTag="activeTag" :targetElemnt="targetElemnt"></contentAnalysis>
+                        <contentAnalysis 
+                            v-loading="statisticsLoading" 
+                            :statisticsData="statisticsData" 
+                            :activeTag="activeTag" 
+                            :targetElemnt="targetElemnt"
+                            :chartOptions="chartOptions">
+                        </contentAnalysis>
                     </div>
                 </div>
                 <div class="right">
@@ -113,11 +119,13 @@ export default {
                 {type: 1, label: '分组变量拖拽区域', draggableList: []},
                 {type: 1, label: '结果变量拖拽区域', draggableList: []}
             ],
+            chartOptions: [],
             //被拖拽的目标对象
             targetElemnt: {},
             statisticalResultsList: [
-                {text:'Xxx关于xxx的单因素分析 样本：队列1-实验组'},
-                {text:'Xxx关于xxx的单因素分析 样本：队列1-实验组'}
+                {text:'关于xxx的描述性统计样本：队列1-实验组1'},
+                {text:'关于xxx的描述性统计样本：队列1-实验组2'},
+                {text:'关于xxx的描述性统计样本：队列1-实验组3'}
             ]
         }
     },
@@ -131,12 +139,22 @@ export default {
         }
     },
     created() {
-        this.getGroupList();
+        this.getGroupList()
         this.getTargetItemList(undefined);
     },
     methods: {
         selectTag(val) {
             this.activeTag = val;
+            //清空统计数据 
+            this.domainList.forEach(li=>{
+                li.draggableList = [];
+            })
+            this. statisticsData = {
+                list: [],
+                textList: []
+            }
+            this.chartOptions = [];
+            this.targetElemnt = {};
         },
         //分组选择框改变
         changeSelectGroup(val) {
@@ -144,6 +162,9 @@ export default {
                 return li.groupId == val;
             })
             console.log(this.selectGroup)
+            if(this.targetElemnt) {
+                this.getAnalysisData(this.targetElemnt);
+            }
         },
         //指标下拉选择
         changeSelectTarget(val) {
@@ -170,6 +191,7 @@ export default {
         async getAnalysisData(targetElemnt) {
             this.statisticsLoading = true;
             let params = {
+                "groupId": this.currentGroupId,
                 "rangeText": targetElemnt.valueRange,
                 "crfId": targetElemnt.crfId,
                 "path": targetElemnt.path,
@@ -179,6 +201,11 @@ export default {
                 let res = await this.$http.statisticalAnalysisTanalysisData(params);
                 if (res.code == '0') {
                     this.statisticsData = res.data;
+                    let text = '';
+                    this.statisticsData.textList.forEach(li=>{
+                        text += li + '\n'
+                    })
+                    this.statisticsData.textList = text;
                 }
             } catch (err) {
                 console.log(err)
@@ -193,13 +220,13 @@ export default {
             this.domainList.forEach((item)=>{
                 item.draggableList = [];
             })
-
             this.domainList[data.to.dataset.id].draggableList = [this.targetElemnt];
         },
         //获取拖拽的对象
         draggableRemoveCallBack(data) {
             this.targetElemnt = data.draggedContext.element;
             this.getAnalysisData(data.draggedContext.element);
+            this.getCharts(data.draggedContext.element);
         },
         //删除已保存的统计结果
         onDeleteResult(item) {
@@ -239,6 +266,22 @@ export default {
                 console.log(err)
             }
         },
+        //获取图表数据 
+        async getCharts(targetElemnt) {
+            let params = {
+                "rangeText": targetElemnt.valueRange,
+                "crfId": targetElemnt.crfId,
+                "path": targetElemnt.path
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisPieOrBar(params);
+                if (res.code == '0') {
+                    this.chartOptions = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        }
     }
 };
 </script>
@@ -251,7 +294,7 @@ export default {
             position: relative;
             width: 240px;
             background-color: #fff;
-            margin-right: 30px;
+            margin-right: 15px;
             .top {
                 padding: 15px 15px 10px;
                 border-bottom: 1px solid #E5E8EB;
@@ -306,11 +349,14 @@ export default {
                 height: 36px;
                 span {
                     border: 1px solid #eee;
+                    border-bottom-color: #fff;
                     line-height: 36px;
                     width: 100px;
                     display: inline-block;
                     text-align: center;
                     cursor: pointer;
+                    position: relative;
+                    z-index: 2;
                     &.active {
                         background-color: #fff;
                     }
@@ -330,6 +376,8 @@ export default {
                     border: 1px solid #eee;
                     padding: 15px;
                     .content {
+                        position: relative;
+                        height: 100%;
                         .top {
                             height: 90px;
                             .domain {

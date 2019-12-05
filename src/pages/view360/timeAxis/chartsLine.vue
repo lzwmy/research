@@ -79,7 +79,6 @@ export default {
                         this.$emit('getIndicatorData')
                     }
                 } catch (error) {
-                    this.$mes('error', '删除出错');
                 }
             }).catch((error) => {});
         },

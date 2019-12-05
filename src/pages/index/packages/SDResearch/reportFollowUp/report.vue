@@ -177,8 +177,6 @@ export default {
                     obj.totalCount = parseInt(res.data.totalElements);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.loading = false;
             } catch (err) {
@@ -199,8 +197,6 @@ export default {
                     let res = await this.$http.PFUdeleteReport(formData);
                     if (res.code == 0) {
                         this.$mes('success', "删除报告成功!");
-                    }else {
-                        this.$mes('error', "删除报告失败!");
                     }
                     this.getDataList();
                 } catch (err) {
@@ -240,8 +236,6 @@ export default {
                 let res = await this.$http.PFUGetList(formData);
                 if (res.code == 0) {
                     this.selectList = res.data;
-                }else {
-                    this.$mes('error', "获取关联报告列表失败!");
                 }
             } catch (err) {
                 console.log(err)
@@ -275,8 +269,6 @@ export default {
                             this.$mes('success', "添加报告成功!");
                             this.dialog.visible = false;
                             this.getDataList();
-                        }else {
-                            this.$mes('error', "添加报告失败!");
                         }
                     } catch (err) {
                         console.log(err)

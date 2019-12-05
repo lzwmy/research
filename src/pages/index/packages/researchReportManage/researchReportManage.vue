@@ -214,8 +214,6 @@ export default {
                     obj.totalCount = parseInt(res.data.totalElements);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.loading = false;
             } catch (err) {
@@ -272,8 +270,6 @@ export default {
                 let res = await this.$http.casesSearchPatient(formData);
                 if (res.code == 0) {
                     this.identify = res.data.identitycardno || "";
-                }else {
-                    this.$mes('error', "获取基本信息失败!");
                 }
             } catch (err) {
                 console.log(err)

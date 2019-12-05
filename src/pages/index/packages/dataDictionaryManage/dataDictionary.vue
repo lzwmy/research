@@ -245,7 +245,7 @@ export default {
           that.dataList = obj;
         }
       } catch (error) {
-        this.$mes('error', "获取数据字典列表失败");
+        
       }
       that.loading = false;
     },
@@ -273,7 +273,6 @@ export default {
             that.getDataList(that.currentPageNo, that.currentPageSize);
           }
         } catch (error) {
-          this.$mes('error', '删除出错');
         }
       }).catch((error) => {});
     },
@@ -312,7 +311,6 @@ export default {
           }
           that.ruleFormDialog.loading = false;
         } catch (error) {
-          this.$mes('error', data.msg);
           that.ruleFormDialog.loading = false;
         }
       });
@@ -362,7 +360,6 @@ export default {
         }
       } catch (error) {
         this.ruleFormDialog.loading = false;
-        this.$mes('error', "获取医学代码集失败");
       }
     },
     //获取代码集oid
@@ -373,7 +370,6 @@ export default {
           this.ruleFormDialog.termGroupOid = data.data;
         }
       } catch (error) {
-        this.$mes('error', "获取代码集oid失败");
       }
     },
     //关闭窗口的回调
@@ -415,7 +411,6 @@ export default {
         }
       } catch (error) {
         that.addCodeDialog.loading = false;
-        this.$mes('error', "获取医学代码集失败");
       }
     },
     //添加到医学代码集
@@ -473,7 +468,6 @@ export default {
           that.getCodeSet(that.ruleFormDialog.id);
         }
       } catch (error) {
-          this.$mes('error', "添加医学代码集失败");
       }
     }
   },

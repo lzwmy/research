@@ -124,11 +124,8 @@ export default {
             item.dischargeDateTime = item.dischargeDateTime?item.dischargeDateTime.slice(0,10):"";
           })
           this.recordAll = utils.deepCopy(this.recordCheck);
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
-        this.$mes('error', '获取患者检验详细列表失败');
       }
     },
     //过滤类别
@@ -156,13 +153,10 @@ export default {
         let data = await this.$http.getCheckInfoDetail(formData);
         if (data.code == 0) {
           this.dataList = data.data;
-        }else{
-          this.$mes('error',data.msg);
         }
         this.loading = false;
       } catch (error) {
         this.loading = false;
-        this.$mes('error', '获取患者检验详细信息失败');
       }
     },
     menuOpen(index) {

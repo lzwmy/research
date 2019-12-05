@@ -192,7 +192,6 @@ export default {
         }
       } catch (error) {
         that.loading = false;
-        this.$mes('error', "获取数据字典列表失败");
       }
     },
     reset () {
@@ -218,7 +217,6 @@ export default {
             that.getDataList(that.currentPageNo, that.currentPageSize);
           }
         } catch (error) {
-          this.$mes('error',  '删除出错');
         }
       }).catch((error) => {});
     },
@@ -254,7 +252,6 @@ export default {
           that.ruleFormDialog.loading = false;
           that.getDataList(that.currentPageNo, that.currentPageSize);
         } catch (error) {
-          this.$mes('error',  data.msg);
           that.ruleFormDialog.loading = false;
         }
       });
@@ -301,8 +298,6 @@ export default {
             }
           }
           this.selectList = utils.deepCopy(list);
-        }else {
-          this.$mes('error','获取医学代码分类失败');
         }
       } catch (error) {
         console.log(error)
@@ -316,7 +311,6 @@ export default {
           this.ruleFormDialog.termItemCode = data.data;
         }
       } catch (error) {
-        this.$mes('error', "获取新医学代码失败");
       }
     },
     async getCodeObject (termItemCode){
@@ -331,8 +325,6 @@ export default {
             termCategoryRspList.push(item.categoryName);
           }
           this.ruleFormDialog.formList = termCategoryRspList;
-        }else {
-          this.$mes('error', "获取医学代码信息失败");
         }
       } catch (error) {
         console.log(error)

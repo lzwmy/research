@@ -16,6 +16,7 @@ export default {
     },
     data () {       
         return {
+            chart: {}
         };
     },
     mounted() {
@@ -25,8 +26,11 @@ export default {
     },
     methods: {
         initHighcharts() {
-            this.$Highcharts.chart(this.$el, this.option);
-        }
+            this.chart = this.$Highcharts.chart(this.$el, this.option);
+        },
+        updated() {
+            this.chart.update(this.option)
+        },
     },
         
 };

@@ -81,8 +81,6 @@ export default {
             let res = await this.$http.ORGDisShareUserRole();
             if (res.code == '0') {
                 return Promise.resolve(res)
-            }else {
-                this.$mes('error', res.msg);
             }
         } catch (err) {
             console.log(err)

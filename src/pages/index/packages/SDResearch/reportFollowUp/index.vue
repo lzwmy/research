@@ -251,11 +251,8 @@ export default {
         if(res.code == 0) {
           this.$mes('success', "已发送邀请码");
           console.log(res)
-        }else {
-          this.$mes('error', "发送邀请码失败");
         }
       }catch (error) {
-        this.$mes('error', error);
         console.log(error)
       }
     },

@@ -9,6 +9,8 @@ const url = {
     getTargetList: '/subject/analysis/variable/list',
     //获取统计数据
     getTanalysisData: '/subject/analysis/item/statistic',
+    //获取图表数据
+    getTanalysisPieOrBar: '/subject/analysis/pieOrBar',
 };
 
 const http = {
@@ -20,6 +22,9 @@ const http = {
     },
     statisticalAnalysisTanalysisData (params) {
         return vm.$post(url.getTanalysisData, params, false);
+    },
+    statisticalAnalysisPieOrBar (params) {
+        return vm.$post(url.getTanalysisPieOrBar, params, false);
     },
 };
 

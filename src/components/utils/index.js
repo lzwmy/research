@@ -839,6 +839,48 @@ const isEffectiveDate = function(date) {
   return (new Date(date).getDate()==date.substring(date.length-2));
 }
 
+
+//数据去重
+const arrRemoveRepeat = function(arr) {
+  let result = []
+  let obj = {}
+  for (let i of arr) {
+      if (!obj[i]) {
+          result.push(i)
+          obj[i] = 1
+      }
+  }
+  return result
+}
+
+//全角转半角
+const ToCDB = function (str) {
+  var tmp = "";
+  for (var i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) > 65248 && str.charCodeAt(i) < 65375) {
+          tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
+      }
+      else {
+          tmp += String.fromCharCode(str.charCodeAt(i));
+      }
+  }
+  return tmp
+}
+
+//半角转全角
+const ToDBC = function (txtstring) {
+  var tmp = "";
+  for (var i = 0; i < txtstring.length; i++) {
+    if (txtstring.charCodeAt(i) == 32) {
+      tmp = tmp + String.fromCharCode(12288);
+    }
+    if (txtstring.charCodeAt(i) < 127) {
+      tmp = tmp + String.fromCharCode(txtstring.charCodeAt(i) + 65248);
+    }
+  }
+  return tmp;
+}
+
 export default {
   getQuery,
   getQueryString,
@@ -883,4 +925,7 @@ export default {
   encrypt,   //加密
   translateDataToTree,  //将有父子关系的数组转换成树形结构数据
   isEffectiveDate,    //判断日期是否有效
+  arrRemoveRepeat,    //数组去重
+  ToCDB,  //全角转半角
+  ToDBC   //半角转全角
 };

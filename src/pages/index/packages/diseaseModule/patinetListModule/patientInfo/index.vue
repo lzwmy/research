@@ -195,9 +195,6 @@
         label-width="96px"
         @submit.native.prevent
         label-position="left">
-        <!-- <el-form-item label="提醒名称:" class="inline" prop="remindDateName">
-          <el-input v-model="dialogFrom.remindDateName" maxLength="15"></el-input>
-        </el-form-item> -->
         <el-form-item label="关联报告:" class="inline" prop="relevantReports">
           <el-select v-model="dialogFrom.relevantReports">
             <el-option v-for="(item, index) in selectList" :label="item.name" :value="String(item.id)" :key="index"></el-option>
@@ -271,32 +268,32 @@
             </el-form-item>
           </div>
           <div v-else-if="dialogFrom.model=='UNEVEN'">
-          <el-form-item label-width="30px" class="inline year" prop="value1">
-            间隔
-            <el-input v-model="dialogFrom.value1" style="width: 200px;" placeholder="以逗号分隔,如: 1,2,3"></el-input>
-          </el-form-item>
-          <el-form-item label-width="0" class="inline" prop="value2">
-            <el-select v-model="dialogFrom.value2" class="select">
-              <el-option label="天" value="DAY"></el-option>   
-              <el-option label="周" value="WEEK"></el-option>
-              <el-option label="月" value="MONTH"></el-option>
-              <el-option label="年" value="YEAR"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label-width="30px" class="inline year" prop="value1">
+              间隔
+              <el-input v-model="dialogFrom.value1" style="width: 200px;" placeholder="以逗号分隔,如: 1,2,3"></el-input>
+            </el-form-item>
+            <el-form-item label-width="0" class="inline" prop="value2">
+              <el-select v-model="dialogFrom.value2" class="select">
+                <el-option label="天" value="DAY"></el-option>   
+                <el-option label="周" value="WEEK"></el-option>
+                <el-option label="月" value="MONTH"></el-option>
+                <el-option label="年" value="YEAR"></el-option>
+              </el-select>
+            </el-form-item>
           </div>
         </div>
         <div class="line" v-if="dialogFrom.model!= 'TIME'">
-          <el-form-item label="提醒范围:" label-width="72px" class="inline top">
-          </el-form-item>
-          <el-form-item label-width="76px" class="block" prop="range">
+          <el-form-item label="提醒范围:" label-width="72px" class="inline top"></el-form-item>
+          <el-form-item label="开始时间" label-width="80px" class="inline" prop="unEvenTime">
             <el-date-picker
-              v-model="dialogFrom.range"
-              type="daterange"
+              v-model="dialogFrom.unEvenTime"
+              type="date"
               value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              placeholder="选择日期">
             </el-date-picker>
+          </el-form-item>
+          <el-form-item label-width="15px" class="inline year" prop="unEvenCount">
+            <el-input v-model="dialogFrom.unEvenCount" type="number" style="width: 130px;" placeholder="请输入次数"></el-input> 次
           </el-form-item>
         </div>
       </el-form>
@@ -402,10 +399,10 @@
             label: '按年',
             value: 'YEAR',
           },
-          // {
-          //   label: '非均匀随访',
-          //   value: 'UNEVEN', 
-          // }
+          {
+            label: '非均匀随访',
+            value: 'UNEVEN', 
+          }
         ],
         remindDetail: {},
         dialogFrom: {
@@ -419,7 +416,8 @@
           appointData: '',
           value1: '',
           value2: '',
-          range: []
+          unEvenTime: '',
+          unEvenCount: ''
         },
         reportSelectList: [],
         dialogReportRules: {
@@ -446,9 +444,12 @@
           value2: [
             {required: true, message: '请选择', trigger: ['change', 'blur']}
           ],
-          range: [
+          unEvenTime: [
             {required: true, message: '请选择日期', trigger: ['change', 'blur']}
           ],
+          unEvenCount: [
+            {required: true, message: '请输入', trigger: ['change', 'blur']}
+          ]
         },
         pickerDisabled: {
           disabledDate(time) {
@@ -575,7 +576,8 @@
                 appointData: res.data.startTime,
                 value1: String(res.data.param),
                 value2: String(res.data.param2),
-                range: [res.data.startTime ? res.data.startTime : '', res.data.endTime ? res.data.endTime : '']
+                unEvenTime: res.data.startTime,
+                unEvenCount: res.data.amount
               }
               
             } else {
@@ -590,7 +592,8 @@
                 appointData: '',
                 value1: '',
                 value2: '',
-                range: []
+                unEvenTime: '',
+                unEvenCount: ''
               }
             }
           })
@@ -631,8 +634,6 @@
           let res = await this.$http.getReportList(formData);
           if (res.code == 0) {
             this.selectList = res.data;
-          } else {
-            this.$mes('error', "获取关联报告列表失败!");
           }
         } catch (err) {
           console.log(err)
@@ -697,15 +698,6 @@
       onSaveRemind(dialogFrom) {
         this.$refs[dialogFrom].validate(async (valid) => {
           if (valid) {
-            //判断日期是否有效
-            let range;
-            if (!this.dialogFrom.range || JSON.stringify(this.dialogFrom.range) == '[]') {
-              range = "";
-            } else {
-              range = this.dialogFrom.range;
-            }
-            // console.log()
-            // return;
             let formData = {
               id: this.dialogFrom.id ? this.dialogFrom.id : undefined,
               remindName: this.dialogFrom.remindDateName,
@@ -717,12 +709,25 @@
               diseaseId: this.dataInfo.diseaseId,
               subjectId: this.dataInfo.subjectId,
               groupId: this.dataInfo.groupId,
-              startTime: range ? range[0] : this.dialogFrom.appointData,
-              endTime: range ? range[1] : "",
+              startTime: this.dialogFrom.unEvenTime,
               diseaseName: this.dataInfo.diseaseName,
               subjectName: this.dataInfo.subjectName,
-              groupName: this.dataInfo.groupName
+              groupName: this.dataInfo.groupName,
+              amount: parseInt(this.dialogFrom.unEvenCount) || undefined
             }
+            //非均匀随访模式
+            if(this.dialogFrom.model == 'UNEVEN') {
+              let unEventArr = utils.ToCDB(this.dialogFrom.value1).split(',').filter(li=>{return li && Number(li)})
+              console.log(unEventArr)
+              if(formData.amount <= unEventArr.length) {
+                this.$mes('info','提醒次数应大于等于随访间隔次数+1');
+                return;
+              }
+              formData.param = unEventArr.join(',');
+              formData.param2 = this.dialogFrom.value2;
+              formData.startTime = this.dialogFrom.unEvenTime;
+            }
+            console.log(formData)
             //定时模式：指定日期
             if(this.dialogFrom.model == 'TIME' && this.dialogFrom.appointData) {
               formData.startTime = this.dialogFrom.appointData;
@@ -733,8 +738,6 @@
                 this.$mes('success', "添加提醒成功!");
                 this.dialogFrom.visible = false;
                 this.getRemindDetail();
-              } else {
-                this.$mes('error', "添加提醒失败!");
               }
             } catch (err) {
               console.log(err)
@@ -837,11 +840,8 @@
           let res = await that.$http.PFUsendPatientInviteCode(fromData)
           if (res.code == 0) {
             this.$mes('success', "已发送邀请码");
-          } else {
-            this.$mes('error', "发送邀请码失败");
           }
         } catch (error) {
-          this.$mes('error', error);
           console.log(error)
         }
       },
@@ -931,8 +931,6 @@
                   this.$refs.refPatientInfoDetail.getDataList()
                 }
                 this.dialogReportForm.visible = false;
-              } else {
-                this.$mes('error', "添加报告失败!");
               }
             } catch (err) {
               console.log(err)
@@ -957,8 +955,6 @@
           let res = await this.$http.PFUGetList(formData);
           if (res.code == 0) {
             this.reportSelectList = res.data;
-          } else {
-            this.$mes('error', "获取关联报告列表失败!");
           }
         } catch (err) {
           console.log(err)
@@ -975,8 +971,6 @@
           let data = await that.$http.getReportList(formData);
           if (data.code == 0) {
             that.reportSelectList = data.data;
-          } else {
-            that.$mes('error', "获取关联报告列表失败!");
           }
         } catch (error) {
           console.log(error)

@@ -238,8 +238,6 @@
               console.log(res)
               this.myForms = res.data.personal.diseaseList; 
               this.allForms = res.data.common.diseaseList;
-            }else {
-              this.$mes('error', res.msg);
             }
           } catch (error) {
             console.log(error);

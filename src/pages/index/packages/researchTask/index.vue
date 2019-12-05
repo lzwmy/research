@@ -238,9 +238,7 @@
             }else {
               this.emptyData = false;
             }
-          } else {
-            this.$mes('error', res.msg);
-          }
+          } 
           this.loading = false;
         } catch (err) {
           this.loading = false;
@@ -261,9 +259,7 @@
             if (res.code == '0') {
               this.$mes('success', '删除成功!');
               this.getDataList();
-            } else {
-              this.$mes('error', res.msg);
-            }
+            } 
           } catch (err) {
             console.log(err)
           }
@@ -317,8 +313,6 @@
               if (res.code == '0') {
                 this.$mes('success', '编辑成功!');
                 this.dialogFrom.visible = false;
-              } else {
-                this.$mes('error', '编辑失败!');
               }
               this.getDataList();
             } catch (err) {
@@ -358,8 +352,6 @@
           let res = await this.$http.RTASKpreviewInfo(params);
           if (res.code == '0') {
             this.projectInfo = res.data;
-          } else {
-            this.$mes('error', '获取项目信息失败');
           }
           this.loading = false;
         } catch (err) {

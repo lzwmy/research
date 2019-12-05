@@ -108,7 +108,6 @@
                 <el-table 
                     ref="refTable" fit border
                     :data="dataList.content"
-                    
                     @selection-change="handleSelectionChange"
                     :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
                     <el-table-column type="selection" fixed align="center" width="50"></el-table-column>
@@ -219,7 +218,6 @@ export default {
     data () {
         return {
             showGuide: false,
-            maxItem: 9999,
             groupList: [],
             crfList: [],
             allCrfForm: [],
@@ -566,7 +564,10 @@ export default {
                 let res = await this.$http.researchObjectImportBatchObject(params);
                 if(res.code==0) {
                     this.$mes('success','导入成功');
-                    this.getDataList();
+                    this.$refs.refSearch.getGroupList()
+                    .then(()=>{
+                        this.getDataList();
+                    })
                 }else if(res.data) {
                     this.handleCheckData(res.data)
                 }

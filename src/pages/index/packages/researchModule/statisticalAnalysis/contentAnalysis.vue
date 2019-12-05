@@ -1,19 +1,19 @@
 <template>
     <div class="statisticalAnalysis_content">
-        <p v-if="statisticsData.list.length != 0" class="page_title text_center">{{targetElemnt.itemName+'的'+ activeTag==0?'描述性统计':'单因素分析'}}</p>
+        <p v-if='targetElemnt.itemName' class="page_title text_center">{{handleTitle}}</p>
         <el-table 
-            v-if="activeTag==0 && statisticsData.list.length != 0"
+            v-if="activeTag==0"
             ref="refTable" fit
             :data="statisticsData.list"
             v-loading="tableLoading">
-            <!-- <el-table-column prop="dynamicName" :label="targetElemnt"></el-table-column> -->
+            <el-table-column v-if="targetElemnt.itemName" prop="dynamicName" :label="targetElemnt.itemName"></el-table-column>
             <el-table-column prop="totalFrequency" label="总频数"></el-table-column>
             <el-table-column prop="validCount" label="有效频数"></el-table-column>
             <el-table-column prop="missingCount" label="缺失数"></el-table-column>
             <el-table-column prop="percentage" label="占比(%)"></el-table-column>
         </el-table>
         <el-table 
-            v-if="activeTag==1 && statisticsData.list.length != 0"
+            v-if="activeTag==1"
             ref="refTable" fit
             :data="statisticsData.list"
             v-loading="tableLoading">
@@ -28,17 +28,17 @@
             <el-table-column prop="e" label="最大值"></el-table-column>
             <el-table-column prop="e" label="正态值检验p值"></el-table-column>
         </el-table>
-        <div v-if="statisticsData.list.length == 0" class="empty flex-center-center flex-wrap" style="margin: 50px 0;">
+        <!-- <div v-if="statisticsData.list.length == 0" class="empty flex-center-center flex-wrap" style="margin: 50px 0;">
             <svg class="icon" aria-hidden="true" style="font-size: 30px;width:100%; text-align:center;">
                 <use xlink:href="#iconzu11"></use>
             </svg>
             <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
-        </div>
+        </div> -->
         <br/>
         <p class="page_title bottom_10">统计结果解读</p>
         <el-input
             type="textarea"
-            :rows="3"
+            :rows="5"
             v-model="statisticsData.textList"
             disabled>
         </el-input>
@@ -46,13 +46,12 @@
         <br/>
         <br/>
         <div class="charts_btn flex-start-start">
-            <el-button :class="activeChart == 0?'active':''" @click="selectBtn(0)">直方图</el-button>
-            <el-button :class="activeChart == 1?'active':''" @click="selectBtn(1)">箱线图</el-button>
+            <el-button :class="activeChart == 0?'active':''" @click="selectBtn(0)">柱状图</el-button>
+            <el-button :class="activeChart == 1?'active':''" @click="selectBtn(1)">饼状图</el-button>
         </div>
         <br/>
         <div class="charts flex-between-center">
-            <charts :option="optionGroup1"></charts>
-            <charts :option="optionGroup1"></charts>
+            <charts ref="chartsRef" :option="optionGroup1"></charts>
         </div>
     </div>
 </template>
@@ -60,20 +59,18 @@
 <script>
 import charts from './charts'
 export default {
-    props: ['statisticsData','targetElemnt','activeTag'],
+    props: ['statisticsData','targetElemnt','activeTag','chartOptions'],
     name: 'contentAnalysis',
     data () {
         return {
             tableLoading: false,
             textarea:'',
             activeChart: 0,
-            dataList: [{a:1},{a:1}],
             optionGroup1: {
                 chart: {
                     type: 'column',
                     margin: [10, 40, 50, 30],
                     spacingBottom: 0
-
                 },
                 title: {
                     text: ''
@@ -85,7 +82,7 @@ export default {
                     enabled: false
                 },
                 xAxis: {
-                    categories: ['白癜风','银屑病','面部皮炎','神经内科']
+                    categories: []
                 },
                 yAxis: {
                     min: 0,
@@ -96,9 +93,8 @@ export default {
                 },
                 series: [
                     {
-                        name:"录入中",
                         color: 'rgba(67, 154, 255, 1)',
-                        data:[10,20,30,4,40,21,54]
+                        data:[]
                     }
                 ],
                 credits: {
@@ -110,9 +106,51 @@ export default {
     components: {
         charts
     },
+    watch: {
+        chartOptions: function(newVal) {
+            this.updataOptions();
+        },
+    },
+    computed: {
+        handleTitle: function() {
+            console.log(this.targetElemnt)
+            if(this.activeTag==0) {
+                return this.targetElemnt.itemName+'的描述性统计';
+            }else {
+                return this.targetElemnt.itemName+'的单因素分析';
+            }
+        }
+    },
     methods: {
         selectBtn(val) {
             this.activeChart = val;
+            this.updataOptions();
+        },
+        updataOptions() {
+            this.optionGroup1.chart = {
+                type: this.activeChart == 0 ?'column':'pie',
+                margin: [10, 40, 50, 30],
+                spacingBottom: 0
+            }
+            if(this.activeChart == 0){
+                this.optionGroup1.xAxis = {
+                    categories: this.chartOptions.map(li=>{return li.key})
+                }
+                this.optionGroup1.series[0] = {
+                    color: 'rgba(67, 154, 255, 1)',
+                    data: this.chartOptions.map(li=>{return li.percent}),
+                }
+            }else {
+                let pieData = [];
+                this.chartOptions.forEach(li => {
+                    pieData.push({
+                        name: li.key,
+                        y: parseInt(li.percent)
+                    })
+                });
+                this.optionGroup1.series[0].data = pieData;
+            }
+            this.$refs.chartsRef.updated();
         }
     }
 };
@@ -120,7 +158,12 @@ export default {
 
 <style lang="less">
     .statisticalAnalysis_content {
-        margin-top: 35px;
+        position: absolute;
+        top: 130px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: auto;
         .el-table {
             margin-top: 20px;
             border-top: 1px solid #eee;

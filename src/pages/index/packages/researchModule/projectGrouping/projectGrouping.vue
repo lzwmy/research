@@ -156,7 +156,6 @@ export default {
                     this.dialgoForm.loading = false;
                     that.getGroupList();
                 } catch (error) {
-                    this.$mes('error',  data.msg);
                     this.dialgoForm.visible = false;
                     this.dialgoForm.loading = false;
                 }
@@ -171,8 +170,6 @@ export default {
                 let res = await this.$http.projectGroupingGroup(params);
                 if (res.code == '0') {
                     this.groupList = res.data;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 this.groupLoading = false;
             } catch (err) {
@@ -190,8 +187,6 @@ export default {
                 let res = await this.$http.projectGroupingsaveAll(params);
                 if (res.code == '0') {
                     this.$mes('success', '保存成功!');
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 this.getGroupList();
             } catch (err) {
@@ -212,8 +207,6 @@ export default {
                     if (res.code == '0') {
                         this.$mes('success', '删除成功!');
                         this.getGroupList();
-                    }else {
-                        this.$mes('error', res.msg);
                     }
                 } catch (err) {
                     console.log(err)

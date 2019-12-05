@@ -76,7 +76,6 @@ export default {
             } catch (err) {
                 this.loading = false;
                 console.log(err)
-                this.$mes('error','导入失败')
             }
         },
     },

@@ -159,8 +159,6 @@ export default {
         let data = await this.$http.getBasicDiagnosisRecord(formData);
         if (data.code == 0) {
           this.dataListDiagnosis = data.data;
-        }else{
-          this.$mes('error',data.msg);
         }
         this.loading0 = false;
       } catch (error) {
@@ -205,14 +203,11 @@ export default {
             })
           })
           this.dataListClinic = data.data;
-        }else{
-          this.$mes('error',data.msg);
         }
         this.loading1 = false;
       } catch (error) {
         console.log(error)
         this.loading1 = false;
-        this.$mes('error', '获取门诊处方、住院医嘱列表失败');
       }
     },
     // 获取患者检验、检查详细信息列表
@@ -235,13 +230,10 @@ export default {
               }
             }
           })
-        }else{
-          this.$mes('error',data.msg);
         }
         this.loading2 = false;
       } catch (error) {
         this.loading2 = false;
-        this.$mes('error', '获取患者检验、检查详细信息列表失败');
       }
     },
     // 获取患者病历文件列表
@@ -260,12 +252,9 @@ export default {
               list.menuIndex = (index + 1) +"-"+ (i + 1);
             })
           })
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
         console.log(error)
-        this.$mes('error', '获取患者病历文件列表失败');
       }
     },
     //跳转到病历文书

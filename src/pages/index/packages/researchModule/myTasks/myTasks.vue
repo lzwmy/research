@@ -4,15 +4,14 @@
             <div class="aside">
                 <p class="aside_title">随访任务</p>
                 <ul v-loading="groupLoading" id="group">
-                    <li v-for="(item, index) in groupList" :key="index" :class="index == activeGroup?'active':''" @click="selectGroup(item,index)">
+                    <li v-for="(item, index) in groupList" :key="index" :class="item.value == activeGroup.value?'active':''" @click="selectGroup(item)">
                         <i class="icon iconfont" :class="item.icon" ></i>
-                        <span v-if="!item.edit">{{item.name}}</span>
-                        <el-input class="addOrg" v-else v-model="item.name"></el-input>
+                        <span>{{item.name}} - {{item.count}}</span>
                     </li>
                 </ul>
             </div>
-            <div class="content">
-                <h2>全部<span>3个任务</span> </h2>
+            <div class="content" v-loading="tableLoading">
+                <h2>{{activeGroup.name}}<span>{{activeGroup.count}}个任务</span> </h2>
                 <div class="form flex-start-center">
                     <el-select v-model="form.groupId" placeholder="请选择" class="right_6" style="width: 140px;" @clear="changeQueueListGroup" @change="changeQueueListGroup" clearable>
                         <el-option
@@ -27,7 +26,7 @@
                         v-model="form.stageId" 
                         placeholder="请选择" 
                         class="right_6" 
-                        @clear="form.stageId='全部阶段'; queueListPoint = []" 
+                        @clear="form.stageId='全部阶段'; queueListPoint = [];" 
                         style="width: 140px;" 
                         @change="changeQueueListStage" 
                         :clearable="form.stageId=='全部阶段'?false:true">
@@ -43,7 +42,7 @@
                         v-model="form.pointId" 
                         placeholder="请选择" 
                         class="right_6" 
-                        @clear="form.pointId='全部随访点'" 
+                        @clear="form.pointId='全部随访点';" 
                         style="width: 140px;" 
                         :clearable="form.pointId=='全部随访点'?false:true">
                             <el-option
@@ -53,13 +52,14 @@
                             :value="item.id">
                             </el-option>
                     </el-select>
-                    <el-input
+                    <!-- <el-input
                         style="width: 300px;"
                         placeholder="请输入本人姓名或者住院号搜索"
                         v-model="form.keywords"
                         @keydown.enter.native="getDataList">
                         <i slot="prefix" class="icon el-icon-search"></i>
-                    </el-input>
+                    </el-input> -->
+                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
                 </div>
                 <el-collapse v-model="activeCollapse" @change="handleChangeCollapse" accordion>
                     <el-collapse-item :name="index+'aaaa'" v-for="(item,index) in collapseList" :key="index">
@@ -83,11 +83,10 @@
                             <el-table-column label="操作" width="86" align="center" fixed="right">
                                 <template slot-scope="scope">
                                     <el-button @click="" type="text" icon="icon iconfont iconzujian22"></el-button>
-                                    <!-- <div :disabled="handlePoint(scope.row[point.prop]).status == 0 || handlePoint(scope.row[point.prop]).status == 5" class="item" effect="dark" placement="top">
-                                        <div slot="content">
-                                            <el-button @click="" type="text" icon="icon iconfont iconbianji"></el-button>
-                                        </div>
-                                    </el-tooltip> -->
+                                    <el-tooltip  class="item" effect="dark" placement="top">
+                                        <div slot="content">计划时间：{{item.visitTime}}</div>
+                                        <el-button @click="toReportFill(scope.row, scope.row.detail, scope.row.detail.crfId)" type="text" icon="icon iconfont iconbianji"></el-button>
+                                    </el-tooltip>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -113,15 +112,15 @@ export default {
     data () {
         return {
             groupList: [
-                {icon:'icondaifang', name: '待访问-0'},
-                {icon:'iconshifang', name: '已失访-10'},
-                {icon:'iconbuliangshijian', name: '不良事件-30'},
-                {icon:'iconzhongzhi', name: '已终止-0'},
-                {icon:'iconwancheng1', name: '已完成-10'},
-                {icon:'iconquanbu', name: '全部-50'}
+                {icon:'icondaifang', name: '待访问', count:null, value: 'entryingCount'},
+                {icon:'iconshifang', name: '已失访', count:null, value: 'lostCount'},
+                {icon:'iconzhongzhi', name: '已终止', count:null, value: 'endCount'},
+                {icon:'iconwancheng1', name: '已完成', count:null, value: 'finishCount'},
+                {icon:'iconquanbu', name: '全 部', count:null, value: 'allCount'}
             ],
-            activeGroup: 0,
+            activeGroup: {},
             groupLoading: false,
+            tableLoading: false,
             queueListGroup: [],
             queueListStage: [],
             queueListPoint: [],
@@ -138,9 +137,10 @@ export default {
         }
     },
     created() {
-        // this.getStatusList();
-        this.getDataList()
         this.getfollowUpList()
+        this.getStatusList().then(()=>{
+            this.getDataList();
+        })
     },
     components: {
         pagination
@@ -153,17 +153,28 @@ export default {
             }
             return width
         },
-        selectGroup(item,index) {
-            this.activeGroup = index;
+        selectGroup(item) {
+            this.activeGroup = item;
+            this.getDataList();
         },
         handleChangeCollapse(val) {
             console.log(val)
         },
         async getDataList() {
+            this.tableLoading = true;
+            let status = null;
+            switch (this.activeGroup.value) {
+                case 'entryingCount':   status = 1;break;
+                case 'lostCount':   status = 2;break;
+                case 'endCount':   status = 3;break;
+                case 'finishCount':   status = 4;break;
+                case 'allCount':   status = undefined;break;
+                default: break;
+            }
             try {
                 let res = await this.$http.myTasksGetTableList({
                     "subjectId": this.$store.state.user.researchInfo.subjectInfoId,
-                    "status": 1,
+                    "status": status,
                     "groupId": this.form.groupId,
                     "patientName": this.form.keywords,
                     "stageId": this.form.stageId=='全部阶段'?'':this.form.stageId,
@@ -176,10 +187,12 @@ export default {
             } catch (err) {
                 console.log(err)
             }
+            this.tableLoading = false;
         },
         changeQueueListGroup(id) {
             this.form.stageId = '全部阶段';
             this.form.pointId = '全部随访点';
+            
             if(!id) {
                 return;
             }
@@ -197,29 +210,31 @@ export default {
             })
             this.queueListPoint = data.pointList || [];
         },    
-        //获取状态列表
+        //获取任务状态列表
         async getStatusList() {
+            this.groupLoading = true;
             try {
                 let res = await this.$http.myTasksGetStatusList({
                     subjectId: this.$store.state.user.researchInfo.subjectInfoId
                 });
                 if (res.code == '0') {
-                    // this.groupList = res.data;
-                    // this.groupList.forEach(ele => {
-                    //     this.groupList[ele.visitStatus] = ele.statusCount;
-                    // });
-                    console.log(this.groupList)
+                    this.groupList.forEach(ele => {
+                        if(typeof(res.data[ele.value]) == 'number') {
+                            ele.count = res.data[ele.value];
+                        }
+                    });
+                    this.activeGroup = this.groupList[0];
                 }
             } catch (err) {
                 console.log(err)
             }
+            this.groupLoading = false;
         },
         //获取随访点列表
         async getfollowUpList() {
             try {
-                // let res = await this.$http.myTasksGetQuereList({
-                let res = await this.$http.followUpPlanStageList({
-                    id: this.$store.state.user.researchInfo.subjectInfoId
+                let res = await this.$http.myTasksGetPointList({
+                    subjectId: this.$store.state.user.researchInfo.subjectInfoId
                 });
                 if (res.code == '0') {
                     this.queueListGroup = res.data;
@@ -227,6 +242,43 @@ export default {
             } catch (err) {
                 console.log(err)
             }
+        },
+        //打开表单填写页面
+        toReportFill(row,point,crfId) {
+            if(!this.$store.state.user.researchAuth.authImport) {
+                this.$mes('info','暂无操作权限!')
+                return;
+            }
+            let group = this.queueListGroup.find(item=>{
+                return item.stages.find(li=>{
+                    return li.stageId == point.stageId
+                })
+            })
+            let urlParameter={
+                cacheData: false,
+                note: point.note,
+                formId: crfId || "",
+                reportId: point.reportId || '',
+                groupId: group && group.groupId,
+                groupName: group && group.groupName,
+                diseaseId: row.diseaseId || "",
+                patientName: row.createTime +' ---  ',
+                patientId: row.patientId || "",
+                identify: row.identify || "",
+                from: "followUpManagement",
+                diseaseName: row.diseaseName || "",
+                subjectName: row.subjectName || "",
+                title: point.pointName,
+                isModify:"displayShow",
+                status: point.status,  
+                pointPatientId: point.id,
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
+                updateTime: point.updateTime || '',
+                updator: point.updator || '',
+            }
+            console.log(urlParameter)
+            localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+            window.open('./subjectForm.html');
         },
     }
 };

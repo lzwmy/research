@@ -486,8 +486,6 @@ export default {
                 }
                 if (res.code == '0') {
                     this.$mes('success', '保存成功!');
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 this.getConfigInfo(this.form.stageId);
                 this.getGroupList();
@@ -647,7 +645,6 @@ export default {
                     this.dialgoForm.loading = false;
                     this.getGroupList();
                 } catch (error) {
-                    this.$mes('error',  data.msg);
                     this.dialgoForm.visible = false;
                     this.dialgoForm.loading = false;
                 }
@@ -667,8 +664,6 @@ export default {
                     if (data.code == '0') {
                         this.$mes('success',data.message || '删除成功');
                         this.getGroupList();
-                    }else {
-                        this.$mes('error', '删除出错');
                     }
                 } catch (error) {
                     console.log(error)
@@ -721,9 +716,6 @@ export default {
                 this.form.crfId = data.data.id;
                 this.getCrfInfo(this.form.crfId)
                 this.dialgoCrfForm.visible = false;
-                this.$mes('success','添加成功!')
-            }else {
-                this.$mes('error','添加失败!')
             }
         },
         //获取crf表单列信息

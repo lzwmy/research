@@ -1596,8 +1596,6 @@ export default {
       if (res.code == 0) {
         this.$mes('success', "删除患者成功!");
         this.getDataList();
-      }else {
-        this.$mes('error', res.msg);
       }
     },
     //查询患者信息
