@@ -48,7 +48,7 @@
           <div class="model_window_box" v-show="blankImg==true" v-loading="loading" element-loading-text="加载中">
             <div class="model_from_set" >
               <div class="from_name">图表名称</div>
-              <el-input v-model="chartName" size="small" placeholder="请输入模板名称" maxlength="10"></el-input>
+              <el-input v-model="chartName" size="small" placeholder="请输入模板名称" maxlength="30"></el-input>
               <div class="from_name pt_20">图表类型</div>
               <div class="from_chart_type">
                 <el-radio v-model="chartType" label="PIE" @change="changeChartType('PIE')">饼状图</el-radio>

@@ -28,7 +28,7 @@
               <p>图片识别（检验报告）</p>
             </div>
           </div>
-          <div class="content-item" @click="jumpURL('http://172.16.0.10:8000/form_view/')">
+          <div class="content-item" @click="jumpURL('http://research.emhi.cn/psa/InspirationPage.html')">
             <div class="content_aligned">
               <img src="./images/Article_recommendation.png" alt="">
               <p>文章推荐</p>
@@ -40,7 +40,7 @@
               <p>文章段落生成</p>
             </div>
           </div>
-          <div class="content-item" >
+          <div class="content-item" @click="jumpURL(' http://120.77.199.11:8686/#/login')">
             <div class="content_aligned">
               <img src="./images/Quality_control.png" alt="">
               <p>数据质控</p>
@@ -135,7 +135,7 @@
     align-items: center;
     width: 100%;
     height: 180px;
-    box-shadow: 5px 9px 8px -2px rgba(0, 0, 0, 0.16);
+    /*box-shadow: 5px 9px 8px -2px rgba(0, 0, 0, 0.16);*/
   }
   .content-item .content_aligned{
     text-align: center;
