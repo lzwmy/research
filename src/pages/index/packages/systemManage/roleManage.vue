@@ -197,7 +197,7 @@ export default {
       this.getPermissionTree();
     },
     search () {
-      this.params_ruleForm = utils.deepClone(this.ruleForm);
+      // this.params_ruleForm = utils.deepClone(this.ruleForm);
       this.$nextTick(() => {
         this.getDataList();
       });
@@ -210,8 +210,8 @@ export default {
       let formData = {
         page: pageNo - 1,
         size: pageSize,
-        roleName: that.params_ruleForm.roleName,
-        status: that.params_ruleForm.status
+        roleName: that.ruleForm.roleName,
+        status: that.ruleForm.status
       };
       try {
         let data = await that.$http.roleFindAllRoles(that.$format(formData));

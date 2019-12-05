@@ -277,7 +277,7 @@ export default {
       this.getGroupsPermission();
     },
     search () {
-      this.params_ruleForm = utils.deepClone(this.ruleForm);
+      // this.params_ruleForm = utils.deepClone(this.ruleForm);
       this.getDataList();
     },
     async getDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
@@ -286,9 +286,9 @@ export default {
       that.currentPageSize = pageSize;
       that.loading = true;
       let formData = {
-        account: that.params_ruleForm.account,
-        userName: that.params_ruleForm.userName,
-        status: that.params_ruleForm.status,
+        account: that.ruleForm.account,
+        userName: that.ruleForm.userName,
+        status: that.ruleForm.status,
         page: pageNo - 1,
         size: pageSize
       };
