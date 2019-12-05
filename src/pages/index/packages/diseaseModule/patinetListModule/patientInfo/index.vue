@@ -722,7 +722,6 @@
                 }
                 return Number(li);
               })
-              console.log(unEventArr)
               if(formData.amount <= unEventArr.length) {
                 this.$mes('info','提醒次数应大于等于随访间隔次数+1');
                 return;
