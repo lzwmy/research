@@ -218,7 +218,6 @@
           this.images[0] = this.dialogImageUrl;
           this.$nextTick(()=>{
               this.$refs.imageView.show();
-
             });
         },
         handleDownload(file) {

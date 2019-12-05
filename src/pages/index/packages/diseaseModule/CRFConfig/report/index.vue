@@ -11,6 +11,7 @@
       </div>
       <div class="report_config_content">
         <div class="report_config-card" v-for="(item,index) in dataList" :key="index" @click="jumpModifyReport(item)">
+          <div :class="['mask_report',{gray:item.crfIsAvailable===0}]"></div>
           <div class="card_img">
             <img v-if="item.crfImage!==null && item.crfImage!=='null'" :src="item.crfImage" alt="">
             <img v-else src="./../img/report_image.png" alt="">
@@ -191,6 +192,20 @@
       margin-bottom: 29px;
       transition: all 300ms;
       position: relative;
+      .mask_report{
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        /*background-color: rgba(224,224,224,0.3);*/
+        background-color: rgba(0,0,0,0.1);
+      }
+      .gray{
+        display: inline-block;
+      }
       .card_img{
         width: 100%;
         text-align: center;
@@ -242,6 +257,7 @@
         border-radius:2px;
         text-align: center;
         line-height: 24px;
+        z-index: 2;
         .iconfont{
           font-size: 14px;
           color: #ffffff;
