@@ -562,7 +562,6 @@
       showDialog() {
         this.getRemindConfig()
           .then((res) => {
-            console.log(res)
             //已存在配置
             if (res.exsit) {
               this.dialogFrom = {
@@ -717,7 +716,12 @@
             }
             //非均匀随访模式
             if(this.dialogFrom.model == 'UNEVEN') {
-              let unEventArr = utils.ToCDB(this.dialogFrom.value1).split(',').filter(li=>{return li && Number(li)})
+              let unEventArr = utils.ToCDB(this.dialogFrom.value1).split(',').filter((li,index)=>{
+                if(index == 0) {
+                  return Number(li) != NaN;
+                }
+                return Number(li);
+              })
               console.log(unEventArr)
               if(formData.amount <= unEventArr.length) {
                 this.$mes('info','提醒次数应大于等于随访间隔次数+1');

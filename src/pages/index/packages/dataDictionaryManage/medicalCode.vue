@@ -199,6 +199,7 @@ export default {
         code:"",
         name:""
       }
+      this.getDataList(pageNo, pageSize);
     },
     onDelete (row) {
       let that = this;

@@ -752,6 +752,7 @@ export default {
         userName: '',
         status: ''
       }
+      this.getDataList(pageNo, pageSize);
     }
   }
 };

@@ -254,6 +254,7 @@ export default {
         code:"",
         name:""
       }
+      this.getDataList(pageNo, pageSize);
     },
     //删除代码集
     onDelete (row) {

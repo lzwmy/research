@@ -439,7 +439,7 @@ export default {
                     break;
             }
             //随访点次数校验
-            let frequency = this.form.frequency.frequencyParam.split(',');
+            let frequency = utils.ToCDB(this.form.frequency.frequencyParam).split(',');
             //输入整数校验
             let isRight = frequency.every(item=>{
                 return item && Number(item);

@@ -497,6 +497,7 @@ export default {
         roleName: '',
         status: ''
       }
+      this.getDataList(pageNo, pageSize);
     }
   }
 };
