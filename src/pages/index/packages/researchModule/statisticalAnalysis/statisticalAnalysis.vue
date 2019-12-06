@@ -272,7 +272,8 @@ export default {
                 "rangeText": targetElemnt.valueRange,
                 "crfId": targetElemnt.crfId,
                 "path": targetElemnt.path,
-                "groupId": this.currentGroupId
+                "groupId": this.currentGroupId,
+                "subjectId": this.$store.state.user.researchInfo.subjectInfoId
             }
             try {
                 let res = await this.$http.statisticalAnalysisPieOrBar(params);

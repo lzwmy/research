@@ -93,6 +93,7 @@ export default {
                 },
                 series: [
                     {
+                        name: '占比(%)',
                         color: 'rgba(67, 154, 255, 1)',
                         data:[]
                     }
@@ -138,7 +139,7 @@ export default {
                 }
                 this.optionGroup1.series[0] = {
                     color: 'rgba(67, 154, 255, 1)',
-                    data: this.chartOptions.map(li=>{return li.percent}),
+                    data: this.chartOptions.map(li=>{return parseInt(li.percent)}),
                 }
             }else {
                 let pieData = [];
