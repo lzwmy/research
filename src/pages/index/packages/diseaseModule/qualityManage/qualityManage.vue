@@ -9,7 +9,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="" label-width='' class="flex-right">
-                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">生成报告</el-button>
+                    <el-button :disabled="crfList.length==0" type="primary" icon="el-icon-search" @click="getDataList()">生成报告</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -28,7 +28,7 @@
                     <el-table-column label='填充率' min-width="200">
                         <template slot-scope="scope">
                             <div style="width: 200px;">
-                                <el-progress :percentage="scope.row.fillingRate" color='#1bbae1'></el-progress>
+                                <el-progress :percentage="scope.row.fillingRate" :color='scope.row.fillingRate>=50?"#1bbae1":"#D95555"'></el-progress>
                             </div>
                         </template>
                     </el-table-column>
@@ -38,6 +38,7 @@
                                 placement="bottom-start"
                                 popper-class="invalid_value"
                                 width="280"
+                                v-if="scope.row.invalidValue && scope.row.invalidValue[0]"
                                 v-model="scope.row.visible"
                                 :visible-arrow="false"
                                 trigger="hover">
@@ -49,10 +50,10 @@
                                     <p v-for="(t,index) in scope.row.invalidValue" :key="index">{{index+1}}、{{t}};</p>
                                 </div>
                                 <div slot="reference" class="inline">
-                                    <p class="inline" v-if="scope.row.invalidValue[0]">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
-                                    <p v-else>暂无</p>
+                                    <p class="inline">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
                                 </div>
                             </el-popover>
+                            <p v-else>暂无</p>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -109,7 +110,14 @@ export default {
             return width
         },
         initPage() {
+            this.form.crfFromId = '';
+            this.dataList.content = [];
             this.getCrfList().then(()=>{
+                if(!this.crfList.length) {
+                    this.$emit('changeLoadding',false);
+                    this.loading = false;
+                    return;
+                }
                 this.getDataList().then(()=>{
                     this.$emit('changeLoadding',false);
                 })
@@ -117,7 +125,6 @@ export default {
         },
         tableHover(row,column,cell) {
             if(column.label!='无效值') {
-                console.log(1211111)
                 this.dataList.content.forEach(item=>{
                     item.visible = false;
                 })
@@ -125,6 +132,7 @@ export default {
             }
         },
         async getCrfList() {
+            
             this.loading = true;
             let formData = {
                 diseaseId: this.$route.query.id
@@ -181,7 +189,7 @@ export default {
 <style lang="less">
     .el-popper.invalid_value {
         padding: 0;
-        transform: translateY(-50px);
+        transform: translateY(-45px);
         .title {
             line-height: 36px;
             border-bottom: 1px solid #ccc;

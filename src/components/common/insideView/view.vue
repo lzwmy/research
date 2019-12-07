@@ -33,6 +33,7 @@
 import insideHeader from 'components/common/insideHeader/header'
 import insideMenu from 'components/common/insideMenu/menu'
 import diseaseRouter from '../insideMenu/diseaseRouter'
+import utils from 'components/utils/index'
 export default {
     name: 'insideView',
     data () {
@@ -132,7 +133,7 @@ export default {
         handleDiseaseSelect(diseaseId) {
             this.viewLoading = true;
             this.$store.commit('saveDiseaseInfo',
-                Object.assign(this.$store.state.user.diseaseInfo,{
+                Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
                     diseaseId: diseaseId,
                 })
             );
