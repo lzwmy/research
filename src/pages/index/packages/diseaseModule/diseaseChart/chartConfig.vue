@@ -1581,6 +1581,15 @@
     .mask_layer_container .el-dialog__body{
       height: 560px;
     }
+    .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item .item_display span{
+      width: 130px;
+    }
+  }
+
+  @media  screen and (min-width: 1366px) and (max-width: 1600px) {
+    .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item .item_display span{
+      width: 130px;
+    }
   }
   .from_chart_type .el-radio__input.is-checked .el-radio__inner{
     border-color: #04B8DD;
