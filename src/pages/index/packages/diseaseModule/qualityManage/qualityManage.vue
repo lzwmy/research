@@ -4,21 +4,12 @@
         <div class="cloud-search el-form-item-small">
             <el-form :inline="true" :model="form" class="flex-start-center">
                 <el-form-item label="CRF">
-                    <el-select v-model="form.crfFrom" size="mini" clearable>
-                        <el-option label="crf1" value="0"></el-option>
-                        <el-option label="crf2" value="1"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="小节">
-                    <el-select v-model="form.minutia" size="mini" clearable>
-                        <el-option label="病人信息" value="1"></el-option>
-                        <el-option label="就诊信息" value="2"></el-option>
-                        <el-option label="手术信息" value="3"></el-option>
-                        <el-option label="检查信息" value="4"></el-option>
+                    <el-select v-model="form.crfFromId" size="mini" @change="getDataList()">
+                        <el-option v-for="(item,index) in crfList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="" label-width='' class="flex-right">
-                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">生成报告</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -27,15 +18,41 @@
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
-                    :data="dataList.content" v-loading="loading" ref="refTable" fit>
-                    <el-table-column label='字段名称' prop=""></el-table-column>
-                    <el-table-column label='有效值名称' prop=""></el-table-column>
-                    <el-table-column label='总人数' prop=""></el-table-column>
-                    <el-table-column label='填充率'>
+                    :data="dataList.content" v-loading="loading" ref="refTable" fit @cell-mouse-enter="tableHover">
+                    <el-table-column label='创建时间' prop="createTime" width="180"></el-table-column>
+                    <el-table-column label='创建人' prop="createName"></el-table-column>
+                    <el-table-column label='分中心' prop="orgName" min-width="140"></el-table-column>
+                    <el-table-column label='病人姓名' prop="patientName" ></el-table-column>
+                    <el-table-column label='性别' prop="sex"></el-table-column>
+                    <el-table-column label='年龄' prop="age"></el-table-column>
+                    <el-table-column label='填充率' min-width="200">
                         <template slot-scope="scope">
-                            <div style="width: 300px;">
-                                <el-progress :percentage="50" color='rgba(0, 188, 146, 1)'></el-progress>
+                            <div style="width: 200px;">
+                                <el-progress :percentage="scope.row.fillingRate" color='#1bbae1'></el-progress>
                             </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="无效值" min-width="200">
+                        <template slot-scope="scope">
+                            <el-popover
+                                placement="bottom-start"
+                                popper-class="invalid_value"
+                                width="280"
+                                v-model="scope.row.visible"
+                                :visible-arrow="false"
+                                trigger="hover">
+                                <div class="title flex-between-center">
+                                    <p>无效值&nbsp;(<span style="color:#1bbae1;">{{scope.row.patientName}}</span>)</p>
+                                    <i @click="scope.row.visible=false" class="icon icon-hover el-icon-circle-close"></i>
+                                </div>
+                                <div class="content" v-if="scope.row.invalidValue[1]">
+                                    <p v-for="(t,index) in scope.row.invalidValue" :key="index">{{index+1}}、{{t}};</p>
+                                </div>
+                                <div slot="reference" class="inline">
+                                    <p class="inline" v-if="scope.row.invalidValue[0]">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
+                                    <p v-else>暂无</p>
+                                </div>
+                            </el-popover>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -59,9 +76,9 @@ export default {
     data () {
         return {
             form: {
-                crfFrom:"",
-                minutia: ""
+                crfFromId:"",
             },
+            crfList: [],
             dataList: {
                 content:[]
             },
@@ -69,7 +86,7 @@ export default {
             identify:"",
             paging: {
                 pageNo: 1,
-                pageSize: 10,
+                pageSize: 20,
                 currentPageNo: '',
                 currentPageSize: '',
             },
@@ -78,7 +95,6 @@ export default {
         };
     },
     created () {
-        // this.getDataList();
     },
     components: {
         pagination,
@@ -93,10 +109,37 @@ export default {
             return width
         },
         initPage() {
-            // this.getDataList()
-            // .then(()=>{
-            //     this.$emit('changeLoadding',false);
-            // })
+            this.getCrfList().then(()=>{
+                this.getDataList().then(()=>{
+                    this.$emit('changeLoadding',false);
+                })
+            })
+        },
+        tableHover(row,column,cell) {
+            if(column.label!='无效值') {
+                console.log(1211111)
+                this.dataList.content.forEach(item=>{
+                    item.visible = false;
+                })
+                row.visible = true;
+            }
+        },
+        async getCrfList() {
+            this.loading = true;
+            let formData = {
+                diseaseId: this.$route.query.id
+            }
+            try {
+                let res = await this.$http.qualityManageGetCrfList(formData);
+                if (res.code == 0) {
+                    this.crfList = res.data;
+                    if(this.crfList.length){
+                        this.form.crfFromId = this.crfList[0].id;
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
@@ -104,27 +147,21 @@ export default {
             that.paging.currentPageNo = pageNo;
             that.paging.currentPageSize = pageSize;
             that.dataList.content = [];
-            let startTime, endTime;
-            if(!this.form.time || this.form.time && this.form.time.length == 0) {
-                startTime = null
-                endTime = null
-            }else {
-                startTime = this.form.time[0];
-                endTime = this.form.time[1];
-            }
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
-                diseaseId: this.$route.query.id || '',
-                start: startTime,
-                end: endTime
+                diseaseId: this.$route.query.id,
+                crfId: parseInt(this.form.crfFromId)
             };
             try {
-                let res = await that.$http.ORGDisGetStatisticsData(formData);
+                let res = await that.$http.qualityManageGetDataList(formData);
                 if (res.code == '0') {
                     let obj = {};
-                    obj.content = res.data.body;
-                    obj.header = res.data.header;
+                    obj.content = res.data.list;
+                    obj.content.forEach( item => {
+                        item.visible = false;
+                        item.createTime = utils.formateDate(item.createTime)
+                    });
                     obj.pageNo = pageNo;
                     obj.pageSize = pageSize;
                     obj.totalCount = parseInt(res.data.sum);
@@ -142,7 +179,32 @@ export default {
 </script>
 
 <style lang="less">
-    
+    .el-popper.invalid_value {
+        padding: 0;
+        transform: translateY(-50px);
+        .title {
+            line-height: 36px;
+            border-bottom: 1px solid #ccc;
+            padding: 0 10px;
+            font-size: 15px;
+            .icon {
+                font-size: 18px;
+            }
+        }
+        .content {
+            padding: 10px;
+            max-height: 300px;
+            overflow: auto;
+            font-size: 13px;
+            color: #666;
+        }
+    } 
+    .qualityManage {
+        .el-progress-bar {
+            width: 80%;
+        }
+
+    }
 </style>
 
 
