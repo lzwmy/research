@@ -54,31 +54,10 @@
                                 </div>
                             </el-popover> 
                             <p v-else>暂无</p>
-                            <!-- <p class="inline" v-if="scope.row.invalidValue && scope.row.invalidValue[0]">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p> -->
-                            <!-- <p v-else>暂无</p> -->
                         </template>
                     </el-table-column>
                 </el-table>
 
-                <!-- <el-popover
-                    placement="bottom-start"
-                    popper-class="invalid_value"
-                    width="280"
-                    v-if="popoverData.invalidValue && popoverData.invalidValue[0]"
-                    :visible-arrow="false"
-                    v-model="visible"
-                    trigger="click">
-                    <div class="title flex-between-center">
-                        <p>无效值&nbsp;(<span style="color:#1bbae1;">{{popoverData.patientName}}</span>)</p>
-                        <i @click="visible = false" class="icon icon-hover el-icon-circle-close"></i>
-                    </div>
-                    <div class="content">
-                        <p v-for="(t,index) in popoverData.invalidValue" :key="index">{{index+1}}、{{t}};</p>
-                    </div>
-                    <div slot="reference" class="inline">
-                        
-                    </div>
-                </el-popover> -->
                 <!-- 分页 -->
                 <pagination :data="dataList" @change="getDataList"></pagination>
             </echarts-contain>
@@ -220,6 +199,12 @@ export default {
             font-size: 15px;
             .icon {
                 font-size: 18px;
+            }
+        }
+        &:hover {
+            p {
+                color: #666;
+                cursor:default;
             }
         }
         .content {

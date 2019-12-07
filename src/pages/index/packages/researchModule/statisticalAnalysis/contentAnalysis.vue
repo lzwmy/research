@@ -85,7 +85,7 @@ export default {
                     categories: []
                 },
                 yAxis: {
-                    min: 0,
+                    visible: false,
                     title: {
                         text: ''
                     },
