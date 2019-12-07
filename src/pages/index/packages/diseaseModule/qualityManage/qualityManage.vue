@@ -52,8 +52,10 @@
                                 <div slot="reference" class="inline">
                                     <p class="inline">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
                                 </div>
-                            </el-popover>
+                            </el-popover> 
                             <p v-else>暂无</p>
+                            <!-- <p class="inline" v-if="scope.row.invalidValue && scope.row.invalidValue[0]">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p> -->
+                            <!-- <p v-else>暂无</p> -->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -124,12 +126,10 @@ export default {
             })
         },
         tableHover(row,column,cell) {
-            if(column.label!='无效值') {
-                this.dataList.content.forEach(item=>{
-                    item.visible = false;
-                })
-                row.visible = true;
-            }
+            this.dataList.content.forEach(item=>{
+                item.visible = false;
+            })
+            row.visible = true;
         },
         async getCrfList() {
             
@@ -188,8 +188,11 @@ export default {
 
 <style lang="less">
     .el-popper.invalid_value {
+        position: fixed !important;
+        right: 10px !important;
+        left: auto !important;
+        top: 177px !important;
         padding: 0;
-        transform: translateY(-45px);
         .title {
             line-height: 36px;
             border-bottom: 1px solid #ccc;
@@ -201,7 +204,8 @@ export default {
         }
         .content {
             padding: 10px;
-            max-height: 300px;
+            min-height: 350px;
+            max-height: 500px;
             overflow: auto;
             font-size: 13px;
             color: #666;
