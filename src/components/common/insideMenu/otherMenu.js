@@ -6,14 +6,14 @@ const adminMenu = [
         menuPath: '/qualityManage',
         name: 'qualityManage',
         children: [],
-        role:[1]
+        roles:[1]
     },
     {
         ico: 'organizationManagement',
         menuName: '组织管理',
         menuCode: "012907",
         menuPath: '/organizationManagementDis',
-        role:[1,2],
+        roles:[1,2],
         children: [
             {
                 ico: '',
@@ -22,7 +22,7 @@ const adminMenu = [
                 menuPath: '/organizationManagementDis',
                 name: 'organizationManagementDis',
                 children: [],
-                role:[1,2]
+                roles:[1,2]
             },
             {
                 ico: '',
@@ -31,7 +31,7 @@ const adminMenu = [
                 menuPath: '/inputStatistics',
                 name: 'inputStatistics',
                 children: [],
-                role:[1]
+                roles:[1]
             }
         ],
         name: 'organizationManagementDis',

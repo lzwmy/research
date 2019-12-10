@@ -6,7 +6,7 @@ const router = [
         menuPath: '/diseaseChart',
         children: [],
         name: 'diseaseChart',
-        role:[1,2,3,4]
+        roles:[1,2,3,4]
     },
     {
         ico: 'bingrenliebiaobeifen1',
@@ -15,7 +15,7 @@ const router = [
         menuPath: '/patientListModule',
         children: [],
         name: 'patientListModule',
-        role:[1,2,3,4]
+        roles:[1,2,3,4]
     },
     {
         ico: 'diseasePatientFollowUp',
@@ -24,7 +24,7 @@ const router = [
         menuPath: '/diseasePatientFollowUp',
         children: [],
         name: 'diseasePatientFollowUp',
-        role:[1,2,3,4]
+        roles:[1,2,3,4]
     },
     {
         ico: 'reportList',
@@ -33,7 +33,7 @@ const router = [
         menuPath: '/reportList',
         children: [],
         name: 'reportList',
-        role:[1,2,3,4]
+        roles:[1,2,3,4]
     },
     {
         ico: 'modelManage',
@@ -42,7 +42,7 @@ const router = [
         menuPath: '/modelManage',
         children: [],
         name: 'modelManage',
-        role:[1,2,3,4]
+        roles:[1,2,3,4]
     }
     // {
     //     ico: 'crfConfig',
@@ -51,7 +51,7 @@ const router = [
     //     menuPath: '/crfConfig',
     //     children: [],
     //     name: 'crfConfig',
-        // role:[1]
+        // roles:[1]
     // }
 ]
 export default router;
