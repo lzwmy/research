@@ -34,6 +34,7 @@ import insideHeader from 'components/common/insideHeader/header'
 import insideMenu from 'components/common/insideMenu/menu'
 import diseaseRouter from '../insideMenu/diseaseRouter'
 import utils from 'components/utils/index'
+import otherMenu from '../insideMenu/otherMenu'
 export default {
     name: 'insideView',
     data () {
@@ -61,6 +62,8 @@ export default {
         
     },
     mounted () {
+        // let a = this.deepCopy(otherMenu.adminMenu);
+        // console.log(a.filter(li=>{return li}))
         this.initView();
         window.onresize = this.initView;
         let headLeft = parseInt($('.component_head').css("left"));
@@ -114,16 +117,16 @@ export default {
             if (o instanceof Array) {
                 var n = [];
                 for (var i = 0; i < o.length; ++i) {
-                    n[i] = deepCopy(o[i]); 
+                    n[i] = this.deepCopy(o[i]); 
                 } 
                 return n; 
             }else if  (o instanceof Object) {
-                // if() {
-                //     return;
-                // }
+                if(o.roles.indexOf(2) == -1) {
+                    return;
+                }
                 var n = {}; 
                 for (var i in o) {
-                    n[i] = deepCopy(o[i]); 
+                    n[i] = this.deepCopy(o[i]); 
                 } 
                 return n; 
             } else { 

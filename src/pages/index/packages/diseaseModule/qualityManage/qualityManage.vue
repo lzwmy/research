@@ -68,10 +68,10 @@
         </div>
         
         <el-dialog 
-            title="无效值" 
+            :title="'无效值 ('+(dialgoForm.popperData.patientName || '')+')'" 
             :append-to-body="true"
             class="invalid_dialog"
-            @close="dialgoForm.visible=false;dialgoForm.popperData = {}"
+            @closed="dialgoForm.visible=false;dialgoForm.popperData = {}"
             :visible.sync="dialgoForm.visible" 
             width="550px">
             <p v-for="(t,index) in dialgoForm.popperData.invalidValue" :key="index">{{index+1}}、{{t}};</p>
@@ -265,6 +265,14 @@ export default {
             max-height: 600px;
             overflow: auto;
             line-height: 1.5em;
+        }
+    }
+    @media screen and (max-width: 1800px) {
+        .invalid_dialog {
+            .el-dialog__body {
+                min-height: 300px;
+                max-height: 400px;
+            }
         }
     }
 </style>
