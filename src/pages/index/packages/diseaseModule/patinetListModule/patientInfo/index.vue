@@ -26,6 +26,20 @@
 
     <div class="container flex-between-center">
       <div class="content">
+        <!-- 主治医生 -->
+        <div class="doctor flex-start-center">
+          <p class="label">主治医生: </p>
+          <div class="tags">
+            <el-tag 
+              v-for="tag in doctorTags"
+              :key="tag.name"
+              closable
+              type="info">
+              {{tag.name}}
+            </el-tag>
+          </div>
+        </div>
+
         <patientInfoDetail ref="refPatientInfoDetail" v-if="!showReportComponent" class="timeline"
                           :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
         <report-list ref="patientDetail" v-if="showReportComponent" class="reportList"
@@ -66,6 +80,13 @@
             </div>
           </div>
         </div>
+
+        <div class="doctor">
+          <h3 class="flex-between-center">
+            <span>主治医生</span>
+          </h3>
+        </div>
+        
         <div class="record">
           <h3 class="flex-between-center">
             <span>操作记录</span>
@@ -373,6 +394,14 @@
           time: "",
           name: "",
         },
+
+        //主治医生列表
+        doctorTags: [
+          {name: '张医生'},
+          {name: '刘医生'},
+          {name: '李医生'},
+          {name: '王医生'},
+        ],
 
 
         selectList: [],
@@ -1002,7 +1031,7 @@
 </script>
 
 
-<style lang="less" scoped>
+<style lang="less">
   .patientInfo {
     height: 100%;
 
@@ -1140,11 +1169,44 @@
           }
         }
 
+        .doctor {
+          background-color: #fff;
+          height: 160px;
+          padding: 0 22px 15px;
+          color: rgba(57, 66, 99, 1);
+          .label {
+            font-size:14px;
+            font-weight:bold;
+            line-height: 32px;
+          }
+          .tags {
+            margin-left: 12px;
+            .el-tag {
+              margin: 0 10px 0 0;
+              background-color: #F3F3F9;
+              color: #394263;
+              .el-icon-close {
+                font-family: "iconfont" !important;
+                &::before {
+                  content: "\e644";
+                }
+                &:hover {
+                  background-color: #fff;
+                  color:#979BAC ;
+                  &::before {
+                    content: "\e6f7" !important;
+                  }
+                }
+              }
+            }
+          }
+        }
+
         .top {
           background-color: #fff;
           padding: 0 22px 15px;
-          height: 200px;
-          margin-bottom: 30px;
+          height: 180px;
+          margin-bottom: 20px;
           color: rgba(57, 66, 99, 1);
 
           .li {
@@ -1182,18 +1244,18 @@
         .record {
           flex-grow: 1;
           background-color: #fff;
-          padding: 14px 22px;
+          padding: 0 22px 15px;
           color: rgba(57, 66, 99, 1);
           position: absolute;
-          top: 230px;
+          top: 380px;
           left: 0;
           width: 100%;
           bottom: 0;
           .el-timeline {
-            padding: 20px 10px;
+            padding: 10px;
             overflow: auto;
             position: absolute;
-            top: 82px;
+            top: 65px;
             left: 20px;
             right: 0;
             bottom: 0;
@@ -1208,6 +1270,8 @@
         }
       }
     }
+    
+    
   }
 </style>
 

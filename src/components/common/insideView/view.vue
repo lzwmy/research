@@ -93,6 +93,13 @@ export default {
                 //专病科研模块：分享登录
                 this.title = '专病科研';
                 this.menuList = diseaseRouter;
+                // diseaseRouter.forEach(item=>{
+                //     this.$store.state.user.diseaseInfo.roles.forEach(li=>{
+                //         if(item.role.indexOf(li)) {
+
+                //         }
+                //     })
+                // })
                 return;
             }
             let insideData = this.$store.state.insideData.insideData;

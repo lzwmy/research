@@ -17,15 +17,15 @@
             </div>
             <div class="iconMenu flex-between-center">
                 <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
-                    <span class="el-icon-user-solid cur_pointer"></span>
+                    <span class="iconfont iconxitongguanli cur_pointer"></span>
                 </el-tooltip>
                 <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
-                    <span class="el-icon-message cur_pointer"></span>
+                    <span class="iconfont iconxitongguanlibeifen2 cur_pointer"></span>
                 </el-tooltip>
                 <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
-                    <span class="el-icon-s-tools cur_pointer"></span>
+                    <span class="iconfont iconxitongguanlibeifen3 cur_pointer"></span>
                 </el-tooltip>
-                <span @click="logout" class="el-icon-switch-button cur_pointer"></span>
+                <span @click="logout" class="iconfont iconxitongguanlibeifen1 cur_pointer"></span>
             </div>
         </div>
         <div class="ment_list">
@@ -44,7 +44,7 @@
                     </el-menu-item>
                     <el-submenu :index="'2-'+item.menuPath" v-if="item.children && item.children.length != 0">
                         <template slot="title">
-                          <!--@click="routerLink(item)"-->
+                            <!--@click="routerLink(item)"-->
                             <i  class="icon iconfont" :class="'icon'+item.ico"></i>
                             <span  slot="title">{{item.menuName}}</span>
                         </template>
@@ -107,6 +107,18 @@ export default {
                 })
                 this.$emit('changeMenuList',menuList)
             }
+            //非录入员，添加数据监察页
+            // let isExist = this.$store.state.user.diseaseInfo.roles.find(li=>{return li==1 || li==2 || li==4})
+            // if(isExist || this.$store.state.user.diseaseInfo.isAdmin) {
+            //     this.$emit('changeMenuList',this.menuList.concat([{
+            //         ico: '',
+            //         menuName: '数据监察',
+            //         menuCode: "0129012",
+            //         menuPath: 'dataMonitoring',
+            //         name: 'dataMonitoring',
+            //         children: []
+            //     }]))
+            // }
         }     
 
     },

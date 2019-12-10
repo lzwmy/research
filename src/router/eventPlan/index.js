@@ -1,4 +1,4 @@
-const eventPlan = r => require.ensure([], () => r(require('packages/eventPlan/eventPlan')), 'eventPlan');
+const eventPlan = r => require.ensure([], () => r(require('packages/systemManageMoudule/eventPlan/eventPlan')), 'eventPlan');
 
 const routes = [
   {

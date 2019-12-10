@@ -1474,6 +1474,55 @@
       "font_class": "shezhi1",
       "unicode": "e6f5",
       "unicode_decimal": 59125
+    },
+    {
+      "icon_id": "12212436",
+      "name": "用户中心",
+      "font_class": "xitongguanli",
+      "unicode": "e6f0",
+      "unicode_decimal": 59120
+    },
+    {
+      "icon_id": "12212437",
+      "name": "退出系统",
+      "font_class": "xitongguanlibeifen1",
+      "unicode": "e6f2",
+      "unicode_decimal": 59122
+    },
+    {
+      "icon_id": "12212438",
+      "name": "消息",
+      "font_class": "xitongguanlibeifen2",
+      "unicode": "e6f3",
+      "unicode_decimal": 59123
+    },
+    {
+      "icon_id": "12212439",
+      "name": "设置",
+      "font_class": "xitongguanlibeifen3",
+      "unicode": "e6f4",
+      "unicode_decimal": 59124
+    },
+    {
+      "icon_id": "12214893",
+      "name": "医生",
+      "font_class": "zujian47",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
+    },
+    {
+      "icon_id": "12214894",
+      "name": "删除",
+      "font_class": "jianqu",
+      "unicode": "e6f7",
+      "unicode_decimal": 59127
+    },
+    {
+      "icon_id": "12214895",
+      "name": "添加医生",
+      "font_class": "lujing2",
+      "unicode": "e6f8",
+      "unicode_decimal": 59128
     }
   ]
 }

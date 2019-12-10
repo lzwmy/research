@@ -37,6 +37,7 @@
                                 <p class="color_1">{{item.itemName}}</p>
                                 <span>{{item.controlType  == 'NUMBER_INPUT'?'连续':'分类'}}</span>
                             </li>
+                            <em v-if='empty' class="block text-center"><br/>(空)</em>
                     </draggable>
                 </ul>
             </div>
@@ -82,6 +83,7 @@
                         <li v-for="(item, index) in statisticalResultsList" :key="index">
                             <p>{{item.text}}<i class="icon el-icon-close" @click="onDeleteResult(item)"></i></p>
                         </li>
+                        <em class="block text-center">(空)</em>
                     </ul>
                 </div>
             </div>
@@ -112,6 +114,7 @@ export default {
                 list: [],
                 textList: []
             },
+            empty: false,
             //指标列表
             targetList: [],
             domainList: [
@@ -123,9 +126,9 @@ export default {
             //被拖拽的目标对象
             targetElemnt: {},
             statisticalResultsList: [
-                {text:'关于xxx的描述性统计样本：队列1-实验组1'},
-                {text:'关于xxx的描述性统计样本：队列1-实验组2'},
-                {text:'关于xxx的描述性统计样本：队列1-实验组3'}
+                // {text:'关于xxx的描述性统计样本：队列1-实验组1'},
+                // {text:'关于xxx的描述性统计样本：队列1-实验组2'},
+                // {text:'关于xxx的描述性统计样本：队列1-实验组3'}
             ]
         }
     },
@@ -151,7 +154,7 @@ export default {
             })
             this. statisticsData = {
                 list: [],
-                textList: []
+                text: ''
             }
             this.chartOptions = [];
             this.targetElemnt = {};
@@ -181,6 +184,7 @@ export default {
                 let res = await this.$http.statisticalAnalysisTargetList(params);
                 if (res.code == '0') {
                     this.targetList = res.data;
+                    this.empty = this.targetList.length?false:true;
                 }
             } catch (err) {
                 console.log(err)
@@ -205,7 +209,7 @@ export default {
                     this.statisticsData.textList.forEach(li=>{
                         text += li + '\n'
                     })
-                    this.statisticsData.textList = text;
+                    this.statisticsData.text = text;
                 }
             } catch (err) {
                 console.log(err)

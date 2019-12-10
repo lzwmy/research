@@ -1,9 +1,9 @@
 // 系统管理 systemManage
 
 // 角色管理 roleManage
-const roleManage = r => require.ensure([], () => r(require('packages/systemManage/roleManage')), 'roleManage');
+const roleManage = r => require.ensure([], () => r(require('packages/systemManageMoudule/userRoleManage/roleManage')), 'roleManage');
 // 用户管理 userManage
-const userManage = r => require.ensure([], () => r(require('packages/systemManage/userManage')), 'userManage');
+const userManage = r => require.ensure([], () => r(require('packages/systemManageMoudule/userRoleManage/userManage')), 'userManage');
 
 const routes = [
   {

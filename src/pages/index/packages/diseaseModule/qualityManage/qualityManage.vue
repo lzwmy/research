@@ -4,7 +4,7 @@
         <div class="cloud-search el-form-item-small">
             <el-form :inline="true" :model="form" class="flex-start-center">
                 <el-form-item label="CRF">
-                    <el-select v-model="form.crfFromId" size="mini" @change="getDataList()">
+                    <el-select v-model="form.crfFromId" size="mini" @change="getDataList(); popperData = {};">
                         <el-option v-for="(item,index) in crfList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -34,7 +34,7 @@
                     </el-table-column>
                     <el-table-column label="无效值" min-width="200">
                         <template slot-scope="scope">
-                            <el-popover
+                            <!-- <el-popover
                                 placement="bottom-start"
                                 popper-class="invalid_value"
                                 width="280"
@@ -52,11 +52,28 @@
                                 <div slot="reference" class="inline">
                                     <p class="inline">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
                                 </div>
-                            </el-popover> 
+                            </el-popover>  -->
+                            <p v-if="scope.row.invalidValue[0]" class="inline">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
                             <p v-else>暂无</p>
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-popover
+                    placement="bottom-start"
+                    popper-class="invalid_value"
+                    width="250"
+                    v-if="popperData.invalidValue && popperData.invalidValue[0]"
+                    v-model="popperData.visible"
+                    :visible-arrow="false"
+                    trigger="hover">
+                    <div class="title flex-between-center">
+                        <p>无效值&nbsp;(<span style="color:#1bbae1;">{{popperData.patientName}}</span>)</p>
+                        <i @click="popperData.visible=false" class="icon icon-hover el-icon-circle-close"></i>
+                    </div>
+                    <div class="content" v-if="popperData.invalidValue[1]">
+                        <p v-for="(t,index) in popperData.invalidValue" :key="index">{{index+1}}、{{t}};</p>
+                    </div>
+                </el-popover> 
 
                 <!-- 分页 -->
                 <pagination :data="dataList" @change="getDataList"></pagination>
@@ -84,6 +101,7 @@ export default {
             dataList: {
                 content:[]
             },
+            popperData: {},
             loading: false,
             identify:"",
             paging: {
@@ -125,10 +143,12 @@ export default {
             })
         },
         tableHover(row,column,cell) {
-            this.dataList.content.forEach(item=>{
-                item.visible = false;
-            })
-            row.visible = true;
+            if(column.label == '无效值') {
+                this.popperData = row;
+                this.popperData.visible = true;
+            }else {
+                this.popperData.visible = false;
+            }
         },
         async getCrfList() {
             
@@ -190,7 +210,7 @@ export default {
         position: fixed !important;
         right: 10px !important;
         left: auto !important;
-        top: 177px !important;
+        top: 186px !important;
         padding: 0;
         .title {
             line-height: 36px;

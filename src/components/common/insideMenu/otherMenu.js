@@ -5,13 +5,15 @@ const adminMenu = [
         menuCode: "0129011",
         menuPath: '/qualityManage',
         name: 'qualityManage',
-        children: []
+        children: [],
+        role:[1]
     },
     {
         ico: 'organizationManagement',
         menuName: '组织管理',
         menuCode: "012907",
         menuPath: '/organizationManagementDis',
+        role:[1,2],
         children: [
             {
                 ico: '',
@@ -19,7 +21,8 @@ const adminMenu = [
                 menuCode: "012906",
                 menuPath: '/organizationManagementDis',
                 name: 'organizationManagementDis',
-                children: []
+                children: [],
+                role:[1,2]
             },
             {
                 ico: '',
@@ -27,7 +30,8 @@ const adminMenu = [
                 menuCode: "012905",
                 menuPath: '/inputStatistics',
                 name: 'inputStatistics',
-                children: []
+                children: [],
+                role:[1]
             }
         ],
         name: 'organizationManagementDis',
