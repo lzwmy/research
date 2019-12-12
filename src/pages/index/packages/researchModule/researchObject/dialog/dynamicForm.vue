@@ -84,6 +84,9 @@ export default {
     components: {
         numberInput
     },
+    created() {
+        console.log(this.dataInfo)
+    },
     methods: {
         addObject(title) {
             this.$confirm('是否'+title+'?', '提示', {
@@ -93,15 +96,18 @@ export default {
                 }).then( async() => {
                     let subjectItemDataDtoList = [];
                     this.dataInfo.content.forEach(li=>{
+                        console.log(li.value)
+                        console.log(typeof(li.value))
                         let obj = {
                             itemName: li.controlName,
-                            value: typeof(li.value) == 'string'?li.value:li.value.join('|'),
+                            value: typeof(li.value) == 'object'?li.value.join('|'):li.value,
                             path: li.path,
                             crfId: String(li.crfId)
                         }
                         subjectItemDataDtoList.push(obj);
                     })
                     console.log(subjectItemDataDtoList)
+                    return
                     this.dialog.loading = true;
                     let params = {
                         subjectGroupId: this.groupInfo.subjectGroupId,
