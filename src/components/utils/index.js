@@ -920,7 +920,6 @@ export default {
   deleteFileId,     //单文件删除
   isRepeat,     //数组里值是否重复
   arrayExistAttr,    //判断两数组里是否包括相同元素key
-  translateDataToTree,
   decrypt,  //解密
   encrypt,   //加密
   translateDataToTree,  //将有父子关系的数组转换成树形结构数据
