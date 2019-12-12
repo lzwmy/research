@@ -92,37 +92,49 @@ export default {
     created () {
         this.diseaseId =  this.$route.query.id;
         this.defaultActive = this.$route.path;
-        //专病科研模块显示组织管理页面：
+        //专病科研模块
         if( this.$route.meta.belongToGroup == 'insideView') {
-            //管理员
-            if(this.$store.state.user.diseaseInfo.roles.indexOf('1') != -1 || this.$store.state.user.diseaseInfo.isAdmin) {
-                this.$emit('changeMenuList',this.menuList.concat(otherMenu.adminMenu))
-            }else if (this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1 && !this.$store.state.user.diseaseInfo.isAdmin) {
-                //多中心管理员
-                this.$emit('changeMenuList',this.menuList.concat(otherMenu.centerAdminMenu))
-            }else if(localStorage.getItem('CURR_LOGIN_TYPE') == 'disease' && this.$store.state.user.diseaseInfo.roles.indexOf('1') == -1){
-                //分享登录，非管理员,删除crf配置页面
-                let menuList = this.menuList.filter(li=>{
-                    return li.menuPath != '/crfConfig';
+            //如果为管理员,拥有所有页面权限 
+            if(this.$store.state.user.diseaseInfo.isAdmin) {
+                let arr = otherMenu.filter(li=>{
+                    return li.menuPath !=  '/crfConfig';
                 })
-                this.$emit('changeMenuList',menuList)
+                this.$emit('changeMenuList',this.menuList.concat(arr))
+            }else {
+                //根据角色匹配菜单项
+                let tempMenu = utils.arrRermoveEmpty(this.deepCopy(otherMenu))
+                tempMenu.forEach(li=>{
+                    li.children = utils.arrRermoveEmpty(li.children)
+                })
+                console.log('menuList:')
+                console.log(tempMenu)
+                this.$emit('changeMenuList',this.menuList.concat(tempMenu))
             }
-            //非录入员，添加数据监察页
-            // let isExist = this.$store.state.user.diseaseInfo.roles.find(li=>{return li==1 || li==2 || li==4})
-            // if(isExist || this.$store.state.user.diseaseInfo.isAdmin) {
-            //     this.$emit('changeMenuList',this.menuList.concat([{
-            //         ico: '',
-            //         menuName: '数据监察',
-            //         menuCode: "0129012",
-            //         menuPath: 'dataMonitoring',
-            //         name: 'dataMonitoring',
-            //         children: []
-            //     }]))
-            // }
         }     
 
     },
     methods: {
+        deepCopy(o) {
+            if (o instanceof Array) {
+                var n = [];
+                for (var i = 0; i < o.length; ++i) {
+                    n[i] = this.deepCopy(o[i]); 
+                } 
+                return n; 
+            }else if  (o instanceof Object) {
+                if(!utils.arrayExistAttr(o.roles,this.$store.state.user.diseaseInfo.roles,null,false)) {  
+                // if(!utils.arrayExistAttr(o.roles,[2],null,false)) {  
+                    return null;
+                }
+                var n = {}; 
+                for (var i in o) {
+                    n[i] = this.deepCopy(o[i]); 
+                } 
+                return n; 
+            } else { 
+                return o; 
+            } 
+        },
         //判断是否有权限 
         authRoles(meta) {
             //非科研项目模块直接为ture

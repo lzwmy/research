@@ -1,6 +1,6 @@
 {
   "id": "1203061",
-  "name": "临床科研平台",
+  "name": "专科专病数据平台",
   "font_family": "iconfont",
   "css_prefix_text": "icon",
   "description": "",
@@ -1523,6 +1523,111 @@
       "font_class": "lujing2",
       "unicode": "e6f8",
       "unicode_decimal": 59128
+    },
+    {
+      "icon_id": "12223600",
+      "name": "提交报告",
+      "font_class": "zujian48",
+      "unicode": "e6f9",
+      "unicode_decimal": 59129
+    },
+    {
+      "icon_id": "12223601",
+      "name": "审核不通过",
+      "font_class": "zujian49",
+      "unicode": "e6fa",
+      "unicode_decimal": 59130
+    },
+    {
+      "icon_id": "12223602",
+      "name": "审核通过",
+      "font_class": "zujian50",
+      "unicode": "e6fb",
+      "unicode_decimal": 59131
+    },
+    {
+      "icon_id": "12223603",
+      "name": "驳回",
+      "font_class": "zujian51",
+      "unicode": "e6fc",
+      "unicode_decimal": 59132
+    },
+    {
+      "icon_id": "12223604",
+      "name": "已经填写",
+      "font_class": "zu12",
+      "unicode": "e6fd",
+      "unicode_decimal": 59133
+    },
+    {
+      "icon_id": "12223605",
+      "name": "通过",
+      "font_class": "bianjibeifen1",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "12223606",
+      "name": "未填写",
+      "font_class": "bianjibeifen2",
+      "unicode": "e6ff",
+      "unicode_decimal": 59135
+    },
+    {
+      "icon_id": "12223607",
+      "name": "不通过",
+      "font_class": "bianji4",
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
+      "icon_id": "12223608",
+      "name": "已提交",
+      "font_class": "bianjibeifen3",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "12259092",
+      "name": "数据监察",
+      "font_class": "dataMonitoring",
+      "unicode": "e702",
+      "unicode_decimal": 59138
+    },
+    {
+      "icon_id": "12261835",
+      "name": "召回",
+      "font_class": "jianqu1",
+      "unicode": "e703",
+      "unicode_decimal": 59139
+    },
+    {
+      "icon_id": "12261837",
+      "name": "通过",
+      "font_class": "jianqu2",
+      "unicode": "e704",
+      "unicode_decimal": 59140
+    },
+    {
+      "icon_id": "12261838",
+      "name": "不通过",
+      "font_class": "jianqu3",
+      "unicode": "e705",
+      "unicode_decimal": 59141
+    },
+    {
+      "icon_id": "12261839",
+      "name": "批注",
+      "font_class": "zu13",
+      "unicode": "e706",
+      "unicode_decimal": 59142
+    },
+    {
+      "icon_id": "12261840",
+      "name": "修改",
+      "font_class": "bianjibeifen4",
+      "unicode": "e707",
+      "unicode_decimal": 59143
     }
   ]
 }

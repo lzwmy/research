@@ -12,6 +12,7 @@ import allCases from './allCases';
 import patientFollowUp from './patientFollowUp';
 import researchReportManage from './researchReportManage';
 import reportList from './reportList';
+import dataMonitoring from './dataMonitoring';
 import eventPlan from './eventPlan';
 import researchModel from './researchModel';
 import researchTask from './researchTask';
@@ -87,7 +88,8 @@ const routes = [
   }
 ];
 
-const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, researchReportManage, reportList, eventPlan,researchModel,patientListModule,diseaseChart, researchTask, research,diseaseModule, systemSetup);
+const route = routes.concat(SDResearch, crfManage, dataDictionaryManage, systemManage, fullTextSearch, openEHRIntroduction, staticInfo, allCases, patientFollowUp, 
+  researchReportManage, reportList, eventPlan,researchModel,patientListModule,diseaseChart, researchTask, research,diseaseModule, systemSetup , dataMonitoring);
 //处理内页打开页面
 route.forEach( item =>{
   if(item.name == 'insideView'){

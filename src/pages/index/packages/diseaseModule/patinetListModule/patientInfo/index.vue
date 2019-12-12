@@ -27,7 +27,7 @@
     <div class="container flex-between-center">
       <div class="content">
         <!-- 主治医生 -->
-        <div class="doctor flex-start-center">
+        <!-- <div class="doctor flex-start-center">
           <p class="label">主治医生: </p>
           <div class="tags">
             <el-tag 
@@ -38,7 +38,7 @@
               {{tag.name}}
             </el-tag>
           </div>
-        </div>
+        </div> -->
 
         <patientInfoDetail ref="refPatientInfoDetail" v-if="!showReportComponent" class="timeline"
                           :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
@@ -81,11 +81,21 @@
           </div>
         </div>
 
-        <div class="doctor">
+        <!-- <div class="doctor">
           <h3 class="flex-between-center">
             <span>主治医生</span>
           </h3>
-        </div>
+          <div class="tags">
+            <el-tag 
+              v-for="tag in doctorTags"
+              :key="tag.name"
+              closable
+              type="info">
+              <i class="icon iconfont iconzujian47"></i>
+              {{tag.name}}
+            </el-tag>
+          </div>
+        </div> -->
         
         <div class="record">
           <h3 class="flex-between-center">
@@ -1174,28 +1184,29 @@
           height: 160px;
           padding: 0 22px 15px;
           color: rgba(57, 66, 99, 1);
-          .label {
-            font-size:14px;
-            font-weight:bold;
-            line-height: 32px;
-          }
           .tags {
-            margin-left: 12px;
+            margin: 10px 0;
             .el-tag {
-              margin: 0 10px 0 0;
-              background-color: #F3F3F9;
+              cursor: pointer;
+              margin: 0 6px 6px 0;
+              background-color: #fff;
+              border: none;
               color: #394263;
-              .el-icon-close {
-                font-family: "iconfont" !important;
-                &::before {
-                  content: "\e644";
-                }
-                &:hover {
+              &:hover {
+                border-color: #e9e9eb;
+                background-color: #f4f4f5;
+                .el-icon-close {
                   background-color: #fff;
                   color:#979BAC ;
                   &::before {
                     content: "\e6f7" !important;
                   }
+                }
+              }
+              .el-icon-close {
+                font-family: "iconfont" !important;
+                &::before {
+                  content: "";
                 }
               }
             }
@@ -1247,7 +1258,8 @@
           padding: 0 22px 15px;
           color: rgba(57, 66, 99, 1);
           position: absolute;
-          top: 380px;
+          // top: 380px;
+          top: 200px;
           left: 0;
           width: 100%;
           bottom: 0;

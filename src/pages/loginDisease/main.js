@@ -24,11 +24,12 @@ import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
-    
     store.commit('saveDiseaseInfo',{
       diseaseId: utils.getQuery('id'), 
       isAdmin: false,
-      roles: []
+      roles: [],
+      orgCode: '',      //组织机构
+      doctor: ''      //医生
     });
     //同步获取全局配置：
     await Global.getConfigJson();

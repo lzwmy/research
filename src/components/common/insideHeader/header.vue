@@ -23,6 +23,15 @@
             </ul>
             <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
         </el-popover>
+        <!-- 组织机构和医生 -->
+        <!-- <div style="margin-left:20px;" v-if="($route.path=='/reportList' || $route.path=='/dataMonitoring') && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)">
+            <el-select v-model="orgCode" placeholder="请选择机构" :disabled="!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable" clearable>
+                <el-option v-for="(item,index) in orgList" :key="index" :label="item.orgName" :value="item.orgCode"></el-option>
+            </el-select>
+            <el-select v-model="doctor" placeholder="请选择医生" clearable>
+                <el-option v-for="(item,index) in doctorList" :key="index" :label="item.userName" :value="item.id"></el-option>
+            </el-select>
+        </div> -->
         <p v-if="$route.meta.belongToGroup == 'researchTask' && $store.state.user.researchInfo.centerModel == 2" @click="shareLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
         <p v-if="$route.meta.belongToGroup == 'insideView'" @click="shareLogin" class="researchLogin flex-center-center">专病分享<span class="icon iconfont iconfenxiang left_6"></span></p>
 
@@ -47,6 +56,7 @@
 </template>
 <script>
 import '../../../pages/index/packages/SDResearch/card_bgColor.less';
+import utils from 'components/utils/index'
 export default {
     name: 'insideHeader',
     data () {
@@ -62,19 +72,13 @@ export default {
                 url: window.location.origin+path+shareUrl,
                 visible: false
             },
+            orgList: [],
+            doctorList: [],
+            orgCode: '',    //组织
+            doctor: '',     //医生
+            orgSelectHide: utils.arrayExistAttr([1,2,4],this.$store.state.user.diseaseInfo.roles,null,false),
+            orgSelectDisable: utils.arrayExistAttr([1],this.$store.state.user.diseaseInfo.roles,null,false)
         };
-    },
-    created () {
-        this.loginType = localStorage.getItem('CURR_LOGIN_TYPE')
-        this.getDataList()
-        .then(()=>{
-            this.dataList.forEach(item => { 
-                if(this.$route.query.id == item.id) {
-                    this.disease = item.name;
-                }
-            });
-        })
-
     },
     watch: {   
         $route: function(newVal) {
@@ -85,6 +89,34 @@ export default {
                 }
             });
         },
+        orgCode: function(newVal) {
+            this.doctor = '';
+            this.getDoctorList();
+            this.$store.commit('saveDiseaseInfo',
+                Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                    orgCode: newVal
+                })
+            );
+        },
+        doctor: function(newVal) {
+            this.$store.commit('saveDiseaseInfo',
+                Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                    doctor: newVal
+                })
+            );
+        }
+    },
+    created () {
+        this.loginType = localStorage.getItem('CURR_LOGIN_TYPE')
+        this.getOrgList(this.$store.state.user.diseaseInfo.diseaseId);
+        this.getDataList()
+        .then(()=>{
+            this.dataList.forEach(item => { 
+                if(this.$route.query.id == item.id) {
+                    this.disease = item.name;
+                }
+            });
+        })
     },
     methods: {
         handleMenuView() {
@@ -93,6 +125,7 @@ export default {
         handleSelect(item) {
             this.disease = item.name;
             this.popoverVisible = false;
+            this.getOrgList(item.id);
             this.$emit('diseaseSelect', item.id)
         },
         async getDataList () {
@@ -118,7 +151,45 @@ export default {
         },
         onCopyError(e) {
             this.$mes('error', '复制失败,请手动复制！');
-        }
+        },
+        //获取机构列表
+        async getOrgList(id) {
+            this.orgCode = '';
+            this.orgLoading = true;
+            try {
+                let res = await this.$http.ORGDisGetOrgList({
+                    diseaseId: id,
+                    source: localStorage.getItem('CURR_LOGIN_TYPE') == 'disease'?'share':'local'
+                });
+                if (res.code == '0') {
+                    this.orgList = res.data;
+                    if(this.orgList.length) {
+                        this.orgCode = this.orgList[0].orgCode;
+                    }
+                }
+                this.orgLoading = false;
+            } catch (err) {
+                this.orgLoading = false;
+                console.log(err)
+            }
+        },
+        //获取医生列表
+        async getDoctorList () {
+            let that = this;
+            let formData = {
+                offset: 0,
+                limit: 999,
+                args: this.orgCode
+            };
+            try {
+                let res = await that.$http.ORGDisGetUserList(formData);
+                if (res.code == '0') {
+                    this.doctorList = res.data.args
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
     }
 };
 </script>

@@ -34,7 +34,6 @@ import insideHeader from 'components/common/insideHeader/header'
 import insideMenu from 'components/common/insideMenu/menu'
 import diseaseRouter from '../insideMenu/diseaseRouter'
 import utils from 'components/utils/index'
-import otherMenu from '../insideMenu/otherMenu'
 export default {
     name: 'insideView',
     data () {
@@ -55,15 +54,14 @@ export default {
         insideHeader,
         insideMenu,
     },
-    created () {
-        this.getMenuList();
-    },
     watch: {
         
     },
+    created () {
+        this.getMenuList();
+        
+    },
     mounted () {
-        // let a = this.deepCopy(otherMenu.adminMenu);
-        // console.log(a.filter(li=>{return li}))
         this.initView();
         window.onresize = this.initView;
         let headLeft = parseInt($('.component_head').css("left"));
@@ -96,13 +94,6 @@ export default {
                 //专病科研模块：分享登录
                 this.title = '专病科研';
                 this.menuList = diseaseRouter;
-                // diseaseRouter.forEach(item=>{
-                //     this.$store.state.user.diseaseInfo.roles.forEach(li=>{
-                //         if(item.role.indexOf(li)) {
-
-                //         }
-                //     })
-                // })
                 return;
             }
             let insideData = this.$store.state.insideData.insideData;
@@ -113,26 +104,7 @@ export default {
                 this.researchId = insideData.researchId;
             }
         },
-        deepCopy(o) {
-            if (o instanceof Array) {
-                var n = [];
-                for (var i = 0; i < o.length; ++i) {
-                    n[i] = this.deepCopy(o[i]); 
-                } 
-                return n; 
-            }else if  (o instanceof Object) {
-                if(o.roles.indexOf(2) == -1) {
-                    return;
-                }
-                var n = {}; 
-                for (var i in o) {
-                    n[i] = this.deepCopy(o[i]); 
-                } 
-                return n; 
-            } else { 
-                return o; 
-            } 
-        },
+        
         handlePageHeight () { // 高度自适应处理
             setTimeout(() => {
                 this.$nextTick(() => {

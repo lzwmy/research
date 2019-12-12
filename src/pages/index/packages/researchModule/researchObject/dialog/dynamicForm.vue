@@ -26,11 +26,11 @@
                             <el-date-picker v-if="item.jsonData.controlType=='DATE_TIME'" v-model="item.value" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
                             <el-date-picker v-if="item.jsonData.controlType=='DATE'" v-model="item.value" value-format="yyyy-MM-dd" type="date" :placeholder="'请选择'+item.controlName" clearable></el-date-picker>
                             <el-checkbox-group v-if="item.jsonData.controlType=='CHECKBOX'" v-model="item.value">
-                                <el-checkbox v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="li">{{precessData(li)}}</el-checkbox>
+                                <el-checkbox v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="precessData(li)">{{precessData(li)}}</el-checkbox>
                             </el-checkbox-group>
                             <div v-if="item.jsonData.controlType=='RADIO_BUTTON'">
                                 <el-radio-group v-model="item.value">
-                                    <el-radio v-for="(li, index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="li">{{precessData(li)}}</el-radio>
+                                    <el-radio v-for="(li, index) in item.jsonData.termSet.rangeText.split('\n')" :key="index" :label="precessData(li)">{{precessData(li)}}</el-radio>
                                 </el-radio-group>
                             </div>
                             <el-select v-if="item.jsonData.controlType=='SINGLE_COMBOX' || item.jsonData.controlType=='MULTI_COMBOX' " clearable :multiple="item.jsonData.controlType=='MULTI_COMBOX'?true:false" v-model="item.value" :placeholder="'请选择'+item.controlName">
@@ -38,7 +38,7 @@
                                     v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')"
                                     :key="index"
                                     :label="precessData(li)"
-                                    :value="li">
+                                    :value="precessData(li)">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -95,7 +95,7 @@ export default {
                     this.dataInfo.content.forEach(li=>{
                         let obj = {
                             itemName: li.controlName,
-                            value: typeof(li.value) == 'string'?li.value:li.value.join('\n'),
+                            value: typeof(li.value) == 'string'?li.value:li.value.join('|'),
                             path: li.path,
                             crfId: String(li.crfId)
                         }

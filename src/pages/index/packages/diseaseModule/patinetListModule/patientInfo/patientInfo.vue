@@ -146,7 +146,6 @@ export default {
                 left: 20px;
                 bottom: 10px;
                 right: 0px;
-                margin-top: 33px;
                 overflow-y: auto;
                 .el-timeline {
                     width: 60%;

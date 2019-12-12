@@ -1,0 +1,538 @@
+<template>
+    <div class="cloud-component disReportList">
+        <div class="box">
+            <div class="aside">
+                <div class="aside_top flex-center-center">
+                    <el-select v-model="crfId" placeholder="请选择CRF表单" clearable>
+                        <el-option v-for="(item, index) in crfList" :key="index" :label="item.crfDisplayName" :value="item.crfId"></el-option>
+                    </el-select>
+                </div>
+                <p class="lable">报告状态</p>
+                <ul v-loading="groupLoading">
+                    <li v-for="(item, index) in reportStatusList" :key="index" :class="form.status==item.status?'active':''" @click="selectReportStatus(item)">
+                        <i class="icon iconfont" :class="item.icon" ></i>
+                        <span>{{item.name}} - {{item.count}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="content">
+                <!-- 搜索区域 -->
+                <div class="cloud-search el-form-item-small flex-end-center">
+                    <el-input
+                        placeholder="搜索"
+                        prefix-icon="el-input__icon el-icon-search"
+                        v-model="form.keyword"
+                        clearable
+                        @keyup.enter.native="getDataList()"
+                        style="width:280px;">
+                    </el-input>
+                </div>
+                <!--搜索结果-->
+                <div class="cloud-search-list">
+                    <echarts-contain containType="big" :parentHeight="routerViewHeight*1-15" :heightRatio="1">
+                        <el-table
+                            :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-70):(routerViewHeight*1)"
+                            :data="dataList.content" v-loading="loading" ref="refTable" size="small"
+                            :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
+                            @row-click="handleClick">
+                            <el-table-column type="expand" width="40"> 
+                                <template slot-scope="scope"> 
+                                    <el-timeline>
+                                        <el-timeline-item
+                                            v-for="(item, index) in scope.row.recordData"
+                                            :key="index"
+                                            :hide-timestamp="true"
+                                            class="aaaaaaaaaaaa">
+                                            <div class="expand_content">
+                                                <i class="icon iconfont iconzujian51"></i>
+                                                <p><span>{{item.createTime}}</span><span>{{item.content}}</span></p>
+                                                <el-popover
+                                                    placement="right"
+                                                    width="350"
+                                                    popper-class="expand_popover"
+                                                    trigger="hover">
+                                                    <div class="content">
+                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
+                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
+                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
+                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
+                                                    </div>
+                                                    <i slot="reference" class="cur_pointer icon iconfont iconzu13"></i>
+                                                </el-popover>
+                                            </div>
+                                        </el-timeline-item>
+                                        <el-timeline-item><div style="color:#999;font-size;13px;">暂无数据</div></el-timeline-item>
+                                    </el-timeline>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="visitDate" label="就诊时间"></el-table-column>
+                            <el-table-column prop="reportName" label="报告名称"></el-table-column>
+                            <el-table-column prop="patientName" label="姓名"></el-table-column>
+                            <el-table-column prop="genderName" label="性别"></el-table-column>
+                            <el-table-column prop="author" label="创建者"></el-table-column>
+                            <el-table-column prop="groupName" label="课题组"></el-table-column>
+                            <el-table-column label="报告状态" width="120px">
+                                <template slot-scope="scope">
+                                    {{scope.row.status==0?'未填写':'已填写'}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作" width="90">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
+                                    <el-button size="mini" v-show="scope.row.status == 0" class="danger" @click="deleteReport(scope.row)"><i class="icon iconfont iconzujian41"></i></el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <!-- 分页 -->
+                        <pagination :data="dataList" @change="getDataList"></pagination>
+                    </echarts-contain>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import echartsContain from 'components/packages/echartsContain/echartsContain';
+import { pageSize, pageNo, emptyText, elementLoadingText } from 'components/utils/constant';
+import pagination from 'components/packages/pagination/pagination';
+import mixins from 'components/mixins';
+import utils from 'components/utils/index';
+import diseaseSubjectgroup from 'components/packages/linkage/diseaseSubjectgroup';
+
+
+export default {
+    name: 'reportList',
+    mixins: [mixins],
+    data () {
+        return {
+            crfList: [],
+            crfId: '',
+            form: {
+                keyword: '',
+                status: -1
+            },
+            reportStatusList: [
+                {icon:'iconbianjibeifen2', name: '未填写', count:0, value: 'noDataCount',status: 0},
+                {icon:'iconzu12', name: '已填写', count:0, value: 'finishCount',status: 1},
+                {icon:'iconbianjibeifen3', name: '已提交', count:0, value: 'submitCount',status: 2},
+                {icon:'iconbianji4', name: '不通过', count:0, value: 'noPassCount',status: 3},
+                {icon:'iconbianjibeifen1', name: '通过', count:0, value: 'passCount',status: 4},
+                {icon:'iconquanbu', name: '全 部', count:0, value: 'total',status: -1}
+            ],
+            dataList: {
+                content: []
+            },
+            loading: false,
+            groupLoading: false,
+            identify:"",
+            paging: {
+                pageNo: 1,
+                pageSize: 20,
+                currentPageNo: '',
+                currentPageSize: '',
+            },
+            emptyText: '',
+            elementLoadingText: ''  
+        };
+    },
+    watch: {
+        crfId: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
+        },
+        orgCode: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
+        },
+        doctor: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
+        }
+    },
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+    },
+    created () {
+        this.loading = true;
+        Promise.all([this.getCrfList(),this.getReportStatusList()]).then(()=>{
+            this.getDataList()
+            .then(()=>{
+                this.$emit('changeLoadding',false)
+            })
+        })
+        
+    },
+    mounted () {
+        this.addEventListenervisibilityChange();
+    },
+    destoryed() {
+        document.removeEventListener(this.visibilityChange)
+    },
+    components: {
+        pagination,
+        echartsContain,
+        diseaseSubjectgroup
+    },
+    methods: {
+        addEventListenervisibilityChange() {
+            let hidden = "";
+            this.visibilityChange = "";
+            if (typeof document.hidden !== "undefined") {
+                hidden = "hidden";
+                this.visibilityChange = "visibilitychange";
+            } else if (typeof document.mozHidden !== "undefined") {
+                hidden = "mozHidden";
+                this.visibilityChange = "mozvisibilitychange";
+            } else if (typeof document.msHidden !== "undefined") {
+                hidden = "msHidden";
+                this.visibilityChange = "msvisibilitychange";
+            } else if (typeof document.webkitHidden !== "undefined") {
+                hidden = "webkitHidden";
+                this.visibilityChange = "webkitvisibilitychange";
+            }
+            document.addEventListener(this.visibilityChange,()=>{
+                if(!document[hidden]) {
+                    this.getDataList();
+                }
+            }, false);
+        },
+        selectReportStatus(row) {
+            this.form.status = row.status;
+            this.getDataList();
+        },
+        async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+            let that = this;
+            that.loading = true;
+            that.paging.currentPageNo = pageNo;
+            that.paging.currentPageSize = pageSize;
+            that.dataList.content = [];
+            let formData = {
+                offset: pageNo,
+                limit: pageSize,
+                args: {
+                    "crfId": this.crfId,
+                    "diseaseId": this.$route.query.id,
+                    "userId": this.$store.state.user.diseaseInfo.doctor,
+                    "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+                    "status": this.form.status == -1? undefined: this.form.status
+                }
+            };
+            try {
+                let res = await that.$http.RRMgetReportDataList(formData);
+                if (res.code == '0') {
+                    let obj = {};
+                    obj.content = res.data.args;
+                    obj.content.forEach(li=>{
+                        li.recordData = [];
+                    })
+                    obj.pageNo = pageNo;
+                    obj.pageSize = pageSize;
+                    obj.totalCount = parseInt(res.data.totalElements);
+                    obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
+                    that.dataList = obj;
+                }
+                that.loading = false;
+            } catch (err) {
+                that.loading = false;
+                console.log(err)
+            }
+        },
+        toReportFill(row) {
+          // console.log(row)
+            this.getIdentify(row.patientId)
+            .then( ()=>{
+                let that = this;
+                let urlParameter={
+                    cacheData: false,
+                    formId: row.crfId || "",
+                    reportId: row.id || '',
+                    groupId: row.groupId || "",
+                    subjectId: row.subjectId || "",
+                    diseaseId: row.diseaseId || "",
+                    patientName: row.patientName || "",
+                    patientId: row.patientId || "",
+                    identify: this.identify || "",
+                    from: "caseManage",
+                    diseaseName: row.diseaseName || "",
+                    subjectName: row.subjectName || "",
+                    groupName: row.groupName || "",
+                    title: row.reportName,
+                    isModify:"displayShow"
+                }
+                localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
+
+                let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
+                window.open('./patientForm.html?'+urlParameters);
+            })
+        },
+        //获取CRF表单
+        async getCrfList() {
+            let formData = {
+                diseaseId: this.$route.query.id
+            }
+            try {
+                let res = await this.$http.RRMgetCrfList(formData);
+                if (res.code == 0) {
+                    this.crfList = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //获取报告状态列表
+        async getReportStatusList() {
+            let formData = {
+                "crfId": this.crfId,
+                "diseaseId": this.$route.query.id,
+                "userId": this.$store.state.user.diseaseInfo.doctor,
+                "orgCode": this.$store.state.user.diseaseInfo.orgCode
+            }
+            try {
+                let res = await this.$http.RRMgetReportStatusList(formData);
+                if (res.code == 0) {
+                    this.reportStatusList.forEach(li=>{
+                        if(typeof(res.data[li.value]) == 'number') {
+                            li.count = res.data[li.value];
+                        }
+                    })
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //获取身份证号
+        async getIdentify(patientId) {
+            let formData = {
+                patientId: patientId
+            }
+            try {
+                let res = await this.$http.casesSearchPatient(formData);
+                if (res.code == 0) {
+                    this.identify = res.data.identitycardno || "";
+                }else {
+                    this.$mes('error', "获取基本信息失败!");
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //表格内容展开
+        handleClick(row, column, cell) {
+            if(column.label=='操作') {
+                return;
+            }
+            console.log(row)
+            console.log(column)
+            console.log(cell)
+            this.$refs.refTable.toggleRowExpansion(row)
+            this.getReportRecord(row)
+        },
+        //获取批注信息
+        async getReportRecord(row) {
+            let index = this.dataList.content.findIndex(li=>{
+                return row.id == li.id;
+            })
+            let formData = {
+                id: row.id
+            }
+            try {
+                let res = await this.$http.RRMgetReportRecord(formData);
+                if (res.code == 0) {
+                    // this.dataList.content[index].recordData = res.data;
+                    row.recordData = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        deleteReport(row) {
+            this.$confirm('是否删除('+row.reportName+')报告?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then( async() => {
+                // try {
+                //     let res = await this.$http.RRMDeleteReport();
+                //     if (res.code == 0) {
+                //         this.$mes('success', "删除成功!");
+                //     }
+                // } catch (err) {
+                //     console.log(err)
+                // }
+            }).catch(() => {});
+        }
+    },
+    beforeRouteEnter (to, from, next) {
+        next();
+    },
+    beforeRouteLeave (to, from, next) {
+        next();
+    }
+};
+</script>
+
+<style lang="less">
+    .disReportList {
+        .el-table {
+            padding: 0 !important;
+        }
+        .el-table__expanded-cell {
+            background-color: #F7FAFD;
+            &:hover {
+                background-color: #F7FAFD !important;
+            }
+            .el-timeline .el-timeline-item:last-child{
+                color: #232325;
+                .el-timeline-item__node {
+                    border-color: #232325;
+                }
+                .el-timeline-item__content {
+                    color: #232325;
+                }
+            }
+            .el-timeline-item__node {
+                background-color: #fff;
+                border:1px solid #ccc;
+                width: 8px;
+                height: 8px;
+            }
+            .el-timeline-item__tail {
+                border-left: 1px solid #ccc;
+                left: 2px;
+            }
+            .el-timeline-item__wrapper {
+                padding-left: 18px;
+            }
+            .el-timeline-item:last-child {
+                padding-bottom: 0;
+            }
+            .el-timeline-item__content {
+                color: #999;
+                // &:hover p {
+                //     color: #333;
+                // }
+                p {
+                    display: inline-block;
+                    margin-left: 8px;
+                    font-size: 13px;
+                    span {
+                        padding-right: 10px;
+                    }
+                }
+            }
+        }
+        .box {
+            position: relative;
+            height: 100%;
+            color: #394263;
+            .aside {                
+                width: 220px;
+                height: 100%;
+                background-color: #fff;
+                .aside_top {
+                    padding:0 15px;
+                    height: 80px;
+                    border-bottom: 1px solid rgba(229,235,236,1);
+                }
+                .lable {
+                    padding: 15px;
+                }
+                li {
+                    height: 40px;
+                    line-height: 40px;
+                    padding-left: 20px;
+                    font-size: 14px;
+                    border-left: 3px solid transparent;
+                    cursor: pointer;
+                    &.active {
+                        background-color: rgba(245, 247, 250, .7);
+                        border-left: 3px solid #1bbae1;
+                        color: #1bbae1;
+                    }
+                    &:hover {
+                        background-color: rgba(245, 247, 250, .7);
+                        border-left: 3px solid #1bbae1;
+                        color: #1bbae1;
+                    }
+                    &:nth-child(1):hover .icon,
+                    &:nth-child(1).active .icon {
+                        color: #F79E00;
+                    }
+                    &:nth-child(2):hover .icon,
+                    &:nth-child(2).active .icon {
+                        color: #0077B4;
+                    }
+                    &:nth-child(3):hover .icon,
+                    &:nth-child(3).active .icon {
+                        color: #8aca56;
+                    }
+                    &:nth-child(4):hover .icon,
+                    &:nth-child(4).active .icon {
+                        color: #e24828;
+                    }
+                    &:nth-child(5):hover .icon,
+                    &:nth-child(5).active .icon {
+                        color: #00bf8f;
+                    }&:nth-child(6):hover .icon,
+                    &:nth-child(6).active .icon {
+                        color: #00B8DF;
+                    }
+                    .icon {
+                        padding-right: 8px;
+                        color: #999;
+                    }
+                }
+            }
+            .content {
+                position: absolute;
+                left: 235px;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #fff;
+                padding: 15px;
+                h2 {
+                    font-size: 16px;
+                    margin-bottom: 15px;
+                    span {
+                        margin-left: 10px;
+                        background:rgba(57,65,100,0.2);
+                        color: #394263;
+                        font-size: 12px;
+                        font-weight: normal;
+                        padding: 0 4px;
+                        border-radius: 10px;
+                    }
+                }
+            }
+        }
+    }
+    .expand_popover {
+        background-color: rgba(0,0,0,.6);
+        padding: 8px 10px;
+        .content p {
+            color: #fff;
+            font-size: 13px;
+            &:hover {
+                color: #fff;
+            }
+        }
+        .popper__arrow{
+            border-right-color: rgba(0,0,0,.6) !important;
+            &::after {
+                border-right-color: rgba(10,10,10,0) !important;
+            }
+        }
+    }
+</style>
+
+

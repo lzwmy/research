@@ -1,4 +1,13 @@
-const adminMenu = [
+const otherMenu = [
+    {
+        ico: 'crfConfig',
+        menuName: 'CRF配置',
+        menuCode: "011005",
+        menuPath: '/crfConfig',
+        children: [],
+        name: 'crfConfig',
+        roles:[1]
+    },
     {
         ico: 'qualityManage',
         menuName: '质控管理',
@@ -35,30 +44,16 @@ const adminMenu = [
             }
         ],
         name: 'organizationManagementDis',
-    }
+    },
+    // {
+    //     ico: 'dataMonitoring',
+    //     menuName: '数据监察',
+    //     menuCode: "0129012",
+    //     menuPath: '/dataMonitoring',
+    //     name: 'dataMonitoring',
+    //     children: [],
+    //     roles:[1,2,4]
+    // }
 ]
 
-const centerAdminMenu = [
-    {
-        ico: 'organizationManagement',
-        menuName: '组织管理',
-        menuCode: "012907",
-        menuPath: '/organizationManagementDis',
-        children: [
-            {
-                ico: '',
-                menuName: '机构管理',
-                menuCode: "012906",
-                menuPath: '/organizationManagementDis',
-                name: 'organizationManagementDis',
-                children: []
-            }
-        ],
-        name: 'organizationManagementDis',
-    }
-]
-
-export default {
-    adminMenu,
-    centerAdminMenu
-};
+export default otherMenu;
