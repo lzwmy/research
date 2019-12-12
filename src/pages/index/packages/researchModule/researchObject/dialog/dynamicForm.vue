@@ -101,6 +101,8 @@ export default {
                         }
                         subjectItemDataDtoList.push(obj);
                     })
+                    console.log(subjectItemDataDtoList)
+                    return
                     this.dialog.loading = true;
                     let params = {
                         subjectGroupId: this.groupInfo.subjectGroupId,
