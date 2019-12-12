@@ -89,7 +89,7 @@
                 <formItemCom 
                     ref="refFormItemCom"
                     @sendAllCrfForm="handleAllFormItem" 
-                    @getDataList="getDataList(0,15)" 
+                    @getDataList="getDataList()" 
                     :allCrfForm="allCrfForm" 
                     :confingData="confingData"
                     :form='form'
@@ -104,12 +104,12 @@
 
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" v-loading="tableLoading">
+            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" >
                 <el-table 
                     ref="refTable" fit border
-                    :data="dataList.content"
+                    :data="dataList.content" v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
-                    :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-58):(routerViewHeight*1)-58">
                     <el-table-column type="selection" fixed align="center" width="50"></el-table-column>
                     <el-table-column 
                         v-for="column in filterHeader"
@@ -138,7 +138,7 @@
                     </el-table-column>
                     <el-table-column width="60" align="center" fixed="right">
                         <template slot="header" slot-scope="scope">
-                            <el-button @click="showConfigDialog" type="text" icon="setting icon iconfont iconfuhao7" style="font-size: 30px; color: #555;"></el-button>
+                            <el-button @click="showConfigDialog" type="text" icon="setting icon iconfont iconfuhao7" style="padding-left: 10px; font-size: 30px; color: #555;"></el-button>
                         </template>
                         <template slot-scope="scope">
                             <el-button @click="deleteObject(scope.row)" type="text" icon="iconfont iconshanchu del"></el-button>
@@ -146,7 +146,7 @@
                     </el-table-column>
                 </el-table>
                 <!-- 分页 -->
-                <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
+                <pagination :data="dataList" @change="getDataList"></pagination>    
 
                 <!-- 引导图 -->
                 <div v-show="showGuide" class="guide flex-center-center" style="height: 500px;">
@@ -205,7 +205,6 @@
 import echartsContain from 'components/packages/echartsContain/echartsContain';
 import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
-// import importDialog from './dialog/ImportDialog'
 import tableConfig from './dialog/tableConfig'
 import dynamicForm from './dialog/dynamicForm'
 import importDialog from './importcom/ImportDialog'
@@ -258,7 +257,7 @@ export default {
             formItemLoading: false,
             paging: {
                 pageNo: 1,
-                pageSize: 10,
+                pageSize: 20,
                 currentPageNo: '',
                 currentPageSize: '',
             },
@@ -343,7 +342,7 @@ export default {
         },
         visibilityChangeHandle() {
             if(!document[this.hidden]) {
-                this.getDataList(0,15);
+                this.getDataList(this.paging.pageNo, this.paging.pageSize);
             }
         },
         //导出
@@ -443,12 +442,10 @@ export default {
                         content: res.data.body,
                         header: res.data.header
                     };
-                    
-                    // obj.content = res.data.args;
-                    // obj.pageNo = pageNo;
-                    // obj.pageSize = pageSize;
-                    // obj.totalCount = parseInt(res.data.totalElements);
-                    // obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
+                    obj.pageNo = pageNo;
+                    obj.pageSize = pageSize;
+                    obj.totalCount = parseInt(res.data.pageSize);
+                    obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
                 }else {
                     that.dataList = {
@@ -470,7 +467,7 @@ export default {
             this.$refs.refTableConfig.initFomeItem();
         },
         handleSaveConfig(data) {
-            this.getDataList(0,15);
+            this.getDataList(this.paging.pageNo, this.paging.pageSize);
         },
         //打开表单填写页面
         toReportFill(data,key,crfName,type) {
@@ -520,6 +517,7 @@ export default {
         addSingleObject(val) {
             //生成表单指标
             let newArr = [];
+            console.log(this.confingData.dataList)
             this.confingData.dataList.forEach(item=>{
                 item.formItemRspList.forEach(li=>{
                     if(li.checked){
@@ -588,7 +586,7 @@ export default {
             .then(()=>{
                 this.$refs.refSearch.selectGroup(currentGrounpId);
                 this.currentGrounpId = currentGrounpId;
-                this.getDataList(0,15);
+                this.getDataList(this.paging.pageNo, this.paging.pageSize);
             })
         },
         //删除研究对象
@@ -607,7 +605,7 @@ export default {
                     let res = await this.$http.researchObjectPreviewTableDeleteObject(params);
                     if (res.code == '0') {
                         this.$mes('success','删除成功!')
-                        this.getDataList(0,15);
+                        this.getDataList(this.paging.pageNo, this.paging.pageSize);
                     }
                 } catch (err) {
                     console.log(err)
@@ -627,7 +625,7 @@ export default {
         //点击分组
         handleSelectGroup(currentGrounpId) {
             this.currentGrounpId = currentGrounpId;
-            this.getDataList(0,15);
+            this.getDataList(this.paging.pageNo, this.paging.pageSize);
         },
         //获取全部crf表单列表和列表下的所有指标
         handleAllFormItem(data) {

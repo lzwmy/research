@@ -26,7 +26,7 @@
                         v-model="form.stageId" 
                         placeholder="请选择" 
                         class="right_6" 
-                        @clear="form.stageId='全部阶段'; queueListPoint = [];" 
+                        @clear="form.stageId='全部阶段'; form.pointId='全部随访点'; queueListPoint = [];" 
                         style="width: 140px;" 
                         @change="changeQueueListStage" 
                         :clearable="form.stageId=='全部阶段'?false:true">
@@ -192,7 +192,6 @@ export default {
         changeQueueListGroup(id) {
             this.form.stageId = '全部阶段';
             this.form.pointId = '全部随访点';
-            
             if(!id) {
                 return;
             }
@@ -202,6 +201,7 @@ export default {
             this.queueListStage = data.stages;
         },
         changeQueueListStage(id) {
+            this.form.pointId='全部随访点';
             if(!id) {
                 return;
             }

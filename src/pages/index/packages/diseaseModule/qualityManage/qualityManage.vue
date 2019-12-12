@@ -9,7 +9,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="" label-width='' class="flex-right">
-                    <el-button type="primary" icon="el-icon-search" @click="getDataList()">生成报告</el-button>
+                    <el-button :disabled="crfList.length==0" type="primary" icon="el-icon-search" @click="getDataList()">生成报告</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -21,45 +21,63 @@
                     :data="dataList.content" v-loading="loading" ref="refTable" fit @cell-mouse-enter="tableHover">
                     <el-table-column label='创建时间' prop="createTime" width="180"></el-table-column>
                     <el-table-column label='创建人' prop="createName"></el-table-column>
-                    <el-table-column label='分中心' prop="orgName" min-width="140"></el-table-column>
+                    <el-table-column label='分中心' prop="orgName" min-width="160"></el-table-column>
                     <el-table-column label='病人姓名' prop="patientName" ></el-table-column>
                     <el-table-column label='性别' prop="sex"></el-table-column>
                     <el-table-column label='年龄' prop="age"></el-table-column>
                     <el-table-column label='填充率' min-width="200">
                         <template slot-scope="scope">
                             <div style="width: 200px;">
-                                <el-progress :percentage="scope.row.fillingRate" color='#1bbae1'></el-progress>
+                                <el-progress :percentage="parseInt(scope.row.fillingRate)" :color='scope.row.fillingRate>=50?"#1bbae1":"#D95555"'></el-progress>
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="无效值" min-width="200">
+                    <el-table-column label="无效值" min-width="160">
                         <template slot-scope="scope">
-                            <el-popover
-                                placement="bottom-start"
-                                popper-class="invalid_value"
-                                width="280"
-                                v-model="scope.row.visible"
-                                :visible-arrow="false"
-                                trigger="hover">
-                                <div class="title flex-between-center">
-                                    <p>无效值&nbsp;(<span style="color:#1bbae1;">{{scope.row.patientName}}</span>)</p>
-                                    <i @click="scope.row.visible=false" class="icon icon-hover el-icon-circle-close"></i>
-                                </div>
-                                <div class="content" v-if="scope.row.invalidValue[1]">
-                                    <p v-for="(t,index) in scope.row.invalidValue" :key="index">{{index+1}}、{{t}};</p>
-                                </div>
-                                <div slot="reference" class="inline">
-                                    <p class="inline" v-if="scope.row.invalidValue[0]">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
-                                    <p v-else>暂无</p>
-                                </div>
-                            </el-popover>
+                            <p v-if="scope.row.invalidValue[0]" class="inline">1、{{scope.row.invalidValue[0]}}<span v-if="scope.row.invalidValue[1]">...</span></p>
+                            <p v-else>暂无</p>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="160" align="center">
+                        <template slot-scope="scope">
+                            <el-button type="primary" style="color:#1bbae1;" icon="icon iconfont iconfuhao2" @click="showDialog(scope.row)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
+                <!-- <el-popover
+                    placement="bottom-start"
+                    popper-class="invalid_value"
+                    width="250"
+                    v-if="popperData.invalidValue && popperData.invalidValue[0]"
+                    v-model="popperData.visible"
+                    :visible-arrow="false"
+                    trigger="hover">
+                    <div class="title flex-between-center">
+                        <p>无效值&nbsp;(<span style="color:#1bbae1;">{{popperData.patientName}}</span>)</p>
+                        <i @click="popperData.visible=false" class="icon icon-hover el-icon-circle-close"></i>
+                        
+                    </div>
+                    <div class="content" v-if="popperData.invalidValue[1]">
+                        <p v-for="(t,index) in popperData.invalidValue" :key="index">{{index+1}}、{{t}};</p>
+                    </div>
+                </el-popover>  -->
+
                 <!-- 分页 -->
                 <pagination :data="dataList" @change="getDataList"></pagination>
             </echarts-contain>
         </div>
+        
+        <el-dialog 
+            :title="'无效值 ('+(dialgoForm.popperData.patientName || '')+')'" 
+            :append-to-body="true"
+            class="invalid_dialog"
+            @closed="dialgoForm.visible=false;dialgoForm.popperData = {}"
+            :visible.sync="dialgoForm.visible" 
+            width="550px">
+            <p v-for="(t,index) in dialgoForm.popperData.invalidValue" :key="index">{{index+1}}、{{t}};</p>
+            <em v-if="!isExist">(空)</em>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -82,6 +100,7 @@ export default {
             dataList: {
                 content:[]
             },
+            // popperData: {},
             loading: false,
             identify:"",
             paging: {
@@ -91,7 +110,12 @@ export default {
                 currentPageSize: '',
             },
             emptyText: '',
-            elementLoadingText: ''  
+            isExist: true,
+            elementLoadingText: ''  ,
+            dialgoForm: {
+                visible: false,
+                popperData: {}
+            }
         };
     },
     created () {
@@ -107,24 +131,42 @@ export default {
                 width = 160
             }
             return width
-        },
+        }, 
         initPage() {
+            this.form.crfFromId = '';
+            this.dataList.content = [];
             this.getCrfList().then(()=>{
+                if(!this.crfList.length) {
+                    this.$emit('changeLoadding',false);
+                    this.loading = false;
+                    return;
+                }
                 this.getDataList().then(()=>{
                     this.$emit('changeLoadding',false);
                 })
             })
         },
-        tableHover(row,column,cell) {
-            if(column.label!='无效值') {
-                console.log(1211111)
-                this.dataList.content.forEach(item=>{
-                    item.visible = false;
-                })
-                row.visible = true;
+        showDialog(row) {
+            if(row.invalidValue && row.invalidValue.length != 0) {
+                this.isExist = true;
+            }else {
+                this.isExist = false;
+            }
+            this.dialgoForm = {
+                visible: true,
+                popperData: row
             }
         },
+        tableHover(row,column,cell) {
+            // if(column.label == '无效值') {
+            //     this.popperData = row;
+            //     this.popperData.visible = true;
+            // }else {
+            //     this.popperData.visible = false;
+            // }
+        },
         async getCrfList() {
+            
             this.loading = true;
             let formData = {
                 diseaseId: this.$route.query.id
@@ -162,6 +204,7 @@ export default {
                         item.visible = false;
                         item.createTime = utils.formateDate(item.createTime)
                     });
+                    
                     obj.pageNo = pageNo;
                     obj.pageSize = pageSize;
                     obj.totalCount = parseInt(res.data.sum);
@@ -180,8 +223,11 @@ export default {
 
 <style lang="less">
     .el-popper.invalid_value {
+        position: fixed !important;
+        right: 10px !important;
+        left: auto !important;
+        top: 186px !important;
         padding: 0;
-        transform: translateY(-50px);
         .title {
             line-height: 36px;
             border-bottom: 1px solid #ccc;
@@ -191,9 +237,16 @@ export default {
                 font-size: 18px;
             }
         }
+        &:hover {
+            p {
+                color: #666;
+                cursor:default;
+            }
+        }
         .content {
             padding: 10px;
-            max-height: 300px;
+            min-height: 350px;
+            max-height: 500px;
             overflow: auto;
             font-size: 13px;
             color: #666;
@@ -204,6 +257,23 @@ export default {
             width: 80%;
         }
 
+    }
+    .invalid_dialog {
+        .el-dialog__body {
+            padding: 10px 20px !important;
+            min-height: 300px;
+            max-height: 600px;
+            overflow: auto;
+            line-height: 1.5em;
+        }
+    }
+    @media screen and (max-width: 1800px) {
+        .invalid_dialog {
+            .el-dialog__body {
+                min-height: 300px;
+                max-height: 400px;
+            }
+        }
     }
 </style>
 

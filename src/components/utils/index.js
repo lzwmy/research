@@ -774,14 +774,32 @@ const isRepeat = function(arr) {
   return false;
 }      
 
-//判断两数组里是否包括相同元素key
-const arrayExistAttr = function(arr1, arr2,key) {
+//判断两数组里是否包括相同元素key strict是否严格相等
+const arrayExistAttr = function(arr1, arr2,key, strict=true) {
   let isExist = false;
   arr1.forEach(item=>{
     arr2.forEach(li=>{
-        if(item.key === li.ley) {
+      if(strict) {
+        if(key) {
+          if(item[key] === li[key]) {
             isExist = true;
+          }
+        }else {
+          if(item === li) {
+            isExist = true;
+          }
         }
+      }else {
+        if(key) {
+          if(item[key] == li[key]) {
+            isExist = true;
+          }
+        }else {
+          if(item == li) {
+            isExist = true;
+          }
+        }
+      }
     })
   })
   if(isExist) {
@@ -789,6 +807,7 @@ const arrayExistAttr = function(arr1, arr2,key) {
   }
   return false;
 }
+
 //将有父子关系的数组转换成树形结构数据
 const translateDataToTree = function(data = []) {
   let parents = data.filter(li=>{ return li.menuLevel == 1});
@@ -881,6 +900,13 @@ const ToDBC = function (txtstring) {
   return tmp;
 }
 
+const arrRermoveEmpty = function(arr) {
+  return arr.filter(li=>{
+    return li
+  })
+}
+
+
 export default {
   getQuery,
   getQueryString,
@@ -926,5 +952,6 @@ export default {
   isEffectiveDate,    //判断日期是否有效
   arrRemoveRepeat,    //数组去重
   ToCDB,  //全角转半角
-  ToDBC   //半角转全角
+  ToDBC,   //半角转全角
+  arrRermoveEmpty,  //数组去除空值
 };

@@ -254,7 +254,7 @@
     .el-table {
       position: absolute;
       bottom: 50px;
-      top: 0;
+      top: 6px;
       left: 0;
       right: 0;
       .el-table__body-wrapper {

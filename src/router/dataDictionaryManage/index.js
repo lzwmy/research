@@ -1,13 +1,13 @@
 // 数据字典管理 dataDictionaryManage
 
 // 数据字典 dataDictionary
-const dataDictionary = r => require.ensure([], () => r(require('packages/dataDictionaryManage/dataDictionary')), 'dataDictionary');
+const dataDictionary = r => require.ensure([], () => r(require('packages/systemManageMoudule/dataDictionaryManage/dataDictionary')), 'dataDictionary');
 //医学代码 medicalCode
-const medicalCode = r => require.ensure([], () => r(require('packages/dataDictionaryManage/medicalCode')), 'medicalCode');
+const medicalCode = r => require.ensure([], () => r(require('packages/systemManageMoudule/dataDictionaryManage/medicalCode')), 'medicalCode');
 //医学代码分类 medicalCodeClass
-const medicalCodeClass = r => require.ensure([], () => r(require('packages/dataDictionaryManage/medicalCodeClass')), 'medicalCodeClass');
+const medicalCodeClass = r => require.ensure([], () => r(require('packages/systemManageMoudule/dataDictionaryManage/medicalCodeClass')), 'medicalCodeClass');
 //
-const dataDictionaryTest = r => require.ensure([], () => r(require('packages/dataDictionaryManage/dataDictionaryTest')), 'dataDictionaryTest');
+const dataDictionaryTest = r => require.ensure([], () => r(require('packages/systemManageMoudule/dataDictionaryManage/dataDictionaryTest')), 'dataDictionaryTest');
 
 const routes = [
   {

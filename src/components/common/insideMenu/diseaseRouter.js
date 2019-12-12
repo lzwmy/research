@@ -21,7 +21,7 @@ const router = [
         menuCode: "0110033",
         menuPath: '/diseasePatientFollowUp',
         children: [],
-        name: 'diseasePatientFollowUp'
+        name: 'diseasePatientFollowUp',
     },
     {
         ico: 'reportList',
@@ -39,13 +39,5 @@ const router = [
         children: [],
         name: 'modelManage',
     }
-    // {
-    //     ico: 'crfConfig',
-    //     menuName: 'CRF配置',
-    //     menuCode: "011005",
-    //     menuPath: '/crfConfig',
-    //     children: [],
-    //     name: 'crfConfig',
-    // }
 ]
 export default router;

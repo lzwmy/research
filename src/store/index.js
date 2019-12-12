@@ -50,9 +50,11 @@ const user = {
     },
     //专病科研数据
     diseaseInfo: {
-      diseaseId: '',
+      diseaseId: '',    //病种ID
       isAdmin: false,  //是否为管理员
-      roles: []
+      roles: [],
+      orgCode: '',      //组织机构
+      doctor: ''      //医生
     },
     session_isDislpayArrow: false,
     //病种列表

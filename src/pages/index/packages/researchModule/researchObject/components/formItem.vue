@@ -64,6 +64,9 @@ export default {
     },
     watch: {
         popoverFomeItemVisible: function(newVal) {
+            if(!newVal) {
+                return;
+            }
             this.getAllFormItem()
             .then(()=>{
                 this.handlePreviewFormItem()
@@ -175,27 +178,28 @@ export default {
                 })
             })
             let params = {
-                searchConditionList: list
+                searchConditionList: list,
+                subjectInfoId: this.$store.state.user.researchInfo.subjectInfoId
             }
             this.loading = true;
             let res;
             console.log(params)
             try {
-                if(list.length) {
+                // if(list.length) {
                     res = await this.$http.researchObjectEditFormItem(params);
                     if (res.code == '0') {
                         this.popoverFomeItemVisible = false;
                         this.$emit('getDataList')
                     }
                     this.loading = false;
-                }else {
-                    res = await this.$http.researchObjectAddFormItem(params);
-                    if (res.code == '0') {
-                        this.popoverFomeItemVisible = false
-                        this.$emit('getDataList')
-                    }
-                    this.loading = false;
-                }
+                // }else {
+                //     res = await this.$http.researchObjectAddFormItem(params);
+                //     if (res.code == '0') {
+                //         this.popoverFomeItemVisible = false
+                //         this.$emit('getDataList')
+                //     }
+                //     this.loading = false;
+                // }
             } catch (err) {
                 console.log(err)
                 this.loading = false;

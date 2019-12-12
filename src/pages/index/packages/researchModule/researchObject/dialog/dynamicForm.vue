@@ -38,7 +38,7 @@
                                     v-for="(li,index) in item.jsonData.termSet.rangeText.split('\n')"
                                     :key="index"
                                     :label="precessData(li)"
-                                    :value="li">
+                                    :value="precessData(li)">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -70,6 +70,7 @@
 
 <script>
 import numberInput from './numberInput'
+import utils from 'components/utils/index';
 export default {
     name: 'dynamicForm',
     props: ['dataInfo','dialog','groupList'],
@@ -94,12 +95,13 @@ export default {
                     this.dataInfo.content.forEach(li=>{
                         let obj = {
                             itemName: li.controlName,
-                            value: typeof(li.value) == 'string'?li.value:li.value.join('\n'),
+                            value: typeof(li.value) == 'string'?li.value:li.value.join('|'),
                             path: li.path,
                             crfId: String(li.crfId)
                         }
                         subjectItemDataDtoList.push(obj);
                     })
+                    console.log(subjectItemDataDtoList)
                     this.dialog.loading = true;
                     let params = {
                         subjectGroupId: this.groupInfo.subjectGroupId,
@@ -130,14 +132,14 @@ export default {
                 this.$mes('info','请先选择分组')
             }
         },
-      //处理 ^
-      precessData(data) {
-        if(data.indexOf('^')!=='-1') {
-          return data.split('^')[0]
-        }else {
-          return data
+        //处理 ^
+        precessData(data) {
+            if(data.indexOf('^') != -1) {
+                return utils.deepClone(data.split('^')[0]) 
+            }else {
+                return data
+            }
         }
-      }
     }
 };
 </script>

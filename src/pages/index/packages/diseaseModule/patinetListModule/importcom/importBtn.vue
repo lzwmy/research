@@ -2,6 +2,7 @@
     <div style="display:inline-block;">
         <el-upload
             class="upload"
+            action=""
             :on-change="successFile"
             :auto-upload="false"
             :show-file-list='false'

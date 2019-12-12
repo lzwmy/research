@@ -49,13 +49,12 @@ export default {
     },
     watch: {
         'dataInfo.visible': function(newVal) {
-            if(!newVal) {
+            if(newVal) {
                 this.initFomeItem();
             }
         }
     },
     created() {
-        
     },
     methods: {
         //回显crf表单列表下的已选指标
@@ -118,7 +117,7 @@ export default {
                 return;
             }
         },
-        //回显crf表单列表下的已选指标
+
         async save() {
             let list = [];
             this.defaultChecked.forEach(li=>{

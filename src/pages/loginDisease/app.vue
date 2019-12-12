@@ -113,7 +113,9 @@ export default {
             this.$store.commit('saveDiseaseInfo',{
               diseaseId: this.$store.state.user.diseaseInfo.diseaseId, 
               isAdmin: false,
-              roles: res.data || []
+              roles: res.data || [],
+              orgCode: '',      //组织机构
+              doctor: ''      //医生
             });
             window.location.href = './index.html#/diseaseChart?id='+ utils.getQuery('id');
           })

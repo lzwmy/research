@@ -39,7 +39,7 @@
         <el-input
             type="textarea"
             :rows="5"
-            v-model="statisticsData.textList"
+            v-model="statisticsData.text"
             disabled>
         </el-input>
         <br/>
@@ -85,7 +85,7 @@ export default {
                     categories: []
                 },
                 yAxis: {
-                    min: 0,
+                    visible: false,
                     title: {
                         text: ''
                     },
@@ -121,6 +121,9 @@ export default {
                 return this.targetElemnt.itemName+'的单因素分析';
             }
         }
+    },
+    created() {
+        console.log(this.statisticsData)
     },
     methods: {
         selectBtn(val) {
