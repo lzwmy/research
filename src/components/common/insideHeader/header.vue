@@ -24,14 +24,28 @@
             <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
         </el-popover>
         <!-- 组织机构和医生 -->
-        <!-- <div style="margin-left:20px;" v-if="($route.path=='/reportList' || $route.path=='/dataMonitoring') && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)">
-            <el-select v-model="orgCode" placeholder="请选择机构" :disabled="!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable" clearable>
+        <el-popover
+            placement="bottom"
+            width="200"
+            trigger="click">
+            <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div style="margin-left:20px;" v-if="($route.path=='/reportList' || $route.path=='/dataMonitoring') && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)">
+                <el-select v-model="orgCode" placeholder="请选择机构" filterable :disabled="!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable" clearable>
+                    <el-option v-for="(item,index) in orgList" :key="index" :label="item.orgName" :value="item.orgCode"></el-option>
+                </el-select>
+                <el-select v-model="doctor" placeholder="请选择医生" filterable clearable>
+                    <el-option v-for="(item,index) in doctorList" :key="index" :label="item.userName" :value="item.id"></el-option>
+                </el-select>
+            </div>
+        </el-popover>
+        <div style="margin-left:20px;" v-if="($route.path=='/reportList' || $route.path=='/dataMonitoring') && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)">
+            <el-select v-model="orgCode" placeholder="请选择机构" filterable :disabled="!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable" clearable>
                 <el-option v-for="(item,index) in orgList" :key="index" :label="item.orgName" :value="item.orgCode"></el-option>
             </el-select>
-            <el-select v-model="doctor" placeholder="请选择医生" clearable>
+            <el-select v-model="doctor" placeholder="请选择医生" filterable clearable>
                 <el-option v-for="(item,index) in doctorList" :key="index" :label="item.userName" :value="item.id"></el-option>
             </el-select>
-        </div> -->
+        </div>
         <p v-if="$route.meta.belongToGroup == 'researchTask' && $store.state.user.researchInfo.centerModel == 2" @click="shareLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
         <p v-if="$route.meta.belongToGroup == 'insideView'" @click="shareLogin" class="researchLogin flex-center-center">专病分享<span class="icon iconfont iconfenxiang left_6"></span></p>
 

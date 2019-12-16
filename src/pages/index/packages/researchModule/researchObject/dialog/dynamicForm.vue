@@ -96,8 +96,6 @@ export default {
                 }).then( async() => {
                     let subjectItemDataDtoList = [];
                     this.dataInfo.content.forEach(li=>{
-                        console.log(li.value)
-                        console.log(typeof(li.value))
                         let obj = {
                             itemName: li.controlName,
                             value: typeof(li.value) == 'object'?li.value.join('|'):li.value,
@@ -106,7 +104,6 @@ export default {
                         }
                         subjectItemDataDtoList.push(obj);
                     })
-
                     this.dialog.loading = true;
                     let params = {
                         subjectGroupId: this.groupInfo.subjectGroupId,
