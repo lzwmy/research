@@ -13,12 +13,14 @@
               <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
               <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
             </span>
+
             <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
             <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
-            <!-- <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button> -->
+            <el-button size="medium" type="success" style="float:right;margin-right: 5px;height: 33px;" @click="submitReportData">提交</el-button>
+             <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button>-->
           </div>
-          <div ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
-            <display-report id="pdfForm" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
+          <div  ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
+            <display-report  id="pdfForm" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
           </div>
           <!--<div class="saveButton">
             <el-button @click="backingOut">返回</el-button>
@@ -28,7 +30,10 @@
       </div>
 
       <!--报告阅读-->
-        <report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>
+        <!--<report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
+      <!--阅读模式-->
+      <read-report-mode ref="reportRead" v-else-if="showReadComponent && crfForm!=null&&report!=null" :item="crfForm"  :report="report"></read-report-mode>
+
     </div>
     <!--数据绑定提醒-->
     <transition name="fade">
@@ -82,10 +87,87 @@
       </div>
     </transition>
     <!--返回顶层icon-->
-    <div  class="break_icon" @click="backTop" :class="scrollTop == 0?'hide':''">
+    <div  class="break_icon" @click="backTop" :class="scrollTop == '0'?'hide':''">
       <i class="el-icon-caret-top"></i>
     </div>
-
+    <!--报告备注-->
+    <div class="remark_box">
+      <div class="remark_title">
+        <span>备注</span>
+        <i class="iconfont iconlujing3" @click="remarkVisible = true"></i>
+      </div>
+      <div class="remark_body_box">
+        <!--<div class="remark_content-item" v-for="(item,index) in remarkList" :key="index">
+          <div class="content-item_title">{{index+1}}、{{item.createTime}} 由 <span>{{item.creatorName}}</span> 备注</div>
+          <div class="content-item_info">
+            <span v-html="item.content"></span>
+            <div>
+              <i class="iconfont iconlujing4" @click="modifyRemark(item)"></i>
+              <i class="iconfont iconshanchu1 del" @click="deleteRemark(item)"></i>
+            </div>
+          </div>
+        </div>-->
+        <div class="remark_content-item">
+          <div class="content-item_title">1 由 <span>啊实打实</span> 备注</div>
+          <div class="content-item_info">
+            <span >
+              啊手动阀手动阀
+            </span>
+            <div>
+              <i class="iconfont iconlujing4" ></i>
+              <i class="iconfont iconshanchu1 del" ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--消息提示窗口-->
+    <div class="tip_box">
+      <!--不通过-->
+      <div class="fail_status">
+        <div class="comment_info">
+          <i class="iconfont iconjianqu3"></i>
+          <span>已批注2处数据</span>
+        </div>
+        <div class="fail_btn" @click="clickVerify(3)">不通过</div>
+      </div>
+      <!--召回 未审核 -->
+      <div class="unreviewed_status">
+        <div class="comment_info">
+          <i class="iconfont iconjianqu1"></i>
+          <span>已批注2处数据</span>
+        </div>
+        <div class="unreviewed_btn">召回</div>
+      </div>
+      <!--通过 无数据批注-->
+      <div class="pass_status">
+        <div class="comment_info">
+          <i class="iconfont iconjianqu2"></i>
+          <span>尚无数据批注</span>
+        </div>
+        <div class="pass_btn" @click="clickVerify(4)">通过</div>
+      </div>
+      <!--召回 已审核 -->
+      <div class="audited_status">
+        <div class="comment_info">
+          <i class="iconfont iconjianqu1"></i>
+          <span>数据已通过审核</span>
+        </div>
+        <div class="audited_btn">召回</div>
+      </div>
+    </div>
+    <!--添加备注弹框-->
+    <el-dialog
+      title="添加备注"
+      :visible.sync="remarkVisible"
+      width="40%"
+      center>
+      <editor :value="editorContent" :isClear="editorVisible" @content-synchronize="contentSynchronize"></editor>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="remarkVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addRemark()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script type="text/javascript">
@@ -96,13 +178,16 @@ import reportRead from "./reportRead";
 import mixins from "components/mixins";
 import { mapGetters } from "vuex";
 import { getDom } from './js/verificationForm';
-
+import readReportMode from '../readOnlyModule/readReportmode';
+import editor from 'components/packages/wangEnduit/editor';
 export default {
   name: "crfConfig",
   mixins: [mixins],
   components: {
     displayReport,
-    reportRead
+    reportRead,
+    readReportMode,
+    editor
   },
   data() {
     return {
@@ -120,7 +205,18 @@ export default {
       referView:null,//数据参考中文名选项
       showReadComponent: false,  //显示报告阅读组件
       scrollTop: 0,
-      urlParameter:{}
+      urlParameter:{},
+      remarkVisible:false,
+      editorContent:"",
+      editorVisible:false,
+      editorInfo:"",
+      remarkList:[],
+      remarkId:"",
+      competence:{
+        from:"", //
+        status:"",  //报告状态0 未填写 1已填写 2 已提交 3 审核不通过 4 审核通过
+        roles:this.$store.state.user.diseaseInfo.roles //1、管理员(所有权限)  2、分中心管理员（无权添加中心,可查看组织管理） 3、数据录入员 4、数据管理员（可审核数据）
+      }
     };
   },
   created() {
@@ -137,11 +233,14 @@ export default {
         that.resize();
       });
     });
-    this.mainContent = document.querySelector("#mainContent");
-    this.mainContent.addEventListener('scroll', this.handleScroll, true) 
+
+    // this.mainContent = document.querySelector("#mainContent");
+    // this.mainContent.addEventListener('scroll', this.handleScroll, true)
+    window.addEventListener('scroll', this.handleScroll, true)
   },
   destroyed() {
-    this.mainContent.removeEventListener('scroll',this.handleScroll);
+    // this.mainContent.removeEventListener('scroll',this.handleScroll);
+    window.removeEventListener('scroll',this.handleScroll);
   },
   activated() {},
   methods: {
@@ -174,7 +273,7 @@ export default {
         }).catch(() => {});
     },
     handleScroll() {
-      this.getContentTop(document.querySelector("#mainContent").scrollTop);
+      this.getContentTop(document.documentElement.scrollTop);
     },
     resize() {
       /*$(".crffill").height($(window).height() - 160);
@@ -201,8 +300,16 @@ export default {
       this.$store.commit("CRF_SET_PATIENTID", this.patientId);
       this.$store.commit("CRF_SET_REPORT_STATUS", false);
       this.$store.commit("CRF_CHANGE_CONTROL", {});
-      this.getForms();
+      this.getForms().then(()=> {
+        this.$nextTick(()=>{
+          let height = $(".crf-main").height();
+          console.log(height);
+          $('.remark_box').css('margin-top',height)
+        })
+      });
       this.getReportData();
+      this.getReportBakNoteList(this.reportId);
+
     },
     //返回上一级
     backingOut() {
@@ -226,6 +333,69 @@ export default {
         window.close();
       }
     },
+    contentSynchronize(data) {
+      // console.log('富文本 编辑回显',data)
+      this.editorInfo = data;
+    },
+    addRemark() {
+      const {txtContent="",content=""} = this.editorInfo;
+      let remarkId = "";
+      if(this.remarkId) {
+        remarkId =  this.remarkId;
+      }
+      let formData = {
+        "content": content,
+        "id": remarkId,
+        "reportId": this.report.id,
+        "txtContent": txtContent
+      };
+      this.reportBakNoteSave(formData).then(()=>{
+        this.remarkVisible = false;
+        this.remarkId = "";
+        this.editorContent="";
+        this.editorVisible=false;
+        this.getReportBakNoteList(this.report.id);
+      })
+    },
+    // 修改备注
+    modifyRemark(item) {
+      this.editorContent="";
+      this.editorVisible=false;
+      this.remarkId = item.id;
+      this.remarkVisible = true;
+      this.editorVisible = true;
+      this.editorContent = item.content;
+    },
+    deleteRemark(item) {
+      this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.reportBakNoteDelete(item.id).then(()=>this.getReportBakNoteList(this.report.id))
+      }).catch(() => {
+
+      });
+    },
+    clickVerify(status) {
+      this.readReportBakAudit(status);
+    },
+    // 审核报告 3 通过 4 不通过
+    async readReportBakAudit(status) {
+      let that = this;
+      let formData = {
+        'notationList':this.$store.state.annotateData.annotateList || [],
+        "reportId":that.report.id,
+        "status":status,
+      };
+      console.log(formData)
+      try {
+        let data = await that.$http.readReportBakAudit(formData);
+        console.log(data)
+      }catch (error) {
+        console.log(error);
+      }
+    },
     downPDF() {
       $(".crfConfig").addClass("heightAuto");
       $("#pdfForm").addClass("pdf")
@@ -237,6 +407,54 @@ export default {
         $(".crfConfig").removeClass("heightAuto");
         $("#pdfForm").removeClass("pdf")
       },600)
+    },
+    //添加备注
+    async reportBakNoteSave(value) {
+      let that = this;
+      let formData = value;
+      try{
+        let data = await that.$http.reportBakNoteSave(formData);
+        console.log(data);
+        /*if(data.code ===0 && data.data) {
+
+        }*/
+      }catch (error) {
+        console.log(error);
+      }
+    },
+    // 获取报告集合
+    async getReportBakNoteList(value) {
+      let that = this;
+      let formData = {
+        reportId:value || ""
+      };
+      try {
+        let data = await that.$http.getReportBakNoteList(formData);
+        console.log(data)
+        if(data.code ===0 && data.data) {
+          that.remarkList = data.data;
+        }else {
+          that.$message.info(data.msg);
+        }
+      }catch (error) {
+        console.log(error);
+      }
+    },
+    async reportBakNoteDelete(value) {
+      let that= this;
+      let formData = {
+        id:value || "",
+      };
+      try {
+        let data = await that.$http.reportBakNoteDelete(formData);
+        if(data.code === 0 ) {
+          that.$message.success('删除成功');
+        }else {
+          that.$message.info(data.msg);
+        }
+      }catch (error) {
+        console.log(error)
+      }
     },
     async getForms(item) {
       let that = this;
@@ -323,6 +541,7 @@ export default {
         this.mainLoading = false;
       }
     },
+    // 保存报告
     async saveReportData() {
       let flag = getDom();
       if(flag) {
@@ -392,6 +611,24 @@ export default {
       }
       return title;
     },
+    //提交报告
+    async submitReportData() {
+      let that = this;
+      let formData = {
+        ...that.report
+      };
+      try {
+        let data = await that.$http.reportBakSubmit(formData);
+        console.log(data);
+        if(data.code ===0 && data.data) {
+
+        }else {
+          that.$message.info(data.msg)
+        }
+      }catch (error) {
+        console.log(error);
+      }
+    },
     //获取数据绑定域及字段
     async searchViewList() {
       try {
@@ -452,6 +689,7 @@ export default {
     },
     getContentTop(top) {
       this.scrollTop = top;
+      // let scrollTop = document.documentElement.scrollTop;
     }
   },
   computed: {
@@ -482,7 +720,243 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang="less" scoped>
+  .remark_box{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 10px;
+    border-top: 1px solid rgba(235,237,242,1);
+    padding-top: 10px;
+    margin-top: 46px;
+    .remark_title{
+      margin-bottom: 10px;
+      span{
+        font-size: 14px;
+        color: #333333;
+        font-weight: bold;
+      }
+      i{
+        font-size: 16px;
+        color: #0076B7;
+        padding-left: 14px;
+        cursor:pointer;
+      }
+    }
+    .remark_body_box{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      .remark_content-item{
+
+        .content-item_title{
+          font-size:14px;
+          line-height:19px;
+          color:rgba(51,51,51,1);
+          margin: 10px 0;
+          span{
+            font-weight: bold;
+          }
+        }
+        .content-item_info{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          min-height: 46px;
+          background:rgba(252,253,252,1);
+          border:1px solid rgba(235,237,242,1);
+          color:#666666 ;
+          line-height: 21px;
+          font-size: 13px;
+          padding-left: 18px;
+          padding-right: 18px;
+          margin-left: 20px;
+          .iconfont{
+            cursor: pointer;
+          }
+          .del{
+            padding-left: 10px;
+            &:hover{
+              color: #D95555;
+            }
+          }
+        }
+      }
+    }
+  }
+  .tip_box {
+    position: fixed;
+    top: 22px;
+    left: 50%;
+    z-index: 3;
+    transform: translate(-50%,-16px);
+    .fail_status{
+      display: flex;
+      width: 556px;
+      height: 42px;
+      background:rgba(232,70,1,0.08);
+      border:1px solid rgba(235,69,0,1);
+      opacity:1;
+      border-radius:4px;
+      padding: 5px 10px;
+      align-items: center;
+      justify-content: space-between;
+      .comment_info {
+        display: flex;
+        align-items: center;
+        .iconfont {
+          font-size: 24px;
+          color: #E24828;
+        }
+        span{
+          font-size: 16px;
+          color: #E5471B;
+          font-weight: bold;
+          line-height: 21px;
+          padding-left: 10px;
+        }
+      }
+      .fail_btn {
+        width:70px;
+        height:32px;
+        background:rgba(229,71,27,1);
+        opacity:1;
+        border-radius:2px;
+        color: #ffffff;
+        text-align: center;
+        line-height: 32px;
+        cursor: pointer;
+        &:hover{
+          opacity: 0.8;
+        }
+      }
+    }
+    .unreviewed_status{
+      display: flex;
+      width: 556px;
+      height: 42px;
+      background:rgba(151,155,171,0.08);
+      border:1px solid rgba(151,155,171,1);
+      opacity:1;
+      border-radius:4px;
+      padding: 5px 10px;
+      align-items: center;
+      justify-content: space-between;
+      .comment_info {
+        display: flex;
+        align-items: center;
+        .iconfont {
+          font-size: 24px;
+          color: #979BAB;
+        }
+        span{
+          font-size: 16px;
+          color: #979BAB;
+          font-weight: bold;
+          line-height: 21px;
+          padding-left: 10px;
+        }
+      }
+      .unreviewed_btn {
+        width:70px;
+        height:32px;
+        background:#979BAB;
+        opacity:1;
+        border-radius:2px;
+        color: #ffffff;
+        text-align: center;
+        line-height: 32px;
+        cursor: pointer;
+        &:hover{
+          opacity: 0.8;
+        }
+      }
+    }
+    .pass_status{
+      display: flex;
+      width: 556px;
+      height: 42px;
+      background:rgba(0,192,142,0.08);
+      border:1px solid rgba(0,193,141,1);
+      opacity:1;
+      border-radius:4px;
+      padding: 5px 10px;
+      align-items: center;
+      justify-content: space-between;
+      .comment_info {
+        display: flex;
+        align-items: center;
+        .iconfont {
+          font-size: 24px;
+          color: #00BF8F;
+        }
+        span{
+          font-size: 16px;
+          color: #00BF8F;
+          font-weight: bold;
+          line-height: 21px;
+          padding-left: 10px;
+        }
+      }
+      .pass_btn {
+        width:70px;
+        height:32px;
+        background:#00C08E;
+        opacity:1;
+        border-radius:2px;
+        color: #ffffff;
+        text-align: center;
+        line-height: 32px;
+        cursor: pointer;
+        &:hover{
+          opacity: 0.8;
+        }
+      }
+    }
+    .audited_status{
+      display: flex;
+      width: 556px;
+      height: 42px;
+      background:rgba(126,131,180,0.08);
+      border:1px solid rgba(126,130,182,1);
+      opacity:1;
+      border-radius:4px;
+      padding: 5px 10px;
+      align-items: center;
+      justify-content: space-between;
+      .comment_info {
+        display: flex;
+        align-items: center;
+        .iconfont {
+          font-size: 24px;
+          color: #7E84B2;
+        }
+        span{
+          font-size: 16px;
+          color: #7E84B2;
+          font-weight: bold;
+          line-height: 21px;
+          padding-left: 10px;
+        }
+      }
+      .audited_btn {
+        width:70px;
+        height:32px;
+        background:#7E84B2;
+        opacity:1;
+        border-radius:2px;
+        color: #ffffff;
+        text-align: center;
+        line-height: 32px;
+        cursor: pointer;
+        &:hover{
+          opacity: 0.8;
+        }
+      }
+    }
+  }
 </style>
 <style lang="less">
 body.theme-blue {
@@ -577,9 +1051,14 @@ body.theme-green {
     border-bottom: 1px dashed #e9eaec !important;
     padding: 11.5px;
     background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 6px;
+    z-index: 2;
+    width: 99.3%;
   }
   .break_icon{
-    position: absolute;
+    position: fixed;
     bottom: 10%;
     right: 2%;
     cursor: pointer;

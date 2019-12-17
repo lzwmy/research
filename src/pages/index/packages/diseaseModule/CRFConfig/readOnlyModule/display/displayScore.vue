@@ -5,19 +5,20 @@
       <span>{{item.controlDisplayName}}</span>
     </div>
     <div :class="item.controlType+'_box'">
-      <span :class="item.controlType+'_rangeValue'">{{report.value || '0.00'}}</span>
-      <el-button type="primary" @click="item.baseProperty.scoreInfo.scoreStatus = true" style="width: 120px;">评分</el-button>
+      <span :class="[item.controlType+'_rangeValue',{'addColor':report.value}]">{{report.value || '0.00'}}</span>
+      <el-button type="primary" v-show="report.value" @click="item.baseProperty.scoreInfo.scoreStatus = true" style="width: 120px;">查看评分</el-button>
     </div>
+    <i class="iconfont iconzu13"></i>
     <el-dialog :visible.sync="item.baseProperty.scoreInfo.scoreStatus"
                class="dialog_score"
                :append-to-body="true"
                :title="item.controlDisplayName+'评分'">
       <score-pasi ref="pasi" v-if="item.baseProperty.scoreInfo.scoreName == 'PASI'&&item.baseProperty.scoreInfo.scoreStatus" :item="item" :report="report" :index="index"></score-pasi>
       <score-pga ref="pasi" v-if="item.baseProperty.scoreInfo.scoreName == 'PGA'&&item.baseProperty.scoreInfo.scoreStatus" :item="item" :report="report" :index="index"></score-pga>
-      <span slot="footer" class="dialog-footer">
+      <!--<span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="scoreSave">确 定</el-button>
         <el-button @click="item.baseProperty.scoreInfo.scoreStatus = false">取 消</el-button>
-      </span>
+      </span>-->
     </el-dialog>
   </div>
 </template>

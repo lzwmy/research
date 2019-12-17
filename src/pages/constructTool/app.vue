@@ -49,7 +49,7 @@
           <div class="content-item" @click="jumpURL(' http://121.36.54.172:8080/search_graph/')">
             <div class="content_aligned">
               <img src="./images/atlas.png" alt="">
-              <p>知识图谱</p>
+              <p>知识图谱可视化</p>
             </div>
           </div>
           <div class="content-item" @click="jumpURL(' http://121.36.54.172:8000/form_view')">

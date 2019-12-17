@@ -81,6 +81,7 @@
               <el-form-item v-if="controlType == 'SCORE'" label="评分名称" class="line_block">
                   <el-select v-model="basicDataInfo.obj.baseProperty.scoreInfo.scoreName">
                     <el-option label="PASI" value="PASI"></el-option>
+                    <el-option label="PGA" value="PGA"></el-option>
                   </el-select>
               </el-form-item>
               <el-form-item v-if="controlType!='DATE'&&controlType!='DATE_TIME'&&controlType!=='FILE_UPLOAD'&&controlType!='GATHER'&&controlType!='TABLE'&&controlType!=='LABEL'" label="输入提示" class="line_block">
@@ -149,7 +150,7 @@
               <el-form-item v-if="basicDataInfo.obj.baseProperty.labelType=='TEXT'&&controlType=='LABEL'" label="标签内容" class="line_blockLabel">
                 <el-input class="widthSet" v-model="basicDataInfo.obj.baseProperty.labelContent" type="textarea" :rows="5" placeholder="请输入标签内容"></el-input>
               </el-form-item>
-              <div v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'&&controlType=='LABEL'" >
+              <div v-if="basicDataInfo.obj.baseProperty.labelType=='IMAGE'&&controlType=='LABEL'&&basicDataInfo.obj.baseProperty.labelImage" >
                 <img :src="this.baseURL+'/file/downloadFile/'+basicDataInfo.obj.baseProperty.labelImage" />
                 <!-- <vue-cropper
                   ref="cropper"
@@ -607,7 +608,7 @@
           this.basicDataInfo.obj.baseProperty.bindingInfo.bindingColumn = data;
         },
         "sliderValue":function(data) { //缩放比例
-          this.progressImgWidth();
+          // this.progressImgWidth();
         },
         "rangeText":function (data) { //值域
           if(this.controlType == 'CASCADE') {
@@ -767,7 +768,7 @@
           console.log(tab, event);
         },
         progressImgWidth() {
-          console.log(this.$refs.cropper.cropInfo.width,this.basicDataInfo.obj.baseProperty.labelType)
+          // console.log(this.$refs.cropper.cropInfo.width,this.basicDataInfo.obj.baseProperty.labelType)
           if(this.basicDataInfo.obj.baseProperty.labelType == 'IMAGE') {
             let w =(this.$refs.cropper.cropInfo.width*this.sliderValue)/100;
             let h =(this.$refs.cropper.cropInfo.height*this.sliderValue)/100;
@@ -1115,7 +1116,7 @@
             //清空 labelContent
             data.obj.baseProperty.labelContent = ""
           }
-          this.progressImgWidth();
+          // this.progressImgWidth();
         },
         // 文件类型判断
         changeFileType(data) {

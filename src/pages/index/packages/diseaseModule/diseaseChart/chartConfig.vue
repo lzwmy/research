@@ -741,9 +741,9 @@
             });
             // that.init();
             that.modelCRFFromList();
-            this.loading = false;
             window.history.go(-1);
           }
+          this.loading = false;
         }catch (error) {
           console.log(error)
         }
@@ -798,6 +798,7 @@
             // that.$emit('refresh',{refresh:true})
             window.history.go(-1);
           }
+          this.loading = false;
         }catch (error) {
           console.log(error)
         }

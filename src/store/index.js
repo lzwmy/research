@@ -226,6 +226,34 @@ const common = {
   }
 }
 
+// 批注 数据
+
+const annotateData = {
+  state:{
+    annotateList:[]
+  },
+  getters:{
+    forlist:state => state.annotate
+  },
+  mutations:{
+    addAnnotate(state,val) {
+      state.annotateList.push(val)
+    },
+    resetAnnotate(state,val) {
+      state.annotateList = [];
+    }
+  },
+  actions:{
+    addFun(context,data) {
+      context.commit('addAnnotate',data);
+    },
+    resetFun(context) {
+      context.commit('resetAnnotate')
+    }
+  }
+};
+
+
 var store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // 在非生产环境下，使用严格模式
   modules: {
@@ -234,7 +262,8 @@ var store = new Vuex.Store({
     crf,
     researchModel,
     common,
-    CRFConfig
+    CRFConfig,
+    annotateData
   },
   getters,
   plugins: [createPersistedState({

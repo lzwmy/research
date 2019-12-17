@@ -1,36 +1,37 @@
 <template>
-  <!--单选框-->
+  <!--多选框-->
   <div class="view_box">
     <div :class="item.controlType">
       <!--style="width:200px;font-size: 14px;"-->
       <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
         <!--<i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />-->
         <span>{{item.controlDisplayName}}</span>
-        <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
+        <!--<i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>-->
       </div>
-      <!--:class="['view_type_radio_btn',{'width_auto_type':item.controlType=='RADIO_BUTTON'}]"-->
-      <!--{{item.baseProperty.layout}}-->
-      <div :class="item.controlType+'_box'" @click="onFocus">
-        <el-radio-group v-model="report.value">
-          <el-radio
+      <!--['view_type_checkBox_btn',{'width_auto_type':item.controlType=='CHECKBOX'}]-->
+      <div :class="[item.controlType+'_box',{'addColor':report.value},{'grayColor':!report.value}]" @click="onFocus">
+        <!--<el-checkbox-group v-model="checkList">
+          <el-checkbox
             v-for="(it,index) in item.termSet.termItemList"
             :label="precessData(it.termItemName)"
             :key="index"
-          >{{precessData(it.termItemName)}}</el-radio>
-        </el-radio-group>
+          ></el-checkbox>
+        </el-checkbox-group>-->
+        {{report.value || '(空)'}}
       </div>
-      <div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>
+      <!--<div :class="item.controlType+'_empty'" @click="()=>{checkList=[];report.value='';}">清空</div>-->
+      <i class="iconfont iconzu13"></i>
     </div>
-    <!--{{item.baseProperty.layout}}-->
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
-  name: "displayRadio",
+  name: "displayCheckBox",
   data() {
     return {
+      checkList: [],
       termList: [],
       rootBinding: null //父元素绑定信息
     };
@@ -45,7 +46,10 @@ export default {
     index: Number
   },
   methods: {
-    //加载术语集
+    change() {
+      this.report.value = this.checkList.join("|");
+    },
+    //初始化术语代码集
     async initTermList() {
       try {
         let params = { termGroupId: this.item.termSet.termGroupOid };
@@ -97,18 +101,20 @@ export default {
     }
   },
   created() {
-    this.report.value =
-      this.report.value || this.item.termSet.termDefaultValue[0];
-
-    //加载术语集
-    //  if(this.item.termSet.termGroupOid){
-    //   this.initTermList();
-    // }
-
+    // this.termValue=this.item.termSet.termDefaultValue;
+    this.checkList = this.item.termSet.termDefaultValue;
+    if (this.report.value) {
+      
+      this.checkList = this.report.value.split("|");
+    }
     //判断控件是否绑定数据如果绑定则获取绑定数据，如果是继承绑定则进行递归获取父绑定
     if (this.item.binding) {
       this.rootBinding = this.recureBindingInfo();
     }
+    //初始化术语代码集
+    // if(this.item.termSet.termGroupOid){
+    //   this.initTermList();
+    // }
     //判断 值域是否等于空
     if(this.item.termSet.rangeText!==""){
       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
@@ -134,6 +140,7 @@ export default {
         this.index == this.crfCurrentControl.index
       ) {
         this.report.value = newer[this.item.bindingColumn];
+        this.checkList = newer[this.item.bindingColumn].split("|");
       } else {
         //如果控件名称不符合，则判断数据绑定是否拥有继承关系，如果有则判断继承关系是否满足
         if (
@@ -142,53 +149,51 @@ export default {
           this.index == this.crfCurrentControl.index
         ) {
           this.report.value = newer[this.item.bindingColumn];
+          this.checkList = newer[this.item.bindingColumn].split("|");
         }
       }
-    }
+    },
+    checkList: "change"
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.RADIO_BUTTON {
+<!--<style scoped>
+.CHECKBOX {
   /*line-height: 32px;*/
 }
-.RADIO_BUTTON .RADIO_BUTTON_title {
+.CHECKBOX .CHECKBOX_title {
   width: 188px;
   display: table-cell;
-  font-size: 14px;
   vertical-align: middle;
   /*padding-left: 1%;*/
+  font-size: 14px;
 }
-/*情况为单列时文字过长*/
-.RADIO_BUTTON .singleColumn {
+.CHECKBOX .CHECKBOX_box {
+  min-width: 164px;
+  max-width: 800px;
+  display: table-cell;
+}
+.CHECKBOX .singleColumn {
   width: auto;
   min-width: 188px;
   max-width: 500px;
   padding-right: 5px;
-  vertical-align: top;
 }
-.RADIO_BUTTON .RADIO_BUTTON_box {
-  min-width: 164px;
-  max-width: 800px;
-  display: table-cell;
-
-}
-.RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group {
+.CHECKBOX .CHECKBOX_box .el-checkbox-group {
   min-width: 164px;
   max-width: 800px;
 }
-.RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group .el-radio {
+.CHECKBOX .CHECKBOX_box .el-checkbox-group .el-checkbox {
   margin-right: 10px;
   margin-left: 0;
 }
-.RADIO_BUTTON .RADIO_BUTTON_empty {
+.CHECKBOX .CHECKBOX_empty {
   min-width: 24px;
   display: table-cell;
   color: #3c81f0;
   cursor: pointer;
-  /*vertical-align: middle;*/
-  vertical-align: top;
+  vertical-align: middle;
 }
-</style>
+</style>-->

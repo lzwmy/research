@@ -116,6 +116,7 @@
   import parameterConfig from './parameterConfig';
   import addItemData from './addItemData';
   import configPortionPreview from './configPortionPreview';
+  import test from  './js/verificationData';
     export default {
       props:{
         configData:{
@@ -496,33 +497,20 @@
           };
           this.basisDataList.push(copyData)
         },
-        verificationData(data) {
-          let flag = true;
-          if(data.length === 0) {
-            return ;
-          }
-          data.forEach(item=>{
-              if(item.controlDisplayName !=="" && item.children.length!==0) {
-                  this.verificationData(item.children)
-              }else if(item.controlDisplayName !=="" && item.children.length!==0) {
-                flag = true;
-              }else if(item.controlDisplayName == "") {
-                flag = false;
-              }
-          });
-          return flag;
-        },
         //保存
         saveBtn() {
           // let temporarySave = JSON.parse(localStorage.getItem('temporarySave'));
-
           // 验证表单名称是否填写完成
-          if(this.verificationData(this.basisDataList) == false || this.portionName == "") {
+          if(test.verificationData(this.basisDataList) == false || this.portionName == "") {
             this.$message.info('表单名称不能为空');
             return ;
           }
           if(this.basisDataList.length === 0) {
             this.$message.info('请添加条目');
+            return ;
+          }
+          if(test.repeatNameTest(this.basisDataList)) {
+            this.$message.info('同级下条目名称存在重复');
             return ;
           }
           if(this.configData.type == 'add') {

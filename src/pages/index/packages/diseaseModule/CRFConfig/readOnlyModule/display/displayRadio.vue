@@ -10,18 +10,19 @@
       </div>
       <!--:class="['view_type_radio_btn',{'width_auto_type':item.controlType=='RADIO_BUTTON'}]"-->
       <!--{{item.baseProperty.layout}}-->
-      <div :class="item.controlType+'_box'" @click="onFocus">
-        <el-radio-group v-model="report.value">
+      <div :class="[item.controlType+'_box',{'addColor':report.value},{'grayColor':!report.value}]" @click="onFocus">
+        <!--<el-radio-group v-model="report.value">
           <el-radio
             v-for="(it,index) in item.termSet.termItemList"
             :label="precessData(it.termItemName)"
             :key="index"
           >{{precessData(it.termItemName)}}</el-radio>
-        </el-radio-group>
+        </el-radio-group>-->
+        {{report.value || '(空)'}}
       </div>
-      <div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>
+      <!--<div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>-->
+      <i class="iconfont iconzu13"></i>
     </div>
-    <!--{{item.baseProperty.layout}}-->
   </div>
 </template>
 
@@ -150,7 +151,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<!--<style scoped>
 .RADIO_BUTTON {
   /*line-height: 32px;*/
 }
@@ -191,4 +192,4 @@ export default {
   /*vertical-align: middle;*/
   vertical-align: top;
 }
-</style>
+</style>-->

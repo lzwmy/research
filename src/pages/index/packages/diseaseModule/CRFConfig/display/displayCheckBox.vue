@@ -91,7 +91,7 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!=='-1') {
+      if(data.indexOf('^')!='-1') {
         return data.split('^')[0]
       }else {
         return data

@@ -15,8 +15,8 @@
   overflow: hidden;
   border: 1px solid #e9eaec;
   position: absolute;
-  left: 298px;
-  right: 305px;
+  /*left: 298px;*/
+  /*right: 305px;*/
 
 }
 .patient_form_container{
@@ -249,7 +249,7 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 }
 
 .crf-main .crf-step-content {
-  padding: 0 10px 10px;
+  /*padding: 0 10px 10px;*/
 }
 
 .crf-main .crf-step-header {
@@ -338,11 +338,13 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 }
 
 .crffill .crf-main {
-  left: 10px;
-  width: calc(100% - 20px);
-  height: 100%;
+  /*left: 10px;*/
+  /*width: calc(100% - 20px);*/
+  width: 100%;
+  /*height: 100%;*/
   background-color: #f7f8fc;
   /*top: 10px;*/
+  top: -6px;
 }
 
 .crffill .crf-section-name {
@@ -367,7 +369,8 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 }
 
 .crffill .crf-main .crf-step-content {
-  height: calc(100% - 45px)
+  height: calc(100% - 45px);
+  margin-top: 56px;
 }
 
 .crffill .crf-main-content {
@@ -537,4 +540,291 @@ body.theme-blue .crf-left-btn.onclick {
 .crfConfig .dynamicStepDialog .el-dialog__body {
   max-height: 600px;
   overflow: auto;
+}
+
+/**
+  * 阅读模式下样式
+  */
+/*统一修改 空 的颜色*/
+.read_container-mode .grayColor {
+  color: #A2A2A2;
+}
+.read_container-mode .info_fixed .info_tip_box {
+  position: absolute;
+  top: 0;
+  left: 60px;
+  transform: translate(0, -40%);
+  background-color: #fff;
+  border-radius: 6px;
+  z-index: 1;
+  display: none;
+}
+.read_container-mode .info_fixed:hover .info_tip_box {
+  display: inline-block;
+}
+.read_container-mode .info_fixed .info_tip_box .tip_content {
+  width: 421px;
+  min-height: 60px;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border:1px solid rgba(229,235,236,1);
+  box-shadow:2px 2px 10px rgba(235,235,235,0.89);
+  color: #333333;
+  transition: all linear 1s;
+}
+.read_container-mode .info_fixed .info_tip_box > i{
+  display: inline-block;
+  border: 10px solid;
+  border-color: transparent rgba(229,235,236,1) transparent transparent;
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translate(0, -40%);
+}
+
+.read_container-mode .info_fixed .info_tip_box > i:after{
+  content: '';
+  display:block;
+  width:0;
+  height:0;
+  border-width: 10px;
+  border-style:solid;
+  border-color:transparent #fff transparent transparent;
+  position:absolute;
+  top:-10px;
+  left:-9px;
+}
+/*数值类型*/
+.read_container-mode .FILE_UPLOAD_Image_box /deep/ .el-upload--picture-card{
+  display: none ;
+}
+.read_container-mode .NUMBER_INPUT {
+  min-height: 32px;
+}
+.read_container-mode .NUMBER_INPUT_box {
+  font-size: 14px;
+}
+.read_container-mode .NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_unitName{
+  font-size: 14px;
+}
+.read_container-mode .NUMBER_INPUT .NUMBER_INPUT_box  .addColor{
+  color: #00BAE6;
+}
+.read_container-mode .NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_select,.read_container-mode .NUMBER_INPUT .NUMBER_INPUT_box .NUMBER_INPUT_box_number{
+  width: auto;
+}
+.read_container-mode .NUMBER_INPUT .NUMBER_INPUT_box .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/*多选框*/
+.read_container-mode .CHECKBOX_box {
+  min-height: 32px;
+  font-size: 14px;
+}
+.read_container-mode .CHECKBOX .addColor {
+  color: #00BAE6;
+}
+.read_container-mode .CHECKBOX .CHECKBOX_box {
+  min-width: auto;
+}
+.read_container-mode .CHECKBOX .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/*单选下拉*/
+.read_container-mode .SINGLE_COMBOX {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .SINGLE_COMBOX .addColor {
+  color: #00BAE6;
+}
+.read_container-mode .SINGLE_COMBOX .SINGLE_COMBOX_box{
+  width: auto;
+}
+.read_container-mode .SINGLE_COMBOX .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color: #979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/*单选框*/
+.read_container-mode .RADIO_BUTTON {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .RADIO_BUTTON .addColor{
+  color: #00BAE6;
+}
+.read_container-mode .el-radio__input.is-checked+.el-radio__label {
+  color: #00BAE6;
+}
+.read_container-mode .el-radio__input.is-checked .el-radio__inner{
+  border-color: #00BAE6;
+  background: #00BAE6;
+}
+.read_container-mode .empty {
+  color: #00BAE6 !important;
+}
+.read_container-mode .RADIO_BUTTON .RADIO_BUTTON_box {
+  min-width: auto;
+}
+.read_container-mode .RADIO_BUTTON .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color: #979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+
+
+/*多行文本*/
+.read_container-mode .MULTI_INPUT {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .MULTI_INPUT .MULTI_INPUT_box{
+  /*font-size: 14px;*/
+  min-height: 32px;
+}
+.read_container-mode .MULTI_INPUT .addColor{
+  color: #00BAE6;
+}
+.read_container-mode .MULTI_INPUT .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/*输入框*/
+.read_container-mode .SINGLE_INPUT {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .SINGLE_INPUT .addColor {
+  color: #00BAE6;
+}
+.read_container-mode .SINGLE_INPUT .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/*级联控件*/
+.read_container-mode .CASCADE {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .CASCADE .addColor {
+  color: #00BAE6;
+}
+/*评分控件*/
+.read_container-mode .SCORE_box {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .SCORE_box  .addColor {
+  color: #00BAE6;
+}
+.read_container-mode .SCORE_box .el-button--primary {
+  background-color: #00BAE6;
+}
+.read_container-mode .SCORE_box .el-button--primary:hover {
+  background-color: #00BAE6;
+}
+.read-mode .el-radio  .el-radio__input.is-checked .el-radio__inner {
+  border-color: #00BAE6;
+  background: #00BAE6;
+}
+.read-mode .el-radio__input.is-disabled.is-checked .el-radio__inner::after{
+  background-color: #F5F7FA;
+}
+/*.read-mode .el-radio__input.is-disabled .el-radio__inner, .el-radio__input.is-disabled.is-checked .el-radio__inner{
+  background-color: #F5F7FA !important;
+  border-color: #E4E7ED !important;
+}*/
+.read-mode .el-radio__input.is-checked+.el-radio__label{
+  color: #00BAE6;
+}
+  /*日期*/
+.read_container-mode .DATE {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .DATE .DATE_box{
+  width: auto;
+}
+.read_container-mode .DATE .addColor {
+  color: #00BAE6;
+}
+.read_container-mode .DATE .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/*日期时间*/
+.read_container-mode .DATE_TIME {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .DATE_TIME .DATE_TIME_box {
+  width: auto;
+}
+.read_container-mode .DATE_TIME .addColor {
+  color: #00BAE6;
+}
+.read_container-mode .DATE_TIME .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/*多选下拉*/
+.read_container-mode .MULTI_COMBOX {
+  font-size: 14px;
+  min-height: 32px;
+}
+.read_container-mode .MULTI_COMBOX .MULTI_COMBOX_box {
+  width: auto;
+}
+.read_container-mode .MULTI_COMBOX .addColor {
+  color: #00BAE6;
+}
+.read_container-mode .MULTI_COMBOX .iconfont {
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/* 评分 */
+.read_container-mode .SCORE .iconfont{
+  display: table-cell;
+  font-size: 16px;
+  color:#979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+/** 级联控件 */
+.read_container-mode .CASCADE .iconfont{
+  display: table-cell;
+  font-size: 16px;
+  color: #979BAB;
+  padding-left: 25px;
+  cursor:pointer;
 }

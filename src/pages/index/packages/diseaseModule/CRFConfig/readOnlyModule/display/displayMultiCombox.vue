@@ -7,15 +7,15 @@
             style="color: red;">*</span>
       <!--<i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />-->
       <span >{{item.controlDisplayName}}</span>
-      <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
+      <!--<i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>-->
     </div>
     <!--style="display:inline-block"-->
-    <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired}]"
+    <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired},{'addColor':report.value},{'grayColor':!report.value}]"
          v-if="item.baseProperty.controlIsExtend=='1'"
          :data-IsExtend="item.baseProperty.controlIsExtend"
          :data-type="item.controlType"
          :data-value="report.value">
-      <el-select
+      <!--<el-select
         :style="`width:${inputWidth}px`"
         v-model="checkList"
         allow-create
@@ -32,15 +32,16 @@
           :label="precessData(item.termItemName)"
           :value="item.termItemName"
         ></el-option>
-      </el-select>
+      </el-select>-->
+      {{report.value || '(空)'}}
     </div>
     <!--style="display:inline-block"-->
-    <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired}]"
+    <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired},{'addColor':report.value},{'grayColor':!report.value}]"
          v-if="item.baseProperty.controlIsExtend=='0'"
          :data-IsExtend="item.baseProperty.controlIsExtend"
          :data-type="item.controlType"
          :data-value="report.value">
-      <el-select
+      <!--<el-select
         :style="`width:${inputWidth}px`"
         v-model="checkList"
         size="small"
@@ -54,8 +55,10 @@
           :label="precessData(it.termItemName)"
           :value="it.termItemName"
         ></el-option>
-      </el-select>
+      </el-select>-->
+      {{report.value || '(空)'}}
     </div>
+    <i class="iconfont iconzu13"></i>
   </div>
 </template>
 
@@ -171,7 +174,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<!--<style scoped>
 .MULTI_COMBOX {
 }
 .MULTI_COMBOX .MULTI_COMBOX_title {
@@ -193,4 +196,4 @@ export default {
 .MULTI_COMBOX .MULTI_COMBOX_box .el-input .el-input__inner {
   width: 188px;
 }
-</style>
+</style>-->
