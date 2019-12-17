@@ -2,7 +2,7 @@
   <!--数据连接管理-->
   <div class="cloud-component clearfix  content-container" style="position:relative;">
     <div class="crfConfig clearfix crffill">
-      <div class="crf-main" v-loading="mainLoading" v-if="!showReadComponent">
+      <div class="crf-main" v-loading="mainLoading" v-if="showReadComponent">
         <div class="crf-main-content" >
           <div class="crf-step-header">
             <i class="header_left"></i>
@@ -32,8 +32,9 @@
       <!--报告阅读-->
         <!--<report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
       <!--阅读模式-->
-      <read-report-mode ref="reportRead" v-else-if="showReadComponent && crfForm!=null&&report!=null" :item="crfForm"  :report="report"></read-report-mode>
-
+      <div v-else>
+        <read-report-mode ref="reportRead" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></read-report-mode>
+      </div>
     </div>
     <!--数据绑定提醒-->
     <transition name="fade">
