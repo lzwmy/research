@@ -1628,6 +1628,27 @@
       "font_class": "bianjibeifen4",
       "unicode": "e707",
       "unicode_decimal": 59143
+    },
+    {
+      "icon_id": "12298710",
+      "name": "添加",
+      "font_class": "lujing3",
+      "unicode": "e708",
+      "unicode_decimal": 59144
+    },
+    {
+      "icon_id": "12298711",
+      "name": "编辑",
+      "font_class": "lujing4",
+      "unicode": "e709",
+      "unicode_decimal": 59145
+    },
+    {
+      "icon_id": "12345058",
+      "name": "已保存",
+      "font_class": "yibaocun",
+      "unicode": "e70d",
+      "unicode_decimal": 59149
     }
   ]
 }

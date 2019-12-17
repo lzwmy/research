@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="aside">
-        <div class="top">
+        <div class="top aside_li">
           <h3 class="flex-between-center">
             <span>随访提醒</span>
             <div>
@@ -81,9 +81,10 @@
           </div>
         </div>
 
-        <!-- <div class="doctor">
+        <div class="doctor aside_li">
           <h3 class="flex-between-center">
             <span>主治医生</span>
+            <i class="cur_pointer icon iconfont iconlujing2" @click="doctorDialog.visible = true"></i>
           </h3>
           <div class="tags">
             <el-tag 
@@ -95,9 +96,9 @@
               {{tag.name}}
             </el-tag>
           </div>
-        </div> -->
+        </div>
         
-        <div class="record">
+        <div class="record aside_li">
           <h3 class="flex-between-center">
             <span>操作记录</span>
           </h3>
@@ -203,10 +204,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer">
-                    <el-button type="primary" @click="onSave('dialogReportForm')" size="mini"
-                               :disabled="dialogReportForm.loading">保 存</el-button>
-                    <el-button @click="onClose('dialogReportForm')" size="mini">关 闭</el-button>
-                </span>
+        <el-button type="primary" @click="onSave('dialogReportForm')" size="mini" :disabled="dialogReportForm.loading">保 存</el-button>
+        <el-button @click="onClose('dialogReportForm')" size="mini">关 闭</el-button>
+      </span>
     </el-dialog>
 
 
@@ -333,6 +333,23 @@
         <el-button @click="onClose('dialogFrom')" size="mini">关 闭</el-button>
       </span>
     </el-dialog>
+
+    <!-- 选择医生 -->
+    <el-dialog
+      title="选择医生"
+      :visible.sync="doctorDialog.visible"
+      width="450px"
+      class="height_auto"
+      :append-to-body="true"
+      @close="doctorDialog.doctor = ''">
+      <el-select v-model="doctorDialog.doctor" filterable clearable class="block" style="margin-bottom: 60px;"  placeholder='可输入关键字搜索'>
+        <el-option v-for="(item, index) in doctorListAll" :label="item.userName" :value="item.id" :key="index"></el-option>
+      </el-select>
+      <span slot="footer">
+        <el-button type="primary" @click="" size="mini" :disabled="doctorDialog.loading">保 存</el-button>
+        <el-button @click="doctorDialog.visible = false" size="mini">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -405,6 +422,12 @@
           name: "",
         },
 
+        doctorDialog: {
+          visible: false,
+          loading: false,
+          doctor: ''
+        },
+        doctorListAll: [],
         //主治医生列表
         doctorTags: [
           {name: '张医生'},
@@ -544,6 +567,7 @@
       this.getLogList();
       this.getSelectList();
       this.searchPatientInfo();
+      this.getDoctorList();
     },
     mounted() {
       // console.log(this.personalInfo.PATIENT_ID);
@@ -553,6 +577,7 @@
         $('.el-drawer__header>span').prepend('<i class="iconfont iconzhiliaoxiaoguo" style="margin-right: 9px;font-size: 18px;font-weight: normal"></i>')
       });
       this.queryTreatmentInfo()
+      this.getAllDoctorList();
     },
     components: {
       quillEditor,
@@ -1035,7 +1060,78 @@
         }catch (error) {
           console.log(error)
         }
-      }
+      },
+      // 查询所有医生
+      async getAllDoctorList() {
+        let that = this;
+        let formData = {
+            offset: 0,
+            limit: 999,
+            args: this.$store.state.user.diseaseInfo.orgCode || ''
+        };
+        try {
+            let res = await that.$http.ORGDisGetUserList(formData);
+            if (res.code == '0') {
+                this.doctorListAll = res.data.args
+            }
+        } catch (err) {
+            console.log(err)
+        }
+      },
+      // 查询医生列表
+      async getDoctorList() {
+        let formData = {
+            reportId: this.dataInfo.patientId || '',
+            diseaseId: this.dataInfo.diseaseId
+        };
+        try {
+            let res = await this.$http.patientListGetDoctorList(formData);
+            if (res.code == '0') {
+            }
+        } catch (err) {
+            console.log(err)
+        }
+      },
+      // 添加医生
+      async addDoctor() {
+        let formData = {
+            "orgCode": "string",
+            "orgName": "string",
+            "reportId": "string",
+            "userId": "string",
+            "userName": "string"
+        };
+        try {
+            let res = await this.$http.patientListAddDoctor(formData);
+            if (res.code == '0') {
+              this.$mes('success','添加成功!');
+              this.getDoctorList();
+            }
+        } catch (err) {
+            console.log(err)
+        }
+      },
+      // 删除医生
+      async deleteDoctor(row) {
+        let that = this;
+        this.$confirm('是否删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async() => {
+          let formData = {
+              id: row.id,
+          };
+          try {
+              let res = await that.$http.patientListDeleteDoctor(formData);
+              if (res.code == '0') {
+                that.$mes('success','删除成功!')
+              }
+          } catch (err) {
+              console.log(err)
+          }
+        }).catch(() => {});
+      },
     }
   };
 </script>
@@ -1160,12 +1256,13 @@
         width: 420px;
         margin-left: 17px;
         height: 100%;
+        overflow: auto;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         position: relative;
         h3 {
-          height: 50px;
+          height: 40px;
           border-bottom: 1px solid rgba(229, 235, 236, 1);
           font-size: 16px;
 
@@ -1179,16 +1276,22 @@
           }
         }
 
+        .aside_li {
+          padding: 0 15px 10px;
+          margin-bottom: 15px;
+        }
+
         .doctor {
           background-color: #fff;
-          height: 160px;
-          padding: 0 22px 15px;
           color: rgba(57, 66, 99, 1);
           .tags {
-            margin: 10px 0;
+            height: 126px;
+            overflow: auto;
+            margin-top: 10px;
             .el-tag {
               cursor: pointer;
-              margin: 0 6px 6px 0;
+              margin: 0 0 6px 0;
+              width: 25%;
               background-color: #fff;
               border: none;
               color: #394263;
@@ -1215,16 +1318,13 @@
 
         .top {
           background-color: #fff;
-          padding: 0 22px 15px;
-          height: 180px;
-          margin-bottom: 20px;
+          height: 145px;
           color: rgba(57, 66, 99, 1);
 
           .li {
-            margin-top: 25px;
+            margin-top: 15px;
             padding-left: 10px;
             font-size: 14px;
-
             i {
               margin-right: 6px;
               color: rgba(151, 155, 170, 1);
@@ -1255,19 +1355,19 @@
         .record {
           flex-grow: 1;
           background-color: #fff;
-          padding: 0 22px 15px;
           color: rgba(57, 66, 99, 1);
           position: absolute;
-          // top: 380px;
-          top: 200px;
+          top: 360px;
           left: 0;
+          overflow: auto;
+          min-height: 350px;
           width: 100%;
           bottom: 0;
           .el-timeline {
             padding: 10px;
             overflow: auto;
             position: absolute;
-            top: 65px;
+            top: 46px;
             left: 20px;
             right: 0;
             bottom: 0;

@@ -55,7 +55,7 @@
           <div class="content-item" @click="jumpURL(' http://121.36.54.172:8000/form_view')">
             <div class="content_aligned">
               <img src="./images/knowledge_base.png" style="width: 120px;" alt="">
-              <p>知识库</p>
+              <p>知识库检索</p>
             </div>
           </div>
         </div>

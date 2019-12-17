@@ -76,15 +76,21 @@
                             </el-table-column>
                             <el-table-column prop="visitDate" label="就诊时间"></el-table-column>
                             <el-table-column prop="reportName" label="报告名称"></el-table-column>
-                            <el-table-column prop="patientName" label="姓名"></el-table-column>
+                            <el-table-column prop="patientName" label="病人姓名"></el-table-column>
                             <el-table-column prop="genderName" label="性别"></el-table-column>
-                            <el-table-column prop="author" label="创建者"></el-table-column>
-                            <el-table-column prop="groupName" label="课题组"></el-table-column>
-                            <el-table-column label="报告状态" width="120px">
+                            <el-table-column prop="updator" label="创建人" v-if="form.status==0"></el-table-column>
+                            <el-table-column prop="updator" label="填写人" v-else-if="form.status==1"></el-table-column>
+                            <el-table-column prop="updator" label="提交人" v-else></el-table-column>
+                            <el-table-column prop="updateTime" label="创建时间" width="180" v-if="form.status==1"></el-table-column>
+                            <el-table-column prop="updateTime" label="填写时间" width="180" v-else-if="form.status==2"></el-table-column>
+                            <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
+                            <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
                                     {{scope.row.status==0?'未填写':'已填写'}}
                                 </template>
                             </el-table-column>
+                            <el-table-column prop="auditor" label="审核人" v-if="[3,4,-1].includes(form.status)"></el-table-column>
+                            <el-table-column prop="auditTime" label="审核时间" width="180" v-if="[3,4,-1].includes(form.status)"></el-table-column>
                             <el-table-column label="操作" width="90">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
@@ -386,7 +392,7 @@ export default {
         matchingIcon(type) {
             switch (type) {
                 case 0: return '';
-                case 1: return '保存';
+                case 1: return 'iconyibaocun';
                 case 2: return 'iconzujian48';
                 case 3: return 'iconzujian49';
                 case 4: return 'iconzujian50';
