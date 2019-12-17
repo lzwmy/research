@@ -15,8 +15,8 @@
             </span>
 
             <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
-            <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
-            <el-button size="medium" type="success" style="float:right;margin-right: 5px;height: 33px;" @click="submitReportData">提交</el-button>
+            <el-button v-if="urlParameter.from != 'patientFollowUp' && btnShow" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
+            <el-button v-if='btnShow' size="medium" type="success" style="float:right;margin-right: 5px;height: 33px;" @click="submitReportData">提交</el-button>
              <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button>-->
           </div>
           <div  ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
@@ -122,7 +122,7 @@
       </div>
     </div>
     <!--消息提示-->
-    <tip-info :tipStatus="tipStatus" :tipContent="tipContent"></tip-info>
+    <tip-info :tipStatus="tipStatus" :tipContent="tipContent" @handle-btn-dispaly='handleBtnDisplay'></tip-info>
     <!--添加备注弹框-->
     <el-dialog
       title="添加备注"
@@ -188,6 +188,7 @@ export default {
       },
       tipStatus:0,
       tipContent:"",
+      btnShow: false
     };
   },
   created() {
@@ -643,6 +644,10 @@ export default {
     getContentTop(top) {
       this.scrollTop = top;
       // let scrollTop = document.documentElement.scrollTop;
+    },
+    //操作按钮显示
+    handleBtnDisplay(data) {
+      this.btnShow = data.showBtn
     }
   },
   computed: {

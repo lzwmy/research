@@ -86,7 +86,7 @@
                             <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
                             <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
-                                    {{scope.row.status==0?'未填写':'已填写'}}
+                                    {{matchingReportStatus(scope.row.status)}}
                                 </template>
                             </el-table-column>
                             <el-table-column prop="auditor" label="审核人" v-if="[3,4,-1].includes(form.status)"></el-table-column>
@@ -277,7 +277,8 @@ export default {
                     patientName: row.patientName || "",
                     patientId: row.patientId || "",
                     identify: this.identify || "",
-                    from: "caseManage",
+                    from: "reportList",
+                    reportStauts: row.status,
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",
@@ -406,6 +407,18 @@ export default {
                 case 0: return '创建报告';
                 case 1: return '保存报告';
                 case 2: return '提交报告';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
+        },
+        //匹配报告状态
+        matchingReportStatus(type) {
+            switch (type) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '已提交';
                 case 3: return '审核不通过';
                 case 4: return '审核通过';
                 case 5: return '召回报告';

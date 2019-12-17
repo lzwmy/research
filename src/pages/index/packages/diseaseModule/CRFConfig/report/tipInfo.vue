@@ -2,41 +2,55 @@
   <!--消息提示窗口-->
   <div class="tip_box">
     <!--不通过-->
-    <div class="fail_status" v-if="status===0">
-      <div class="comment_info">
-        <i class="iconfont iconjianqu3"></i>
-        <span>已批注2处数据</span>
-      </div>
+    <!-- <div class="fail_status mes_box">
+      <div class="comment_info"><i class="iconfont iconjianqu3"></i><span>已批注2处数据</span></div>
       <div class="fail_btn" @click="clickVerify(3)">不通过</div>
-    </div>
+    </div> -->
     <!--召回 未审核 -->
-    <div class="unreviewed_status" v-else-if="status">
-      <div class="comment_info">
-        <i class="iconfont iconjianqu1"></i>
-        <span>已批注2处数据</span>
-      </div>
+    <!-- <div class="unreviewed_status mes_box">
+      <div class="comment_info"><i class="iconfont iconjianqu1"></i><span>已批注2处数据</span></div>
       <div class="unreviewed_btn">召回</div>
-    </div>
+    </div> -->
     <!--通过 无数据批注-->
-    <div class="pass_status" v-else-if="status">
+    <!-- <div class="pass_status mes_box">
       <div class="comment_info">
         <i class="iconfont iconjianqu2"></i>
         <span>尚无数据批注</span>
       </div>
       <div class="pass_btn" @click="clickVerify(4)">通过</div>
-    </div>
+    </div> -->
     <!--召回 已审核 -->
-    <div class="audited_status" v-else-if="status">
+    <!-- <div class="audited_status mes_box">
       <div class="comment_info">
         <i class="iconfont iconjianqu1"></i>
         <span>数据已通过审核</span>
       </div>
       <div class="audited_btn">召回</div>
+    </div> -->
+
+    <div class="mes_box" :class="['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'']">
+      <div class="mes_info"><i class="icon iconfont" :class="curInfo.icon"></i><span class="mes_text">{{curInfo.text}}</span></div>
+      <div class="mes_btn" @click="clickVerify(curInfo.status)">{{curInfo.btnText}}</div>
     </div>
   </div>
 </template>
 
 <script>
+/***
+ * status 0 (未填写) => 无弹窗  显示提交保存按钮 （填写模式）
+  status 1 (已填写) => 无弹窗  显示提交保存按钮  （填写模式）
+
+  非数据监察进入
+  status 2 (已提交) => 弹窗:数据尚未审核 召回  （阅读模式）   召回=>填写模式
+  status 3 (不通过) => 弹窗:数据审核不通过 召回  （阅读模式） 召回=>填写模式
+  status 4 (通过) => 弹窗:数据审核通过 召回  （阅读模式）     召回=>填写模式
+
+  数据监察进
+  status 2 (已提交) => 弹窗:审核 通过/不通过  （阅读模式）
+  status 3 (不通过) => 弹窗:数据审核不通过 重新审核  （阅读模式）
+  status 4 (通过) => 弹窗:数据审核通过 重新审核  （阅读模式）
+  * 
+**/
   export default {
     name: "tipInfo",
     props:{
@@ -52,22 +66,92 @@
     data() {
       return {
         status:this.tipStatus,
-        content:this.tipContent
-        /***
-         * status 0 (未填写) => 无弹窗  显示提交保存按钮 （填写模式）
-         status 1 (已填写) => 无弹窗  显示提交保存按钮  （填写模式）
-
-         非数据监察进入
-         status 2 (已提交) => 弹窗:数据尚未审核 召回  （阅读模式）   召回=>填写模式
-         status 3 (不通过) => 弹窗:数据审核不通过 召回  （阅读模式） 召回=>填写模式
-         status 4 (通过) => 弹窗:数据审核通过 召回  （阅读模式）     召回=>填写模式
-
-         数据监察进
-         status 2 (已提交) => 弹窗:审核 通过/不通过  （阅读模式）
-         status 3 (不通过) => 弹窗:数据审核不通过 重新审核  （阅读模式）
-         status 4 (通过) => 弹窗:数据审核通过 重新审核  （阅读模式）
-         * **/
+        content:this.tipContent,
+        curInfo:{},
+        messageList: [
+          { 
+            isExamine:false,    //是否审核
+            status: 0,          //报告状态
+            text: null,         //提示文本消息
+            showBtn: true,      //是否显示提交、保存按钮
+            btnText:'召回',     //按钮文字
+            mode:0,             //模式0-填写  1-阅读
+            icon:null, //iconfont  
+          },
+          { 
+            isExamine:false,    
+            status: 1,          
+            text: null,        
+            showBtn: true,      
+            btnText:'召回',     
+            mode:0,            
+            icon:null, 
+          },
+          //非审核 
+          { 
+            isExamine:false,    
+            status: 2,          
+            text: '数据尚未审核',        
+            showBtn: true,      
+            btnText:'召回',     
+            mode:0,            
+            icon:'iconjianqu1', 
+          },
+          { 
+            isExamine:false,    
+            status: 3,          
+            text: '数据审核不通过',        
+            showBtn: true,      
+            btnText:'召回',     
+            mode:1,            
+            icon:'iconjianqu3', 
+          },
+          { 
+            isExamine:false,    
+            status: 4,          
+            text: '数据审核通过',        
+            showBtn: true,      
+            btnText:'召回',     
+            mode:1,            
+            icon:'iconjianqu2', 
+          },
+          //审核
+          { 
+            isExamine:true,    
+            status: 2,          
+            text: '已修改10处批注',        
+            showBtn: true,      
+            btnText:'不通过',     
+            mode:0,            
+            icon:'iconjianqu1', 
+          },
+          { 
+            isExamine:true,    
+            status: 3,          
+            text: '数据审核不通过',        
+            showBtn: true,      
+            btnText:'重新审核',     
+            mode:1,            
+            icon:'iconjianqu3', 
+          },
+          { 
+            isExamine:true,    
+            status: 4,          
+            text: '数据审核通过',        
+            showBtn: true,      
+            btnText:'重新审核',     
+            mode:1,            
+            icon:'iconjianqu2', 
+          },
+        ]
       }
+    },
+    created() {
+      let reportStatus = 2;
+      let isExamine = false;
+      this.curInfo = this.messageList.find(li=>{
+        return li.status== reportStatus && li.isExamine == isExamine;
+      })
     },
     methods:{
       clickVerify(status) {
@@ -101,169 +185,98 @@
     left: 50%;
     z-index: 3;
     transform: translate(-50%,-16px);
-    .fail_status{
+    .mes_box {
       display: flex;
       width: 556px;
       height: 42px;
-      background:rgba(232,70,1,0.08);
-      border:1px solid rgba(235,69,0,1);
       opacity:1;
       border-radius:4px;
       padding: 5px 10px;
       align-items: center;
       justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #E24828;
-        }
-        span{
-          font-size: 16px;
-          color: #E5471B;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
-      }
-      .fail_btn {
-        width:70px;
-        height:32px;
-        background:rgba(229,71,27,1);
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
-      }
     }
-    .unreviewed_status{
+    .mes_info {
       display: flex;
-      width: 556px;
-      height: 42px;
-      background:rgba(151,155,171,0.08);
-      border:1px solid rgba(151,155,171,1);
-      opacity:1;
-      border-radius:4px;
-      padding: 5px 10px;
       align-items: center;
-      justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #979BAB;
-        }
-        span{
-          font-size: 16px;
-          color: #979BAB;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
+      .mes_icon {
+        font-size: 24px;
       }
-      .unreviewed_btn {
-        width:70px;
-        height:32px;
-        background:#979BAB;
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
+      .mes_text {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 21px;
+        padding-left: 10px;
       }
     }
-    .pass_status{
-      display: flex;
-      width: 556px;
-      height: 42px;
-      background:rgba(0,192,142,0.08);
-      border:1px solid rgba(0,193,141,1);
+    .mes_btn {
+      width:70px;
+      height:32px;
       opacity:1;
-      border-radius:4px;
-      padding: 5px 10px;
-      align-items: center;
-      justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #00BF8F;
-        }
-        span{
-          font-size: 16px;
-          color: #00BF8F;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
-      }
-      .pass_btn {
-        width:70px;
-        height:32px;
-        background:#00C08E;
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
+      border-radius:2px;
+      color: #ffffff;
+      text-align: center;
+      line-height: 32px;
+      cursor: pointer;
+      &:hover{
+        opacity: 0.8;
       }
     }
-    .audited_status{
-      display: flex;
-      width: 556px;
-      height: 42px;
+    .mes_status_2 {
       background:rgba(126,131,180,0.08);
       border:1px solid rgba(126,130,182,1);
-      opacity:1;
-      border-radius:4px;
-      padding: 5px 10px;
-      align-items: center;
-      justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #7E84B2;
-        }
-        span{
-          font-size: 16px;
-          color: #7E84B2;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
+      &.isExamine {
+
       }
-      .audited_btn {
-        width:70px;
-        height:32px;
+      .icon {
+        color: #7E84B2;
+      }
+      .mes_text {
+        color: #7E84B2;
+      }
+      .mes_btn {
         background:#7E84B2;
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
       }
     }
+    .mes_status_3 {
+      background:rgba(232,70,1,0.08);
+      border:1px solid rgba(235,69,0,1);
+      &.isExamine {
+        .mes_btn {
+          color: #2b41de;
+          text-decoration: underline;
+          background-color: transparent;
+        }
+      } 
+      .icon {
+        color: #E24828;
+      }
+      .mes_text {
+        color: #E5471B;
+      }
+      .mes_btn {
+        background:rgba(229,71,27,1);
+      }
+    }
+    .mes_status_4 {
+      background:rgba(0,192,142,0.08);
+      border:1px solid rgba(0,193,141,1);
+      &.isExamine {
+        .mes_btn {
+          color: #2b41de;
+          text-decoration: underline;
+          background-color: transparent;
+        }
+      }
+      .icon {
+        color: #00BF8F;
+      }
+      .mes_text {
+        color: #00BF8F;
+      }
+      .mes_btn {
+        background:#00C08E;
+      }
+    }
+    
   }
 </style>

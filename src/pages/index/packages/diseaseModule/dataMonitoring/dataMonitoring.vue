@@ -1,16 +1,15 @@
 <template>
-    <div class="cloud-component disReportList">
+    <div class="cloud-component dataMonitoring">
         <div class="box">
             <div class="aside">
                 <div class="aside_top flex-center-center">
-                    <el-select v-model="identify" placeholder="请选择" clearable>
-                        <el-option label="全部" value=""></el-option>
-                        <el-option label="123" value="123"></el-option>
+                    <el-select v-model="crfId" placeholder="请选择CRF表单" clearable>
+                        <el-option v-for="(item, index) in crfList" :key="index" :label="item.crfDisplayName" :value="item.crfId"></el-option>
                     </el-select>
                 </div>
                 <p class="lable">报告状态</p>
                 <ul v-loading="groupLoading">
-                    <li v-for="(item, index) in groupList" :key="index">
+                    <li v-for="(item, index) in reportStatusList" :key="index" :class="form.status==item.status?'active':''" @click="selectReportStatus(item)">
                         <i class="icon iconfont" :class="item.icon" ></i>
                         <span>{{item.name}} - {{item.count}}</span>
                     </li>
@@ -18,38 +17,15 @@
             </div>
             <div class="content">
                 <!-- 搜索区域 -->
-                <div class="cloud-search el-form-item-small">
-                    <el-form :inline="true" :model="form" class="flex-start-center">
-                        <!-- <el-form-item label="时间范围：">
-                            <el-date-picker
-                                v-model="form.time"
-                                type="daterange"
-                                size="mini"
-                                value-format="yyyy-MM-dd"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
-                            </el-date-picker>
-                        </el-form-item> -->
-                        <el-form-item label="状态:">
-                            <el-select v-model="form.state" size="mini">
-                                <el-option label="全部" value=""></el-option>
-                                <el-option label="未填写" value="0"></el-option>
-                                <el-option label="已填写" value="1"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="" label-width='' class="flex-right">
-                            <el-input
-                                placeholder="搜索"
-                                prefix-icon="el-input__icon el-icon-search"
-                                v-model="form.report"
-                                clearable
-                                @keyup.enter.native="getDataList()"
-                                style="width:280px;">
-                            </el-input>
-                            <!-- <el-button type="primary" icon="el-icon-search" @click="getDataList()">查 询</el-button> -->
-                        </el-form-item>
-                    </el-form>
+                <div class="cloud-search el-form-item-small flex-end-center">
+                    <el-input
+                        placeholder="搜索"
+                        prefix-icon="el-input__icon el-icon-search"
+                        v-model="form.keyword"
+                        clearable
+                        @keyup.enter.native="getDataList()"
+                        style="width:280px;">
+                    </el-input>
                 </div>
                 <!--搜索结果-->
                 <div class="cloud-search-list">
@@ -60,36 +36,65 @@
                             :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
                             @row-click="handleClick">
                             <el-table-column type="expand" width="40"> 
-                                <template slot-scope="props"> 
+                                <template slot-scope="scope"> 
                                     <el-timeline>
                                         <el-timeline-item
-                                            v-for="(item, index) in 5"
+                                            v-for="(item, index) in scope.row.recordData"
                                             :key="index"
                                             :hide-timestamp="true"
                                             class="aaaaaaaaaaaa">
                                             <div class="expand_content">
-                                                <i class="icon iconfont iconzujian51"></i>
-                                                <p><span>2019-8-20 16:10:20</span><span>张医生填写报告</span></p>
-                                                <i class="icon iconfont iconzujian51"></i>
+                                                <i class="icon iconfont" :class="matchingIcon(item.actionType)"></i>
+                                                <p>
+                                                    <span>{{item.createTime}}</span>
+                                                    <span>{{item.creatorName}}</span>
+                                                    <span>{{matchingStatus(item.actionType)}}</span>
+                                                </p>
+                                                <el-popover
+                                                    v-if="[3,4,5].includes(item.actionType)"
+                                                    placement="right"
+                                                    width="350"
+                                                    popper-class="expand_popover"
+                                                    trigger="click">
+                                                    <div class="content" >
+                                                        <!-- 修改记录 -->
+                                                        <p v-for="(li,index) in scope.row.dataChangeList" :key="index">
+                                                            {{scope.row.createTime}} - {{scope.row.creatorName }} 修改"{{li.oldData}}"为"{{li.newData }}"
+                                                        </p>
+                                                        <!-- 批注记录 -->
+                                                        <p v-for="(li,index) in scope.row.notationList" :key="index">
+                                                            {{li.createTime}} - {{li.creatorName}} 备注"{{li.content}}"
+                                                        </p>
+                                                    </div>
+                                                    <i slot="reference" class="cur_pointer icon iconfont iconzu13"></i>
+                                                </el-popover>
                                             </div>
                                         </el-timeline-item>
+                                        <el-timeline-item v-if="scope.row.recordDataEmpty"><div style="color:#999;font-size;13px;">暂无数据</div></el-timeline-item>
                                     </el-timeline>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="visitDate" label="就诊时间"></el-table-column>
                             <el-table-column prop="reportName" label="报告名称"></el-table-column>
-                            <el-table-column prop="patientName" label="姓名"></el-table-column>
+                            <el-table-column prop="patientName" label="病人姓名"></el-table-column>
                             <el-table-column prop="genderName" label="性别"></el-table-column>
-                            <el-table-column prop="author" label="创建者"></el-table-column>
-                            <el-table-column prop="groupName" label="课题组"></el-table-column>
-                            <el-table-column label="报告状态" width="120px">
+                            <el-table-column prop="updator" label="创建人" v-if="form.status==0"></el-table-column>
+                            <el-table-column prop="updator" label="填写人" v-else-if="form.status==1"></el-table-column>
+                            <el-table-column prop="updator" label="提交人" v-else></el-table-column>
+                            <el-table-column prop="updateTime" label="创建时间" width="180" v-if="form.status==1"></el-table-column>
+                            <el-table-column prop="updateTime" label="填写时间" width="180" v-else-if="form.status==2"></el-table-column>
+                            <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
+                            <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
                                     {{scope.row.status==0?'未填写':'已填写'}}
                                 </template>
                             </el-table-column>
-                            <el-table-column label="操作" width="80">
+                            <el-table-column prop="auditor" label="审核人" v-if="[3,4,-1].includes(form.status)"></el-table-column>
+                            <el-table-column prop="auditTime" label="审核时间" width="180" v-if="[3,4,-1].includes(form.status)"></el-table-column>
+                            <el-table-column label="操作" width="90">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
+                                    <el-button size="mini" v-show="scope.row.status == 0" class="danger" @click="deleteReport(scope.row)"><i class="icon iconfont iconzujian41"></i></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -116,17 +121,17 @@ export default {
     mixins: [mixins],
     data () {
         return {
+            crfList: [],
+            crfId: '',
             form: {
-                diseaseSubjectGroup: {},
-                time:[],
-                state:"",
-                report: ""
+                keyword: '',
+                status: -1
             },
-            groupList: [
-                {icon:'iconbianjibeifen3', name: '已提交', count:0, value: 'endCount'},
-                {icon:'iconbianji4', name: '不通过', count:0, value: 'finishCount'},
-                {icon:'iconbianjibeifen1', name: '通过', count:0, value: 'finishCount'},
-                {icon:'iconquanbu', name: '全 部', count:0, value: 'allCount'}
+            reportStatusList: [
+                {icon:'iconbianjibeifen3', name: '已提交', count:0, value: 'submitCount',status: 2},
+                {icon:'iconbianji4', name: '不通过', count:0, value: 'noPassCount',status: 3},
+                {icon:'iconbianjibeifen1', name: '通过', count:0, value: 'passCount',status: 4},
+                {icon:'iconquanbu', name: '全 部', count:0, value: 'total',status: -1}
             ],
             dataList: {
                 content: []
@@ -144,29 +149,40 @@ export default {
             elementLoadingText: ''  
         };
     },
-    watch: {},
-    computed: {},
-    created () {
-        let date = new Date();
-        this.form.time[0] = utils.formateDate(date).substring(0,7) + '-01';
-        let lastDay = '';
-        if ((date.getMonth() + 1) == 2) {
-            let yearType = date.getFullYear();
-            if (yearType % 4 == 0 && (yearType % 100 != 0 || yearType % 400 == 0)) {
-                lastDay = 29;
-            } else {
-                lastDay = 28;
-            }
-        } else if ([1,3,5,7,8,10,12].indexOf((date.getMonth() + 1)) != -1) {
-            lastDay = 31;
-        } else {
-            lastDay = 30;
+    watch: {
+        crfId: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
+        },
+        orgCode: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
+        },
+        doctor: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
         }
-        this.form.time[1] = utils.formateDate(date).substring(0,7) + '-' + lastDay;
-        this.getDataList()
-        .then(()=>{
-            this.$emit('changeLoadding',false)
+    },
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+    },
+    created () {
+        this.loading = true;
+        Promise.all([this.getCrfList(),this.getReportStatusList()]).then(()=>{
+            this.getDataList()
+            .then(()=>{
+                this.$emit('changeLoadding',false)
+            })
         })
+        
     },
     mounted () {
         this.addEventListenervisibilityChange();
@@ -202,67 +218,47 @@ export default {
                 }
             }, false);
         },
+        selectReportStatus(row) {
+            this.form.status = row.status;
+            this.getDataList();
+        },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;
             that.loading = true;
             that.paging.currentPageNo = pageNo;
             that.paging.currentPageSize = pageSize;
             that.dataList.content = [];
-            let startTime, endTime;
-            if(!this.form.time || this.form.time && this.form.time.length == 0) {
-                startTime = null
-                endTime = null
-            }else {
-                startTime = this.form.time[0].split("-").join('');
-                endTime = this.form.time[1].split("-").join('');
-            }
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
                 args: {
-                    // diseaseId: this.form.diseaseSubjectGroup.disease || '',
-                    diseaseId: this.$route.query.id || '',
-                    subjectId: this.form.diseaseSubjectGroup.subject || '',
-                    groupId: this.form.diseaseSubjectGroup.group || '',
-                    crfId: "",
-                    patientName: "",
-                    startTime: startTime,
-                    endTime: endTime,
-                    status: this.form.state
+                    "crfId": this.crfId,
+                    "diseaseId": this.$route.query.id,
+                    "userId": this.$store.state.user.diseaseInfo.doctor,
+                    "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+                    "status": this.form.status == -1? undefined: this.form.status
                 }
             };
             try {
-                let res = await that.$http.RRMgetDataList(formData);
+                let res = await that.$http.RRMgetReportDataList(formData);
                 if (res.code == '0') {
                     let obj = {};
                     obj.content = res.data.args;
+                    obj.content.forEach(li=>{
+                        li.recordData = null;
+                        li.recordDataEmpty = false;
+                    })
                     obj.pageNo = pageNo;
                     obj.pageSize = pageSize;
                     obj.totalCount = parseInt(res.data.totalElements);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.loading = false;
             } catch (err) {
                 that.loading = false;
                 console.log(err)
             }
-        },
-        changeDiseaseSubjectGroup (data) {
-            this.form.diseaseSubjectGroup = data;
-        },
-        reset () {
-            this.form = {
-                diseaseSubjectGroup: {},
-                time:[],
-                state:""
-            }
-            let date = new Date().getTime();
-            this.form.time[0] = utils.formateDate(date - ( 1000 * 60 * 60 * 24 * 30));
-            this.form.time[1] = utils.formateDate(date + ( 1000 * 60 * 60 * 24));
-            this.$refs.diseaseSubjectGroup.ruleForm.disease = '';
         },
         toReportFill(row) {
           // console.log(row)
@@ -279,7 +275,8 @@ export default {
                     patientName: row.patientName || "",
                     patientId: row.patientId || "",
                     identify: this.identify || "",
-                    from: "caseManage",
+                    from: "reportList",
+                    reportStauts: row.status,
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",
@@ -288,9 +285,44 @@ export default {
                 }
                 localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
 
-              let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
-              window.open('./patientForm.html?'+urlParameters);
+                let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
+                window.open('./patientForm.html?'+urlParameters);
             })
+        },
+        //获取CRF表单
+        async getCrfList() {
+            let formData = {
+                diseaseId: this.$route.query.id
+            }
+            try {
+                let res = await this.$http.RRMgetCrfList(formData);
+                if (res.code == 0) {
+                    this.crfList = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //获取报告状态列表
+        async getReportStatusList() {
+            let formData = {
+                "crfId": this.crfId,
+                "diseaseId": this.$route.query.id,
+                "userId": this.$store.state.user.diseaseInfo.doctor,
+                "orgCode": this.$store.state.user.diseaseInfo.orgCode
+            }
+            try {
+                let res = await this.$http.RRMgetReportStatusList(formData);
+                if (res.code == 0) {
+                    this.reportStatusList.forEach(li=>{
+                        if(typeof(res.data[li.value]) == 'number') {
+                            li.count = res.data[li.value];
+                        }
+                    })
+                }
+            } catch (err) {
+                console.log(err)
+            }
         },
         //获取身份证号
         async getIdentify(patientId) {
@@ -309,8 +341,75 @@ export default {
             }
         },
         //表格内容展开
-        handleClick(row) {
-            // this.$refs.refTable.toggleRowExpansion(row)
+        handleClick(row, column, cell) {
+            if(column.label=='操作') {
+                return;
+            }
+            this.$refs.refTable.toggleRowExpansion(row)
+            this.getReportRecord(row)
+        },
+        //获取批注信息
+        async getReportRecord(row) {
+            let index = this.dataList.content.findIndex(li=>{
+                return row.id == li.id;
+            })
+            let formData = {
+                id: row.id
+            }
+            try {
+                let res = await this.$http.RRMgetReportRecord(formData);
+                if (res.code == 0) {
+                    row.recordData = res.data;
+                }
+                row.recordDataEmpty = row.recordData.length?false:true;
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        deleteReport(row) {
+            this.$confirm('是否删除('+row.reportName+')报告?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then( async() => {
+                let formData = {
+                    reportId: row.id,
+                    crfId: row.crfId,
+                };
+                try {
+                    let res = await this.$http.reportDelete(formData);
+                    if (res.code == 0) {
+                        this.$mes('success', "删除成功");
+                        this.getDataList();
+                    } 
+                } catch (err) {
+                    console.log(err)
+                }
+            }).catch(() => {});
+        },
+        //匹配iconfont
+        matchingIcon(type) {
+            switch (type) {
+                case 0: return '';
+                case 1: return 'iconyibaocun';
+                case 2: return 'iconzujian48';
+                case 3: return 'iconzujian49';
+                case 4: return 'iconzujian50';
+                case 5: return 'iconzujian51';
+                default: break;
+            }
+        },
+        //匹配操作状态
+        matchingStatus(type) {
+            switch (type) {
+                case 0: return '创建报告';
+                case 1: return '保存报告';
+                case 2: return '提交报告';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
         }
     },
     beforeRouteEnter (to, from, next) {
@@ -323,7 +422,7 @@ export default {
 </script>
 
 <style lang="less">
-    .disReportList {
+    .dataMonitoring {
         .el-table {
             padding: 0 !important;
         }
@@ -331,6 +430,9 @@ export default {
             background-color: #F7FAFD;
             &:hover {
                 background-color: #F7FAFD !important;
+            }
+            .el-timeline-item__timestamp {
+                display: none;
             }
             .el-timeline .el-timeline-item:last-child{
                 color: #232325;
@@ -346,6 +448,7 @@ export default {
                 border:1px solid #ccc;
                 width: 8px;
                 height: 8px;
+                top: 5px;
             }
             .el-timeline-item__tail {
                 border-left: 1px solid #ccc;
@@ -353,15 +456,13 @@ export default {
             }
             .el-timeline-item__wrapper {
                 padding-left: 18px;
+                top: 0;
             }
             .el-timeline-item:last-child {
                 padding-bottom: 0;
             }
             .el-timeline-item__content {
                 color: #999;
-                // &:hover p {
-                //     color: #333;
-                // }
                 p {
                     display: inline-block;
                     margin-left: 8px;
@@ -407,19 +508,26 @@ export default {
                     }
                     &:nth-child(1):hover .icon,
                     &:nth-child(1).active .icon {
-                        color: #8aca56;
+                        color: #F79E00;
                     }
                     &:nth-child(2):hover .icon,
                     &:nth-child(2).active .icon {
-                        color: #e24828;
+                        color: #0077B4;
                     }
                     &:nth-child(3):hover .icon,
                     &:nth-child(3).active .icon {
-                        color: #00bf8f;
+                        color: #8aca56;
                     }
                     &:nth-child(4):hover .icon,
                     &:nth-child(4).active .icon {
+                        color: #e24828;
+                    }
+                    &:nth-child(5):hover .icon,
+                    &:nth-child(5).active .icon {
                         color: #00bf8f;
+                    }&:nth-child(6):hover .icon,
+                    &:nth-child(6).active .icon {
+                        color: #00B8DF;
                     }
                     .icon {
                         padding-right: 8px;
@@ -448,6 +556,23 @@ export default {
                         border-radius: 10px;
                     }
                 }
+            }
+        }
+    }
+    .expand_popover {
+        background-color: rgba(0,0,0,.6);
+        padding: 8px 10px;
+        .content p {
+            color: #fff;
+            font-size: 13px;
+            &:hover {
+                color: #fff;
+            }
+        }
+        .popper__arrow{
+            border-right-color: rgba(0,0,0,.6) !important;
+            &::after {
+                border-right-color: rgba(10,10,10,0) !important;
             }
         }
     }
