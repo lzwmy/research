@@ -40,7 +40,6 @@
             <div>
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="orgInfoInput" clearable></el-input>
                 <div class="content">
-                    <p @click="orgInfo = {orgName:'全部机构'}">全部机构</p>
                     <p v-for="(item,index) in filterOrgList" :key="index" @click="orgInfo = item;orgPopoverVisible = false;">{{item.orgName}}</p>
                     <em v-if="filterOrgList.length==0" class="empty">(空)</em>
                 </div>
@@ -58,21 +57,12 @@
             <div>
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="doctorInput" clearable></el-input>
                 <div class="content">
-                    <p @click="doctorInfo = {userName:'全部医生'}">全部医生</p>
                     <p v-for="(item,index) in filterDoctorList" :key="index" @click="doctorInfo = item;doctorPopoverVisible = false;">{{item.userName}}</p>
                     <em v-if="filterDoctorList.length==0" class="empty">(空)</em>
                 </div>
             </div>
         </el-popover>
 
-        <div style="margin-left:20px;" v-if="(['/reportList' ,'/dataMonitoring','/patientListModule'].includes($route.path) ) && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)">
-            <!-- <el-select v-model="orgCode" placeholder="请选择机构" filterable :disabled="!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable" clearable>
-                <el-option v-for="(item,index) in orgList" :key="index" :label="item.orgName" :value="item.orgCode"></el-option>
-            </el-select> -->
-            <!-- <el-select v-model="doctor" placeholder="请选择医生" filterable clearable>
-                <el-option v-for="(item,index) in doctorList" :key="index" :label="item.userName" :value="item.id"></el-option>
-            </el-select> -->
-        </div>
         <p v-if="$route.meta.belongToGroup == 'researchTask' && $store.state.user.researchInfo.centerModel == 2" @click="shareLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
         <p v-if="$route.meta.belongToGroup == 'insideView'" @click="shareLogin" class="researchLogin flex-center-center">专病分享<span class="icon iconfont iconfenxiang left_6"></span></p>
 
@@ -140,14 +130,16 @@ export default {
             this.getDoctorList();
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-                    orgCode: this.orgInfo.orgCode
+                    orgCode: this.orgInfo.orgCode,
+                    orgName: this.orgInfo.orgName
                 })
             );
         },
         doctorInfo: function(newVal) {
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-                    doctor: this.doctorInfo.id
+                    doctor: this.doctorInfo.id,
+                    doctorName: this.doctorInfo.userName
                 })
             );
         }
@@ -222,6 +214,10 @@ export default {
                 });
                 if (res.code == '0') {
                     this.orgList = res.data;
+                    this.orgList.unshift({
+                        orgName: '全部机构',
+                        orgCode: null
+                    })
                     if(this.orgList.length) {
                         this.orgInfo = this.orgList[0];
                     }
@@ -243,7 +239,11 @@ export default {
             try {
                 let res = await that.$http.ORGDisGetUserList(formData);
                 if (res.code == '0') {
-                    this.doctorList = res.data.args
+                    this.doctorList = res.data.args;
+                    this.doctorList.unshift({
+                        userName: '全部医生',
+                        id: null
+                    })
                 }
             } catch (err) {
                 console.log(err)

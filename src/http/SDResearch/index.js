@@ -171,10 +171,10 @@ const http = {
     return vm.$get(url.getDoctorList, params);
   },
   patientListAddDoctor (params) {
-    return vm.$post(url.addDoctor, params);
+    return vm.$post(url.addDoctor, params,false);
   },
   patientListDeleteDoctor (params) {
-    return vm.$post(url.deleteDoctor, params);
+    return vm.$get(url.deleteDoctor, params);
   },
   patientListImportReportData (params) {
     return vm.$fileUpload(url.patientListImportReportData, params);

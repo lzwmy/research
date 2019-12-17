@@ -26,20 +26,6 @@
 
     <div class="container flex-between-center">
       <div class="content">
-        <!-- 主治医生 -->
-        <!-- <div class="doctor flex-start-center">
-          <p class="label">主治医生: </p>
-          <div class="tags">
-            <el-tag 
-              v-for="tag in doctorTags"
-              :key="tag.name"
-              closable
-              type="info">
-              {{tag.name}}
-            </el-tag>
-          </div>
-        </div> -->
-
         <patientInfoDetail ref="refPatientInfoDetail" v-if="!showReportComponent" class="timeline"
                           :reportFillData="reportFillData" :dataInfo="dataInfo"></patientInfoDetail>
         <report-list ref="patientDetail" v-if="showReportComponent" class="reportList"
@@ -89,11 +75,12 @@
           <div class="tags">
             <el-tag 
               v-for="tag in doctorTags"
-              :key="tag.name"
+              :key="tag.userName"
               closable
+              @close='deleteDoctor(tag)'
               type="info">
               <i class="icon iconfont iconzujian47"></i>
-              {{tag.name}}
+              <span class="userName">{{tag.userName}}</span>
             </el-tag>
           </div>
         </div>
@@ -341,12 +328,12 @@
       width="450px"
       class="height_auto"
       :append-to-body="true"
-      @close="doctorDialog.doctor = ''">
-      <el-select v-model="doctorDialog.doctor" filterable clearable class="block" style="margin-bottom: 60px;"  placeholder='可输入关键字搜索'>
+      @close="doctorDialog.doctors = []">
+      <el-select v-model="doctorDialog.doctors" filterable multiple clearable class="block" style="margin-bottom: 60px;"  placeholder='可输入关键字搜索'>
         <el-option v-for="(item, index) in doctorListAll" :label="item.userName" :value="item.id" :key="index"></el-option>
       </el-select>
       <span slot="footer">
-        <el-button type="primary" @click="" size="mini" :disabled="doctorDialog.loading">保 存</el-button>
+        <el-button type="primary" @click="addDoctor" size="mini" :disabled="doctorDialog.loading">保 存</el-button>
         <el-button @click="doctorDialog.visible = false" size="mini">关 闭</el-button>
       </span>
     </el-dialog>
@@ -425,16 +412,11 @@
         doctorDialog: {
           visible: false,
           loading: false,
-          doctor: ''
+          doctors: []
         },
         doctorListAll: [],
         //主治医生列表
-        doctorTags: [
-          {name: '张医生'},
-          {name: '刘医生'},
-          {name: '李医生'},
-          {name: '王医生'},
-        ],
+        doctorTags: [],
 
 
         selectList: [],
@@ -539,7 +521,15 @@
             this.selectDayArr = 30;
           }
         }
-      }
+      },
+      orgCode: function(newVal) {
+        this.getAllDoctorList()
+      },
+    },
+    computed: {
+      orgCode: function() {
+        return this.$store.state.user.diseaseInfo.orgCode;
+      },
     },
     beforeRouteEnter (to, from, next) {
       //从病人列表进入
@@ -1081,12 +1071,13 @@
       // 查询医生列表
       async getDoctorList() {
         let formData = {
-            reportId: this.dataInfo.patientId || '',
+            patientId: this.dataInfo.patientId || '',
             diseaseId: this.dataInfo.diseaseId
         };
         try {
             let res = await this.$http.patientListGetDoctorList(formData);
             if (res.code == '0') {
+              this.doctorTags = res.data;
             }
         } catch (err) {
             console.log(err)
@@ -1094,13 +1085,29 @@
       },
       // 添加医生
       async addDoctor() {
-        let formData = {
-            "orgCode": "string",
-            "orgName": "string",
-            "reportId": "string",
-            "userId": "string",
-            "userName": "string"
-        };
+        if(this.doctorListAll.length == 0) {
+          this.$mes('info','请先选择机构!');
+          return;
+        }
+        if(this.doctorDialog.doctors.length == 0) {
+          this.$mes('info','请选择医生!');
+          return;
+        }
+        let formData = [];
+        this.doctorDialog.doctors.forEach(item=>{
+          this.doctorListAll.forEach(li=>{
+            if(item == li.id){
+              formData.push({
+                "diseaseId": this.dataInfo.diseaseId,
+                "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+                "orgName": this.$store.state.user.diseaseInfo.orgName,
+                "patientId": this.dataInfo.patientId,
+                "userId": li.id,
+                "userName": li.userName
+              })
+            }
+          })
+        })
         try {
             let res = await this.$http.patientListAddDoctor(formData);
             if (res.code == '0') {
@@ -1108,8 +1115,9 @@
               this.getDoctorList();
             }
         } catch (err) {
-            console.log(err)
+          console.log(err)
         }
+        this.doctorDialog.visible = false;
       },
       // 删除医生
       async deleteDoctor(row) {
@@ -1125,7 +1133,8 @@
           try {
               let res = await that.$http.patientListDeleteDoctor(formData);
               if (res.code == '0') {
-                that.$mes('success','删除成功!')
+                that.$mes('success','删除成功!');
+                this.getDoctorList();
               }
           } catch (err) {
               console.log(err)
@@ -1288,7 +1297,14 @@
             height: 126px;
             overflow: auto;
             margin-top: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-content: flex-start;
+            flex-wrap: wrap;
             .el-tag {
+              display: flex;
+              align-items: center;
+              justify-content:space-around;
               cursor: pointer;
               margin: 0 0 6px 0;
               width: 25%;
@@ -1300,11 +1316,20 @@
                 background-color: #f4f4f5;
                 .el-icon-close {
                   background-color: #fff;
+                  margin-top: 2px;
                   color:#979BAC ;
                   &::before {
                     content: "\e6f7" !important;
                   }
                 }
+              }
+              .userName {
+                display: inline-block;
+                width: 40px;
+                text-align: center;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
               }
               .el-icon-close {
                 font-family: "iconfont" !important;
