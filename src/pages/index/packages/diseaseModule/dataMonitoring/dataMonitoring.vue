@@ -275,7 +275,7 @@ export default {
                     patientName: row.patientName || "",
                     patientId: row.patientId || "",
                     identify: this.identify || "",
-                    from: "reportList",
+                    from: "dataMonitoring",
                     reportStauts: row.status,
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",

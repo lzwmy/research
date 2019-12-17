@@ -1,34 +1,7 @@
 <template>
   <!--消息提示窗口-->
   <div class="tip_box">
-    <!--不通过-->
-    <!-- <div class="fail_status mes_box">
-      <div class="comment_info"><i class="iconfont iconjianqu3"></i><span>已批注2处数据</span></div>
-      <div class="fail_btn" @click="clickVerify(3)">不通过</div>
-    </div> -->
-    <!--召回 未审核 -->
-    <!-- <div class="unreviewed_status mes_box">
-      <div class="comment_info"><i class="iconfont iconjianqu1"></i><span>已批注2处数据</span></div>
-      <div class="unreviewed_btn">召回</div>
-    </div> -->
-    <!--通过 无数据批注-->
-    <!-- <div class="pass_status mes_box">
-      <div class="comment_info">
-        <i class="iconfont iconjianqu2"></i>
-        <span>尚无数据批注</span>
-      </div>
-      <div class="pass_btn" @click="clickVerify(4)">通过</div>
-    </div> -->
-    <!--召回 已审核 -->
-    <!-- <div class="audited_status mes_box">
-      <div class="comment_info">
-        <i class="iconfont iconjianqu1"></i>
-        <span>数据已通过审核</span>
-      </div>
-      <div class="audited_btn">召回</div>
-    </div> -->
-
-    <div class="mes_box" :class="['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'']">
+    <div class="mes_box" v-if="[2,3,4].includes(curInfo.status)" :class="['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'']">
       <div class="mes_info"><i class="icon iconfont" :class="curInfo.icon"></i><span class="mes_text">{{curInfo.text}}</span></div>
       <div class="mes_btn" @click="clickVerify(curInfo.status)">{{curInfo.btnText}}</div>
     </div>
@@ -56,17 +29,15 @@
     props:{
       tipStatus:{
         type:Number,
-        default:null
+        default:0
       },
-      tipContent:{
-        type:String,
-        default:null
+      isExamine:{
+        type:Boolean,
+        default:false
       }
     },
     data() {
       return {
-        status:this.tipStatus,
-        content:this.tipContent,
         curInfo:{},
         messageList: [
           { 
@@ -76,7 +47,7 @@
             showBtn: true,      //是否显示提交、保存按钮
             btnText:'召回',     //按钮文字
             mode:0,             //模式0-填写  1-阅读
-            icon:null, //iconfont  
+            icon:null,          //iconfont  
           },
           { 
             isExamine:false,    
@@ -92,16 +63,16 @@
             isExamine:false,    
             status: 2,          
             text: '数据尚未审核',        
-            showBtn: true,      
+            showBtn: false,      
             btnText:'召回',     
-            mode:0,            
+            mode:1,            
             icon:'iconjianqu1', 
           },
           { 
             isExamine:false,    
             status: 3,          
             text: '数据审核不通过',        
-            showBtn: true,      
+            showBtn: false,      
             btnText:'召回',     
             mode:1,            
             icon:'iconjianqu3', 
@@ -110,7 +81,7 @@
             isExamine:false,    
             status: 4,          
             text: '数据审核通过',        
-            showBtn: true,      
+            showBtn: false,      
             btnText:'召回',     
             mode:1,            
             icon:'iconjianqu2', 
@@ -120,16 +91,16 @@
             isExamine:true,    
             status: 2,          
             text: '已修改10处批注',        
-            showBtn: true,      
+            showBtn: false,      
             btnText:'不通过',     
-            mode:0,            
+            mode:1,            
             icon:'iconjianqu1', 
           },
           { 
             isExamine:true,    
             status: 3,          
             text: '数据审核不通过',        
-            showBtn: true,      
+            showBtn: false,      
             btnText:'重新审核',     
             mode:1,            
             icon:'iconjianqu3', 
@@ -138,7 +109,7 @@
             isExamine:true,    
             status: 4,          
             text: '数据审核通过',        
-            showBtn: true,      
+            showBtn: false,      
             btnText:'重新审核',     
             mode:1,            
             icon:'iconjianqu2', 
@@ -147,15 +118,26 @@
       }
     },
     created() {
-      let reportStatus = 2;
-      let isExamine = false;
       this.curInfo = this.messageList.find(li=>{
-        return li.status== reportStatus && li.isExamine == isExamine;
+        return li.status== this.tipStatus && li.isExamine == this.isExamine;
       })
+      this.$emit('handleView',this.curInfo || {})
     },
     methods:{
       clickVerify(status) {
-        this.readReportBakAudit(status).then(data => this.$emit('',data));
+        //如果为非审核情况下，显示保存、提交按钮 进入填写模式
+        if(!this.isExamine) {
+          this.curInfo.status = 1;
+          this.curInfo.mode = 0;
+          this.curInfo.showBtn = true;
+          this.$emit('handleView',this.curInfo)
+        }else {
+          this.curInfo = this.messageList.find(li=>{
+            return li.status== 2 && li.isExamine == this.isExamine;
+          })
+          this.$emit('handleView',this.curInfo)
+        }
+        // this.readReportBakAudit(status).then(data => this.$emit('handleView',data));
       },
       // 审核报告 3 通过 4 不通过
       async readReportBakAudit(status) {
