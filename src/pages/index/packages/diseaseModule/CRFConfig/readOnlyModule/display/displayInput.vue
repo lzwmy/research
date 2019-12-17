@@ -20,29 +20,32 @@
       {{report.value || '(空)'}}
     </div>
     <div class="info_fixed" style="display: table-cell;position: relative;">
-      <i class="iconfont iconzu13" @click="commentMethod"></i>
-      <div class="info_tip_box" >
+      <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
+      <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
+      <div class="info_tip_box" v-if="modifyDataProcess()">
         <i></i>
         <div class="tip_content" >
-          <p v-for="(it,index) in $store.state.annotateData.annotateList">
-            <span v-if="it.path == item.controlName">{{it.createTime}} {{it.content}}</span>
+          <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+            <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
           </p>
-          <!--<p> 2018-8-20 16:17:13 张医生 批注“瘙痒、头疼”</p>
-          <p> 2018-8-20 16:17:13 张医生 批注“瘙痒、头疼”</p>
-          <p> 2018-8-20 16:17:13 张医生 批注“瘙痒、头疼”</p>
-          <p> 2018-8-20 16:17:13 张医生 批注“瘙痒、头疼”</p>
-          <p> 2018-8-20 16:17:13 张医生 批注“瘙痒、头疼”</p>
-          <p> 2018-8-20 16:17:13 张医生 批注“瘙痒、头疼”</p>
-          <p> 2018-8-20 16:17:13 张医生 批注“瘙痒、头疼”</p>-->
         </div>
       </div>
+        <div class="info_tip_box" v-else-if="annotateProcess()">
+          <i></i>
+          <div class="tip_content" >
+            <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index">
+              <span v-if="it.path == item.controlName">{{it.createTime}} {{it.content}}</span>
+            </p>
+          </div>
+        </div>
     </div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex';
-import eventBus from 'src/eventBus/bus.js'
+import eventBus from 'src/eventBus/bus.js';
+import utils from 'components/utils/index.js';
 export default {
   name: "displayInput",
   data() {
@@ -50,7 +53,8 @@ export default {
       fontSize: 30,
       labelWidth: 200,
       inputWidth: 100,
-      rootBinding:null//父元素绑定信息
+      rootBinding:null,//父元素绑定信息
+      annotateStatus:false
     };
   },
   props: {
@@ -103,9 +107,34 @@ export default {
       
     },
     commentMethod() {
-      console.log('触发')
       let path = this.item.controlName;
       eventBus.$emit('display-show',path)
+    },
+    annotateProcess() {
+      let find = false;
+      let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+      let array = utils.deleteObject(copyArray,'path');
+      array.forEach(item => {
+        if(item.path == this.item.controlName) {
+          find = true;
+        }
+      });
+      return find;
+    },
+    modifyDataProcess() {
+      let find = false;
+      let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.modifyData));
+      let array = utils.deleteObject(copyArray,'path');
+      array.forEach(item => {
+        if(item.path == this.item.controlName) {
+          find = true;
+        }
+      });
+      let flag = this.annotateProcess();
+      if(flag) {
+        find = false;
+      }
+      return  find;
     },
     //递归获取数据
     recureBindingInfo(){
@@ -161,7 +190,10 @@ export default {
             
          }
       }
-    }
+    },
+   /* '$store.state.annotateData.annotateList':function (array) {
+      // this.annotateProcess();
+    }*/
   }
 };
 </script>

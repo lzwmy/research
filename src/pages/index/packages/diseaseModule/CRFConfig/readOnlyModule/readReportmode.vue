@@ -53,7 +53,9 @@
     },
     methods:{
       initPage() {
-        this.$store.dispatch('resetFun')
+        this.$store.dispatch('resetFun');
+        this.getReportBakListNotation();
+        this.getReportBakListDataChange();
       },
       closePage() {
         let userAgent = navigator.userAgent;
@@ -109,9 +111,32 @@
         };
         try {
           let data = await that.$http.getReportBakListNotation(formData);
-          console.log(data)
+          console.log('获取批注信息',data)
+          if(data.code === 0) {
+            if(data.data.length !==0) {
+              data.data.forEach(item => {
+                this.$store.dispatch('resetFun',item);
+              })
+            }
+          }
         }catch (error) {
           console.log(error);
+        }
+      },
+      // 获取报告数据变化的数值
+      async getReportBakListDataChange() {
+        let that = this;
+        let formData = {
+          reportId:that.report.id
+        };
+        try {
+          let data = await that.$http.getReportBakListDataChange(formData);
+          console.log('获取报告数据修改',data);
+          if(data.code === 0) {
+            this.$store.dispatch('addModifyDataFun',data.data);
+          }
+        }catch (error) {
+          console.log(data)
         }
       }
     },

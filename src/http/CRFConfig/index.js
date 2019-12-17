@@ -44,6 +44,8 @@ const url = {
   reportBakNoteDelete:"/report/bak/note/delete",
   //提交报告
   reportBakSubmit:"/report/bak/submit",
+  //获取 报告数据变化值
+  getReportBakListDataChange:"/report/bak/list/dataChange",
 };
 
 const http = {
@@ -100,6 +102,9 @@ const http = {
   },
   reportBakSubmit(params) {
     return vm.$post(url.reportBakSubmit,params,false);
+  },
+  getReportBakListDataChange(params) {
+    return vm.$get(url.getReportBakListDataChange,params,true);
   }
 };
 

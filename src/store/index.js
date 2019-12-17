@@ -230,7 +230,8 @@ const common = {
 
 const annotateData = {
   state:{
-    annotateList:[]
+    annotateList:[],
+    modifyData:[],
   },
   getters:{
     forlist:state => state.annotate
@@ -241,6 +242,9 @@ const annotateData = {
     },
     resetAnnotate(state,val) {
       state.annotateList = [];
+    },
+    addModifyData(state,val) {
+      state.modifyData = val;
     }
   },
   actions:{
@@ -249,6 +253,9 @@ const annotateData = {
     },
     resetFun(context) {
       context.commit('resetAnnotate')
+    },
+    addModifyDataFun(context,data) {
+      context.commit('addModifyData',data);
     }
   }
 };
