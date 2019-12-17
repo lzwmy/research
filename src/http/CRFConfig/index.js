@@ -29,6 +29,21 @@ const url = {
   CRFDeleteForm:'/form/crf/bak/delete.do',
   //获取小节ID
   CRFQueryPortionId:"/form/portion/bak/generate/portionId.do",
+  /***
+   *  阅读模式
+   * */
+  // 审核报告 -- 是否添加批注
+  readReportBakAudit:'/report/bak/audit',
+  // 获取报告批注
+  getReportBakListNotation:"/report/bak/list/notation",
+  // 保存 备注
+  reportBakNoteSave:"/report/bak/note/save",
+  // 获取报告 批注
+  getReportBakNoteList:"/report/bak/note/list",
+  //删除备注
+  reportBakNoteDelete:"/report/bak/note/delete",
+  //提交报告
+  reportBakSubmit:"/report/bak/submit",
 };
 
 const http = {
@@ -64,6 +79,27 @@ const http = {
   },
   CRFQueryPortionId(params) {
     return vm.$post(url.CRFQueryPortionId,{},true);
+  },
+  /**
+   *  阅读报告
+   * */
+  readReportBakAudit(params) {
+    return vm.$post(url.readReportBakAudit,params,false);
+  },
+  getReportBakListNotation(params) {
+    return vm.$get(url.getReportBakListNotation,params,false);
+  },
+  reportBakNoteSave(params) {
+    return vm.$post(url.reportBakNoteSave,params,false);
+  },
+  getReportBakNoteList(params) {
+    return vm.$get(url.getReportBakNoteList,params,true);
+  },
+  reportBakNoteDelete(params) {
+    return vm.$get(url.reportBakNoteDelete,params,true);
+  },
+  reportBakSubmit(params) {
+    return vm.$post(url.reportBakSubmit,params,false);
   }
 };
 
