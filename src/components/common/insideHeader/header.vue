@@ -21,17 +21,48 @@
                     <p class="text-center">{{item.name}}</p>
                 </li>
             </ul>
-            <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div slot="reference" class="flex-between-center">{{disease}}<span v-if="!disease">请选择病种</span><i class="el-icon-arrow-down el-icon--right"></i></div>
         </el-popover>
+
         <!-- 组织机构和医生 -->
-         <div style="margin-left:20px;" v-if="(['/reportList' ,'/dataMonitoring','/patientListModule'].includes($route.path) ) && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)">
-            <el-select v-model="orgCode" placeholder="请选择机构" :disabled="!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable" clearable>
-                <el-option v-for="(item,index) in orgList" :key="index" :label="item.orgName" :value="item.orgCode"></el-option>
-            </el-select>
-            <el-select v-model="doctor" placeholder="请选择医生" clearable>
-                <el-option v-for="(item,index) in doctorList" :key="index" :label="item.userName" :value="item.id"></el-option>
-            </el-select>
-        </div>
+        <!-- v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage'].includes($route.meta.flag) ) && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)" -->
+
+        <el-popover
+            class="orgDoctorSelect"
+            popper-class="orgDoctorSelect"
+            placement="bottom"
+            width="200"
+            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage'].includes($route.meta.flag) )"
+            :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable'
+            v-model="orgPopoverVisible"
+            trigger="click">
+            <div slot="reference" class="flex-between-center">{{orgInfo.orgName}}<span v-if="!orgInfo.orgName">全部机构</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div>
+                <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="orgInfoInput" clearable></el-input>
+                <div class="content">
+                    <p v-for="(item,index) in filterOrgList" :key="index" @click="orgInfo = item;orgPopoverVisible = false;">{{item.orgName}}</p>
+                    <em v-if="filterOrgList.length==0" class="empty">(空)</em>
+                </div>
+            </div>
+        </el-popover>
+        <el-popover
+            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage'].includes($route.meta.flag) )"
+            class="orgDoctorSelect"
+            popper-class="orgDoctorSelect"
+            placement="bottom"
+            width="200"
+            v-model="doctorPopoverVisible"
+            trigger="click">
+            <div slot="reference" class="flex-between-center">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">全部医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div>
+                <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="doctorInput" clearable></el-input>
+                <div class="content">
+                    <p v-for="(item,index) in filterDoctorList" :key="index" @click="doctorInfo = item;doctorPopoverVisible = false;">{{item.userName}}</p>
+                    <em v-if="filterDoctorList.length==0" class="empty">(空)</em>
+                </div>
+            </div>
+        </el-popover>
+
         <p v-if="$route.meta.belongToGroup == 'researchTask' && $store.state.user.researchInfo.centerModel == 2" @click="shareLogin" class="researchLogin flex-center-center">项目分享<span class="icon iconfont iconfenxiang left_6"></span></p>
         <p v-if="$route.meta.belongToGroup == 'insideView'" @click="shareLogin" class="researchLogin flex-center-center">专病分享<span class="icon iconfont iconfenxiang left_6"></span></p>
 
@@ -74,8 +105,13 @@ export default {
             },
             orgList: [],
             doctorList: [],
-            orgCode: '',    //组织
+            orgInfoInput: '',
+            doctorInput: '',    
+            orgInfo: {},  //机构 
+            orgPopoverVisible:false,
+            doctorPopoverVisible: false,
             doctor: '',     //医生
+            doctorInfo: '',
             orgSelectHide: utils.arrayExistAttr([1,2,4],this.$store.state.user.diseaseInfo.roles,null,false),
             orgSelectDisable: utils.arrayExistAttr([1],this.$store.state.user.diseaseInfo.roles,null,false)
         };
@@ -89,22 +125,36 @@ export default {
                 }
             });
         },
-        orgCode: function(newVal) {
-            this.doctor = '';
+        orgInfo: function(newVal) {
+            this.doctorInfo = '';
             this.getDoctorList();
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-                    orgCode: newVal
+                    orgCode: this.orgInfo.orgCode,
+                    orgName: this.orgInfo.orgName
                 })
             );
         },
-        doctor: function(newVal) {
+        doctorInfo: function(newVal) {
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-                    doctor: newVal
+                    doctor: this.doctorInfo.id,
+                    doctorName: this.doctorInfo.userName
                 })
             );
         }
+    },
+    computed: {
+        filterOrgList() {
+            return this.orgList.filter(li=>{
+                return li.orgName.toLowerCase().indexOf(this.orgInfoInput.toLowerCase()) != -1;
+            })
+        },
+        filterDoctorList() {
+            return this.doctorList.filter(li=>{
+                return li.userName.toLowerCase().indexOf(this.doctorInput.toLowerCase()) != -1;
+            })
+        },
     },
     created () {
         this.loginType = localStorage.getItem('CURR_LOGIN_TYPE')
@@ -119,6 +169,7 @@ export default {
         })
     },
     methods: {
+        
         handleMenuView() {
             this.$store.commit("changeMenuView", !this.$store.state.common.openMenuView);
         },
@@ -154,7 +205,7 @@ export default {
         },
         //获取机构列表
         async getOrgList(id) {
-            this.orgCode = '';
+            this.orgInfo = '';
             this.orgLoading = true;
             try {
                 let res = await this.$http.ORGDisGetOrgList({
@@ -163,8 +214,12 @@ export default {
                 });
                 if (res.code == '0') {
                     this.orgList = res.data;
+                    this.orgList.unshift({
+                        orgName: '全部机构',
+                        orgCode: null
+                    })
                     if(this.orgList.length) {
-                        this.orgCode = this.orgList[0].orgCode;
+                        this.orgInfo = this.orgList[0];
                     }
                 }
                 this.orgLoading = false;
@@ -179,12 +234,16 @@ export default {
             let formData = {
                 offset: 0,
                 limit: 999,
-                args: this.orgCode
+                args: this.orgInfo.orgCode
             };
             try {
                 let res = await that.$http.ORGDisGetUserList(formData);
                 if (res.code == '0') {
-                    this.doctorList = res.data.args
+                    this.doctorList = res.data.args;
+                    this.doctorList.unshift({
+                        userName: '全部医生',
+                        id: null
+                    })
                 }
             } catch (err) {
                 console.log(err)
@@ -300,6 +359,44 @@ export default {
         }
         .projectShare .el-dialog{
             min-height: 200px;
+        }
+        .inside_header > .orgDoctorSelect {
+            height: 100%;
+            min-width: 90px;
+            transition: all 300ms;
+            cursor: pointer;
+            &:hover {
+                background-color: #D3D5DE;
+            }
+            .el-popover__reference {
+                display: block;
+                height: 60px;
+                width: 100%;
+                padding:0 15px;
+                font-size: 15px;
+                text-align: center;
+                line-height: 60px;
+                color: #777;
+            }
+            i {
+                color: #777;
+            }
+        }
+        & > .orgDoctorSelect {
+            min-height: 180px;
+            max-height: 500px;
+            overflow: auto;
+            .content {
+                padding: 10px 6px;
+                p {
+                    line-height: 24px;
+                    color: #666;
+                    cursor: pointer;
+                    &:hover {
+                        color: #1bbae1;
+                    }
+                }
+            }
         }
     }
 

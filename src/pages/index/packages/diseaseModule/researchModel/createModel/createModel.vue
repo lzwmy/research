@@ -107,6 +107,22 @@
           diseaseName:""
         }
       },
+      watch: {
+        orgCode: function(newVal) {
+          this.modelManageGetDataList()
+        },
+        doctor: function(newVal) {
+          this.modelManageGetDataList()
+        }
+      },
+      computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+      },
       methods:{
         //病种切换 刷新页面
         initPage() {
@@ -177,9 +193,12 @@
           })
         },
         async modelManageGetDataList() {
+          this.loading = true;
           let that = this;
           let formData = {
-            diseaseId:this.$route.query.id
+            diseaseId:this.$route.query.id,
+            "userId": this.$store.state.user.diseaseInfo.doctor || '',
+            "orgCode": this.$store.state.user.diseaseInfo.orgCode || ''
           };
           try {
             // let data = await that.$http.modelManageGetDataList(formData);

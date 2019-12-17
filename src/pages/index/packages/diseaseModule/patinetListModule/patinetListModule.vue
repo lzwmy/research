@@ -689,9 +689,22 @@
             return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
           });
         }
+      },
+      orgCode: function(newVal) {
+        this.getDataList()
+      },
+      doctor: function(newVal) {
+        this.getDataList()
       }
     },
-    computed: {},
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+    },
     created () {
       this.initPage();
     },
@@ -937,10 +950,12 @@
             // viewName: that.currentSelectViewsNameList,
             viewName: [that.viewName],
             page: pageNo - 1,
-            size: pageSize
+            size: pageSize,
+            "userId": this.$store.state.user.diseaseInfo.doctor || '',
+            "orgCode": this.$store.state.user.diseaseInfo.orgCode || null,
           };
           try {
-            let data = await that.$http.casesFindCases(that.$format(formData));
+            let data = await that.$http.casesFindCases(formData);
             that.loading = false;
             if (data && data.code == '0') {
               let result = data.data;

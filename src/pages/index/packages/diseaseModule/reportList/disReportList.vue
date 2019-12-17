@@ -44,38 +44,53 @@
                                             :hide-timestamp="true"
                                             class="aaaaaaaaaaaa">
                                             <div class="expand_content">
-                                                <i class="icon iconfont iconzujian51"></i>
-                                                <p><span>{{item.createTime}}</span><span>{{item.content}}</span></p>
+                                                <i class="icon iconfont" :class="matchingIcon(item.actionType)"></i>
+                                                <p>
+                                                    <span>{{item.createTime}}</span>
+                                                    <span>{{item.creatorName}}</span>
+                                                    <span>{{matchingStatus(item.actionType)}}</span>
+                                                </p>
                                                 <el-popover
+                                                    v-if="[3,4,5].includes(item.actionType)"
                                                     placement="right"
                                                     width="350"
                                                     popper-class="expand_popover"
-                                                    trigger="hover">
-                                                    <div class="content">
-                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
-                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
-                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
-                                                        <p>2019-12-3 19:21 李医生 批注“瘙痒、头疼？”</p>
+                                                    trigger="click">
+                                                    <div class="content" >
+                                                        <!-- 修改记录 -->
+                                                        <p v-for="(li,index) in scope.row.dataChangeList" :key="index">
+                                                            {{scope.row.createTime}} - {{scope.row.creatorName }} 修改"{{li.oldData}}"为"{{li.newData }}"
+                                                        </p>
+                                                        <!-- 批注记录 -->
+                                                        <p v-for="(li,index) in scope.row.notationList" :key="index">
+                                                            {{li.createTime}} - {{li.creatorName}} 备注"{{li.content}}"
+                                                        </p>
                                                     </div>
                                                     <i slot="reference" class="cur_pointer icon iconfont iconzu13"></i>
                                                 </el-popover>
                                             </div>
                                         </el-timeline-item>
-                                        <el-timeline-item><div style="color:#999;font-size;13px;">暂无数据</div></el-timeline-item>
+                                        <el-timeline-item v-if="scope.row.recordDataEmpty"><div style="color:#999;font-size;13px;">暂无数据</div></el-timeline-item>
                                     </el-timeline>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="visitDate" label="就诊时间"></el-table-column>
                             <el-table-column prop="reportName" label="报告名称"></el-table-column>
-                            <el-table-column prop="patientName" label="姓名"></el-table-column>
+                            <el-table-column prop="patientName" label="病人姓名"></el-table-column>
                             <el-table-column prop="genderName" label="性别"></el-table-column>
-                            <el-table-column prop="author" label="创建者"></el-table-column>
-                            <el-table-column prop="groupName" label="课题组"></el-table-column>
-                            <el-table-column label="报告状态" width="120px">
+                            <el-table-column prop="updator" label="创建人" v-if="form.status==0"></el-table-column>
+                            <el-table-column prop="updator" label="填写人" v-else-if="form.status==1"></el-table-column>
+                            <el-table-column prop="updator" label="提交人" v-else></el-table-column>
+                            <el-table-column prop="updateTime" label="创建时间" width="180" v-if="form.status==1"></el-table-column>
+                            <el-table-column prop="updateTime" label="填写时间" width="180" v-else-if="form.status==2"></el-table-column>
+                            <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
+                            <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
                                     {{scope.row.status==0?'未填写':'已填写'}}
                                 </template>
                             </el-table-column>
+                            <el-table-column prop="auditor" label="审核人" v-if="[3,4,-1].includes(form.status)"></el-table-column>
+                            <el-table-column prop="auditTime" label="审核时间" width="180" v-if="[3,4,-1].includes(form.status)"></el-table-column>
                             <el-table-column label="操作" width="90">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
@@ -232,7 +247,8 @@ export default {
                     let obj = {};
                     obj.content = res.data.args;
                     obj.content.forEach(li=>{
-                        li.recordData = [];
+                        li.recordData = null;
+                        li.recordDataEmpty = false;
                     })
                     obj.pageNo = pageNo;
                     obj.pageSize = pageSize;
@@ -330,9 +346,6 @@ export default {
             if(column.label=='操作') {
                 return;
             }
-            console.log(row)
-            console.log(column)
-            console.log(cell)
             this.$refs.refTable.toggleRowExpansion(row)
             this.getReportRecord(row)
         },
@@ -347,9 +360,9 @@ export default {
             try {
                 let res = await this.$http.RRMgetReportRecord(formData);
                 if (res.code == 0) {
-                    // this.dataList.content[index].recordData = res.data;
                     row.recordData = res.data;
                 }
+                row.recordDataEmpty = row.recordData.length?false:true;
             } catch (err) {
                 console.log(err)
             }
@@ -360,15 +373,44 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then( async() => {
-                // try {
-                //     let res = await this.$http.RRMDeleteReport();
-                //     if (res.code == 0) {
-                //         this.$mes('success', "删除成功!");
-                //     }
-                // } catch (err) {
-                //     console.log(err)
-                // }
+                let formData = {
+                    reportId: row.id,
+                    crfId: row.crfId,
+                };
+                try {
+                    let res = await this.$http.reportDelete(formData);
+                    if (res.code == 0) {
+                        this.$mes('success', "删除成功");
+                        this.getDataList();
+                    } 
+                } catch (err) {
+                    console.log(err)
+                }
             }).catch(() => {});
+        },
+        //匹配iconfont
+        matchingIcon(type) {
+            switch (type) {
+                case 0: return '';
+                case 1: return 'iconyibaocun';
+                case 2: return 'iconzujian48';
+                case 3: return 'iconzujian49';
+                case 4: return 'iconzujian50';
+                case 5: return 'iconzujian51';
+                default: break;
+            }
+        },
+        //匹配操作状态
+        matchingStatus(type) {
+            switch (type) {
+                case 0: return '创建报告';
+                case 1: return '保存报告';
+                case 2: return '提交报告';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
         }
     },
     beforeRouteEnter (to, from, next) {
@@ -390,6 +432,9 @@ export default {
             &:hover {
                 background-color: #F7FAFD !important;
             }
+            .el-timeline-item__timestamp {
+                display: none;
+            }
             .el-timeline .el-timeline-item:last-child{
                 color: #232325;
                 .el-timeline-item__node {
@@ -404,6 +449,7 @@ export default {
                 border:1px solid #ccc;
                 width: 8px;
                 height: 8px;
+                top: 5px;
             }
             .el-timeline-item__tail {
                 border-left: 1px solid #ccc;
@@ -411,15 +457,13 @@ export default {
             }
             .el-timeline-item__wrapper {
                 padding-left: 18px;
+                top: 0;
             }
             .el-timeline-item:last-child {
                 padding-bottom: 0;
             }
             .el-timeline-item__content {
                 color: #999;
-                // &:hover p {
-                //     color: #333;
-                // }
                 p {
                     display: inline-block;
                     margin-left: 8px;
