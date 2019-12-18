@@ -574,6 +574,11 @@ export default {
     //提交报告
     async submitReportData() {
       let that = this;
+      let flag = getDom();
+      if(flag) {
+        this.$message.info('有必填项未填写');
+        return ;
+      }
       let formData = {
         ...that.report
       };
@@ -654,8 +659,8 @@ export default {
     //操作视图
     handleView(data) {
       console.log(data)
-      this.showReadComponent = data.mode==1?true:false
-      this.btnShow = data.showBtn || true
+      this.showReadComponent = data.mode === 1 ? true : false;
+      this.btnShow = data.showBtn;
     }
   },
   computed: {

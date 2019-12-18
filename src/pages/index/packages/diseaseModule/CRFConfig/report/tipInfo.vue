@@ -152,18 +152,21 @@
           this.curInfo.status = 1;
           this.curInfo.mode = 0;
           this.curInfo.showBtn = true;
-          this.reportBakCallback();
-          this.$emit('handleView',this.curInfo)
+          this.reportBakCallback().then(() => this.$emit('handleView',this.curInfo))
         }else { // 通过 or  不通过
           this.curInfo = this.messageList.find(li=>{
             return li.status== 2 && li.isExamine == this.isExamine;
           });
-          this.readReportBakAudit(3);
+          if(this.curInfo.btnText == '通过') {
+            this.readReportBakAudit(4)
+          }else if(this.curInfo.btnText == '不通过') {
+            this.readReportBakAudit(3)
+          }
           this.$emit('handleView',this.curInfo)
         }
         // this.readReportBakAudit(status).then(data => this.$emit('handleView',data));
       },
-      // 审核报告  4 通过  3 不通过
+      // 审核报告   3 不通过 4 通过
       async readReportBakAudit(status) {
         let that = this;
         let formData = {
@@ -173,7 +176,9 @@
         };
         try {
           let data = await that.$http.readReportBakAudit(formData);
-          return data;
+          if(data.code === 0) {
+            that.$message.success('审核成功')
+          }
         }catch (error) {
           console.log(error);
         }
