@@ -45,15 +45,15 @@ const otherMenu = [
         ],
         name: 'organizationManagementDis',
     },
-    // {
-    //     ico: 'dataMonitoring',
-    //     menuName: '数据监察',
-    //     menuCode: "0129012",
-    //     menuPath: '/dataMonitoring',
-    //     name: 'dataMonitoring',
-    //     children: [],
-    //     roles:[1,2,4]
-    // }
+    {
+        ico: 'dataMonitoring',
+        menuName: '数据监察',
+        menuCode: "0129012",
+        menuPath: '/dataMonitoring',
+        name: 'dataMonitoring',
+        children: [],
+        roles:[1,2,4]
+    }
 ]
 
 export default otherMenu;

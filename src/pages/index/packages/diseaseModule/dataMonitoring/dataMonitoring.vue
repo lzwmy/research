@@ -34,7 +34,7 @@
                             :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-70):(routerViewHeight*1)"
                             :data="dataList.content" v-loading="loading" ref="refTable" size="small"
                             :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
-                            @row-click="handleClick">
+                            @row-click="handleClick" @expand-change="expandChange">
                             <el-table-column type="expand" width="40"> 
                                 <template slot-scope="scope"> 
                                     <el-timeline>
@@ -42,7 +42,7 @@
                                             v-for="(item, index) in scope.row.recordData"
                                             :key="index"
                                             :hide-timestamp="true"
-                                            class="aaaaaaaaaaaa">
+                                            :class="'status_'+item.actionType">
                                             <div class="expand_content">
                                                 <i class="icon iconfont" :class="matchingIcon(item.actionType)"></i>
                                                 <p>
@@ -51,18 +51,18 @@
                                                     <span>{{matchingStatus(item.actionType)}}</span>
                                                 </p>
                                                 <el-popover
-                                                    v-if="[3,4,5].includes(item.actionType)"
+                                                    v-if="[3,4,5].includes(item.actionType) && (item.dataChangeList.length || item.notationList.length)"
                                                     placement="right"
                                                     width="350"
                                                     popper-class="expand_popover"
-                                                    trigger="click">
+                                                    trigger="hover">
                                                     <div class="content" >
                                                         <!-- 修改记录 -->
-                                                        <p v-for="(li,index) in scope.row.dataChangeList" :key="index">
+                                                        <p v-for="(li,index) in item.dataChangeList" :key="index">
                                                             {{scope.row.createTime}} - {{scope.row.creatorName }} 修改"{{li.oldData}}"为"{{li.newData }}"
                                                         </p>
                                                         <!-- 批注记录 -->
-                                                        <p v-for="(li,index) in scope.row.notationList" :key="index">
+                                                        <p v-for="(li,index) in item.notationList" :key="index">
                                                             {{li.createTime}} - {{li.creatorName}} 备注"{{li.content}}"
                                                         </p>
                                                     </div>
@@ -70,7 +70,7 @@
                                                 </el-popover>
                                             </div>
                                         </el-timeline-item>
-                                        <el-timeline-item v-if="scope.row.recordDataEmpty"><div style="color:#999;font-size;13px;">暂无数据</div></el-timeline-item>
+                                        <el-timeline-item v-if="scope.row.recordDataEmpty"><div style="color:#999;font-size;13px;">暂无记录</div></el-timeline-item>
                                     </el-timeline>
                                 </template>
                             </el-table-column>
@@ -86,7 +86,7 @@
                             <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
                             <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
-                                    {{scope.row.status==0?'未填写':'已填写'}}
+                                    {{matchingReportStatus(scope.row.status)}}
                                 </template>
                             </el-table-column>
                             <el-table-column prop="auditor" label="审核人" v-if="[3,4,-1].includes(form.status)"></el-table-column>
@@ -214,7 +214,9 @@ export default {
             }
             document.addEventListener(this.visibilityChange,()=>{
                 if(!document[hidden]) {
-                    this.getDataList();
+                    this.getReportStatusList().then(()=>{
+                        this.getDataList()
+                    })
                 }
             }, false);
         },
@@ -261,7 +263,6 @@ export default {
             }
         },
         toReportFill(row) {
-          // console.log(row)
             this.getIdentify(row.patientId)
             .then( ()=>{
                 let that = this;
@@ -276,7 +277,7 @@ export default {
                     patientId: row.patientId || "",
                     identify: this.identify || "",
                     from: "dataMonitoring",
-                    reportStauts: row.status,
+                    reportStatus: row.status,
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",
@@ -340,13 +341,18 @@ export default {
                 console.log(err)
             }
         },
-        //表格内容展开
+        //表格内容点击
         handleClick(row, column, cell) {
             if(column.label=='操作') {
                 return;
             }
             this.$refs.refTable.toggleRowExpansion(row)
-            this.getReportRecord(row)
+        },
+        //表格内容展开
+        expandChange(row,expanded ) {
+            if(expanded.length) {
+                this.getReportRecord(row)
+            }
         },
         //获取批注信息
         async getReportRecord(row) {
@@ -359,6 +365,10 @@ export default {
             try {
                 let res = await this.$http.RRMgetReportRecord(formData);
                 if (res.code == 0) {
+                    res.data.forEach(li=>{
+                        li.dataChangeList = li.dataChangeList?li.dataChangeList:[];
+                        li.notationList = li.notationList?li.notationList:[];
+                    })
                     row.recordData = res.data;
                 }
                 row.recordDataEmpty = row.recordData.length?false:true;
@@ -410,6 +420,18 @@ export default {
                 case 5: return '召回报告';
                 default: break;
             }
+        },
+        //匹配报告状态
+        matchingReportStatus(type) {
+            switch (type) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '已提交';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
         }
     },
     beforeRouteEnter (to, from, next) {
@@ -441,6 +463,37 @@ export default {
                 }
                 .el-timeline-item__content {
                     color: #232325;
+                    .icon.el-popover__reference,
+                    .icon.el-popover__reference:hover{
+                        color: #232325 !important; 
+                    }
+                }
+                &.status_2 {
+                    color: #8AC75B;
+                    .el-timeline-item__node {
+                        border-color: #8AC75B;
+                    }
+                    .el-timeline-item__content {
+                        color: #8AC75B;
+                    }
+                }
+                &.status_3 {
+                    color: #DF4931;
+                    .el-timeline-item__node {
+                        border-color: #DF4931;
+                    }
+                    .el-timeline-item__content {
+                        color: #DF4931;
+                    }
+                }
+                &.status_4 {
+                    color: #00BE90;
+                    .el-timeline-item__node {
+                        border-color: #00BE90;
+                    }
+                    .el-timeline-item__content {
+                        color: #00BE90;
+                    }
                 }
             }
             .el-timeline-item__node {

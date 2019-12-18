@@ -279,7 +279,6 @@ export default {
                     patientId: row.patientId || "",
                     identify: this.identify || "",
                     from: "reportList",
-                    // from: "dataMonitoring",
                     reportStatus: row.status,
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
@@ -466,6 +465,10 @@ export default {
                 }
                 .el-timeline-item__content {
                     color: #232325;
+                    .icon.el-popover__reference,
+                    .icon.el-popover__reference:hover{
+                        color: #232325 !important; 
+                    }
                 }
                 &.status_2 {
                     color: #8AC75B;
