@@ -8,7 +8,30 @@
       <span :class="[item.controlType+'_rangeValue',{'addColor':report.value}]">{{report.value || '0.00'}}</span>
       <el-button type="primary" v-show="report.value" @click="item.baseProperty.scoreInfo.scoreStatus = true" style="width: 120px;">查看评分</el-button>
     </div>
-    <i class="iconfont iconzu13"></i>
+    <div class="info_fixed" style="display: table-cell;position: relative;">
+      <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
+      <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
+      <div class="info_tip_box" v-if="modifyDataProcess()">
+        <i></i>
+        <div class="tip_content" >
+          <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+            <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="info_tip_box" v-else-if="annotateProcess()">
+        <i></i>
+        <div class="tip_content" >
+          <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
+            <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+          </p>
+          <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+            <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
     <el-dialog :visible.sync="item.baseProperty.scoreInfo.scoreStatus"
                class="dialog_score"
                :append-to-body="true"
@@ -26,6 +49,8 @@
 <script>
   import scorePasi from './scoreComponent/scorePasi';
   import scorePga from './scoreComponent/scorePga';
+  import eventBus from 'src/eventBus/bus.js';
+  import utils from 'components/utils/index.js';
   export default {
     name: "displayScore",
     components:{
@@ -59,6 +84,50 @@
               break;
           default:
             break;
+        }
+      },
+      commentMethod() {
+        let path = this.item.controlName;
+        eventBus.$emit('display-show',path)
+      },
+      annotateProcess() {
+        let find = false;
+        let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+        let array = utils.deleteObject(copyArray,'path');
+        array.forEach(item => {
+          if(item.path == this.item.controlName) {
+            find = true;
+            return ;
+          }
+        });
+        return find;
+      },
+      modifyDataProcess() {
+        let find = false;
+        let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.modifyData));
+        let array = utils.deleteObject(copyArray,'path');
+        array.forEach(item => {
+          if(item.path == this.item.controlName) {
+            find = true;
+            return ;
+          }
+        });
+        let flag = this.annotateProcess();
+        if(flag) {
+          find = false;
+        }
+        return  find;
+      },
+      emptyAnnotate() {
+        let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+        if(copyData.length !== 0) {
+          for(let i=0;i<copyData.length;i++) {
+            if(copyData[i].path == this.item.controlName) {
+              copyData.splice(i,1);
+              i--;
+            }
+          }
+          this.$store.dispatch('resetFun',copyData)
         }
       },
       //PSAI 评分
