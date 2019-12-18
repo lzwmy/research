@@ -123,7 +123,7 @@
       </div>
     </div>
     <!--消息提示-->
-    <tip-info :tipStatus="tipStatus" :isExamine='isExamine' :tipContent="tipContent" @handleView='handleView'></tip-info>
+    <tip-info ref="tipInfo" :tipStatus="tipStatus" :isExamine='isExamine' :tipContent="tipContent" @handleView='handleView'></tip-info>
     <!--添加备注弹框-->
     <el-dialog
       title="添加备注"
@@ -587,6 +587,7 @@ export default {
         console.log(data);
         if(data.code ===0) {
           that.$message.success('提交成功');
+          this.$refs.tipInfo.changeStatus(this.tipStatus);
         }else {
           that.$message.info(data.msg)
         }
