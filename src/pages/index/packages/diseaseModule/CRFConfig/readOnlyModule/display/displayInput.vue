@@ -34,14 +34,15 @@
           <i></i>
           <div class="tip_content" >
             <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.content}}</span>
             </p>
             <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-              <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
             </p>
           </div>
         </div>
     </div>
+    <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
   </div>
 </template>
 
@@ -140,6 +141,18 @@ export default {
         find = false;
       }
       return  find;
+    },
+    emptyAnnotate() {
+      let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+      if(copyData.length !== 0) {
+        for(let i=0;i<copyData.length;i++) {
+          if(copyData[i].path == this.item.controlName) {
+            copyData.splice(i,1);
+            i--;
+          }
+        }
+        this.$store.dispatch('resetFun',copyData)
+      }
     },
     //递归获取数据
     recureBindingInfo(){

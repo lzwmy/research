@@ -566,7 +566,18 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .info_fixed .active_modifyInfo{
   color: #439AFF !important;
 }
-
+.read_container-mode  .remove_annotate{
+  display: table-cell;
+  font-size: 14px;
+  color: #00BAE6;
+  text-decoration: none;
+  cursor: pointer;
+  padding-left: 8px;
+  font-style: normal;
+}
+.read_container-mode  .remove_annotate:hover{
+  text-decoration: underline;
+}
 .read_container-mode .info_fixed:hover .info_tip_box {
   display: inline-block;
 }
@@ -581,6 +592,10 @@ body.theme-blue .crf-left-btn.onclick {
   box-shadow:2px 2px 10px rgba(235,235,235,0.89);
   color: #333333;
   transition: all linear 1s;
+}
+.read_container-mode .info_fixed .info_tip_box .tip_content p span.ml_7{
+  display: inline-block;
+  padding-top: 7px;
 }
 .read_container-mode .info_fixed .info_tip_box > i{
   display: inline-block;

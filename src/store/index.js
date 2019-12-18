@@ -244,7 +244,7 @@ const annotateData = {
       state.annotateList.push(val)
     },
     resetAnnotate(state,val) {
-      state.annotateList = [];
+      state.annotateList = val;
     },
     addModifyData(state,val) {
       state.modifyData = val;
@@ -257,8 +257,8 @@ const annotateData = {
     addFun(context,data) {
       context.commit('addAnnotate',data);
     },
-    resetFun(context) {
-      context.commit('resetAnnotate')
+    resetFun(context,data=[]) {
+      context.commit('resetAnnotate',data)
     },
     addModifyDataFun(context,data) {
       context.commit('addModifyData',data);
