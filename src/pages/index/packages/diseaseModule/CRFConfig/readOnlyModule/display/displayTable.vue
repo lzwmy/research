@@ -1,7 +1,7 @@
 <template>
   <!--表格-->
   <div class="view_box" v-if="item.controlType=='TABLE'">
-    <div class="view_title" style="width:250px;display:inline-block;">
+    <div :class="['view_title',{'view_table-title':item.controlType=='TABLE'}]" style="width:250px;display:inline-block;">
         <!--加号-->
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" @click="changeExpend(0)"></i>
         <!--减号-->
@@ -9,6 +9,30 @@
         <!-- <span style="font-weight:font-size:14px;bold;color:#333333;font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{item.controlDisplayName}}</span> -->
         <strong v-if="item.displayIsVisible=='1'">{{item.controlDisplayName}}</strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
+        <div class="info_fixed" style="display: inline-block;position: relative;">
+          <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
+          <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
+          <div class="info_tip_box" v-if="modifyDataProcess()">
+            <i></i>
+            <div class="tip_content" >
+              <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+                <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="info_tip_box" v-else-if="annotateProcess()">
+            <i></i>
+            <div class="tip_content" >
+              <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
+                <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+              </p>
+              <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+                <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
       </div>
 
     <div class="view_knowType" v-if="item.gatherKnowType>0">
@@ -44,6 +68,8 @@
 
 <script>
 import {mapGetters} from 'vuex';
+import eventBus from 'src/eventBus/bus.js';
+import utils from 'components/utils/index.js';
 import displayInput from "./displayInput";
 import displayMultiInput from "./displayMultiInput";
 import displayCheckBox from "./displayCheckBox";
@@ -131,6 +157,50 @@ export default {
             newRow.children.push(newObj);
         });
         this.report.children.push(newRow);
+    },
+    commentMethod() {
+      let path = this.item.controlName;
+      eventBus.$emit('display-show',path)
+    },
+    annotateProcess() {
+      let find = false;
+      let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+      let array = utils.deleteObject(copyArray,'path');
+      array.forEach(item => {
+        if(item.path == this.item.controlName) {
+          find = true;
+          return ;
+        }
+      });
+      return find;
+    },
+    modifyDataProcess() {
+      let find = false;
+      let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.modifyData));
+      let array = utils.deleteObject(copyArray,'path');
+      array.forEach(item => {
+        if(item.path == this.item.controlName) {
+          find = true;
+          return ;
+        }
+      });
+      let flag = this.annotateProcess();
+      if(flag) {
+        find = false;
+      }
+      return  find;
+    },
+    emptyAnnotate() {
+      let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+      if(copyData.length !== 0) {
+        for(let i=0;i<copyData.length;i++) {
+          if(copyData[i].path == this.item.controlName) {
+            copyData.splice(i,1);
+            i--;
+          }
+        }
+        this.$store.dispatch('resetFun',copyData)
+      }
     },
     //递归获取
     recureBindingInfo(){

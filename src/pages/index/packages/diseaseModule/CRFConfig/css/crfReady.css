@@ -852,3 +852,22 @@ body.theme-blue .crf-left-btn.onclick {
   padding-left: 25px;
   cursor:pointer;
 }
+/***表格**/
+.read_container-mode .view_container_tlr .info_fixed{
+  opacity: 0;
+}
+.read_container-mode .view_table-title .iconzu13{
+  font-size: 16px;
+  color:#979BAB !important;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.read_container-mode .view_table-title .active_annotate {
+  color: #F99F00 !important;
+}
+.read_container-mode .view_table-title .remove_annotate{
+  display: inline-block;
+}
+.read_container-mode .view_table-title .active_modifyInfo {
+  color: #439AFF !important;
+}
