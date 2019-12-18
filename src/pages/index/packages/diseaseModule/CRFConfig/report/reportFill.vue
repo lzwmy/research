@@ -249,7 +249,7 @@ export default {
       this.formId = this.urlParameter.formId;
       this.reportId = this.urlParameter.reportId;
 
-      this.tipStatus = this.urlParameter.reportStatus || 0;
+      // this.tipStatus = this.urlParameter.reportStatus || 0;
       this.isExamine = this.urlParameter.from=='dataMonitoring'?true:false;
 
       if (!this.formId) {
@@ -349,7 +349,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.submitReportData();
+        this.submitReportData().then(()=> this.initPage());
       }).catch(() => {
       });
     },
@@ -453,6 +453,7 @@ export default {
         console.log('report data',report)
         if (report.data && report.code == "0") {
           this.report = report.data;
+          this.tipStatus = report.data.status || 0 ;
           console.log("====================================")
           console.log(this.report)
           if(report.data && report.data.portions&&report.data.portions.length==0){

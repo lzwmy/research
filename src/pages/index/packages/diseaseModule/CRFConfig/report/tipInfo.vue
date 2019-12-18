@@ -126,6 +126,12 @@
     watch: {
       annotateNum: function(newVal) {
         this.checkAnnotateNum(newVal);
+      },
+      'tipStatus':function (value) {
+        this.curInfo = this.messageList.find(li=>{
+          return li.status== value && li.isExamine == this.isExamine;
+        })
+        this.$emit('handleView',this.curInfo || {})
       }
     },
     created() {
