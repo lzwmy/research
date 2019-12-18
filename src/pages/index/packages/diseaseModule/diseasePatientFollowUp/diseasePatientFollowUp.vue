@@ -45,9 +45,11 @@
                             <i @click="dialgoForm.visible = true;dialgoForm.url=item.mobileUrl" class="icon iconfont iconfenxiang copy"></i>
                         </div>
                     </div>
-                    <div class="box" style="display: flex;margin-top: 6px;padding: 0 10px;">
+                    <div class="box" style="display: flex;margin-top: 6px;padding-right:10px;">
                         <div class="box_left" @click="toReportFill(item)">
-                        <h3 :style="item.patientName.length > 3?'font-size: 17px;':''">{{item.patientName}}</h3>
+                        <el-tooltip :disabled="countStrSize(item.patientName)" :content="item.patientName" placement="top">
+                            <h3 style="width:80px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;">{{item.patientName}}</h3>
+                        </el-tooltip>
                         <p>{{item.genderName}}/{{item.age}}</p>
                         </div>
                         <div class="box_right flex-center-end">
@@ -138,9 +140,10 @@ export default {
     },
     mounted () {
         this.addEventListenervisibilityChange();
+
     },
-    destoryed() {
-        document.removeEventListener(this.visibilityChange)
+    beforeDestroy() {
+        document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
     },
     methods: {
         initDate() {
@@ -177,27 +180,26 @@ export default {
                 this.$emit('changeLoadding',false)
             })
         },
+        visibilityChangeHandle() {
+            if (!document[this.hidden]) {
+                this.getDataList()
+            }
+        },
         addEventListenervisibilityChange() {
-            let hidden = "";
-            this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";
             } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
+                this.hidden = "mozHidden";
                 this.visibilityChange = "mozvisibilitychange";
             } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                this.hidden = "msHidden";
                 this.visibilityChange = "msvisibilitychange";
             } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                this.hidden = "webkitHidden";
                 this.visibilityChange = "webkitvisibilitychange";
             }
-            document.addEventListener(this.visibilityChange,()=>{
-                if(!document[hidden]) {
-                    this.getDataList();
-                }
-            }, false);
+            document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
         },
         handleStatus(status) {
             switch (status) {
@@ -323,6 +325,14 @@ export default {
                 console.log(err)
             }
         },
+        //计算长度
+        countStrSize(str) {
+            if (str == null) return true;
+            if (typeof str != "string"){
+                str += "";
+            }
+            return str.replace(/[\u0391-\uFFE5]/g,"aa").length>6?false:true;
+        }
     }
 };
 </script>
@@ -341,11 +351,12 @@ export default {
             align-content: flex-start;
             li {
                 height: 120px;
-                margin-right: 25px;
+                min-width: 316px;
+                margin-right: 20px;
                 border-radius: 0px;
                 padding: 0;
                 background:rgba(255,255,255,1);
-                margin-bottom: 21px;
+                margin-bottom: 17px;
                 transition: all 300ms;
                 cursor: pointer;
                 

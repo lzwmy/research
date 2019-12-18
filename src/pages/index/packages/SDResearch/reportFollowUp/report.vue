@@ -128,33 +128,32 @@ export default {
         this.addEventListenervisibilityChange();
     },
     destoryed() {
-        document.removeEventListener(this.visibilityChange)
+        document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
     },
     components: {
         pagination
     },
     methods: {
+        visibilityChangeHandle() {
+            if (!document[this.hidden]) {
+                this.getDataList()
+            }
+        },
         addEventListenervisibilityChange() {
-            let hidden = "";
-            this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";
             } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
+                this.hidden = "mozHidden";
                 this.visibilityChange = "mozvisibilitychange";
             } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                this.hidden = "msHidden";
                 this.visibilityChange = "msvisibilitychange";
             } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                this.hidden = "webkitHidden";
                 this.visibilityChange = "webkitvisibilitychange";
             }
-            document.addEventListener(this.visibilityChange,()=>{
-                if(!document[hidden]) {
-                    this.getDataList();
-                }
-            }, false);
+            document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let that = this;

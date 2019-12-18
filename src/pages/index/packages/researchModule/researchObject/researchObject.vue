@@ -323,8 +323,6 @@ export default {
         },
         //切换页面刷新操作
         addEventListenervisibilityChange() {
-            this.hidden = "";
-            this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
                 this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";

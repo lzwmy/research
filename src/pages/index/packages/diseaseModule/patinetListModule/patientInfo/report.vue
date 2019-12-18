@@ -71,9 +71,6 @@
     // mounted () {
     //     this.addEventListenervisibilityChange();
     // },
-    // beforeDestroy(){
-    //     document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
-    // },
     components: {
       pagination
     },
