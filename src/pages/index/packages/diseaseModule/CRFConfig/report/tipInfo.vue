@@ -91,9 +91,9 @@
           { 
             isExamine:true,    
             status: 2,          
-            text: '已修改处批注',        
+            text: '尚无数据批注',        
             showBtn: false,      
-            btnText:'不通过',     
+            btnText:'通过',     
             mode:1,            
             icon:'iconjianqu1', 
           },
@@ -116,6 +116,27 @@
             icon:'iconjianqu2', 
           },
         ]
+      }
+    },
+    computed: {
+      annotateNum: function() {
+        return this.$store.state.annotateData.annotateNum;
+      }
+    },
+    watch: {
+      annotateNum: function(newVal) {
+        //批注后改变对象属性的值
+        let obj = this.messageList.find(li=>{
+          return li.status == 2 && li.isExamine == true;
+        })
+        //无批注
+        if(newVal==0) {
+          obj.text = '尚无数据批注';
+          obj.btnText = '通过';
+        }else {
+          obj.text = '已修改'+newVal+'处批注';
+          obj.btnText = '不通过';
+        }
       }
     },
     created() {
