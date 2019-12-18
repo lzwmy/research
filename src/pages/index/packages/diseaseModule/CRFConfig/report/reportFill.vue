@@ -451,7 +451,7 @@ export default {
           if(report.data && report.data.portions&&report.data.portions.length==0){
               this.$store.commit("CRF_SET_REPORT_STATUS", true);
           }else{
-            this.showReadComponent=true;
+            // this.showReadComponent=true;
             // this.showReadComponent=false;
           }
         }
@@ -659,7 +659,6 @@ export default {
     },
     //操作视图
     handleView(data) {
-      console.log(data)
       this.showReadComponent = data.mode === 1 ? true : false;
       this.btnShow = data.showBtn;
     }

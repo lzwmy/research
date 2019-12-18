@@ -4,7 +4,7 @@
     <div class="mes_box" v-if="[2,3,4].includes(curInfo.status)" :class="
     ['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'',curInfo.btnText=='通过'?'pass':'']">
       <div class="mes_info"><i class="icon iconfont" :class="curInfo.icon"></i><span class="mes_text">{{curInfo.text}}</span></div>
-      <div class="mes_btn" @click="clickVerify(curInfo.status)">{{curInfo.btnText}}</div>
+      <div class="mes_btn" @click="clickVerify(curInfo.status,curInfo)">{{curInfo.btnText}}</div>
     </div>
   </div>
 </template>
@@ -46,7 +46,7 @@
             status: 0,          //报告状态
             text: null,         //提示文本消息
             showBtn: true,      //是否显示提交、保存按钮
-            btnText:'召回',     //按钮文字
+            btnText:'',     //按钮文字
             mode:0,             //模式0-填写  1-阅读
             icon:null,          //iconfont  
           },
@@ -55,7 +55,7 @@
             status: 1,          
             text: null,        
             showBtn: true,      
-            btnText:'召回',     
+            btnText:'',     
             mode:0,            
             icon:null, 
           },
@@ -125,18 +125,7 @@
     },
     watch: {
       annotateNum: function(newVal) {
-        //批注后改变对象属性的值
-        let obj = this.messageList.find(li=>{
-          return li.status == 2 && li.isExamine == true;
-        })
-        //无批注
-        if(newVal==0) {
-          obj.text = '尚无数据批注';
-          obj.btnText = '通过';
-        }else {
-          obj.text = '已修改'+newVal+'处批注';
-          obj.btnText = '不通过';
-        }
+        this.checkAnnotateNum(newVal);
       }
     },
     created() {
@@ -146,25 +135,46 @@
       this.$emit('handleView',this.curInfo || {})
     },
     methods:{
-      clickVerify(status) {
+      clickVerify(status, curInfo) {
         //如果为非审核情况下，显示保存、提交按钮 进入填写模式
-        if(!this.isExamine) { // 召回
-          this.curInfo.status = 1;
-          this.curInfo.mode = 0;
-          this.curInfo.showBtn = true;
-          this.reportBakCallback().then(() => this.$emit('handleView',this.curInfo))
-        }else { // 通过 or  不通过
-          this.curInfo = this.messageList.find(li=>{
-            return li.status== 2 && li.isExamine == this.isExamine;
-          });
-          if(this.curInfo.btnText == '通过') {
-            this.readReportBakAudit(4)
-          }else if(this.curInfo.btnText == '不通过') {
-            this.readReportBakAudit(3)
+        this.$confirm('是否执行('+curInfo.btnText+')操作?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          if(!this.isExamine) { // 召回
+            this.curInfo.status = 1;
+            this.curInfo.mode = 0;
+            this.curInfo.showBtn = true;
+            this.reportBakCallback().then(() => this.$emit('handleView',this.curInfo))
+          }else { // 通过 or  不通过   //重新审核
+            switch (this.curInfo.btnText) {
+              case '重新审核':
+                this.checkAnnotateNum(this.annotateNum);
+                this.curInfo = this.messageList.find(li=>{
+                  return li.status== 2 && li.isExamine == true;
+                });
+                break;
+              case '通过':
+                this.curInfo = this.messageList.find(li=>{
+                  return li.status== 4 && li.isExamine == true;
+                });
+                this.readReportBakAudit(4).then(()=>{
+                  this.$emit('handleView',this.curInfo)
+                })
+                break;
+              case '不通过':
+                this.curInfo = this.messageList.find(li=>{
+                  return li.status== 3 && li.isExamine == true;
+                });
+                this.readReportBakAudit(3).then(()=>{
+                  this.$emit('handleView',this.curInfo)
+                })
+                break;
+              default:break;
+            }
           }
-          this.$emit('handleView',this.curInfo)
-        }
-        // this.readReportBakAudit(status).then(data => this.$emit('handleView',data));
+        }).catch(() => {});
       },
       // 审核报告   3 不通过 4 通过
       async readReportBakAudit(status) {
@@ -196,15 +206,28 @@
           console.log(error)
         }
       },
-
+      //提交后改变状态
       changeStatus(status) {
-        this.curInfo.status = 1;
-        this.curInfo.mode = 1;
-        this.curInfo.showBtn = false;
+        this.curInfo = this.messageList.find(li=>{
+          return li.status== 2 && li.isExamine == false;
+        });
         this.$emit('handleView',this.curInfo)
+      },
+      //检查批注
+      checkAnnotateNum (n) {
+        //批注后改变对象属性的值
+        let obj = this.messageList.find(li=>{
+          return li.status == 2 && li.isExamine == true;
+        })
+        //无批注
+        if(n==0) {
+          obj.text = '尚无数据批注';
+          obj.btnText = '通过';
+        }else {
+          obj.text = '已修改'+n+'处批注';
+          obj.btnText = '不通过';
+        }
       }
-    },
-    mounted() {
     }
   }
 </script>

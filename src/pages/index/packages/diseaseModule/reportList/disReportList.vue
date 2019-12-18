@@ -42,7 +42,7 @@
                                             v-for="(item, index) in scope.row.recordData"
                                             :key="index"
                                             :hide-timestamp="true"
-                                            class="aaaaaaaaaaaa">
+                                            :class="'status_'+item.actionType">
                                             <div class="expand_content">
                                                 <i class="icon iconfont" :class="matchingIcon(item.actionType)"></i>
                                                 <p>
@@ -51,18 +51,18 @@
                                                     <span>{{matchingStatus(item.actionType)}}</span>
                                                 </p>
                                                 <el-popover
-                                                    v-if="[3,4,5].includes(item.actionType) && (scope.row.dataChangeList.length || scope.row.notationList.length)"
+                                                    v-if="[3,4,5].includes(item.actionType) && (item.dataChangeList.length || item.notationList.length)"
                                                     placement="right"
                                                     width="350"
                                                     popper-class="expand_popover"
-                                                    trigger="click">
+                                                    trigger="hover">
                                                     <div class="content" >
                                                         <!-- 修改记录 -->
-                                                        <p v-for="(li,index) in scope.row.dataChangeList" :key="index">
+                                                        <p v-for="(li,index) in item.dataChangeList" :key="index">
                                                             {{scope.row.createTime}} - {{scope.row.creatorName }} 修改"{{li.oldData}}"为"{{li.newData }}"
                                                         </p>
                                                         <!-- 批注记录 -->
-                                                        <p v-for="(li,index) in scope.row.notationList" :key="index">
+                                                        <p v-for="(li,index) in item.notationList" :key="index">
                                                             {{li.createTime}} - {{li.creatorName}} 备注"{{li.content}}"
                                                         </p>
                                                     </div>
@@ -265,7 +265,6 @@ export default {
             }
         },
         toReportFill(row) {
-          // console.log(row)
             this.getIdentify(row.patientId)
             .then( ()=>{
                 let that = this;
@@ -281,7 +280,6 @@ export default {
                     identify: this.identify || "",
                     from: "reportList",
                     // from: "dataMonitoring",
-                    // reportStatus: 3,
                     reportStatus: row.status,
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
@@ -468,6 +466,33 @@ export default {
                 }
                 .el-timeline-item__content {
                     color: #232325;
+                }
+                &.status_2 {
+                    color: #8AC75B;
+                    .el-timeline-item__node {
+                        border-color: #8AC75B;
+                    }
+                    .el-timeline-item__content {
+                        color: #8AC75B;
+                    }
+                }
+                &.status_3 {
+                    color: #DF4931;
+                    .el-timeline-item__node {
+                        border-color: #DF4931;
+                    }
+                    .el-timeline-item__content {
+                        color: #DF4931;
+                    }
+                }
+                &.status_4 {
+                    color: #00BE90;
+                    .el-timeline-item__node {
+                        border-color: #00BE90;
+                    }
+                    .el-timeline-item__content {
+                        color: #00BE90;
+                    }
                 }
             }
             .el-timeline-item__node {
