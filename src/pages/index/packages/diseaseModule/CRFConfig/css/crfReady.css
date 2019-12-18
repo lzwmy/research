@@ -556,6 +556,7 @@ body.theme-blue .crf-left-btn.onclick {
   transform: translate(0, -40%);
   background-color: #fff;
   border-radius: 6px;
+  font-size: 14px;
   z-index: 1;
   display: none;
 }
@@ -595,7 +596,7 @@ body.theme-blue .crf-left-btn.onclick {
 }
 .read_container-mode .info_fixed .info_tip_box .tip_content p span.ml_7{
   display: inline-block;
-  padding-top: 7px;
+  padding-top: 5px;
 }
 .read_container-mode .info_fixed .info_tip_box > i{
   display: inline-block;

@@ -57,7 +57,7 @@
           console.log('监听',data);
           if(data.length!==0) {
             let copyData = JSON.parse(JSON.stringify(data));
-            let sum = utils.deleteObject(copyData).length;
+            let sum = copyData.length;
             this.$store.dispatch('annotateNumberFun',sum)
           }
       }
