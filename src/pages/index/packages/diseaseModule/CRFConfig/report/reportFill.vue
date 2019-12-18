@@ -15,8 +15,8 @@
             </span>
 
             <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
-            <el-button v-if="urlParameter.from != 'patientFollowUp' && btnShow" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
-            <el-button v-if='btnShow' size="medium" type="success" style="float:right;margin-right: 5px;height: 33px;" @click="submitReportData">提交</el-button>
+            <el-button v-if="urlParameter.from != 'patientFollowUp' && btnShow" @click="saveReportConfirm" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
+            <el-button v-if='btnShow' size="medium" type="success" style="float:right;margin-right: 5px;height: 33px;" @click="submitReportConfirm">提交</el-button>
              <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button>-->
           </div>
           <div  ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
@@ -98,25 +98,13 @@
         <i class="iconfont iconlujing3" @click="remarkVisible = true"></i>
       </div>
       <div class="remark_body_box">
-        <!--<div class="remark_content-item" v-for="(item,index) in remarkList" :key="index">
+        <div class="remark_content-item" v-for="(item,index) in remarkList" :key="index">
           <div class="content-item_title">{{index+1}}、{{item.createTime}} 由 <span>{{item.creatorName}}</span> 备注</div>
           <div class="content-item_info">
             <span v-html="item.content"></span>
             <div>
               <i class="iconfont iconlujing4" @click="modifyRemark(item)"></i>
               <i class="iconfont iconshanchu1 del" @click="deleteRemark(item)"></i>
-            </div>
-          </div>
-        </div>-->
-        <div class="remark_content-item">
-          <div class="content-item_title">1 由 <span>啊实打实</span> 备注</div>
-          <div class="content-item_info">
-            <span >
-              啊手动阀手动阀
-            </span>
-            <div>
-              <i class="iconfont iconlujing4" ></i>
-              <i class="iconfont iconshanchu1 del" ></i>
             </div>
           </div>
         </div>
@@ -355,7 +343,26 @@ export default {
 
       });
     },
-
+    submitReportConfirm() {
+      this.$confirm('是否执行当前操作', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.submitReportData();
+      }).catch(() => {
+      });
+    },
+    saveReportConfirm() {
+      this.$confirm('是否执行当前操作', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.saveReportData()
+      }).catch(() => {
+      });
+    },
     downPDF() {
       $(".crfConfig").addClass("heightAuto");
       $("#pdfForm").addClass("pdf")

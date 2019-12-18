@@ -30,17 +30,17 @@
           </p>
         </div>
       </div>
-        <div class="info_tip_box" v-else-if="annotateProcess()">
-          <i></i>
-          <div class="tip_content" >
-            <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
-              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.content}}</span>
-            </p>
-            <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
-            </p>
-          </div>
+      <div class="info_tip_box" v-else-if="annotateProcess()">
+        <i></i>
+        <div class="tip_content" >
+          <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
+            <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+          </p>
+          <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+            <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+          </p>
         </div>
+      </div>
     </div>
     <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
   </div>
