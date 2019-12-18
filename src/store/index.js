@@ -52,9 +52,11 @@ const user = {
     diseaseInfo: {
       diseaseId: '',    //病种ID
       isAdmin: false,  //是否为管理员
-      roles: [],
+      roles: [3],
       orgCode: '',      //组织机构
-      doctor: ''      //医生
+      orgName: '',
+      doctor: '',      //医生
+      doctorName: ''
     },
     session_isDislpayArrow: false,
     //病种列表

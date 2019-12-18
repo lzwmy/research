@@ -25,39 +25,41 @@
         </el-popover>
 
         <!-- 组织机构和医生 -->
-        <!-- v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage'].includes($route.meta.flag) ) && (orgSelectHide || this.$store.state.user.diseaseInfo.isAdmin)" -->
 
         <el-popover
             class="orgDoctorSelect"
             popper-class="orgDoctorSelect"
             placement="bottom"
             width="200"
-            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage'].includes($route.meta.flag) )"
-            :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !orgSelectDisable'
+            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage','diseasePatientFollowUp'].includes($route.meta.flag) )"
+            :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
             v-model="orgPopoverVisible"
             trigger="click">
-            <div slot="reference" class="flex-between-center">{{orgInfo.orgName}}<span v-if="!orgInfo.orgName">全部机构</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable))?'disabled':''">{{orgInfo.orgName}}<span v-if="!orgInfo.orgName">全部机构</span><i class="el-icon-arrow-down el-icon--right"></i></div>
             <div>
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="orgInfoInput" clearable></el-input>
                 <div class="content">
-                    <p v-for="(item,index) in filterOrgList" :key="index" @click="orgInfo = item;orgPopoverVisible = false;">{{item.orgName}}</p>
+                    <p v-for="(item,index) in filterOrgList" :key="index" @click="selectOrg(item)" 
+                    :class="orgInfo.orgCode==item.orgCode?'active':''">{{item.orgName}}</p>
                     <em v-if="filterOrgList.length==0" class="empty">(空)</em>
                 </div>
             </div>
         </el-popover>
         <el-popover
-            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage'].includes($route.meta.flag) )"
+            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage','diseasePatientFollowUp'].includes($route.meta.flag) )"
             class="orgDoctorSelect"
             popper-class="orgDoctorSelect"
             placement="bottom"
             width="200"
+            :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'
             v-model="doctorPopoverVisible"
             trigger="click">
-            <div slot="reference" class="flex-between-center">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">全部医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable)?'disabled':''">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">全部医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
             <div>
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="doctorInput" clearable></el-input>
                 <div class="content">
-                    <p v-for="(item,index) in filterDoctorList" :key="index" @click="doctorInfo = item;doctorPopoverVisible = false;">{{item.userName}}</p>
+                    <p v-for="(item,index) in filterDoctorList" :key="index" @click="doctorInfo = item;doctorPopoverVisible = false;"
+                    :class="doctorInfo.id==item.id?'active':''">{{item.userName}}</p>
                     <em v-if="filterDoctorList.length==0" class="empty">(空)</em>
                 </div>
             </div>
@@ -112,8 +114,8 @@ export default {
             doctorPopoverVisible: false,
             doctor: '',     //医生
             doctorInfo: '',
-            orgSelectHide: utils.arrayExistAttr([1,2,4],this.$store.state.user.diseaseInfo.roles,null,false),
-            orgSelectDisable: utils.arrayExistAttr([1],this.$store.state.user.diseaseInfo.roles,null,false)
+            selectNoDisable: utils.arrayExistAttr([1,2,4],this.$store.state.user.diseaseInfo.roles,null,false),
+            selectOrgNoDisable: utils.arrayExistAttr([1],this.$store.state.user.diseaseInfo.roles,null,false)
         };
     },
     watch: {   
@@ -125,16 +127,16 @@ export default {
                 }
             });
         },
-        orgInfo: function(newVal) {
-            this.doctorInfo = '';
-            this.getDoctorList();
-            this.$store.commit('saveDiseaseInfo',
-                Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-                    orgCode: this.orgInfo.orgCode,
-                    orgName: this.orgInfo.orgName
-                })
-            );
-        },
+        // orgInfo: function(newVal) {
+        //     this.doctorInfo = '';
+        //     this.getDoctorList();
+        //     this.$store.commit('saveDiseaseInfo',
+        //         Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+        //             orgCode: this.orgInfo.orgCode,
+        //             orgName: this.orgInfo.orgName
+        //         })
+        //     );
+        // },
         doctorInfo: function(newVal) {
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
@@ -157,6 +159,14 @@ export default {
         },
     },
     created () {
+        this.orgInfo = {
+            orgCode: this.$store.state.user.diseaseInfo.orgCode,
+            orgName: this.$store.state.user.diseaseInfo.orgName
+        }
+        this.doctorInfo = {
+            id: this.$store.state.user.diseaseInfo.doctor,
+            userName: this.$store.state.user.diseaseInfo.doctorName,
+        }
         this.loginType = localStorage.getItem('CURR_LOGIN_TYPE')
         this.getOrgList(this.$store.state.user.diseaseInfo.diseaseId);
         this.getDataList()
@@ -178,6 +188,19 @@ export default {
             this.popoverVisible = false;
             this.getOrgList(item.id);
             this.$emit('diseaseSelect', item.id)
+        },
+        //选择机构
+        selectOrg(row) {
+            this.orgInfo = row;
+            this.orgPopoverVisible = false;
+            this.doctorInfo = {};
+            this.getDoctorList();
+            this.$store.commit('saveDiseaseInfo',
+                Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                    orgCode: this.orgInfo.orgCode,
+                    orgName: this.orgInfo.orgName
+                })
+            );
         },
         async getDataList () {
             this.loading = true;
@@ -205,7 +228,6 @@ export default {
         },
         //获取机构列表
         async getOrgList(id) {
-            this.orgInfo = '';
             this.orgLoading = true;
             try {
                 let res = await this.$http.ORGDisGetOrgList({
@@ -216,9 +238,9 @@ export default {
                     this.orgList = res.data;
                     this.orgList.unshift({
                         orgName: '全部机构',
-                        orgCode: null
+                        orgCode: ''
                     })
-                    if(this.orgList.length) {
+                    if(this.orgList.length && !this.$store.state.user.diseaseInfo.orgCode) {
                         this.orgInfo = this.orgList[0];
                     }
                 }
@@ -242,7 +264,7 @@ export default {
                     this.doctorList = res.data.args;
                     this.doctorList.unshift({
                         userName: '全部医生',
-                        id: null
+                        id: ''
                     })
                 }
             } catch (err) {
@@ -393,6 +415,9 @@ export default {
                     color: #666;
                     cursor: pointer;
                     &:hover {
+                        color: #1bbae1;
+                    }
+                    &.active {
                         color: #1bbae1;
                     }
                 }

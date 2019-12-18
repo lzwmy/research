@@ -165,7 +165,7 @@ export default {
         this.$store.commit('saveDiseaseInfo',{
           diseaseId: item.id,
           isAdmin: res,
-          roles: [],
+          roles: [3],
           orgCode: '',      //组织机构
           doctor: ''      //医生
         });

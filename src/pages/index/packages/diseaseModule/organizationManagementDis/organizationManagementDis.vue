@@ -106,7 +106,7 @@
             class="height_auto"
             @close="closeDialog"
             :visible.sync="dialgOrgForm.visible" 
-            width="45%">
+            width="700px">
             <el-form :model="dialgOrgForm" ref="dialgOrgForm" :rules="dialgoOrgFormRules" label-width="110px"
                     class="ruleFormDialog" @submit.native.prevent v-loading="dialgOrgForm.loading" label-position="left">
                 <el-form-item label="机构名称：" prop="orgName">

@@ -523,13 +523,29 @@
         }
       },
       orgCode: function(newVal) {
-        this.getAllDoctorList()
+        this.$router.push({
+          path:'/patientListModule',
+          query: {
+            id: this.$route.query.id
+          }
+        })
       },
+      doctor: function(newVal) {
+        this.$router.push({
+          path:'/patientListModule',
+          query: {
+            id: this.$route.query.id
+          }
+        })
+      }
     },
     computed: {
       orgCode: function() {
         return this.$store.state.user.diseaseInfo.orgCode;
       },
+      doctor: function() {
+        return this.$store.state.user.diseaseInfo.doctor;
+      }
     },
     beforeRouteEnter (to, from, next) {
       //从病人列表进入

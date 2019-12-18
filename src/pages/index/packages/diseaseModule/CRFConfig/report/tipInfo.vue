@@ -1,7 +1,8 @@
 <template>
   <!--消息提示窗口-->
   <div class="tip_box">
-    <div class="mes_box" v-if="[2,3,4].includes(curInfo.status)" :class="['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'']">
+    <div class="mes_box" v-if="[2,3,4].includes(curInfo.status)" :class="
+    ['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'',curInfo.btnText=='通过'?'pass':'']">
       <div class="mes_info"><i class="icon iconfont" :class="curInfo.icon"></i><span class="mes_text">{{curInfo.text}}</span></div>
       <div class="mes_btn" @click="clickVerify(curInfo.status)">{{curInfo.btnText}}</div>
     </div>
@@ -90,7 +91,7 @@
           { 
             isExamine:true,    
             status: 2,          
-            text: '已修改10处批注',        
+            text: '已修改处批注',        
             showBtn: false,      
             btnText:'不通过',     
             mode:1,            
@@ -161,6 +162,52 @@
 </script>
 
 <style lang="less" scoped>
+  .success_status {
+    background:rgba(0,192,142,0.08);
+    border: 1px solid #00BF8F;
+    .icon {
+      color: #00BF8F;
+    }
+    .mes_text {
+      color: #00BF8F;
+    }
+    .mes_btn {
+      background:#00C08E;
+    }
+  }
+  .fail_status {
+    background:rgba(232,70,1,0.08);
+    border:1px solid rgba(235,69,0,1);
+    .icon {
+      color: #E24828;
+    }
+    .mes_text {
+      color: #E5471B;
+    }
+    .mes_btn {
+      background:rgba(229,71,27,1);
+    }
+  }
+  .normal_status {
+    background:rgba(126,131,180,0.08);
+    border:1px solid rgba(126,130,182,1);
+    .icon {
+      color: #7E84B2;
+    }
+    .mes_text {
+      color: #7E84B2;
+    }
+    .mes_btn {
+      background:#7E84B2;
+    }
+  }
+  .isExamine_btn{
+    color: #2b41de;
+    text-decoration: underline;
+    background-color: transparent;
+  }
+
+
   .tip_box {
     position: fixed;
     top: 22px;
@@ -204,59 +251,29 @@
       }
     }
     .mes_status_2 {
-      background:rgba(126,131,180,0.08);
-      border:1px solid rgba(126,130,182,1);
+      .normal_status();
       &.isExamine {
-
-      }
-      .icon {
-        color: #7E84B2;
-      }
-      .mes_text {
-        color: #7E84B2;
-      }
-      .mes_btn {
-        background:#7E84B2;
+        .fail_status();
+        &.pass {
+          .success_status();
+        }
       }
     }
     .mes_status_3 {
-      background:rgba(232,70,1,0.08);
-      border:1px solid rgba(235,69,0,1);
+      .fail_status();
       &.isExamine {
         .mes_btn {
-          color: #2b41de;
-          text-decoration: underline;
-          background-color: transparent;
+          .isExamine_btn();
         }
       } 
-      .icon {
-        color: #E24828;
-      }
-      .mes_text {
-        color: #E5471B;
-      }
-      .mes_btn {
-        background:rgba(229,71,27,1);
-      }
+      
     }
     .mes_status_4 {
-      background:rgba(0,192,142,0.08);
-      border:1px solid rgba(0,193,141,1);
+      .success_status();
       &.isExamine {
         .mes_btn {
-          color: #2b41de;
-          text-decoration: underline;
-          background-color: transparent;
+          .isExamine_btn();
         }
-      }
-      .icon {
-        color: #00BF8F;
-      }
-      .mes_text {
-        color: #00BF8F;
-      }
-      .mes_btn {
-        background:#00C08E;
       }
     }
     

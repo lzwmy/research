@@ -115,6 +115,22 @@ export default {
             }
         };
     },
+    watch: {
+        orgCode: function(newVal) {
+            this.getDataList()
+        },
+        doctor: function(newVal) {
+            this.getDataList()
+        }
+    },
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+    },
     created () {
         this.initDate()
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
@@ -215,11 +231,13 @@ export default {
                     diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
                     startTime: startTime,
                     endTime: endTime,
-                    status: this.form.state
+                    status: this.form.state,
+                    "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+                    "userId": this.$store.state.user.diseaseInfo.doctor
                 }
             };
             try {
-                let res = await that.$http.PFUPgetDataList(formData);
+                let res = await that.$http.PFUPDisGetDataList(formData);
                 if (res.code == '0') {
                     this.dataList = res.data.args;
                 }

@@ -178,6 +178,7 @@ export default {
                 utils.ssoLogout();
             }).catch((errors) => {
                 console.log(errors);
+                utils.ssoLogout();
             });
         },
         onBack() {

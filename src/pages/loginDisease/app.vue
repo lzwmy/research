@@ -109,14 +109,17 @@ export default {
           };
           that.$store.commit('saveToken',res.data.data.token) 
           that.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-          this.getUserRoles().then((res)=>{
+          this.getUserRoles().then((resRoles)=>{
             this.$store.commit('saveDiseaseInfo',{
               diseaseId: this.$store.state.user.diseaseInfo.diseaseId, 
               isAdmin: false,
-              roles: res.data || [],
-              orgCode: '',      //组织机构
-              doctor: ''      //医生
+              roles: resRoles.data || [3],
+              orgCode: res.data.data.orgCode,
+              orgName: res.data.data.orgName,
+              doctor: res.data.data.userId,
+              doctorName: res.data.data.name
             });
+            debugger
             window.location.href = './index.html#/diseaseChart?id='+ utils.getQuery('id');
           })
           return

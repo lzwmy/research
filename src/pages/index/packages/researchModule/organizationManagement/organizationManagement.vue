@@ -235,7 +235,7 @@ export default {
                 userName: '',
                 status: '',
                 page: 0,
-                size: 9999
+                size: 500
             }
             try {
                 let res = await this.$http.userFindAllUsers(formData);
