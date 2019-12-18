@@ -191,6 +191,13 @@
           console.log(error)
         }
       },
+
+      changeStatus(status) {
+        this.curInfo.status = 1;
+        this.curInfo.mode = 1;
+        this.curInfo.showBtn = false;
+        this.$emit('handleView',this.curInfo)
+      }
     },
     mounted() {
     }
