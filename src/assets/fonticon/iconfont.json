@@ -1649,6 +1649,13 @@
       "font_class": "yibaocun",
       "unicode": "e70d",
       "unicode_decimal": 59149
+    },
+    {
+      "icon_id": "12401733",
+      "name": "系统设置",
+      "font_class": "systemSetup",
+      "unicode": "e70e",
+      "unicode_decimal": 59150
     }
   ]
 }

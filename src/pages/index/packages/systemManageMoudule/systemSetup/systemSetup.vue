@@ -3,13 +3,13 @@
         <div class="cloud-search-list">
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-5):(routerViewHeight*1)"
                     :data="dataList.content" v-loading="loading" ref="refTable" fit>
-                    <el-table-column prop="" label='名称'></el-table-column>
-                    <el-table-column prop="" label='Key'></el-table-column>
-                    <el-table-column prop="" label='值'></el-table-column>
-                    <el-table-column prop="" label='备注' min-width="180"></el-table-column>
-                    <el-table-column prop="" label='操作' width="120">
+                    <el-table-column prop="name" label='名称'></el-table-column>
+                    <el-table-column prop="key" label='Key'></el-table-column>
+                    <el-table-column prop="value" label='值'></el-table-column>
+                    <el-table-column prop="remark" label='备注' min-width="180"></el-table-column>
+                    <el-table-column label='操作' width="120">
                         <template slot-scope="scope">
                             <el-button type="text" @click="showDialog(scope.row)"><i class="iconfont iconbianji"></i></el-button>
                         </template>
@@ -58,12 +58,13 @@ export default {
     data () {
         return {
             dataList: {
-                content: [{},{}]
+                content: []
             },
             dialogForm: {
                 loading: false,
                 visible: false,
                 name:'',
+                id:'',
                 key: '',
                 value: '',
                 note:''
@@ -77,7 +78,7 @@ export default {
         };
     },
     created () {
-        // this.getDataList();
+        this.getDataList();
     },
     components: {
         echartsContain,
@@ -86,10 +87,8 @@ export default {
         async getDataList () {
             let that = this;
             that.loading = true;
-            let formData = {
-            };
             try {
-                let res = await that.$http.systemSetupGetDataList(formData);
+                let res = await that.$http.systemSetupGetDataList();
                 if (res.code == '0') {
                     that.dataList.content = res.data;
                 }
@@ -104,20 +103,22 @@ export default {
             this.dialogForm = {
                 loading: false,
                 visible: true,
-                name:'',
-                key: '',
-                value: '',
-                note:''
+                name: row.name,
+                id: row.id,
+                key: row.key,
+                value: row.value,
+                note: row.remark
             }
         },
-        saveDialog() {
+        saveDialog() { 
             this.$refs['dialogFormRef'].validate(async(valid) => {
                 if (valid) {
                     this.dialogForm.loading = true;
                     try {
                         let res = await this.$http.systemSetupSave({
-                            orgCode: this.dialogForm.orgCode,
-                            orgName: this.dialogForm.orgName
+                            "id": this.dialogForm.id,
+                            "remark": this.dialogForm.note,
+                            "value": this.dialogForm.value
                         });
                         if (res.code == '0') {
                             this.$mes('success', '保存成功!');
@@ -142,6 +143,7 @@ export default {
                 loading: false,
                 visible: false,
                 name:'',
+                id:'',
                 key: '',
                 value: '',
                 note:''

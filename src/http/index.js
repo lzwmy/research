@@ -24,6 +24,7 @@ import organizationManagementDis from './organizationManagementDis/index';
 import myTasks from './research/myTasks/index';
 import statisticalAnalysis from './research/statisticalAnalysis/index';
 import qualityManage from './qualityManage/index';
+import systemSetup from './systemSetup/index';
 //科研项目 -- 研究指标
 import researchTarget from './research/researchTaget/index';
 //科研项目 -- 项目进度
@@ -39,5 +40,5 @@ import researchInspiration from './researchInspiration/index';
 const http = Object.assign({}, SDResearch, crfManage, dataDictionaryManage, systemManage, index, staticInfo, auth,CRFManageHttp, patientFollowUp,view360, 
     researchReportManage, eventPlan, researchModel,fullTextSearch,treatmentAnalysis,diseaseChart,CRFConfig,organizationManagement,researchTask,researchObject,
     projectGrouping,followUpPlan,researchTarget,projectProgress,followUpManagement,sucjectAuth,score,organizationManagementDis,myTasks,researchInspiration,
-    statisticalAnalysis,qualityManage);
+    statisticalAnalysis,qualityManage,systemSetup);
 export default http;

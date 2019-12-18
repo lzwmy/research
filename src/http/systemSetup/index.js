@@ -2,8 +2,8 @@
 
 const vm = new Vue();
 const url = {
-    getDataList: '/',
-    save: '/',
+    getDataList: '/manage/system/setup/list.do',
+    save: '/manage/system/setup/edit.do',
 };
 
 const http = {
