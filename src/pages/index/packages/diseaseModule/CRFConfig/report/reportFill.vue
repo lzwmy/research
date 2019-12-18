@@ -580,8 +580,8 @@ export default {
       try {
         let data = await that.$http.reportBakSubmit(formData);
         console.log(data);
-        if(data.code ===0 && data.data) {
-
+        if(data.code ===0) {
+          that.$message.success('提交成功');
         }else {
           that.$message.info(data.msg)
         }
@@ -655,7 +655,7 @@ export default {
     handleView(data) {
       console.log(data)
       this.showReadComponent = data.mode==1?true:false
-      this.btnShow = data.showBtn
+      this.btnShow = data.showBtn || true
     }
   },
   computed: {

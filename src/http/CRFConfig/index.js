@@ -44,7 +44,12 @@ const url = {
   reportBakNoteDelete:"/report/bak/note/delete",
   //提交报告
   reportBakSubmit:"/report/bak/submit",
+  //获取 报告数据变化值
+  getReportBakListDataChange:"/report/bak/list/dataChange",
+  // 召回报告
+  reportBakCallback:"/report/bak/callback",
 };
+
 
 const http = {
   // CRFBakSearchAll(params) {
@@ -100,6 +105,12 @@ const http = {
   },
   reportBakSubmit(params) {
     return vm.$post(url.reportBakSubmit,params,false);
+  },
+  getReportBakListDataChange(params) {
+    return vm.$get(url.getReportBakListDataChange,params,true);
+  },
+  reportBakCallback(params) {
+    return vm.$get(url.reportBakCallback,params,true);
   }
 };
 

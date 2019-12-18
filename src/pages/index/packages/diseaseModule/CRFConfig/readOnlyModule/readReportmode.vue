@@ -11,7 +11,7 @@
 
     <!--批注弹框新增-->
     <el-dialog
-      title="备注"
+      title="批注"
       :visible.sync="centerDialogVisible"
       width="50%"
       center>
@@ -29,7 +29,8 @@
 <script>
   import "./../css/crfReady.css";
   import displayReport from "./display/displayReport";
-  import eventBus from 'src/eventBus/bus.js'
+  import eventBus from 'src/eventBus/bus.js';
+  import utils from 'components/utils/index.js';
   export default {
     name: "readReport",
     props:{
@@ -51,9 +52,21 @@
         }
       }
     },
+    watch:{
+      '$store.state.annotateData.annotateList':function (data) {
+          console.log('监听',data);
+          if(data.length!==0) {
+            let copyData = JSON.parse(JSON.stringify(data));
+            let sum = utils.deleteObject(copyData).length;
+            this.$store.dispatch('annotateNumberFun',sum)
+          }
+      }
+    },
     methods:{
       initPage() {
-        this.$store.dispatch('resetFun')
+        this.$store.dispatch('resetFun');
+        this.$store.dispatch('addModifyDataFun',[]);
+        this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
       },
       closePage() {
         let userAgent = navigator.userAgent;
@@ -109,9 +122,32 @@
         };
         try {
           let data = await that.$http.getReportBakListNotation(formData);
-          console.log(data)
+          console.log('获取批注信息',data)
+          if(data.code === 0) {
+            if(data.data.length !==0) {
+              data.data.forEach(item => {
+                that.$store.dispatch('addFun',item);
+              })
+            }
+          }
         }catch (error) {
           console.log(error);
+        }
+      },
+      // 获取报告数据变化的数值
+      async getReportBakListDataChange() {
+        let that = this;
+        let formData = {
+          reportId:that.report.id
+        };
+        try {
+          let data = await that.$http.getReportBakListDataChange(formData);
+          console.log('获取报告数据修改',data);
+          if(data.code === 0) {
+            this.$store.dispatch('addModifyDataFun',data.data);
+          }
+        }catch (error) {
+          console.log(data)
         }
       }
     },

@@ -904,7 +904,22 @@ const arrRermoveEmpty = function(arr) {
   return arr.filter(li=>{
     return li
   })
-}
+};
+
+// 去除重复对象
+const deleteObject = function (arr,attribute) {
+  var new_arr=[];
+  var json_arr=[];
+  for(var i=0; i<arr.length; i++){
+    // console.log(new_arr.indexOf(arr[i][attribute]));
+    if(new_arr.indexOf(arr[i][attribute]) ==-1){    //  -1代表没有找到
+      new_arr.push(arr[i][attribute]);   //如果没有找到就把这个name放到arr里面，以便下次循环时用
+      json_arr.push(arr[i]);
+    } /*else{
+    }*/
+  }
+  return json_arr;
+};
 
 
 export default {
@@ -954,4 +969,5 @@ export default {
   ToCDB,  //全角转半角
   ToDBC,   //半角转全角
   arrRermoveEmpty,  //数组去除空值
+  deleteObject, // 去除 重复对象
 };

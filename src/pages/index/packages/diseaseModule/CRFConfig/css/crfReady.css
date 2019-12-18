@@ -559,13 +559,21 @@ body.theme-blue .crf-left-btn.onclick {
   z-index: 1;
   display: none;
 }
+
+.read_container-mode .info_fixed  .active_annotate {
+  color: #F99F00 !important;
+}
+.read_container-mode .info_fixed .active_modifyInfo{
+  color: #439AFF !important;
+}
+
 .read_container-mode .info_fixed:hover .info_tip_box {
   display: inline-block;
 }
 .read_container-mode .info_fixed .info_tip_box .tip_content {
   width: 421px;
   min-height: 60px;
-  padding: 0 10px;
+  padding: 10px 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;

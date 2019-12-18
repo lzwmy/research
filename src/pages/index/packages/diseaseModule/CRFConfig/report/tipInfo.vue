@@ -127,25 +127,27 @@
     methods:{
       clickVerify(status) {
         //如果为非审核情况下，显示保存、提交按钮 进入填写模式
-        if(!this.isExamine) {
+        if(!this.isExamine) { // 召回
           this.curInfo.status = 1;
           this.curInfo.mode = 0;
           this.curInfo.showBtn = true;
+          this.reportBakCallback();
           this.$emit('handleView',this.curInfo)
-        }else {
+        }else { // 通过 or  不通过
           this.curInfo = this.messageList.find(li=>{
             return li.status== 2 && li.isExamine == this.isExamine;
-          })
+          });
+          this.readReportBakAudit(3);
           this.$emit('handleView',this.curInfo)
         }
         // this.readReportBakAudit(status).then(data => this.$emit('handleView',data));
       },
-      // 审核报告 3 通过 4 不通过
+      // 审核报告  4 通过  3 不通过
       async readReportBakAudit(status) {
         let that = this;
         let formData = {
           'notationList':this.$store.state.annotateData.annotateList || [],
-          "reportId":that.report.id,
+          "reportId":that.$parent.report.id,
           "status":status,
         };
         try {
@@ -153,6 +155,19 @@
           return data;
         }catch (error) {
           console.log(error);
+        }
+      },
+      async reportBakCallback() {
+        let that = this;
+        let formData = {
+          reportId:that.$parent.report.id
+        };
+        try{
+          let data = await that.$http.reportBakCallback(formData);
+          console.log(data)
+          return  data
+        }catch (error) {
+          console.log(error)
         }
       },
     },
