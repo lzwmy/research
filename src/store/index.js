@@ -232,6 +232,7 @@ const annotateData = {
   state:{
     annotateList:[],
     modifyData:[],
+    annotateNum:0,
   },
   getters:{
     forlist:state => state.annotate
@@ -245,6 +246,9 @@ const annotateData = {
     },
     addModifyData(state,val) {
       state.modifyData = val;
+    },
+    annotateNumber(state,val) {
+      state.annotateNum = val;
     }
   },
   actions:{
@@ -256,6 +260,9 @@ const annotateData = {
     },
     addModifyDataFun(context,data) {
       context.commit('addModifyData',data);
+    },
+    annotateNumberFun(context,data) {
+      context.commit('annotateNumber',data)
     }
   }
 };

@@ -46,7 +46,10 @@ const url = {
   reportBakSubmit:"/report/bak/submit",
   //获取 报告数据变化值
   getReportBakListDataChange:"/report/bak/list/dataChange",
+  // 召回报告
+  reportBakCallback:"/report/bak/callback",
 };
+
 
 const http = {
   // CRFBakSearchAll(params) {
@@ -105,6 +108,9 @@ const http = {
   },
   getReportBakListDataChange(params) {
     return vm.$get(url.getReportBakListDataChange,params,true);
+  },
+  reportBakCallback(params) {
+    return vm.$get(url.reportBakCallback,params,true);
   }
 };
 
