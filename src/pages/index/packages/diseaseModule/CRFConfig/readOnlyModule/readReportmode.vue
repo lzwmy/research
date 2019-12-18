@@ -64,7 +64,7 @@
     },
     methods:{
       initPage() {
-        this.$store.dispatch('annotateNumberFun',0)
+        this.$store.dispatch('annotateNumberFun',0);
         this.$store.dispatch('resetFun');
         this.$store.dispatch('addModifyDataFun',[]);
         this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
