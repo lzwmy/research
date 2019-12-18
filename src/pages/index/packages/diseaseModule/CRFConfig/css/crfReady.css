@@ -556,6 +556,7 @@ body.theme-blue .crf-left-btn.onclick {
   transform: translate(0, -40%);
   background-color: #fff;
   border-radius: 6px;
+  font-size: 14px;
   z-index: 1;
   display: none;
 }
@@ -595,7 +596,7 @@ body.theme-blue .crf-left-btn.onclick {
 }
 .read_container-mode .info_fixed .info_tip_box .tip_content p span.ml_7{
   display: inline-block;
-  padding-top: 7px;
+  padding-top: 5px;
 }
 .read_container-mode .info_fixed .info_tip_box > i{
   display: inline-block;
@@ -850,4 +851,23 @@ body.theme-blue .crf-left-btn.onclick {
   color: #979BAB;
   padding-left: 25px;
   cursor:pointer;
+}
+/***表格**/
+.read_container-mode .view_container_tlr .info_fixed{
+  opacity: 0;
+}
+.read_container-mode .view_table-title .iconzu13{
+  font-size: 16px;
+  color:#979BAB !important;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.read_container-mode .view_table-title .active_annotate {
+  color: #F99F00 !important;
+}
+.read_container-mode .view_table-title .remove_annotate{
+  display: inline-block;
+}
+.read_container-mode .view_table-title .active_modifyInfo {
+  color: #439AFF !important;
 }
