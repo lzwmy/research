@@ -29,7 +29,7 @@
         <el-option
           v-for="item in item.termSet.termItemList"
           :key="item.termItemName"
-          :label="precessData(item.termItemName)"
+          :label="item.termItemName"
           :value="item.termItemName"
         ></el-option>
       </el-select>
@@ -51,7 +51,7 @@
         <el-option
           v-for="it in item.termSet.termItemList"
           :key="it.termItemName"
-          :label="precessData(it.termItemName)"
+          :label="it.termItemName"
           :value="it.termItemName"
         ></el-option>
       </el-select>
@@ -86,10 +86,14 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!=='-1') {
-        return data.split('^')[0]
+      if(data != undefined && data != 'undefined'){
+        if(data.indexOf('^')!='-1') {
+          return data.split('^')[0]
+        }else {
+          return data
+        }
       }else {
-        return data
+        return  data
       }
     },
     //加载术语集
@@ -116,7 +120,7 @@ export default {
       this.report.value = this.checkList.join("|");
     }else if(this.report.value !== "") {
       if(this.report.value.indexOf('|')!== '-1') {
-        this.checkList = this.report.value.split('|');
+        this.checkList = this.report.value.split('|').map(item => this.precessData(item));
       }
     }
 
@@ -133,7 +137,7 @@ export default {
       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
         return item !== ""
       }).map(item=>{
-        return {termItemName:item}
+        return {termItemName:this.precessData(item)}
       });
       this.item.termSet.termItemList = arrayList;
     }

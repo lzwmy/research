@@ -871,3 +871,33 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .view_table-title .active_modifyInfo {
   color: #439AFF !important;
 }
+/** 集合 **/
+.read_container-mode .gather_knowType .is_knowType {
+  font-style: normal;
+  font-size: 14px;
+  color: #A2A2A2;
+}
+.read_container-mode .gather_knowType .iconfont{
+  font-size: 16px;
+  color: #A2A2A2;
+  cursor: pointer;
+}
+.read_container-mode .gather_knowType .remove_annotate {
+  display: inline-block;
+}
+
+/**备注弹框样式**/
+.patient_form_container .annotate_dialog-box .el-dialog .el-dialog__footer{
+  position: static
+}
+.patient_form_container .annotate_dialog-box .el-dialog .el-dialog__body {
+  padding: 25px 25px 30px;
+}
+
+/**批注弹框样式**/
+.read_container-mode .annotate_dialog-box.el-dialog .el-dialog__footer{
+  position: static
+}
+.read_container-mode .annotate_dialog-box .el-dialog .el-dialog__body {
+  padding: 25px 25px 30px;
+}

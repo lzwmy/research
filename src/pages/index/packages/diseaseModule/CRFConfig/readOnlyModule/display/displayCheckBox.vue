@@ -17,7 +17,7 @@
             :key="index"
           ></el-checkbox>
         </el-checkbox-group>-->
-        {{report.value || '(空)'}}
+        {{displayValue || '(空)'}}
       </div>
       <!--<div :class="item.controlType+'_empty'" @click="()=>{checkList=[];report.value='';}">清空</div>-->
       <div class="info_fixed" style="display: table-cell;position: relative;">
@@ -58,7 +58,8 @@ export default {
     return {
       checkList: [],
       termList: [],
-      rootBinding: null //父元素绑定信息
+      rootBinding: null, //父元素绑定信息
+      displayValue:"",
     };
   },
   props: {
@@ -162,16 +163,20 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!='-1') {
-        return data.split('^')[0]
+      if(data != undefined && data != 'undefined'){
+        if(data.indexOf('^')!='-1') {
+          return data.split('^')[0]
+        }else {
+          return data
+        }
       }else {
-        return data
+        return  data
       }
     }
   },
   created() {
     // this.termValue=this.item.termSet.termDefaultValue;
-    this.checkList = this.item.termSet.termDefaultValue;
+    /*this.checkList = this.item.termSet.termDefaultValue;
     if (this.report.value) {
       
       this.checkList = this.report.value.split("|");
@@ -192,6 +197,14 @@ export default {
         return {termItemName:item}
       });
       this.item.termSet.termItemList = arrayList;
+    }*/
+    if(this.report.value) {
+      if(this.report.value.indexOf("|") != '-1') {
+        let array = this.report.value.split("|").map(item => this.precessData(item)).join("、");
+        this.displayValue = array;
+      }else {
+        this.displayValue = this.precessData(this.report.value);
+      }
     }
   },
   computed: {

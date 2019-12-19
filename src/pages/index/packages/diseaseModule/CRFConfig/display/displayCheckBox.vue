@@ -13,7 +13,7 @@
         <el-checkbox-group v-model="checkList">
           <el-checkbox
             v-for="(it,index) in item.termSet.termItemList"
-            :label="precessData(it.termItemName)"
+            :label="it.termItemName"
             :key="index"
           ></el-checkbox>
         </el-checkbox-group>
@@ -118,7 +118,7 @@ export default {
       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
         return item !== ""
       }).map(item=>{
-        return {termItemName:item}
+        return {termItemName:this.precessData(item)}
       });
       this.item.termSet.termItemList = arrayList;
     }
