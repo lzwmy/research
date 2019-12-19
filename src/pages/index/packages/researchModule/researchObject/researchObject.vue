@@ -603,7 +603,9 @@ export default {
                     let res = await this.$http.researchObjectPreviewTableDeleteObject(params);
                     if (res.code == '0') {
                         this.$mes('success','删除成功!')
-                        this.getDataList(this.paging.pageNo, this.paging.pageSize);
+                        this.$refs.refSearch.getGroupList().then(()=>{
+                            this.getDataList(this.paging.pageNo, this.paging.pageSize);
+                        })
                     }
                 } catch (err) {
                     console.log(err)

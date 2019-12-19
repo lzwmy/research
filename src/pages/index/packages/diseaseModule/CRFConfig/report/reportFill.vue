@@ -660,6 +660,7 @@ export default {
     //返回顶层
     backTop() {
       /*if(!this.showReadComponent) {
+        console.log(this.$refs.top)
         this.$refs.top.scrollTop = 0;
       }else {
         this.$refs.reportRead.toTop();

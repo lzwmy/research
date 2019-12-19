@@ -9,6 +9,8 @@ const url = {
     getUserRoles: '/disease/user/isAdmin',
     // 查询机构下的人员列表
     getUserList: '/disease/user/list',
+    // 查询机构下的人员列表（包括所有人员）
+    getUserListAll: '/disease/org/user/list',
     // 删除人员列表项
     deleteUser: '/disease/user/delete',
     // 新建用户
@@ -39,6 +41,9 @@ const http = {
     },
     ORGDisGetUserList (params) {
         return vm.$post(url.getUserList, params, false);
+    },
+    ORGDisGetUserListAll (params) {
+        return vm.$get(url.getUserListAll, params, true);
     },
     ORGDisDeleteUser (params) {
         return vm.$get(url.deleteUser, params, true);

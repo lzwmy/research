@@ -1,7 +1,7 @@
 <template>
   <!--消息提示窗口-->
   <div class="tip_box">
-    <div class="mes_box" v-if="[2,3,4].includes(curInfo.status)" :class="
+    <div class="mes_box" v-if="curInfo &&[2,3,4].includes(curInfo.status)" :class="
     ['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'',curInfo.btnText=='通过'?'pass':'']">
       <div class="mes_info"><i class="icon iconfont" :class="curInfo.icon"></i><span class="mes_text">{{curInfo.text}}</span></div>
       <div class="mes_btn" @click="clickVerify(curInfo.status,curInfo)">{{curInfo.btnText}}</div>
@@ -95,7 +95,7 @@
             showBtn: false,      
             btnText:'通过',     
             mode:1,            
-            icon:'iconjianqu1', 
+            icon:'iconjianqu2', 
           },
           { 
             isExamine:true,    
@@ -143,7 +143,7 @@
     methods:{
       clickVerify(status, curInfo) {
         //如果为非审核情况下，显示保存、提交按钮 进入填写模式
-        this.$confirm('是否执行('+curInfo.btnText+')操作?', '提示', {
+        this.$confirm('是否执行 ('+curInfo.btnText+') 操作?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -162,19 +162,23 @@
                 });
                 break;
               case '通过':
-                this.curInfo = this.messageList.find(li=>{
-                  return li.status== 4 && li.isExamine == true;
-                });
                 this.readReportBakAudit(4).then(()=>{
-                  this.$emit('handleView',this.curInfo)
+                  setTimeout(() => {
+                    this.curInfo = this.messageList.find(li=>{
+                      return li.status== 4 && li.isExamine == true;
+                    });
+                    this.$emit('handleView',this.curInfo)
+                  }, 500);
                 })
                 break;
               case '不通过':
-                this.curInfo = this.messageList.find(li=>{
-                  return li.status== 3 && li.isExamine == true;
-                });
                 this.readReportBakAudit(3).then(()=>{
-                  this.$emit('handleView',this.curInfo)
+                  setTimeout(() => {
+                    this.curInfo = this.messageList.find(li=>{
+                      return li.status== 3 && li.isExamine == true;
+                    });
+                    this.$emit('handleView',this.curInfo)
+                  }, 500);
                 })
                 break;
               default:break;
@@ -229,9 +233,11 @@
         if(n==0) {
           obj.text = '尚无数据批注';
           obj.btnText = '通过';
+          obj.icon = 'iconjianqu2';
         }else {
           obj.text = '已修改'+n+'处批注';
           obj.btnText = '不通过';
+          obj.icon = 'iconjianqu3';
         }
       }
     }
