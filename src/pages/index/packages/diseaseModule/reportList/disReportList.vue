@@ -32,7 +32,7 @@
                     <echarts-contain containType="big" :parentHeight="routerViewHeight*1-15" :heightRatio="1">
                         <el-table
                             :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-70):(routerViewHeight*1)"
-                            :data="dataList.content" v-loading="loading" ref="refTable" size="small"
+                            :data="dataList.content" v-loading="loading" ref="refTable"
                             :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
                             @row-click="handleClick" @expand-change="expandChange">
                             <el-table-column type="expand" width="40"> 

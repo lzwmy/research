@@ -82,7 +82,7 @@
                     <el-table-column sortable prop="groupName" label="课题组"></el-table-column>
                     <el-table-column sortable label="报告状态" width="110px">
                         <template slot-scope="scope">
-                            {{scope.row.status==0?'未填写':'已填写'}}
+                            {{matchingReportStatus(scope.row.status)}}
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" width="80">
@@ -156,6 +156,18 @@ export default {
         diseaseSubjectgroup
     },
     methods: {
+        //匹配报告状态
+        matchingReportStatus(status) {
+            switch (status) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '已提交';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
+        },
         visibilityChangeHandle() {
             if (!document[this.hidden]) {
                 this.getDataList()

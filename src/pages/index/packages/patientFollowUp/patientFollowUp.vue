@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="fill-info flex-between-center">
                                     <div @click="toReportFill(item)" class="box_tag">
-                                        <span v-html="handleStatus(item.status)"></span>
+                                        <span class="status" :class="'status_'+item.status">{{matchingReportStatus(item.status)}}</span>
                                     </div>
                                     <i @click="dialgoForm.visible = true;dialgoForm.url=item.mobileUrl" class="icon iconfont iconfenxiang copy"></i>
                                 </div>
@@ -162,6 +162,17 @@ export default {
         document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
     },
     methods: {
+        matchingReportStatus(type) {
+            switch (type) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '已提交';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
+        },
         visibilityChangeHandle() {
             if (!document[this.hidden]) {
                 this.getDataList()
@@ -360,6 +371,33 @@ export default {
             cursor: pointer;
             &:hover {
                 box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
+            }
+            .status {
+                display: inline-block;
+                width: 70px;
+                line-height: 22px;
+                text-align: center;
+                border-radius:2px;
+                &.status_0 {
+                    color: rgb(247, 158, 1);
+                    background:rgba(247, 158,1, 0.1);
+                }
+                &.status_1 {
+                    color: rgb(0, 119, 180);
+                    background: rgba(0, 119, 180, 0.1);
+                }
+                &.status_2 {
+                    color: #8aca56;
+                    background:rgba(138, 202, 86,0.1);
+                }
+                &.status_3 {
+                    color: rgb(226, 72, 40);
+                    background:rgba(226, 72, 40,0.1);
+                }
+                &.status_4 {
+                    color: rgb(0, 191, 143);
+                    background:rgba(0, 191, 143,0.1);
+                }
             }
             .copy {
                 color: #9BABB8;

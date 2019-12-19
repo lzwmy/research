@@ -23,9 +23,9 @@
       <el-table-column prop="author" label="创建者"></el-table-column>
       <el-table-column prop="diseaseName" label="病种"></el-table-column>
       <el-table-column prop="groupName" label="课题组"></el-table-column>
-      <el-table-column label="报告状态" width="100px">
+      <el-table-column label="报告状态" width="120px">
         <template slot-scope="scope">
-          {{scope.row.status==0?'未填写':'已填写'}}
+          {{matchingReportStatus(scope.row.status)}}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100">
@@ -75,6 +75,18 @@
       pagination
     },
     methods: {
+      //匹配报告状态
+      matchingReportStatus(status) {
+          switch (status) {
+              case 0: return '未填写';
+              case 1: return '已填写';
+              case 2: return '已提交';
+              case 3: return '审核不通过';
+              case 4: return '审核通过';
+              case 5: return '召回报告';
+              default: break;
+          }
+      },
       visibilityChangeHandle() {
         if (!document[this.hidden]) {
           this.getDataList();
@@ -141,51 +153,6 @@
           console.log(err)
         }
       },
-      // old httpRequest
-      /*async getDataList(pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
-        console.log(this.reportFillData);
-        return ;
-        let that = this;
-        that.loading = true;
-        that.paging.currentPageNo = pageNo;
-        that.paging.currentPageSize = pageSize;
-        that.dataList.content = [];
-        let formData = {
-          offset: pageNo,
-          limit: pageSize,
-          args: {
-            diseaseId: this.reportFillData.diseaseId || '',
-            subjectId: this.reportFillData.subjectId || '',
-            groupId: this.reportFillData.groupId || '',
-            crfId: '',
-            patientName: this.reportFillData.patientName || '',
-            patientId:this.reportFillData.patientId || "",
-            startTime: null,
-            endTime: null,
-            status: ""
-          }
-        };
-        try {
-          // let res = await that.$http.RRMgetDataList(formData);
-          // 新 2.0 查询报告记录
-          let res = await that.$http.queryFilterReportList(formData);
-          if (res.code == '0') {
-            let obj = {};
-            obj.content = res.data.args;
-            obj.pageNo = pageNo;
-            obj.pageSize = pageSize;
-            obj.totalCount = parseInt(res.data.totalElements);
-            obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
-            that.dataList = obj;
-          } else {
-            this.$mes('error', res.msg);
-          }
-          that.loading = false;
-        } catch (err) {
-          that.loading = false;
-          console.log(err)
-        }
-      },*/
       toReportFill(row) {
         this.getIdentify(row.patientId)
           .then(() => {
