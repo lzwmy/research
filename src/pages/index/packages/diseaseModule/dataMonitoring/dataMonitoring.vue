@@ -3,7 +3,7 @@
         <div class="box">
             <div class="aside">
                 <div class="aside_top flex-center-center">
-                    <el-select v-model="crfId" placeholder="请选择CRF表单" clearable>
+                    <el-select v-model="crfId" placeholder="请选择表单">
                         <el-option v-for="(item, index) in crfList" :key="index" :label="item.crfDisplayName" :value="item.crfId"></el-option>
                     </el-select>
                 </div>
@@ -18,14 +18,14 @@
             <div class="content">
                 <!-- 搜索区域 -->
                 <div class="cloud-search el-form-item-small flex-end-center">
-                    <el-input
+                    <!-- <el-input
                         placeholder="搜索"
                         prefix-icon="el-input__icon el-icon-search"
                         v-model="form.keyword"
                         clearable
                         @keyup.enter.native="getDataList()"
                         style="width:280px;">
-                    </el-input>
+                    </el-input> -->
                 </div>
                 <!--搜索结果-->
                 <div class="cloud-search-list">
@@ -74,8 +74,8 @@
                                     </el-timeline>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="visitDate" label="就诊时间"></el-table-column>
-                            <el-table-column prop="reportName" label="报告名称"></el-table-column>
+                            <el-table-column prop="visitDate" label="就诊时间" min-width="100"></el-table-column>
+                            <el-table-column prop="reportName" label="报告名称" min-width="120" show-overflow-tooltip></el-table-column>
                             <el-table-column prop="patientName" label="病人姓名"></el-table-column>
                             <el-table-column prop="genderName" label="性别"></el-table-column>
                             <el-table-column prop="updator" label="创建人" v-if="form.status==0"></el-table-column>
@@ -94,7 +94,6 @@
                             <el-table-column label="操作" width="90">
                                 <template slot-scope="scope">
                                     <el-button size="mini" @click="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
-                                    <el-button size="mini" v-show="scope.row.status == 0" class="danger" @click="deleteReport(scope.row)"><i class="icon iconfont iconzujian41"></i></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -298,6 +297,10 @@ export default {
                 let res = await this.$http.RRMgetCrfList(formData);
                 if (res.code == 0) {
                     this.crfList = res.data;
+                    this.crfList.unshift({
+                        crfDisplayName: '全部表单',
+                        crfId: ''
+                    })
                 }
             } catch (err) {
                 console.log(err)
@@ -374,27 +377,6 @@ export default {
             } catch (err) {
                 console.log(err)
             }
-        },
-        deleteReport(row) {
-            this.$confirm('是否删除('+row.reportName+')报告?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then( async() => {
-                let formData = {
-                    reportId: row.id,
-                    crfId: row.crfId,
-                };
-                try {
-                    let res = await this.$http.reportDelete(formData);
-                    if (res.code == 0) {
-                        this.$mes('success', "删除成功");
-                        this.getDataList();
-                    } 
-                } catch (err) {
-                    console.log(err)
-                }
-            }).catch(() => {});
         },
         //匹配iconfont
         matchingIcon(type) {
@@ -540,6 +522,7 @@ export default {
                 }
                 .lable {
                     padding: 15px;
+                    font-size: 14px;
                 }
                 li {
                     height: 40px;
@@ -552,33 +535,31 @@ export default {
                         background-color: rgba(245, 247, 250, .7);
                         border-left: 3px solid #1bbae1;
                         color: #1bbae1;
+                        span {
+                            font-weight: bold;
+                        }
                     }
                     &:hover {
                         background-color: rgba(245, 247, 250, .7);
                         border-left: 3px solid #1bbae1;
                         color: #1bbae1;
+                        span {
+                            font-weight: bold;
+                        }
                     }
                     &:nth-child(1):hover .icon,
                     &:nth-child(1).active .icon {
-                        color: #F79E00;
+                        color: #8aca56;
                     }
                     &:nth-child(2):hover .icon,
                     &:nth-child(2).active .icon {
-                        color: #0077B4;
+                        color: #e24828;
                     }
                     &:nth-child(3):hover .icon,
                     &:nth-child(3).active .icon {
-                        color: #8aca56;
-                    }
-                    &:nth-child(4):hover .icon,
-                    &:nth-child(4).active .icon {
-                        color: #e24828;
-                    }
-                    &:nth-child(5):hover .icon,
-                    &:nth-child(5).active .icon {
                         color: #00bf8f;
-                    }&:nth-child(6):hover .icon,
-                    &:nth-child(6).active .icon {
+                    }&:nth-child(4):hover .icon,
+                    &:nth-child(4).active .icon {
                         color: #00B8DF;
                     }
                     .icon {

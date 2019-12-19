@@ -180,6 +180,7 @@ export default {
     },
     //滚动到顶部
     toTop () {
+      console.log(this.$refs.content)
       this.$refs.content.scrollTop = 0;
     },
     //下载pdf
