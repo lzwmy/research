@@ -70,7 +70,7 @@
         <div class="doctor aside_li">
           <h3 class="flex-between-center">
             <span>主治医生</span>
-            <i class="cur_pointer icon iconfont iconlujing2" @click="doctorDialog.visible = true"></i>
+            <i class="cur_pointer icon iconfont iconlujing2" @click="showAddDoctorDialog"></i>
           </h3>
           <div class="tags">
             <el-tag 
@@ -1099,12 +1099,16 @@
             console.log(err)
         }
       },
-      // 添加医生
-      async addDoctor() {
+      showAddDoctorDialog() {
         if(this.doctorListAll.length == 0) {
           this.$mes('info','请先选择机构!');
           return;
         }
+        this.doctorDialog.visible = true;
+      },
+      // 添加医生
+      async addDoctor() {
+        
         if(this.doctorDialog.doctors.length == 0) {
           this.$mes('info','请选择医生!');
           return;
@@ -1319,17 +1323,18 @@
             flex-wrap: wrap;
             .el-tag {
               display: flex;
+              font-size: 14px;
               align-items: center;
               justify-content:space-around;
               cursor: pointer;
-              margin: 0 0 6px 0;
-              width: 25%;
+              margin: 0 6px 6px 0;
+              width: 28%;
               background-color: #fff;
               border: none;
               color: #394263;
               &:hover {
-                border-color: #e9e9eb;
-                background-color: #f4f4f5;
+                border-color: #E5EBEC;
+                background-color: #F3F3FA;
                 .el-icon-close {
                   background-color: #fff;
                   margin-top: 2px;
@@ -1341,7 +1346,7 @@
               }
               .userName {
                 display: inline-block;
-                width: 40px;
+                width: 70px;
                 text-align: center;
                 text-overflow: ellipsis;
                 overflow: hidden;

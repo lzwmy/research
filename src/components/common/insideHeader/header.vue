@@ -31,6 +31,7 @@
             popper-class="orgDoctorSelect"
             placement="bottom"
             width="200"
+            :visible-arrow="true"
             v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage','diseasePatientFollowUp'].includes($route.meta.flag) )"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
             v-model="orgPopoverVisible"
@@ -51,12 +52,13 @@
             popper-class="orgDoctorSelect"
             placement="bottom"
             width="200"
+            :visible-arrow="true"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'
             v-model="doctorPopoverVisible"
             trigger="click">
             <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable)?'disabled':''">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">全部医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
             <div>
-                <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="doctorInput" clearable></el-input>
+                <el-input placeholder="请搜索医生"  prefix-icon="el-icon-search" v-model="doctorInput" clearable></el-input>
                 <div class="content">
                     <p v-for="(item,index) in filterDoctorList" :key="index" @click="doctorInfo = item;doctorPopoverVisible = false;"
                     :class="doctorInfo.id==item.id?'active':''">{{item.userName}}</p>
@@ -183,7 +185,7 @@ export default {
             this.orgInfo = row;
             this.orgPopoverVisible = false;
             this.doctorInfo = {
-                userName: '全部医生',
+                userName: '所有医生',
                 id: ''
             };
             this.getDoctorList();
@@ -254,7 +256,7 @@ export default {
                 if (res.code == '0') {
                     this.doctorList = res.data;
                     this.doctorList.unshift({
-                        userName: '全部医生',
+                        userName: '所有医生',
                         id: ''
                     })
                 }
@@ -399,17 +401,23 @@ export default {
             min-height: 180px;
             max-height: 500px;
             overflow: auto;
+            padding: 0;
+            .el-input {
+                margin: 10px;
+                width: 178px;
+            }
             .content {
-                padding: 10px 6px;
                 p {
-                    line-height: 24px;
+                    line-height: 34px;
+                    padding: 0 20px;
                     color: #666;
                     cursor: pointer;
                     &:hover {
-                        color: #1bbae1;
+                        background-color: #f5f7fa;
                     }
                     &.active {
-                        color: #1bbae1;
+                        // color: #1bbae1;
+                        // background-color: #f5f7fa;
                     }
                 }
             }

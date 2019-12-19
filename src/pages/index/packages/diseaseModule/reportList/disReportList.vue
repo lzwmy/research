@@ -3,7 +3,7 @@
         <div class="box">
             <div class="aside">
                 <div class="aside_top flex-center-center">
-                    <el-select v-model="crfId" placeholder="请选择表单">
+                    <el-select v-model="crfId" placeholder="请选择">
                         <el-option v-for="(item, index) in crfList" :key="index" :label="item.crfDisplayName" :value="item.crfId"></el-option>
                     </el-select>
                 </div>
@@ -81,8 +81,8 @@
                             <el-table-column prop="updator" label="创建人" v-if="form.status==0"></el-table-column>
                             <el-table-column prop="updator" label="填写人" v-else-if="form.status==1"></el-table-column>
                             <el-table-column prop="updator" label="提交人" v-else></el-table-column>
-                            <el-table-column prop="updateTime" label="创建时间" width="180" v-if="form.status==1"></el-table-column>
-                            <el-table-column prop="updateTime" label="填写时间" width="180" v-else-if="form.status==2"></el-table-column>
+                            <el-table-column prop="updateTime" label="创建时间" width="180" v-if="form.status==0"></el-table-column>
+                            <el-table-column prop="updateTime" label="填写时间" width="180" v-else-if="form.status==1"></el-table-column>
                             <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
                             <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
@@ -125,14 +125,14 @@ export default {
             crfId: '',
             form: {
                 keyword: '',
-                status: -1
+                status: 0
             },
             reportStatusList: [
                 {icon:'iconbianjibeifen2', name: '未填写', count:0, value: 'noDataCount',status: 0},
                 {icon:'iconzu12', name: '已填写', count:0, value: 'finishCount',status: 1},
                 {icon:'iconbianjibeifen3', name: '已提交', count:0, value: 'submitCount',status: 2},
                 {icon:'iconbianji4', name: '不通过', count:0, value: 'noPassCount',status: 3},
-                {icon:'iconbianjibeifen1', name: '通过', count:0, value: 'passCount',status: 4},
+                {icon:'iconbianjibeifen1', name: '通 过', count:0, value: 'passCount',status: 4},
                 {icon:'iconquanbu', name: '全 部', count:0, value: 'total',status: -1}
             ],
             dataList: {
@@ -301,7 +301,7 @@ export default {
                 if (res.code == 0) {
                     this.crfList = res.data;
                     this.crfList.unshift({
-                        crfDisplayName: '全部表单',
+                        crfDisplayName: '全部报告',
                         crfId: ''
                     })
                 }
@@ -357,6 +357,9 @@ export default {
         expandChange(row,expanded ) {
             if(expanded.length) {
                 this.getReportRecord(row)
+                this.$nextTick(()=>{
+                    this.$emit('handlePageHeight');
+                })
             }
         },
         //获取批注信息
@@ -457,8 +460,15 @@ export default {
         }
         .el-table__expanded-cell {
             background-color: #F7FAFD;
+            // padding:0;
+            // padding-right: 40px;
             &:hover {
                 background-color: #F7FAFD !important;
+            }
+            .el-timeline {
+                // padding: 20px 50px;
+                // overflow: auto;
+                // max-height: 300px;
             }
             .el-timeline-item__timestamp {
                 display: none;
@@ -573,27 +583,22 @@ export default {
                             font-weight: bold;
                         }
                     }
-                    &:nth-child(1):hover .icon,
-                    &:nth-child(1).active .icon {
+                    &:nth-child(1) .icon {
                         color: #F79E00;
                     }
-                    &:nth-child(2):hover .icon,
-                    &:nth-child(2).active .icon {
+                    &:nth-child(2) .icon{
                         color: #0077B4;
                     }
-                    &:nth-child(3):hover .icon,
-                    &:nth-child(3).active .icon {
+                    &:nth-child(3) .icon{
                         color: #8aca56;
                     }
-                    &:nth-child(4):hover .icon,
-                    &:nth-child(4).active .icon {
+                    &:nth-child(4) .icon{
                         color: #e24828;
                     }
-                    &:nth-child(5):hover .icon,
-                    &:nth-child(5).active .icon {
+                    &:nth-child(5) .icon{
                         color: #00bf8f;
-                    }&:nth-child(6):hover .icon,
-                    &:nth-child(6).active .icon {
+                    }
+                    &:nth-child(6) .icon{
                         color: #00B8DF;
                     }
                     .icon {
