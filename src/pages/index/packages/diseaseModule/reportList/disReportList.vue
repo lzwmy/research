@@ -63,7 +63,7 @@
                                                         </p>
                                                         <!-- 批注记录 -->
                                                         <p v-for="(li,index) in item.notationList" :key="index">
-                                                            {{li.createTime}} - {{li.creatorName}} 备注"{{li.content}}"
+                                                            {{li.createTime}} - {{li.creatorName}} 批注 "{{li.content}}"
                                                         </p>
                                                     </div>
                                                     <i slot="reference" class="cur_pointer icon iconfont iconzu13"></i>

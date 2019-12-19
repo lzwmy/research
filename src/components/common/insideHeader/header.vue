@@ -127,16 +127,6 @@ export default {
                 }
             });
         },
-        // orgInfo: function(newVal) {
-        //     this.doctorInfo = '';
-        //     this.getDoctorList();
-        //     this.$store.commit('saveDiseaseInfo',
-        //         Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-        //             orgCode: this.orgInfo.orgCode,
-        //             orgName: this.orgInfo.orgName
-        //         })
-        //     );
-        // },
         doctorInfo: function(newVal) {
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
@@ -168,9 +158,9 @@ export default {
             userName: this.$store.state.user.diseaseInfo.doctorName,
         }
         this.loginType = localStorage.getItem('CURR_LOGIN_TYPE')
-        this.getOrgList(this.$store.state.user.diseaseInfo.diseaseId);
-        this.getDataList()
-        .then(()=>{
+        this.getOrgList(this.$store.state.user.diseaseInfo.diseaseId)
+        this.getDoctorList();
+        this.getDataList().then(()=>{
             this.dataList.forEach(item => { 
                 if(this.$route.query.id == item.id) {
                     this.disease = item.name;
@@ -179,7 +169,6 @@ export default {
         })
     },
     methods: {
-        
         handleMenuView() {
             this.$store.commit("changeMenuView", !this.$store.state.common.openMenuView);
         },
@@ -193,7 +182,10 @@ export default {
         selectOrg(row) {
             this.orgInfo = row;
             this.orgPopoverVisible = false;
-            this.doctorInfo = {};
+            this.doctorInfo = {
+                userName: '全部医生',
+                id: ''
+            };
             this.getDoctorList();
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
@@ -254,14 +246,13 @@ export default {
         async getDoctorList () {
             let that = this;
             let formData = {
-                offset: 0,
-                limit: 999,
-                args: this.orgInfo.orgCode
+                orgCode: this.orgInfo.orgCode,
+                diseaseId: this.$route.query.id
             };
             try {
-                let res = await that.$http.ORGDisGetUserList(formData);
+                let res = await that.$http.ORGDisGetUserListAll(formData);
                 if (res.code == '0') {
-                    this.doctorList = res.data.args;
+                    this.doctorList = res.data;
                     this.doctorList.unshift({
                         userName: '全部医生',
                         id: ''

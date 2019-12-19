@@ -95,7 +95,7 @@
             showBtn: false,      
             btnText:'通过',     
             mode:1,            
-            icon:'iconjianqu1', 
+            icon:'iconjianqu2', 
           },
           { 
             isExamine:true,    
@@ -229,9 +229,11 @@
         if(n==0) {
           obj.text = '尚无数据批注';
           obj.btnText = '通过';
+          obj.icon = 'iconjianqu2';
         }else {
           obj.text = '已修改'+n+'处批注';
           obj.btnText = '不通过';
+          obj.icon = 'iconjianqu3';
         }
       }
     }
