@@ -14,9 +14,9 @@
         <el-radio-group v-model="report.value">
           <el-radio
             v-for="(it,index) in item.termSet.termItemList"
-            :label="precessData(it.termItemName)"
+            :label="it.termItemName"
             :key="index"
-          >{{precessData(it.termItemName)}}</el-radio>
+          >{{it.termItemName}}</el-radio>
         </el-radio-group>
       </div>
       <div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>
@@ -114,7 +114,7 @@ export default {
       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
         return item !== ""
       }).map(item=>{
-        return {termItemName:item}
+        return {termItemName:this.precessData(item)}
       });
       this.item.termSet.termItemList = arrayList;
     }

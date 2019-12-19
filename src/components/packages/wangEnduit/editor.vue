@@ -132,11 +132,16 @@
   }
 
   .toolbar {
+    /*border: 1px solid #ccc;*/
+    background-color: #f1f1f1;
     border: 1px solid #ccc;
+    height: 34px;
+    line-height: 23px;
   }
 
   .text {
     border: 1px solid #ccc;
-    height: 450px;
+    border-top: none;
+    height: 215px;
   }
 </style>

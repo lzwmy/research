@@ -47,13 +47,20 @@
           groupValue:"",//
           group:[],//二级 联动
           columnsValue:"",//
-          columns:[] // 三级联动
+          columns:[], // 三级联动
+          fillValue:''
+        }
+      },
+      watch:{
+        'fillValue':function (data) {
+          this.report.value = JSON.parse(data).join('|');
         }
       },
       methods:{
         oneSelect() {
           let array = [this.optionValue];
-          this.report.value = JSON.stringify(array);
+          // this.report.value = JSON.stringify(array);
+          this.fillValue = JSON.stringify(array);
           let data = this.options.map(item=>{
             if(item.value == this.optionValue) {
               //判断item 是否包含 children 字段
@@ -72,9 +79,10 @@
           })
         },
         groupSelect() {
-          let array = JSON.parse(this.report.value);
-          array[1] = this.groupValue
-          this.report.value = JSON.stringify(array);
+          let array = JSON.parse(this.fillValue);
+          array[1] = this.groupValue;
+          // this.report.value = JSON.stringify(array);
+          this.fillValue = JSON.stringify(array);
           let data = this.group.map(item => {
             if(item.value == this.groupValue) {
               if(item.hasOwnProperty('children')) {
@@ -88,9 +96,10 @@
           })
         },
         columnsSelect() {
-          let array = JSON.parse(this.report.value);
+          let array = JSON.parse(this.fillValue);
           array[2] = this.columnsValue;
-          this.report.value = JSON.stringify(array);
+          // this.report.value = JSON.stringify(array);
+          this.fillValue = JSON.stringify(array);
         },
         singleLayerData(array) {
           this.optionValue = array[0];
@@ -120,7 +129,13 @@
       mounted() {
         this.options = JSON.parse(this.item.termSet.rangeText || '[]') ;
         if(this.report.value !== "") {
-          let array = JSON.parse(this.report.value);
+          // let array = JSON.parse(this.report.value);
+          let array = [];
+          if(this.report.value.indexOf("|") != '-1') {
+            array = this.report.value.split("|");
+          }else {
+            array = JSON.parse(this.report.value);
+          }
           switch (array.length) {
             case 1 :
               this.singleLayerData(array);

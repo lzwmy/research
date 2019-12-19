@@ -13,10 +13,11 @@
     <el-dialog
       title="批注"
       :visible.sync="centerDialogVisible"
-      width="50%"
+      class="annotate_dialog-box"
+      width="40%"
       center>
       <div class="comment_content">
-        <el-input type="textarea" :rows="10" placeholder="请输入备注内容" v-model="annotate"></el-input>
+        <el-input type="textarea" :rows="11" resize="none" placeholder="请输入备注内容" v-model="annotate"></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addComment">确 定</el-button>

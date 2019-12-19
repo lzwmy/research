@@ -33,7 +33,7 @@
           :value="item.termItemName"
         ></el-option>
       </el-select>-->
-      {{report.value || '(空)'}}
+      {{displayValue || '(空)'}}
     </div>
     <!--style="display:inline-block"-->
     <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired},{'addColor':report.value},{'grayColor':!report.value}]"
@@ -56,7 +56,7 @@
           :value="it.termItemName"
         ></el-option>
       </el-select>-->
-      {{report.value || '(空)'}}
+      {{displayValue || '(空)'}}
     </div>
     <div class="info_fixed" style="display: table-cell;position: relative;">
       <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
@@ -96,7 +96,8 @@ export default {
       inputWidth: 188,
       checkList: [],
       termList: [],
-      rootBinding: null //父元素绑定信息
+      rootBinding: null, //父元素绑定信息
+      displayValue:""
     };
   },
   props: {
@@ -114,10 +115,14 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!='-1') {
-        return data.split('^')[0]
+      if(data != undefined && data != 'undefined'){
+        if(data.indexOf('^')!='-1') {
+          return data.split('^')[0]
+        }else {
+          return data
+        }
       }else {
-        return data
+        return  data
       }
     },
     commentMethod() {
@@ -179,7 +184,7 @@ export default {
     }
   },
   created() {
-    if (this.item.baseProperty.controlWidth > 0) {
+    /*if (this.item.baseProperty.controlWidth > 0) {
       this.inputWidth = 47 * this.item.baseProperty.controlWidth;
     }
 
@@ -208,6 +213,14 @@ export default {
         return {termItemName:item}
       });
       this.item.termSet.termItemList = arrayList;
+    }*/
+    if(this.report.value) {
+      if(this.report.value.indexOf("|") != '-1') {
+        let array = this.report.value.split('|').map(item => this.precessData(item)).join('、');
+        this.displayValue = array;
+      }else {
+        this.displayValue = this.precessData(this.report.value);
+      }
     }
   },
   computed: {

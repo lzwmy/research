@@ -32,7 +32,7 @@
           :value="it.termItemName"
         ></el-option>
       </el-select>-->
-      {{report.value || '(空)'}}
+      {{displayValue || '(空)'}}
     </div>
     <!--style="display:inline-block"-->
     <div :class="[item.controlType+'_box',{isRequired:item.baseProperty.isRequired},{'addColor':report.value},{'grayColor':!report.value}]"
@@ -55,7 +55,7 @@
           :value="it.termItemName"
         ></el-option>
       </el-select>-->
-      {{report.value || '(空)'}}
+      {{displayValue || '(空)'}}
     </div>
     <div class="info_fixed" style="display: table-cell;position: relative;">
       <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
@@ -94,7 +94,8 @@ export default {
     return {
       inputWidth: 188,
       termList: [],
-      rootBinding: null //父元素绑定信息
+      rootBinding: null, //父元素绑定信息
+      displayValue:"",
     };
   },
   props: {
@@ -197,10 +198,14 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!='-1') {
-        return data.split('^')[0]
+      if(data != undefined && data != 'undefined'){
+        if(data.indexOf('^')!='-1') {
+          return data.split('^')[0]
+        }else {
+          return data
+        }
       }else {
-        return data
+        return  data
       }
     },
     //自动获取数据
@@ -218,7 +223,7 @@ export default {
     }
   },
   created() {
-    this.report.value =
+    /*this.report.value =
       this.report.value || this.item.termSet.termDefaultValue[0];
     if (this.item.baseProperty.controlWidth > 0) {
       this.inputWidth = 47 * this.item.baseProperty.controlWidth;
@@ -250,8 +255,15 @@ export default {
         return {termItemName:item}
       });
       this.item.termSet.termItemList = arrayList;
+    }*/
+    if(this.report.value) {
+      if(this.report.value.indexOf("^") != '-1') {
+        let str = this.precessData(this.report.value);
+        this.displayValue = str;
+      }else {
+        this.displayValue = this.report.value;
+      }
     }
-
   },
   computed: {
     ...mapGetters([

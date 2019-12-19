@@ -29,7 +29,7 @@
             :label="item.value"
             :value="item.value"></el-option>
         </el-select>-->
-        {{report.value || "(空)"}}
+        {{displayValue || "(空)"}}
       </div>
       <div class="info_fixed" style="display: table-cell;position: relative;">
         <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
@@ -74,7 +74,8 @@
           groupValue:"",//
           group:[],//二级 联动
           columnsValue:"",//
-          columns:[] // 三级联动
+          columns:[], // 三级联动
+          displayValue:"",
         }
       },
       methods:{
@@ -189,7 +190,7 @@
         },
       },
       mounted() {
-        this.options = JSON.parse(this.item.termSet.rangeText || '[]') ;
+        /*this.options = JSON.parse(this.item.termSet.rangeText || '[]') ;
         if(this.report.value !== "") {
           let array = JSON.parse(this.report.value);
           switch (array.length) {
@@ -204,6 +205,15 @@
               break;
             default:
               break;
+          }
+        }*/
+        if(this.report.value) {
+          if(this.report.value.indexOf('|') != '-1') {
+            let array = this.report.value.split('|').join("/");
+            this.displayValue = array;
+          }else {
+            let array = JSON.parse(this.report.value).join("/");
+            this.displayValue = array;
           }
         }
       }

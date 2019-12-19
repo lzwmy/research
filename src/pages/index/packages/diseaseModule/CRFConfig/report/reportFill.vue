@@ -95,7 +95,7 @@
     <div class="remark_box">
       <div class="remark_title">
         <span>备注</span>
-        <i class="iconfont iconlujing3" @click="remarkVisible = true"></i>
+        <i class="iconfont iconlujing3" @click="openRemark"></i>
       </div>
       <div class="remark_body_box">
         <div class="remark_content-item" v-for="(item,index) in remarkList" :key="index">
@@ -116,6 +116,7 @@
     <el-dialog
       title="添加备注"
       :visible.sync="remarkVisible"
+      class="annotate_dialog-box"
       width="40%"
       center>
       <editor :value="editorContent" :isClear="editorVisible" @content-synchronize="contentSynchronize"></editor>
@@ -269,7 +270,6 @@ export default {
       this.getForms().then(()=> {
         this.$nextTick(()=>{
           let height = $(".crf-main").height();
-          console.log(height);
           $('.remark_box').css('margin-top',height)
         })
       });
@@ -322,6 +322,10 @@ export default {
         this.editorVisible=false;
         this.getReportBakNoteList(this.report.id);
       })
+    },
+    openRemark() {
+      this.remarkVisible = true;
+      this.editorContent="";
     },
     // 修改备注
     modifyRemark(item) {
@@ -655,11 +659,12 @@ export default {
     },
     //返回顶层
     backTop() {
-      if(!this.showReadComponent) {
+      /*if(!this.showReadComponent) {
         this.$refs.top.scrollTop = 0;
       }else {
         this.$refs.reportRead.toTop();
-      }
+      }*/
+      document.documentElement.scrollTop = 0;
     },
     getContentTop(top) {
       this.scrollTop = top;
