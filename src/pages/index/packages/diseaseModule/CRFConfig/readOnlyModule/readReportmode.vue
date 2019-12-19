@@ -54,11 +54,12 @@
     },
     watch:{
       '$store.state.annotateData.annotateList':function (data) {
-          console.log('监听',data);
           if(data.length!==0) {
             let copyData = JSON.parse(JSON.stringify(data));
             let sum = copyData.length;
             this.$store.dispatch('annotateNumberFun',sum)
+          }else  if(data.length == 0) {
+            this.$store.dispatch('annotateNumberFun',0)
           }
       }
     },
