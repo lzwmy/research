@@ -160,6 +160,8 @@ const url = {
 
   //获取医生列表
   getDoctorList: '/report/bak/duty/doctor/list',
+  //获取该机构下所有医生列表
+  getDoctorListALL: '/disease/own/org/user/list',
   //添加医生
   addDoctor: '/report/bak/duty/doctor/add',
   //删除医生
@@ -167,6 +169,9 @@ const url = {
 };
 
 const http = {
+  patientListGetDoctorListAll (params) {
+    return vm.$get(url.getDoctorListALL, params);
+  },
   patientListGetDoctorList (params) {
     return vm.$get(url.getDoctorList, params);
   },

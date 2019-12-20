@@ -30,7 +30,7 @@
     props:{
       tipStatus:{
         type:Number,
-        default:0
+        default: -1
       },
       isExamine:{
         type:Boolean,
@@ -50,6 +50,16 @@
             btnText:'',     //按钮文字
             mode:0,             //模式0-填写  1-阅读
             icon:null,          //iconfont  
+          },
+          { 
+            isExamine:false,    
+            status: -1,      
+            visible: false,     
+            text: null,        
+            showBtn: false,      
+            btnText:'无状态报告',     
+            mode: 0,            
+            icon:null, 
           },
           { 
             isExamine:false,    
