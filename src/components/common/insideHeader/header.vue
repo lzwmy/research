@@ -32,7 +32,6 @@
             placement="bottom"
             width="200"
             :visible-arrow="true"
-            v-if="this.$store.state.user.diseaseInfo.isAdmin || selectNoDisable"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
             v-model="orgPopoverVisible"
             trigger="click">
@@ -47,7 +46,6 @@
             </div>
         </el-popover>
         <el-popover
-            v-if="this.$store.state.user.diseaseInfo.isAdmin || selectNoDisable"
             class="orgDoctorSelect"
             popper-class="orgDoctorSelect"
             placement="bottom"

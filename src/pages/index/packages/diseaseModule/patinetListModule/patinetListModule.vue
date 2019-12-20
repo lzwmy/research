@@ -91,7 +91,7 @@
                     <el-form-item class="fuzzyQuery rf mt">
                       <el-input v-model.trim="fuzzyQuery" style="width: 200px !important;" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
                                 prefix-icon="el-icon-search"
-                                placeholder="请输入搜索内容"></el-input>
+                                placeholder="请输入搜索内容" clearable></el-input>
                     </el-form-item>
                     <el-form-item class="fuzzyQuery rf mt">
                       <el-dropdown class="caseManageDropdown" style="margin-right: 6px;" @command="handleCommand" trigger="hover"

@@ -51,7 +51,7 @@
                                                     <span>{{matchingStatus(item.actionType)}}</span>
                                                 </p>
                                                 <el-popover
-                                                    v-if="[3,4,5].includes(item.actionType) && (item.dataChangeList.length || item.notationList.length)"
+                                                    v-if="(item.dataChangeList.length || item.notationList.length)"
                                                     placement="right"
                                                     width="350"
                                                     popper-class="expand_popover"
@@ -59,14 +59,14 @@
                                                     <div class="content" >
                                                         <!-- 修改记录 -->
                                                         <p v-for="(li,index) in item.dataChangeList" :key="index">
-                                                            {{scope.row.createTime}} - {{scope.row.creatorName }} 修改"{{li.oldData}}"为"{{li.newData }}"
+                                                            {{scope.row.createTime}} - {{scope.row.creatorName }} 修改 "{{li.oldData}}"为"{{li.newData }}"
                                                         </p>
                                                         <!-- 批注记录 -->
                                                         <p v-for="(li,index) in item.notationList" :key="index">
                                                             {{li.createTime}} - {{li.creatorName}} 批注 "{{li.content}}"
                                                         </p>
                                                     </div>
-                                                    <i slot="reference" class="cur_pointer icon iconfont iconzu13"></i>
+                                                    <i slot="reference" class="cur_pointer icon iconfont iconzu14"></i>
                                                 </el-popover>
                                             </div>
                                         </el-timeline-item>
@@ -79,11 +79,11 @@
                             <el-table-column prop="patientName" label="病人姓名"></el-table-column>
                             <el-table-column prop="genderName" label="性别"></el-table-column>
                             <el-table-column prop="author" label="创建人" v-if="form.status==0"></el-table-column>
-                            <el-table-column prop="submitter" label="填写人" v-else-if="form.status==1"></el-table-column>
-                            <el-table-column prop="updator" label="提交人" v-else></el-table-column>
+                            <el-table-column prop="inputer" label="填写人" v-else-if="form.status==1"></el-table-column>
+                            <el-table-column prop="submitter" label="提交人" v-else></el-table-column>
                             <el-table-column prop="createTime" label="创建时间" width="180" v-if="form.status==0"></el-table-column>
-                            <el-table-column prop="submitTime" label="填写时间" width="180" v-else-if="form.status==1"></el-table-column>
-                            <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
+                            <el-table-column prop="inputTime" label="填写时间" width="180" v-else-if="form.status==1"></el-table-column>
+                            <el-table-column prop="submitTime" label="提交时间" width="180" v-else></el-table-column>
                             <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
                                     {{matchingReportStatus(scope.row.status)}}
@@ -236,7 +236,7 @@ export default {
                     "diseaseId": this.$route.query.id,
                     "userId": this.$store.state.user.diseaseInfo.doctor,
                     "orgCode": this.$store.state.user.diseaseInfo.orgCode,
-                    "status": this.form.status == -1? undefined: this.form.status
+                    "status": this.form.status == -1? [2,3,4]: [this.form.status]
                 }
             };
             try {
@@ -381,7 +381,7 @@ export default {
         //匹配iconfont
         matchingIcon(type) {
             switch (type) {
-                case 0: return '';
+                case 0: return 'iconzujian52';
                 case 1: return 'iconyibaocun';
                 case 2: return 'iconzujian48';
                 case 3: return 'iconzujian49';
@@ -428,6 +428,12 @@ export default {
     .dataMonitoring {
         .el-table {
             padding: 0 !important;
+        }
+        .el-table {
+            padding: 0 !important;
+            .cell {
+                height: 24px;
+            }
         }
         .el-table__expanded-cell {
             background-color: #F7FAFD;
@@ -615,13 +621,35 @@ export default {
     .expand_popover {
         background-color: rgba(0,0,0,.6);
         padding: 8px 10px;
-        .content p {
-            color: #fff;
-            font-size: 13px;
-            &:hover {
-                color: #fff;
+        padding: 8px 10px;
+        min-width: 350px !important;
+        width: auto !important;
+        max-width: 600px !important;
+        .content {
+            max-height: 500px;
+            overflow: auto;
+            /*scrollbar滚动轴修改*/
+            &::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(155, 155, 155, 0.3);
+                border-radius: 10px;
+                background-color: rgba(245, 245, 245, 0.151);
             }
-        }
+
+            &::-webkit-scrollbar {
+                background-color: rgba(245, 245, 245, 0.13);
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, .8);
+            }
+            p {
+                color: #fff;
+                font-size: 13px;
+                &:hover {
+                    color: #fff;
+                }
+            }
+        } 
         .popper__arrow{
             border-right-color: rgba(0,0,0,.6) !important;
             &::after {

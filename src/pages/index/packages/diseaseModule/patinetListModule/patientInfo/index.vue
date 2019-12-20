@@ -1365,6 +1365,7 @@
 
           .li {
             margin-top: 15px;
+            margin-bottom: 23px;
             padding-left: 10px;
             font-size: 14px;
             i {
@@ -1379,11 +1380,6 @@
             .cont {
               flex-grow: 1;
               line-height: 18px;
-
-              p:first-child {
-                margin-bottom: 10px;
-              }
-
               p.cur_pointer {
                 &:hover {
                   color: #333;

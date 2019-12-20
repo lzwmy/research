@@ -88,52 +88,13 @@ export default {
                 this.defaultActive = '/' + to.meta.flag;
             })
         },
-        menuList: function(newVal) {
-        }
     },
     created () {
         this.diseaseId =  this.$route.query.id;
-        this.defaultActive = this.$route.path;
-        //专病科研模块
-        if( this.$route.meta.belongToGroup == 'insideView') {
-            //如果为管理员,拥有所有页面权限 
-            if(this.$store.state.user.diseaseInfo.isAdmin) {
-                let arr = otherMenu.filter(li=>{
-                    return li.menuPath !=  '/crfConfig';
-                })
-                this.$emit('changeMenuList',this.menuList.concat(arr))
-            }else {
-                //根据角色匹配菜单项
-                let tempMenu = utils.arrRermoveEmpty(this.deepCopy(otherMenu))
-                tempMenu.forEach(li=>{
-                    li.children = utils.arrRermoveEmpty(li.children)
-                })
-                this.$emit('changeMenuList',this.menuList.concat(tempMenu))
-            }
-        }    
+        this.defaultActive = this.$route.path;  
     },
     methods: {
-        deepCopy(o) {
-            if (o instanceof Array) {
-                var n = [];
-                for (var i = 0; i < o.length; ++i) {
-                    n[i] = this.deepCopy(o[i]); 
-                } 
-                return n; 
-            }else if  (o instanceof Object) {
-                if(!utils.arrayExistAttr(o.roles,this.$store.state.user.diseaseInfo.roles,null,false)) {  
-                // if(!utils.arrayExistAttr(o.roles,[2],null,false)) {  
-                    return null;
-                }
-                var n = {}; 
-                for (var i in o) {
-                    n[i] = this.deepCopy(o[i]); 
-                } 
-                return n; 
-            } else { 
-                return o; 
-            } 
-        },
+        
         //判断是否有权限 
         authRoles(meta) {
             //非科研项目模块直接为ture
