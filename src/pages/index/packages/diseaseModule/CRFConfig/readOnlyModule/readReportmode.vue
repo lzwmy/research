@@ -1,9 +1,10 @@
 <template>
   <div class="read_container-mode">
     <div class="crf-step-header">
+      <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
       <i class="header_left"></i>
       <span style="font-size: 16px; margin-right:20px;">{{report.patientName}}</span>
-      <el-button type="danger" size="mini" style="float:right;margin-left: 5px" @click="closePage">关 闭</el-button>
+      <!--<el-button type="danger" size="mini" style="float:right;margin-left: 5px" @click="closePage">关 闭</el-button>-->
     </div>
     <div class="content-body">
       <display-Report :item="item"  :report="report"></display-Report>
@@ -86,7 +87,17 @@
         let timestamp=this.getMyDate(new Date().getTime());
         this.currentComment.createTime = timestamp;
         this.currentComment.content = this.annotate;
-        console.log('获取时间戳',timestamp,this.currentComment.content,this.currentComment.path)
+        console.log('获取时间戳',timestamp,this.currentComment.content,this.currentComment.path);
+        let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+        if(copyData.length ) {
+          for(let i=0;i<copyData.length;i++) {
+            if(copyData[i].path == this.currentComment.path) {
+              copyData.splice(i,1);
+              i--;
+            }
+          }
+          this.$store.dispatch('resetFun',copyData);
+        }
         this.$store.dispatch('addFun',Object.assign({},JSON.parse(JSON.stringify(this.currentComment))));
         this.centerDialogVisible = false;
         console.log(this.$store.state.annotateData.annotateList);
@@ -96,6 +107,7 @@
         this.currentComment.path="";
         this.annotate = "";
       },
+
       getMyDate(str) {
         if (str == null || str == "") {
           return '';
@@ -157,12 +169,22 @@
     mounted() {
       this.initPage();
       eventBus.$on('display-show',result => {
+        console.log('批注点击事件',result);
         this.currentComment.path = result;
         this.centerDialogVisible = true;
+        let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+        if(copyData.length) {
+          copyData.forEach(item => {
+            if(item.path == result) {
+              this.annotate = item.content;
+              return ;
+            }
+          })
+        }
       })
     },
     beforeDestroy () {
-      eventBus.$off('display')
+      eventBus.$off('display-show')
     },
   }
 </script>

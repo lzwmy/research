@@ -262,7 +262,7 @@
 <style lang="less" scoped>
   .success_status {
     background:rgba(0,192,142,0.08);
-    border: 1px solid #00BF8F;
+    border: 1px solid rgba(0,192,142,0.08);
     .icon {
       color: #00BF8F;
     }
@@ -271,11 +271,15 @@
     }
     .mes_btn {
       background:#00C08E;
+      color: #ffffff;
+      &:hover{
+       text-decoration: none;
+      }
     }
   }
   .fail_status {
     background:rgba(232,70,1,0.08);
-    border:1px solid rgba(235,69,0,1);
+    border:1px solid rgba(232,70,1,0.08);
     .icon {
       color: #E24828;
     }
@@ -284,11 +288,17 @@
     }
     .mes_btn {
       background:rgba(229,71,27,1);
+      color: #ffffff;
+      &:hover{
+        text-decoration: none;
+      }
     }
   }
+
+
   .normal_status {
     background:rgba(126,131,180,0.08);
-    border:1px solid rgba(126,130,182,1);
+    border:1px solid rgba(126,131,180,0.08);
     .icon {
       color: #7E84B2;
     }
@@ -296,19 +306,24 @@
       color: #7E84B2;
     }
     .mes_btn {
-      background:#7E84B2;
+      /*background:#7E84B2;*/
     }
   }
   .isExamine_btn{
-    color: #2b41de;
-    text-decoration: underline;
+    /*color: #2b41de;*/
+    color: #787878;
+    text-decoration: none;
     background-color: transparent;
+    &:hover{
+      color: #2b41de;
+      text-decoration: underline;
+    }
   }
 
 
   .tip_box {
     position: fixed;
-    top: 22px;
+    top: 16px;
     left: 50%;
     z-index: 3;
     transform: translate(-50%,-16px);
@@ -340,12 +355,15 @@
       height:32px;
       opacity:1;
       border-radius:2px;
-      color: #ffffff;
+      /*color: #ffffff;*/
+      color: #787878;
       text-align: center;
       line-height: 32px;
       cursor: pointer;
       &:hover{
         opacity: 0.8;
+        color: #2b41de;
+        text-decoration: underline;
       }
     }
     .mes_status_2 {
@@ -359,15 +377,32 @@
     }
     .mes_status_3 {
       .fail_status();
+      .mes_btn {
+        background:transparent;
+        color: #787878;
+        &:hover{
+          color: #2b41de;
+          text-decoration: underline;
+        }
+      }
       &.isExamine {
         .mes_btn {
           .isExamine_btn();
         }
+
       } 
       
     }
     .mes_status_4 {
       .success_status();
+      .mes_btn {
+        background:transparent;
+        color: #787878;
+        &:hover{
+          color: #2b41de;
+          text-decoration: underline;
+        }
+      }
       &.isExamine {
         .mes_btn {
           .isExamine_btn();

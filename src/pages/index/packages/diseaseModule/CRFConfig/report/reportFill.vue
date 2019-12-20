@@ -5,9 +5,10 @@
       <div class="crf-main" v-loading="mainLoading" v-if="!showReadComponent">
         <div class="crf-main-content" >
           <div class="crf-step-header">
+            <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
             <i class="header_left"></i>
             <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
-            <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
+            <!--<el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>-->
             <span v-if="urlParameter.from == 'patientFollowUp'"  style="float: right; margin-right: 10px;">
               <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
               <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
@@ -94,20 +95,24 @@
     <!--报告备注-->
     <div class="remark_box">
       <div class="remark_title">
-        <span>备注</span>
-        <i class="iconfont iconlujing3" @click="openRemark"></i>
+        <i class="header_left"></i>
+        <span>讨论</span>
+        <i class="iconfont iconlujing3" v-if="isExamine" @click="openRemark"></i>
       </div>
-      <div class="remark_body_box">
+      <div class="remark_body_box" v-if="remarkList.length">
         <div class="remark_content-item" v-for="(item,index) in remarkList" :key="index">
           <div class="content-item_title">{{index+1}}、{{item.createTime}} 由 <span>{{item.creatorName}}</span> 备注</div>
           <div class="content-item_info">
             <span v-html="item.content"></span>
             <div>
-              <i class="iconfont iconlujing4" @click="modifyRemark(item)"></i>
-              <i class="iconfont iconshanchu1 del" @click="deleteRemark(item)"></i>
+              <i class="iconfont iconlujing4" v-if="isExamine" @click="modifyRemark(item)"></i>
+              <i class="iconfont iconshanchu1 del" v-if="isExamine" @click="deleteRemark(item)"></i>
             </div>
           </div>
         </div>
+      </div>
+      <div class="empty flex-center-center flex-wrap" v-else>
+        <img src="./../basisComponents/image/none_content.png" width="180px" alt="">
       </div>
     </div>
     <!--消息提示-->
@@ -833,10 +838,10 @@ body.theme-green {
 }
   .header_left{
     width:2px;
-    border-left: 4px solid #2d8cf0;
+    border-left: 2px solid #2d8cf0;
     padding-left: 10px;
     height: 25px;
-    line-height: 25px;
+    line-height: 30px;
     margin-top: 5px;
     margin-bottom: 5px;
   }
