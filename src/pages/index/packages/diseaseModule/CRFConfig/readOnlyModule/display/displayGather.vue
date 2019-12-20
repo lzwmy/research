@@ -3,11 +3,12 @@
   <div class="view_box" >
       <div class="view_title" style="width:250px;display:inline-block;">
         <!--加号-->
-        <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" @click="changeExpend(0)"></i>
+        <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" ></i>
         <!--减号-->
-        <i v-if="!isFold" class="iconfont iconzu2" @click="changeExpend(1)"></i>
-        <strong v-show="item.displayIsVisible">{{item.controlDisplayName}}</strong>
+        <i v-if="!isFold" class="iconfont iconzu2" ></i>
+        <strong v-show="item.displayIsVisible">{{item.controlDisplayName}} </strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
+
       </div>
       <div :class="['view_knowType',{'gather_knowType':item.gatherKnowType>0}]" style="display: inline-block;" v-if="item.gatherKnowType>0">
         <!--<i class="is_knowType" v-if="item.gatherKnowType==1">{{changeRadioKnowType(report.value) == '有' ? '有' : changeRadioKnowType(report.value) == '无' ? '无' : '（空）'}}</i>
@@ -47,7 +48,7 @@
         </div>
         <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
       </div>
-    <div v-if="report.value!='无' && report.value != ''"  :class="['view_content',{'width_container':item.gatherRank=='1'}]">
+    <div v-if="(report.value!='无' && report.value != '') || item.gatherKnowType == 0"  :class="['view_content',{'width_container':item.gatherRank=='1'}]">
       <!--集合上下排列-->
       <div :class="item.controlType+'_bg_color'" style="padding-left:55px;" v-if="item.gatherRank=='0'"  @click="popMehtod">
         <!--style="margin-top:15px" style="display: block;"-->
