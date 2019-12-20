@@ -565,7 +565,9 @@ body.theme-blue .crf-left-btn.onclick {
   color: #F99F00 !important;
 }
 .read_container-mode .info_fixed .active_modifyInfo{
-  color: #439AFF !important;
+  /*color: #439AFF !important;*/
+  /*color: #979BAB !important;*/
+  transform: rotateX(180deg);
 }
 .read_container-mode  .remove_annotate{
   display: table-cell;
@@ -597,6 +599,10 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .info_fixed .info_tip_box .tip_content p span.ml_7{
   display: inline-block;
   padding-top: 5px;
+}
+.read_container-mode .info_fixed .info_tip_box .tip_content p span {
+  word-break: break-all;
+  line-height: 1.2rem;
 }
 .read_container-mode .info_fixed .info_tip_box > i{
   display: inline-block;
