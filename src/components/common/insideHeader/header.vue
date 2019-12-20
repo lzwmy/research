@@ -32,7 +32,7 @@
             placement="bottom"
             width="200"
             :visible-arrow="true"
-            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage','diseasePatientFollowUp'].includes($route.meta.flag) )"
+            v-if="this.$store.state.user.diseaseInfo.isAdmin || selectNoDisable"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
             v-model="orgPopoverVisible"
             trigger="click">
@@ -42,12 +42,12 @@
                 <div class="content">
                     <p v-for="(item,index) in filterOrgList" :key="index" @click="selectOrg(item)" 
                     :class="orgInfo.orgCode==item.orgCode?'active':''">{{item.orgName}}</p>
-                    <em v-if="filterOrgList.length==0" class="empty">(空)</em>
+                    <span v-if="filterOrgList.length==0" class="empty" style="padding:0 20px;">暂无数据</span>
                 </div>
             </div>
         </el-popover>
         <el-popover
-            v-if="(['reportList' ,'dataMonitoring','patientListModule','modelManage','diseasePatientFollowUp'].includes($route.meta.flag) )"
+            v-if="this.$store.state.user.diseaseInfo.isAdmin || selectNoDisable"
             class="orgDoctorSelect"
             popper-class="orgDoctorSelect"
             placement="bottom"
@@ -56,13 +56,13 @@
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'
             v-model="doctorPopoverVisible"
             trigger="click">
-            <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable)?'disabled':''">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">全部医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable)?'disabled':''">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">所有医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
             <div>
                 <el-input placeholder="请搜索医生"  prefix-icon="el-icon-search" v-model="doctorInput" clearable></el-input>
                 <div class="content">
                     <p v-for="(item,index) in filterDoctorList" :key="index" @click="doctorInfo = item;doctorPopoverVisible = false;"
                     :class="doctorInfo.id==item.id?'active':''">{{item.userName}}</p>
-                    <em v-if="filterDoctorList.length==0" class="empty">(空)</em>
+                    <span v-if="filterDoctorList.length==0" class="empty" style="padding:0 20px;">暂无数据</span>
                 </div>
             </div>
         </el-popover>

@@ -76,6 +76,12 @@ export default {
     methods: {
         //改变菜单
         handleMenuList(data) {
+            data.forEach(ele => {
+                if(ele.children && ele.children.length != 0) {
+                    ele.children.sort((a,b) => {return a.menuOrder - b.menuOrder })
+                }
+            });
+            data.sort((a,b) => {return a.menuOrder - b.menuOrder})
             this.menuList = data;
         },
         initView() {

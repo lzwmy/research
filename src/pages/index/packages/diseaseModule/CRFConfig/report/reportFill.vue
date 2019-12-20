@@ -454,6 +454,7 @@ export default {
       }
     },
     async getReportData() {
+      this.mainLoading = true;
       try {
         // let params = { groupId: this.groupId, patientId: this.patientId };
         let params = { reportId: this.reportId };
@@ -476,6 +477,7 @@ export default {
         this.$notice("获取查找表单关联的模块失败");
         console.log(error);
       }
+      this.mainLoading = false;
     },
     //保存保存（随访进来）
     async saveFollowUpReportData() {
