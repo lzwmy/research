@@ -78,11 +78,11 @@
                             <el-table-column prop="reportName" label="报告名称" min-width="120" show-overflow-tooltip></el-table-column>
                             <el-table-column prop="patientName" label="病人姓名"></el-table-column>
                             <el-table-column prop="genderName" label="性别"></el-table-column>
-                            <el-table-column prop="updator" label="创建人" v-if="form.status==0"></el-table-column>
-                            <el-table-column prop="updator" label="填写人" v-else-if="form.status==1"></el-table-column>
+                            <el-table-column prop="author" label="创建人" v-if="form.status==0"></el-table-column>
+                            <el-table-column prop="submitter" label="填写人" v-else-if="form.status==1"></el-table-column>
                             <el-table-column prop="updator" label="提交人" v-else></el-table-column>
-                            <el-table-column prop="updateTime" label="创建时间" width="180" v-if="form.status==0"></el-table-column>
-                            <el-table-column prop="updateTime" label="填写时间" width="180" v-else-if="form.status==1"></el-table-column>
+                            <el-table-column prop="createTime" label="创建时间" width="180" v-if="form.status==0"></el-table-column>
+                            <el-table-column prop="submitTime" label="填写时间" width="180" v-else-if="form.status==1"></el-table-column>
                             <el-table-column prop="updateTime" label="提交时间" width="180" v-else></el-table-column>
                             <el-table-column label="状态" width="120px" v-if="form.status == -1">
                                 <template slot-scope="scope">
@@ -437,16 +437,30 @@ export default {
             .el-timeline-item__timestamp {
                 display: none;
             }
-            .el-timeline .el-timeline-item:last-child{
-                color: #232325;
-                .el-timeline-item__node {
-                    border-color: #232325;
+            .el-timeline .el-timeline-item {
+                .icon.el-popover__reference,
+                .icon.el-popover__reference:hover{
+                    color: #232325 !important; 
                 }
-                .el-timeline-item__content {
-                    color: #232325;
-                    .icon.el-popover__reference,
-                    .icon.el-popover__reference:hover{
-                        color: #232325 !important; 
+                .el-timeline-item__node {
+                    transform: translateX(-5%);
+                }
+                &.status_0 {
+                    color: #F79E00;
+                    .el-timeline-item__node {
+                        border-color: #F79E00;
+                    }
+                    .el-timeline-item__content {
+                        color: #F79E00;
+                    }
+                }
+                &.status_1 {
+                    color: #0077B4;
+                    .el-timeline-item__node {
+                        border-color: #0077B4;
+                    }
+                    .el-timeline-item__content {
+                        color: #0077B4;
                     }
                 }
                 &.status_2 {
@@ -474,6 +488,15 @@ export default {
                     }
                     .el-timeline-item__content {
                         color: #00BE90;
+                    }
+                }
+                &.status_5 {
+                    color: #232325;
+                    .el-timeline-item__node {
+                        border-color: #232325;
+                    }
+                    .el-timeline-item__content {
+                        color: #232325;
                     }
                 }
             }

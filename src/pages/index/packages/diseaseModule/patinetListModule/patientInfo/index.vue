@@ -1104,11 +1104,13 @@
           this.$mes('info','请先选择机构!');
           return;
         }
+        this.doctorDialog.doctors = this.doctorTags.map((li)=>{
+          return li.userId;
+        })
         this.doctorDialog.visible = true;
       },
       // 添加医生
       async addDoctor() {
-        
         if(this.doctorDialog.doctors.length == 0) {
           this.$mes('info','请选择医生!');
           return;
@@ -1314,7 +1316,7 @@
           background-color: #fff;
           color: rgba(57, 66, 99, 1);
           .tags {
-            height: 126px;
+            height: 80px;
             overflow: auto;
             margin-top: 10px;
             display: flex;
@@ -1399,11 +1401,12 @@
         }
 
         .record {
+          margin-bottom: 0;
           flex-grow: 1;
           background-color: #fff;
           color: rgba(57, 66, 99, 1);
           position: absolute;
-          top: 360px;
+          top: 315px;
           left: 0;
           overflow: auto;
           min-height: 350px;

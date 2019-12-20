@@ -1,7 +1,7 @@
 <template>
   <!--消息提示窗口-->
   <div class="tip_box">
-    <div class="mes_box" v-if="curInfo &&[2,3,4].includes(curInfo.status)" :class="
+    <div class="mes_box" v-if="curInfo && curInfo.visible" :class="
     ['mes_status_'+curInfo.status,curInfo.isExamine?'isExamine':'',curInfo.btnText=='通过'?'pass':'']">
       <div class="mes_info"><i class="icon iconfont" :class="curInfo.icon"></i><span class="mes_text">{{curInfo.text}}</span></div>
       <div class="mes_btn" @click="clickVerify(curInfo.status,curInfo)">{{curInfo.btnText}}</div>
@@ -43,6 +43,7 @@
         messageList: [
           { 
             isExamine:false,    //是否审核
+            visible: false,     //是否显示弹框
             status: 0,          //报告状态
             text: null,         //提示文本消息
             showBtn: true,      //是否显示提交、保存按钮
@@ -52,7 +53,8 @@
           },
           { 
             isExamine:false,    
-            status: 1,          
+            status: 1,      
+            visible: false,     
             text: null,        
             showBtn: true,      
             btnText:'',     
@@ -61,7 +63,8 @@
           },
           //非审核 
           { 
-            isExamine:false,    
+            isExamine:false,
+            visible: true,   
             status: 2,          
             text: '数据尚未审核',        
             showBtn: false,      
@@ -70,16 +73,18 @@
             icon:'iconjianqu1', 
           },
           { 
-            isExamine:false,    
+            isExamine:false, 
+            visible: false,   
             status: 3,          
             text: '数据审核不通过',        
-            showBtn: false,      
+            showBtn: true,      
             btnText:'召回',     
-            mode:1,            
+            mode: 0,            
             icon:'iconjianqu3', 
           },
           { 
-            isExamine:false,    
+            isExamine:false, 
+            visible: true,   
             status: 4,          
             text: '数据审核通过',        
             showBtn: false,      
@@ -89,7 +94,8 @@
           },
           //审核
           { 
-            isExamine:true,    
+            isExamine:true,  
+            visible: true,  
             status: 2,          
             text: '尚无数据批注',        
             showBtn: false,      
@@ -98,7 +104,8 @@
             icon:'iconjianqu2', 
           },
           { 
-            isExamine:true,    
+            isExamine:true,
+            visible: true,    
             status: 3,          
             text: '数据审核不通过',        
             showBtn: false,      
@@ -108,6 +115,7 @@
           },
           { 
             isExamine:true,    
+            visible: true,
             status: 4,          
             text: '数据审核通过',        
             showBtn: false,      
@@ -149,10 +157,7 @@
           type: 'warning'
         }).then(() => {
           if(!this.isExamine) { // 召回
-            this.curInfo.status = 1;
-            this.curInfo.mode = 0;
-            this.curInfo.showBtn = true;
-            this.reportBakCallback().then(() => this.$emit('handleView',this.curInfo))
+            this.reportBakCallback().then(() => this.$parent.getReportData())
           }else { // 通过 or  不通过   //重新审核
             switch (this.curInfo.btnText) {
               case '重新审核':

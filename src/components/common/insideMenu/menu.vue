@@ -87,6 +87,8 @@ export default {
             this.$nextTick(()=>{
                 this.defaultActive = '/' + to.meta.flag;
             })
+        },
+        menuList: function(newVal) {
         }
     },
     created () {
@@ -106,12 +108,9 @@ export default {
                 tempMenu.forEach(li=>{
                     li.children = utils.arrRermoveEmpty(li.children)
                 })
-                console.log('menuList:')
-                console.log(tempMenu)
                 this.$emit('changeMenuList',this.menuList.concat(tempMenu))
             }
-        }     
-
+        }    
     },
     methods: {
         deepCopy(o) {
