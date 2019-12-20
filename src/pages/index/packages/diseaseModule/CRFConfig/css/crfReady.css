@@ -907,3 +907,43 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .annotate_dialog-box .el-dialog .el-dialog__body {
   padding: 25px 25px 30px;
 }
+/***级联控件**/
+.read_container-mode .CASCADE_box {
+  color: #979BAB;
+}
+/***文件上传--图片类型*/
+.read_container-mode .FILE_UPLOAD .info_fixed {
+  font-size: 16px;
+  color: #979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.read_container-mode .FILE_UPLOAD .info_fixed .active_annotate{
+  color: #F99F00;
+}
+.read_container-mode .FILE_UPLOAD .info_fixed .active_modifyInfo{
+  font-size: 16px;
+  color: #979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.read_container-mode .FILE_UPLOAD .FILE_UPLOAD_Image_box  {
+  vertical-align: middle !important;
+}
+.read_container-mode .FILE_UPLOAD .FILE_UPLOAD_Image_box span{
+  color: #979BAB;
+}
+/***文件上传--文件类型*/
+.read_container-mode .FILE_UPLOAD .FILE_UPLOAD_file_box .el-upload{
+  display: none;
+}
+.read_container-mode .FILE_UPLOAD .FILE_UPLOAD_file_box {
+  width: auto !important;
+  color: #979BAB;
+}
+.read_container-mode .FILE_UPLOAD .el-upload-list__item:first-child {
+  margin-top: 0;
+}
+.content-item_info img{
+  cursor: pointer;
+}

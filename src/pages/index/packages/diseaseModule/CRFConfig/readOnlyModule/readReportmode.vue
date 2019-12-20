@@ -38,7 +38,8 @@
     props:{
       item: {},
       report: {},
-      index: Number
+      index: Number,
+      tipStatus:Number,
     },
     components:{
       displayReport
@@ -70,7 +71,11 @@
         this.$store.dispatch('annotateNumberFun',0);
         this.$store.dispatch('resetFun');
         this.$store.dispatch('addModifyDataFun',[]);
-        this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
+        if(this.tipStatus == 3 || this.tipStatus == 4) {
+          return ;
+        }else{
+          this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
+        }
       },
       closePage() {
         let userAgent = navigator.userAgent;
@@ -186,6 +191,15 @@
     beforeDestroy () {
       eventBus.$off('display-show')
     },
+    activated() {
+      this.$nextTick(()=>{
+        setTimeout(()=>{
+          let height = $(".crf-main").height();
+          $('.remark_box').css('margin-top',height)
+          clearTimeout()
+        },900)
+      })
+    }
   }
 </script>
 

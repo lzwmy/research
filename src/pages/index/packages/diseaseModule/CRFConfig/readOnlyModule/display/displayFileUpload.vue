@@ -33,6 +33,7 @@
                    :action="uploadActionUrl">
           <el-button size="small">点击上传</el-button>
         </el-upload>
+        <span v-if="fileList.length == 0">（空）</span>
       </div>
       <div :class="item.controlType+'_Image_box'" v-if="item.baseProperty.fileType=='IMAGE'">
         
@@ -76,8 +77,34 @@
                     ref="imageView"
                     @on-close="closeViewer"
                     :state="dialogVisible"
-                    :url="images"></image-view>
+                    :url="images">
+        </image-view>
+        <span v-if="report.value == ''">（空）</span>
       </div>
+      <div class="info_fixed" style="display: table-cell;position: relative;vertical-align: middle;">
+        <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
+        <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
+        <div class="info_tip_box" v-if="modifyDataProcess()">
+          <i></i>
+          <div class="tip_content" >
+            <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+              <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="info_tip_box" v-else-if="annotateProcess()">
+          <i></i>
+          <div class="tip_content" >
+            <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+            </p>
+            <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
     </div>
   </div>
 </template>
@@ -85,6 +112,8 @@
 
 <script>
   import imageView from 'components/packages/ImagePreview/imageView';
+  import eventBus from 'src/eventBus/bus.js';
+  import utils from 'components/utils/index.js';
     export default {
       name: "displayFileUpload",
       components:{
@@ -224,6 +253,50 @@
         handleDownload(file) {
           console.log(file);
           this.downFile(file.fileId,file.fileName)
+        },
+        commentMethod() {
+          let path = this.item.controlName;
+          eventBus.$emit('display-show',path)
+        },
+        annotateProcess() {
+          let find = false;
+          let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+          let array = utils.deleteObject(copyArray,'path');
+          array.forEach(item => {
+            if(item.path == this.item.controlName) {
+              find = true;
+              return ;
+            }
+          });
+          return find;
+        },
+        modifyDataProcess() {
+          let find = false;
+          let copyArray = JSON.parse(JSON.stringify(this.$store.state.annotateData.modifyData));
+          let array = utils.deleteObject(copyArray,'path');
+          array.forEach(item => {
+            if(item.path == this.item.controlName) {
+              find = true;
+              return ;
+            }
+          });
+          let flag = this.annotateProcess();
+          if(flag) {
+            find = false;
+          }
+          return  find;
+        },
+        emptyAnnotate() {
+          let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+          if(copyData.length !== 0) {
+            for(let i=0;i<copyData.length;i++) {
+              if(copyData[i].path == this.item.controlName) {
+                copyData.splice(i,1);
+                i--;
+              }
+            }
+            this.$store.dispatch('resetFun',copyData)
+          }
         },
         //单个文件删除
         async deleteFileId(value) {

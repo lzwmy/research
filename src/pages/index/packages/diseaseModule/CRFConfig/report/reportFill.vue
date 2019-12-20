@@ -34,7 +34,7 @@
         <!--<report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
       <!--阅读模式-->
       <div v-else>
-        <read-report-mode ref="reportRead" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></read-report-mode>
+        <read-report-mode ref="reportRead" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report" :tipStatus="tipStatus"></read-report-mode>
       </div>
     </div>
     <!--数据绑定提醒-->
@@ -111,10 +111,17 @@
           </div>
         </div>
       </div>
-      <div class="empty flex-center-center flex-wrap" v-else>
+      <div class="remark_body_box" style="align-items: center" v-else>
         <img src="./../basisComponents/image/none_content.png" width="180px" alt="">
       </div>
     </div>
+    <!--备注图片预览-->
+    <image-view v-if="dialogVisibles"
+                ref="imageViewS"
+                @on-close="closeViewer"
+                :state="dialogVisibles"
+                :url="images">
+    </image-view>
     <!--消息提示-->
     <tip-info ref="tipInfo" v-if="urlParameter.from != 'patientFollowUp'" :tipStatus="tipStatus" :isExamine='isExamine' :tipContent="tipContent" @handleView='handleView'></tip-info>
     <!--添加备注弹框-->
@@ -143,6 +150,7 @@ import { getDom } from './js/verificationForm';
 import readReportMode from '../readOnlyModule/readReportmode';
 import editor from 'components/packages/wangEnduit/editor';
 import tipInfo from './tipInfo';
+import imageView from 'components/packages/ImagePreview/imageView';
 export default {
   name: "crfConfig",
   mixins: [mixins],
@@ -151,7 +159,8 @@ export default {
     reportRead,
     readReportMode,
     editor,
-    tipInfo
+    tipInfo,
+    imageView
   },
   data() {
     return {
@@ -184,7 +193,9 @@ export default {
       tipStatus:-1,  //报告状态
       isExamine: false, //是否审核
       tipContent:"",
-      btnShow: false
+      btnShow: false,
+      dialogVisibles:false,
+      images:[]
     };
   },
   created() {
@@ -204,11 +215,28 @@ export default {
 
     // this.mainContent = document.querySelector("#mainContent");
     // this.mainContent.addEventListener('scroll', this.handleScroll, true)
-    window.addEventListener('scroll', this.handleScroll, true)
+    window.addEventListener('scroll', this.handleScroll, true);
+    /*this.$nextTick(function (){
+      let remarkImg = $('.content-item_info img');
+      $('.content-item_info img').each(function () {
+        $(this).click(function () {
+          $(this).attr('src');
+          console.log($(this).attr('src').split('/'))
+        })
+      })
+    });*/
   },
   destroyed() {
     // this.mainContent.removeEventListener('scroll',this.handleScroll);
+    let that = this;
     window.removeEventListener('scroll',this.handleScroll);
+    let imgReview = document.querySelectorAll('.content-item_info img');
+    imgReview.forEach(item => {
+      item.removeEventListener('click',function () {
+        let url = this.getAttribute('src');
+        that.showImgPreview(url,false)
+      })
+    })
   },
   activated() {},
   methods: {
@@ -272,13 +300,41 @@ export default {
       this.$store.commit("CRF_CHANGE_CONTROL", {});
       this.getForms().then(()=> {
         this.$nextTick(()=>{
-          let height = $(".crf-main").height();
-          $('.remark_box').css('margin-top',height)
+          setTimeout(()=>{
+            let height = $(".crf-main").height();
+            $('.remark_box').css('margin-top',height)
+            clearTimeout()
+          },900)
         })
       });
       this.getReportData();
-      this.getReportBakNoteList(this.reportId);
-
+      this.getReportBakNoteList(this.reportId).then(()=> {
+        let that = this;
+        that.$nextTick(()=> {
+          /*$('.content-item_info img').each(function () {
+            /!*$(this).click(function () {
+              $(this).attr('src');
+              console.log($(this).attr('src').split('/'));
+              that.showImgPreview($(this).attr('src'),true)
+            })*!/
+          })*/
+          let imgReview = document.querySelectorAll('.content-item_info img');
+          imgReview.forEach(item => {
+            item.addEventListener('click',function () {
+              let url = this.getAttribute('src');
+              that.showImgPreview(url,true)
+            })
+          })
+        });
+      });
+    },
+    showImgPreview(url,status) {
+      let urlList  = url.split('/');
+      this.dialogVisibles = status;
+      this.images[0] = this.baseURL+"/file/downloadFile/"+urlList[urlList.length-1];
+      this.$nextTick(()=>{
+        this.$refs.imageViewS.show();
+      });
     },
     //返回上一级
     backingOut() {
@@ -349,6 +405,9 @@ export default {
       }).catch(() => {
 
       });
+    },
+    closeViewer() {
+      this.dialogVisibles = false;
     },
     submitReportConfirm() {
       this.$confirm('是否执行当前操作', '提示', {
