@@ -123,7 +123,7 @@
                 :url="images">
     </image-view>
     <!--消息提示-->
-    <tip-info ref="tipInfo" :tipStatus="tipStatus" :isExamine='isExamine' :tipContent="tipContent" @handleView='handleView'></tip-info>
+    <tip-info ref="tipInfo" v-if="urlParameter.from != 'patientFollowUp'" :tipStatus="tipStatus" :isExamine='isExamine' :tipContent="tipContent" @handleView='handleView'></tip-info>
     <!--添加备注弹框-->
     <el-dialog
       title="添加备注"
@@ -190,7 +190,7 @@ export default {
         status:"",  //报告状态0 未填写 1已填写 2 已提交 3 审核不通过 4 审核通过
         roles:this.$store.state.user.diseaseInfo.roles //1、管理员(所有权限)  2、分中心管理员（无权添加中心,可查看组织管理） 3、数据录入员 4、数据管理员（可审核数据）
       },
-      tipStatus:0,  //报告状态
+      tipStatus:-1,  //报告状态
       isExamine: false, //是否审核
       tipContent:"",
       btnShow: false,
@@ -282,8 +282,6 @@ export default {
       this.groupId = "";
       this.formId = this.urlParameter.formId;
       this.reportId = this.urlParameter.reportId;
-
-      // this.tipStatus = this.urlParameter.reportStatus || 0;
       this.isExamine = this.urlParameter.from=='dataMonitoring'?true:false;
 
       if (!this.formId) {
@@ -522,7 +520,7 @@ export default {
         console.log('report data',report)
         if (report.data && report.code == "0") {
           this.report = report.data;
-          this.tipStatus = report.data.status || 0 ;
+          this.tipStatus = report.data.status;
           console.log("====================================")
           console.log(this.report)
           if(report.data && report.data.portions&&report.data.portions.length==0){

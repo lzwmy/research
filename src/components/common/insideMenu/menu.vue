@@ -37,8 +37,8 @@
             :collapse="!$store.state.common.openMenuView" 
             :unique-opened="true">
                 <span v-for="(item, index) in menuList" :key="index">
-                    <p class="line" v-if="authRoles(item.meta) && item.menuPath=='/organizationManagement'" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
-                    <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="authRoles(item.meta) && item.children && item.children.length == 0">
+                    <p class="line" v-if="item.menuPath=='/organizationManagement' && authRoles(item.meta)" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
+                    <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="item.children && item.children.length == 0 && authRoles(item.meta)">
                         <i class="icon iconfont" :class="'icon'+item.ico"></i>
                         <span slot="title">{{item.menuName}}</span>
                     </el-menu-item>

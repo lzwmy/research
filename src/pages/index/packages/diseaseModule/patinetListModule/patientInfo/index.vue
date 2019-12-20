@@ -1071,14 +1071,12 @@
       async getAllDoctorList() {
         let that = this;
         let formData = {
-            offset: 0,
-            limit: 999,
-            args: this.$store.state.user.diseaseInfo.orgCode || ''
+            diseaseId: this.$route.query.id
         };
         try {
-            let res = await that.$http.ORGDisGetUserList(formData);
+            let res = await that.$http.patientListGetDoctorListAll(formData);
             if (res.code == '0') {
-                this.doctorListAll = res.data.args
+                this.doctorListAll = res.data;
             }
         } catch (err) {
             console.log(err)
@@ -1100,10 +1098,6 @@
         }
       },
       showAddDoctorDialog() {
-        if(this.doctorListAll.length == 0) {
-          this.$mes('info','请先选择机构!');
-          return;
-        }
         this.doctorDialog.doctors = this.doctorTags.map((li)=>{
           return li.userId;
         })
