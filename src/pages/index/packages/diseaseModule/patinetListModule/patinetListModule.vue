@@ -794,10 +794,12 @@
             params.append('diseaseId',this.$route.query.id);
             let res = await this.$http.patientListImportData(params);
             if(res.code==0) {
-                this.$mes('success','导入成功');
-                this.getDataList();
-            }else if(res.data) {
-                this.handleCheckData(res.data)
+                if(res.msg.includes('成功')) {
+                  this.$mes('success','导入成功');
+                  this.getDataList();
+              }else if(res.msg.includes('失败')) {
+                  this.handleCheckData(res.data)
+              }
             }
             this.importPatinetLoading = false;
         } catch (err) {

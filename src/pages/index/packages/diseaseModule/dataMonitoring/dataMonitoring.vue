@@ -32,7 +32,7 @@
                     <echarts-contain containType="big" :parentHeight="routerViewHeight*1-15" :heightRatio="1">
                         <el-table
                             :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-70):(routerViewHeight*1)"
-                            :data="dataList.content" v-loading="loading" ref="refTable" size="small"
+                            :data="dataList.content" v-loading="loading" ref="refTable"
                             :empty-text="emptyText" :element-loading-text="elementLoadingText" fit
                             @row-click="handleClick" @expand-change="expandChange">
                             <el-table-column type="expand" width="40"> 
@@ -546,7 +546,7 @@ export default {
                 background-color: #fff;
                 .aside_top {
                     padding:0 15px;
-                    height: 80px;
+                    height: 50px;
                     border-bottom: 1px solid rgba(229,235,236,1);
                 }
                 .lable {
@@ -601,7 +601,7 @@ export default {
                 right: 0;
                 bottom: 0;
                 background-color: #fff;
-                padding: 15px;
+                padding: 0 15px;
                 h2 {
                     font-size: 16px;
                     margin-bottom: 15px;
@@ -624,7 +624,7 @@ export default {
         padding: 8px 10px;
         min-width: 350px !important;
         width: auto !important;
-        max-width: 600px !important;
+        max-width: 450px !important;
         .content {
             max-height: 500px;
             overflow: auto;

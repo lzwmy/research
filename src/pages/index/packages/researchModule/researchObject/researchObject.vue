@@ -559,13 +559,15 @@ export default {
                 params.append('subjectInfoId',this.$store.state.user.researchInfo.subjectInfoId);
                 let res = await this.$http.researchObjectImportBatchObject(params);
                 if(res.code==0) {
-                    this.$mes('success','导入成功');
-                    this.$refs.refSearch.getGroupList()
-                    .then(()=>{
-                        this.getDataList();
-                    })
-                }else if(res.data) {
-                    this.handleCheckData(res.data)
+                    if(res.msg.includes('成功')) {
+                        this.$refs.refSearch.getGroupList()
+                        .then(()=>{
+                            this.getDataList();
+                        })
+                    }else if(res.msg.includes('失败')) {
+                        this.handleCheckData(res.data)
+                    }
+                    
                 }
                 this.importMask = false;
             } catch (err) {

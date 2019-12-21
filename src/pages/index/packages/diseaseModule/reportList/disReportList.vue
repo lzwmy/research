@@ -579,7 +579,7 @@ export default {
                 background-color: #fff;
                 .aside_top {
                     padding:0 15px;
-                    height: 80px;
+                    height: 50px;
                     border-bottom: 1px solid rgba(229,235,236,1);
                 }
                 .lable {
@@ -662,7 +662,7 @@ export default {
         padding: 8px 10px;
         min-width: 350px !important;
         width: auto !important;
-        max-width: 600px !important;
+        max-width: 450px !important;
         .content {
             max-height: 500px;
             overflow: auto;
