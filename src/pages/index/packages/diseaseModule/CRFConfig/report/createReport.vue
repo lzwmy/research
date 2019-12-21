@@ -160,6 +160,16 @@
           this.idsUpdateData = 1;
         }*/
       },
+      created() {
+        //通过导入报告创建表单
+        let importData = this.$route.params;
+        if(importData && importData.import) {
+          this.isReset = true;
+          this.dataList = importData.reportData.formPortions;
+          this.crfType = importData.reportData.crfType;
+          this.crfName = importData.reportData.crfDisplayName;
+        }
+      },
       methods: {
         init() {
           this.idsUpdateData = 0;

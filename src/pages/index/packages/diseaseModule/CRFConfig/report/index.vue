@@ -3,13 +3,23 @@
       <div class="component_head flex-between-center">
         <p>{{$route.meta.txt}}</p>
         <div class=" cur_pointer head_content flex-start-center">
-          <div class="create_model_btn" @click="createCRF">
-            <i class="iconfont icontianjia"></i>
-            <span>新建CRF</span>
-          </div>
+        <el-upload
+          class="upload"
+          action=""
+          :on-change="successFile"
+          :auto-upload="false"
+          :show-file-list='false'
+          accept=".json">
+          <el-button icon="icon iconfont icondaochu" class="upload">导入表单</el-button>
+        </el-upload>
+        <el-button type="primary" icon="icon iconfont icontianjia" @click="createCRF">新建CRF</el-button>
+        <!-- <div class="create_model_btn" @click="createCRF">
+          <i class="iconfont icontianjia"></i>
+          <span>新建CRF</span>
+        </div> -->
         </div>
       </div>
-      <div class="report_config_content">
+      <div class="report_config_content" v-loading="downloading" :element-loading-text="downloadingText">
         <div class="report_config-card" v-for="(item,index) in dataList" :key="index" @click="jumpModifyReport(item)">
           <div :class="['mask_report',{gray:item.crfIsAvailable===0}]"></div>
           <div class="card_img">
@@ -24,6 +34,9 @@
           <div class="close-ben" @click.stop="deleteCrf(item)">
             <i class="iconfont iconshanchu1"></i>
           </div>
+          <div class="download-btn" @click.stop="downloadExcelTemp(item)">
+            <i class="iconfont iconxiazai"></i>
+          </div>
         </div>
         <div class="img_none" v-if="dataList.length==0">
           <img  src="./../basisComponents/image/none_content.png" alt="">
@@ -37,6 +50,8 @@
       data() {
         return {
           dataList:[],
+          downloading: false,
+          downloadingText: ''
         }
       },
       methods:{
@@ -44,6 +59,54 @@
           this.reportList().then(()=>{
             this.$emit('changeLoadding',false);
           })
+        },
+        //下载模版
+        async downloadExcelTemp(row) {
+          this.downloading = true;
+          this.downloadingText = '导出中...';
+          try{
+              let res = await this.$http.CRFExportCrfForm({
+                  crfId: row.crfId
+              });
+              let blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=UTF-8'});
+              this.$download(row.crfDisplayName+'.json', blob);
+          }catch (error) {
+            console.log(error)
+              this.$notice('导出失败')
+          }
+          this.downloading = false;
+        },
+        //文件选中
+        successFile(file,fileList) {
+          this.downloading = true;
+          this.importData(file);
+        },
+        //导入数据
+        async importData(file) {
+          this.downloadingText = '导入中...';
+          try {
+              let params = new FormData();
+              params.append('file',file.raw);
+              params.append('diseaseId',this.$route.query.id);
+              params.append('crfId',this.currentCrfId);
+              let res = await this.$http.CRFImportCrfForm(params);
+              if(res.code==0) {
+                  this.$router.push({
+                    name:"createReport",
+                    params:{
+                      import: true,
+                      reportData: JSON.parse(res.msg)
+                    },
+                    query:{
+                      id:this.$route.query.id,
+                      type:'add'
+                    }
+                  })
+              }
+          } catch (err) {
+              console.log(err)
+          }
+            this.downloading  = false;
         },
         createCRF() {
           let diseaseId = this.$route.query.id;
@@ -143,7 +206,7 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .report_config_container{
   display:flex;
   width: 100%;
@@ -170,6 +233,12 @@
       background-color: #14aed4;
     }
   }
+  .el-upload {
+    margin-right: 15px;
+    .el-button {
+      transform: translateY(-2px);
+    }
+  }
   .report_config_content{
     display:flex;
     width:100%;
@@ -192,6 +261,11 @@
       margin-bottom: 29px;
       transition: all 300ms;
       position: relative;
+      &:hover {
+        .download-btn {
+          display: block;
+        }
+      }
       .mask_report{
         display: none;
         position: absolute;
@@ -254,6 +328,23 @@
         width:36px;
         height:24px;
         background:rgba(239,63,73,1);
+        border-radius:2px;
+        text-align: center;
+        line-height: 24px;
+        z-index: 2;
+        .iconfont{
+          font-size: 14px;
+          color: #ffffff;
+        }
+      }
+      .download-btn {
+        position: absolute;
+        top: 10px;
+        right:56px;
+        width:36px;
+        height:24px;
+        display: none;
+        background: #1BBAE1;
         border-radius:2px;
         text-align: center;
         line-height: 24px;
