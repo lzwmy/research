@@ -167,7 +167,7 @@
           type: 'warning'
         }).then(() => {
           if(!this.isExamine) { // 召回
-            this.reportBakCallback().then(() => this.$parent.getReportData())
+            this.reportBakCallback().then(() => this.$parent.initPage())
           }else { // 通过 or  不通过   //重新审核
             switch (this.curInfo.btnText) {
               case '重新审核':
@@ -194,7 +194,7 @@
                     });
                     this.$emit('handleView',this.curInfo)
                   }, 500);
-                })
+                });
                 break;
               default:break;
             }

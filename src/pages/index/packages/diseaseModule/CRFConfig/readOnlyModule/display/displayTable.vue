@@ -3,47 +3,50 @@
   <div class="view_box" v-if="item.controlType=='TABLE'">
     <div :class="['view_title',{'view_table-title':item.controlType=='TABLE'}]" style="width:250px;display:inline-block;">
         <!--加号-->
-        <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" @click="changeExpend(0)"></i>
+        <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" ></i>
         <!--减号-->
-        <i v-if="!isFold" class="iconfont iconzu2" @click="changeExpend(1)"></i>
+        <i v-if="!isFold" class="iconfont iconzu2" ></i>
         <!-- <span style="font-weight:font-size:14px;bold;color:#333333;font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{item.controlDisplayName}}</span> -->
         <strong v-if="item.displayIsVisible=='1'">{{item.controlDisplayName}}</strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
-        <div class="info_fixed" style="display: inline-block;position: relative;">
-          <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
-          <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
-          <div class="info_tip_box" v-if="modifyDataProcess()">
-            <i></i>
-            <div class="tip_content" >
-              <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-                <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
-              </p>
-            </div>
-          </div>
-          <div class="info_tip_box" v-else-if="annotateProcess()">
-            <i></i>
-            <div class="tip_content" >
-              <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
-                <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
-              </p>
-              <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-                <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-        <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
+
       </div>
 
-    <div class="view_knowType" v-if="item.gatherKnowType>0">
-     <el-radio-group v-model="report.value">
+    <div :class="['view_knowType',{'table_knowType':item.gatherKnowType>0}]" v-if="item.gatherKnowType>0">
+     <!--<el-radio-group v-model="report.value">
           <el-radio v-if="item.gatherKnowType==2" label="是"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="否"  @change="changeRadioKnowType(1)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="不详"  @change="changeRadioKnowType(1)"></el-radio>
           <el-radio v-if="item.gatherKnowType==1" label="有"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==1" label="无" @change="changeRadioKnowType(1)"></el-radio>
         </el-radio-group>
-        <span class="empty" @click="()=>{report.value=null;isFold=false}">清空</span>
+        <span class="empty" @click="()=>{report.value=null;isFold=false}">清空</span>-->
+      <i class="is_knowType" v-if="item.gatherKnowType==1">{{report.value || '无'}}</i>
+      <i class="is_knowType" v-if="item.gatherKnowType==2">{{report.value || '无'}}</i>
+      <div class="info_fixed" style="display: inline-block;position: relative;">
+        <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
+        <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
+        <div class="info_tip_box" v-if="modifyDataProcess()">
+          <i></i>
+          <div class="tip_content" >
+            <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+              <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+            </p>
+          </div>
+        </div>
+        <div class="info_tip_box" v-else-if="annotateProcess()">
+          <i></i>
+          <div class="tip_content" >
+            <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+            </p>
+            <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
+              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
     </div>
     <div v-if="!isFold"
       :class="['view_content',{'tb_content':item.controlType=='TABLE'},{'bg_color':item.gatherRank=='0'}]"
