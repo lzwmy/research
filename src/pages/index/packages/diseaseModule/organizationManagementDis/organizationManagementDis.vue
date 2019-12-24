@@ -83,7 +83,6 @@
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
-                        <!-- <el-option :disabled="item.name=='管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option> -->
                         <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -254,7 +253,8 @@ export default {
                 if (res.code == '0') {
                     if(this.loginType=='share') {
                         this.roleList = res.data.filter(li=>{
-                            return li.id != 1 || li.id != 2; 
+                            // return li.id != 1 && li.id != 2; 
+                            return li.id != 1; 
                         })
                     }else {
                         this.roleList = res.data.filter(li=>{
@@ -451,7 +451,8 @@ export default {
                     try {
                         let res = await this.$http.ORGDisEditOrg({
                             orgCode: this.dialgOrgForm.orgCode,
-                            orgName: this.dialgOrgForm.orgName
+                            orgName: this.dialgOrgForm.orgName,
+                            diseaseId: this.$route.query.id
                         });
                         if (res.code == '0') {
                             this.$mes('success', '保存成功!');
@@ -479,7 +480,7 @@ export default {
             }).then(async () => {
                 try {
                     let res = await this.$http.ORGDisDeleteOrg({
-                        orgCode: item.orgCode
+                        orgCode: item.orgCode,
                     });
                     if (res.code == '0') {
                         this.$mes('success', '删除成功!');

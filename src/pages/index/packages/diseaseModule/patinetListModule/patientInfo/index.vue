@@ -1098,9 +1098,10 @@
         }
       },
       showAddDoctorDialog() {
-        this.doctorDialog.doctors = this.doctorTags.map((li)=>{
-          return li.userId;
-        })
+        //选中回显
+        // this.doctorDialog.doctors = this.doctorTags.map((li)=>{
+        //   return li.userId;
+        // })
         this.doctorDialog.visible = true;
       },
       // 添加医生

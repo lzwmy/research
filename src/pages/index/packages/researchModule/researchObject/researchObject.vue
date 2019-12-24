@@ -313,7 +313,7 @@ export default {
         handleWidth(label) {
             let width = '';
             if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
-                width = 160
+                width = '170'
             }
             return width
         },

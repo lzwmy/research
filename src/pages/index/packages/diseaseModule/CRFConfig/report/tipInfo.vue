@@ -262,7 +262,8 @@
 <style lang="less" scoped>
   .success_status {
     background:rgba(0,192,142,0.08);
-    border: 1px solid rgba(0,192,142,0.08);
+    /*border: 1px solid rgba(0,192,142,0.08);*/
+    border: 1px solid #00C18D;
     .icon {
       color: #00BF8F;
     }
@@ -279,7 +280,8 @@
   }
   .fail_status {
     background:rgba(232,70,1,0.08);
-    border:1px solid rgba(232,70,1,0.08);
+    /*border:1px solid rgba(232,70,1,0.08);*/
+    border:1px solid rgba(235,69,0,1);
     .icon {
       color: #E24828;
     }
@@ -298,7 +300,8 @@
 
   .normal_status {
     background:rgba(126,131,180,0.08);
-    border:1px solid rgba(126,131,180,0.08);
+    /*border:1px solid rgba(126,131,180,0.08);*/
+    border:1px solid rgba(126,130,182,1);
     .icon {
       color: #7E84B2;
     }
@@ -323,7 +326,8 @@
 
   .tip_box {
     position: fixed;
-    top: 16px;
+    /*top: 16px;*/
+    top: 22px;
     left: 50%;
     z-index: 3;
     transform: translate(-50%,-16px);
@@ -348,6 +352,9 @@
         font-weight: bold;
         line-height: 21px;
         padding-left: 10px;
+      }
+      .iconfont{
+        font-size: 22px;
       }
     }
     .mes_btn {
