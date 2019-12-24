@@ -5,11 +5,11 @@
                 <el-table
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-5):(routerViewHeight*1)"
                     :data="dataList.content" v-loading="loading" ref="refTable" fit>
-                    <el-table-column prop="name" label='名称'></el-table-column>
-                    <el-table-column prop="key" label='Key'></el-table-column>
-                    <el-table-column prop="value" label='值'></el-table-column>
-                    <el-table-column prop="remark" label='备注' min-width="180"></el-table-column>
-                    <el-table-column label='操作' width="120">
+                    <el-table-column prop="name" label='名称' show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="key" label='Key' show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="value" label='值' min-width="180" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="remark" label='备注' min-width="160" show-overflow-tooltip></el-table-column>
+                    <el-table-column label='操作' width="100">
                         <template slot-scope="scope">
                             <el-button type="text" @click="showDialog(scope.row)"><i class="iconfont iconbianji"></i></el-button>
                         </template>

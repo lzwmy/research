@@ -415,7 +415,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.submitReportData().then(()=> this.initPage());
+        this.submitReportData();
       }).catch(() => {
       });
     },
@@ -663,7 +663,8 @@ export default {
         console.log(data);
         if(data.code ===0) {
           that.$message.success('提交成功');
-          this.$refs.tipInfo.changeStatus(this.tipStatus);
+          window.location.reload();
+          // this.$refs.tipInfo.changeStatus(this.tipStatus);
         }else {
           that.$message.info(data.msg)
         }

@@ -25,7 +25,7 @@
       <el-table-column prop="groupName" label="课题组"></el-table-column>
       <el-table-column label="报告状态" width="120px">
         <template slot-scope="scope">
-          {{matchingReportStatus(scope.row.status)}}
+          {{matchingReportStatus(scope.row)}}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100">
@@ -76,16 +76,27 @@
     },
     methods: {
       //匹配报告状态
-      matchingReportStatus(status) {
-          switch (status) {
-              case 0: return '未填写';
-              case 1: return '已填写';
-              case 2: return '已提交';
-              case 3: return '审核不通过';
-              case 4: return '审核通过';
-              case 5: return '召回报告';
-              default: break;
-          }
+      matchingReportStatus(row) {
+        //报告状态
+        if(row.reportType == 1) {
+            switch (row.status) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '已提交';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
+        }else {
+            switch (row.status) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '失访';
+                case 3: return '终止';
+                default: break;
+            }
+        }
       },
       visibilityChangeHandle() {
         if (!document[this.hidden]) {
@@ -167,7 +178,7 @@
               patientName: row.patientName || "",
               patientId: row.patientId || "",
               identify: this.identify || "",
-              from: "caseManage",
+              from: row.reportType==1?"caseManage":'patientFollowUp',
               diseaseName: row.diseaseName || "",
               subjectName: row.subjectName || "",
               groupName: row.groupName || "",
