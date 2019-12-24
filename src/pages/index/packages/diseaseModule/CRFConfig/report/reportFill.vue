@@ -897,7 +897,7 @@ body.theme-green {
 }
   .header_left{
     width:2px;
-    border-left: 2px solid #2d8cf0;
+    border-left: 4px solid #2d8cf0;
     padding-left: 10px;
     height: 25px;
     line-height: 30px;
