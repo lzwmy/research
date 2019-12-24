@@ -132,7 +132,7 @@ export default {
                 {icon:'iconzu12', name: '已填写', count:0, value: 'finishCount',status: 1},
                 {icon:'iconbianjibeifen3', name: '已提交', count:0, value: 'submitCount',status: 2},
                 {icon:'iconbianji4', name: '不通过', count:0, value: 'noPassCount',status: 3},
-                {icon:'iconbianjibeifen1', name: '通 过', count:0, value: 'passCount',status: 4},
+                {icon:'iconbianjibeifen1', name: '已通过', count:0, value: 'passCount',status: 4},
                 {icon:'iconquanbu', name: '全 部', count:0, value: 'total',status: -1}
             ],
             dataList: {
@@ -579,12 +579,13 @@ export default {
                 background-color: #fff;
                 .aside_top {
                     padding:0 15px;
-                    height: 50px;
+                    height: 65px;
                     border-bottom: 1px solid rgba(229,235,236,1);
                 }
                 .lable {
-                    padding: 15px;
-                    font-size: 14px;
+                    padding: 13px 18px;
+                    font-size: 15px;
+                    font-weight: bold;
                 }
                 li {
                     height: 40px;
@@ -640,7 +641,7 @@ export default {
                 right: 0;
                 bottom: 0;
                 background-color: #fff;
-                padding: 0 15px;
+                padding: 15px 15px 0;
                 h2 {
                     font-size: 16px;
                     margin-bottom: 15px;

@@ -7,7 +7,7 @@
                         <el-option v-for="(item, index) in crfList" :key="index" :label="item.crfDisplayName" :value="item.crfId"></el-option>
                     </el-select>
                 </div>
-                <p class="lable">报告状态</p>
+                <p class="lable">审核状态</p>
                 <ul v-loading="groupLoading">
                     <li v-for="(item, index) in reportStatusList" :key="index" :class="form.status==item.status?'active':''" @click="selectReportStatus(item)">
                         <i class="icon iconfont" :class="item.icon" ></i>
@@ -127,9 +127,9 @@ export default {
                 status: 2
             },
             reportStatusList: [
-                {icon:'iconbianjibeifen3', name: '已提交', count:0, value: 'submitCount',status: 2},
+                {icon:'iconbianjibeifen3', name: '待审核', count:0, value: 'submitCount',status: 2},
                 {icon:'iconbianji4', name: '不通过', count:0, value: 'noPassCount',status: 3},
-                {icon:'iconbianjibeifen1', name: '通 过', count:0, value: 'passCount',status: 4},
+                {icon:'iconbianjibeifen1', name: '已通过', count:0, value: 'passCount',status: 4},
                 {icon:'iconquanbu', name: '全 部', count:0, value: 'total',status: -1}
             ],
             dataList: {
@@ -546,12 +546,13 @@ export default {
                 background-color: #fff;
                 .aside_top {
                     padding:0 15px;
-                    height: 50px;
+                    height: 65px;
                     border-bottom: 1px solid rgba(229,235,236,1);
                 }
                 .lable {
-                    padding: 15px;
-                    font-size: 14px;
+                    padding: 13px 18px;
+                    font-size: 15px;
+                    font-weight: bold;
                 }
                 li {
                     height: 40px;
@@ -601,7 +602,7 @@ export default {
                 right: 0;
                 bottom: 0;
                 background-color: #fff;
-                padding: 0 15px;
+                padding:15px 15px 0;
                 h2 {
                     font-size: 16px;
                     margin-bottom: 15px;

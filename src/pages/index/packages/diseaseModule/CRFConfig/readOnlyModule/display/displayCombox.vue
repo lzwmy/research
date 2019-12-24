@@ -58,7 +58,7 @@
       {{displayValue || '(空)'}}
     </div>
     <div class="info_fixed" style="display: table-cell;position: relative;">
-      <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
+      <i class="iconfont iconzu14" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
       <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
       <div class="info_tip_box" v-if="modifyDataProcess()">
         <i></i>
