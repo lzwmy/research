@@ -42,12 +42,12 @@
             {
               scoreTitle:'明显改善',
               scoreNum:1,
-              description:"有非常肯定的疗效（约为75%），仍有皮损的。"
+              description:"有非常肯定的疗效（约为75%），仍有皮损的"
             },
             {
               scoreTitle:'中等程度改善',
               scoreNum:2,
-              description:"有肯定的疗效（约为75%）。"
+              description:"有肯定的疗效（约为50%）"
             },
             {
               scoreTitle:'轻度改善',
