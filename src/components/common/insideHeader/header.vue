@@ -36,6 +36,7 @@
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
             v-model="orgPopoverVisible"
             trigger="click">
+
             <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable))?'disabled':''">{{orgInfo.orgName}}<span v-if="!orgInfo.orgName">全部机构</span><i class="el-icon-arrow-down el-icon--right"></i></div>
             <div>
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="orgInfoInput" clearable></el-input>
@@ -50,7 +51,7 @@
             class="orgDoctorSelect"
             popper-class="orgDoctorSelect"
             placement="bottom"
-            width="200"
+            width="201"
             :visible-arrow="true"
             v-if="$route.meta.belongToGroup == 'insideView'"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'

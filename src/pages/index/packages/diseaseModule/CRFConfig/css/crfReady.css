@@ -877,6 +877,21 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .view_table-title .active_modifyInfo {
   color: #439AFF !important;
 }
+.read_container-mode .table_knowType .is_knowType {
+  font-style: normal;
+  font-size: 14px;
+  color: #A2A2A2;
+}
+.read_container-mode .table_knowType .iconfont{
+  font-size: 16px;
+  color: #A2A2A2;
+  cursor: pointer;
+}
+.read_container-mode .table_knowType .remove_annotate {
+  display: inline-block;
+}
+
+
 /** 集合 **/
 .read_container-mode .gather_knowType .is_knowType {
   font-style: normal;
@@ -947,3 +962,4 @@ body.theme-blue .crf-left-btn.onclick {
 .content-item_info img{
   cursor: pointer;
 }
+

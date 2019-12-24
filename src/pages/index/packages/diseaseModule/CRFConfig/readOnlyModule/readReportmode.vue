@@ -71,11 +71,15 @@
         this.$store.dispatch('annotateNumberFun',0);
         this.$store.dispatch('resetFun');
         this.$store.dispatch('addModifyDataFun',[]);
+        console.log(this.tipStatus)
         if(this.tipStatus == 3 || this.tipStatus == 4) {
-          return ;
-        }else{
           this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
+          return ;
+        }else if(this.tipStatus == 2){ //已提交
+          this.getReportBakListDataChange()
+          // this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
         }
+        /*this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());*/
       },
       closePage() {
         let userAgent = navigator.userAgent;
@@ -192,6 +196,7 @@
       eventBus.$off('display-show')
     },
     activated() {
+      this.initPage();
       this.$nextTick(()=>{
         setTimeout(()=>{
           let height = $(".crf-main").height();

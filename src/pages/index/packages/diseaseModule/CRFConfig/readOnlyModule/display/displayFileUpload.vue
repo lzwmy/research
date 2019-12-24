@@ -79,7 +79,7 @@
                     :state="dialogVisible"
                     :url="images">
         </image-view>
-        <span v-if="report.value == ''">（空）</span>
+        <span v-if="fileList.length == 0">（空）</span>
       </div>
       <div class="info_fixed" style="display: table-cell;position: relative;vertical-align: middle;">
         <i class="iconfont iconbianjibeifen2" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
