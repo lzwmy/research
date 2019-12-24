@@ -640,7 +640,7 @@ export default {
                 right: 0;
                 bottom: 0;
                 background-color: #fff;
-                padding: 15px;
+                padding: 0 15px;
                 h2 {
                     font-size: 16px;
                     margin-bottom: 15px;
