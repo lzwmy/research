@@ -59,11 +59,11 @@
                                                     <div class="content" >
                                                         <!-- 修改记录 -->
                                                         <p v-for="(li,index) in item.dataChangeList" :key="index">
-                                                            {{scope.row.createTime}} - {{scope.row.creatorName }} 修改 "{{li.oldData}}"为"{{li.newData }}"
+                                                            {{li.path}}:&nbsp;&nbsp;&nbsp;修改"{{li.oldData}}"&nbsp;为&nbsp;"{{li.newData }}"
                                                         </p>
                                                         <!-- 批注记录 -->
                                                         <p v-for="(li,index) in item.notationList" :key="index">
-                                                            {{li.createTime}} - {{li.creatorName}} 批注 "{{li.content}}"
+                                                            {{li.path}}:&nbsp;&nbsp;&nbsp;批注&nbsp;"{{li.content}}"
                                                         </p>
                                                     </div>
                                                     <i slot="reference" class="cur_pointer icon iconfont iconzu14"></i>

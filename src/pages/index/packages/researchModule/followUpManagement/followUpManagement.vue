@@ -114,7 +114,7 @@
                         :key="index" 
                         align="center"
                         :min-width="column.label.length * 15 + 50"
-                        :widht="handleWidth(column.label)"
+                        :width="handleWidth(column.label)"
                         show-overflow-tooltip>
                         <template slot-scope="scope" v-show="column.prop=='visitStatus'">
                             <p><i  v-show="column.prop=='visitStatus'" class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
@@ -273,7 +273,7 @@ export default {
         handleWidth(label) {
             let width = '';
             if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
-                width = 160
+                width = '170'
             }
             return width
         },

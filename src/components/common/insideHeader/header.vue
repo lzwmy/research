@@ -32,6 +32,7 @@
             placement="bottom"
             width="200"
             :visible-arrow="true"
+            v-if="$route.meta.belongToGroup == 'insideView'"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
             v-model="orgPopoverVisible"
             trigger="click">
@@ -51,6 +52,7 @@
             placement="bottom"
             width="200"
             :visible-arrow="true"
+            v-if="$route.meta.belongToGroup == 'insideView'"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'
             v-model="doctorPopoverVisible"
             trigger="click">

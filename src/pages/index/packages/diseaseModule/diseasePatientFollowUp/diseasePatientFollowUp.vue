@@ -209,10 +209,8 @@ export default {
             switch (type) {
                 case 0: return '未填写';
                 case 1: return '已填写';
-                case 2: return '已提交';
-                case 3: return '审核不通过';
-                case 4: return '审核通过';
-                case 5: return '召回报告';
+                case 2: return '失访';
+                case 3: return '终止';
                 default: break;
             }
         },
@@ -385,16 +383,16 @@ export default {
                     text-align: center;
                     border-radius:2px;
                     &.status_0 {
-                        color: rgb(247, 158, 1);
-                        background:rgba(247, 158,1, 0.1);
+                        color: rgb(59, 59, 59);
+                        background:rgba(59,59,59, 0.1);
                     }
                     &.status_1 {
                         color: rgb(0, 119, 180);
                         background: rgba(0, 119, 180, 0.1);
                     }
                     &.status_2 {
-                        color: #8aca56;
-                        background:rgba(138, 202, 86,0.1);
+                        color: rgb(247, 158, 1);
+                        background:rgba(247, 158,1, 0.1);
                     }
                     &.status_3 {
                         color: rgb(226, 72, 40);
