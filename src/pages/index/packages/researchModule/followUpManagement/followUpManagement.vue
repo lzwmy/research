@@ -116,9 +116,11 @@
                         :min-width="column.label.length * 15 + 50"
                         :width="handleWidth(column.label)"
                         show-overflow-tooltip>
-                        <template slot-scope="scope" v-show="column.prop=='visitStatus'">
-                            <p><i  v-show="column.prop=='visitStatus'" class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
-                        </template>
+                        <div>
+                            <template slot-scope="scope" v-show="column.prop=='visitStatus'">
+                                <p class="aaaaaaa"><i  v-show="column.prop=='visitStatus'" class="status-icon" :style="'background:'+handleStatus(scope.row[column.prop])+';'"></i> {{scope.row[column.prop]}}</p>
+                            </template>
+                        </div>
                     </el-table-column>
                     <el-table-column  :label="li.label" align="center" v-for="(li,liIndex) in headerReportList" :key="'1_'+liIndex">
                         <el-table-column 

@@ -14,7 +14,7 @@
                         <p @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
                         <div>
                             <el-button type="danger" class="delete_btn" icon="icon iconfont iconshanchu1" @click="onDeleteReport(item)"></el-button>
-                            <span class="state" :class="'status_'+item.status">{{matchingReportStatus(item.status)}}</span>
+                            <span class="state" :class="'status_'+item.reportType+'_'+item.status">{{matchingReportStatus(item)}}</span>
                             <!-- <span class="state" v-if="item.status==0">未填写</span> -->
                             <!-- <span class="state" v-if="item.status==1" style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已填写</span> -->
                         </div>
@@ -48,16 +48,28 @@ export default {
     },
     methods: {
         //匹配报告状态
-        matchingReportStatus(type) {
-            switch (type) {
-                case 0: return '未填写';
-                case 1: return '已填写';
-                case 2: return '已提交';
-                case 3: return '审核不通过';
-                case 4: return '审核通过';
-                case 5: return '召回报告';
-                default: break;
+        matchingReportStatus(row) {
+            //报告状态
+            if(row.reportType == 1) {
+                switch (row.status) {
+                    case 0: return '未填写';
+                    case 1: return '已填写';
+                    case 2: return '已提交';
+                    case 3: return '审核不通过';
+                    case 4: return '审核通过';
+                    case 5: return '召回报告';
+                    default: break;
+                }
+            }else {
+                switch (row.status) {
+                    case 0: return '未填写';
+                    case 1: return '已填写';
+                    case 2: return '失访';
+                    case 3: return '终止';
+                    default: break;
+                }
             }
+            
         },
         async getDataList () {
             let that = this;
@@ -212,30 +224,50 @@ export default {
                         line-height: 22px;
                         text-align: center;
                         border-radius:2px;
-                        &.status_0 {
+                        &.status_1_0 {
                             color: rgb(247, 158, 1);
                             border:1px solid rgb(247, 158,1);
                             background:rgba(247, 158,1, 0.1);
                         }
-                        &.status_1 {
+                        &.status_1_1 {
                             color: rgb(0, 119, 180);
                             border:1px solid rgb(0, 119, 180);
                             background: rgba(0, 119, 180, 0.1);
                         }
-                        &.status_2 {
+                        &.status_1_2 {
                             color: #8aca56;
                             border:1px solid rgb(138, 202, 86);
                             background:rgba(138, 202, 86,0.1);
                         }
-                        &.status_3 {
+                        &.status_1_3 {
                             color: rgb(226, 72, 40);
                             border:1px solid #e24828;
                             background:rgba(226, 72, 40,0.1);
                         }
-                        &.status_4 {
+                        &.status_1_4 {
                             color: rgb(0, 191, 143);
                             border:1px solid #00bf8f;
                             background:rgba(0, 191, 143,0.1);
+                        }
+                        &.status_2_0 {
+                            color: #999;
+                            border:1px solid rgba(153, 153, 153, 0.753);
+                            background:rgba(153, 153, 153, 0.1);
+                        }
+                        &.status_2_1 {
+                            color: rgb(0, 119, 180);
+                            border:1px solid rgb(0, 119, 180);
+                            background: rgba(0, 119, 180, 0.1);
+                        }
+                        &.status_2_2 {
+                            color: rgb(247, 158, 1);
+                            border:1px solid rgb(247, 158,1);
+                            background:rgba(247, 158,1, 0.1);
+                        }
+                        &.status_2_3 {
+                            color: rgb(226, 72, 40);
+                            border:1px solid #e24828;
+                            background:rgba(226, 72, 40,0.1);
                         }
                     }
                     .delete_btn {
