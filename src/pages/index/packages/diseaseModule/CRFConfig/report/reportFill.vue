@@ -656,7 +656,10 @@ export default {
         return ;
       }
       let formData = {
-        ...that.report
+        reportBakDto:{
+          ...that.report
+        },
+        replyList:[]
       };
       try {
         let data = await that.$http.reportBakSubmit(formData);
