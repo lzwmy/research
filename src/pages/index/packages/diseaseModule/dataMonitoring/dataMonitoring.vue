@@ -312,7 +312,8 @@ export default {
                 "crfId": this.crfId,
                 "diseaseId": this.$route.query.id,
                 "userId": this.$store.state.user.diseaseInfo.doctor,
-                "orgCode": this.$store.state.user.diseaseInfo.orgCode
+                "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+                "status": [2,3,4]
             }
             try {
                 let res = await this.$http.RRMgetReportStatusList(formData);
