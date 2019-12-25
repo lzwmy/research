@@ -1,7 +1,7 @@
 <template>
   <div class="read_container-mode">
     <div class="crf-step-header">
-      <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
+      <i class="el-icon-close close_icon" title="关闭" style="display: none" @click="closePage"></i>
       <i class="header_left"></i>
       <span style="font-size: 16px; margin-right:20px;">{{report.patientName}}</span>
       <!--<el-button type="danger" size="mini" style="float:right;margin-left: 5px" @click="closePage">关 闭</el-button>-->
@@ -212,7 +212,7 @@
 .read_container-mode {
   position: relative;
   .content-body{
-    margin-top: 56px;
+    margin-top: 50px;
     background-color: #FCFCFC;
   }
   .tip_box {
