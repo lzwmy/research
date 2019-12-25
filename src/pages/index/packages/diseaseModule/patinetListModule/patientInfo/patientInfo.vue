@@ -123,7 +123,7 @@ export default {
                     patientName: row.patientName || "",
                     patientId: row.patientId || "",
                     identify: this.identify || "",
-                    from: "caseManage",
+                    from: row.reportType==1?"caseManage":'patientFollowUp',
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",
