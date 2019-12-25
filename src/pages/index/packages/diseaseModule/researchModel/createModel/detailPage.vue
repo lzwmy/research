@@ -48,7 +48,7 @@
               <el-switch v-model="privacy" active-color="#50D1F1"></el-switch>
             </div>
             <div class="export_btn">
-              <el-button class="cr_style" type="primary" disabled @click="modelExportExcel">
+              <el-button class="cr_style" type="primary" @click="modelExportExcel">
                 <i class="iconfont icondaochu"></i>
                 导出Excel
               </el-button>
