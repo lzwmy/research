@@ -101,7 +101,7 @@
       </div>
       <div class="remark_body_box" v-if="remarkList.length">
         <div class="remark_content-item" v-for="(item,index) in remarkList" :key="index">
-          <div class="content-item_title">{{index+1}}、{{item.createTime}} 由 <span>{{item.creatorName}}</span> 备注</div>
+          <div class="content-item_title">{{index+1}}、{{item.createTime}} 由 <span>{{item.creatorName}}</span> 创建</div>
           <div class="content-item_info">
             <span v-html="item.content"></span>
             <div>
