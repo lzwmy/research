@@ -39,7 +39,7 @@ const router = [
         ico: 'modelManage',
         menuName: '科研建模',
         menuCode: "011004",
-        menuOrder: 5,
+        menuOrder: 7,
         menuPath: '/modelManage',
         children: [],
         name: 'modelManage',

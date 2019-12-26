@@ -112,6 +112,7 @@ export default {
           this.getUserRoles().then((resRoles)=>{
             this.$store.commit('saveDiseaseInfo',{
               diseaseId: this.$store.state.user.diseaseInfo.diseaseId, 
+              diseaseName: this.$store.state.user.diseaseInfo.diseaseName,
               isAdmin: false,
               roles: resRoles.data || [3],
               orgCode: res.data.data.orgCode,

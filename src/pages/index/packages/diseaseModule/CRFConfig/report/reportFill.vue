@@ -1,24 +1,27 @@
 <template>
   <!--数据连接管理-->
-  <div class="cloud-component clearfix  content-container" style="position:relative;">
+  <div class="cloud-component clearfix  content-container">
     <div class="crfConfig clearfix crffill">
       <div class="crf-main" v-loading="mainLoading" v-if="!showReadComponent">
         <div class="crf-main-content" >
-          <div class="crf-step-header">
-            <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
-            <i class="header_left"></i>
-            <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
-            <!--<el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>-->
-            <span v-if="urlParameter.from == 'patientFollowUp'"  style="float: right; margin-right: 10px;">
-              <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
-              <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
-              <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
-            </span>
+          <div class="crf-step-header flex-between-center">
+            <div>
+              <!-- <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i> -->
+              <i class="header_left"></i>
+              <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
+            </div>
+            <div>
+              <!--<el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>-->
+              <span v-if="urlParameter.from == 'patientFollowUp'"  style="float: right; margin-right: 10px;">
+                <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
+                <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
+                <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
+              </span>
 
-            <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
-            <el-button v-if="urlParameter.from != 'patientFollowUp' && btnShow" @click="saveReportConfirm" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
-            <el-button v-if='btnShow' size="medium" type="success" style="float:right;margin-right: 15px;" @click="submitReportConfirm">提交</el-button>
-             <!--<el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button>-->
+              <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
+              <el-button v-if="urlParameter.from != 'patientFollowUp' && btnShow" @click="saveReportConfirm" type="primary" :disabled="mainLoading" >保 存</el-button>
+              <el-button v-if='btnShow' size="medium" type="success" @click="submitReportConfirm">提 交</el-button>
+            </div>
           </div>
           <div  ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
             <display-report  id="pdfForm" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
@@ -656,10 +659,8 @@ export default {
         return ;
       }
       let formData = {
-        reportBakDto:{
-          ...that.report
-        },
-        replyList:[]
+        'replyList': [],
+        ...that.report
       };
       try {
         let data = await that.$http.reportBakSubmit(formData);
@@ -667,7 +668,6 @@ export default {
         if(data.code ===0) {
           that.$message.success('提交成功');
           window.location.reload();
-          // this.$refs.tipInfo.changeStatus(this.tipStatus);
         }else {
           that.$message.info(data.msg)
         }
@@ -842,19 +842,6 @@ export default {
 
 </style>
 <style lang="less">
-body.theme-blue {
-  .crffill .crf-step .crf-section-title.active,
-  .crffill .menu-panel .parent-node.active {
-    background: #c6e2ff;
-  }
-}
-
-body.theme-green {
-  .crffill .crf-step .crf-section-title.active,
-  .crffill .menu-panel .parent-node.active {
-    background: #b2efe0;
-  }
-}
 .binding-box {
   position: absolute;
   width: 400px;
@@ -930,15 +917,16 @@ body.theme-green {
     /*border-top: 2px solid #2d8cf0;*/
   }
   .crf-step-header {
-    display: block !important;
-    border-bottom: 1px dashed #e9eaec !important;
-    padding: 11.5px;
-    background-color: #ffffff;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1), 0 1px 10px rgba(0,0,0,0.1);
+    height: 46px;
+    line-height: 46px;
+    background-color: #fafafa;
     position: fixed;
     top: 0;
-    left: 6px;
+    left: 0;
+    right: 0;
+    padding: 0 10px !important;
     z-index: 2;
-    width: 99.3%;
   }
   .break_icon{
     position: fixed;
@@ -985,5 +973,14 @@ body.theme-green {
       top: 11px;
     }
   }
+}
+
+.cloud-component {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 </style>

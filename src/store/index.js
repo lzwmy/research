@@ -51,6 +51,7 @@ const user = {
     //专病科研数据
     diseaseInfo: {
       diseaseId: '',    //病种ID
+      diseaseName: '',    //病种名
       isAdmin: false,  //是否为管理员
       roles: [3],
       orgCode: '',      //组织机构
