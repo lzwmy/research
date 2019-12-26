@@ -124,7 +124,21 @@
             this.searchList = [];
           }
         },
+        orgCode: function(newVal) {
+          this.modelDisplaySum();
+        },
+        doctor: function(newVal) {
+          this.modelDisplaySum();
+        },
       },
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+    },
       created() {
         /*if(this.modelData.type == 'modify'){
           this.getDataList(this.modelData.obj.modelId);
@@ -344,6 +358,8 @@
             formRelation:that.$parent.relationFrom,
             filter:that.searchList,
             crfList:that.$parent.searchTerm || [],
+            "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+            "userId": this.$store.state.user.diseaseInfo.doctor
           };
           // console.log(formData);
           try {

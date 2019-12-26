@@ -110,7 +110,7 @@
       },
       watch: {
         orgCode: function(newVal) {
-          this.ModelQueryDynamicTable()
+          this.ModelQueryDynamicTable();
         },
         doctor: function(newVal) {
           this.ModelQueryDynamicTable()
@@ -222,7 +222,9 @@
           let that = this;
           let formData = {
             "modelId": that.$route.query.modelId,
-            "privacy": that.privacy
+            "privacy": that.privacy,
+            "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+            "userId": this.$store.state.user.diseaseInfo.doctor,
           };
           try{
             // let data = await that.$http.modelExportTable(formData);
