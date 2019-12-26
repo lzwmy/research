@@ -1,9 +1,9 @@
 <template>
   <div class="read_container-mode">
     <div class="crf-step-header">
-      <i class="el-icon-close close_icon" title="关闭" style="display: none" @click="closePage"></i>
       <i class="header_left"></i>
       <span style="font-size: 16px; margin-right:20px;">{{report.patientName}}</span>
+      <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
       <!--<el-button type="danger" size="mini" style="float:right;margin-left: 5px" @click="closePage">关 闭</el-button>-->
     </div>
     <div class="content-body">
@@ -212,179 +212,12 @@
 .read_container-mode {
   position: relative;
   .content-body{
-    margin-top: 50px;
+    // margin-top: 50px;
     background-color: #FCFCFC;
   }
-  .tip_box {
-    position: fixed;
-    top: 22px;
-    left: 50%;
-    z-index: 3;
-    transform: translate(-50%,-16px);
-    .fail_status{
-      display: flex;
-      width: 556px;
-      height: 42px;
-      background:rgba(232,70,1,0.08);
-      border:1px solid rgba(235,69,0,1);
-      opacity:1;
-      border-radius:4px;
-      padding: 5px 10px;
-      align-items: center;
-      justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #E24828;
-        }
-        span{
-          font-size: 16px;
-          color: #E5471B;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
-      }
-      .fail_btn {
-        width:70px;
-        height:32px;
-        background:rgba(229,71,27,1);
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
-      }
-    }
-    .unreviewed_status{
-      display: flex;
-      width: 556px;
-      height: 42px;
-      background:rgba(151,155,171,0.08);
-      border:1px solid rgba(151,155,171,1);
-      opacity:1;
-      border-radius:4px;
-      padding: 5px 10px;
-      align-items: center;
-      justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #979BAB;
-        }
-        span{
-          font-size: 16px;
-          color: #979BAB;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
-      }
-      .unreviewed_btn {
-        width:70px;
-        height:32px;
-        background:#979BAB;
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
-      }
-    }
-    .pass_status{
-      display: flex;
-      width: 556px;
-      height: 42px;
-      background:rgba(0,192,142,0.08);
-      border:1px solid rgba(0,193,141,1);
-      opacity:1;
-      border-radius:4px;
-      padding: 5px 10px;
-      align-items: center;
-      justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #00BF8F;
-        }
-        span{
-          font-size: 16px;
-          color: #00BF8F;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
-      }
-      .pass_btn {
-        width:70px;
-        height:32px;
-        background:#00C08E;
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
-      }
-    }
-    .audited_status{
-      display: flex;
-      width: 556px;
-      height: 42px;
-      background:rgba(126,131,180,0.08);
-      border:1px solid rgba(126,130,182,1);
-      opacity:1;
-      border-radius:4px;
-      padding: 5px 10px;
-      align-items: center;
-      justify-content: space-between;
-      .comment_info {
-        display: flex;
-        align-items: center;
-        .iconfont {
-          font-size: 24px;
-          color: #7E84B2;
-        }
-        span{
-          font-size: 16px;
-          color: #7E84B2;
-          font-weight: bold;
-          line-height: 21px;
-          padding-left: 10px;
-        }
-      }
-      .audited_btn {
-        width:70px;
-        height:32px;
-        background:#7E84B2;
-        opacity:1;
-        border-radius:2px;
-        color: #ffffff;
-        text-align: center;
-        line-height: 32px;
-        cursor: pointer;
-        &:hover{
-          opacity: 0.8;
-        }
-      }
-    }
+  .close_icon {
+    line-height: 46px;
+    float: right;
   }
 }
 </style>

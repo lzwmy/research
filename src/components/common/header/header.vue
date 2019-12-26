@@ -8,12 +8,12 @@
 
       <div class="header-info flex-end-center">
           <div class="li setText">
-            <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+            <el-tooltip class="item" effect="light" content="该功能暂末开通123" placement="top-start">
               <i class="icon iconfont iconzujian23"></i>
             </el-tooltip>
           </div>
           <div class="li setText">
-            <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
+            <el-tooltip class="item" effect="light" content="该功能暂末开通123" placement="top-start">
               <i class="icon iconfont iconzujian22"></i>
             </el-tooltip>
           </div>

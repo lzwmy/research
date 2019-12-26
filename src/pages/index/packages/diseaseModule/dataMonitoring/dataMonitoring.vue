@@ -127,8 +127,8 @@ export default {
                 status: 2
             },
             reportStatusList: [
-                {icon:'iconbianjibeifen3', name: '待审核', count:0, value: 'submitCount',status: 2},
-                {icon:'iconbianji4', name: '不通过', count:0, value: 'noPassCount',status: 3},
+                {icon:'iconinfo', name: '待审核', count:0, value: 'submitCount',status: 2},
+                {icon:'iconbianjibeifen2', name: '不通过', count:0, value: 'noPassCount',status: 3},
                 {icon:'iconbianjibeifen1', name: '已通过', count:0, value: 'passCount',status: 4},
                 {icon:'iconquanbu', name: '全 部', count:0, value: 'total',status: -1}
             ],
@@ -453,56 +453,50 @@ export default {
                     transform: translateX(-5%);
                 }
                 &.status_0 {
-                    color: #F79E00;
                     .el-timeline-item__node {
                         border-color: #F79E00;
                     }
-                    .el-timeline-item__content {
+                    .el-timeline-item__content .icon {
                         color: #F79E00;
                     }
                 }
                 &.status_1 {
-                    color: #0077B4;
                     .el-timeline-item__node {
                         border-color: #0077B4;
                     }
-                    .el-timeline-item__content {
+                    .el-timeline-item__content .icon {
                         color: #0077B4;
                     }
                 }
                 &.status_2 {
-                    color: #8AC75B;
                     .el-timeline-item__node {
                         border-color: #8AC75B;
                     }
-                    .el-timeline-item__content {
+                    .el-timeline-item__content .icon {
                         color: #8AC75B;
                     }
                 }
                 &.status_3 {
-                    color: #DF4931;
                     .el-timeline-item__node {
                         border-color: #DF4931;
                     }
-                    .el-timeline-item__content {
+                    .el-timeline-item__content .icon {
                         color: #DF4931;
                     }
                 }
                 &.status_4 {
-                    color: #00BE90;
                     .el-timeline-item__node {
                         border-color: #00BE90;
                     }
-                    .el-timeline-item__content {
+                    .el-timeline-item__content .icon {
                         color: #00BE90;
                     }
                 }
                 &.status_5 {
-                    color: #232325;
                     .el-timeline-item__node {
                         border-color: #232325;
                     }
-                    .el-timeline-item__content {
+                    .el-timeline-item__content .icon {
                         color: #232325;
                     }
                 }
@@ -579,10 +573,10 @@ export default {
                         }
                     }
                     &:nth-child(1) .icon{
-                        color: #8aca56;
+                        color: #c6c5c3;
                     }
                     &:nth-child(2) .icon{
-                        color: #e24828;
+                        color: #F79E00;
                     }
                     &:nth-child(3) .icon{
                         color: #00bf8f;

@@ -41,8 +41,12 @@
             <div>
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="orgInfoInput" clearable></el-input>
                 <div class="content">
-                    <p v-for="(item,index) in filterOrgList" :key="index" @click="selectOrg(item)" 
-                    :class="orgInfo.orgCode==item.orgCode?'active':''">{{item.orgName}}</p>
+                    <div v-for="(item,index) in filterOrgList" :key="index">
+                        <el-tooltip :disabled="countStrSize(item.orgName)" :content="item.orgName" placement="top">
+                            <p @click="selectOrg(item)" 
+                            :class="orgInfo.orgCode==item.orgCode?'active':''">{{item.orgName}}</p>
+                        </el-tooltip>
+                    </div>
                     <span v-if="filterOrgList.length==0" class="empty" style="padding:0 20px;">暂无数据</span>
                 </div>
             </div>
@@ -161,15 +165,23 @@ export default {
             userName: this.$store.state.user.diseaseInfo.doctorName,
         }
         this.loginType = localStorage.getItem('CURR_LOGIN_TYPE')
-        this.getOrgList(this.$store.state.user.diseaseInfo.diseaseId)
-        this.getDoctorList();
-        this.getDataList().then(()=>{
-            this.dataList.forEach(item => { 
-                if(this.$route.query.id == item.id) {
-                    this.disease = item.name;
-                }
-            });
-        })
+        //专病模块下
+        if(this.$route.meta.belongToGroup == 'insideView') {
+            this.getOrgList(this.$store.state.user.diseaseInfo.diseaseId)
+            this.getDoctorList();
+            this.getDataList().then(()=>{
+                this.dataList.forEach(item => { 
+                    if(this.$route.query.id == item.id) {
+                        this.disease = item.name;
+                    }
+                });
+                this.$store.commit('saveDiseaseInfo',
+                    Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                        diseaseName:this.disease
+                    })
+                );
+            })
+        }
     },
     methods: {
         handleMenuView() {
@@ -179,7 +191,7 @@ export default {
             this.disease = item.name;
             this.popoverVisible = false;
             this.getOrgList(item.id);
-            this.$emit('diseaseSelect', item.id)
+            this.$emit('diseaseSelect', item)
         },
         //选择机构
         selectOrg(row) {
@@ -265,6 +277,14 @@ export default {
                 console.log(err)
             }
         },
+        //计算长度
+        countStrSize(str) {
+            if (str == null) return true;
+            if (typeof str != "string"){
+                str += "";
+            }
+            return str.replace(/[\u0391-\uFFE5]/g,"aa").length>20?false:true;
+        }
     }
 };
 </script>
@@ -402,6 +422,7 @@ export default {
             min-height: 180px;
             max-height: 500px;
             overflow: auto;
+            overflow-x: hidden;
             padding: 0;
             .el-input {
                 margin: 10px;
@@ -413,12 +434,12 @@ export default {
                     padding: 0 20px;
                     color: #666;
                     cursor: pointer;
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                     &:hover {
                         background-color: #f5f7fa;
-                    }
-                    &.active {
-                        // color: #1bbae1;
-                        // background-color: #f5f7fa;
                     }
                 }
             }

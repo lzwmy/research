@@ -106,6 +106,7 @@ export default {
                 }
             });
             this.menuList.sort((a,b) => {return a.menuOrder - b.menuOrder})
+            console.log(this.menuList)
         },
         deepCopy(o) {
             if (o instanceof Array) {
@@ -182,18 +183,19 @@ export default {
             }, 400);
         },
         //切换病种
-        handleDiseaseSelect(diseaseId) {
+        handleDiseaseSelect(data) {
             this.viewLoading = true;
             this.$store.commit('saveDiseaseInfo',
                 Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-                    diseaseId: diseaseId,
+                    diseaseId: data.id,
+                    diseaseName: data.name
                 })
             );
             
             this.$router.push({
                 path: '/' + this.$route.meta.flag,
                 query: {
-                    id: diseaseId
+                    id: data.id
                 }
             });
             typeof(this.$refs.routercomponent2.hideReportFollowiUp)== 'function' && this.$refs.routercomponent2.hideReportFollowiUp();

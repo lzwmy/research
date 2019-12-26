@@ -370,7 +370,7 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
 
 .crffill .crf-main .crf-step-content {
   height: calc(100% - 45px);
-  margin-top: 56px;
+  /* margin-top: 56px; */
 }
 
 .crffill .crf-main-content {

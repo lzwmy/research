@@ -164,6 +164,7 @@ export default {
       .then((res)=>{
         this.$store.commit('saveDiseaseInfo',{
           diseaseId: item.id,
+          diseaseName: item.name,
           isAdmin: res,
           roles: [3],
           orgCode: '',      //组织机构

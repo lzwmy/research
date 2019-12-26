@@ -378,13 +378,13 @@ export default {
                 }
                 .status {
                     display: inline-block;
-                    width: 70px;
+                    width: 50px;
                     line-height: 22px;
                     text-align: center;
                     border-radius:2px;
                     &.status_0 {
-                        color: rgb(59, 59, 59);
-                        background:rgba(59,59,59, 0.1);
+                        color: #fafafa;
+                        background:rgba(59,59,59, 0.3);
                     }
                     &.status_1 {
                         color: rgb(0, 119, 180);

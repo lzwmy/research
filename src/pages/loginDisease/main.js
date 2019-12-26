@@ -26,6 +26,7 @@ let initApp = async () => {
   try {
     store.commit('saveDiseaseInfo',{
       diseaseId: utils.getQuery('id'), 
+      diseaseName: '',
       isAdmin: false,
       roles: [3],
       orgCode: '',      //组织机构
