@@ -154,7 +154,13 @@ export default {
     },
     //是否不详 事件
     changeRadioKnowType(value) {
-      this.isFold = value;
+      if(this.item.gatherKnowType ==1 || this.item.gatherKnowType == 2) {
+        this.isFold = value;
+      } else if(this.item.gatherKnowType == 3 && value > 0) {
+        this.isFold = false;
+      }else if(this.item.gatherKnowType == 3 && value == 0) {
+        this.isFold = true;
+      }
     },
     //点击图标切换
     changeExpend(value) {
