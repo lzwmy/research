@@ -503,6 +503,8 @@ export default {
     else if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
       this.isFold = true;
     }
+
+
     if(this.item.termSet.rangeText!=="" && this.item.gatherKnowType == 3){
       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
         return item !== ""
@@ -510,6 +512,16 @@ export default {
         return {termItemName:item.split('^')[0],id:parseInt(item.split('^')[1])}
       });
       this.item.termSet.termItemList = arrayList;
+      //初始化 集合 默认展开
+      if(this.report.value) {
+        arrayList.forEach(item => {
+          if(item.termItemName == this.report.value && item.id == 0) {
+            this.isFold = false;
+          }else if(item.termItemName == this.report.value && item.id != 0){
+            this.isFold = true;
+          }
+        })
+      }
     }
     //初始化报告数据
     this.item.children.forEach(element => {
