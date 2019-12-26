@@ -33,6 +33,7 @@
                 <el-option label="无" :value="0"></el-option>
                 <el-option label="有无" :value="1"></el-option>
                 <el-option label="是否不详" :value="2"></el-option>
+                <el-option label="自定义选项" :value="3" v-if="basisDataItem.controlType=='GATHER'"></el-option>
               </el-select>
               <!--是否必填-->
               <i class="iconfont iconfuhao2 gray" v-if="basisDataItem.displayIsVisible=='0'" @click="isVisible(basisDataItem)"></i>
@@ -139,6 +140,10 @@
             {
               name:"级联控件",
               value:"CASCADE"
+            },
+            {
+              name:"滑块控件",
+              value:"SLIDER"
             }
             /*{
               name:"超链接",
@@ -235,6 +240,12 @@
               "scoreName":"",
               "scoreStatus":false,
             },
+            'sliderInfo':{
+              'min':0,
+              'max':10,
+              'step':0,
+            },
+            "remark":"",
           };
           data.termSet= {
             "termGroupOid": "", //(代码集OID)

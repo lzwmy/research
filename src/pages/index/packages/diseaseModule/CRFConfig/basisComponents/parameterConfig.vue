@@ -33,18 +33,24 @@
                   </div>
                 </div>
               </el-form-item>
-              <el-form-item label="是否必填" v-if="controlType!=='GATHER'&&controlType!=='TABLE'&&controlType!=='FILE_UPLOAD'&&controlType!=='FILE_UPLOAD'&&controlType!=='SCORE'&&controlType!=='TABLE'&&controlType!=='RADIO_BUTTON'&&controlType!=='CHECKBOX'">
+              <el-form-item label="是否必填" v-if="controlType!=='GATHER'&&controlType!=='TABLE'&&controlType!=='FILE_UPLOAD'&&controlType!=='FILE_UPLOAD'&&controlType!=='SCORE'&&controlType!=='TABLE'&&controlType!=='RADIO_BUTTON'&&controlType!=='CHECKBOX'&&controlType != 'SLIDER'">
                 <el-switch
                   v-model="basicDataInfo.obj.baseProperty.isRequired"
                   active-color="#13ce66"
                   inactive-color="#DCDFE6">
                 </el-switch>
               </el-form-item>
-              <el-form-item
-                v-if="controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX'"
+              <!--<el-form-item
+                v-if="controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX' || controlType == 'RADIO_BUTTON' || controlType == 'CHECKBOX'"
                 label="可手动录入"
                 class="line_blockCheck"
               >
+                <el-radio-group v-model="basicDataInfo.obj.baseProperty.controlIsExtend">
+                  <el-radio :label="1">是</el-radio>
+                  <el-radio :label="0">否</el-radio>
+                </el-radio-group>
+              </el-form-item>-->
+              <el-form-item label="是否可扩展" v-if="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(controlType)">
                 <el-radio-group v-model="basicDataInfo.obj.baseProperty.controlIsExtend">
                   <el-radio :label="1">是</el-radio>
                   <el-radio :label="0">否</el-radio>
@@ -84,7 +90,7 @@
                     <el-option label="PGA" value="PGA"></el-option>
                   </el-select>
               </el-form-item>
-              <el-form-item v-if="controlType!='DATE'&&controlType!='DATE_TIME'&&controlType!=='FILE_UPLOAD'&&controlType!='GATHER'&&controlType!='TABLE'&&controlType!=='LABEL'" label="输入提示" class="line_block">
+              <el-form-item v-if="controlType!='DATE'&&controlType!='DATE_TIME'&&controlType!=='FILE_UPLOAD'&&controlType!='GATHER'&&controlType!='TABLE'&&controlType!=='LABEL'&& controlType!='SLIDER'" label="输入提示" class="line_block">
                 <el-input v-model="basicDataInfo.obj.baseProperty.controlTip" size="mini" placeholder="请输入重要的提示"></el-input>
               </el-form-item>
               <el-form-item v-if="controlType=='FILE_UPLOAD'" label="上传类型" class="line_block" >
@@ -147,6 +153,18 @@
                   <!-- <el-slider class="slider_box" style="width: 80%;padding-left: 9%;display: inline-block;" v-model="sliderValue" :marks="sliderMarks" @change="changeZoom"></el-slider> -->
                 </div>
               </el-form-item>
+              <el-from-item class="number_range" label="数值范围" v-if="controlType=='SLIDER'">
+                <div>
+                  <label>数值范围:</label>
+                  <!--<el-input placeholder="最小值"  v-model.number="basicDataInfo.obj.baseProperty.sliderInfo.min" min="0"></el-input> - <el-input v-model.number="basicDataInfo.obj.baseProperty.sliderInfo.max"  placeholder="最大值"></el-input>-->
+                  <el-input-number v-model="basicDataInfo.obj.baseProperty.sliderInfo.max" :min="0"></el-input-number>
+                </div>
+                <div class="step-box">
+                  <label>间断点:</label>
+                  <el-input-number v-model="basicDataInfo.obj.baseProperty.sliderInfo.step" :min="basicDataInfo.obj.baseProperty.sliderInfo.min"></el-input-number>
+                </div>
+
+              </el-from-item>
               <el-form-item v-if="basicDataInfo.obj.baseProperty.labelType=='TEXT'&&controlType=='LABEL'" label="标签内容" class="line_blockLabel">
                 <el-input class="widthSet" v-model="basicDataInfo.obj.baseProperty.labelContent" type="textarea" :rows="5" placeholder="请输入标签内容"></el-input>
               </el-form-item>
@@ -164,6 +182,9 @@
                   mode="auto"
                 ></vue-cropper> -->
               </div>
+              <el-form-item label="备注内容" class="line_blockLabel" v-if="['SINGLE_INPUT','MULTI_INPUT','NUMBER_INPUT'].includes(controlType)">
+                <el-input style="width: 98%" type="textarea" v-model="basicDataInfo.obj.baseProperty.remark" :rows="5" placeholder="请输入备注内容信息"></el-input>
+              </el-form-item>
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="数据设置" name="second">
@@ -535,6 +556,14 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
+          <el-tab-pane label="高级配置" name="highSet" v-if="['CASCADE','SLIDER'].includes(controlType)">
+            <el-form class="alignment">
+              <el-form-item label="内容配置" >
+                <!--v-model="basicDataInfo.obj.termSet.rangeText"-->
+                <el-input type="textarea" :rows="5"  v-model="rangeText"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -611,7 +640,7 @@
           // this.progressImgWidth();
         },
         "rangeText":function (data) { //值域
-          if(this.controlType == 'CASCADE') {
+          if(this.controlType == 'CASCADE' || this.controlType == 'SLIDER') {
             this.basicDataInfo.obj.termSet.rangeText =JSON.stringify(eval(data)) ;
           }else{
             this.basicDataInfo.obj.termSet.rangeText = data;
@@ -1485,6 +1514,24 @@
     }
     .el-tabs__item.is-active{
       background-color: #ffffff;
+    }
+  }
+  .number_range {
+    label {
+      padding-right: 10px;
+    }
+    .el-input-number{
+      line-height: 30px;
+      width: auto;
+      .el-input{
+        width: 150px;
+      }
+    }
+    .step-box{
+      margin-top: 10px;
+      label {
+        padding-right: 24px;
+      }
     }
   }
 </style>
