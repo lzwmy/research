@@ -30,7 +30,7 @@
             class="orgDoctorSelect"
             popper-class="orgDoctorSelect"
             placement="bottom"
-            width="200"
+            width="230"
             :visible-arrow="true"
             v-if="$route.meta.belongToGroup == 'insideView'"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
@@ -42,10 +42,7 @@
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="orgInfoInput" clearable></el-input>
                 <div class="content">
                     <div v-for="(item,index) in filterOrgList" :key="index">
-                        <el-tooltip :disabled="countStrSize(item.orgName)" :content="item.orgName" placement="top">
-                            <p @click="selectOrg(item)" 
-                            :class="orgInfo.orgCode==item.orgCode?'active':''">{{item.orgName}}</p>
-                        </el-tooltip>
+                        <p @click="selectOrg(item)" :class="orgInfo.orgCode==item.orgCode?'active':''">{{item.orgName}}</p>
                     </div>
                     <span v-if="filterOrgList.length==0" class="empty" style="padding:0 20px;">暂无数据</span>
                 </div>
@@ -55,7 +52,7 @@
             class="orgDoctorSelect"
             popper-class="orgDoctorSelect"
             placement="bottom"
-            width="201"
+            width="230"
             :visible-arrow="true"
             v-if="$route.meta.belongToGroup == 'insideView'"
             :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'
@@ -426,7 +423,7 @@ export default {
             padding: 0;
             .el-input {
                 margin: 10px;
-                width: 178px;
+                width: auto;
             }
             .content {
                 p {
