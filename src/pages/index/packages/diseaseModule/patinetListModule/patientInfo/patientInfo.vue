@@ -225,9 +225,12 @@ export default {
                         text-align: center;
                         border-radius:2px;
                         &.status_1_0 {
-                            color: rgb(247, 158, 1);
-                            border:1px solid rgb(247, 158,1);
-                            background:rgba(247, 158,1, 0.1);
+                            // color: #fafafa;
+                            // border:1px solid rgba(59, 59, 59, 0.5);
+                            // background:rgba(59, 59, 59, 0.25)
+                            color: rgba(59, 59, 59, 0.5);
+                            border:1px solid rgba(59, 59, 59, 0.5);
+                            background:rgba(59, 59, 59, 0.1)
                         }
                         &.status_1_1 {
                             color: rgb(0, 119, 180);
@@ -240,9 +243,9 @@ export default {
                             background:rgba(138, 202, 86,0.1);
                         }
                         &.status_1_3 {
-                            color: rgb(226, 72, 40);
-                            border:1px solid #e24828;
-                            background:rgba(226, 72, 40,0.1);
+                            color: rgb(247, 158, 1);
+                            border:1px solid rgb(247, 158,1);
+                            background:rgba(247, 158,1, 0.1);
                         }
                         &.status_1_4 {
                             color: rgb(0, 191, 143);

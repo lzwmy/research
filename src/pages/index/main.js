@@ -68,7 +68,6 @@ Vue.directive('focus', {
 Object.keys(filters).forEach(i => Vue.filter(i, filters[i]));
 
 
-// let Highcharts = require('highcharts');
 Vue.prototype.$Highcharts = Highcharts;
 
 
