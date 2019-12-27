@@ -34,7 +34,7 @@
     data() {
       return {
         marks:{},
-        sliderValue:this.report.value || 0
+        sliderValue:parseInt(this.report.value) || 0
       }
     },
     watch:{
@@ -52,7 +52,7 @@
         }
         this.marks = obj;
       }
-      this.report.value = this.report.value || 0;
+      this.sliderValue = parseInt(this.report.value) || 0;
     }
   }
 </script>

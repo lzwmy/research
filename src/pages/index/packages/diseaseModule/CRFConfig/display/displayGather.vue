@@ -522,9 +522,10 @@ export default {
       if(this.report.value) {
         arrayList.forEach(item => {
           if(item.termItemName == this.report.value && item.id == 0) {
-            this.isFold = false;
-          }else if(item.termItemName == this.report.value && item.id != 0){
             this.isFold = true;
+          }else if(item.termItemName == this.report.value && item.id != 0){
+            this.isFold = false;
+            return ;
           }
         })
       }
