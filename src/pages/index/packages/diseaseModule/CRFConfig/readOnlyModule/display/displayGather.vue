@@ -68,6 +68,7 @@
               <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
               <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
               <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
+              <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
             </el-col>
           </el-row>
           <el-col  v-if="it.baseProperty.layout.wrap == '0'" :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
@@ -84,6 +85,7 @@
             <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
             <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
             <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
+            <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
           </el-col>
 <!--          {{it.baseProperty.layout}}-->
         </div>
@@ -122,6 +124,7 @@ import displayTable from "./displayTable";
 import displayGather from "./displayGather";
 import displayGatherColumn from "./displayGatherColumn";
 import displayCascader from './displayCascader';
+import displaySlider from './displaySlider';
 export default {
   name: "displayGather",
   components: {
@@ -138,7 +141,8 @@ export default {
     displayTable,
     displayGather,
     displayGatherColumn,
-    displayCascader
+    displayCascader,
+    displaySlider
   },
   data() {
     return {

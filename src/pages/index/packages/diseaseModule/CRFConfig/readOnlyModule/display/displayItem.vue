@@ -19,6 +19,7 @@
           <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
           <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
           <display-cascader v-else-if="item.controlType == 'CASCADE'" :item="item" :report="report"></display-cascader>
+          <display-slider v-else-if="item.controlType == 'SLIDER'" :item="item" :report="report"></display-slider>
         </el-col>
       </el-row>
     <el-col  v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
@@ -37,6 +38,7 @@
       <display-file-upload v-else-if="item.controlType == 'FILE_UPLOAD'" :item="item" :report="report"></display-file-upload>
       <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
       <display-cascader v-else-if="item.controlType == 'CASCADE'" :item="item" :report="report"></display-cascader>
+      <display-slider v-else-if="item.controlType == 'SLIDER'" :item="item" :report="report"></display-slider>
     </el-col>
   </div>
 </template>
@@ -57,6 +59,7 @@ import displayGather from "./displayGather";
 import displayFileUpload from './displayFileUpload';
 import displayScore from './displayScore';
 import displayCascader from './displayCascader';
+import displaySlider from './displaySlider';
 import "assets/css/crf.less";
 export default {
   name: "displayItem",
@@ -85,7 +88,8 @@ export default {
     displayGather,
     displayFileUpload,
     displayScore,
-    displayCascader
+    displayCascader,
+    displaySlider
   },
   methods:{
     formatSpan(item) {

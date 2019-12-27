@@ -20,6 +20,7 @@
           >{{precessData(it.termItemName)}}</el-radio>
         </el-radio-group>-->
         {{report.value || '(空)'}}
+        <span v-if="item.baseProperty.controlIsExtend && report.value == '其他'">{{ `(${report.value2})` }}</span>
       </div>
       <!--<div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>-->
       <div class="info_fixed" style="display: table-cell;position: relative;">

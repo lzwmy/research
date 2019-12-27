@@ -12,7 +12,7 @@
 
       </div>
 
-    <div :class="['view_knowType',{'table_knowType':item.gatherKnowType>0}]" v-if="item.gatherKnowType>0">
+    <div :class="['view_knowType',{'table_knowType':item.gatherKnowType>0}]" v-if="item.gatherKnowType>0" style="display: inline-block;padding: 10px 0">
      <!--<el-radio-group v-model="report.value">
           <el-radio v-if="item.gatherKnowType==2" label="是"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="否"  @change="changeRadioKnowType(1)"></el-radio>
