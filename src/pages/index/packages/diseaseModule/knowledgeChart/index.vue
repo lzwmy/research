@@ -188,8 +188,9 @@ export default {
             },
             activeItem: '',
             currentPage: 1,
-            totalPage: 3,
+            totalPage: null,
             tabTotalWidth: null,
+            tabBoxWidth: null,
         }
     },
     components: {
@@ -213,11 +214,14 @@ export default {
     },
     methods: {
         computeTabsWidth() {
+            this.tabBoxWidth = $('.item-group').width();
             let width = 0;
             Array.from($('.el-tabs__item')).forEach(ele=>{
                 width += $(ele).outerWidth(true);
             })
+            console.log(width)
             this.tabTotalWidth = width;
+            this.totalPage = Math.ceil(this.tabTotalWidth/this.tabBoxWidth)
         },
         async getChartData() {
             this.loading = true;
