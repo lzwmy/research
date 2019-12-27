@@ -96,7 +96,7 @@
     }
 </script>
 
-<style >
+<!--<style >
 .pga_container table{
   width: 100%;
   border-collapse: collapse;
@@ -122,4 +122,4 @@
   background-color: #f7f9fa;
   cursor: pointer;
 }
-</style>
+</style>-->

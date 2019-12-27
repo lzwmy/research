@@ -661,7 +661,9 @@ export default {
       }
       let formData = {
         'replyList': [],
-        ...that.report
+        'reportBakDto':{
+          ...that.report
+        }
       };
       try {
         let data = await that.$http.reportBakSubmit(formData);

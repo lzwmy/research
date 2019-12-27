@@ -206,7 +206,7 @@
         <div class="content_item">
           <div class="item_name sing-input">PASI (总分) =</div>
           <div class="item_single-input">
-            <el-input v-model="total" readonly></el-input>
+            <el-input v-model="totalNumber"></el-input>
           </div>
         </div>
       </div>
@@ -248,6 +248,11 @@
           return PASI
         }
       },
+      watch:{
+        'total':function (data) {
+          this.totalNumber = data;
+        }
+      },
       data(){
         return {
           head:{
@@ -273,7 +278,8 @@
             desquamation:0,//脱屑
             erythema:0,//红斑
             infiltration:0,//浸润
-          }
+          },
+          totalNumber:'0.00'
         }
       },
       methods:{

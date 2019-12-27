@@ -633,3 +633,30 @@
 .SLIDER .SLIDER_box .el-slider .el-slider__marks .el-slider__marks-text{
   white-space: nowrap;
 }
+
+ /**PGA 评分 控件**/
+.pga_container table{
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e5ebf1;
+}
+.pga_container table thead tr th{
+  text-align: left;
+  padding: 0 10px;
+  height: 39px;
+}
+.pga_container table td{
+  height: 39px;
+  color: #6a707e;
+  padding: 0 10px;
+}
+.pga_container table tbody tr td.single_checkBox .el-radio .el-radio__label{
+  display: none;
+}
+.pga_container table tbody tr td.single_checkBox{
+  text-align: center;
+}
+.pga_container table tbody tr:hover{
+  background-color: #f7f9fa;
+  cursor: pointer;
+}

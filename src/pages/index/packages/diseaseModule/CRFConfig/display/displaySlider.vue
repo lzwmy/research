@@ -8,12 +8,12 @@
     <div :class="[item.controlType+'_box']">
       <el-slider
         v-if="item.baseProperty.sliderInfo.step == 0"
-        v-model="report.value"
+        v-model="sliderValue"
         :max="item.baseProperty.sliderInfo.max">
       </el-slider>
       <el-slider
         v-else-if="item.baseProperty.sliderInfo.step > 0"
-        v-model="report.value"
+        v-model="sliderValue"
         :max="item.baseProperty.sliderInfo.max"
         :step="item.baseProperty.sliderInfo.step"
         :marks="marks"
@@ -25,7 +25,6 @@
 
 <script>
   export default {
-    name: "displaySlider",
     props:{
       item: {},
       report: {},
@@ -33,7 +32,13 @@
     },
     data() {
       return {
-        marks:{}
+        marks:{},
+        sliderValue:parseInt(this.report.value) || 0
+      }
+    },
+    watch:{
+      "sliderValue":function (data) {
+        this.report.value = data.toString();
       }
     },
     methods:{},
@@ -46,6 +51,7 @@
         }
         this.marks = obj;
       }
+      this.sliderValue = parseInt(this.report.value) || 0;
     }
   }
 </script>

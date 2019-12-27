@@ -5,7 +5,10 @@
       <span>{{item.controlDisplayName}}</span>
     </div>
     <div :class="item.controlType+'_box'">
-      <span :class="item.controlType+'_rangeValue'">{{report.value || '0.00'}}</span>
+      <span :class="item.controlType+'_rangeValue'" >
+        {{report.value || '0.00'}}
+        <!--<el-input v-model="report.value" style="width: 64px"></el-input> style="padding-right: 0;"-->
+      </span>
       <el-button type="primary" @click="item.baseProperty.scoreInfo.scoreStatus = true" style="width: 120px;">评分</el-button>
     </div>
     <el-dialog :visible.sync="item.baseProperty.scoreInfo.scoreStatus"
@@ -46,7 +49,7 @@
         console.log('评分弹框保存');
         switch (this.item.baseProperty.scoreInfo.scoreName) {
           case "PASI":
-            this.report.value = this.$refs.pasi.total;
+            this.report.value = this.$refs.pasi.totalNumber;
             // console.log(this.$refs.pasi.total);
             this.item.baseProperty.scoreInfo.scoreStatus = false;
             this.scoreReportSave();
@@ -73,7 +76,7 @@
           reportId:JSON.parse(localStorage.getItem('reportFill')).urlParameter.reportId,
           jsonData:JSON.stringify(jsonData),
           scoreName:this.item.baseProperty.scoreInfo.scoreName,
-          score:this.$refs.pasi.total
+          score:this.$refs.pasi.totalNumber
         };
         try{
           let data = await that.$http.scoreReportSave(formData);
@@ -105,6 +108,11 @@
         }catch (error) {
           console.log(error)
         }
+      }
+    },
+    mounted() {
+      if(this.report.value == "") {
+        this.report.value = this.report.value || '0.00'
       }
     }
   }

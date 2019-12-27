@@ -891,6 +891,30 @@ body.theme-blue .crf-left-btn.onclick {
   display: inline-block;
 }
 
+.read_container-mode .view_container_tlr .arrangement_lr .table_label {
+  border:1px solid #dee2e5;
+  text-align: center;
+  vertical-align: middle;
+}
+.read_container-mode .view_container_tlr .arrangement_lr .table_label .info_fixed {
+  display: none !important;
+}
+/***** 表格下 控件类型隐藏 ***/
+/**
+* 输入框
+ */
+.read_container-mode .view_container_tlr .arrangement_lr .table_label .SINGLE_INPUT{
+  display: table;
+  width: 100%;
+}
+.read_container-mode .view_container_tlr .arrangement_lr .table_label .SINGLE_INPUT .SINGLE_INPUT_box{
+  display: table-cell;
+  vertical-align: middle;
+}
+/**
+* 日期
+ */
+
 
 /** 集合 **/
 .read_container-mode .gather_knowType .is_knowType {
@@ -962,4 +986,22 @@ body.theme-blue .crf-left-btn.onclick {
 .content-item_info img{
   cursor: pointer;
 }
-
+/** 滑块控件**/
+.read_container-mode .SLIDER .info_fixed  {
+  font-size: 16px;
+  color: #979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.read_container-mode .SLIDER .info_fixed .active_annotate{
+  color: #F99F00;
+}
+.read_container-mode .SLIDER .info_fixed .active_modifyInfo{
+  font-size: 16px;
+  color: #979BAB;
+  padding-left: 25px;
+  cursor: pointer;
+}
+.read_container-mode .SLIDER  .remove_annotate {
+  vertical-align: middle;
+}

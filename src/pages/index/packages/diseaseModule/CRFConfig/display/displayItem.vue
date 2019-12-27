@@ -106,7 +106,7 @@ export default {
       return span;
     }
   }
- 
+
 };
 </script>
 

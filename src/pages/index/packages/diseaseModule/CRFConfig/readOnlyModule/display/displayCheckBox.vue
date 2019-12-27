@@ -18,6 +18,7 @@
           ></el-checkbox>
         </el-checkbox-group>-->
         {{displayValue || '(空)'}}
+        <span v-if="item.baseProperty.controlIsExtend">{{ `(${report.value2})` }}</span>
       </div>
       <!--<div :class="item.controlType+'_empty'" @click="()=>{checkList=[];report.value='';}">清空</div>-->
       <div class="info_fixed" style="display: table-cell;position: relative;">
