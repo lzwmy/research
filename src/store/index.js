@@ -236,13 +236,16 @@ const annotateData = {
     annotateList:[],
     modifyData:[],
     annotateNum:0,
+    answerList:[],
+    tipStatus:'',
+    isExamine:''
   },
   getters:{
     forlist:state => state.annotate
   },
   mutations:{
     addAnnotate(state,val) {
-      state.annotateList.push(val)
+      state.annotateList.push(val);
     },
     resetAnnotate(state,val) {
       state.annotateList = val;
@@ -252,7 +255,19 @@ const annotateData = {
     },
     annotateNumber(state,val) {
       state.annotateNum = val;
-    }
+    },
+    addAnswer(state,val) {
+      state.answerList.push(val);
+    },
+    resetAnswer(state,val) {
+      state.answerList = val;
+    },
+    setStatus(state,val) {
+      state.tipStatus = val;
+    },
+    setIsExamine(state,val) {
+      state.isExamine = val;
+    },
   },
   actions:{
     addFun(context,data) {
@@ -266,7 +281,19 @@ const annotateData = {
     },
     annotateNumberFun(context,data) {
       context.commit('annotateNumber',data)
-    }
+    },
+    addAnswerFun(context,data) {
+      context.commit('addAnswer',data)
+    },
+    resetAnswerFun(context,data=[]) {
+      context.commit('resetAnswer',data)
+    },
+    setStatusFun(context,data) {
+      context.commit('setStatus',data)
+    },
+    setIsExamineFun(context,data) {
+      context.commit('setIsExamine',data)
+    },
   }
 };
 

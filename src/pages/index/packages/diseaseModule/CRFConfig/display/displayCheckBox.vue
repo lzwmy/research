@@ -15,11 +15,12 @@
             v-for="(it,index) in item.termSet.termItemList"
             :label="it.termItemName"
             :key="index"
-          ></el-checkbox>
-          <el-checkbox label="其他" v-if="item.baseProperty.controlIsExtend">其他</el-checkbox>
+          >
+            <div v-if="it.termItemName == '其他'" style="display: contents">{{it.termItemName}}</div>
+            <el-input style="display: inline-block"  v-if="it.termItemName == '其他' &&item.baseProperty.controlIsExtend && checkList.includes('其他')"  v-model="report.value2" ></el-input>
+          </el-checkbox>
         </el-checkbox-group>
       </div>
-      <el-input  v-if="item.baseProperty.controlIsExtend && checkList.includes('其他')"  v-model="report.value2" ></el-input>
       <div :class="item.controlType+'_empty'" @click="resetData">清空</div>
     </div>
   </div>
