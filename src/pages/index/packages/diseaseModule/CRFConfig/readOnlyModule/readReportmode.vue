@@ -2,7 +2,7 @@
   <div class="read_container-mode">
     <div class="crf-step-header">
       <i class="header_left"></i>
-      <span style="font-size: 16px; margin-right:20px;">{{report.patientName}}</span>
+      <span style="font-size: 16px; margin-right:20px;">{{report.patientName}} {{tipStatus}} {{isExamine}}</span>
       <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
       <!--<el-button type="danger" size="mini" style="float:right;margin-left: 5px" @click="closePage">关 闭</el-button>-->
     </div>
@@ -12,7 +12,7 @@
 
     <!--批注弹框新增-->
     <el-dialog
-      title="批注"
+      :title="title"
       :visible.sync="centerDialogVisible"
       class="annotate_dialog-box"
       width="40%"
@@ -23,6 +23,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="addComment">确 定</el-button>
         <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <span class="clear_data" @click="clearData">清空</span>
       </span>
     </el-dialog>
   </div>
@@ -40,6 +41,7 @@
       report: {},
       index: Number,
       tipStatus:Number,
+      isExamine:Boolean,
     },
     components:{
       displayReport
@@ -47,6 +49,7 @@
     data() {
       return {
         centerDialogVisible: false,
+        title:"批注",
         annotate:"",
         currentComment:{
           createTime:"",
@@ -71,9 +74,14 @@
         this.$store.dispatch('annotateNumberFun',0);
         this.$store.dispatch('resetFun');
         this.$store.dispatch('addModifyDataFun',[]);
-        console.log(this.tipStatus)
+        this.$store.dispatch('resetAnswerFun');
+        this.$store.dispatch('setStatusFun',this.tipStatus);
+        this.$store.dispatch('setIsExamineFun',this.isExamine);
         if(this.tipStatus == 3 || this.tipStatus == 4) {
           this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
+          if(this.tipStatus == 3 && this.isExamine == false) {
+            this.getAnswerList();
+          }
           return ;
         }else if(this.tipStatus == 2){ //已提交
           this.getReportBakListDataChange()
@@ -97,26 +105,67 @@
         this.currentComment.createTime = timestamp;
         this.currentComment.content = this.annotate;
         console.log('获取时间戳',timestamp,this.currentComment.content,this.currentComment.path);
-        let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
-        if(copyData.length ) {
-          for(let i=0;i<copyData.length;i++) {
-            if(copyData[i].path == this.currentComment.path) {
-              copyData.splice(i,1);
-              i--;
+        if(this.tipStatus == 3 && this.isExamine == false) {
+          let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.answerList));
+          if(copyData.length ) {
+            for(let i=0;i<copyData.length;i++) {
+              if(copyData[i].path == this.currentComment.path) {
+                copyData.splice(i,1);
+                i--;
+              }
             }
+            this.$store.dispatch('resetAnswerFun',copyData);
           }
-          this.$store.dispatch('resetFun',copyData);
+          this.currentComment.creatorName = this.$store.state.user.userLogin.name;
+          this.$store.dispatch('addAnswerFun',Object.assign({},JSON.parse(JSON.stringify(this.currentComment))));
+        }else {
+          let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+          if(copyData.length ) {
+            for(let i=0;i<copyData.length;i++) {
+              if(copyData[i].path == this.currentComment.path) {
+                copyData.splice(i,1);
+                i--;
+              }
+            }
+            this.$store.dispatch('resetFun',copyData);
+          }
+          this.$store.dispatch('addFun',Object.assign({},JSON.parse(JSON.stringify(this.currentComment))));
         }
-        this.$store.dispatch('addFun',Object.assign({},JSON.parse(JSON.stringify(this.currentComment))));
         this.centerDialogVisible = false;
-        console.log(this.$store.state.annotateData.annotateList);
+        /*console.log(this.$store.state.annotateData.answerList);*/
         //清空
         this.currentComment.createTime="";
         this.currentComment.content="";
         this.currentComment.path="";
         this.annotate = "";
       },
-
+      clearData() {
+        if(this.tipStatus == 3 && this.isExamine == false) {
+          let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.answerList));
+          if(copyData.length ) {
+            for(let i=0;i<copyData.length;i++) {
+              if(copyData[i].path == this.currentComment.path) {
+                copyData.splice(i,1);
+                i--;
+              }
+            }
+            this.$store.dispatch('resetAnswerFun',copyData);
+          }
+        }else {
+          let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+          if(copyData.length ) {
+            for(let i=0;i<copyData.length;i++) {
+              if(copyData[i].path == this.currentComment.path) {
+                copyData.splice(i,1);
+                i--;
+              }
+            }
+            this.$store.dispatch('resetFun',copyData);
+          }
+        }
+        this.annotate = "";
+        this.centerDialogVisible = false;
+      },
       getMyDate(str) {
         if (str == null || str == "") {
           return '';
@@ -173,23 +222,54 @@
         }catch (error) {
           console.log(data)
         }
+      },
+      // 获取回复 列表
+      async getAnswerList() {
+        let that = this;
+        let formData = {
+          reportId:that.report.id
+        };
+        try {
+          let data = await that.$http.getAnswerList(formData);
+          if(data.code === 0) {
+            this.$store.dispatch('resetAnswerFun',data.data);
+          }
+        }catch (error) {
+          console.log(error);
+        }
       }
     },
     mounted() {
       this.initPage();
       eventBus.$on('display-show',result => {
         console.log('批注点击事件',result);
+        this.annotate = "";
         this.currentComment.path = result;
         this.centerDialogVisible = true;
-        let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
-        if(copyData.length) {
-          copyData.forEach(item => {
-            if(item.path == result) {
-              this.annotate = item.content;
-              return ;
-            }
-          })
+        if(this.tipStatus == 3 && this.isExamine == false) {
+          this.title = '回复';
+          let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.answerList));
+          if(copyData.length) {
+            copyData.forEach(item => {
+              if(item.path == result) {
+                this.annotate = item.content;
+                return ;
+              }
+            })
+          }
+        }else {
+          this.title = '批注';
+          let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+          if(copyData.length) {
+            copyData.forEach(item => {
+              if(item.path == result) {
+                this.annotate = item.content;
+                return ;
+              }
+            })
+          }
         }
+
       })
     },
     beforeDestroy () {

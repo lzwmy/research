@@ -184,7 +184,12 @@
                   return;
                 }
               default:
-                this.reportBakCallback().then(() => this.$parent.initPage())
+                this.reportBakCallback().then(() =>{
+                    this.$parent.showReadComponent = false;
+                    this.$parent.crfForm = null;
+                    this.$parent.report = null;
+                    this.$parent.initPage();
+                } );
                 return;
             }
           }else { 

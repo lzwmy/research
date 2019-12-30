@@ -458,6 +458,17 @@
   padding-left: 5px;
   color: #7878787a;
 }
+
+/**数值-- 针对于单行的的布局**/
+.NUMBER_INPUT .single_line-box {
+  min-width: auto !important;
+}
+.NUMBER_INPUT .single_line-box .single_line-unit{
+  width: auto;
+  min-width: auto !important;
+}
+
+
 /*单选框*/
 .RADIO_BUTTON {
   line-height: 32px;
@@ -502,6 +513,16 @@
   cursor: pointer;
   vertical-align: middle;
   /*padding-left: 5px;*/
+}
+/**单选-- 针对于单行的的布局**/
+.RADIO_BUTTON .RADIO_BUTTON_single_line {
+  min-width: auto !important;
+}
+.RADIO_BUTTON .RADIO_BUTTON_single_line .el-radio-group {
+  min-width: auto !important;
+}
+.RADIO_BUTTON .empty_single-box {
+  padding-left: 10px;
 }
 /*表格*/
 .table_label {
@@ -659,4 +680,8 @@
 .pga_container table tbody tr:hover{
   background-color: #f7f9fa;
   cursor: pointer;
+}
+/** 集合 **/
+.GATHER .gather_knowType .el-radio-group .el-radio {
+  margin-right: 10px;
 }

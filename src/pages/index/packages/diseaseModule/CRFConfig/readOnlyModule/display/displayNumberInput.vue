@@ -40,12 +40,15 @@
       </div>
       <div class="info_fixed" style="display: table-cell;position: relative;">
         <i class="iconfont iconzu14" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
-        <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
+        <i class="iconfont iconzu13" v-else-if="showStatus()"  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
         <div class="info_tip_box" v-if="modifyDataProcess()">
           <i></i>
           <div class="tip_content" >
             <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
               <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+            </p>
+            <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复： {{it.content}}</span>
             </p>
           </div>
         </div>
@@ -53,7 +56,10 @@
           <i></i>
           <div class="tip_content" >
             <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 批注： {{it.content}}</span>
+            </p>
+            <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复： {{it.content}}</span>
             </p>
             <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
               <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
@@ -61,7 +67,6 @@
           </div>
         </div>
       </div>
-      <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
     </div>
   </div>
 </template>
@@ -121,9 +126,131 @@ export default {
            this.$store.commit('CRF_CHANGE_CONTROL',ctrl);
       
     },
+    showStatus () {
+      let show = true;
+      let annotateStatus = false;
+      let modifyStatus = false;
+      let anwerStatus = false;
+      let annotateList = this.$store.state.annotateData.annotateList;
+      let modifyData = this.$store.state.annotateData.modifyData;
+      let answerList = this.$store.state.annotateData.answerList;
+      if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
+        if(annotateList.length || modifyData.length || answerList.length) {
+          if(annotateList.length) {
+            annotateList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                annotateStatus = true;
+                return ;
+              }
+            })
+          }
+          if(modifyData.length) {
+            modifyData.forEach(item => {
+              if(item.path == this.item.controlName) {
+                modifyStatus = true;
+                return ;
+              }
+            })
+          }
+          if(answerList.length) {
+            answerList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                anwerStatus = true;
+                return ;
+              }
+            })
+          }
+          if(annotateStatus || modifyStatus || anwerStatus) {
+            show = true;
+          }else {
+            show = false;
+          }
+        }else {
+          show = false;
+        }
+      }else if(this.$store.state.annotateData.tipStatus  == 4 && this.$store.state.annotateData.isExamine == false) {
+        if(annotateList.length || modifyData.length || answerList.length) {
+          if(annotateList.length) {
+            annotateList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                annotateStatus = true;
+                return ;
+              }
+            })
+          }
+          if(modifyData.length) {
+            modifyData.forEach(item => {
+              if(item.path == this.item.controlName) {
+                modifyStatus = true;
+                return ;
+              }
+            })
+          }
+          if(answerList.length) {
+            answerList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                anwerStatus = true;
+                return ;
+              }
+            })
+          }
+          if(annotateStatus || modifyStatus || anwerStatus) {
+            show = true;
+          }else {
+            show = false;
+          }
+        }else {
+          show = false;
+        }
+      }else if(this.$store.state.annotateData.tipStatus  == 2 && this.$store.state.annotateData.isExamine == false) {
+        if(annotateList.length || modifyData.length || answerList.length) {
+          if(annotateList.length) {
+            annotateList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                annotateStatus = true;
+                return ;
+              }
+            })
+          }
+          if(modifyData.length) {
+            modifyData.forEach(item => {
+              if(item.path == this.item.controlName) {
+                modifyStatus = true;
+                return ;
+              }
+            })
+          }
+          if(answerList.length) {
+            answerList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                anwerStatus = true;
+                return ;
+              }
+            })
+          }
+          if(annotateStatus || modifyStatus || anwerStatus) {
+            show = true;
+          }else {
+            show = false;
+          }
+        }else {
+          show = false;
+        }
+      }
+      return show;
+    },
     commentMethod() {
-      let path = this.item.controlName;
-      eventBus.$emit('display-show',path)
+      let flag = this.modifyDataProcess();
+      if(flag) {
+        if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
+          return ;
+        }
+      }else {
+        let path = this.item.controlName;
+        eventBus.$emit('display-show',path)
+      }
+      /*let path = this.item.controlName;
+      eventBus.$emit('display-show',path)*/
     },
     annotateProcess() {
       let find = false;
@@ -135,6 +262,17 @@ export default {
           return ;
         }
       });
+      if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
+        let answerList = this.$store.state.annotateData.answerList;
+        if(answerList.length) {
+          answerList.forEach(item => {
+            if(item.path == this.item.controlName) {
+              find = true;
+              return ;
+            }
+          })
+        }
+      }
       return find;
     },
     modifyDataProcess() {

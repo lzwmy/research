@@ -1,7 +1,7 @@
 <template>
   <!--集合-->
-  <div class="view_box" >
-      <div class="view_title" style="min-width:180px;display:inline-block;padding: 10px 0">
+  <div :class="['view_box',item.controlType]" >
+      <div class="view_title" style="min-width:184px;display:inline-block;padding: 10px 0">
         <!--加号-->
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" @click="changeExpend(0)"></i>
         <!--减号-->
@@ -9,7 +9,7 @@
         <strong v-show="item.displayIsVisible">{{item.controlDisplayName}}</strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
-      <div class="view_knowType" style="display: inline-block;" v-if="item.gatherKnowType>0">
+      <div :class="['view_knowType',{'gather_knowType':item.gatherKnowType>0 }]" style="display: inline-block;" v-if="item.gatherKnowType>0">
         <el-radio-group v-model="report.value">
           <el-radio v-if="item.gatherKnowType==2" label="是"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="否"  @change="changeRadioKnowType(1)"></el-radio>
