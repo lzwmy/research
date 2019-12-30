@@ -75,45 +75,45 @@
             <el-select v-model="statistics" v-loading="checkLoading" @change="changeTarget(statistics)">
               <el-option
                 v-for="item in statisticsList"
-                :key="item.formItemId"
+                :key="item.path"
                 :label="item.formItemName"
-                :value="item.formItemId">
+                :value="item.path">
               </el-option>
             </el-select>
             <div class="from_name" v-show="chartType=='BAR'">对比指标</div>
             <el-select v-model="compareFormItemId"  v-show="chartType=='BAR'" v-loading="checkLoading" @change="changeCompareValuePath(compareFormItemId)">
               <el-option
                 v-for="item in compareFormItemList"
-                :key="item.formItemId"
+                :key="item.path"
                 :label="item.formItemName"
-                :value="item.formItemId">
+                :value="item.path">
               </el-option>
             </el-select>
             <div class="from_name" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'">X轴</div>
             <el-select v-model="xaxis" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'" v-loading="checkLoading">
               <el-option
                 v-for="item in xaxisList"
-                :key="item.formItemId"
+                :key="item.path"
                 :label="item.formItemName"
-                :value="item.formItemId">
+                :value="item.path">
               </el-option>
             </el-select>
             <div class="from_name" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'">Y轴</div>
             <el-select v-model="yaxis" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'" v-loading="checkLoading">
               <el-option
                 v-for="item in yaxisList"
-                :key="item.formItemId"
+                :key="item.path"
                 :label="item.formItemName"
-                :value="item.formItemId">
+                :value="item.path">
               </el-option>
             </el-select>
             <div class="from_name" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'&&chartType!=='2D_SCATTER'">Z轴</div>
             <el-select v-model="zaxis" v-if="chartType!=='PIE'&&chartType!=='BAR'&&chartType!=='LINE'&&chartType!=='2D_SCATTER'" v-loading="checkLoading">
               <el-option
                 v-for="item in zaxisList"
-                :key="item.formItemId"
+                :key="item.path"
                 :label="item.formItemName"
-                :value="item.formItemId">
+                :value="item.path">
               </el-option>
             </el-select>
             <!--<div class="submit_btn">
