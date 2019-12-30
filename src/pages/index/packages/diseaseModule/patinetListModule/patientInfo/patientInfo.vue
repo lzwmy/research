@@ -225,9 +225,9 @@ export default {
                         text-align: center;
                         border-radius:2px;
                         &.status_1_0 {
-                            color: rgb(247, 158, 1);
-                            border:1px solid rgb(247, 158,1);
-                            background:rgba(247, 158,1, 0.1);
+                            color: #999;
+                            border:1px solid rgba(153, 153, 153, 0.753);
+                            background:rgba(153, 153, 153, 0.1);
                         }
                         &.status_1_1 {
                             color: rgb(0, 119, 180);

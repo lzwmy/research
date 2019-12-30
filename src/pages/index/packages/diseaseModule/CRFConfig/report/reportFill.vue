@@ -12,7 +12,7 @@
             </div>
             <div>
               <!--<el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>-->
-              <span v-if="urlParameter.from == 'patientFollowUp'"  style="float: right; margin-right: 10px;">
+              <span v-if="urlParameter.from == 'patientFollowUp'">
                 <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
                 <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
                 <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
