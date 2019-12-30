@@ -38,7 +38,7 @@
         <!--<report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
       <!--阅读模式-->
       <div v-else>
-        <read-report-mode ref="reportRead" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report" :tipStatus="tipStatus"></read-report-mode>
+        <read-report-mode ref="reportRead" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report" :tipStatus="tipStatus" :isExamine='isExamine'></read-report-mode>
       </div>
     </div>
     <!--数据绑定提醒-->
@@ -660,7 +660,7 @@ export default {
         return ;
       }
       let formData = {
-        'replyList': [],
+        'replyList':that.$store.state.annotateData.answerList || [],
         'reportBakDto':{
           ...that.report
         }
@@ -744,8 +744,8 @@ export default {
     },
     //操作视图
     handleView(data) {
-      this.showReadComponent = data.mode === 1 ? true : false;
-      this.btnShow = data.showBtn;
+        this.showReadComponent = data.mode === 1 ? true : false;
+        this.btnShow = data.showBtn;
     }
   },
   computed: {

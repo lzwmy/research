@@ -10,7 +10,7 @@
       <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
     </div>
     <!--style="display:inline-block" :style="`width:${inputWidth}px`"-->
-    <div :class="item.controlType+'_box'"  >
+    <div :class="[item.controlType+'_box',{'single_line-box':item.baseProperty.layout.columns==1}]"  >
       <!--style="display:inline-block;width:50%"-->
       <div :class="[item.controlType+'_box_number',{isRequired:item.baseProperty.isRequired}]"
            :data-switch="item.termUnit.numberIsSwitch"
@@ -19,7 +19,7 @@
         <el-input @change="changed" @focus="onFocus" size="small" placeholder="请输入" v-model.trim="inputValue"></el-input>
       </div>
       <!--style="display:inline-block;width:48%"-->
-      <div :class="item.controlType+'_box_unitName'"  v-if="item.termUnit.numberIsSwitch=='1'">
+      <div :class="[item.controlType+'_box_unitName',{'single_line-unit':item.baseProperty.layout.columns==1 && item.baseProperty.remark}]"  v-if="item.termUnit.numberIsSwitch=='1'">
         {{inputUnit}}
       </div>
       <!--style="display:inline-block"-->

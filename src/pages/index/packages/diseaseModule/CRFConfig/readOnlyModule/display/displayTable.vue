@@ -1,7 +1,7 @@
 <template>
   <!--表格-->
   <div class="view_box" v-if="item.controlType=='TABLE'">
-    <div :class="['view_title',{'view_table-title':item.controlType=='TABLE'}]" style="width:250px;display:inline-block;">
+    <div :class="['view_title',{'view_table-title':item.controlType=='TABLE'}]" style="min-width:190px;display:inline-block;">
         <!--加号-->
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" ></i>
         <!--减号-->
@@ -23,14 +23,17 @@
         <span class="empty" @click="()=>{report.value=null;isFold=false}">清空</span>-->
       <i class="is_knowType" v-if="item.gatherKnowType==1">{{report.value || '无'}}</i>
       <i class="is_knowType" v-if="item.gatherKnowType==2">{{report.value || '无'}}</i>
-      <div class="info_fixed" style="display: inline-block;position: relative;">
+      <div class="info_fixed" style="display: table-cell;position: relative;">
         <i class="iconfont iconzu14" v-if="modifyDataProcess()" :class="[{'active_modifyInfo':modifyDataProcess()}]" @click="commentMethod"></i>
-        <i class="iconfont iconzu13" v-else  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
+        <i class="iconfont iconzu13" v-else-if="showStatus()"  :class="[{'active_annotate':annotateProcess()}]" @click="commentMethod" ></i>
         <div class="info_tip_box" v-if="modifyDataProcess()">
           <i></i>
           <div class="tip_content" >
             <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
               <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+            </p>
+            <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复： {{it.content}}</span>
             </p>
           </div>
         </div>
@@ -38,7 +41,10 @@
           <i></i>
           <div class="tip_content" >
             <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.content}}</span>
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 批注： {{it.content}}</span>
+            </p>
+            <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复： {{it.content}}</span>
             </p>
             <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
               <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
@@ -46,7 +52,6 @@
           </div>
         </div>
       </div>
-      <i class="remove_annotate" v-show="annotateProcess()" @click="emptyAnnotate">清空</i>
     </div>
     <div v-if="(report.value!='无' && report.value != '') || item.gatherKnowType == 0"
       :class="['view_content',{'tb_content':item.controlType=='TABLE'},{'bg_color':item.gatherRank=='0'}]"
@@ -161,9 +166,131 @@ export default {
         });
         this.report.children.push(newRow);
     },
+    showStatus () {
+      let show = true;
+      let annotateStatus = false;
+      let modifyStatus = false;
+      let anwerStatus = false;
+      let annotateList = this.$store.state.annotateData.annotateList;
+      let modifyData = this.$store.state.annotateData.modifyData;
+      let answerList = this.$store.state.annotateData.answerList;
+      if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
+        if(annotateList.length || modifyData.length || answerList.length) {
+          if(annotateList.length) {
+            annotateList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                annotateStatus = true;
+                return ;
+              }
+            })
+          }
+          if(modifyData.length) {
+            modifyData.forEach(item => {
+              if(item.path == this.item.controlName) {
+                modifyStatus = true;
+                return ;
+              }
+            })
+          }
+          if(answerList.length) {
+            answerList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                anwerStatus = true;
+                return ;
+              }
+            })
+          }
+          if(annotateStatus || modifyStatus || anwerStatus) {
+            show = true;
+          }else {
+            show = false;
+          }
+        }else {
+          show = false;
+        }
+      }else if(this.$store.state.annotateData.tipStatus  == 4 && this.$store.state.annotateData.isExamine == false) {
+        if(annotateList.length || modifyData.length || answerList.length) {
+          if(annotateList.length) {
+            annotateList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                annotateStatus = true;
+                return ;
+              }
+            })
+          }
+          if(modifyData.length) {
+            modifyData.forEach(item => {
+              if(item.path == this.item.controlName) {
+                modifyStatus = true;
+                return ;
+              }
+            })
+          }
+          if(answerList.length) {
+            answerList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                anwerStatus = true;
+                return ;
+              }
+            })
+          }
+          if(annotateStatus || modifyStatus || anwerStatus) {
+            show = true;
+          }else {
+            show = false;
+          }
+        }else {
+          show = false;
+        }
+      }else if(this.$store.state.annotateData.tipStatus  == 2 && this.$store.state.annotateData.isExamine == false) {
+        if(annotateList.length || modifyData.length || answerList.length) {
+          if(annotateList.length) {
+            annotateList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                annotateStatus = true;
+                return ;
+              }
+            })
+          }
+          if(modifyData.length) {
+            modifyData.forEach(item => {
+              if(item.path == this.item.controlName) {
+                modifyStatus = true;
+                return ;
+              }
+            })
+          }
+          if(answerList.length) {
+            answerList.forEach(item => {
+              if(item.path == this.item.controlName) {
+                anwerStatus = true;
+                return ;
+              }
+            })
+          }
+          if(annotateStatus || modifyStatus || anwerStatus) {
+            show = true;
+          }else {
+            show = false;
+          }
+        }else {
+          show = false;
+        }
+      }
+      return show;
+    },
     commentMethod() {
-      let path = this.item.controlName;
-      eventBus.$emit('display-show',path)
+      let flag = this.modifyDataProcess();
+      if(flag) {
+        if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
+          return ;
+        }
+      }else {
+        let path = this.item.controlName;
+        eventBus.$emit('display-show',path)
+      }
+      /*let path = this.item.controlName;
+      eventBus.$emit('display-show',path)*/
     },
     annotateProcess() {
       let find = false;
@@ -175,6 +302,17 @@ export default {
           return ;
         }
       });
+      if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
+        let answerList = this.$store.state.annotateData.answerList;
+        if(answerList.length) {
+          answerList.forEach(item => {
+            if(item.path == this.item.controlName) {
+              find = true;
+              return ;
+            }
+          })
+        }
+      }
       return find;
     },
     modifyDataProcess() {

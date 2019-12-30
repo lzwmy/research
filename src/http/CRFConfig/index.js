@@ -48,7 +48,8 @@ const url = {
   getReportBakListDataChange:"/report/bak/list/dataChange",
   // 召回报告
   reportBakCallback:"/report/bak/callback",
-
+  // 获取 回复列表
+  getAnswerList:"/report/bak/list/reply",
   //导出表单
   exportCrfForm: '/form/crf/bak/export',
   //导入表单数据
@@ -123,6 +124,9 @@ const http = {
   CRFImportCrfForm (params) {
     return vm.$fileUpload(url.importCrfForm, params);
   },
+  getAnswerList(params) {
+    return vm.$get(url.getAnswerList,params,true);
+  }
 };
 
 export default http;

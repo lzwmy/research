@@ -938,7 +938,16 @@ body.theme-blue .crf-left-btn.onclick {
 .patient_form_container .annotate_dialog-box .el-dialog .el-dialog__body {
   padding: 25px 25px 30px;
 }
-
+.patient_form_container .dialog-footer .clear_data {
+  font-size: 12px;
+  color: #666666;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.patient_form_container .dialog-footer .clear_data:hover {
+  text-decoration: underline;
+  color: #439aff;
+}
 /**批注弹框样式**/
 .read_container-mode .annotate_dialog-box.el-dialog .el-dialog__footer{
   position: static

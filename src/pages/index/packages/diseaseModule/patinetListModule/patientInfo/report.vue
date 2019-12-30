@@ -83,9 +83,9 @@
                 case 0: return '未填写';
                 case 1: return '已填写';
                 case 2: return '已提交';
-                case 3: return '审核不通过';
-                case 4: return '审核通过';
-                case 5: return '召回报告';
+                case 3: return '不通过';
+                case 4: return '已通过';
+                case 5: return '已召回';
                 default: break;
             }
         }else {
