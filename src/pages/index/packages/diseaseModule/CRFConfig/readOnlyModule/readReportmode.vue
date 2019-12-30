@@ -2,7 +2,7 @@
   <div class="read_container-mode">
     <div class="crf-step-header">
       <i class="header_left"></i>
-      <span style="font-size: 16px; margin-right:20px;">{{report.patientName}} {{tipStatus}} {{isExamine}}</span>
+      <span style="font-size: 16px; margin-right:20px;">{{report.patientName}} <!--{{tipStatus}} {{isExamine}}--></span>
       <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
       <!--<el-button type="danger" size="mini" style="float:right;margin-left: 5px" @click="closePage">关 闭</el-button>-->
     </div>
