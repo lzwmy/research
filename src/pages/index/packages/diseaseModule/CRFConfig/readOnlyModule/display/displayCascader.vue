@@ -349,8 +349,11 @@
           if(this.report.value.indexOf('|') != '-1') {
             let array = this.report.value.split('|').join("/");
             this.displayValue = array;
-          }else {
+          }else if(this.report.value.indexOf('[') != '-1'){
             let array = JSON.parse(this.report.value).join("/");
+            this.displayValue = array;
+          }else {
+            let array = this.report.value;
             this.displayValue = array;
           }
         }
