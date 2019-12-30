@@ -55,9 +55,9 @@ export default {
                     case 0: return '未填写';
                     case 1: return '已填写';
                     case 2: return '已提交';
-                    case 3: return '审核不通过';
-                    case 4: return '审核通过';
-                    case 5: return '召回报告';
+                    case 3: return '不通过';
+                    case 4: return '已通过';
+                    case 5: return '已召回';
                     default: break;
                 }
             }else {
@@ -220,14 +220,14 @@ export default {
                     }
                     .state {
                         display: inline-block;
-                        width: 80px;
+                        width: 62px;
                         line-height: 22px;
                         text-align: center;
                         border-radius:2px;
                         &.status_1_0 {
-                            color: rgb(247, 158, 1);
-                            border:1px solid rgb(247, 158,1);
-                            background:rgba(247, 158,1, 0.1);
+                            color: #999;
+                            border:1px solid rgba(153, 153, 153, 0.753);
+                            background:rgba(153, 153, 153, 0.1);
                         }
                         &.status_1_1 {
                             color: rgb(0, 119, 180);

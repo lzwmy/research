@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "250689",
+      "name": "信息提示-",
+      "font_class": "xinxitishi",
+      "unicode": "e715",
+      "unicode_decimal": 59157
+    },
+    {
       "icon_id": "422472",
       "name": "保存",
       "font_class": "baocun",
@@ -39,6 +46,20 @@
       "font_class": "info",
       "unicode": "e711",
       "unicode_decimal": 59153
+    },
+    {
+      "icon_id": "6966934",
+      "name": "数据图谱",
+      "font_class": "shujutupu",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "7040363",
+      "name": "监管执法-我的任务",
+      "font_class": "woderenwu",
+      "unicode": "e625",
+      "unicode_decimal": 58917
     },
     {
       "icon_id": "8405864",
@@ -1677,6 +1698,20 @@
       "font_class": "zujian52",
       "unicode": "e710",
       "unicode_decimal": 59152
+    },
+    {
+      "icon_id": "12594998",
+      "name": "知识图谱",
+      "font_class": "zhishitupu",
+      "unicode": "e712",
+      "unicode_decimal": 59154
+    },
+    {
+      "icon_id": "12597951",
+      "name": "上传图片",
+      "font_class": "shangchuantupian",
+      "unicode": "e713",
+      "unicode_decimal": 59155
     }
   ]
 }

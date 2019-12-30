@@ -128,7 +128,7 @@ export default {
                 status: 0
             },
             reportStatusList: [
-                {icon:'iconinfo', name: '未填写', count:0, value: 'noDataCount',status: 0},
+                {icon:'iconxinxitishi', name: '未填写', count:0, value: 'noDataCount',status: 0},
                 {icon:'iconzu12', name: '已填写', count:0, value: 'finishCount',status: 1},
                 {icon:'iconbianjibeifen3', name: '已提交', count:0, value: 'submitCount',status: 2},
                 {icon:'iconbianjibeifen2', name: '不通过', count:0, value: 'noPassCount',status: 3},
@@ -438,9 +438,9 @@ export default {
                 case 0: return '未填写';
                 case 1: return '已填写';
                 case 2: return '已提交';
-                case 3: return '审核不通过';
-                case 4: return '审核通过';
-                case 5: return '召回报告';
+                case 3: return '不通过';
+                case 4: return '已通过';
+                case 5: return '已召回';
                 default: break;
             }
         }
