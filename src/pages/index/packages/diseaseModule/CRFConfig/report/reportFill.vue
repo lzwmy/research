@@ -21,6 +21,7 @@
               <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
               <el-button v-if="urlParameter.from != 'patientFollowUp' && btnShow" @click="saveReportConfirm" type="primary" :disabled="mainLoading" >保 存</el-button>
               <el-button v-if='btnShow' size="medium" type="success" @click="submitReportConfirm">提 交</el-button>
+              <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
             </div>
           </div>
           <div  ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
