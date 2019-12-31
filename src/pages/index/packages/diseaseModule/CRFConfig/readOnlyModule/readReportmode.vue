@@ -74,10 +74,10 @@
         this.$store.dispatch('annotateNumberFun',0);
         this.$store.dispatch('resetFun');
         this.$store.dispatch('addModifyDataFun',[]);
-        this.$store.dispatch('resetAnswerFun');
+        this.$store.dispatch('resetAnswerFun',[]);
         this.$store.dispatch('setStatusFun',this.tipStatus);
         this.$store.dispatch('setIsExamineFun',this.isExamine);
-        if(this.tipStatus == 3 || this.tipStatus == 4) {
+        /*if(this.tipStatus == 3 || this.tipStatus == 4) {
           this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
           if(this.tipStatus == 3 && this.isExamine == false) {
             this.getAnswerList();
@@ -85,9 +85,39 @@
           return ;
         }else if(this.tipStatus == 2){ //已提交
           this.getReportBakListDataChange()
-          // this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
+        }*/
+        this.showIconData();
+      },
+      showIconData() {
+        let tipStatus = this.tipStatus;
+        let isExamine = this.isExamine;
+        if(tipStatus == 2 && isExamine == false) {
+          console.log('报告列表 -- 已提交','用户可以查看所有的 批注、修改记录、回复');
+          this.getReportBakListNotation()
+            .then(()=> this.getReportBakListDataChange())
+            .then(()=> this.getAnswerList());
+        }else if(tipStatus == 3 && isExamine == false) {
+          console.log('报告列表 -- 不通过','显示最近一次 批注、修改信息、回复');
+          this.getReportLastNotation()
+            .then(() => this.getReportLastDataChange())
+            .then(() => this.getReportLastReply())
+        }else if(tipStatus == 4 && isExamine == false) {
+          console.log('报告列表 -- 通过','完整的阅读报告模式');
+          return false;
+        }else if (tipStatus == 2 && isExamine == true) {
+          console.log('数据监察 -- 待审核','显示最近一次 批注、修改信息、回复');
+          this.getReportLastNotation()
+            .then(() => this.getReportLastDataChange())
+            .then(() => this.getReportLastReply())
+        }else if(tipStatus == 3 && isExamine == true)  {
+          console.log('数据监察 -- 不通过','显示最近一次 批注、修改信息、回复');
+          this.getReportLastNotation()
+            .then(() => this.getReportLastDataChange())
+            .then(() => this.getReportLastReply())
+        }else if(tipStatus == 4 && isExamine == true) {
+          console.log('数据监察 -- 通过','完整的阅读报告模式');
+          return false;
         }
-        /*this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());*/
       },
       closePage() {
         let userAgent = navigator.userAgent;
@@ -109,7 +139,7 @@
           let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.answerList));
           if(copyData.length ) {
             for(let i=0;i<copyData.length;i++) {
-              if(copyData[i].path == this.currentComment.path) {
+              if(copyData[i].path == this.currentComment.path && copyData[i].old == 0) {
                 copyData.splice(i,1);
                 i--;
               }
@@ -117,18 +147,21 @@
             this.$store.dispatch('resetAnswerFun',copyData);
           }
           this.currentComment.creatorName = this.$store.state.user.userLogin.name;
+          this.currentComment.old = 0;
           this.$store.dispatch('addAnswerFun',Object.assign({},JSON.parse(JSON.stringify(this.currentComment))));
         }else {
           let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
           if(copyData.length ) {
             for(let i=0;i<copyData.length;i++) {
-              if(copyData[i].path == this.currentComment.path) {
+              if(copyData[i].path == this.currentComment.path && copyData[i].old == 0) {
                 copyData.splice(i,1);
                 i--;
               }
             }
             this.$store.dispatch('resetFun',copyData);
           }
+          this.currentComment.creatorName = this.$store.state.user.userLogin.name;
+          this.currentComment.old = 0;
           this.$store.dispatch('addFun',Object.assign({},JSON.parse(JSON.stringify(this.currentComment))));
         }
         this.centerDialogVisible = false;
@@ -144,7 +177,7 @@
           let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.answerList));
           if(copyData.length ) {
             for(let i=0;i<copyData.length;i++) {
-              if(copyData[i].path == this.currentComment.path) {
+              if(copyData[i].path == this.currentComment.path && copyData[i].old == 0) {
                 copyData.splice(i,1);
                 i--;
               }
@@ -155,7 +188,7 @@
           let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
           if(copyData.length ) {
             for(let i=0;i<copyData.length;i++) {
-              if(copyData[i].path == this.currentComment.path) {
+              if(copyData[i].path == this.currentComment.path && copyData[i].old == 0) {
                 copyData.splice(i,1);
                 i--;
               }
@@ -187,7 +220,7 @@
         return num;
       },
 
-      // 获取批注信息
+      // 获取批注信息 -- 所有
       async getReportBakListNotation() {
         let that = this;
         let formData = {
@@ -195,10 +228,11 @@
         };
         try {
           let data = await that.$http.getReportBakListNotation(formData);
-          console.log('获取批注信息',data)
+          console.log('获取批注信息',data);
           if(data.code === 0) {
             if(data.data.length !==0) {
               data.data.forEach(item => {
+                item.old = 1; // 1 接口历史记录，不允许修改  0 新增加记录，允许修改
                 that.$store.dispatch('addFun',item);
               })
             }
@@ -207,7 +241,7 @@
           console.log(error);
         }
       },
-      // 获取报告数据变化的数值
+      // 获取报告数据变化的数值 -- 所有
       async getReportBakListDataChange() {
         let that = this;
         let formData = {
@@ -223,7 +257,7 @@
           console.log(data)
         }
       },
-      // 获取回复 列表
+      // 获取回复列表 -- 所有
       async getAnswerList() {
         let that = this;
         let formData = {
@@ -231,7 +265,65 @@
         };
         try {
           let data = await that.$http.getAnswerList(formData);
+          if(data.code === 0 && data.data) {
+            data.data.forEach(item=>{
+              return item.old = 1; // 1 代表后台获取数据，不可编辑 0自己手动改录入数据，可以允许编辑
+            });
+            this.$store.dispatch('resetAnswerFun',data.data);
+          }
+        }catch (error) {
+          console.log(error);
+        }
+      },
+      // 获取最近一次 批注 集合
+      async getReportLastNotation() {
+        let that = this;
+        let formData = {
+          reportId:that.report.id
+        };
+        try {
+          let data = await that.$http.getReportLastNotation(formData);
+          console.log('获取最近一次 批注回复信息',data);
           if(data.code === 0) {
+            if(data.data.length !==0) {
+              data.data.forEach(item => {
+                item.old = 1; // 1 接口历史记录，不允许修改  0 新增加记录， 不允许修改
+                that.$store.dispatch('addFun',item);
+              })
+            }
+          }
+        }catch (error) {
+          console.log(error)
+        }
+      },
+      // 获取 最近一次 数据变化 集合
+      async getReportLastDataChange() {
+        let that = this;
+        let formData = {
+          reportId:that.report.id
+        };
+        try{
+          let data = await that.$http.getReportLastDataChange(formData);
+          console.log('获取报告数据修改--最近一次',data);
+          if(data.code === 0 ) {
+            this.$store.dispatch('addModifyDataFun',data.data);
+          }
+        }catch (error) {
+          console.log(error)
+        }
+      },
+      // 获取 最近一次 回复 集合
+      async getReportLastReply() {
+        let that = this;
+        let formData = {
+          reportId:that.report.id
+        };
+        try{
+          let data = await that.$http.getReportLastReply(formData);
+          if(data.code === 0 && data.data) {
+            data.data.forEach(item=>{
+              return item.old = 1; // 1 代表后台获取数据，不可编辑 0自己手动改录入数据，可以允许编辑
+            });
             this.$store.dispatch('resetAnswerFun',data.data);
           }
         }catch (error) {
@@ -251,7 +343,7 @@
           let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.answerList));
           if(copyData.length) {
             copyData.forEach(item => {
-              if(item.path == result) {
+              if(item.path == result && item.old == 0) {
                 this.annotate = item.content;
                 return ;
               }
@@ -262,7 +354,7 @@
           let copyData = JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
           if(copyData.length) {
             copyData.forEach(item => {
-              if(item.path == result) {
+              if(item.path == result && item.old == 0) {
                 this.annotate = item.content;
                 return ;
               }

@@ -674,6 +674,9 @@ export default {
         }else {
           that.$message.info(data.msg)
         }
+        this.$store.dispatch('resetFun');
+        this.$store.dispatch('addModifyDataFun',[]);
+        this.$store.dispatch('resetAnswerFun',[]);
       }catch (error) {
         console.log(error);
       }

@@ -238,7 +238,8 @@ const annotateData = {
     annotateNum:0,
     answerList:[],
     tipStatus:'',
-    isExamine:''
+    isExamine:'',
+    tipBtnText:"",
   },
   getters:{
     forlist:state => state.annotate
@@ -268,6 +269,9 @@ const annotateData = {
     setIsExamine(state,val) {
       state.isExamine = val;
     },
+    UTipBtnText(state,val) {
+      state.tipBtnText = val;
+    }
   },
   actions:{
     addFun(context,data) {
@@ -294,6 +298,9 @@ const annotateData = {
     setIsExamineFun(context,data) {
       context.commit('setIsExamine',data)
     },
+    UTipBtnTextFun(context,data) {
+      context.commit('UTipBtnText',data)
+    }
   }
 };
 

@@ -34,7 +34,7 @@ const url = {
    * */
   // 审核报告 -- 是否添加批注
   readReportBakAudit:'/report/bak/audit',
-  // 获取报告批注
+  // 获取报告所有批注
   getReportBakListNotation:"/report/bak/list/notation",
   // 保存 备注
   reportBakNoteSave:"/report/bak/note/save",
@@ -53,7 +53,13 @@ const url = {
   //导出表单
   exportCrfForm: '/form/crf/bak/export',
   //导入表单数据
-  importCrfForm: '/form/crf/bak/import'
+  importCrfForm: '/form/crf/bak/import',
+  //获取报告最近一次 -批注
+  getReportLastNotation:"/report/bak/list/last/notation",
+  // 获取报告最近一次 - 数据变化
+  getReportLastDataChange:"/report/bak/list/last/dataChange",
+  // 获取报告最近一次 - 回复
+  getReportLastReply:"/report/bak/list/last/reply",
 };
 
 
@@ -126,6 +132,15 @@ const http = {
   },
   getAnswerList(params) {
     return vm.$get(url.getAnswerList,params,true);
+  },
+  getReportLastNotation(params) {
+    return vm.$get(url.getReportLastNotation,params,true);
+  },
+  getReportLastDataChange(params) {
+    return vm.$get(url.getReportLastDataChange,params,true);
+  },
+  getReportLastReply(params) {
+    return vm.$get(url.getReportLastReply,params,true);
   }
 };
 

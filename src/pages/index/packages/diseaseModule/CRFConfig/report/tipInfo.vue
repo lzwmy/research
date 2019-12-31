@@ -151,7 +151,9 @@
       'tipStatus':function (value) {
         this.curInfo = this.messageList.find(li=>{
           return li.status== value && li.isExamine == this.isExamine;
-        })
+        });
+        // console.log(value,this.tipStatus,this.isExamine,this.curInfo);
+        this.$store.dispatch('UTipBtnTextFun',this.curInfo.btnText);
         this.$emit('handleView',this.curInfo || {})
       }
     },
@@ -159,6 +161,7 @@
       this.curInfo = this.messageList.find(li=>{
         return li.status== this.tipStatus && li.isExamine == this.isExamine;
       })
+      // this.$store.dispatch('UTipBtnTextFun',this.curInfo.btnText);
       this.$emit('handleView',this.curInfo || {})
     },
     methods:{
@@ -270,6 +273,7 @@
             this.curInfo = this.messageList.find(li=>{
               return li.status== 2 && li.isExamine == true;
             });
+            this.$store.dispatch('UTipBtnTextFun',this.curInfo.btnText);
             break;
           case '通过':
             this.readReportBakAudit(4).then(()=>{

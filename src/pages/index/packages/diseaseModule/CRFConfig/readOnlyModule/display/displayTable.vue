@@ -29,25 +29,25 @@
         <div class="info_tip_box" v-if="modifyDataProcess()">
           <i></i>
           <div class="tip_content" >
-            <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-              <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 "{{it.oldData}}" 为 "{{it.newData}}"</span>
+            <p v-for="(ita,indexa) in $store.state.annotateData.modifyData" :key1="indexa">
+              <span v-if="ita.path == item.controlName">{{ita.createTime}} {{ita.creatorName}} 修改 "{{ita.oldData}}" 为 "{{ita.newData}}"</span>
             </p>
-            <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复 "{{it.content}}"</span>
+            <p v-for="(its,indexs) in $store.state.annotateData.answerList" :key2="indexs" >
+              <span v-if="its.path == item.controlName" >{{its.createTime}} {{its.creatorName}} 回复 "{{its.content}}"</span>
             </p>
           </div>
         </div>
         <div class="info_tip_box" v-else-if="annotateProcess()">
           <i></i>
           <div class="tip_content" >
-            <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 批注 "{{it.content}}"</span>
+            <p v-for="(itd,indexd) in $store.state.annotateData.annotateList" :key3="indexd" >
+              <span v-if="itd.path == item.controlName" >{{itd.createTime}} {{itd.creatorName}} 批注 "{{itd.content}}"</span>
             </p>
-            <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复  "{{it.content}}"</span>
+            <p v-for="(itf,indexf) in $store.state.annotateData.answerList" :key4="indexf" >
+              <span v-if="itf.path == item.controlName" >{{itf.createTime}} {{itf.creatorName}} 回复  "{{itf.content}}"</span>
             </p>
-            <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改  "{{it.oldData}}" 为 "{{it.newData}}"</span>
+            <p v-for="(itg,indexg) in $store.state.annotateData.modifyData" :key5="indexg">
+              <span v-if="itg.path == item.controlName" :class="{'ml_7':indexg>0}">{{itg.createTime}} {{itg.creatorName}} 修改  "{{itg.oldData}}" 为 "{{itg.newData}}"</span>
             </p>
           </div>
         </div>
@@ -126,7 +126,6 @@ export default {
     ...mapGetters([
       'crfCurrentControl',
       'crfBindingData'
-
     ]),
     iconActive:function(){
       return this.item.gatherKnowType>0&&!this.gatherTermValue>0
@@ -276,6 +275,10 @@ export default {
         }else {
           show = false;
         }
+      }else if(this.$store.state.annotateData.tipStatus  == 4 && this.$store.state.annotateData.isExamine == true ) {
+        if(this.$store.state.annotateData.tipBtnText == '重新审核'&& this.$store.state.annotateData.tipBtnText != '') {
+          show = false;
+        }
       }
       return show;
     },
@@ -284,6 +287,9 @@ export default {
       if(flag) {
         if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
           return ;
+        }else {
+          let path = this.item.controlName;
+          eventBus.$emit('display-show',path)
         }
       }else {
         let path = this.item.controlName;
