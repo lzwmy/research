@@ -45,10 +45,10 @@
           <i></i>
           <div class="tip_content" >
             <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-              <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+              <span v-if="it.path == item.controlName">{{it.createTime}} {{it.creatorName}} 修改 "{{it.oldData}}" 为 "{{it.newData}}"</span>
             </p>
             <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复： {{it.content}}</span>
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复 "{{it.content}}"</span>
             </p>
           </div>
         </div>
@@ -56,13 +56,13 @@
           <i></i>
           <div class="tip_content" >
             <p v-for="(it,index) in $store.state.annotateData.annotateList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 批注： {{it.content}}</span>
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 批注 "{{it.content}}"</span>
             </p>
             <p v-for="(it,index) in $store.state.annotateData.answerList" :key="index" >
-              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复： {{it.content}}</span>
+              <span v-if="it.path == item.controlName" >{{it.createTime}} {{it.creatorName}} 回复  "{{it.content}}"</span>
             </p>
             <p v-for="(it,index) in $store.state.annotateData.modifyData" :key="index">
-              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改 : {{it.oldData}} 为 {{it.newData}}</span>
+              <span v-if="it.path == item.controlName" :class="{'ml_7':index>0}">{{it.createTime}} {{it.creatorName}} 修改  "{{it.oldData}}" 为 "{{it.newData}}"</span>
             </p>
           </div>
         </div>
