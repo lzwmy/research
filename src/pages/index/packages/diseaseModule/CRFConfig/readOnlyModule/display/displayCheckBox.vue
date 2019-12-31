@@ -18,7 +18,6 @@
           ></el-checkbox>
         </el-checkbox-group>-->
         {{displayValue || '(空)'}}
-        <span v-if="item.baseProperty.controlIsExtend && report.value2">{{ `(${report.value2})` }}</span>
       </div>
       <!--<div :class="item.controlType+'_empty'" @click="()=>{checkList=[];report.value='';}">清空</div>-->
       <div class="info_fixed" style="display: table-cell;position: relative;">
@@ -339,8 +338,17 @@ export default {
     }*/
     if(this.report.value) {
       if(this.report.value.indexOf("|") != '-1') {
-        let array = this.report.value.split("|").map(item => this.precessData(item)).join("、");
-        this.displayValue = array;
+        let array = this.report.value.split("|").map(item => this.precessData(item));
+        if(array.includes('其他')) {
+          for(let i=0;i<array.length;i++) {
+            if(array[i] == '其他' && this.item.baseProperty.controlIsExtend && this.report.value2) {
+              array[i] = array[i]+`(${this.report.value2})`
+            }
+          }
+          this.displayValue = array.join('、');
+        }else {
+          this.displayValue = array.join('、');
+        }
       }else {
         this.displayValue = this.precessData(this.report.value);
       }
