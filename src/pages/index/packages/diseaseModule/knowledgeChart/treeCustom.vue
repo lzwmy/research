@@ -17,7 +17,7 @@
                 :props="defaultProps"
                 :expand-on-click-node="false">
                 <div class="custom-tree-node flex-between-center" slot-scope="{ node, data }">
-                    <span class="label" @dblclick="editNodePrompt(data)">{{ node.label }}</span>
+                    <span class="label" @dblclick="editNodePrompt(node,data)">{{ node.label }}</span>
                     <div class="right-btn-group flex-center-center">
                         <el-switch
                             v-if="node.level != 1"
@@ -124,11 +124,15 @@ export default {
                         };
                         console.log(Object.assign(newChild,{treeId: ++this.treeId}))
                         that.editNode(newChild, instance.inputValue).then(()=>{
+                            if(!data.children) {
+                                that.$set(data, 'children', []);
+                            }
                             data.children.push(Object.assign(newChild,{treeId: ++this.treeId}));
                             instance.confirmButtonLoading = false;
                             done();
-                        }).catch(()=>{
+                        }).catch((err)=>{
                             instance.confirmButtonLoading = false;
+                            console.log(err)
                         });
                     } else {
                         done();
@@ -152,7 +156,10 @@ export default {
             }).catch(() => {});
         },
 
-        editNodePrompt(data) {
+        editNodePrompt(node,data) {
+            if(node.level == 1) {
+                return;
+            }
             let that = this;
             this.$prompt('节点名称:', '编辑', {
                 confirmButtonText: '确 定',

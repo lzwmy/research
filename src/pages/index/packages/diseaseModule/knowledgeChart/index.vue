@@ -8,14 +8,18 @@
         </div>
         <!--搜索结果-->
         <div class="cloud-search-list" v-loading='loading'>
-            <div class="chart-warp">
-                <chartCom ref="chartsRef" :option="chartOption"></chartCom>
+            <div class="chart-warp" v-if="showHighchart">
+                <chartCom ref="chartsRef"  :option="chartOption" @sendColorArr="getColorArr"></chartCom>
+                <!-- <chartCom ref="chartsRef" :option="chartOption"></chartCom> -->
             </div>
 
             <div class="item-group">
                 <el-tabs v-model="activeItem">
-                    <el-tab-pane v-for="(item, index) in tabsList" :key="index">
-                        <p slot="label" @click="selectTab(item,index)" :class="item.isActive?'active':''">{{item[0]}}</p>
+                    <el-tab-pane v-for="(item, index) in displayTabsList" :key="index">
+                        <p slot="label" @click="selectTab(item,index)" :class="item.isActive?'active':''">
+                            <i :style="'background-color:'+item.color"></i>
+                            {{item[0]}}
+                        </p>
                     </el-tab-pane>
                 </el-tabs>
                 <div class="pagination">{{currentPage}}&nbsp;/&nbsp;{{totalPage}}</div>
@@ -29,10 +33,16 @@
                         <span :class="activeBtn==1?'active':''" @click ="selectBtn(1)">热点分析</span>
                     </div>
                 </div>
-                <div class="content">
-                    <div class="li flex-between-center" v-for="(item,index) in 30" :key="index">
-                        <p>1、发病年龄-生存时间>5年</p>
-                        <span>50例</span>
+                <el-input
+                    placeholder="请输入"
+                    prefix-icon="el-icon-search"
+                    v-model="keyword"
+                    clearable>
+                </el-input>
+                <div class="content" v-loading="asideLoading">
+                    <div class="li flex-between-center" v-for="(item,index) in filterAnalysisData" :key="index">
+                        <p>{{index + 1}}、{{item.parentNodeName}} > {{item.nodeName}}</p>
+                        <span>{{item.count}}例</span>
                     </div>
                 </div>
             </div>
@@ -49,11 +59,16 @@ export default {
     data () {
         return {
             loading: false,
-            tabsList: [],
-            selectTabsList: [],
+            asideLoading: false,
+            keyword: '',
+            displayTabsList: [],
+            allTabsList: [],
+            analysisData:[],
+            allAnalysisData:[],
             activeBtn: 0,
             activeItem: '',
             currentPage: 1,
+            showHighchart: false,
             totalPage: 1,
             tabTotalWidth: 0,  //tab总长度
             tabBoxWidth: 0,    //tab一页显示长度
@@ -61,7 +76,7 @@ export default {
                 chart: {
                     type: 'networkgraph',
                     margin: [0],
-                    spacingBottom: 0
+                    spacingBottom: 0,
                 },
                 title: {
                     text: ''
@@ -72,15 +87,19 @@ export default {
                 plotOptions: {
                     networkgraph: {
                         keys: ['from', 'to'],
+                        color: '#1bbae1',
                         layoutAlgorithm: {
                             enableSimulation: true
-                        }
+                        },
+                        
                     }
                 },
                 series: [
                     {
                         dataLabels: {
                             enabled: true,
+                            linkFormat: '',   
+                            format: '{point.name}'
                         },
                         data:[]
                     }
@@ -91,16 +110,28 @@ export default {
             },
         }
     },
+    computed: {
+        diseaseId: function() {
+            return this.$store.state.user.diseaseInfo.diseaseId;
+        },
+        filterAnalysisData() {
+            return this.analysisData.filter(li=>{
+                return (li.parentNodeName.toLowerCase().indexOf(this.keyword.toLowerCase()) != -1 || li.nodeName.toLowerCase().indexOf(this.keyword.toLowerCase()) != -1);
+            })
+        },
+    },
+    watch: {
+        diseaseId: function(newVal) {
+            this.getChartData();
+            this.getAnalysisData();
+        }
+    },
     components: {
         chartCom
     },
-    computed: {
-        handldTabsList: function() {
-            return this.arrRemoveRepeat(this.tabsList);
-        }
-    },
     created() {
         this.getChartData();
+        this.getAnalysisData();
     },
     mounted() {
         this.$nextTick(()=>{
@@ -129,22 +160,26 @@ export default {
         },
         async getChartData() {
             this.loading = true;
+            this.showHighchart = false;
             let formData = {
                 diseaseId: this.$route.query.id
             }
             try {
                 let res = await this.$http.KCgetChartOption(formData);
                 if (res.code == 0) {
-                    this.chartOption.series[0].data = res.data.data;
-                    this.$refs.chartsRef.updated();
-                    
-                    this.tabsList = utils.deepCopy(res.data.data);
-                    this.tabsList.forEach((li)=>{
+                    this.displayTabsList = utils.deepCopy(res.data.data);
+                    this.displayTabsList.forEach((li)=>{
                         li.isActive = true;
                     })
-                    this.tabsList = this.arrRemoveRepeat(this.tabsList);
+                    this.chartOption.series[0].data = res.data.data;
+                    this.$nextTick(()=>{
+                        this.showHighchart = true;
+                        // this.$refs.chartsRef.updated();
+                    })
+                    
+                    this.displayTabsList = this.arrRemoveRepeat(this.displayTabsList);
 
-                    this.selectTabsList = utils.deepCopy(res.data.data)
+                    this.allTabsList = utils.deepCopy(res.data.data)
                     this.computeTabs();
                 }
             } catch (err) {
@@ -152,36 +187,91 @@ export default {
             }
             this.loading = false;
         },
+        async getAnalysisData() {
+            this.asideLoading = true;
+            let formData = {
+                diseaseId: this.$route.query.id
+            }
+            try {
+                let res = await this.$http.KCgetrRelationship(formData);
+                if (res.code == 0) {
+                    this.analysisData = res.data;
+                    this.allAnalysisData = utils.deepCopy(res.data)
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            this.asideLoading = false;
+        },
         //选择类目
         selectTab(item,index) {
-            this.$set(this.tabsList, index, Object.assign(
-                this.tabsList[index],{isActive:!item.isActive}
+            this.showHighchart = false;
+            this.$set(this.displayTabsList, index, Object.assign(
+                this.displayTabsList[index],{isActive:!item.isActive}
             ))
             //置灰的类目
-            let tabsListFallow = this.tabsList.filter((li)=>{
+            let tabsListFallow = this.displayTabsList.filter((li)=>{
                 return !li.isActive;
             })
+            this.chartOption.series[0].data = this.handleTabsListActive(tabsListFallow, utils.deepCopy(this.allTabsList));
+            this.$nextTick(()=>{
+                this.showHighchart = true;
+                // this.$refs.chartsRef.updated();
+            })
             
-            
-            this.chartOption.series[0].data = this.handleTabsListActive(tabsListFallow, utils.deepCopy(this.selectTabsList));;
-            this.$refs.chartsRef.updated();
+             //置灰的类目
+            let tabsListFilter = [];
+            tabsListFallow.forEach((li)=>{
+                this.allTabsList.forEach((n)=>{
+                    if(n[0] == li[0]) {
+                        tabsListFilter.push(n)
+                    } 
+                })
+            })
+            console.log(utils.deepCopy(this.allAnalysisData))
+            console.log(tabsListFilter)
+
+            //关联右边实体关系分析列表
+            console.log(this.handleAnalysisDataActive(tabsListFilter, utils.deepCopy(this.allAnalysisData)))
+            this.analysisData = this.handleAnalysisDataActive(tabsListFilter, utils.deepCopy(this.allAnalysisData))
         },
-        handleTabsListActive(tabsListFallow,selectTabsList) {
-            console.log(tabsListFallow)
-            console.log(selectTabsList)
+        /**
+         * 去除置灰的类目
+         * tabsListFallow： 置灰类目组
+         * allTabsList 待遍历的数据
+        */
+        handleTabsListActive(tabsListFallow,allTabsList) {
             for(let i = 0; i < tabsListFallow.length; i++) {
-                for(let j = 0; j < selectTabsList.length; j++) {
-                    if(tabsListFallow[i][0] == selectTabsList[j][0]) {
-                        selectTabsList.splice(j,1)
+                for(let j = 0; j < allTabsList.length; j++) {
+                    if(tabsListFallow[i][0] == allTabsList[j][0] || tabsListFallow[i][1] == allTabsList[j][0]) {
+                        let tempArr = utils.deepCopy(allTabsList[j]);
+                        allTabsList.splice(j,1)
+                        this.handleTabsListActive([tempArr],allTabsList);
                         j--;
-                    }else if(tabsListFallow[i][1] == selectTabsList[j][0]) {
-                        selectTabsList.splice(j,1)
+                    }else if(tabsListFallow[i][0] == allTabsList[j][1] || tabsListFallow[i][1] == allTabsList[j][1]) {
+                        allTabsList.splice(j,1)
                         j--;
                     }
                 }
             }
-            console.log(selectTabsList)
-            return selectTabsList;
+            return allTabsList;
+        },
+
+        handleAnalysisDataActive(tabsListFallow,allTabsList) {
+            for(let i = 0; i < tabsListFallow.length; i++) {
+                for(let j = 0; j < allTabsList.length; j++) {
+                    if(tabsListFallow[i][0] == allTabsList[j].parentNodeName || tabsListFallow[i][0] == allTabsList[j].parentNodeName ||
+                        tabsListFallow[i][0] == allTabsList[j].nodeName || tabsListFallow[i][0] == allTabsList[j].nodeName ||
+                        tabsListFallow[i][1] == allTabsList[j].nodeName || tabsListFallow[i][1] == allTabsList[j].nodeName ||
+                        tabsListFallow[i][1] == allTabsList[j].parentNodeName || tabsListFallow[i][1] == allTabsList[j].parentNodeName) {
+                        let tempArr = utils.deepCopy(allTabsList[j]);
+                        allTabsList.splice(j,1)
+                        this.handleAnalysisDataActive([tempArr],allTabsList);
+                        j--;
+                    }
+                }
+            }
+            return allTabsList;
         },
         arrRemoveRepeat(arr) {
             let result = []
@@ -197,26 +287,33 @@ export default {
         //点击上一页
         prevArrowsClick() {
             if(this.currentPage == 1) {
-                document.querySelector('.el-tabs__nav-prev').classList.add('disabled');
                 return
             }else {
-                document.querySelector('.el-tabs__nav-prev').classList.remove('disabled');
                 this.currentPage --;
             }
         },
         //点击下一页
         nextArrowsClick() {
             if(this.currentPage == this.totalPage) {
-                document.querySelector('.el-tabs__nav-next').classList.add('disabled');
                 return
             }else {
-                document.querySelector('.el-tabs__nav-next').classList.remove('disabled');
                 this.currentPage ++;
             }
         },
         //点击分析按钮
         selectBtn(val) {
             this.activeBtn = val;
+        },
+        //接收子组件传过来的颜色列表
+        getColorArr(list = []) {
+            this.displayTabsList.forEach((li,index)=>{
+                let obj = list.find( n =>{
+                    return n.id == li[0];
+                } )
+                this.$set(this.displayTabsList, index, Object.assign(
+                    this.displayTabsList[index],{color:obj && obj.color}
+                ))
+            })
         }
     },
 };
@@ -238,20 +335,23 @@ export default {
             padding: 15px;
             overflow: auto;
             .chart-warp {
-                border: 1px dashed #555;
+                // border: 1px dashed #555;
                 position: absolute;
                 top: 15px;
                 left: 15px;
-                right: 435px;
+                right: 400px;
                 bottom: 40px;
                 padding: 15px;
             }
             .item-group {
                 position: absolute;
                 left: 15px;
-                right: 435px;
+                right: 400px;
                 bottom: 1px;
                 height: 39px;
+                .is-disabled {
+                    cursor:not-allowed;
+                }
                 .el-tabs {
                     height: 40px;
                     overflow: hidden;
@@ -285,8 +385,7 @@ export default {
                             cursor: pointer;
                             position: relative;
                             color:#999;
-                            &::before {
-                                content: '';
+                            i {
                                 position: absolute;
                                 width: 12px;
                                 height: 12px;
@@ -298,8 +397,13 @@ export default {
                             }
                             &.active {
                                 color: #333;
-                                &::before { 
+                                i { 
                                     background-color: #333;
+                                }
+                            }
+                            &:not(.active) {
+                                i { 
+                                    background-color: #999 !important;
                                 }
                             }
                         } 
@@ -321,7 +425,7 @@ export default {
             top: 0;
             right: 0;
             bottom: 0;
-            width: 420px;
+            width: 400px;
             overflow: auto;
             border-left:1px solid rgba(229,235,236,1);
             .top {
@@ -353,12 +457,17 @@ export default {
 
                 }
             }
+            .el-input {
+                margin: 10px 15px;
+                display: block;
+                width: auto;
+            }
             .content {
                 position: absolute;
-                top: 66px;
+                top: 118px;
                 right: 0;
                 bottom: 0;
-                width: 420px;
+                width: 100%;
                 overflow: auto;
                 .li {
                     padding: 0 23px;

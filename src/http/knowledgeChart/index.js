@@ -4,6 +4,8 @@ const vm = new Vue();
 const url = {
     //获取力导图配置数据 
     getChartOption: '/diseasespecies/preview/knowledge/graph',
+    //获取力导图配置数据 
+    getrRelationship: '/diseasespecies/knowledge/graph/relationship',
 
 
 
@@ -18,6 +20,9 @@ const url = {
 const http = {
     KCgetChartOption (params) {
         return vm.$post(url.getChartOption, params, true);
+    },
+    KCgetrRelationship (params) {
+        return vm.$post(url.getrRelationship, params, true);
     },
     KCgetTreeData (params) {
         return vm.$post(url.getTreeData, params, true);
