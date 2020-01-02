@@ -106,7 +106,6 @@ export default {
                 }
             });
             this.menuList.sort((a,b) => {return a.menuOrder - b.menuOrder})
-            console.log(this.menuList)
         },
         deepCopy(o) {
             if (o instanceof Array) {
@@ -147,6 +146,7 @@ export default {
                 this.menuList = diseaseRouter;
                 return;
             }
+
             let insideData = this.$store.state.insideData.insideData;
             this.fromRouter = insideData.fromRouter;
             this.title = insideData.title;
