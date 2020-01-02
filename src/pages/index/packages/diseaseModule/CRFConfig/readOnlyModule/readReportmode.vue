@@ -62,7 +62,12 @@
       '$store.state.annotateData.annotateList':function (data) {
           if(data.length!==0) {
             let copyData = JSON.parse(JSON.stringify(data));
+            console.log(copyData);
             let sum = copyData.length;
+            if(copyData.length) {
+              let resultData  = copyData.filter(item => item.old == 0);
+              sum = resultData.length;
+            }
             this.$store.dispatch('annotateNumberFun',sum)
           }else  if(data.length == 0) {
             this.$store.dispatch('annotateNumberFun',0)
