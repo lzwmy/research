@@ -632,6 +632,7 @@ body.theme-blue .crf-left-btn.onclick {
 }
 .read_container-mode .NUMBER_INPUT {
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .NUMBER_INPUT_box {
   font-size: 14px;
@@ -656,6 +657,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .CHECKBOX_box {
   min-height: 32px;
   font-size: 14px;
+  line-height: 32px;
 }
 .read_container-mode .CHECKBOX .addColor {
   color: #00BAE6;
@@ -674,6 +676,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .SINGLE_COMBOX {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .SINGLE_COMBOX .addColor {
   color: #00BAE6;
@@ -692,6 +695,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .RADIO_BUTTON {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .RADIO_BUTTON .addColor{
   color: #00BAE6;
@@ -743,6 +747,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .SINGLE_INPUT {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .SINGLE_INPUT .addColor {
   color: #00BAE6;
@@ -758,6 +763,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .CASCADE {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .CASCADE .addColor {
   color: #00BAE6;
@@ -766,6 +772,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .SCORE_box {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .SCORE_box  .addColor {
   color: #00BAE6;
@@ -802,6 +809,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .DATE {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .DATE .DATE_box{
   width: auto;
@@ -820,6 +828,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .DATE_TIME {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .DATE_TIME .DATE_TIME_box {
   width: auto;
@@ -838,6 +847,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .MULTI_COMBOX {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
 }
 .read_container-mode .MULTI_COMBOX .MULTI_COMBOX_box {
   width: auto;
