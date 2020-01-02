@@ -97,7 +97,7 @@
       <i class="el-icon-caret-top"></i>
     </div>
     <!--报告备注-->
-    <div class="remark_box">
+    <div class="remark_box" v-if="urlParameter.from!='patientFollowUp'">
       <div class="remark_title">
         <i class="header_left"></i>
         <span>讨论</span>
