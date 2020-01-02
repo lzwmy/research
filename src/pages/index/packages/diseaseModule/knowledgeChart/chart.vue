@@ -41,9 +41,11 @@ export default {
                 Highcharts.seriesTypes.networkgraph,
                 'afterSetOptions',
                 function (e) {
-                    var colors = Highcharts.getOptions().colors,
+                    // var colors = Highcharts.getOptions().colors,
+                    var colors = ['#7cb5ec',"#90ed7d", "#f7a35c", "#8085e9","#f15c80","#e4d354","#2b908f","#f45b5b","#91e8e1"],
                         i = 0,
                         nodes = {};
+                        console.log(colors)
                     let dataFirstName = e.options.data.length && e.options.data[0][0];
                     e.options.data.forEach(function (link,index) {
                         if (link[0] === dataFirstName) {

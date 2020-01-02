@@ -222,17 +222,14 @@ export default {
              //置灰的类目
             let tabsListFilter = [];
             tabsListFallow.forEach((li)=>{
-                this.allTabsList.forEach((n)=>{
-                    if(n[0] == li[0]) {
-                        tabsListFilter.push(n)
-                    } 
-                })
+                let obj = {
+                    nodeName: li[1],
+                    parentNodeName: li[0]
+                }
+                tabsListFilter.push(obj)
             })
-            console.log(utils.deepCopy(this.allAnalysisData))
-            console.log(tabsListFilter)
 
             //关联右边实体关系分析列表
-            console.log(this.handleAnalysisDataActive(tabsListFilter, utils.deepCopy(this.allAnalysisData)))
             this.analysisData = this.handleAnalysisDataActive(tabsListFilter, utils.deepCopy(this.allAnalysisData))
         },
         /**
@@ -260,13 +257,14 @@ export default {
         handleAnalysisDataActive(tabsListFallow,allTabsList) {
             for(let i = 0; i < tabsListFallow.length; i++) {
                 for(let j = 0; j < allTabsList.length; j++) {
-                    if(tabsListFallow[i][0] == allTabsList[j].parentNodeName || tabsListFallow[i][0] == allTabsList[j].parentNodeName ||
-                        tabsListFallow[i][0] == allTabsList[j].nodeName || tabsListFallow[i][0] == allTabsList[j].nodeName ||
-                        tabsListFallow[i][1] == allTabsList[j].nodeName || tabsListFallow[i][1] == allTabsList[j].nodeName ||
-                        tabsListFallow[i][1] == allTabsList[j].parentNodeName || tabsListFallow[i][1] == allTabsList[j].parentNodeName) {
+                    if(tabsListFallow[i].parentNodeName == allTabsList[j].parentNodeName || tabsListFallow[i].parentNodeName == allTabsList[j].parentNodeName ||                   
+                        tabsListFallow[i].nodeName == allTabsList[j].parentNodeName || tabsListFallow[i].nodeName == allTabsList[j].parentNodeName) {
                         let tempArr = utils.deepCopy(allTabsList[j]);
                         allTabsList.splice(j,1)
                         this.handleAnalysisDataActive([tempArr],allTabsList);
+                        j--;
+                    }else if(tabsListFallow[i].nodeName == allTabsList[j].nodeName || tabsListFallow[i].parentNodeName == allTabsList[j].nodeName) {
+                        allTabsList.splice(j,1)
                         j--;
                     }
                 }
