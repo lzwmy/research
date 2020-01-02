@@ -8,14 +8,13 @@
         <i v-if="!isFold" class="iconfont iconzu2" ></i>
         <strong v-show="item.displayIsVisible">{{item.controlDisplayName}} </strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
-
       </div>
       <div :class="['view_knowType',{'gather_knowType':item.gatherKnowType>0}]" style="display: inline-block;" v-if="item.gatherKnowType>0">
         <!--<i class="is_knowType" v-if="item.gatherKnowType==1">{{changeRadioKnowType(report.value) == '有' ? '有' : changeRadioKnowType(report.value) == '无' ? '无' : '（空）'}}</i>
         <i class="is_knowType" v-if="item.gatherKnowType==2">{{changeRadioKnowType(report.value) == '有' ? '有' : changeRadioKnowType(report.value) == '无' ? '无' : '（空）'}}</i>-->
-        <i class="is_knowType" v-if="item.gatherKnowType==1">{{report.value || '无'}}</i>
-        <i class="is_knowType" v-if="item.gatherKnowType==2">{{report.value || '无'}}</i>
-        <i class="is_knowType" v-if="item.gatherKnowType==3">{{report.value || '无'}}</i>
+        <i :class="['is_knowType',{'addColor':report.value}]" v-if="item.gatherKnowType==1">{{report.value || '无'}}</i>
+        <i :class="['is_knowType',{'addColor':report.value}]" v-if="item.gatherKnowType==2">{{report.value || '无'}}</i>
+        <i :class="['is_knowType',{'addColor':report.value}]" v-if="item.gatherKnowType==3">{{report.value || '无'}}</i>
         <!--<el-radio-group v-model="report.value">
           <el-radio v-if="item.gatherKnowType==2" label="是"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="否"  @change="changeRadioKnowType(1)"></el-radio>

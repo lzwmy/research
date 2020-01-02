@@ -320,6 +320,7 @@ export default {
     }
   },
   created() {
+    console.log(this.report.value,this.report.value2)
     // this.termValue=this.item.termSet.termDefaultValue;
     /*this.checkList = this.item.termSet.termDefaultValue;
     if (this.report.value) {
@@ -357,7 +358,11 @@ export default {
           this.displayValue = array.join('、');
         }
       }else {
-        this.displayValue = this.precessData(this.report.value);
+        if(this.item.baseProperty.controlIsExtend && this.report.value2 && this.report.value == '其他') {
+          this.displayValue =this.precessData(this.report.value)+`(${this.report.value2})`
+        }else {
+          this.displayValue = this.precessData(this.report.value);
+        }
       }
     }
   },

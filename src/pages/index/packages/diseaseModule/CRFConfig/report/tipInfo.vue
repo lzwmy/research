@@ -204,8 +204,15 @@
       // 审核报告   3 不通过 4 通过
       async readReportBakAudit(status) {
         let that = this;
+        let array =JSON.parse(JSON.stringify(this.$store.state.annotateData.annotateList));
+        let resultData = [];
+        if(array.length) {
+          resultData = array.filter(item =>{
+            return item.old == 0
+          });
+        }
         let formData = {
-          'notationList':this.$store.state.annotateData.annotateList || [],
+          'notationList':resultData || [],
           "reportId":that.$parent.report.id,
           "status":status,
         };
