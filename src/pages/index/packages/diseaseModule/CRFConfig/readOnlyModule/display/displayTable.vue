@@ -1,7 +1,7 @@
 <template>
   <!--表格-->
   <div class="view_box" v-if="item.controlType=='TABLE'">
-    <div :class="['view_title',{'view_table-title':item.controlType=='TABLE'}]" style="min-width:190px;display:inline-block;">
+    <div :class="['view_title',{'view_table-title':item.controlType=='TABLE'}]" style="min-width:185px;display:inline-block;">
         <!--加号-->
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" ></i>
         <!--减号-->
@@ -53,7 +53,8 @@
         </div>
       </div>
     </div>
-    <div v-if="(report.value!='无' && report.value != '') || item.gatherKnowType == 0"
+<!--    (report.value!='无' && report.value != '') || item.gatherKnowType == 0-->
+    <div v-if="!isFold"
       :class="['view_content',{'tb_content':item.controlType=='TABLE'},{'bg_color':item.gatherRank=='0'}]"
     >
       <!--表格上下排列-->
@@ -364,8 +365,11 @@ export default {
       this.addRow();
     }
     //初始化默认集合是否展开
-    if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
-          this.isFold = true;
+    if(this.report.value&&(this.report.value=="有"||this.report.value=="是")){
+      this.isFold = false;
+    }
+    else if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
+      this.isFold = true;
     }
 
     //判断控件是否绑定数据如果绑定则获取绑定数据，如果是继承绑定则进行递归获取父绑定

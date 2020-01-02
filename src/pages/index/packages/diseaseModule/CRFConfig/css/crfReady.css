@@ -722,6 +722,8 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .MULTI_INPUT {
   font-size: 14px;
   min-height: 32px;
+  line-height: 32px;
+  display: table;
 }
 .read_container-mode .MULTI_INPUT .MULTI_INPUT_box{
   /*font-size: 14px;*/
@@ -769,17 +771,25 @@ body.theme-blue .crf-left-btn.onclick {
   color: #00BAE6;
 }
 .read_container-mode .SCORE_box .el-button--primary {
-  background-color: #00BAE6;
+  /*background-color: #00BAE6;*/
+  background-color: transparent;
+  color: #666666;
 }
 .read_container-mode .SCORE_box .el-button--primary:hover {
-  background-color: #00BAE6;
+  /*background-color: #00BAE6;*/
+  background-color: transparent;
+  color: #00BAE6;
+  border-color: transparent;
+  text-decoration: underline;
 }
 .read-mode .el-radio  .el-radio__input.is-checked .el-radio__inner {
-  border-color: #00BAE6;
-  background: #00BAE6;
+  /*border-color: #00BAE6;
+  background: #00BAE6;*/
+  border-color: transparent;
+  background: transparent;
 }
 .read-mode .el-radio__input.is-disabled.is-checked .el-radio__inner::after{
-  background-color: #F5F7FA;
+  /*background-color: #F5F7FA;*/
 }
 /*.read-mode .el-radio__input.is-disabled .el-radio__inner, .el-radio__input.is-disabled.is-checked .el-radio__inner{
   background-color: #F5F7FA !important;
