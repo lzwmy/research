@@ -339,8 +339,9 @@ export default {
                 try {
                     let res, formData;
                     let organization = that.orgList.find(item=>{
-                        return that.dialogForm.organization == item.orgName;
+                        return this.orgCode == item.orgCode;
                     })
+                    console.log(organization)
                     if(that.dialogForm.title == "添加用户"){
                         formData = {
                             diseaseId: this.$store.state.user.diseaseInfo.diseaseId,

@@ -52,21 +52,24 @@ export default {
                             nodes[dataFirstName] = {
                                 id: dataFirstName,
                                 marker: {
-                                    radius: 16
+                                    radius: 20
                                 },
                                 color: "#1bbae1"
                             };
                             nodes[link[1]] = {
                                 id: link[1],
                                 marker: {
-                                    radius: 10
+                                    radius: 14
                                 },
                                 color: colors[i++]
                             };
                         } else if (nodes[link[0]] && nodes[link[0]].color) {
                             nodes[link[1]] = {
                                 id: link[1],
-                                color: nodes[link[0]].color
+                                color: nodes[link[0]].color,
+                                marker: {
+                                    radius: 8
+                                },
                             };
                         }
                     });

@@ -105,7 +105,7 @@ export default {
                         dataLabels: {
                             enabled: true,
                             linkFormat: '',   
-                            format: '{point.name}'
+                            format: '{point.name}',
                         },
                         data:[]
                     }
