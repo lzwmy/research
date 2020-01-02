@@ -11,7 +11,7 @@
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
 
-    <div class="view_knowType" v-if="item.gatherKnowType>0">
+    <div class="view_knowType" style="display: inline-block;" v-if="item.gatherKnowType>0">
      <el-radio-group v-model="report.value">
           <el-radio v-if="item.gatherKnowType==2" label="是"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="否"  @change="changeRadioKnowType(1)"></el-radio>
@@ -101,6 +101,7 @@ export default {
   methods: {
     //是否不详 事件
     changeRadioKnowType(value) {
+      console.log(value)
       this.isFold = value;
     },
     //点击图标切换
@@ -148,8 +149,11 @@ export default {
       this.addRow();
     }
     //初始化默认集合是否展开
-    if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
-          this.isFold = true;
+    if(this.report.value&&(this.report.value=="有"||this.report.value=="是")){
+      this.isFold = false;
+    }
+    else if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
+      this.isFold = true;
     }
 
     //判断控件是否绑定数据如果绑定则获取绑定数据，如果是继承绑定则进行递归获取父绑定

@@ -14,14 +14,16 @@
         <el-radio-group v-model="report.value">
           <el-radio
             v-for="(it,index) in item.termSet.termItemList"
-            :label="precessData(it.termItemName)"
+            :label="it.termItemName"
             :key="index"
-          >{{precessData(it.termItemName)}}</el-radio>
+          >{{it.termItemName}}</el-radio>
+          <el-radio label="其他" v-if="item.baseProperty.controlIsExtend ">其他</el-radio>
         </el-radio-group>
       </div>
-      <div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>
+      <el-input  v-if="item.baseProperty.controlIsExtend && report.value == '其他'"  v-model="report.value2" ></el-input>
+      <div :class="item.controlType+'_empty'" @click="resetData">清空</div>
     </div>
-    <!--{{item.baseProperty.layout}}-->
+    <!--{{item.baseProperty.controlIsExtend}}-->
   </div>
 </template>
 
@@ -77,6 +79,10 @@ export default {
       };
       this.$store.commit("CRF_CHANGE_CONTROL", ctrl);
     },
+    resetData() {
+      this.report.value = "";
+      this.report.value2 = "";
+    },
     //递归获取
     recureBindingInfo() {
       if (this.item.binding == 1) {
@@ -89,7 +95,7 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!=='-1') {
+      if(data.indexOf('^')!='-1') {
         return data.split('^')[0]
       }else {
         return data
@@ -114,7 +120,7 @@ export default {
       let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
         return item !== ""
       }).map(item=>{
-        return {termItemName:item}
+        return {termItemName:this.precessData(item)}
       });
       this.item.termSet.termItemList = arrayList;
     }

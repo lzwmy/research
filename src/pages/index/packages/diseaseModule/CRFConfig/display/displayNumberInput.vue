@@ -37,6 +37,7 @@
         </el-select>
       </div>
     </div>
+    <span class="annotate_info" v-if="item.baseProperty.remark">{{item.baseProperty.remark}}</span>
   </div>
 </template>
 

@@ -23,9 +23,9 @@
       <el-table-column prop="author" label="创建者"></el-table-column>
       <el-table-column prop="diseaseName" label="病种"></el-table-column>
       <el-table-column prop="groupName" label="课题组"></el-table-column>
-      <el-table-column label="报告状态" width="100px">
+      <el-table-column label="报告状态" width="120px">
         <template slot-scope="scope">
-          {{scope.row.status==0?'未填写':'已填写'}}
+          {{matchingReportStatus(scope.row)}}
         </template>
       </el-table-column>
       <el-table-column label="操作" width="100">
@@ -71,13 +71,33 @@
     // mounted () {
     //     this.addEventListenervisibilityChange();
     // },
-    // beforeDestroy(){
-    //     document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
-    // },
     components: {
       pagination
     },
     methods: {
+      //匹配报告状态
+      matchingReportStatus(row) {
+        //报告状态
+        if(row.reportType == 1) {
+            switch (row.status) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '已提交';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
+        }else {
+            switch (row.status) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '失访';
+                case 3: return '终止';
+                default: break;
+            }
+        }
+      },
       visibilityChangeHandle() {
         if (!document[this.hidden]) {
           this.getDataList();
@@ -111,8 +131,6 @@
           let res = await this.$http.casesSearchPatient(formData);
           if (res.code == 0) {
             this.identify = res.data.identitycardno || "";
-          } else {
-            this.$mes('error', "获取基本信息失败!");
           }
         } catch (err) {
           console.log(err)
@@ -139,8 +157,6 @@
             let obj = {};
             obj.content = res.data;
             this.dataList = obj;
-          }else {
-            this.$mes('error', res.msg);
           }
           that.loading = false;
         } catch (err) {
@@ -148,51 +164,6 @@
           console.log(err)
         }
       },
-      // old httpRequest
-      /*async getDataList(pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
-        console.log(this.reportFillData);
-        return ;
-        let that = this;
-        that.loading = true;
-        that.paging.currentPageNo = pageNo;
-        that.paging.currentPageSize = pageSize;
-        that.dataList.content = [];
-        let formData = {
-          offset: pageNo,
-          limit: pageSize,
-          args: {
-            diseaseId: this.reportFillData.diseaseId || '',
-            subjectId: this.reportFillData.subjectId || '',
-            groupId: this.reportFillData.groupId || '',
-            crfId: '',
-            patientName: this.reportFillData.patientName || '',
-            patientId:this.reportFillData.patientId || "",
-            startTime: null,
-            endTime: null,
-            status: ""
-          }
-        };
-        try {
-          // let res = await that.$http.RRMgetDataList(formData);
-          // 新 2.0 查询报告记录
-          let res = await that.$http.queryFilterReportList(formData);
-          if (res.code == '0') {
-            let obj = {};
-            obj.content = res.data.args;
-            obj.pageNo = pageNo;
-            obj.pageSize = pageSize;
-            obj.totalCount = parseInt(res.data.totalElements);
-            obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
-            that.dataList = obj;
-          } else {
-            this.$mes('error', res.msg);
-          }
-          that.loading = false;
-        } catch (err) {
-          that.loading = false;
-          console.log(err)
-        }
-      },*/
       toReportFill(row) {
         this.getIdentify(row.patientId)
           .then(() => {
@@ -207,7 +178,7 @@
               patientName: row.patientName || "",
               patientId: row.patientId || "",
               identify: this.identify || "",
-              from: "caseManage",
+              from: row.reportType==1?"caseManage":'patientFollowUp',
               diseaseName: row.diseaseName || "",
               subjectName: row.subjectName || "",
               groupName: row.groupName || "",
@@ -258,9 +229,10 @@
     .el-table {
       position: absolute;
       bottom: 50px;
-      top: 0;
+      top: 6px;
       left: 0;
       right: 0;
+      padding: 0 !important;
       .el-table__body-wrapper {
         position: absolute;
         bottom: 0;

@@ -21,6 +21,7 @@
         :placeholder="item.baseProperty.controlTip"
       ></el-input>
     </div>
+    <span class="annotate_info" v-if="item.baseProperty.remark">{{item.baseProperty.remark}}</span>
     <!--{{item.baseProperty.layout}}-->
   </div>
 </template>

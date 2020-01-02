@@ -3,6 +3,7 @@ const router = [
         ico: 'diseaseChartIcon',
         menuName: '病种概览',
         menuCode: "011001",
+        menuOrder: 1,
         menuPath: '/diseaseChart',
         children: [],
         name: 'diseaseChart',
@@ -11,6 +12,7 @@ const router = [
         ico: 'bingrenliebiaobeifen1',
         menuName: '病人列表',
         menuCode: "011002",
+        menuOrder: 2,
         menuPath: '/patientListModule',
         children: [],
         name: 'patientListModule',
@@ -19,14 +21,16 @@ const router = [
         ico: 'diseasePatientFollowUp',
         menuName: '患者随访',
         menuCode: "0110033",
+        menuOrder: 3,
         menuPath: '/diseasePatientFollowUp',
         children: [],
-        name: 'diseasePatientFollowUp'
+        name: 'diseasePatientFollowUp',
     },
     {
         ico: 'reportList',
         menuName: '报告列表',
         menuCode: "011003",
+        menuOrder: 4,
         menuPath: '/reportList',
         children: [],
         name: 'reportList',
@@ -35,17 +39,10 @@ const router = [
         ico: 'modelManage',
         menuName: '科研建模',
         menuCode: "011004",
+        menuOrder: 7,
         menuPath: '/modelManage',
         children: [],
         name: 'modelManage',
     }
-    // {
-    //     ico: 'crfConfig',
-    //     menuName: 'CRF配置',
-    //     menuCode: "011005",
-    //     menuPath: '/crfConfig',
-    //     children: [],
-    //     name: 'crfConfig',
-    // }
 ]
 export default router;

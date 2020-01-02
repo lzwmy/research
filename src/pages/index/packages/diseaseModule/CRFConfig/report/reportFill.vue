@@ -1,24 +1,30 @@
 <template>
   <!--数据连接管理-->
-  <div class="cloud-component clearfix  content-container" style="position:relative;">
+  <div class="cloud-component clearfix  content-container">
     <div class="crfConfig clearfix crffill">
       <div class="crf-main" v-loading="mainLoading" v-if="!showReadComponent">
         <div class="crf-main-content" >
-          <div class="crf-step-header">
-            <i class="header_left"></i>
-            <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
-            <el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>
-            <span v-if="urlParameter.from == 'patientFollowUp'"  style="float: right; margin-right: 10px;">
-              <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
-              <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
-              <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
-            </span>
-            <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
-            <el-button v-if="urlParameter.from != 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveReportData" type="primary" style="float:right;margin-right: 5px" :disabled="mainLoading" >保 存</el-button>
-            <!-- <el-button type="primary" size="mini" @click="toReportRead" style="float:right;margin-right: 15px">阅读</el-button> -->
+          <div class="crf-step-header flex-between-center">
+            <div>
+              <!-- <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i> -->
+              <i class="header_left"></i>
+              <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
+            </div>
+            <div>
+              <!--<el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>-->
+              <span v-if="urlParameter.from == 'patientFollowUp'"  style="float: right; margin-right: 10px;">
+                <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
+                <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
+                <el-button v-if="urlParameter.from == 'patientFollowUp' && urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="saveFollowUpReportData" type="primary" :disabled="mainLoading">保 存</el-button>
+              </span>
+
+              <!--<el-button type="primary" @click="downPDF">下载pdf</el-button>-->
+              <el-button v-if="urlParameter.from != 'patientFollowUp' && btnShow" @click="saveReportConfirm" type="primary" :disabled="mainLoading" >保 存</el-button>
+              <el-button v-if='btnShow' size="medium" type="success" @click="submitReportConfirm">提 交</el-button>
+            </div>
           </div>
-          <div ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
-            <display-report id="pdfForm" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
+          <div  ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
+            <display-report  id="pdfForm" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
           </div>
           <!--<div class="saveButton">
             <el-button @click="backingOut">返回</el-button>
@@ -28,7 +34,11 @@
       </div>
 
       <!--报告阅读-->
-        <report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>
+        <!--<report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
+      <!--阅读模式-->
+      <div v-else>
+        <read-report-mode ref="reportRead" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report" :tipStatus="tipStatus"></read-report-mode>
+      </div>
     </div>
     <!--数据绑定提醒-->
     <transition name="fade">
@@ -82,10 +92,54 @@
       </div>
     </transition>
     <!--返回顶层icon-->
-    <div  class="break_icon" @click="backTop" :class="scrollTop == 0?'hide':''">
+    <div  class="break_icon" @click="backTop" :class="scrollTop == '0'?'hide':''">
       <i class="el-icon-caret-top"></i>
     </div>
-
+    <!--报告备注-->
+    <div class="remark_box">
+      <div class="remark_title">
+        <i class="header_left"></i>
+        <span>讨论</span>
+        <i class="iconfont iconlujing3" v-if="isExamine" @click="openRemark"></i>
+      </div>
+      <div class="remark_body_box" v-if="remarkList.length">
+        <div class="remark_content-item" v-for="(item,index) in remarkList" :key="index">
+          <div class="content-item_title">{{index+1}}、{{item.createTime}} 由 <span>{{item.creatorName}}</span> 创建</div>
+          <div class="content-item_info">
+            <span v-html="item.content"></span>
+            <div>
+              <i class="iconfont iconlujing4" v-if="isExamine" @click="modifyRemark(item)"></i>
+              <i class="iconfont iconshanchu1 del" v-if="isExamine" @click="deleteRemark(item)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="remark_body_box" style="align-items: center" v-else>
+        <img src="./../basisComponents/image/none_content.png" width="180px" alt="">
+      </div>
+    </div>
+    <!--备注图片预览-->
+    <image-view v-if="dialogVisibles"
+                ref="imageViewS"
+                @on-close="closeViewer"
+                :state="dialogVisibles"
+                :url="images">
+    </image-view>
+    <!--消息提示-->
+    <tip-info ref="tipInfo" v-if="urlParameter.from != 'patientFollowUp'" :tipStatus="tipStatus" :isExamine='isExamine' :tipContent="tipContent" @handleView='handleView'></tip-info>
+    <!--添加备注弹框-->
+    <el-dialog
+      title="添加备注"
+      :visible.sync="remarkVisible"
+      class="annotate_dialog-box"
+      width="40%"
+      center>
+      <editor :value="editorContent" :isClear="editorVisible" @content-synchronize="contentSynchronize"></editor>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="remarkVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addRemark()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script type="text/javascript">
@@ -96,13 +150,20 @@ import reportRead from "./reportRead";
 import mixins from "components/mixins";
 import { mapGetters } from "vuex";
 import { getDom } from './js/verificationForm';
-
+import readReportMode from '../readOnlyModule/readReportmode';
+import editor from 'components/packages/wangEnduit/editor';
+import tipInfo from './tipInfo';
+import imageView from 'components/packages/ImagePreview/imageView';
 export default {
   name: "crfConfig",
   mixins: [mixins],
   components: {
     displayReport,
-    reportRead
+    reportRead,
+    readReportMode,
+    editor,
+    tipInfo,
+    imageView
   },
   data() {
     return {
@@ -120,7 +181,24 @@ export default {
       referView:null,//数据参考中文名选项
       showReadComponent: false,  //显示报告阅读组件
       scrollTop: 0,
-      urlParameter:{}
+      urlParameter:{},
+      remarkVisible:false,
+      editorContent:"",
+      editorVisible:false,
+      editorInfo:"",
+      remarkList:[],
+      remarkId:"",
+      competence:{
+        from:"",  // 患者列表、报告列表、患者随访、数据监察
+        status:"",  //报告状态0 未填写 1已填写 2 已提交 3 审核不通过 4 审核通过
+        roles:this.$store.state.user.diseaseInfo.roles //1、管理员(所有权限)  2、分中心管理员（无权添加中心,可查看组织管理） 3、数据录入员 4、数据管理员（可审核数据）
+      },
+      tipStatus:-1,  //报告状态
+      isExamine: false, //是否审核
+      tipContent:"",
+      btnShow: false,
+      dialogVisibles:false,
+      images:[]
     };
   },
   created() {
@@ -137,11 +215,31 @@ export default {
         that.resize();
       });
     });
-    this.mainContent = document.querySelector("#mainContent");
-    this.mainContent.addEventListener('scroll', this.handleScroll, true) 
+
+    // this.mainContent = document.querySelector("#mainContent");
+    // this.mainContent.addEventListener('scroll', this.handleScroll, true)
+    window.addEventListener('scroll', this.handleScroll, true);
+    /*this.$nextTick(function (){
+      let remarkImg = $('.content-item_info img');
+      $('.content-item_info img').each(function () {
+        $(this).click(function () {
+          $(this).attr('src');
+          console.log($(this).attr('src').split('/'))
+        })
+      })
+    });*/
   },
   destroyed() {
-    this.mainContent.removeEventListener('scroll',this.handleScroll);
+    // this.mainContent.removeEventListener('scroll',this.handleScroll);
+    let that = this;
+    window.removeEventListener('scroll',this.handleScroll);
+    let imgReview = document.querySelectorAll('.content-item_info img');
+    imgReview.forEach(item => {
+      item.removeEventListener('click',function () {
+        let url = this.getAttribute('src');
+        that.showImgPreview(url,false)
+      })
+    })
   },
   activated() {},
   methods: {
@@ -174,7 +272,7 @@ export default {
         }).catch(() => {});
     },
     handleScroll() {
-      this.getContentTop(document.querySelector("#mainContent").scrollTop);
+      this.getContentTop(document.documentElement.scrollTop);
     },
     resize() {
       /*$(".crffill").height($(window).height() - 160);
@@ -187,6 +285,8 @@ export default {
       this.groupId = "";
       this.formId = this.urlParameter.formId;
       this.reportId = this.urlParameter.reportId;
+      this.isExamine = this.urlParameter.from=='dataMonitoring'?true:false;
+
       if (!this.formId) {
         this.$notice("页面缺少表单id");
         return false;
@@ -201,8 +301,43 @@ export default {
       this.$store.commit("CRF_SET_PATIENTID", this.patientId);
       this.$store.commit("CRF_SET_REPORT_STATUS", false);
       this.$store.commit("CRF_CHANGE_CONTROL", {});
-      this.getForms();
+      this.getForms().then(()=> {
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            let height = $(".crf-main").height();
+            $('.remark_box').css('margin-top',height)
+            clearTimeout()
+          },900)
+        })
+      });
       this.getReportData();
+      this.getReportBakNoteList(this.reportId).then(()=> {
+        let that = this;
+        that.$nextTick(()=> {
+          /*$('.content-item_info img').each(function () {
+            /!*$(this).click(function () {
+              $(this).attr('src');
+              console.log($(this).attr('src').split('/'));
+              that.showImgPreview($(this).attr('src'),true)
+            })*!/
+          })*/
+          let imgReview = document.querySelectorAll('.content-item_info img');
+          imgReview.forEach(item => {
+            item.addEventListener('click',function () {
+              let url = this.getAttribute('src');
+              that.showImgPreview(url,true)
+            })
+          })
+        });
+      });
+    },
+    showImgPreview(url,status) {
+      let urlList  = url.split('/');
+      this.dialogVisibles = status;
+      this.images[0] = this.baseURL+"/file/downloadFile/"+urlList[urlList.length-1];
+      this.$nextTick(()=>{
+        this.$refs.imageViewS.show();
+      });
     },
     //返回上一级
     backingOut() {
@@ -226,6 +361,77 @@ export default {
         window.close();
       }
     },
+    contentSynchronize(data) {
+      // console.log('富文本 编辑回显',data)
+      this.editorInfo = data;
+    },
+    addRemark() {
+      const {txtContent="",content=""} = this.editorInfo;
+      let remarkId = "";
+      if(this.remarkId) {
+        remarkId =  this.remarkId;
+      }
+      let formData = {
+        "content": content,
+        "id": remarkId,
+        "reportId": this.report.id,
+        "txtContent": txtContent
+      };
+      this.reportBakNoteSave(formData).then(()=>{
+        this.remarkVisible = false;
+        this.remarkId = "";
+        this.editorContent="";
+        this.editorVisible=false;
+        this.getReportBakNoteList(this.report.id);
+      })
+    },
+    openRemark() {
+      this.remarkVisible = true;
+      this.editorContent="";
+    },
+    // 修改备注
+    modifyRemark(item) {
+      this.editorContent="";
+      this.editorVisible=false;
+      this.remarkId = item.id;
+      this.remarkVisible = true;
+      this.editorVisible = true;
+      this.editorContent = item.content;
+    },
+    deleteRemark(item) {
+      this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.reportBakNoteDelete(item.id).then(()=>this.getReportBakNoteList(this.report.id))
+      }).catch(() => {
+
+      });
+    },
+    closeViewer() {
+      this.dialogVisibles = false;
+    },
+    submitReportConfirm() {
+      this.$confirm('是否执行当前操作', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.submitReportData();
+      }).catch(() => {
+      });
+    },
+    saveReportConfirm() {
+      this.$confirm('是否执行当前操作', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.saveReportData()
+      }).catch(() => {
+      });
+    },
     downPDF() {
       $(".crfConfig").addClass("heightAuto");
       $("#pdfForm").addClass("pdf")
@@ -237,6 +443,54 @@ export default {
         $(".crfConfig").removeClass("heightAuto");
         $("#pdfForm").removeClass("pdf")
       },600)
+    },
+    //添加备注
+    async reportBakNoteSave(value) {
+      let that = this;
+      let formData = value;
+      try{
+        let data = await that.$http.reportBakNoteSave(formData);
+        console.log(data);
+        /*if(data.code ===0 && data.data) {
+
+        }*/
+      }catch (error) {
+        console.log(error);
+      }
+    },
+    // 获取报告集合
+    async getReportBakNoteList(value) {
+      let that = this;
+      let formData = {
+        reportId:value || ""
+      };
+      try {
+        let data = await that.$http.getReportBakNoteList(formData);
+        console.log(data)
+        if(data.code ===0 && data.data) {
+          that.remarkList = data.data;
+        }else {
+          that.$message.info(data.msg);
+        }
+      }catch (error) {
+        console.log(error);
+      }
+    },
+    async reportBakNoteDelete(value) {
+      let that= this;
+      let formData = {
+        id:value || "",
+      };
+      try {
+        let data = await that.$http.reportBakNoteDelete(formData);
+        if(data.code === 0 ) {
+          that.$message.success('删除成功');
+        }else {
+          that.$message.info(data.msg);
+        }
+      }catch (error) {
+        console.log(error)
+      }
     },
     async getForms(item) {
       let that = this;
@@ -260,6 +514,7 @@ export default {
       }
     },
     async getReportData() {
+      this.mainLoading = true;
       try {
         // let params = { groupId: this.groupId, patientId: this.patientId };
         let params = { reportId: this.reportId };
@@ -268,19 +523,21 @@ export default {
         console.log('report data',report)
         if (report.data && report.code == "0") {
           this.report = report.data;
+          this.tipStatus = report.data.status;
           console.log("====================================")
           console.log(this.report)
           if(report.data && report.data.portions&&report.data.portions.length==0){
               this.$store.commit("CRF_SET_REPORT_STATUS", true);
           }else{
             // this.showReadComponent=true;
-            this.showReadComponent=false;
+            // this.showReadComponent=false;
           }
         }
       } catch (error) {
         this.$notice("获取查找表单关联的模块失败");
         console.log(error);
       }
+      this.mainLoading = false;
     },
     //保存保存（随访进来）
     async saveFollowUpReportData() {
@@ -323,6 +580,7 @@ export default {
         this.mainLoading = false;
       }
     },
+    // 保存报告
     async saveReportData() {
       let flag = getDom();
       if(flag) {
@@ -392,6 +650,31 @@ export default {
       }
       return title;
     },
+    //提交报告
+    async submitReportData() {
+      let that = this;
+      let flag = getDom();
+      if(flag) {
+        this.$message.info('有必填项未填写');
+        return ;
+      }
+      let formData = {
+        'replyList': [],
+        ...that.report
+      };
+      try {
+        let data = await that.$http.reportBakSubmit(formData);
+        console.log(data);
+        if(data.code ===0) {
+          that.$message.success('提交成功');
+          window.location.reload();
+        }else {
+          that.$message.info(data.msg)
+        }
+      }catch (error) {
+        console.log(error);
+      }
+    },
     //获取数据绑定域及字段
     async searchViewList() {
       try {
@@ -444,14 +727,22 @@ export default {
     },
     //返回顶层
     backTop() {
-      if(!this.showReadComponent) {
+      /*if(!this.showReadComponent) {
+        console.log(this.$refs.top)
         this.$refs.top.scrollTop = 0;
       }else {
         this.$refs.reportRead.toTop();
-      }
+      }*/
+      document.documentElement.scrollTop = 0;
     },
     getContentTop(top) {
       this.scrollTop = top;
+      // let scrollTop = document.documentElement.scrollTop;
+    },
+    //操作视图
+    handleView(data) {
+      this.showReadComponent = data.mode === 1 ? true : false;
+      this.btnShow = data.showBtn;
     }
   },
   computed: {
@@ -482,22 +773,75 @@ export default {
   }
 };
 </script>
-<style scoped>
+<style lang="less" scoped>
+  .remark_box{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 10px;
+    border-top: 1px solid rgba(235,237,242,1);
+    padding-top: 10px;
+    margin-top: 46px;
+    .remark_title{
+      margin-bottom: 10px;
+      span{
+        font-size: 14px;
+        color: #333333;
+        font-weight: bold;
+      }
+      i{
+        font-size: 16px;
+        color: #0076B7;
+        padding-left: 14px;
+        cursor:pointer;
+      }
+    }
+    .remark_body_box{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      .remark_content-item{
+
+        .content-item_title{
+          font-size:14px;
+          line-height:19px;
+          color:rgba(51,51,51,1);
+          margin: 10px 0;
+          span{
+            font-weight: bold;
+          }
+        }
+        .content-item_info{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          min-height: 46px;
+          background:rgba(252,253,252,1);
+          border:1px solid rgba(235,237,242,1);
+          color:#666666 ;
+          line-height: 21px;
+          font-size: 13px;
+          padding-left: 18px;
+          padding-right: 18px;
+          margin-left: 20px;
+          .iconfont{
+            cursor: pointer;
+          }
+          .del{
+            padding-left: 10px;
+            &:hover{
+              color: #D95555;
+            }
+          }
+        }
+      }
+    }
+  }
+
 </style>
 <style lang="less">
-body.theme-blue {
-  .crffill .crf-step .crf-section-title.active,
-  .crffill .menu-panel .parent-node.active {
-    background: #c6e2ff;
-  }
-}
-
-body.theme-green {
-  .crffill .crf-step .crf-section-title.active,
-  .crffill .menu-panel .parent-node.active {
-    background: #b2efe0;
-  }
-}
 .binding-box {
   position: absolute;
   width: 400px;
@@ -547,7 +891,7 @@ body.theme-green {
     border-left: 4px solid #2d8cf0;
     padding-left: 10px;
     height: 25px;
-    line-height: 25px;
+    line-height: 30px;
     margin-top: 5px;
     margin-bottom: 5px;
   }
@@ -573,13 +917,19 @@ body.theme-green {
     /*border-top: 2px solid #2d8cf0;*/
   }
   .crf-step-header {
-    display: block !important;
-    border-bottom: 1px dashed #e9eaec !important;
-    padding: 11.5px;
-    background-color: #ffffff;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.1), 0 1px 10px rgba(0,0,0,0.1);
+    height: 46px;
+    line-height: 46px;
+    background-color: #fafafa;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0 10px !important;
+    z-index: 2;
   }
   .break_icon{
-    position: absolute;
+    position: fixed;
     bottom: 10%;
     right: 2%;
     cursor: pointer;
@@ -623,5 +973,14 @@ body.theme-green {
       top: 11px;
     }
   }
+}
+
+.cloud-component {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
 }
 </style>

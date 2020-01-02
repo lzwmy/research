@@ -39,7 +39,7 @@
             'movable': true,
             'zoomable': true,
             'rotatable': true,
-            'scalable': true,
+            'scalable': false,
             'transition': true,
             'fullscreen': true,
             'keyboard': true,
@@ -51,9 +51,22 @@
         show() {
           const viewer = this.$refs.viewer.$viewer;
           viewer.show();
+          this.imgTransformProcess();
         },
         onCloseImg() {
           this.$emit('on-close',false);
+        },
+        imgTransformProcess() {
+          let that = this;
+          let time = setInterval(()=>{
+            if(document.querySelectorAll('.viewer-loading').length!==0){
+              document.querySelectorAll('.viewer-canvas>img')[0].style.display = 'none';
+              clearInterval(time);
+            }else{
+              that.imgTransformProcess();
+              clearInterval(time)
+            }
+          })
         }
       },
       mounted() {
@@ -65,7 +78,8 @@
               setTimeout(()=>{
                 var el = $('.viewer-container')[0];
                 if($(el).hasClass('viewer-in')) {
-                  console.log('打开')
+                  // console.log('打开');
+                  return ;
                 }
                 if($(el).hasClass('viewer-hide')) {
                   that.onCloseImg();
@@ -74,6 +88,12 @@
             })
           }
         })
+      },
+      destroyed() {
+        let that = this;
+        window.removeEventListener('click',function () {
+          that.onCloseImg();
+        },true);
       }
     }
 </script>

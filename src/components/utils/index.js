@@ -1,6 +1,7 @@
 // import Vue from 'vue';
 import store from '../../store/index';
 import { MessageBox, Menu } from 'element-ui';
+import Global from 'components/utils/global';
 import CryptoJS from '../../../static/js/crypto-js'
 
 const vm = new Vue();
@@ -368,53 +369,6 @@ const loadMenuInfo = () => {
 };
 
 
-/**
- * Created by hh on 18/01/03.
- *退出
- *@param {} [] []
- *@return {Object} [返回对象]
- */
-const ssoLogout = () => {
-  //登录来源
-  let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
-  let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
-  let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
-  let diseaseId = store.state.user.diseaseInfo.diseaseId
-  try {
-    vm.$get('/auth/logout.do?t=' + (+new Date()))
-    then(function (response) {
-      store.commit('USER_SIGNOUT');
-      if(isDisease) {
-        window.location.href = './loginDisease.html?id='+diseaseId;
-      }else if(isResearch) {
-        window.location.href = './loginResearch.html?id='+subjectInfoId;
-      }else {
-        window.location.href = './login.html';
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-      store.commit('USER_SIGNOUT');
-      if(isDisease) {
-        window.location.href = './loginDisease.html?id='+diseaseId;
-      }else if(isResearch) {
-        window.location.href = './loginResearch.html?id='+subjectInfoId;
-      }else {
-        window.location.href = './login.html';
-      }
-    });
-  } catch (err) {
-    store.commit('USER_SIGNOUT');
-    if(isDisease) {
-      window.location.href = './loginDisease.html?id='+diseaseId;
-    }else if(isResearch) {
-      window.location.href = './loginResearch.html?id='+subjectInfoId;
-    }else {
-      window.location.href = './login.html';
-    }
-  }
-};
-
 const getOrgData = () => {
   return new Promise((resolve, reject) => {
     if (localStorage.getItem('ORGDATA') && localStorage.getItem('ORGDATA').length > 0) {
@@ -658,62 +612,78 @@ const defineArrayFind = function () {
   }
 };
 
-const validLoginAuthenticated = function () {
+const checkToken = function () {
   return new Promise(async (resolve, reject) => {
     try {
-      let data = await vm.$http.authLoginValidAuthenticated();
-      data = data.data;
-      if (data && data.code == '0' && data.data) {
-        let userLogin = {
-          name: data.data.name,
-          permissionCodes: data.data.permissionCodes,
-          roleCodes: data.data.roleCodes,
-          sessionId: data.data.sessionId,
-          userId: data.data.userId
-        };
-        store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-        let url = getQuery('url');
-        if (url) {
-          window.location.href = url;
-        } else {
-          window.location.href = './index.html#/index';
+      let res = await vm.$http.ckeckTokenAPI();
+      if (res.data.code == '0' && res.data.data) {
+        //跳转至主页
+        let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
+        let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
+        let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
+        let diseaseId = store.state.user.diseaseInfo.diseaseId;
+        if(isDisease) {
+          window.location.href = './#/diseaseChart?id='+diseaseId;
+        }else if(isResearch) {
+          window.location.href = './#/projectProgress';
+        }else {
+          window.location.href = './#/index';
         }
-      } else {
         resolve();
+      } else {
+        ssoLogout();
+        reject();
       }
     } catch (err) {
-      store.commit('USER_SIGNOUT');
-      reject(err);
+      ssoLogout();
+      reject();
     }
   });
 };
 
-const validIndexAuthenticated = function () {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let data = await vm.$http.authIndexValidAuthenticated();
-      if (data && data.code == '0' && data.data) {
-        let userLogin = {
-          name: data.data.name,
-          permissionCodes: data.data.permissionCodes,
-          roleCodes: data.data.roleCodes,
-          sessionId: data.data.sessionId,
-          userId: data.data.userId
-        };
-        store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-        resolve(userLogin);
-      }
-    } catch (err) {
-      store.commit('USER_SIGNOUT');
-      //是否为科研项目登录
-      let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
-      if(!isResearch) {
-        window.location.href = './login.html';
+/**
+ * Created by hh on 18/01/03.
+ *退出
+ *@param {} [] []
+ *@return {Object} [返回对象]
+ */
+const ssoLogout = async() => {
+  //登录来源
+  let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
+  let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
+  let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
+  let diseaseId = store.state.user.diseaseInfo.diseaseId
+  try {
+    store.commit('USER_SIGNOUT');
+    vm.$get('/auth/logout.do?t=' + (+new Date()))
+    then(function (response) {
+      if(isDisease) {
+        window.location.href = './loginDisease.html?id='+diseaseId;
+      }else if(isResearch) {
+        window.location.href = './loginResearch.html?id='+subjectInfoId;
       }else {
-        window.location.href = './loginResearch.html';
+        window.location.href = './login.html';
       }
+    })
+    .catch(function (error) {
+      console.log(error);
+      if(isDisease) {
+        window.location.href = './loginDisease.html?id='+diseaseId;
+      }else if(isResearch) {
+        window.location.href = './loginResearch.html?id='+subjectInfoId;
+      }else {
+        window.location.href = './login.html';
+      }
+    });
+  } catch (err) {
+    if(isDisease) {
+      window.location.href = './loginDisease.html?id='+diseaseId;
+    }else if(isResearch) {
+      window.location.href = './loginResearch.html?id='+subjectInfoId;
+    }else {
+      window.location.href = './login.html';
     }
-  });
+  }
 };
 
 
@@ -804,14 +774,32 @@ const isRepeat = function(arr) {
   return false;
 }      
 
-//判断两数组里是否包括相同元素key
-const arrayExistAttr = function(arr1, arr2,key) {
+//判断两数组里是否包括相同元素key strict是否严格相等
+const arrayExistAttr = function(arr1, arr2,key, strict=true) {
   let isExist = false;
   arr1.forEach(item=>{
     arr2.forEach(li=>{
-        if(item.key === li.ley) {
+      if(strict) {
+        if(key) {
+          if(item[key] === li[key]) {
             isExist = true;
+          }
+        }else {
+          if(item === li) {
+            isExist = true;
+          }
         }
+      }else {
+        if(key) {
+          if(item[key] == li[key]) {
+            isExist = true;
+          }
+        }else {
+          if(item == li) {
+            isExist = true;
+          }
+        }
+      }
     })
   })
   if(isExist) {
@@ -819,6 +807,7 @@ const arrayExistAttr = function(arr1, arr2,key) {
   }
   return false;
 }
+
 //将有父子关系的数组转换成树形结构数据
 const translateDataToTree = function(data = []) {
   let parents = data.filter(li=>{ return li.menuLevel == 1});
@@ -869,6 +858,70 @@ const isEffectiveDate = function(date) {
   return (new Date(date).getDate()==date.substring(date.length-2));
 }
 
+
+//数据去重
+const arrRemoveRepeat = function(arr) {
+  let result = []
+  let obj = {}
+  for (let i of arr) {
+      if (!obj[i]) {
+          result.push(i)
+          obj[i] = 1
+      }
+  }
+  return result
+}
+
+//全角转半角
+const ToCDB = function (str) {
+  var tmp = "";
+  for (var i = 0; i < str.length; i++) {
+      if (str.charCodeAt(i) > 65248 && str.charCodeAt(i) < 65375) {
+          tmp += String.fromCharCode(str.charCodeAt(i) - 65248);
+      }
+      else {
+          tmp += String.fromCharCode(str.charCodeAt(i));
+      }
+  }
+  return tmp
+}
+
+//半角转全角
+const ToDBC = function (txtstring) {
+  var tmp = "";
+  for (var i = 0; i < txtstring.length; i++) {
+    if (txtstring.charCodeAt(i) == 32) {
+      tmp = tmp + String.fromCharCode(12288);
+    }
+    if (txtstring.charCodeAt(i) < 127) {
+      tmp = tmp + String.fromCharCode(txtstring.charCodeAt(i) + 65248);
+    }
+  }
+  return tmp;
+}
+
+const arrRermoveEmpty = function(arr) {
+  return arr.filter(li=>{
+    return li
+  })
+};
+
+// 去除重复对象
+const deleteObject = function (arr,attribute) {
+  var new_arr=[];
+  var json_arr=[];
+  for(var i=0; i<arr.length; i++){
+    // console.log(new_arr.indexOf(arr[i][attribute]));
+    if(new_arr.indexOf(arr[i][attribute]) ==-1){    //  -1代表没有找到
+      new_arr.push(arr[i][attribute]);   //如果没有找到就把这个name放到arr里面，以便下次循环时用
+      json_arr.push(arr[i]);
+    } /*else{
+    }*/
+  }
+  return json_arr;
+};
+
+
 export default {
   getQuery,
   getQueryString,
@@ -900,8 +953,7 @@ export default {
   getWeek, // 获取某一天属于一年的第几周
   throttle, // 函数节流，有些执行的函数会执行很多次
   defineArrayFind, // 为旧浏览器提供它没有原生支持的数组查找某个对象的方法findIndex，返回索引；
-  validIndexAuthenticated, // 验证首页浏览器自带的session有没有在登录有效期
-  validLoginAuthenticated, // 验证登录页浏览器自带的session有没有在登录有效期
+  checkToken, // 验证登录页浏览器缓存的token有没有在登录有效期
   calculationAge,    //根据出生年月日计算周岁
   deepCopy,   //深克隆
   handleTableScorll,   //操作表格滚动
@@ -909,9 +961,14 @@ export default {
   deleteFileId,     //单文件删除
   isRepeat,     //数组里值是否重复
   arrayExistAttr,    //判断两数组里是否包括相同元素key
-  translateDataToTree,
   decrypt,  //解密
   encrypt,   //加密
   translateDataToTree,  //将有父子关系的数组转换成树形结构数据
   isEffectiveDate,    //判断日期是否有效
+  arrRemoveRepeat,    //数组去重
+  ToCDB,  //全角转半角
+  ToDBC,   //半角转全角
+  arrRermoveEmpty,  //数组去除空值
+  deleteObject, // 去除 重复对象
+
 };

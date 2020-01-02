@@ -149,9 +149,15 @@
 .SINGLE_INPUT .SINGLE_INPUT_box .el-input .el-input__inner {
   /* width: 188px; */
 }
+.SINGLE_INPUT .annotate_info {
+  display: table-cell;
+  padding-left: 5px;
+  color: #7878787a;
+}
 /*多选框*/
 .CHECKBOX {
   line-height: 32px;
+  display: table;
 }
 .CHECKBOX .CHECKBOX_title {
   width: 188px;
@@ -186,12 +192,18 @@
   margin-right: 10px;
   margin-left: 0;
 }
+.CHECKBOX .el-input {
+  width: 200px;
+  display: table-cell;
+  vertical-align: middle;
+}
 .CHECKBOX .CHECKBOX_empty {
   min-width: 24px;
   display: table-cell;
   color: #3c81f0;
   cursor: pointer;
-  vertical-align: middle;
+  vertical-align: top;
+  padding-left: 5px;
 }
 /*单选下拉*/
 .SINGLE_COMBOX {
@@ -397,6 +409,12 @@
 .MULTI_INPUT .MULTI_INPUT_box {
   display: table-cell;
 }
+.MULTI_INPUT .annotate_info {
+   display: table-cell;
+   padding-left: 5px;
+   color: #7878787a;
+ }
+
 /*数值框*/
 .NUMBER_INPUT{
 
@@ -435,9 +453,15 @@
   display: table-cell;
   padding-left: 1%;
 }
+.NUMBER_INPUT .annotate_info {
+  display: table-cell;
+  padding-left: 5px;
+  color: #7878787a;
+}
 /*单选框*/
 .RADIO_BUTTON {
   line-height: 32px;
+  display: table;
 }
 .RADIO_BUTTON .RADIO_BUTTON_title {
   width: 188px;
@@ -467,12 +491,17 @@
   margin-right: 10px;
   margin-left: 0;
 }
+.RADIO_BUTTON .el-input {
+  display: table-cell;
+  width: 200px;
+}
 .RADIO_BUTTON .RADIO_BUTTON_empty {
-  min-width: 24px;
+  min-width: 26px;
   display: table-cell;
   color: #3c81f0;
   cursor: pointer;
   vertical-align: middle;
+  /*padding-left: 5px;*/
 }
 /*表格*/
 .table_label {
@@ -569,4 +598,38 @@
 }
 .CASCADE .CASCADE_box{
   display: table-cell;
+}
+
+/*图片控件 隐藏不需要显示项*/
+.viewer-toolbar > ul > li.viewer-prev {
+  display: none;
+}
+.viewer-toolbar > ul > li.viewer-play {
+  display: none;
+}
+.viewer-toolbar > ul > li.viewer-next {
+  display: none;
+}
+.viewer-toolbar > ul > li.viewer-one-to-one {
+  display: none;
+}
+
+/**滑块控件**/
+.SLIDER {
+  display: table;
+}
+.SLIDER .SLIDER_title {
+  width: 188px;
+  display: table-cell;
+  font-size: 14px;
+  vertical-align: middle;
+}
+.SLIDER .SLIDER_box{
+  display: table-cell;
+}
+.SLIDER .SLIDER_box .el-slider {
+  min-width: 600px;
+}
+.SLIDER .SLIDER_box .el-slider .el-slider__marks .el-slider__marks-text{
+  white-space: nowrap;
 }

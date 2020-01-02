@@ -83,7 +83,6 @@
                 </el-form-item>
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
-                        <!-- <el-option :disabled="item.name=='管理员'" v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option> -->
                         <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -106,7 +105,7 @@
             class="height_auto"
             @close="closeDialog"
             :visible.sync="dialgOrgForm.visible" 
-            width="45%">
+            width="700px">
             <el-form :model="dialgOrgForm" ref="dialgOrgForm" :rules="dialgoOrgFormRules" label-width="110px"
                     class="ruleFormDialog" @submit.native.prevent v-loading="dialgOrgForm.loading" label-position="left">
                 <el-form-item label="机构名称：" prop="orgName">
@@ -140,7 +139,7 @@ export default {
             if (!value) {
             return callback(new Error('手机号不能为空'));
             } else {
-            const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/
+            const reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
             if (reg.test(value)) {
                 callback();
             } else {
@@ -240,8 +239,6 @@ export default {
                     obj.totalCount = parseInt(res.data.totalElements);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.tableLoading = false;
             } catch (err) {
@@ -256,15 +253,14 @@ export default {
                 if (res.code == '0') {
                     if(this.loginType=='share') {
                         this.roleList = res.data.filter(li=>{
-                            return li.id != 1 || li.id != 2; 
+                            // return li.id != 1 && li.id != 2; 
+                            return li.id != 1; 
                         })
                     }else {
                         this.roleList = res.data.filter(li=>{
                             return li.id != 1; 
                         })
                     }
-                }else {
-                    this.$mes('error', res.msg);
                 }
             } catch (err) {
                 console.log(err)
@@ -283,8 +279,6 @@ export default {
                     if(this.orgList.length) {
                         this.orgCode = this.orgList[0].orgCode;
                     }
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 this.orgLoading = false;
             } catch (err) {
@@ -418,8 +412,6 @@ export default {
                 if (res.code == '0') {
                     this.$mes('success', '添加成功!');
                     this.getOrgList();
-                }else {
-                    this.$mes('error', res.msg);
                 }
             } catch (err) {
                 console.log(err)
@@ -459,7 +451,8 @@ export default {
                     try {
                         let res = await this.$http.ORGDisEditOrg({
                             orgCode: this.dialgOrgForm.orgCode,
-                            orgName: this.dialgOrgForm.orgName
+                            orgName: this.dialgOrgForm.orgName,
+                            diseaseId: this.$route.query.id
                         });
                         if (res.code == '0') {
                             this.$mes('success', '保存成功!');
@@ -487,7 +480,7 @@ export default {
             }).then(async () => {
                 try {
                     let res = await this.$http.ORGDisDeleteOrg({
-                        orgCode: item.orgCode
+                        orgCode: item.orgCode,
                     });
                     if (res.code == '0') {
                         this.$mes('success', '删除成功!');

@@ -140,6 +140,7 @@
           },
           htmlImg:"",
           idsUpdateData:0, // 0 未刷新 1 刷新，返回提示保存
+          crfId:"",
         }
       },
       watch:{
@@ -158,6 +159,16 @@
         "crfName":function (data) {
           this.idsUpdateData = 1;
         }*/
+      },
+      created() {
+        //通过导入报告创建表单
+        let importData = this.$route.params;
+        if(importData && importData.import) {
+          this.isReset = true;
+          this.dataList = importData.reportData.formPortions;
+          this.crfType = importData.reportData.crfType;
+          this.crfName = importData.reportData.crfDisplayName;
+        }
       },
       methods: {
         init() {
@@ -366,7 +377,7 @@
         async CRFReportSave() {
           let that = this;
           let formData = {
-            // "id": 0,
+            "id": that.crfId,
             "crfDisplayName": that.crfName,
             "crfType": that.crfType,
             "crfIsAvailable": that.enable ? 1 : 0,
@@ -390,7 +401,8 @@
           }
           try {
             let data = await that.$http.CRFBakSave(formData);
-            if(data.code == 0) {
+            if(data.code == 0 && data.data) {
+              this.crfId = data.data;
               this.$message.success('保存成功');
               /*let temporarySave = {
                 dataList:[],
@@ -456,11 +468,13 @@
           };
           try {
             let data = await that.$http.CRFReportPreview(formData);
-            if(data.code == 0) {
+            if(data.code == 0 && data.data) {
               that.crfName = data.data.crfDisplayName;
               that.enable =  data.data.crfIsAvailable==1 ? true :false;
               that.crfType = data.data.crfType;
               that.dataList = data.data.formPortions;
+            }else{
+              this.$message.info(data.msg)
             }
             that.loading = false;
           }catch (error) {

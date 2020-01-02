@@ -315,7 +315,6 @@
       }
       },
       mounted() {
-        console.log(this.report.value2);
         if(this.report.value2 !== "") {
           this.getScoreReportPreview();
         }

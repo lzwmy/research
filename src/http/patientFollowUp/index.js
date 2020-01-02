@@ -3,8 +3,9 @@
 
 const vm = new Vue();
 const url = {
+  // 查询列表（专病）
+  getDisDataList: '/report/remind/get/list',
   // 查询列表
-  // getDataList: '/report/visitList.do',
   getDataList: '/report/remind/task/list.do',
   //推送微信消息
   associatePush: '/mp/associate/push',
@@ -15,6 +16,9 @@ const url = {
 const http = {
   PFUPgetDataList (params) {
     return vm.$post(url.getDataList, params, false);
+  },
+  PFUPDisGetDataList (params) {
+    return vm.$post(url.getDisDataList, params, false);
   },
   PFUassociatePush (params) {
     return vm.$get(url.associatePush, params, false);

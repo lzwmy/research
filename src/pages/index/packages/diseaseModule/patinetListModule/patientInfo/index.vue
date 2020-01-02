@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="aside">
-        <div class="top">
+        <div class="top aside_li">
           <h3 class="flex-between-center">
             <span>随访提醒</span>
             <div>
@@ -66,7 +66,26 @@
             </div>
           </div>
         </div>
-        <div class="record">
+
+        <div class="doctor aside_li">
+          <h3 class="flex-between-center">
+            <span>主治医生</span>
+            <i class="cur_pointer icon iconfont iconlujing2" @click="showAddDoctorDialog"></i>
+          </h3>
+          <div class="tags">
+            <el-tag 
+              v-for="tag in doctorTags"
+              :key="tag.userName"
+              closable
+              @close='deleteDoctor(tag)'
+              type="info">
+              <i class="icon iconfont iconzujian47"></i>
+              <span class="userName">{{tag.userName}}</span>
+            </el-tag>
+          </div>
+        </div>
+        
+        <div class="record aside_li">
           <h3 class="flex-between-center">
             <span>操作记录</span>
           </h3>
@@ -172,10 +191,9 @@
         </el-form-item>
       </el-form>
       <span slot="footer">
-                    <el-button type="primary" @click="onSave('dialogReportForm')" size="mini"
-                               :disabled="dialogReportForm.loading">保 存</el-button>
-                    <el-button @click="onClose('dialogReportForm')" size="mini">关 闭</el-button>
-                </span>
+        <el-button type="primary" @click="onSave('dialogReportForm')" size="mini" :disabled="dialogReportForm.loading">保 存</el-button>
+        <el-button @click="onClose('dialogReportForm')" size="mini">关 闭</el-button>
+      </span>
     </el-dialog>
 
 
@@ -195,9 +213,6 @@
         label-width="96px"
         @submit.native.prevent
         label-position="left">
-        <!-- <el-form-item label="提醒名称:" class="inline" prop="remindDateName">
-          <el-input v-model="dialogFrom.remindDateName" maxLength="15"></el-input>
-        </el-form-item> -->
         <el-form-item label="关联报告:" class="inline" prop="relevantReports">
           <el-select v-model="dialogFrom.relevantReports">
             <el-option v-for="(item, index) in selectList" :label="item.name" :value="String(item.id)" :key="index"></el-option>
@@ -271,38 +286,55 @@
             </el-form-item>
           </div>
           <div v-else-if="dialogFrom.model=='UNEVEN'">
-          <el-form-item label-width="30px" class="inline year" prop="value1">
-            间隔
-            <el-input v-model="dialogFrom.value1" style="width: 200px;" placeholder="以逗号分隔,如: 1,2,3"></el-input>
-          </el-form-item>
-          <el-form-item label-width="0" class="inline" prop="value2">
-            <el-select v-model="dialogFrom.value2" class="select">
-              <el-option label="天" value="DAY"></el-option>   
-              <el-option label="周" value="WEEK"></el-option>
-              <el-option label="月" value="MONTH"></el-option>
-              <el-option label="年" value="YEAR"></el-option>
-            </el-select>
-          </el-form-item>
+            <el-form-item label-width="30px" class="inline year" prop="value1">
+              间隔
+              <el-input v-model="dialogFrom.value1" style="width: 200px;" placeholder="以逗号分隔,如: 1,2,3"></el-input>
+            </el-form-item>
+            <el-form-item label-width="0" class="inline" prop="value2">
+              <el-select v-model="dialogFrom.value2" class="select">
+                <el-option label="天" value="DAY"></el-option>   
+                <el-option label="周" value="WEEK"></el-option>
+                <el-option label="月" value="MONTH"></el-option>
+                <el-option label="年" value="YEAR"></el-option>
+              </el-select>
+            </el-form-item>
           </div>
         </div>
         <div class="line" v-if="dialogFrom.model!= 'TIME'">
-          <el-form-item label="提醒范围:" label-width="72px" class="inline top">
-          </el-form-item>
-          <el-form-item label-width="76px" class="block" prop="range">
+          <el-form-item label="提醒范围:" label-width="72px" class="inline top"></el-form-item>
+          <el-form-item label="开始时间" label-width="80px" class="inline" prop="unEvenTime">
             <el-date-picker
-              v-model="dialogFrom.range"
-              type="daterange"
+              v-model="dialogFrom.unEvenTime"
+              type="date"
               value-format="yyyy-MM-dd"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              placeholder="选择日期">
             </el-date-picker>
+          </el-form-item>
+          <el-form-item label-width="15px" class="inline year" prop="unEvenCount">
+            <el-input v-model="dialogFrom.unEvenCount" type="number" style="width: 130px;" placeholder="请输入次数"></el-input> 次
           </el-form-item>
         </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="onSaveRemind('dialogFrom')" size="mini" :disabled="dialogFrom.loading">保 存</el-button>
         <el-button @click="onClose('dialogFrom')" size="mini">关 闭</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 选择医生 -->
+    <el-dialog
+      title="选择医生"
+      :visible.sync="doctorDialog.visible"
+      width="450px"
+      class="height_auto"
+      :append-to-body="true"
+      @close="doctorDialog.doctors = []">
+      <el-select v-model="doctorDialog.doctors" filterable multiple clearable class="block" style="margin-bottom: 60px;"  placeholder='可输入关键字搜索'>
+        <el-option v-for="(item, index) in doctorListAll" :label="item.userName" :value="item.id" :key="index"></el-option>
+      </el-select>
+      <span slot="footer">
+        <el-button type="primary" @click="addDoctor" size="mini" :disabled="doctorDialog.loading">保 存</el-button>
+        <el-button @click="doctorDialog.visible = false" size="mini">关 闭</el-button>
       </span>
     </el-dialog>
   </div>
@@ -377,6 +409,15 @@
           name: "",
         },
 
+        doctorDialog: {
+          visible: false,
+          loading: false,
+          doctors: []
+        },
+        doctorListAll: [],
+        //主治医生列表
+        doctorTags: [],
+
 
         selectList: [],
         selectDayArr: 31,
@@ -419,7 +460,8 @@
           appointData: '',
           value1: '',
           value2: '',
-          range: []
+          unEvenTime: '',
+          unEvenCount: ''
         },
         reportSelectList: [],
         dialogReportRules: {
@@ -446,9 +488,12 @@
           value2: [
             {required: true, message: '请选择', trigger: ['change', 'blur']}
           ],
-          range: [
+          unEvenTime: [
             {required: true, message: '请选择日期', trigger: ['change', 'blur']}
           ],
+          unEvenCount: [
+            {required: true, message: '请输入', trigger: ['change', 'blur']}
+          ]
         },
         pickerDisabled: {
           disabledDate(time) {
@@ -476,6 +521,30 @@
             this.selectDayArr = 30;
           }
         }
+      },
+      orgCode: function(newVal) {
+        this.$router.push({
+          path:'/patientListModule',
+          query: {
+            id: this.$route.query.id
+          }
+        })
+      },
+      doctor: function(newVal) {
+        this.$router.push({
+          path:'/patientListModule',
+          query: {
+            id: this.$route.query.id
+          }
+        })
+      }
+    },
+    computed: {
+      orgCode: function() {
+        return this.$store.state.user.diseaseInfo.orgCode;
+      },
+      doctor: function() {
+        return this.$store.state.user.diseaseInfo.doctor;
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -504,6 +573,7 @@
       this.getLogList();
       this.getSelectList();
       this.searchPatientInfo();
+      this.getDoctorList();
     },
     mounted() {
       // console.log(this.personalInfo.PATIENT_ID);
@@ -513,6 +583,7 @@
         $('.el-drawer__header>span').prepend('<i class="iconfont iconzhiliaoxiaoguo" style="margin-right: 9px;font-size: 18px;font-weight: normal"></i>')
       });
       this.queryTreatmentInfo()
+      this.getAllDoctorList();
     },
     components: {
       quillEditor,
@@ -561,7 +632,6 @@
       showDialog() {
         this.getRemindConfig()
           .then((res) => {
-            console.log(res)
             //已存在配置
             if (res.exsit) {
               this.dialogFrom = {
@@ -575,7 +645,8 @@
                 appointData: res.data.startTime,
                 value1: String(res.data.param),
                 value2: String(res.data.param2),
-                range: [res.data.startTime ? res.data.startTime : '', res.data.endTime ? res.data.endTime : '']
+                unEvenTime: res.data.startTime,
+                unEvenCount: res.data.amount
               }
               
             } else {
@@ -590,7 +661,8 @@
                 appointData: '',
                 value1: '',
                 value2: '',
-                range: []
+                unEvenTime: '',
+                unEvenCount: ''
               }
             }
           })
@@ -631,8 +703,6 @@
           let res = await this.$http.getReportList(formData);
           if (res.code == 0) {
             this.selectList = res.data;
-          } else {
-            this.$mes('error', "获取关联报告列表失败!");
           }
         } catch (err) {
           console.log(err)
@@ -697,15 +767,6 @@
       onSaveRemind(dialogFrom) {
         this.$refs[dialogFrom].validate(async (valid) => {
           if (valid) {
-            //判断日期是否有效
-            let range;
-            if (!this.dialogFrom.range || JSON.stringify(this.dialogFrom.range) == '[]') {
-              range = "";
-            } else {
-              range = this.dialogFrom.range;
-            }
-            // console.log()
-            // return;
             let formData = {
               id: this.dialogFrom.id ? this.dialogFrom.id : undefined,
               remindName: this.dialogFrom.remindDateName,
@@ -717,25 +778,39 @@
               diseaseId: this.dataInfo.diseaseId,
               subjectId: this.dataInfo.subjectId,
               groupId: this.dataInfo.groupId,
-              startTime: range ? range[0] : this.dialogFrom.appointData,
-              endTime: range ? range[1] : "",
+              startTime: this.dialogFrom.unEvenTime,
               diseaseName: this.dataInfo.diseaseName,
               subjectName: this.dataInfo.subjectName,
-              groupName: this.dataInfo.groupName
+              groupName: this.dataInfo.groupName,
+              amount: parseInt(this.dialogFrom.unEvenCount) || undefined
             }
+            //非均匀随访模式
+            if(this.dialogFrom.model == 'UNEVEN') {
+              let unEventArr = utils.ToCDB(this.dialogFrom.value1).split(',').filter((li,index)=>{
+                if(index == 0) {
+                  return Number(li) != NaN;
+                }
+                return Number(li);
+              })
+              if(formData.amount <= unEventArr.length) {
+                this.$mes('info','提醒次数应大于等于随访间隔次数+1');
+                return;
+              }
+              formData.param = unEventArr.join(',');
+              formData.param2 = this.dialogFrom.value2;
+              formData.startTime = this.dialogFrom.unEvenTime;
+            }
+            console.log(formData)
             //定时模式：指定日期
             if(this.dialogFrom.model == 'TIME' && this.dialogFrom.appointData) {
               formData.startTime = this.dialogFrom.appointData;
             }
-
             try {
               let res = await this.$http.PFUAddRemind(formData);
               if (res.code == 0) {
                 this.$mes('success', "添加提醒成功!");
                 this.dialogFrom.visible = false;
                 this.getRemindDetail();
-              } else {
-                this.$mes('error', "添加提醒失败!");
               }
             } catch (err) {
               console.log(err)
@@ -838,11 +913,8 @@
           let res = await that.$http.PFUsendPatientInviteCode(fromData)
           if (res.code == 0) {
             this.$mes('success', "已发送邀请码");
-          } else {
-            this.$mes('error', "发送邀请码失败");
           }
         } catch (error) {
-          this.$mes('error', error);
           console.log(error)
         }
       },
@@ -919,6 +991,7 @@
               subjectName: this.dataInfo.subjectName,
               groupName: this.dataInfo.groupName
             }
+            
             // let res = await this.$http.PFUaddReport(formData);
             // 新2.0 保存接口
             let res = await this.$http.patientReportAddSave(formData);
@@ -931,8 +1004,6 @@
                   this.$refs.refPatientInfoDetail.getDataList()
                 }
                 this.dialogReportForm.visible = false;
-              } else {
-                this.$mes('error', "添加报告失败!");
               }
             } catch (err) {
               console.log(err)
@@ -957,8 +1028,6 @@
           let res = await this.$http.PFUGetList(formData);
           if (res.code == 0) {
             this.reportSelectList = res.data;
-          } else {
-            this.$mes('error', "获取关联报告列表失败!");
           }
         } catch (err) {
           console.log(err)
@@ -975,8 +1044,6 @@
           let data = await that.$http.getReportList(formData);
           if (data.code == 0) {
             that.reportSelectList = data.data;
-          } else {
-            that.$mes('error', "获取关联报告列表失败!");
           }
         } catch (error) {
           console.log(error)
@@ -999,13 +1066,104 @@
         }catch (error) {
           console.log(error)
         }
-      }
+      },
+      // 查询所有医生
+      async getAllDoctorList() {
+        let that = this;
+        let formData = {
+            diseaseId: this.$route.query.id
+        };
+        try {
+            let res = await that.$http.patientListGetDoctorListAll(formData);
+            if (res.code == '0') {
+                this.doctorListAll = res.data;
+            }
+        } catch (err) {
+            console.log(err)
+        }
+      },
+      // 查询医生列表
+      async getDoctorList() {
+        let formData = {
+            patientId: this.dataInfo.patientId || '',
+            diseaseId: this.dataInfo.diseaseId
+        };
+        try {
+            let res = await this.$http.patientListGetDoctorList(formData);
+            if (res.code == '0') {
+              this.doctorTags = res.data;
+            }
+        } catch (err) {
+            console.log(err)
+        }
+      },
+      showAddDoctorDialog() {
+        //选中回显
+        // this.doctorDialog.doctors = this.doctorTags.map((li)=>{
+        //   return li.userId;
+        // })
+        this.doctorDialog.visible = true;
+      },
+      // 添加医生
+      async addDoctor() {
+        if(this.doctorDialog.doctors.length == 0) {
+          this.$mes('info','请选择医生!');
+          return;
+        }
+        let formData = [];
+        this.doctorDialog.doctors.forEach(item=>{
+          this.doctorListAll.forEach(li=>{
+            if(item == li.id){
+              formData.push({
+                "diseaseId": this.dataInfo.diseaseId,
+                "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+                "orgName": this.$store.state.user.diseaseInfo.orgName,
+                "patientId": this.dataInfo.patientId,
+                "userId": li.id,
+                "userName": li.userName
+              })
+            }
+          })
+        })
+        try {
+            let res = await this.$http.patientListAddDoctor(formData);
+            if (res.code == '0') {
+              this.$mes('success','添加成功!');
+              this.getDoctorList();
+            }
+        } catch (err) {
+          console.log(err)
+        }
+        this.doctorDialog.visible = false;
+      },
+      // 删除医生
+      async deleteDoctor(row) {
+        let that = this;
+        this.$confirm('是否删除?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async() => {
+          let formData = {
+              id: row.id,
+          };
+          try {
+              let res = await that.$http.patientListDeleteDoctor(formData);
+              if (res.code == '0') {
+                that.$mes('success','删除成功!');
+                this.getDoctorList();
+              }
+          } catch (err) {
+              console.log(err)
+          }
+        }).catch(() => {});
+      },
     }
   };
 </script>
 
 
-<style lang="less" scoped>
+<style lang="less">
   .patientInfo {
     height: 100%;
 
@@ -1124,12 +1282,13 @@
         width: 420px;
         margin-left: 17px;
         height: 100%;
+        overflow: auto;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         position: relative;
         h3 {
-          height: 50px;
+          height: 40px;
           border-bottom: 1px solid rgba(229, 235, 236, 1);
           font-size: 16px;
 
@@ -1143,18 +1302,73 @@
           }
         }
 
+        .aside_li {
+          padding: 0 15px 10px;
+          margin-bottom: 15px;
+        }
+
+        .doctor {
+          background-color: #fff;
+          color: rgba(57, 66, 99, 1);
+          .tags {
+            height: 80px;
+            overflow: auto;
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-content: flex-start;
+            flex-wrap: wrap;
+            .el-tag {
+              display: flex;
+              font-size: 14px;
+              align-items: center;
+              justify-content:space-around;
+              cursor: pointer;
+              margin: 0 6px 6px 0;
+              width: 28%;
+              background-color: #fff;
+              border: none;
+              color: #394263;
+              &:hover {
+                border-color: #E5EBEC;
+                background-color: #F3F3FA;
+                .el-icon-close {
+                  background-color: #fff;
+                  margin-top: 2px;
+                  color:#979BAC ;
+                  &::before {
+                    content: "\e6f7" !important;
+                  }
+                }
+              }
+              .userName {
+                display: inline-block;
+                width: 70px;
+                text-align: center;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              }
+              .el-icon-close {
+                font-family: "iconfont" !important;
+                &::before {
+                  content: "";
+                }
+              }
+            }
+          }
+        }
+
         .top {
           background-color: #fff;
-          padding: 0 22px 15px;
-          height: 200px;
-          margin-bottom: 30px;
+          height: 145px;
           color: rgba(57, 66, 99, 1);
 
           .li {
-            margin-top: 25px;
+            margin-top: 15px;
+            margin-bottom: 23px;
             padding-left: 10px;
             font-size: 14px;
-
             i {
               margin-right: 6px;
               color: rgba(151, 155, 170, 1);
@@ -1167,11 +1381,6 @@
             .cont {
               flex-grow: 1;
               line-height: 18px;
-
-              p:first-child {
-                margin-bottom: 10px;
-              }
-
               p.cur_pointer {
                 &:hover {
                   color: #333;
@@ -1183,20 +1392,22 @@
         }
 
         .record {
+          margin-bottom: 0;
           flex-grow: 1;
           background-color: #fff;
-          padding: 14px 22px;
           color: rgba(57, 66, 99, 1);
           position: absolute;
-          top: 230px;
+          top: 315px;
           left: 0;
+          overflow: auto;
+          min-height: 350px;
           width: 100%;
           bottom: 0;
           .el-timeline {
-            padding: 20px 10px;
+            padding: 10px;
             overflow: auto;
             position: absolute;
-            top: 82px;
+            top: 46px;
             left: 20px;
             right: 0;
             bottom: 0;
@@ -1211,6 +1422,8 @@
         }
       }
     }
+    
+    
   }
 </style>
 

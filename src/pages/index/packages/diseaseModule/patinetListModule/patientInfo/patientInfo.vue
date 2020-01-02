@@ -13,9 +13,10 @@
                         <!-- <p>{{item.author}}  {{item.createTime}}</p> -->
                         <p @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
                         <div>
-                            <el-button type="danger" icon="icon iconfont iconshanchu1" @click="onDeleteReport(item)"></el-button>
-                            <span class="state" v-if="item.status==0">未完成</span>
-                            <span class="state" v-else style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已完成</span>
+                            <el-button type="danger" class="delete_btn" icon="icon iconfont iconshanchu1" @click="onDeleteReport(item)"></el-button>
+                            <span class="state" :class="'status_'+item.reportType+'_'+item.status">{{matchingReportStatus(item)}}</span>
+                            <!-- <span class="state" v-if="item.status==0">未填写</span> -->
+                            <!-- <span class="state" v-if="item.status==1" style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已填写</span> -->
                         </div>
                     </div>
                     <!-- <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'初诊':'随访'}}</h4> -->
@@ -46,6 +47,30 @@ export default {
         this.getIdentify(this.reportFillData.patientId);
     },
     methods: {
+        //匹配报告状态
+        matchingReportStatus(row) {
+            //报告状态
+            if(row.reportType == 1) {
+                switch (row.status) {
+                    case 0: return '未填写';
+                    case 1: return '已填写';
+                    case 2: return '已提交';
+                    case 3: return '审核不通过';
+                    case 4: return '审核通过';
+                    case 5: return '召回报告';
+                    default: break;
+                }
+            }else {
+                switch (row.status) {
+                    case 0: return '未填写';
+                    case 1: return '已填写';
+                    case 2: return '失访';
+                    case 3: return '终止';
+                    default: break;
+                }
+            }
+            
+        },
         async getDataList () {
             let that = this;
             that.loading = true;
@@ -63,8 +88,6 @@ export default {
                 let res = await that.$http.queryReportListnew(formData);
                 if (res.code == '0') {
                     this.reportDataList = res.data;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.loading = false;
             } catch (err) {
@@ -81,8 +104,6 @@ export default {
                 let res = await this.$http.casesSearchPatient(formData);
                 if (res.code == 0) {
                     this.identify = res.data.identitycardno || "";
-                }else {
-                    this.$mes('error', "获取基本信息失败!");
                 }
             } catch (err) {
                 console.log(err)
@@ -102,7 +123,7 @@ export default {
                     patientName: row.patientName || "",
                     patientId: row.patientId || "",
                     identify: this.identify || "",
-                    from: "caseManage",
+                    from: row.reportType==1?"caseManage":'patientFollowUp',
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",
@@ -110,8 +131,8 @@ export default {
                     isModify:"displayShow"
                 }
                 localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
-              let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
-              window.open('./patientForm.html?'+urlParameters);
+                let urlParameters = "cacheData="+false+"&formId="+row.crfId+"&reportId="+row.id+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+row.patientName+"&patientId="+row.patientId+"&identify="+this.identify+"&from="+'caseManage'+"&diseaseName="+row.diseaseName+"&subjectName="+row.subjectName+"&groupName="+row.groupName+"&title="+row.reportName+"&isModify="+"displayShow";
+                window.open('./patientForm.html?'+urlParameters);
             })
         },
         //删除报告
@@ -150,7 +171,6 @@ export default {
                 left: 20px;
                 bottom: 10px;
                 right: 0px;
-                margin-top: 33px;
                 overflow-y: auto;
                 .el-timeline {
                     width: 60%;
@@ -200,14 +220,65 @@ export default {
                     }
                     .state {
                         display: inline-block;
-                        width:66px;
+                        width: 80px;
                         line-height: 22px;
                         text-align: center;
-                        background:rgba(27,186,225,0.1);
                         border-radius:2px;
-                        border:1px solid rgba(27,186,225,1);
-                        color: rgba(27, 186, 225, 1);
-                    }   
+                        &.status_1_0 {
+                            // color: #fafafa;
+                            // border:1px solid rgba(59, 59, 59, 0.5);
+                            // background:rgba(59, 59, 59, 0.25)
+                            color: rgba(59, 59, 59, 0.5);
+                            border:1px solid rgba(59, 59, 59, 0.5);
+                            background:rgba(59, 59, 59, 0.1)
+                        }
+                        &.status_1_1 {
+                            color: rgb(0, 119, 180);
+                            border:1px solid rgb(0, 119, 180);
+                            background: rgba(0, 119, 180, 0.1);
+                        }
+                        &.status_1_2 {
+                            color: #8aca56;
+                            border:1px solid rgb(138, 202, 86);
+                            background:rgba(138, 202, 86,0.1);
+                        }
+                        &.status_1_3 {
+                            color: rgb(247, 158, 1);
+                            border:1px solid rgb(247, 158,1);
+                            background:rgba(247, 158,1, 0.1);
+                        }
+                        &.status_1_4 {
+                            color: rgb(0, 191, 143);
+                            border:1px solid #00bf8f;
+                            background:rgba(0, 191, 143,0.1);
+                        }
+                        &.status_2_0 {
+                            color: #999;
+                            border:1px solid rgba(153, 153, 153, 0.753);
+                            background:rgba(153, 153, 153, 0.1);
+                        }
+                        &.status_2_1 {
+                            color: rgb(0, 119, 180);
+                            border:1px solid rgb(0, 119, 180);
+                            background: rgba(0, 119, 180, 0.1);
+                        }
+                        &.status_2_2 {
+                            color: rgb(247, 158, 1);
+                            border:1px solid rgb(247, 158,1);
+                            background:rgba(247, 158,1, 0.1);
+                        }
+                        &.status_2_3 {
+                            color: rgb(226, 72, 40);
+                            border:1px solid #e24828;
+                            background:rgba(226, 72, 40,0.1);
+                        }
+                    }
+                    .delete_btn {
+                        display: none;
+                    }
+                    &:hover .delete_btn {
+                        display: inline-block;
+                    }
                 }
             }
             .reportList {

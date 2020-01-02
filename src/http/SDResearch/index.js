@@ -157,14 +157,34 @@ const url = {
   patientListImportData: '/disease/excel/import/patientInfos',
    //批量导入患者报告信息
   patientListImportReportData: '/disease/excel/import/patientReports',
-  
+
+  //获取医生列表
+  getDoctorList: '/report/bak/duty/doctor/list',
+  //获取该机构下所有医生列表
+  getDoctorListALL: '/disease/own/org/user/list',
+  //添加医生
+  addDoctor: '/report/bak/duty/doctor/add',
+  //删除医生
+  deleteDoctor: '/report/bak/duty/doctor/delete'
 };
 
 const http = {
-  patientListImportReportData (params,config) {
+  patientListGetDoctorListAll (params) {
+    return vm.$get(url.getDoctorListALL, params);
+  },
+  patientListGetDoctorList (params) {
+    return vm.$get(url.getDoctorList, params);
+  },
+  patientListAddDoctor (params) {
+    return vm.$post(url.addDoctor, params,false);
+  },
+  patientListDeleteDoctor (params) {
+    return vm.$get(url.deleteDoctor, params);
+  },
+  patientListImportReportData (params) {
     return vm.$fileUpload(url.patientListImportReportData, params);
   },
-  patientListImportData (params,config) {
+  patientListImportData (params) {
     return vm.$fileUpload(url.patientListImportData, params);
   },
   patientListExportCheck (params) {

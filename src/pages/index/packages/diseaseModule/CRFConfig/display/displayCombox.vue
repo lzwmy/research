@@ -125,10 +125,14 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!=='-1') {
-        return data.split('^')[0]
+      if(data != undefined && data != 'undefined'){
+        if(data.indexOf('^')!='-1') {
+          return data.split('^')[0]
+        }else {
+          return data
+        }
       }else {
-        return data
+        return  data
       }
     },
     //自动获取数据
@@ -175,11 +179,11 @@ export default {
       let arrayList = this.item.termSet.rangeText.split('\n').filter(item =>{
         return item !== ""
       }).map(item=>{
-        return {termItemName:item}
+        return {termItemName:this.precessData(item)}
       });
       this.item.termSet.termItemList = arrayList;
     }
-
+    this.report.value = this.precessData(this.report.value)
   },
   computed: {
     ...mapGetters([

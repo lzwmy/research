@@ -91,7 +91,7 @@
                     <el-form-item class="fuzzyQuery rf mt">
                       <el-input v-model.trim="fuzzyQuery" style="width: 200px !important;" @change="fuzzyQueryHandle" @keyup.enter.native="fuzzyQueryHandle"
                                 prefix-icon="el-icon-search"
-                                placeholder="请输入搜索内容"></el-input>
+                                placeholder="请输入搜索内容" clearable></el-input>
                     </el-form-item>
                     <el-form-item class="fuzzyQuery rf mt">
                       <el-dropdown class="caseManageDropdown" style="margin-right: 6px;" @command="handleCommand" trigger="hover"
@@ -505,7 +505,7 @@
         if (!value) {
           return callback(new Error('手机号不能为空'));
         } else {
-          const reg = /^1[3|4|5|7|8|9][0-9]\d{8}$/
+          const reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
           console.log(reg.test(value));
           if (reg.test(value)) {
             callback();
@@ -689,9 +689,22 @@
             return item.name !== 'creator' && item.name !== 'updator' && item.name !== 'fill';
           });
         }
+      },
+      orgCode: function(newVal) {
+        this.getDataList()
+      },
+      doctor: function(newVal) {
+        this.getDataList()
       }
     },
-    computed: {},
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+    },
     created () {
       this.initPage();
     },
@@ -753,7 +766,6 @@
           this.notPassDialogVisible = false;
           this.notPassDialogLoading = false;
           console.log(error)
-          this.$mes('error','导出失败')
         }
       },
       //添加患者下拉 
@@ -782,16 +794,17 @@
             params.append('diseaseId',this.$route.query.id);
             let res = await this.$http.patientListImportData(params);
             if(res.code==0) {
-                this.$mes('success','导入成功');
-                this.getDataList();
-            }else if(res.data) {
-                this.handleCheckData(res.data)
+                if(res.msg.includes('成功')) {
+                  this.$mes('success','导入成功');
+                  this.getDataList();
+              }else if(res.msg.includes('失败')) {
+                  this.handleCheckData(res.data)
+              }
             }
             this.importPatinetLoading = false;
         } catch (err) {
           this.importPatinetLoading = false;
           console.log(err)
-          this.$mes('error','导入失败')
         }
       },
       async getFindViews () {
@@ -939,10 +952,12 @@
             // viewName: that.currentSelectViewsNameList,
             viewName: [that.viewName],
             page: pageNo - 1,
-            size: pageSize
+            size: pageSize,
+            "userId": this.$store.state.user.diseaseInfo.doctor || '',
+            "orgCode": this.$store.state.user.diseaseInfo.orgCode || null,
           };
           try {
-            let data = await that.$http.casesFindCases(that.$format(formData));
+            let data = await that.$http.casesFindCases(formData);
             that.loading = false;
             if (data && data.code == '0') {
               let result = data.data;
@@ -1731,8 +1746,6 @@
                 this.$mes('success', this.patientDialogTitle+"成功!");
                 this.patientDialogVisible = false;
                 this.getDataList();
-              }else {
-                this.$mes('error', this.patientDialogTitle+"失败!");
               }
             } catch (err) {
               console.log(err)

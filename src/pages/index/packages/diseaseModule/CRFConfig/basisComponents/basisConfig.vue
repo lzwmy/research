@@ -62,6 +62,7 @@
                 <el-option label="无" :value="0"></el-option>
                 <el-option label="有无" :value="1"></el-option>
                 <el-option label="是否不详" :value="2"></el-option>
+                <el-option label="自定义选项" :value="3" v-if="basisItem.controlType=='GATHER'"></el-option>
               </el-select>
               <!--是否必填-->
               <i class="iconfont iconfuhao2 gray" v-if="basisItem.displayIsVisible=='0'" @click="isVisible(basisItem)"></i>
@@ -116,6 +117,7 @@
   import parameterConfig from './parameterConfig';
   import addItemData from './addItemData';
   import configPortionPreview from './configPortionPreview';
+  import test from  './js/verificationData';
     export default {
       props:{
         configData:{
@@ -203,6 +205,10 @@
             {
               name:"级联控件",
               value:"CASCADE"
+            },
+            {
+              name:"滑块控件",
+              value:"SLIDER"
             }
             /*{
               name:"超链接",
@@ -314,7 +320,13 @@
             "scoreInfo":{
               "scoreName":"",
               "scoreStatus":false,
-            }
+            },
+            'sliderInfo':{
+              'min':0,
+              'max':10,
+              'step':0,
+            },
+            "remark":"",
           };
           data.termSet= {
             "termGroupOid": "", //(代码集OID)
@@ -496,33 +508,20 @@
           };
           this.basisDataList.push(copyData)
         },
-        verificationData(data) {
-          let flag = true;
-          if(data.length === 0) {
-            return ;
-          }
-          data.forEach(item=>{
-              if(item.controlDisplayName !=="" && item.children.length!==0) {
-                  this.verificationData(item.children)
-              }else if(item.controlDisplayName !=="" && item.children.length!==0) {
-                flag = true;
-              }else if(item.controlDisplayName == "") {
-                flag = false;
-              }
-          });
-          return flag;
-        },
         //保存
         saveBtn() {
           // let temporarySave = JSON.parse(localStorage.getItem('temporarySave'));
-
           // 验证表单名称是否填写完成
-          if(this.verificationData(this.basisDataList) == false || this.portionName == "") {
+          if(test.verificationData(this.basisDataList) == false || this.portionName == "") {
             this.$message.info('表单名称不能为空');
             return ;
           }
           if(this.basisDataList.length === 0) {
             this.$message.info('请添加条目');
+            return ;
+          }
+          if(test.repeatNameTest(this.basisDataList)) {
+            this.$message.info('同级下条目名称存在重复');
             return ;
           }
           if(this.configData.type == 'add') {

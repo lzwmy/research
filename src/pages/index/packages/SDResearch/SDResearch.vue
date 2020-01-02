@@ -164,8 +164,11 @@ export default {
       .then((res)=>{
         this.$store.commit('saveDiseaseInfo',{
           diseaseId: item.id,
+          diseaseName: item.name,
           isAdmin: res,
-          roles: []
+          roles: [3],
+          orgCode: '',      //组织机构
+          doctor: ''      //医生
         });
         this.$router.push({
           path: list[0].menuPath,

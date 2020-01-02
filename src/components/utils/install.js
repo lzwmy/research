@@ -30,9 +30,13 @@ axios.interceptors.response.use(response => {
 });
 
 function checkStatus (response) {
-  // loading
   // 如果http状态码正常，则直接返回数据
   if (response && (response.status === 200 || response.status === 304 || response.status === 400)) {
+    return response;
+  } 
+  if(response && String(response.status).charAt(0) == '5'){
+    //服务端异常
+    utils.ssoLogout();
     return response;
   }
   // 异常状态下，把错误信息返回去
@@ -70,22 +74,12 @@ function checkCode (res) {
       Message({message: '系统开小差了',duration: 2000});
       return res.data;
     case '20': 
-      Message({message: '接口参数异常',duration: 2000});
+      Message({message: res.data.msg || '接口参数异常',duration: 2000});
       return res.data;
     case '40': 
-      Message({message: '业务异常',duration: 2000});
+      Message({message: res.data.msg || '业务异常',duration: 2000});
       return res.data;
     default:  
-      // MessageBox.confirm(res.data.message, '提示', {
-      //   confirmButtonText: '确定',
-      //   type: 'warning',
-      //   showCancelButton: false,
-      //   callback: action => {
-      //     utils.ssoLogout();
-      //   }
-      // }).catch(() => {
-      //   utils.ssoLogout();
-      // }); 
       utils.ssoLogout();
       break ;
   }
@@ -193,7 +187,7 @@ export default {
       );
     };
     // 经过checkStatus处理，不需要超时code = 10 的提示，所以不需要checkCode处理处理
-    Vue.prototype.$getValidLoginAuthenticated = function (url, params = {}, config = {}) {
+    Vue.prototype.$getValidAuthenticated = function (url, params = {}, config = {}) {
       return axios(Object.assign({
         method: 'get',
         url: url + (url.indexOf('?') === -1 ? '?' : '&') + 't=' + (+new Date()),

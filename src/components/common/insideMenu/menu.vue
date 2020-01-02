@@ -17,15 +17,15 @@
             </div>
             <div class="iconMenu flex-between-center">
                 <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
-                    <span class="el-icon-user-solid cur_pointer"></span>
+                    <span class="iconfont iconxitongguanli cur_pointer"></span>
                 </el-tooltip>
                 <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
-                    <span class="el-icon-message cur_pointer"></span>
+                    <span class="iconfont iconxitongguanlibeifen2 cur_pointer"></span>
                 </el-tooltip>
                 <el-tooltip class="item" effect="light" content="该功能暂末开通" placement="top-start">
-                    <span class="el-icon-s-tools cur_pointer"></span>
+                    <span class="iconfont iconxitongguanlibeifen3 cur_pointer"></span>
                 </el-tooltip>
-                <span @click="logout" class="el-icon-switch-button cur_pointer"></span>
+                <span @click="logout" class="iconfont iconxitongguanlibeifen1 cur_pointer"></span>
             </div>
         </div>
         <div class="ment_list">
@@ -37,14 +37,14 @@
             :collapse="!$store.state.common.openMenuView" 
             :unique-opened="true">
                 <span v-for="(item, index) in menuList" :key="index">
-                    <p class="line" v-if="authRoles(item.meta) && item.menuPath=='/organizationManagement'" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
-                    <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="authRoles(item.meta) && item.children && item.children.length == 0">
+                    <p class="line" v-if="item.menuPath=='/organizationManagement' && authRoles(item.meta)" style="background: rgba(151, 155, 170, 0.5); height: 1px; margin: 20px 25px 20px 25px;"></p>
+                    <el-menu-item :index="item.menuPath" @click="routerLink(item)" v-if="item.children && item.children.length == 0 && authRoles(item.meta)">
                         <i class="icon iconfont" :class="'icon'+item.ico"></i>
                         <span slot="title">{{item.menuName}}</span>
                     </el-menu-item>
                     <el-submenu :index="'2-'+item.menuPath" v-if="item.children && item.children.length != 0">
                         <template slot="title">
-                          <!--@click="routerLink(item)"-->
+                            <!--@click="routerLink(item)"-->
                             <i  class="icon iconfont" :class="'icon'+item.ico"></i>
                             <span  slot="title">{{item.menuName}}</span>
                         </template>
@@ -87,30 +87,14 @@ export default {
             this.$nextTick(()=>{
                 this.defaultActive = '/' + to.meta.flag;
             })
-        }
+        },
     },
     created () {
         this.diseaseId =  this.$route.query.id;
-        this.defaultActive = this.$route.path;
-        //专病科研模块显示组织管理页面：
-        if( this.$route.meta.belongToGroup == 'insideView') {
-            //管理员
-            if(this.$store.state.user.diseaseInfo.roles.indexOf('1') != -1 || this.$store.state.user.diseaseInfo.isAdmin) {
-                this.$emit('changeMenuList',this.menuList.concat(otherMenu.adminMenu))
-            }else if (this.$store.state.user.diseaseInfo.roles.indexOf('2') != -1 && !this.$store.state.user.diseaseInfo.isAdmin) {
-                //多中心管理员
-                this.$emit('changeMenuList',this.menuList.concat(otherMenu.centerAdminMenu))
-            }else if(localStorage.getItem('CURR_LOGIN_TYPE') == 'disease' && this.$store.state.user.diseaseInfo.roles.indexOf('1') == -1){
-                //分享登录，非管理员,删除crf配置页面
-                let menuList = this.menuList.filter(li=>{
-                    return li.menuPath != '/crfConfig';
-                })
-                this.$emit('changeMenuList',menuList)
-            }
-        }     
-
+        this.defaultActive = this.$route.path;  
     },
     methods: {
+        
         //判断是否有权限 
         authRoles(meta) {
             //非科研项目模块直接为ture
@@ -154,6 +138,7 @@ export default {
                 utils.ssoLogout();
             }).catch((errors) => {
                 console.log(errors);
+                utils.ssoLogout();
             });
         },
         onBack() {

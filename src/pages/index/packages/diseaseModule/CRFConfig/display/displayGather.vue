@@ -16,6 +16,13 @@
           <el-radio v-if="item.gatherKnowType==2" label="不详"  @change="changeRadioKnowType(1)"></el-radio>
           <el-radio v-if="item.gatherKnowType==1" label="有"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==1" label="无" @change="changeRadioKnowType(1)"></el-radio>
+          <el-radio v-if="item.gatherKnowType==3"
+                    v-for="(it,index) in item.termSet.termItemList"
+                    :label="it.termItemName"
+                    :key="index"
+                    @change="changeRadioKnowType(it.id)">
+            {{it.termItemName}}
+          </el-radio>
         </el-radio-group>
         <span class="empty" @click="()=>{report.value=null;isFold=true}">清空</span>
       </div>
@@ -39,6 +46,7 @@
               <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
               <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
               <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
+              <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
             </el-col>
           </el-row>
           <el-col  v-if="it.baseProperty.layout.wrap == '0'" :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
@@ -55,6 +63,7 @@
             <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
             <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
             <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
+            <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
           </el-col>
 <!--          {{it.baseProperty.layout}}-->
         </div>
@@ -91,6 +100,7 @@ import displayTable from "./displayTable";
 import displayGather from "./displayGather";
 import displayGatherColumn from "./displayGatherColumn";
 import displayCascader from './displayCascader';
+import displaySlider from './displaySlider';
 export default {
   name: "displayGather",
   components: {
@@ -107,7 +117,8 @@ export default {
     displayTable,
     displayGather,
     displayGatherColumn,
-    displayCascader
+    displayCascader,
+    displaySlider
   },
   data() {
     return {
@@ -129,7 +140,6 @@ export default {
     ...mapGetters([
       'crfCurrentControl',
       'crfBindingData'
-
     ])
   },
   methods: {
@@ -493,7 +503,26 @@ export default {
     else if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
       this.isFold = true;
     }
-    
+
+
+    if(this.item.termSet.rangeText!=="" && this.item.gatherKnowType == 3){
+      let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
+        return item !== ""
+      }).map(item=>{
+        return {termItemName:item.split('^')[0],id:parseInt(item.split('^')[1])}
+      });
+      this.item.termSet.termItemList = arrayList;
+      //初始化 集合 默认展开
+      if(this.report.value) {
+        arrayList.forEach(item => {
+          if(item.termItemName == this.report.value && item.id == 0) {
+            this.isFold = false;
+          }else if(item.termItemName == this.report.value && item.id != 0){
+            this.isFold = true;
+          }
+        })
+      }
+    }
     //初始化报告数据
     this.item.children.forEach(element => {
       let arr = this.report.children.filter(

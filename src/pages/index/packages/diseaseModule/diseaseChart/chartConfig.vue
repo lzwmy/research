@@ -48,7 +48,7 @@
           <div class="model_window_box" v-show="blankImg==true" v-loading="loading" element-loading-text="加载中">
             <div class="model_from_set" >
               <div class="from_name">图表名称</div>
-              <el-input v-model="chartName" size="small" placeholder="请输入模板名称"></el-input>
+              <el-input v-model="chartName" size="small" placeholder="请输入模板名称" maxlength="30"></el-input>
               <div class="from_name pt_20">图表类型</div>
               <div class="from_chart_type">
                 <el-radio v-model="chartType" label="PIE" @change="changeChartType('PIE')">饼状图</el-radio>
@@ -741,9 +741,9 @@
             });
             // that.init();
             that.modelCRFFromList();
-            this.loading = false;
             window.history.go(-1);
           }
+          this.loading = false;
         }catch (error) {
           console.log(error)
         }
@@ -798,6 +798,7 @@
             // that.$emit('refresh',{refresh:true})
             window.history.go(-1);
           }
+          this.loading = false;
         }catch (error) {
           console.log(error)
         }
@@ -1580,6 +1581,15 @@
     }
     .mask_layer_container .el-dialog__body{
       height: 560px;
+    }
+    .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item .item_display span{
+      width: 130px;
+    }
+  }
+
+  @media  screen and (min-width: 1366px) and (max-width: 1600px) {
+    .mask_layer_body .mask_layer_left .statistical_analysis_content .statistical_analysis_item .item_display span{
+      width: 130px;
     }
   }
   .from_chart_type .el-radio__input.is-checked .el-radio__inner{

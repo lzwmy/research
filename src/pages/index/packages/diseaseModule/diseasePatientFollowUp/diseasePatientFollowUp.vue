@@ -41,13 +41,18 @@
                         </p>
                         </div>
                         <div class="fill-info flex-between-center">
-                            <div class="box_tag" @click="toReportFill(item)"><span v-html="handleStatus(item.status)"></span></div>
+                            <div class="box_tag" @click="toReportFill(item)">
+                                <!-- <span v-html="handleStatus(item.status)"></span> -->
+                                <span class="status" :class="'status_'+item.status">{{matchingReportStatus(item.status)}}</span>
+                            </div>
                             <i @click="dialgoForm.visible = true;dialgoForm.url=item.mobileUrl" class="icon iconfont iconfenxiang copy"></i>
                         </div>
                     </div>
-                    <div class="box" style="display: flex;margin-top: 6px;padding: 0 10px;">
+                    <div class="box" style="display: flex;margin-top: 6px;padding-right:10px;">
                         <div class="box_left" @click="toReportFill(item)">
-                        <h3 :style="item.patientName.length > 3?'font-size: 17px;':''">{{item.patientName}}</h3>
+                        <el-tooltip :disabled="countStrSize(item.patientName)" :content="item.patientName" placement="top">
+                            <h3 style="width:80px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;">{{item.patientName}}</h3>
+                        </el-tooltip>
                         <p>{{item.genderName}}/{{item.age}}</p>
                         </div>
                         <div class="box_right flex-center-end">
@@ -115,6 +120,22 @@ export default {
             }
         };
     },
+    watch: {
+        orgCode: function(newVal) {
+            this.getDataList()
+        },
+        doctor: function(newVal) {
+            this.getDataList()
+        }
+    },
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
+        }
+    },
     created () {
         this.initDate()
         this.$emit('handlePageHeight');// 初始化的时候首先调用调整窗口
@@ -122,9 +143,10 @@ export default {
     },
     mounted () {
         this.addEventListenervisibilityChange();
+
     },
-    destoryed() {
-        document.removeEventListener(this.visibilityChange)
+    beforeDestroy() {
+        document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
     },
     methods: {
         initDate() {
@@ -161,27 +183,36 @@ export default {
                 this.$emit('changeLoadding',false)
             })
         },
+        visibilityChangeHandle() {
+            if (!document[this.hidden]) {
+                this.getDataList()
+            }
+        },
         addEventListenervisibilityChange() {
-            let hidden = "";
-            this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";
             } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
+                this.hidden = "mozHidden";
                 this.visibilityChange = "mozvisibilitychange";
             } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                this.hidden = "msHidden";
                 this.visibilityChange = "msvisibilitychange";
             } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                this.hidden = "webkitHidden";
                 this.visibilityChange = "webkitvisibilitychange";
             }
-            document.addEventListener(this.visibilityChange,()=>{
-                if(!document[hidden]) {
-                    this.getDataList();
-                }
-            }, false);
+            document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
+        },
+        //匹配报告状态
+        matchingReportStatus(type) {
+            switch (type) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '失访';
+                case 3: return '终止';
+                default: break;
+            }
         },
         handleStatus(status) {
             switch (status) {
@@ -215,11 +246,13 @@ export default {
                     diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
                     startTime: startTime,
                     endTime: endTime,
-                    status: this.form.state
+                    status: this.form.state,
+                    "orgCode": this.$store.state.user.diseaseInfo.orgCode,
+                    "userId": this.$store.state.user.diseaseInfo.doctor
                 }
             };
             try {
-                let res = await that.$http.PFUPgetDataList(formData);
+                let res = await that.$http.PFUPDisGetDataList(formData);
                 if (res.code == '0') {
                     this.dataList = res.data.args;
                 }
@@ -270,8 +303,6 @@ export default {
                 let res = await this.$http.casesSearchPatient(formData);
                 if (res.code == 0) {
                     this.identify = res.data.identitycardno || "";
-                }else {
-                    this.$mes('error', "获取基本信息失败!");
                 }
             } catch (err) {
                 console.log(err)
@@ -287,8 +318,6 @@ export default {
                 if (res.code == 0) {
                     this.$mes('success', "已向"+row.patientName+"推送微信随访消息!");
                     this.getDataList();
-                }else {
-                    this.$mes('error', "推送消息失败!");
                 }
             } catch (err) {
                 console.log(err)
@@ -304,13 +333,19 @@ export default {
                 if (res.code == 0) {
                     this.$mes('success', "已向"+row.patientName+"推送短信随访消息!");
                     this.getDataList();
-                }else {
-                    this.$mes('error', "推送消息失败!");
                 }
             } catch (err) {
                 console.log(err)
             }
         },
+        //计算长度
+        countStrSize(str) {
+            if (str == null) return true;
+            if (typeof str != "string"){
+                str += "";
+            }
+            return str.replace(/[\u0391-\uFFE5]/g,"aa").length>6?false:true;
+        }
     }
 };
 </script>
@@ -329,16 +364,44 @@ export default {
             align-content: flex-start;
             li {
                 height: 120px;
-                margin-right: 25px;
+                min-width: 316px;
+                margin-right: 20px;
                 border-radius: 0px;
                 padding: 0;
                 background:rgba(255,255,255,1);
-                margin-bottom: 21px;
+                margin-bottom: 17px;
                 transition: all 300ms;
                 cursor: pointer;
                 
                 &:hover {
                     box-shadow:0px 4px 10px rgba(0,0,0,0.16); 
+                }
+                .status {
+                    display: inline-block;
+                    width: 50px;
+                    line-height: 22px;
+                    text-align: center;
+                    border-radius:2px;
+                    &.status_0 {
+                        color: #fafafa;
+                        background:rgba(59,59,59, 0.3);
+                    }
+                    &.status_1 {
+                        color: rgb(0, 119, 180);
+                        background: rgba(0, 119, 180, 0.1);
+                    }
+                    &.status_2 {
+                        color: rgb(247, 158, 1);
+                        background:rgba(247, 158,1, 0.1);
+                    }
+                    &.status_3 {
+                        color: rgb(226, 72, 40);
+                        background:rgba(226, 72, 40,0.1);
+                    }
+                    &.status_4 {
+                        color: rgb(0, 191, 143);
+                        background:rgba(0, 191, 143,0.1);
+                    }
                 }
                 .copy {
                     color: #9BABB8;

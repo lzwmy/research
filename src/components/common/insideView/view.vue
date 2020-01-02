@@ -1,7 +1,7 @@
 <template>
     <div class="inside_cloud-container">
         <insideHeader @diseaseSelect="handleDiseaseSelect"></insideHeader>
-        <insideMenu :title="title" @changeLoadding="handleLoadding" :menuList="menuList" :fromRouter="fromRouter" @changeMenuList="handleMenuList"></insideMenu>
+        <insideMenu :title="title" @changeLoadding="handleLoadding" :menuList="menuList" :fromRouter="fromRouter" ></insideMenu>
         <div id="insideContainer" :class="$store.state.common.openMenuView?'open':'close'" v-loading="viewLoading"  
                         element-loading-background="#fff"
                         element-loading-text="拼命加载中">
@@ -33,6 +33,8 @@
 import insideHeader from 'components/common/insideHeader/header'
 import insideMenu from 'components/common/insideMenu/menu'
 import diseaseRouter from '../insideMenu/diseaseRouter'
+import utils from 'components/utils/index'
+import otherMenu from '../insideMenu/otherMenu'
 export default {
     name: 'insideView',
     data () {
@@ -53,11 +55,35 @@ export default {
         insideHeader,
         insideMenu,
     },
-    created () {
-        this.getMenuList();
-    },
     watch: {
         
+    },
+    created () {
+        this.getMenuList();
+        //进入专病科研模块
+        if( this.$route.meta.belongToGroup == 'insideView') {
+            //如果为管理员,拥有所有页面权限 
+            if(this.$store.state.user.diseaseInfo.isAdmin) {
+                if(localStorage.getItem('CURR_LOGIN_TYPE') != 'null') {
+                    this.menuList = this.menuList.concat(otherMenu)
+                }else {
+                    //主平台进入，删除本地配置的crfConfig页
+                    let arr = otherMenu.filter(li=>{
+                        return li.menuPath !=  '/crfConfig';
+                    })
+                    this.menuList = this.menuList.concat(arr)
+                }
+            }else {
+                //根据角色匹配菜单项
+                let tempMenu = utils.arrRermoveEmpty(this.deepCopy(otherMenu))
+                tempMenu.forEach(li=>{
+                    li.children = utils.arrRermoveEmpty(li.children)
+                })
+                this.menuList = this.menuList.concat(tempMenu);
+            }
+            //菜单排序
+            this.handleMenuSort();
+        }    
     },
     mounted () {
         this.initView();
@@ -72,9 +98,36 @@ export default {
         });
     },
     methods: {
-        //改变菜单
-        handleMenuList(data) {
-            this.menuList = data;
+        //菜单排序
+        handleMenuSort() {
+            this.menuList.forEach(ele => {
+                if(ele.children && ele.children.length != 0) {
+                    ele.children.sort((a,b) => {return a.menuOrder - b.menuOrder })
+                }
+            });
+            this.menuList.sort((a,b) => {return a.menuOrder - b.menuOrder})
+            console.log(this.menuList)
+        },
+        deepCopy(o) {
+            if (o instanceof Array) {
+                var n = [];
+                for (var i = 0; i < o.length; ++i) {
+                    n[i] = this.deepCopy(o[i]); 
+                } 
+                return n; 
+            }else if  (o instanceof Object) {
+                if(!utils.arrayExistAttr(o.roles,this.$store.state.user.diseaseInfo.roles,null,false)) {  
+                // if(!utils.arrayExistAttr(o.roles,[2],null,false)) {  
+                    return null;
+                }
+                var n = {}; 
+                for (var i in o) {
+                    n[i] = this.deepCopy(o[i]); 
+                } 
+                return n; 
+            } else { 
+                return o; 
+            } 
         },
         initView() {
             this.handlePageHeight();
@@ -102,6 +155,7 @@ export default {
                 this.researchId = insideData.researchId;
             }
         },
+        
         handlePageHeight () { // 高度自适应处理
             setTimeout(() => {
                 this.$nextTick(() => {
@@ -129,18 +183,19 @@ export default {
             }, 400);
         },
         //切换病种
-        handleDiseaseSelect(diseaseId) {
+        handleDiseaseSelect(data) {
             this.viewLoading = true;
             this.$store.commit('saveDiseaseInfo',
-                Object.assign(this.this.$store.state.user.diseaseInfo,{
-                    diseaseId: diseaseId,
+                Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                    diseaseId: data.id,
+                    diseaseName: data.name
                 })
             );
             
             this.$router.push({
                 path: '/' + this.$route.meta.flag,
                 query: {
-                    id: diseaseId
+                    id: data.id
                 }
             });
             typeof(this.$refs.routercomponent2.hideReportFollowiUp)== 'function' && this.$refs.routercomponent2.hideReportFollowiUp();

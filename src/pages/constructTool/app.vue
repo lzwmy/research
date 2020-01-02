@@ -10,10 +10,54 @@
       </div>
       <div class="content-body">
         <div class="content-box">
-          <div>1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>4</div>
+          <div class="content-item" @click="jumpURL('http://47.112.114.173:17212/HMC/#/archetype')">
+            <div class="content_aligned">
+              <img src="./images/create_model.png" alt="">
+              <p>openEHR信息建模</p>
+            </div>
+          </div>
+          <div class="content-item" @click="jumpURL('http://111.230.90.48:8097/hitszmed/')">
+            <div class="content_aligned">
+              <img src="./images/natural_language.png" alt="">
+              <p>NLP自然语言处理</p>
+            </div>
+          </div>
+          <div class="content-item" @click="jumpURL('http://research.emhi.cn/ocr/')">
+            <div class="content_aligned">
+              <img src="./images/img_Identify.png" alt="">
+              <p>图片识别（检验报告）</p>
+            </div>
+          </div>
+          <div class="content-item" @click="jumpURL('http://research.emhi.cn/psa/InspirationPage.html')">
+            <div class="content_aligned">
+              <img src="./images/Article_recommendation.png" alt="">
+              <p>文章推荐</p>
+            </div>
+          </div>
+          <div class="content-item">
+            <div class="content_aligned">
+              <img src="./images/Paragraph_generation.png" alt="">
+              <p>文章段落生成</p>
+            </div>
+          </div>
+          <div class="content-item" @click="jumpURL(' http://120.77.199.11:8686/#/login')">
+            <div class="content_aligned">
+              <img src="./images/Quality_control.png" alt="">
+              <p>数据质控</p>
+            </div>
+          </div>
+          <div class="content-item" @click="jumpURL(' http://121.36.54.172:8080/search_graph/')">
+            <div class="content_aligned">
+              <img src="./images/atlas.png" alt="">
+              <p>知识图谱可视化</p>
+            </div>
+          </div>
+          <div class="content-item" @click="jumpURL(' http://121.36.54.172:8000/form_view')">
+            <div class="content_aligned">
+              <img src="./images/knowledge_base.png" style="width: 120px;" alt="">
+              <p>知识库检索</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -30,6 +74,11 @@
       },
       created() {
         this.logo = JSON.parse(localStorage.getItem('Global')).logo;
+      },
+      methods:{
+        jumpURL(url) {
+          window.open(url)
+        }
       }
     }
 </script>
@@ -47,6 +96,7 @@
 }
   .header-box img{
     height: 36px;
+    width: 136px;
   }
   .header-box a:hover{
     color: #ffffff;
@@ -73,9 +123,51 @@
     width: 1300px;
     height: calc(100vh - 100px);
     margin:0 auto;
-    border-radius: 2px;
     background-color: #ffffff;
+    border-radius: 2px;
     display: grid;
-    grid-template-columns: ;
+    grid-template-columns: repeat(auto-fill, 19.3%);
+    grid-template-rows: repeat(auto-fill,180px);
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+    padding: 25px;
   }
+.content-box > div{
+  background-color:#F9FAFC;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.content-box > div:hover{
+  background-color: #1BBAE1;
+  opacity: 0.8;
+}
+  .content-box .content-item{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 180px;
+    /*box-shadow: 5px 9px 8px -2px rgba(0, 0, 0, 0.16);*/
+  }
+  .content-item .content_aligned{
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    height: 100%;
+    align-items: end;
+  }
+  .content_aligned p{
+    padding-bottom: 20px;
+    display: grid;
+    align-items: end;
+    font-size: 20px;
+    color:#1BBAE1;
+    font-weight: 400;
+  }
+  .content_aligned img{
+    width: 78px;
+  }
+.content-box > div:hover p{
+  color: #ffffff;
+}
 </style>

@@ -796,7 +796,9 @@ export default {
           // viewName: that.currentSelectViewsNameList,
           viewName: [that.viewName],
           page: pageNo - 1,
-          size: pageSize
+          size: pageSize,
+          "userId": '',
+          "orgCode": ''
         };
         try {
           let data = await that.$http.casesFindCases(that.$format(formData));
@@ -1596,8 +1598,6 @@ export default {
       if (res.code == 0) {
         this.$mes('success', "删除患者成功!");
         this.getDataList();
-      }else {
-        this.$mes('error', res.msg);
       }
     },
     //查询患者信息
