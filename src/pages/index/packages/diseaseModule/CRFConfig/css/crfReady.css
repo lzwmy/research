@@ -551,7 +551,7 @@ body.theme-blue .crf-left-btn.onclick {
 }
 .read_container-mode .info_fixed .info_tip_box {
   position: absolute;
-  top: 0;
+  top: 5px;
   left: 60px;
   transform: translate(0, -40%);
   background-color: #fff;
