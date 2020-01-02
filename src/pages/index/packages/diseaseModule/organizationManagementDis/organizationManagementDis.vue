@@ -271,6 +271,7 @@ export default {
             try {
                 let res = await this.$http.ORGDisGetOrgList({
                     diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
+                    source: this.loginType
                 });
                 if (res.code == '0') {
                     this.orgList = res.data;
