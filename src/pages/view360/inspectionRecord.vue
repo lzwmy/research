@@ -118,14 +118,11 @@ export default {
         let data = await this.$http.getExamInfoDetail(formData);
         if (data.code == 0) {
           this.infoData = data.data;
-        }else{
-          this.$mes('error',data.msg);
         }
         this.loading = false;
       } catch (error) {
         this.loading = false;
         console.log(error)
-        this.$mes('error', '获取患者检查记录信息失败');
       }
     },
     // 查询患者检查记录列表
@@ -145,8 +142,6 @@ export default {
             item.dischargeDateTime = item.dischargeDateTime?item.dischargeDateTime.slice(0,10):"";
           })
           this.recordAll = utils.deepCopy(this.recordCheck);
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
         console.log(error)

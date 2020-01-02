@@ -37,6 +37,7 @@ export default {
         }
     },
     created() {
+        let that = this;
         this.getStagePointList()
         .then(()=>{
             //默认不能执行任何操作
@@ -49,12 +50,21 @@ export default {
             //找到当前随访点id的阶段和随访点
             this.stageList.forEach(item=>{
                 item.pointList.forEach(li=>{
-                    if(this.pointPatientId == li.pointPatientId) {
+                    if(that.pointPatientId == li.pointPatientId) {
                         stage = item;
                         point = li;
                     }
                 })
             })
+            if(JSON.stringify(point) == '[]') {
+                this.$message({
+                    type: 'info',
+                    message: '未匹配到随访点'
+                });
+            }
+            console.log(this.stageList)
+            console.log(stage)
+            console.log(that.pointPatientId)
             let isDisabled = false;
             //手动触发的阶段: 如果startType==1, 非第一个未开始的随访点则不能操作
             if(stage.startType == 1) {

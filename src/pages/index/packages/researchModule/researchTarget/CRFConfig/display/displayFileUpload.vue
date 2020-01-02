@@ -44,7 +44,7 @@
           :on-remove="handleRemove"
           :auto-upload="false">
           <i slot="default" class="el-icon-plus"></i>
-          <div slot="file" slot-scope="{file}">
+          <div slot="file" slot-scope="{file}" style="width: 100%;height: 100%;">
             <img
               class="el-upload-list__item-thumbnail"
               :src="newUrl+'/file/download/thumbnail/'+file.fileId" alt=""

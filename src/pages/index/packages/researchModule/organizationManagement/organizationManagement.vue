@@ -224,8 +224,6 @@ export default {
                             return li.id != 2 || li.id != 1;
                         })
                     }
-                }else {
-                    this.$mes('error', res.msg);
                 }
             } catch (err) {
                 console.log(err)
@@ -237,7 +235,7 @@ export default {
                 userName: '',
                 status: '',
                 page: 0,
-                size: 9999
+                size: 500
             }
             try {
                 let res = await this.$http.userFindAllUsers(formData);
@@ -279,8 +277,6 @@ export default {
                     obj.totalCount = parseInt(res.data.totalElements);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.tableLoading = false;
             } catch (err) {
@@ -296,8 +292,6 @@ export default {
                 if (res.code == '0') {
                     this.orgList = res.data;
                     this.orgCode = this.orgList[0].orgCode;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 this.orgLoading = false;
             } catch (err) {
@@ -313,8 +307,6 @@ export default {
                 if (res.code == '0') {
                     this.orgList = res.data;
                     this.orgCode = this.orgList[0].orgCode;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 this.orgLoading = false;
             } catch (err) {
@@ -497,8 +489,6 @@ export default {
                 if (res.code == '0') {
                     this.$mes('success', '添加成功!');
                     this.getOrgList();
-                }else {
-                    this.$mes('error', res.msg);
                 }
             } catch (err) {
                 console.log(err)
@@ -521,7 +511,6 @@ export default {
                         that.getDataList(that.paging.currentPageNo, that.paging.currentPageSize);
                     }
                 } catch (error) {
-                    this.$mes('error', '删除出错');
                 }
             }).catch((error) => {});
             },

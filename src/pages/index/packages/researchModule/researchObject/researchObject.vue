@@ -1,5 +1,5 @@
 <template>
-    <div class="cloud-component researchObject cloud_common_search">
+    <div class="cloud-component researchObject cloud_common_search" v-loading="importMask"  element-loading-text="数据正在导入中。。。。">
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
@@ -89,7 +89,7 @@
                 <formItemCom 
                     ref="refFormItemCom"
                     @sendAllCrfForm="handleAllFormItem" 
-                    @getDataList="getDataList(0,15)" 
+                    @getDataList="getDataList()" 
                     :allCrfForm="allCrfForm" 
                     :confingData="confingData"
                     :form='form'
@@ -104,13 +104,12 @@
 
         <!--搜索结果-->
         <div class="cloud-search-list">
-            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" v-loading="tableLoading">
+            <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1" >
                 <el-table 
                     ref="refTable" fit border
-                    :data="dataList.content"
-                    
+                    :data="dataList.content" v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
-                    :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-58):(routerViewHeight*1)-58">
                     <el-table-column type="selection" fixed align="center" width="50"></el-table-column>
                     <el-table-column 
                         v-for="column in filterHeader"
@@ -139,7 +138,7 @@
                     </el-table-column>
                     <el-table-column width="60" align="center" fixed="right">
                         <template slot="header" slot-scope="scope">
-                            <el-button @click="showConfigDialog" type="text" icon="setting icon iconfont iconfuhao7" style="font-size: 30px; color: #555;"></el-button>
+                            <el-button @click="showConfigDialog" type="text" icon="setting icon iconfont iconfuhao7" style="padding-left: 10px; font-size: 30px; color: #555;"></el-button>
                         </template>
                         <template slot-scope="scope">
                             <el-button @click="deleteObject(scope.row)" type="text" icon="iconfont iconshanchu del"></el-button>
@@ -147,7 +146,7 @@
                     </el-table-column>
                 </el-table>
                 <!-- 分页 -->
-                <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
+                <pagination :data="dataList" @change="getDataList"></pagination>    
 
                 <!-- 引导图 -->
                 <div v-show="showGuide" class="guide flex-center-center" style="height: 500px;">
@@ -206,7 +205,6 @@
 import echartsContain from 'components/packages/echartsContain/echartsContain';
 import pagination from 'components/packages/pagination/pagination';
 import mixins from 'components/mixins';
-// import importDialog from './dialog/ImportDialog'
 import tableConfig from './dialog/tableConfig'
 import dynamicForm from './dialog/dynamicForm'
 import importDialog from './importcom/ImportDialog'
@@ -219,7 +217,6 @@ export default {
     data () {
         return {
             showGuide: false,
-            maxItem: 9999,
             groupList: [],
             crfList: [],
             allCrfForm: [],
@@ -239,6 +236,8 @@ export default {
                 visible: false,
                 dataList: []
             },
+            //文件导入loading蒙板
+            importMask: false,
             //回显指标
             previewFormItem:[],
             //已选指标数组
@@ -258,7 +257,7 @@ export default {
             formItemLoading: false,
             paging: {
                 pageNo: 1,
-                pageSize: 10,
+                pageSize: 20,
                 currentPageNo: '',
                 currentPageSize: '',
             },
@@ -314,7 +313,7 @@ export default {
         handleWidth(label) {
             let width = '';
             if(label.indexOf('时间') != -1 || label.indexOf('日期') != -1) {
-                width = 160
+                width = '170'
             }
             return width
         },
@@ -324,8 +323,6 @@ export default {
         },
         //切换页面刷新操作
         addEventListenervisibilityChange() {
-            this.hidden = "";
-            this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
                 this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";
@@ -343,7 +340,7 @@ export default {
         },
         visibilityChangeHandle() {
             if(!document[this.hidden]) {
-                this.getDataList(0,15);
+                this.getDataList(this.paging.pageNo, this.paging.pageSize);
             }
         },
         //导出
@@ -443,12 +440,10 @@ export default {
                         content: res.data.body,
                         header: res.data.header
                     };
-                    
-                    // obj.content = res.data.args;
-                    // obj.pageNo = pageNo;
-                    // obj.pageSize = pageSize;
-                    // obj.totalCount = parseInt(res.data.totalElements);
-                    // obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
+                    obj.pageNo = pageNo;
+                    obj.pageSize = pageSize;
+                    obj.totalCount = parseInt(res.data.pageSize);
+                    obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
                 }else {
                     that.dataList = {
@@ -470,7 +465,7 @@ export default {
             this.$refs.refTableConfig.initFomeItem();
         },
         handleSaveConfig(data) {
-            this.getDataList(0,15);
+            this.getDataList(this.paging.pageNo, this.paging.pageSize);
         },
         //打开表单填写页面
         toReportFill(data,key,crfName,type) {
@@ -520,6 +515,7 @@ export default {
         addSingleObject(val) {
             //生成表单指标
             let newArr = [];
+            console.log(this.confingData.dataList)
             this.confingData.dataList.forEach(item=>{
                 item.formItemRspList.forEach(li=>{
                     if(li.checked){
@@ -555,7 +551,7 @@ export default {
         },
         //批量添加研究对象
         async importBatchObject(file) {
-            this.importPatinetLoading = true;
+            this.importMask = true;
             try {
                 let params = new FormData();
                 params.append('file',file.raw);
@@ -563,29 +559,34 @@ export default {
                 params.append('subjectInfoId',this.$store.state.user.researchInfo.subjectInfoId);
                 let res = await this.$http.researchObjectImportBatchObject(params);
                 if(res.code==0) {
-                    this.$mes('success','导入成功');
-                    this.getDataList();
-                }else if(res.data) {
-                    this.handleCheckData(res.data)
+                    if(res.msg.includes('成功')) {
+                        this.$refs.refSearch.getGroupList()
+                        .then(()=>{
+                            this.getDataList();
+                        })
+                    }else if(res.msg.includes('失败')) {
+                        this.handleCheckData(res.data)
+                    }
+                    
                 }
-                this.importPatinetLoading = false;
+                this.importMask = false;
             } catch (err) {
-            this.importPatinetLoading = false;
-            console.log(err)
-            this.$mes('error','导入失败')
+                this.importMask = false;
+                console.log(err)
+                this.$mes('error','导入失败')
             }
         },
         //批量添加研究对象文件选中
         successFile(file,fileList) {
             this.importBatchObject(file);
         },
-        //成功添加回调
+        //成功添加对象回调
         handleSuccessAdd(currentGrounpId) {
             this.$refs.refSearch.getGroupList()
             .then(()=>{
                 this.$refs.refSearch.selectGroup(currentGrounpId);
                 this.currentGrounpId = currentGrounpId;
-                this.getDataList(0,15);
+                this.getDataList(this.paging.pageNo, this.paging.pageSize);
             })
         },
         //删除研究对象
@@ -604,7 +605,9 @@ export default {
                     let res = await this.$http.researchObjectPreviewTableDeleteObject(params);
                     if (res.code == '0') {
                         this.$mes('success','删除成功!')
-                        this.getDataList(0,15);
+                        this.$refs.refSearch.getGroupList().then(()=>{
+                            this.getDataList(this.paging.pageNo, this.paging.pageSize);
+                        })
                     }
                 } catch (err) {
                     console.log(err)
@@ -624,7 +627,7 @@ export default {
         //点击分组
         handleSelectGroup(currentGrounpId) {
             this.currentGrounpId = currentGrounpId;
-            this.getDataList(0,15);
+            this.getDataList(this.paging.pageNo, this.paging.pageSize);
         },
         //获取全部crf表单列表和列表下的所有指标
         handleAllFormItem(data) {

@@ -156,13 +156,10 @@ export default {
             })
             this.dataList = data.data;
           })
-        }else{
-          this.$mes('error',data.msg);
         }
         this.loading = false;
       } catch (error) {
         this.loading = false;
-        this.$mes('error', '获取门诊处方、住院医嘱列表失败');
       }
     },
     //门诊处方多选框改变,找出对应的code码

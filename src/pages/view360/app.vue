@@ -211,8 +211,6 @@ export default {
         if (data.code == '0') {
           this.basicInfo = data.data;
           this.basicInfo.age = utils.calculationAge(data.data.birthdate);
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
         console.log(error)
@@ -239,8 +237,6 @@ export default {
           })
           //就诊概览默认选择第一项
           this.$refs.componets.onClickRecord(this.record[0], 0);
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
         console.log(error)
@@ -256,11 +252,8 @@ export default {
             code: "全部",
             name: "全部"
           })
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
-        this.$mes('error', '获取患者病历文书分类失败');
       }
     },
     //获取检查记录类别
@@ -273,11 +266,8 @@ export default {
             code: "全部",
             name: "全部"
           })
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
-        this.$mes('error', '获取检查记录类别失败');
       }
     },
     //获取检验记录类别
@@ -290,11 +280,8 @@ export default {
             code: "全部",
             name: "全部"
           })
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
-        this.$mes('error', '获取检验记录类别失败');
       }
     },
     // 获取门诊处方类别列表
@@ -306,11 +293,8 @@ export default {
             sortList: data.data.sortList,
             typeList: data.data.typeList
           }
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
-        this.$mes('error', '获取门诊处方类别列表失败');
       }
     },
     // 获取住院医嘱类别列表
@@ -323,11 +307,8 @@ export default {
             typeList: data.data.typeList,
             statusList: data.data.statusList
           }
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
-        this.$mes('error', '获取住院医嘱类别列表失败');
       }
     }
   }

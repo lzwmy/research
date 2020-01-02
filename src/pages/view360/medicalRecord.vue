@@ -166,12 +166,9 @@ export default {
             item.dischargeDateTime = item.dischargeDateTime?item.dischargeDateTime.slice(0,10):"";
           })
           this.dataListFileAll = utils.deepCopy(this.dataListFile);
-        }else{
-          this.$mes('error',data.msg);
         }
       } catch (error) {
         console.log(error)
-        this.$mes('error', '获取患者病历文件列表失败');
       }
     },
     //过滤类别

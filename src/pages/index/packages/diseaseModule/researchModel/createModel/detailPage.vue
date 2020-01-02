@@ -48,7 +48,7 @@
               <el-switch v-model="privacy" active-color="#50D1F1"></el-switch>
             </div>
             <div class="export_btn">
-              <el-button class="cr_style" type="primary" disabled @click="modelExportExcel">
+              <el-button class="cr_style" type="primary" @click="modelExportExcel">
                 <i class="iconfont icondaochu"></i>
                 导出Excel
               </el-button>
@@ -106,6 +106,22 @@
           currentPageSize: '',
           emptyText: '',
           elementLoadingText: '',
+        }
+      },
+      watch: {
+        orgCode: function(newVal) {
+          this.ModelQueryDynamicTable()
+        },
+        doctor: function(newVal) {
+          this.ModelQueryDynamicTable()
+        }
+      },
+      computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        },
+        doctor: function() {
+            return this.$store.state.user.diseaseInfo.doctor;
         }
       },
       methods:{
@@ -170,11 +186,13 @@
           let formData = {
             modelId:that.$route.query.modelId,
             limit:pageSize,
-            offset:pageNo
+            offset:pageNo,
+            "userId": this.$store.state.user.diseaseInfo.doctor || '',
+            "orgCode": this.$store.state.user.diseaseInfo.orgCode || ''
           };
           try{
             // let data = await that.$http.ModelQueryDynamicTable(that.$format(formData));
-            let data = await that.$http.modelDynamicTableListNew(that.$format(formData));
+            let data = await that.$http.modelDynamicTableListNew(formData);
             if(data.code == 0) {
               let obj = {};
               that.dynamicTableDataList = data.data;

@@ -81,8 +81,6 @@ export default {
             let res = await this.$http.ORGDisShareUserRole();
             if (res.code == '0') {
                 return Promise.resolve(res)
-            }else {
-                this.$mes('error', res.msg);
             }
         } catch (err) {
             console.log(err)
@@ -111,12 +109,18 @@ export default {
           };
           that.$store.commit('saveToken',res.data.data.token) 
           that.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-          this.getUserRoles().then((res)=>{
+          this.getUserRoles().then((resRoles)=>{
             this.$store.commit('saveDiseaseInfo',{
               diseaseId: this.$store.state.user.diseaseInfo.diseaseId, 
+              diseaseName: this.$store.state.user.diseaseInfo.diseaseName,
               isAdmin: false,
-              roles: res.data || []
+              roles: resRoles.data || [3],
+              orgCode: res.data.data.orgCode,
+              orgName: res.data.data.orgName,
+              doctor: res.data.data.userId,
+              doctorName: res.data.data.name
             });
+            debugger
             window.location.href = './index.html#/diseaseChart?id='+ utils.getQuery('id');
           })
           return

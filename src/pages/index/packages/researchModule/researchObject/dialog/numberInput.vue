@@ -31,7 +31,8 @@ export default {
     },
     watch: {
         'inputValue': function(newVal) {
-            this.dataInfo.value = this.inputValue + '|' + this.inputUnit;
+            this.dataInfo.value = this.inputValue;
+            // this.dataInfo.value = this.inputValue + '|' + this.inputUnit;
         }
     },
     components: {
@@ -39,7 +40,8 @@ export default {
     },
     methods: {
         selectChange(val) {
-            this.dataInfo.value = this.inputValue + '|' + this.inputUnit;
+            this.dataInfo.value = this.inputValue;
+            // this.dataInfo.value = this.inputValue + '|' + this.inputUnit;
         }
     }
 };

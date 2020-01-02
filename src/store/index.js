@@ -40,7 +40,7 @@ const user = {
     researchInfo: {
       subjectInfoId: '',
       centerModel: '',  //1单中心，2多中心
-      roles: [],    //1、管理员(所有权限)  2、分中心管理员（无权添加中心,可查看组织管理） 3、数据录入员 4、数据管理员（导入/导出数据）
+      roles: [],    //1、管理员(所有权限)  2、分中心管理员（无权添加中心,可查看组织管理） 3、数据录入员 4、数据管理员（可审核数据）
     },
     //科研项目权限
     researchAuth: {
@@ -50,9 +50,14 @@ const user = {
     },
     //专病科研数据
     diseaseInfo: {
-      diseaseId: '',
+      diseaseId: '',    //病种ID
+      diseaseName: '',    //病种名
       isAdmin: false,  //是否为管理员
-      roles: []
+      roles: [3],
+      orgCode: '',      //组织机构
+      orgName: '',
+      doctor: '',      //医生
+      doctorName: ''
     },
     session_isDislpayArrow: false,
     //病种列表
@@ -224,6 +229,48 @@ const common = {
   }
 }
 
+// 批注 数据
+
+const annotateData = {
+  state:{
+    annotateList:[],
+    modifyData:[],
+    annotateNum:0,
+  },
+  getters:{
+    forlist:state => state.annotate
+  },
+  mutations:{
+    addAnnotate(state,val) {
+      state.annotateList.push(val)
+    },
+    resetAnnotate(state,val) {
+      state.annotateList = val;
+    },
+    addModifyData(state,val) {
+      state.modifyData = val;
+    },
+    annotateNumber(state,val) {
+      state.annotateNum = val;
+    }
+  },
+  actions:{
+    addFun(context,data) {
+      context.commit('addAnnotate',data);
+    },
+    resetFun(context,data=[]) {
+      context.commit('resetAnnotate',data)
+    },
+    addModifyDataFun(context,data) {
+      context.commit('addModifyData',data);
+    },
+    annotateNumberFun(context,data) {
+      context.commit('annotateNumber',data)
+    }
+  }
+};
+
+
 var store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production', // 在非生产环境下，使用严格模式
   modules: {
@@ -232,7 +279,8 @@ var store = new Vuex.Store({
     crf,
     researchModel,
     common,
-    CRFConfig
+    CRFConfig,
+    annotateData
   },
   getters,
   plugins: [createPersistedState({

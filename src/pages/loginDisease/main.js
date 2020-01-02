@@ -19,15 +19,26 @@ Vue.prototype.$mes = function (type, message) {
 import install from 'components/utils/install';
 Vue.use(install);
 import store from '../../store';
+import utils from 'components/utils';
 import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
-    store.commit('USER_SIGNOUT');
-    localStorage.setItem('CURR_LOGIN_TYPE', 'disease');
+    store.commit('saveDiseaseInfo',{
+      diseaseId: utils.getQuery('id'), 
+      diseaseName: '',
+      isAdmin: false,
+      roles: [3],
+      orgCode: '',      //组织机构
+      doctor: ''      //医生
+    });
     //同步获取全局配置：
     await Global.getConfigJson();
-
+    // 同步验证缓存的token有没有在登录有效期 和 是否是在专病下登录
+    if(store.state.user.token && localStorage.getItem('CURR_LOGIN_TYPE') == 'disease') {
+      await utils.checkToken();
+    }
+    localStorage.setItem('CURR_LOGIN_TYPE', 'disease');
     // 初始化根vue
     new Vue({
       el: '#app',

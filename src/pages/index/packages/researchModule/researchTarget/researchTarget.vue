@@ -29,7 +29,7 @@
           </el-tab-pane>
       </el-tabs>
     <!-- 引导图 -->
-    <div v-show="isExsit" class="guide flex-center-center" style="height: 500px;">
+    <div v-show="isExsit && editableTabs.length == 0" class="guide flex-center-center" style="height: 500px;">
       <div class="guide_box flex-center-start flex-wrap">
         <div class="guide_wrap">
           <p class="text_center">#创建研究指标#</p>

@@ -3,29 +3,29 @@
         <!-- <img src="../images/statisticalAnalysis.png" alt="" width="100%"> -->
         <aside>
             <div class="top">
-                <el-select v-model="selectGroup" placeholder="请选择">
+                <el-select v-model="currentGroupId" placeholder="请选择" @change="changeSelectGroup">
                     <el-option
                         v-for="(item,index) in selectGroupList"
                         :key="index"
-                        :label="item.label"
-                        :value="item.label">
+                        :label="item.groupName"
+                        :value="item.groupId">
                     </el-option>
                 </el-select>
-                <p class="color_1">290585个研究对象</p>
+                <p class="color_1">{{selectGroup.patientCount}} 个研究对象</p>
             </div>
             <div class="content">
                 <div class="select flex-between-center">
                     <p class="label font_14 color_1" style="width: 90px;">指标列表</p>
-                    <el-select v-model="selectTarget" placeholder="请选择">
+                    <el-select v-model="selectTarget" @change="changeSelectTarget" placeholder="请选择">
                         <el-option
                             v-for="(item,index) in selectTargetList"
                             :key="index"
                             :label="item.label"
-                            :value="item.label">
+                            :value="item.value">
                         </el-option>
                     </el-select>
                 </div>
-                <ul>
+                <ul v-loading="selectTargetLoading">
                     <!-- :move="draggableRemoveCallBack" -->
                     <draggable 
                     v-model="targetList" 
@@ -34,9 +34,10 @@
                     @end="onEndCallBack" 
                     :move="draggableRemoveCallBack">
                             <li class="flex-between-center" v-for="(item, index) in targetList" :key="index">
-                                <p class="color_1">{{item.label}}</p>
-                                <span>{{item.type == 1?'分类':'连续'}}</span>
+                                <p class="color_1">{{item.itemName}}</p>
+                                <span>{{item.controlType  == 'NUMBER_INPUT'?'连续':'分类'}}</span>
                             </li>
+                            <em v-if='empty' class="block text-center"><br/>(空)</em>
                     </draggable>
                 </ul>
             </div>
@@ -61,13 +62,19 @@
                                             :data-id="index" v-model="item.draggableList" 
                                             :group='{name: "menu",put: true, pull: "clone"}' 
                                             :sort="false">
-                                            <div class="li" v-for="(li, index) in item.draggableList" :key="index">{{li.label}}</div>
+                                            <div class="li" v-for="(li, index) in item.draggableList" :key="index">{{li.itemName}}</div>
                                         </draggable>
                                     </div>
                             </div>
                             <el-button type="primary" icon="icon iconfont iconzujian38" @click="">保存到项目</el-button>
                         </div>
-                        <contentAnalysis></contentAnalysis>
+                        <contentAnalysis 
+                            v-loading="statisticsLoading" 
+                            :statisticsData="statisticsData" 
+                            :activeTag="activeTag" 
+                            :targetElemnt="targetElemnt"
+                            :chartOptions="chartOptions">
+                        </contentAnalysis>
                     </div>
                 </div>
                 <div class="right">
@@ -76,6 +83,7 @@
                         <li v-for="(item, index) in statisticalResultsList" :key="index">
                             <p>{{item.text}}<i class="icon el-icon-close" @click="onDeleteResult(item)"></i></p>
                         </li>
+                        <em class="block text-center">(空)</em>
                     </ul>
                 </div>
             </div>
@@ -91,42 +99,36 @@ export default {
     data () {
         return {
             activeTag: 0,
-            selectGroupList:[
-                {label:'分组1'},
-                {label:'分组2'},
-                {label:'分组3'},
-                {label:'分组4'}
-            ],
-            selectGroup: '',
-            selectTarget: '',
+            selectGroupList:[],    
+            selectGroup: {},
+            selectTarget: undefined,
+            selectTargetLoading: false,
+            statisticsLoading: false,
             selectTargetList: [
-                {label:'分部'},
-                {label:'分类'},
-                {label:'连续'}
+                {label:'全部',value:undefined},
+                {label:'分类',value:'TYPE'},
+                {label:'连续',value:'NUMBER'}
             ],
-            targetList: [
-                { label: '性别1', type: 1},
-                { label: '民族2', type: 2},
-                { label: '性别3', type: 1},
-                { label: '民族4', type: 2},
-                { label: '性别5', type: 1},
-                { label: '民族6', type: 2},
-                { label: '性别7', type: 1},
-                { label: '民族8', type: 2},
-                { label: '性别9', type: 1},
-                { label: '民族10', type: 2},
-                { label: '性别11', type: 1}
-            ],
+            //统计信息
+            statisticsData: {
+                list: [],
+                textList: []
+            },
+            empty: false,
+            //指标列表
+            targetList: [],
             domainList: [
                 {type: 0, label: '将变量拖入此区可进行新的分析', draggableList: []},
                 {type: 1, label: '分组变量拖拽区域', draggableList: []},
                 {type: 1, label: '结果变量拖拽区域', draggableList: []}
             ],
+            chartOptions: [],
             //被拖拽的目标对象
             targetElemnt: {},
             statisticalResultsList: [
-                {text:'Xxx关于xxx的单因素分析 样本：队列1-实验组'},
-                {text:'Xxx关于xxx的单因素分析 样本：队列1-实验组'}
+                // {text:'关于xxx的描述性统计样本：队列1-实验组1'},
+                // {text:'关于xxx的描述性统计样本：队列1-实验组2'},
+                // {text:'关于xxx的描述性统计样本：队列1-实验组3'}
             ]
         }
     },
@@ -134,9 +136,85 @@ export default {
         draggable,
         contentAnalysis
     },
+    computed: {
+        currentGroupId: function() {
+            return this.selectGroup.groupId;
+        }
+    },
+    created() {
+        this.getGroupList()
+        this.getTargetItemList(undefined);
+    },
     methods: {
         selectTag(val) {
             this.activeTag = val;
+            //清空统计数据 
+            this.domainList.forEach(li=>{
+                li.draggableList = [];
+            })
+            this. statisticsData = {
+                list: [],
+                text: ''
+            }
+            this.chartOptions = [];
+            this.targetElemnt = {};
+        },
+        //分组选择框改变
+        changeSelectGroup(val) {
+            this.selectGroup = this.selectGroupList.find(li=>{
+                return li.groupId == val;
+            })
+            console.log(this.selectGroup)
+            if(this.targetElemnt) {
+                this.getAnalysisData(this.targetElemnt);
+            }
+        },
+        //指标下拉选择
+        changeSelectTarget(val) {
+            this.getTargetItemList(val);
+        },
+        //指标列表
+        async getTargetItemList(type) {
+            this.selectTargetLoading = true;
+            let params = {
+                variableType: type,
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisTargetList(params);
+                if (res.code == '0') {
+                    this.targetList = res.data;
+                    this.empty = this.targetList.length?false:true;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            this.selectTargetLoading = false;
+        },
+        //统计数据
+        async getAnalysisData(targetElemnt) {
+            this.statisticsLoading = true;
+            let params = {
+                "groupId": this.currentGroupId,
+                "rangeText": targetElemnt.valueRange,
+                "crfId": targetElemnt.crfId,
+                "path": targetElemnt.path,
+                "subjectId": this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisTanalysisData(params);
+                if (res.code == '0') {
+                    this.statisticsData = res.data;
+                    let text = '';
+                    this.statisticsData.textList.forEach(li=>{
+                        text += li + '\n'
+                    })
+                    this.statisticsData.text = text;
+                }
+            } catch (err) {
+                console.log(err)
+            }
+            this.statisticsLoading = false;
         },
         //拖拽后的回调
         onEndCallBack(data) {
@@ -146,12 +224,13 @@ export default {
             this.domainList.forEach((item)=>{
                 item.draggableList = [];
             })
-
             this.domainList[data.to.dataset.id].draggableList = [this.targetElemnt];
         },
         //获取拖拽的对象
         draggableRemoveCallBack(data) {
             this.targetElemnt = data.draggedContext.element;
+            this.getAnalysisData(data.draggedContext.element);
+            this.getCharts(data.draggedContext.element);
         },
         //删除已保存的统计结果
         onDeleteResult(item) {
@@ -173,6 +252,41 @@ export default {
                 //     this.$mes('error', '删除出错');
                 // }
             }).catch((error) => {});
+        },
+        //获取分组列表
+        async getGroupList() {
+            let params = {
+                subjectId: this.$store.state.user.researchInfo.subjectInfoId,
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisGroup(params);
+                if (res.code == '0') {
+                    this.selectGroupList = res.data;
+                    if(this.selectGroupList.length != 0) {
+                        this.selectGroup = this.selectGroupList[0];
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //获取图表数据 
+        async getCharts(targetElemnt) {
+            let params = {
+                "rangeText": targetElemnt.valueRange,
+                "crfId": targetElemnt.crfId,
+                "path": targetElemnt.path,
+                "groupId": this.currentGroupId,
+                "subjectId": this.$store.state.user.researchInfo.subjectInfoId
+            }
+            try {
+                let res = await this.$http.statisticalAnalysisPieOrBar(params);
+                if (res.code == '0') {
+                    this.chartOptions = res.data;
+                }
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 };
@@ -186,7 +300,7 @@ export default {
             position: relative;
             width: 240px;
             background-color: #fff;
-            margin-right: 30px;
+            margin-right: 15px;
             .top {
                 padding: 15px 15px 10px;
                 border-bottom: 1px solid #E5E8EB;
@@ -241,11 +355,14 @@ export default {
                 height: 36px;
                 span {
                     border: 1px solid #eee;
+                    border-bottom-color: #fff;
                     line-height: 36px;
                     width: 100px;
                     display: inline-block;
                     text-align: center;
                     cursor: pointer;
+                    position: relative;
+                    z-index: 2;
                     &.active {
                         background-color: #fff;
                     }
@@ -265,6 +382,8 @@ export default {
                     border: 1px solid #eee;
                     padding: 15px;
                     .content {
+                        position: relative;
+                        height: 100%;
                         .top {
                             height: 90px;
                             .domain {

@@ -44,8 +44,6 @@ let initApp = async () => {
   try {
     //同步获取全局配置；
     await Global.getConfigJson();
-    //同步验证浏览器自带的session有没有在登录有效期；
-    // await utils.validLoginAuthenticated();
     // 获取公共的 baseURL
     Vue.prototype.baseURL = JSON.parse(localStorage.getItem('Global')).baseURL;
     // 初始化根vue

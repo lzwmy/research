@@ -2,6 +2,7 @@
     <div style="display:inline-block;">
         <el-upload
             class="upload"
+            action=""
             :on-change="successFile"
             :auto-upload="false"
             :show-file-list='false'
@@ -38,17 +39,16 @@ export default {
                 params.append('subjectGroupId',this.groupId);
                 params.append('crfId',this.currentCrfId);
                 let res = await this.$http.researchObjectImportBatchData(params);
-                if(res.code==0) {
+                if(res.msg.includes('成功')) {
                     this.$mes('success','导入成功');
                     this.$emit('updata');
-                }else if(res.data) {
+                }else if(res.msg.includes('失败')) {
                     this.$emit('checkData',res.data);
                 }
                 this.loading = false;
             } catch (err) {
                 this.loading = false;
                 console.log(err)
-                this.$mes('error','导入失败')
             }
         },
     },

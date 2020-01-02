@@ -530,7 +530,7 @@
               <el-form-item label="值域选项" >
                 <!--v-model="basicDataInfo.obj.termSet.rangeText"-->
                 <el-input type="textarea" :rows="5"  v-model="rangeText"></el-input>
-                <div class="range_notes">每行代表一个选项，可以添加多个选项，名称和代表分值用“^”隔开，分值不是必填项。例：胸痛^10</div>
+                <div class="range_notes">每行代表一个选项，可以添加多个选项，每个选项务必在不同，名称和代表分值用“^”隔开，表示一行，例：男^1</div>
               </el-form-item>
             </el-form>
           </el-tab-pane>

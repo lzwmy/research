@@ -18,16 +18,19 @@ Vue.prototype.$mes = function (type, message) {
 }
 import install from 'components/utils/install';
 Vue.use(install);
+import utils from 'components/utils';
 import store from '../../store';
 import Global from 'components/utils/global';
 
 let initApp = async () => {
   try {
-    store.commit('USER_SIGNOUT');
-    localStorage.setItem('CURR_LOGIN_TYPE', 'research');
     //同步获取全局配置：
     await Global.getConfigJson();
-
+    // 同步验证缓存的token有没有在登录有效期 和 是否是在科研项目下登录
+    if(store.state.user.token && localStorage.getItem('CURR_LOGIN_TYPE') == 'research') {
+      await utils.checkToken();
+    }
+    localStorage.setItem('CURR_LOGIN_TYPE', 'research');
     // 初始化根vue
     new Vue({
       el: '#app',

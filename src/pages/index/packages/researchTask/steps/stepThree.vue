@@ -73,6 +73,12 @@ export default {
         },
         addGroupInput() {
             let n = parseInt(this.groupList[this.groupList.length - 1].id) + 1;
+            let isExist = this.groupList.find(li=>{
+                return li.name == '分组'+ n;
+            })
+            if(isExist) {
+                n = n + '-1';
+            }
             this.groupList.push({
                 id: n,
                 name: '分组'+ n,
@@ -80,6 +86,16 @@ export default {
             })
         },
         addGroup(index) {
+            let isExistIndex = this.groupList.findIndex(li=>{
+                return li.name == this.groupList[index].name;
+            })
+            if(isExistIndex!=index) {
+                this.$mes('inif','分组名字已存在!')
+                this.$nextTick(()=>{
+                    $("#groupUl li input").focus();
+                })
+                return;
+            }
             this.$set(this.groupList[index],'edit',false);
         },
         editGroup(index) {

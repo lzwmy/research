@@ -82,7 +82,7 @@
                     <el-table-column sortable prop="groupName" label="课题组"></el-table-column>
                     <el-table-column sortable label="报告状态" width="110px">
                         <template slot-scope="scope">
-                            {{scope.row.status==0?'未填写':'已填写'}}
+                            {{matchingReportStatus(scope.row.status)}}
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" width="80">
@@ -145,8 +145,10 @@ export default {
     mounted () {
         this.addEventListenervisibilityChange();
     },
+    beforeDestroy() {
+        document.removeEventListener(this.visibilityChange,this.visibilityChangeHandle)
+    },
     destoryed() {
-        document.removeEventListener(this.visibilityChange)
     },
     components: {
         pagination,
@@ -154,27 +156,38 @@ export default {
         diseaseSubjectgroup
     },
     methods: {
+        //匹配报告状态
+        matchingReportStatus(status) {
+            switch (status) {
+                case 0: return '未填写';
+                case 1: return '已填写';
+                case 2: return '已提交';
+                case 3: return '审核不通过';
+                case 4: return '审核通过';
+                case 5: return '召回报告';
+                default: break;
+            }
+        },
+        visibilityChangeHandle() {
+            if (!document[this.hidden]) {
+                this.getDataList()
+            }
+        },
         addEventListenervisibilityChange() {
-            let hidden = "";
-            this.visibilityChange = "";
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                this.hidden = "hidden";
                 this.visibilityChange = "visibilitychange";
             } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
+                this.hidden = "mozHidden";
                 this.visibilityChange = "mozvisibilitychange";
             } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                this.hidden = "msHidden";
                 this.visibilityChange = "msvisibilitychange";
             } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                this.hidden = "webkitHidden";
                 this.visibilityChange = "webkitvisibilitychange";
             }
-            document.addEventListener(this.visibilityChange,()=>{
-                if(!document[hidden]) {
-                    this.getDataList();
-                }
-            }, false);
+            document.addEventListener(this.visibilityChange,this.visibilityChangeHandle);
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
             let startTime, endTime;
@@ -214,8 +227,6 @@ export default {
                     obj.totalCount = parseInt(res.data.totalElements);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
-                }else {
-                    this.$mes('error', res.msg);
                 }
                 that.loading = false;
             } catch (err) {
@@ -272,8 +283,6 @@ export default {
                 let res = await this.$http.casesSearchPatient(formData);
                 if (res.code == 0) {
                     this.identify = res.data.identitycardno || "";
-                }else {
-                    this.$mes('error', "获取基本信息失败!");
                 }
             } catch (err) {
                 console.log(err)

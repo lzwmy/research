@@ -205,7 +205,6 @@ export default {
                     }
                 }
             } catch (error) {
-                this.$mes('error', '获取患者住院登记列表失败!');
             }
             this.loadingEvent = false;
         },
@@ -238,7 +237,6 @@ export default {
                 }
             } catch (error) {
                 console.log(error)
-                this.$mes('error', '获取检测数据失败!');
             }
             this.loadingLab = false;
         },
@@ -441,7 +439,6 @@ export default {
                     })
                 }
             } catch (error) {
-                this.$mes('error', '保存模版失败!');
             }
         },
         async onSearch() {
@@ -454,7 +451,6 @@ export default {
                     this.dialog.dataList = res.data?res.data:[];
                 }
             } catch (error) {
-                this.$mes('error', '查询失败!');
             }
         },
         async getIndicatorTemplate() {
@@ -467,7 +463,6 @@ export default {
                     this.dialog.targetList = res.data?res.data:[];
                 }
             } catch (error) {
-                this.$mes('error', '获取已选指标失败!');
             }
         },
         onAdd(row) {
