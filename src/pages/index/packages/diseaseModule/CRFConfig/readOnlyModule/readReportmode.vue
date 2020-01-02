@@ -107,8 +107,8 @@
             .then(() => this.getReportLastDataChange())
             .then(() => this.getReportLastReply())
         }else if(tipStatus == 4 && isExamine == false) {
-          console.log('报告列表 -- 通过','完整的阅读报告模式');
-          return false;
+          console.log('报告列表 -- 通过','完整的阅读报告模式 ,显示全部修改记录');
+          this.getReportBakListDataChange()
         }else if (tipStatus == 2 && isExamine == true) {
           console.log('数据监察 -- 待审核','显示最近一次 批注、修改信息、回复');
           this.getReportLastNotation()
@@ -120,8 +120,8 @@
             .then(() => this.getReportLastDataChange())
             .then(() => this.getReportLastReply())
         }else if(tipStatus == 4 && isExamine == true) {
-          console.log('数据监察 -- 通过','完整的阅读报告模式');
-          return false;
+          console.log('数据监察 -- 通过','完整的阅读报告模式，显示全部修改记录');
+          this.getReportBakListDataChange()
         }
       },
       closePage() {
@@ -342,6 +342,12 @@
         console.log('批注点击事件',result);
         this.annotate = "";
         this.currentComment.path = result;
+        if(this.tipStatus == 4 && this.isExamine == true && this.$store.state.annotateData.tipBtnText == '重新审核'){
+          return false;
+        }
+        if(this.tipStatus == 4 && this.isExamine == false && this.$store.state.annotateData.tipBtnText == '召回'){
+          return false;
+        }
         this.centerDialogVisible = true;
         if(this.tipStatus == 3 && this.isExamine == false) {
           this.title = '回复';
