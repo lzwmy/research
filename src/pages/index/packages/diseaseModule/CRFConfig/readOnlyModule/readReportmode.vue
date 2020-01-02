@@ -138,6 +138,10 @@
       },
       //添加评分
       addComment() {
+        if(this.annotate == "") {
+          this.$message.info('内容不能为空，请重新输入');
+          return false;
+        }
         let timestamp=this.getMyDate(new Date().getTime());
         this.currentComment.createTime = timestamp;
         this.currentComment.content = this.annotate;
