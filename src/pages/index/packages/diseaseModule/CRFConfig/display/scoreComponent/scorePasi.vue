@@ -206,7 +206,7 @@
         <div class="content_item">
           <div class="item_name sing-input">PASI (总分) =</div>
           <div class="item_single-input">
-            <el-input v-model="totalNumber"></el-input>
+            <el-input v-model="pasiTotal" ></el-input>
           </div>
         </div>
       </div>
@@ -248,11 +248,6 @@
           return PASI
         }
       },
-      watch:{
-        'total':function (data) {
-          this.totalNumber = data;
-        }
-      },
       data(){
         return {
           head:{
@@ -279,7 +274,12 @@
             erythema:0,//红斑
             infiltration:0,//浸润
           },
-          totalNumber:'0.00'
+          pasiTotal:'0.00',
+        }
+      },
+      watch:{
+        'total':function (data) {
+          this.pasiTotal = data ;
         }
       },
       methods:{
@@ -322,7 +322,9 @@
       },
       mounted() {
         if(this.report.value2 !== "") {
-          this.getScoreReportPreview();
+          this.getScoreReportPreview().then(()=>{
+            this.pasiTotal = this.report.value;
+          });
         }
       }
     }

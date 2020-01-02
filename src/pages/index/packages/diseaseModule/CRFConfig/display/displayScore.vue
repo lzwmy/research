@@ -49,7 +49,7 @@
         console.log('评分弹框保存');
         switch (this.item.baseProperty.scoreInfo.scoreName) {
           case "PASI":
-            this.report.value = this.$refs.pasi.totalNumber;
+            this.report.value = this.$refs.pasi.pasiTotal;
             // console.log(this.$refs.pasi.total);
             this.item.baseProperty.scoreInfo.scoreStatus = false;
             this.scoreReportSave();
