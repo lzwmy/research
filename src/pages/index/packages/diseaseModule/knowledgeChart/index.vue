@@ -64,6 +64,7 @@ export default {
     data () {
         return {
             loading: false,
+            emptyData: true,
             asideLoading: false,
             keyword: '',
             emptyData: true,
@@ -179,6 +180,7 @@ export default {
                     })
                     this.emptyData = res.data.data.length?false: true;
                     this.chartOption.series[0].data = res.data.data;
+                    this.emptyData = res.data.data.length?true: false;
                     this.$nextTick(()=>{
                         this.showHighchart = true;
                         // this.$refs.chartsRef.updated();

@@ -422,6 +422,7 @@ export default {
         if (data && data.code == '0') {
           this.$notice(data.msg);
           this.closePermissionDialog();
+          window.location.reload();
         }
       } catch (error) {
         this.$notice('绑定菜单权限失败');
