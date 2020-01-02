@@ -9,7 +9,7 @@
         <!--搜索结果-->
         <div class="cloud-search-list" v-loading='loading'>
             <div class="chart-warp" v-if="showHighchart">
-                <chartCom v-if='emptyData' ref="chartsRef" :option="chartOption" @sendColorArr="getColorArr"></chartCom>
+                <chartCom v-if="!emptyData" ref="chartsRef"  :option="chartOption" @sendColorArr="getColorArr"></chartCom>
                 <div v-else class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
                     <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
                         <use xlink:href="#iconzu11"></use>
@@ -177,8 +177,8 @@ export default {
                     this.displayTabsList.forEach((li)=>{
                         li.isActive = true;
                     })
+                    this.emptyData = res.data.data.length?false: true;
                     this.chartOption.series[0].data = res.data.data;
-                    this.emptyData = res.data.data.length?true: false;
                     this.$nextTick(()=>{
                         this.showHighchart = true;
                         // this.$refs.chartsRef.updated();
