@@ -53,7 +53,7 @@
           </div>
         </div>
       </div>
-    <div v-if="(report.value!='无' && report.value != '') || item.gatherKnowType == 0"  :class="['view_content',{'width_container':item.gatherRank=='1'}]">
+    <div v-if="!isFold"  :class="['view_content',{'width_container':item.gatherRank=='1'}]">
       <!--集合上下排列-->
       <div :class="item.controlType+'_bg_color'" style="padding-left:55px;" v-if="item.gatherRank=='0'"  @click="popMehtod">
         <!--style="margin-top:15px" style="display: block;"-->
@@ -717,7 +717,25 @@ export default {
     else if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
       this.isFold = true;
     }
-    
+    if(this.item.termSet.rangeText!=="" && this.item.gatherKnowType == 3){
+      let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
+        return item !== ""
+      }).map(item=>{
+        return {termItemName:item.split('^')[0],id:parseInt(item.split('^')[1])}
+      });
+      this.item.termSet.termItemList = arrayList;
+      //初始化 集合 默认展开
+      if(this.report.value) {
+        arrayList.forEach(item => {
+          if(item.termItemName == this.report.value && item.id == 0) {
+            this.isFold = true;
+          }else if(item.termItemName == this.report.value && item.id != 0){
+            this.isFold = false;
+            return ;
+          }
+        })
+      }
+    }
     //初始化报告数据
     this.item.children.forEach(element => {
       let arr = this.report.children.filter(
