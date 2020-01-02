@@ -9,8 +9,13 @@
         <!--搜索结果-->
         <div class="cloud-search-list" v-loading='loading'>
             <div class="chart-warp" v-if="showHighchart">
-                <chartCom ref="chartsRef"  :option="chartOption" @sendColorArr="getColorArr"></chartCom>
-                <!-- <chartCom ref="chartsRef" :option="chartOption"></chartCom> -->
+                <chartCom v-if="!emptyData" ref="chartsRef"  :option="chartOption" @sendColorArr="getColorArr"></chartCom>
+                <div v-else class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+                    <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
+                        <use xlink:href="#iconzu11"></use>
+                    </svg>
+                    <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
+                </div>
             </div>
 
             <div class="item-group">
@@ -61,6 +66,7 @@ export default {
             loading: false,
             asideLoading: false,
             keyword: '',
+            emptyData: true,
             displayTabsList: [],
             allTabsList: [],
             analysisData:[],
@@ -138,10 +144,10 @@ export default {
             $('.item-group').on('click','.el-tabs__nav-prev', this.prevArrowsClick)
             $('.item-group').on('click','.el-tabs__nav-next', this.nextArrowsClick)
         })
-        window.onresize = this.computeTabs;
+        // window.onresize = this.computeTabs;
     },
     destroyed() {
-        window.onresize = null;
+        // window.onresize = null;
     },
     methods: {
         computeTabs() {
@@ -171,6 +177,7 @@ export default {
                     this.displayTabsList.forEach((li)=>{
                         li.isActive = true;
                     })
+                    this.emptyData = res.data.data.length?false: true;
                     this.chartOption.series[0].data = res.data.data;
                     this.$nextTick(()=>{
                         this.showHighchart = true;
