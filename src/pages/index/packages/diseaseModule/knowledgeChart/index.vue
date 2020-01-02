@@ -144,10 +144,10 @@ export default {
             $('.item-group').on('click','.el-tabs__nav-prev', this.prevArrowsClick)
             $('.item-group').on('click','.el-tabs__nav-next', this.nextArrowsClick)
         })
-        // window.onresize = this.computeTabs;
-    },
-    destroyed() {
-        // window.onresize = null;
+        let that = this
+        $(window).resize(function() {
+            that.computeTabs();
+        });
     },
     methods: {
         computeTabs() {

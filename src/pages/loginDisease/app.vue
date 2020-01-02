@@ -78,9 +78,13 @@ export default {
     },
     async getUserRoles() {
         try {
-            let res = await this.$http.ORGDisShareUserRole();
+            let res = await this.$http.ORGDisShareUserRole({
+              diseaseId: utils.getQuery('id')
+            });
             if (res.code == '0') {
                 return Promise.resolve(res)
+            }else {
+              return Promise.reject()
             }
         } catch (err) {
             console.log(err)

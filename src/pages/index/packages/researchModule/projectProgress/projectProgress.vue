@@ -385,7 +385,7 @@
       //角色信息
       async getUserInfo() {
         try {
-          let res = await this.$http.researchSharegetRoles();
+          let res = await this.$http.researchGetRoles();
           if (res.code == '0') {
             return Promise.resolve(res.data);
           }else {

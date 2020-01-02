@@ -15,6 +15,8 @@ const url = {
     deleteUser: '/disease/user/delete',
     // 新建用户
     createUser: '/disease/user/create',
+    // 添加用户
+    addUser: '/disease/user/add',
     // 编辑人员列表项
     updateUserList: '/disease/user/update',
     // 添加分中心
@@ -51,6 +53,9 @@ const http = {
     ORGDisCreateUser (params) {
         return vm.$post(url.createUser, params, false);
     },
+    ORGDisAddUser (params) {
+        return vm.$post(url.addUser, params, false);
+    },
     ORGDisupdateUserList (params) {
         return vm.$post(url.updateUserList, params, false);
     },
@@ -67,7 +72,7 @@ const http = {
         return vm.$post(url.roleList, params, false);
     },
     ORGDisShareUserRole (params) {
-        return vm.$post(url.shareUserRole, params, false);
+        return vm.$post(url.shareUserRole, params, true);
     },
     ORGDisGetStatisticsData (params) {
         return vm.$post(url.getStatisticsData, params, true);

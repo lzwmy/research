@@ -3,7 +3,7 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button :disabled="orgList.length == 0" type="primary" icon="el-icon-plus" @click="showDialog('添加用户')">新建用户</el-button>
+                <el-button :disabled="orgList.length == 0" type="primary" icon="el-icon-plus" @click="showDialog(orgType==1?'添加用户':'新建用户')"> {{orgType==1?'添加用户':'新建用户'}}</el-button>
 
             </div>
         </div>
@@ -59,7 +59,7 @@
                 </echarts-contain>
             </div>
         </div>
-        <!-- 多中心添加用户 -->
+        <!-- 多中心新建用户 -->
         <el-dialog 
             :title="dialogForm.title" 
             :visible.sync="dialogForm.visible" 
@@ -95,6 +95,34 @@
             </el-form>
             <div slot="footer">
                 <el-button type="primary" @click="onConfirm" :disabled="dialogForm.loading">确 认</el-button>
+                <el-button @click="closeDialog" >取 消</el-button>
+            </div>
+        </el-dialog>
+
+        <!-- 主平台添加用户 -->
+        <el-dialog 
+            :title="dialogFormAdd.title" 
+            :visible.sync="dialogFormAdd.visible" 
+            :append-to-body="true"
+            class="height_auto"
+            @close="closeDialog"
+            width="550px">
+            <el-form 
+                :model="dialogFormAdd" ref="dialogFormAdd" :rules="ruleDialogFormAdd" label-width="100px" class="organizationManagement" 
+                @submit.native.prevent v-loading="dialogFormAdd.loading" label-position="left">
+                <el-form-item label="选择用户:" prop="userId">
+                    <el-select v-model="dialogFormAdd.userId" class="block">
+                        <el-option v-for="(item, index) in userList" :key="index" :label="item.userName" :value="item.id" :disabled="dialogFormAdd.title=='编辑用户'"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="角色:" prop="role">
+                    <el-select v-model="dialogFormAdd.role" multiple class="block">
+                        <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button type="primary" @click="onConfirmAdd" :disabled="dialogFormAdd.loading">确 认</el-button>
                 <el-button @click="closeDialog" >取 消</el-button>
             </div>
         </el-dialog>
@@ -160,6 +188,16 @@ export default {
                 visible: false,
                 loading: false,
             },
+             //主平台机构选择用户
+            dialogFormAdd: {
+                title:'',
+                userName:'',
+                userId: '',
+                id: '',
+                role:[],
+                visible: false,
+                loading: false,
+            },
             dialgOrgForm: {
                 visible: false,
                 orgName: '',
@@ -170,8 +208,10 @@ export default {
             orgList: [],
             orgLoading: false,
             orgCode: '',
+            orgType: null,
             tableLoading: false,
             roleList: [],
+            userList: [],
             paging: {
                 pageNo: 1,
                 pageSize: 20,
@@ -187,6 +227,10 @@ export default {
             },
             dialgoOrgFormRules: {
                 orgName: [{required: true, message:'请输入机构名称',trigger:'change'}]
+            },
+            ruleDialogFormAdd: {
+                userId: [{required: true, message: '请选择用户', trigger: 'change'}],
+                role: [{required: true, message: '请选择角色', trigger: 'change'}],
             },
             loginType: localStorage.getItem('CURR_LOGIN_TYPE') == 'disease'?'share':'local'
         }
@@ -215,6 +259,11 @@ export default {
         },
         selectGroup(item,index) {
             this.orgCode = item.orgCode;
+            this.orgType = item.orgType;
+            //点击主平台的机构
+            if(item.orgType == 1) {
+                this.getAllUsers();
+            }
             this.getDataList();
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
@@ -226,7 +275,10 @@ export default {
             let formData = {
                 offset: pageNo - 1,
                 limit: pageSize,
-                args: this.orgCode
+                args: {
+                    orgCode: this.orgCode,
+                    diseaseId: this.$route.query.id
+                }
             };
             try {
                 let res = await that.$http.ORGDisGetUserList(formData);
@@ -265,13 +317,31 @@ export default {
                 console.log(err)
             }
         },
+        //获取全部用户
+        async getAllUsers() {
+            let formData = {
+                account: '',
+                userName: '',
+                status: '',
+                page: 0,
+                size: 500
+            }
+            try {
+                let res = await this.$http.userFindAllUsers(formData);
+                if (res.code == '0') {
+                    this.userList = res.data.list;
+                    console.log(res.data)
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
         //获取机构列表
         async getOrgList() {
             this.orgLoading = true;
             try {
                 let res = await this.$http.ORGDisGetOrgList({
                     diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
-                    source: this.loginType
                 });
                 if (res.code == '0') {
                     this.orgList = res.data;
@@ -286,32 +356,51 @@ export default {
             }
         },
         showDialog(title,row) {
-            let orgInfo = this.orgList.find( li => {
-                return li.orgCode == this.orgCode;
-            })
-            if(row) {
-                let roles = row.roles.map(li=>{
-                    return li.id;
-                })
-                this.dialogForm = {
-                    title: title,
-                    userName: row.userName,
-                    userId: row.id,
-                    tel: row.phoneNumber,
-                    role: roles,
-                    organization: orgInfo.orgName,
-                    department: row.deptName,
-                    position: row.duty,
-                    visible: true,
-                    loading: false,
+            //添加用户
+            if(this.orgType == 1) {
+                this.dialogFormAdd.title = title;
+                this.dialogFormAdd.visible = true;
+                if(!row) {
+                    return;
                 }
+                this.dialogFormAdd.userName = row.userName;
+                this.dialogFormAdd.role = row.roles;
+                let user = this.userList.find(li=>{
+                    return li.userName == row.userName;
+                })
+                this.dialogFormAdd.userId = user.id;
+                this.dialogFormAdd.id = row.id;
+            }else {
+                //新建用户
+                let orgInfo = this.orgList.find( li => {
+                    return li.orgCode == this.orgCode;
+                })
+                if(row) {
+                    let roles = row.roles.map(li=>{
+                        return li.id;
+                    })
+                    this.dialogForm = {
+                        title: title,
+                        userName: row.userName,
+                        userId: row.id,
+                        tel: row.phoneNumber,
+                        role: roles,
+                        organization: orgInfo.orgName,
+                        department: row.deptName,
+                        position: row.duty,
+                        visible: true,
+                        loading: false,
+                    }
+                }
+                this.dialogForm.title = title;
+                this.dialogForm.visible = true;
             }
-            this.dialogForm.title = title;
-            this.dialogForm.visible = true;
         },
         closeDialog() {
             this.$refs.dialogForm && this.$refs.dialogForm.resetFields();
             this.$refs.dialgOrgForm && this.$refs.dialgOrgForm.resetFields();
+            this.$refs.dialogFormAdd && this.$refs.dialogFormAdd.resetFields();
+
             this.dialogForm = {
                 title:'',
                 userId: '',
@@ -328,6 +417,15 @@ export default {
                 orgCode: '',
                 orgName: '',
                 loading: false
+            };
+            this.dialogFormAdd = {
+                title:'',
+                userName:'',
+                userId: '',
+                id: '',
+                role:[],
+                visible: false,
+                loading: false
             }
         },
         onConfirm() {
@@ -343,7 +441,7 @@ export default {
                         return this.orgCode == item.orgCode;
                     })
                     console.log(organization)
-                    if(that.dialogForm.title == "添加用户"){
+                    if(that.dialogForm.title == "新建用户"){
                         formData = {
                             diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
                             userName: this.dialogForm.userName,
@@ -381,6 +479,50 @@ export default {
                 }
             });
         },
+        onConfirmAdd() {
+            this.$refs.dialogFormAdd.validate(async (valid) => {
+                let that = this;
+                if (!valid) {
+                    return false;
+                }
+                that.dialogFormAdd.loading = true;
+                try {
+                    let res, formData;
+                    let organization = that.orgList.find(item=>{
+                        return this.orgCode == item.orgCode;
+                    })
+                    console.log(organization)
+                    if(that.dialogFormAdd.title == "添加用户"){
+                        formData = {
+                            diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
+                            orgName: organization.orgName,
+                            orgCode: organization.orgCode,
+                            userId: this.dialogFormAdd.userId,
+                            roles: this.dialogFormAdd.role,
+                        }
+                        res = await that.$http.ORGDisAddUser(formData);
+                    }else {
+                        formData = {
+                            diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
+                            orgName: organization.orgName,
+                            orgCode: organization.orgCode,
+                            userId: this.dialogFormAdd.userId,
+                            roles: this.dialogFormAdd.role,
+                        }
+                        res = await that.$http.ORGDisupdateUserList(formData);
+                    }
+                    if (res.code == '0') {
+                        that.$mes('success', that.dialogFormAdd.title +'成功');
+                        that.dialogFormAdd.visible = false;
+                        that.getDataList(that.paging.currentPageNo, that.paging.currentPageSize);
+                    }
+                    that.dialogFormAdd.loading = false;
+                } catch (error) {
+                    console.log(error)
+                    that.dialogFormAdd.visible = false;
+                }
+            });
+        },
         addOrgInput() {
             this.orgList.push({
                 edit: true,
@@ -413,7 +555,7 @@ export default {
             try {
                 let res = await this.$http.ORGDisAddOrg(formData);
                 if (res.code == '0') {
-                    this.$mes('success', '添加成功!');
+                    this.$mes('success', '新建成功!');
                     this.getOrgList();
                 }
             } catch (err) {

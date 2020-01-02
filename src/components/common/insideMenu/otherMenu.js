@@ -55,7 +55,7 @@ const otherMenu = [
                 menuPath: '/inputStatistics',
                 name: 'inputStatistics',
                 children: [],
-                roles:[1]
+                roles:[1,2]
             }
         ],
         name: 'organizationManagementDis',

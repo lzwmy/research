@@ -8,7 +8,7 @@ const url = {
     //获取角色信息 (系统登录)
     getRoles: '/subject/getRoles',
     //获取角色信息（分享登录）
-    sharegetRoles: '/subject/share/getRoles',
+    // sharegetRoles: '/subject/share/getRoles',
     
 
 };
@@ -20,9 +20,9 @@ const http = {
     researchGetRoles (params) {
         return vm.$get(url.getRoles, params, true);
     },
-    researchSharegetRoles () {
-        return vm.$get(url.sharegetRoles, null, false);
-    },
+    // researchSharegetRoles () {
+    //     return vm.$get(url.sharegetRoles, null, false);
+    // },
 };
 
 export default http;

@@ -111,7 +111,7 @@ export default {
         console.log(error);
       }
     },
-    async getUserRoles() {
+    async getIsAdmin() {
       try {
         let data = await this.$http.ORGDisGetUserRoles();
         if (data.code == '0') {
@@ -134,6 +134,33 @@ export default {
       }
       this.$store.commit('saveInsideData',params)
       this.$router.push('/userManage')
+    },
+    async getUserRoles(id) {
+        try {
+            let res = await this.$http.ORGDisShareUserRole({
+              diseaseId: id
+            });
+            if (res.code == '0' && res.data.length) {
+                this.$store.commit('saveDiseaseInfo',{
+                  diseaseId: item.id,
+                  diseaseName: item.name,
+                  isAdmin: false,
+                  roles: res.data || [3],
+                  orgCode: '',      //组织机构
+                  doctor: ''      //医生
+                });
+                this.$router.push({
+                  path: list[0].menuPath,
+                  query: {
+                    id: item.id
+                  }
+                })
+            }else {
+              this.$mes('info','暂无权限访问')
+            }
+        } catch (err) {
+            console.log(err)
+        }
     },
     toLink(item) {
       let list = [];
@@ -160,8 +187,12 @@ export default {
         menuList: list
       }
       this.$store.commit('saveInsideData',params)
-      this.getUserRoles()
-      .then((res)=>{
+      this.getIsAdmin().then((res)=>{
+        //非管理员
+        if(!res) {
+          this.getUserRoles(item.id);
+          return;
+        }
         this.$store.commit('saveDiseaseInfo',{
           diseaseId: item.id,
           diseaseName: item.name,

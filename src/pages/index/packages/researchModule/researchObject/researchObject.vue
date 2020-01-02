@@ -109,7 +109,7 @@
                     ref="refTable" fit border
                     :data="dataList.content" v-loading="tableLoading"
                     @selection-change="handleSelectionChange"
-                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-58):(routerViewHeight*1)-58">
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-58):(routerViewHeight*1)">
                     <el-table-column type="selection" fixed align="center" width="50"></el-table-column>
                     <el-table-column 
                         v-for="column in filterHeader"
@@ -431,7 +431,6 @@ export default {
                 patientStatus: parseInt(this.form.patientState),
                 searchType: parseInt(this.form.radio),
                 keyword: this.form.keyword,
-                enterType: localStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
             };
             try {
                 let res = await that.$http.researchObjectTable(formData);

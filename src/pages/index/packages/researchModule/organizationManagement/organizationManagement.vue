@@ -3,8 +3,7 @@
         <div class="component_head flex-between-center">
             <p>{{$route.meta.txt}}</p>
             <div class="head_content cur_pointer">
-                <el-button type="primary" icon="el-icon-plus" @click="showDialog('添加用户')">{{$store.state.user.researchInfo.centerModel==1?'添加用户':'新建用户'}}</el-button>
-
+                <el-button type="primary" icon="el-icon-plus" @click="showDialog(orgType==1?'添加用户':'新建用户')">{{orgType==1?'添加用户':'新建用户'}}</el-button>
             </div>
         </div>
         <div class="box">
@@ -48,7 +47,7 @@
                 </echarts-contain>
             </div>
         </div>
-        <!-- 多中心添加用户 -->
+        <!-- 新建用户 -->
         <el-dialog 
             :title="dialogForm.title" 
             :visible.sync="dialogForm.visible" 
@@ -65,11 +64,11 @@
                 <el-form-item label="手机号:" prop="tel">
                     <el-input v-model.trim="dialogForm.tel" placeholder="请输入用户名" :maxlength="30" clearable :disabled="dialogForm.title=='编辑用户'"></el-input>
                 </el-form-item>
-                <el-form-item label="机构:" prop="organization">
+                <!-- <el-form-item label="机构:" prop="organization">
                     <el-select v-model="dialogForm.organization" class="block">
                         <el-option v-for="(item, index) in orgList" :key="index" :label="item.orgName" :value="item.orgName" :disabled="dialogForm.title=='编辑用户'"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
                         <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
@@ -88,7 +87,7 @@
             </div>
         </el-dialog>
 
-        <!-- 单中心选择用户 -->
+        <!-- 添加用户 -->
         <el-dialog 
             :title="dialogFormSingle.title" 
             :visible.sync="dialogFormSingle.visible" 
@@ -156,6 +155,7 @@ export default {
             dataList: {},
             orgList: [],
             roleList: [],
+            orgType: null,
             orgLoading: false,
             orgCode: '',
             tableLoading: false,
@@ -168,7 +168,6 @@ export default {
             ruleDialogForm: {
                 userName: [{required: true, message: '请输入用户名', trigger: 'change'}],
                 tel: [{required: true, message: '请输入手机号', trigger: 'change'}],
-                organization: [{required: true, message: '请选择机构', trigger: 'change'}],
                 role: [{required: true, message: '请选择角色', trigger: 'change'}],
                 department: [{required: true, message: '请输入科室', trigger: 'change'}],
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]
@@ -188,26 +187,15 @@ export default {
     },
     methods: {
         initPage () {
-            //单中心
-            if(this.$store.state.user.researchInfo.centerModel==1) {
-                this.getAllUsers();
-            }
-            //手机登录时
-            if(localStorage.getItem('CURR_LOGIN_TYPE') == "research") {
-                this.getOrgListShare()
-                .then(()=>{
-                    this.orgList.length != 0 && this.selectGroup(this.orgList[0]);
-                })
-            }else {
-                this.getOrgList()
-                .then(()=>{
-                    this.orgList.length != 0 && this.selectGroup(this.orgList[0]);
-                })
-            }
+            this.getAllUsers();
+            this.getOrgList().then(()=>{
+                this.orgList.length != 0 && this.selectGroup(this.orgList[0]);
+            })
             this.getAllRoles();
         },
         selectGroup(item,index) {
             this.orgCode = item.orgCode;
+            this.orgType = item.orgType;
             this.getDataList();
         },
         async getAllRoles() {
@@ -253,7 +241,7 @@ export default {
             that.paging.currentPageSize = pageSize;
             that.dataList.content = [];
             let formData = {
-                offset: pageNo - 1,
+                offset: pageNo,
                 limit: pageSize,
                 args: this.orgCode
             };
@@ -299,24 +287,9 @@ export default {
                 console.log(err)
             }
         },
-        //获取机构列表(手机登录)
-        async getOrgListShare() {
-            this.orgLoading = true;
-            try {
-                let res = await this.$http.ORGgetOrgListShare({subjectId: this.$store.state.user.researchInfo.subjectInfoId});
-                if (res.code == '0') {
-                    this.orgList = res.data;
-                    this.orgCode = this.orgList[0].orgCode;
-                }
-                this.orgLoading = false;
-            } catch (err) {
-                this.orgLoading = false;
-                console.log(err)
-            }
-        },
         showDialog(title, row) {
-            //多中心
-            if(this.$store.state.user.researchInfo.centerModel==2) {
+            //新建用户
+            if(this.orgType == 0) {
                 this.dialogForm.title = title;
                 this.dialogForm.visible = true;
                 if(!row) {
@@ -324,12 +297,13 @@ export default {
                 }
                 this.dialogForm.userName = row.userName;
                 this.dialogForm.tel = row.phoneNumber;
-                this.dialogForm.organization = row.orgName;
+                this.dialogForm.organization = this.orgCode;
                 this.dialogForm.role = row.roles;
                 this.dialogForm.department = row.deptName;
                 this.dialogForm.position = row.duty;
                 this.dialogForm.userId = row.id;
             }else {
+                //添加用户
                 this.dialogFormSingle.title = title;
                 this.dialogFormSingle.visible = true;
                 if(!row) {
@@ -345,31 +319,28 @@ export default {
             }
         },
         closeDialog() {
-            if(this.$store.state.user.researchInfo.centerModel==2) {
-                this.$refs.dialogForm.resetFields();
-                this.dialogForm = {
-                    title:'',
-                    userId: '',
-                    userName:'',
-                    tel: '',
-                    organization: '',
-                    role:[],
-                    department: '',
-                    position: '',
-                    visible: false,
-                    loading: false,
-                }
-            }else {
-                this.$refs.dialogFormSingle.resetFields();
-                this.dialogFormSingle = {
-                    title:'',
-                    userName:'',
-                    userId: '',
-                    id: '',
-                    role:[],
-                    visible: false,
-                    loading: false
-                }
+            this.$refs.dialogForm && this.$refs.dialogForm.resetFields();
+            this.$refs.dialogFormSingle && this.$refs.dialogFormSingle.resetFields();
+            this.dialogForm = {
+                title:'',
+                userId: '',
+                userName:'',
+                tel: '',
+                organization: '',
+                role:[],
+                department: '',
+                position: '',
+                visible: false,
+                loading: false,
+            }
+            this.dialogFormSingle = {
+                title:'',
+                userName:'',
+                userId: '',
+                id: '',
+                role:[],
+                visible: false,
+                loading: false
             }
         },
         onConfirm() {
@@ -381,16 +352,16 @@ export default {
                 that.dialogForm.loading = true;
                 try {
                     let res, formData;
-                    let organization = that.orgList.filter(item=>{
-                        return that.dialogForm.organization == item.orgName;
+                    let organization = that.orgList.find(item=>{
+                        return that.orgCode == item.orgCode;
                     })
-                    if(that.dialogForm.title == "添加用户"){
+                    if(that.dialogForm.title == "新建用户"){
                         formData = {
                             subjectId: this.$store.state.user.researchInfo.subjectInfoId,
                             userName: this.dialogForm.userName,
                             phoneNumber: this.dialogForm.tel,
-                            orgName: this.dialogForm.organization,
-                            orgCode: organization[0].orgCode,
+                            orgName: organization.orgName,
+                            orgCode: organization.orgCode,
                             deptName: this.dialogForm.department,
                             duty: this.dialogForm.position,
                             roles: this.dialogForm.role

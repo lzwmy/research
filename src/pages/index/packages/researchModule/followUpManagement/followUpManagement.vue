@@ -84,7 +84,7 @@
                 <formItemCom 
                     ref="refFormItemCom"
                     @sendAllCrfForm="handleAllFormItem" 
-                    @getDataList="getDataList(0,15)" 
+                    @getDataList="getDataList(0,20)" 
                     :allCrfForm="allCrfForm" 
                     :confingData="confingData"
                     :form='form'
@@ -104,7 +104,7 @@
                     v-if="dataList.header.length != 0"
                     :data="dataList.content"
                     @selection-change="handleSelectionChange"
-                    :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
+                    :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1 - 58):(routerViewHeight*1)">
                     <el-table-column type="selection" align="center" width="50" fixed></el-table-column>
                     <el-table-column 
                         v-for="(column,index) in filterHeader"
@@ -159,15 +159,8 @@
                         </template>
                     </el-table-column>
                 </el-table>
-
-                <!-- <div v-show="dataList.header.length == 0 && showGuide" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
-                    <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
-                        <use xlink:href="#iconzu11"></use>
-                    </svg>
-                    <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
-                </div> -->
                 <!-- 分页 -->
-                <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
+                <pagination :data="dataList" @change="getDataList"></pagination>    
 
 
                 <!-- 引导图 -->
@@ -233,7 +226,7 @@ export default {
             tableLoading: false,
             paging: {
                 pageNo: 1,
-                pageSize: 10,
+                pageSize: 20,
                 currentPageNo: '',
                 currentPageSize: '',
             },
@@ -312,7 +305,7 @@ export default {
         },
         visibilityChangeHandle() {
             if(!document[this.hidden]) {
-                this.getDataList(0,15);
+                this.getDataList(0,20);
             }
         },
          //表格多选项
@@ -352,7 +345,6 @@ export default {
                 visitStatus: this.form.visitStatus==''?undefined:this.form.visitStatus,
                 searchType: parseInt(this.form.radio),
                 content: this.form.keyword,
-                enterType: localStorage.getItem('CURR_LOGIN_TYPE') == "research"?1:0     //0账号密码  1 验证码
             };
             try {
                 let res = await that.$http.followUpManagementTable(formData);
@@ -362,7 +354,11 @@ export default {
                         header: res.data.header
                     };
                     that.dataList = obj;
-                    console.log(this.dataList)
+                    obj.pageNo = pageNo;
+                    obj.pageSize = pageSize;
+                    obj.totalCount = parseInt(res.data.pageSize);
+                    obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
+                    that.dataList = obj;
                 }else {
                     that.dataList = {
                         content: [],
@@ -444,10 +440,7 @@ export default {
         handleSelectGroup(data) {
             this.currentGrounpId = data;
             //查询两遍，解决table提示框不显示问题
-            this.getDataList(0,15)
-            // .then(()=>{
-                // this.getDataList(0,15);
-            // })
+            this.getDataList(0, 20)
         },
         //获取全部crf表单列表和列表下的所有指标
         handleAllFormItem(data) {
@@ -507,7 +500,7 @@ export default {
         },
         //表单编辑成功回调
         successAdd() {
-            this.getDataList(0,15);
+            this.getDataList(0,20);
         },
         handlePoint(data) {
             if(typeof(data) != 'object') {
@@ -524,9 +517,9 @@ export default {
         .cloud-search-list .bigContain {
             background-color: #fff;
         }
-        .echartsContain {
-            min-height: 600px;
-        }
+        // .echartsContain {
+        //     min-height: 600px;
+        // }
         .el-table {
             padding: 0;
             .status-icon {
