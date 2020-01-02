@@ -52,14 +52,14 @@ export default {
                             nodes[dataFirstName] = {
                                 id: dataFirstName,
                                 marker: {
-                                    radius: 20
+                                    radius: 26
                                 },
                                 color: "#1bbae1"
                             };
                             nodes[link[1]] = {
                                 id: link[1],
                                 marker: {
-                                    radius: 14
+                                    radius: 18
                                 },
                                 color: colors[i++]
                             };
