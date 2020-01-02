@@ -14,7 +14,7 @@
                         <span v-if="!item.edit">{{item.orgName}}</span>
                         <el-input @keyup.enter.native="addOrg" @blur="addOrg" class="addOrg" v-else v-model="item.orgName"></el-input>
                         <el-popover
-                            v-if="$store.state.user.diseaseInfo.isAdmin===true"
+                            v-if="$store.state.user.diseaseInfo.isAdmin===true && item.orgType != 1"
                             placement="bottom"
                             popper-class="more_popper"
                             trigger="hover">
@@ -26,7 +26,7 @@
                         </el-popover>
                     </li>
                 </ul>
-                <el-button v-if="loginType=='local'" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加分中心</el-button>
+                <el-button v-if="loginType=='local' && $store.state.user.diseaseInfo.isAdmin" class="plus flex-center-center" type="primary" icon="el-icon-plus" @click="addOrgInput">添加分中心</el-button>
             </div>
             <div class="content">
                 <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
@@ -76,11 +76,11 @@
                 <el-form-item label="手机号:" prop="tel">
                     <el-input v-model.trim="dialogForm.tel" placeholder="请输入手机号" :maxlength="30" clearable></el-input>
                 </el-form-item>
-                <el-form-item label="机构:" prop="organization">
+                <!-- <el-form-item label="机构:" prop="organization">
                     <el-select v-model="dialogForm.organization" class="block">
                         <el-option v-for="(item, index) in orgList" :key="index" :label="item.orgName" :value="item.orgName" :disabled="dialogForm.title=='编辑用户'"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
                         <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
@@ -182,7 +182,6 @@ export default {
                 userName: [{required: true, message: '请输入用户名', trigger: 'change'}],
                 tel: [{required: true, validator:checkPhone, trigger: 'blur'}],
                 role: [{required: true, message: '请选择角色', trigger: 'change'}],
-                organization: [{required: true, message: '请选择机构', trigger: 'change'}],
                 department: [{required: true, message: '请输入科室', trigger: 'change'}],
                 position: [{required: true, message: '请输入职称', trigger: 'change'}]
             },
@@ -272,7 +271,6 @@ export default {
             try {
                 let res = await this.$http.ORGDisGetOrgList({
                     diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
-                    source: this.loginType
                 });
                 if (res.code == '0') {
                     this.orgList = res.data;
@@ -287,6 +285,9 @@ export default {
             }
         },
         showDialog(title,row) {
+            let orgInfo = this.orgList.find( li => {
+                return li.orgCode == this.orgCode;
+            })
             if(row) {
                 let roles = row.roles.map(li=>{
                     return li.id;
@@ -297,7 +298,7 @@ export default {
                     userId: row.id,
                     tel: row.phoneNumber,
                     role: roles,
-                    organization: row.orgName,
+                    organization: orgInfo.orgName,
                     department: row.deptName,
                     position: row.duty,
                     visible: true,
@@ -337,7 +338,7 @@ export default {
                 that.dialogForm.loading = true;
                 try {
                     let res, formData;
-                    let organization = that.orgList.filter(item=>{
+                    let organization = that.orgList.find(item=>{
                         return that.dialogForm.organization == item.orgName;
                     })
                     if(that.dialogForm.title == "添加用户"){
@@ -345,8 +346,8 @@ export default {
                             diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
                             userName: this.dialogForm.userName,
                             phoneNumber: this.dialogForm.tel,
-                            orgName: this.dialogForm.organization,
-                            orgCode: organization[0].orgCode,
+                            orgName: organization.orgName,
+                            orgCode: organization.orgCode,
                             deptName: this.dialogForm.department,
                             duty: this.dialogForm.position,
                             roles: this.dialogForm.role
@@ -357,8 +358,8 @@ export default {
                             diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
                             userName: this.dialogForm.userName,
                             phoneNumber: this.dialogForm.tel,
-                            orgName: this.dialogForm.organization,
-                            orgCode: organization[0].orgCode,
+                            orgName: organization.orgName,
+                            orgCode: organization.orgCode,
                             deptName: this.dialogForm.department,
                             duty: this.dialogForm.position,
                             roles: this.dialogForm.role,
@@ -426,7 +427,8 @@ export default {
                 type: 'warning'
             }).then(async () => {
                 let formData = {
-                    id: row.id
+                    id: row.id,
+                    orgCode: row.orgCode
                 };
                 try {
                     let data = await that.$http.ORGDisDeleteUser(formData);
