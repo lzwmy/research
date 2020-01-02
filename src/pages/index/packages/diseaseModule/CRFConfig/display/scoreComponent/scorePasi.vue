@@ -206,7 +206,7 @@
         <div class="content_item">
           <div class="item_name sing-input">PASI (总分) =</div>
           <div class="item_single-input">
-            <el-input v-model="total" readonly></el-input>
+            <el-input v-model="pasiTotal" ></el-input>
           </div>
         </div>
       </div>
@@ -273,7 +273,13 @@
             desquamation:0,//脱屑
             erythema:0,//红斑
             infiltration:0,//浸润
-          }
+          },
+          pasiTotal:'0.00',
+        }
+      },
+      watch:{
+        'total':function (data) {
+          this.pasiTotal = data ;
         }
       },
       methods:{
@@ -316,7 +322,9 @@
       },
       mounted() {
         if(this.report.value2 !== "") {
-          this.getScoreReportPreview();
+          this.getScoreReportPreview().then(()=>{
+            this.pasiTotal = this.report.value;
+          });
         }
       }
     }
