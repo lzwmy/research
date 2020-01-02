@@ -64,9 +64,9 @@ export default {
     },
     watch: {
         popoverFomeItemVisible: function(newVal) {
-            if(!newVal) {
-                return;
-            }
+            // if(!newVal) {
+            //     return;
+            // }
             this.getAllFormItem()
             .then(()=>{
                 this.handlePreviewFormItem()

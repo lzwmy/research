@@ -101,7 +101,7 @@
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1"  v-loading="tableLoading">
                 <el-table 
                     ref="refTable" fit border
-                    v-if="dataList.content.length != 0"
+                    v-if="dataList.header.length != 0"
                     :data="dataList.content"
                     @selection-change="handleSelectionChange"
                     :max-height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1):(routerViewHeight*1)">
@@ -160,12 +160,12 @@
                     </el-table-column>
                 </el-table>
 
-                <div v-show="dataList.content.length == 0 && showGuide" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
+                <!-- <div v-show="dataList.header.length == 0 && showGuide" class="empty flex-center-center flex-wrap" style="margin-top: 180px;">
                     <svg class="icon" aria-hidden="true" style="font-size: 170px;width:100%; text-align:center;">
                         <use xlink:href="#iconzu11"></use>
                     </svg>
                     <p class="text-center" style="font-size: 14px; color:#666;padding-top: 15px;">暂无内容</p>
-                </div>
+                </div> -->
                 <!-- 分页 -->
                 <!-- <pagination :data="dataList" @change="getDataList"></pagination>     -->
 
@@ -215,7 +215,8 @@ export default {
             stageList:[],
             stagePointList:[],
             dataList: {
-                content: []
+                content: [],
+                header: []
             },
             form: {
                 entryTime:[],
@@ -355,7 +356,7 @@ export default {
             };
             try {
                 let res = await that.$http.followUpManagementTable(formData);
-                if (res.code == '0' && res.data.body.length != 0) {
+                if (res.code == '0') {
                     let obj = {
                         content: res.data.body,
                         header: res.data.header

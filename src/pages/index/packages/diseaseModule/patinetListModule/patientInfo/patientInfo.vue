@@ -10,16 +10,12 @@
                 size="18">
                 <el-card>
                     <div class="flex-between-center cur_pointer">
-                        <!-- <p>{{item.author}}  {{item.createTime}}</p> -->
                         <p @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
                         <div>
                             <el-button type="danger" class="delete_btn" icon="icon iconfont iconshanchu1" @click="onDeleteReport(item)"></el-button>
                             <span class="state" :class="'status_'+item.reportType+'_'+item.status">{{matchingReportStatus(item)}}</span>
-                            <!-- <span class="state" v-if="item.status==0">未填写</span> -->
-                            <!-- <span class="state" v-if="item.status==1" style="color: rgba(245, 157, 0, 1); border: 1px solid rgba(245, 157, 0, 1); background:rgba(245, 157, 0, 0.1);">已填写</span> -->
                         </div>
                     </div>
-                    <!-- <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'初诊':'随访'}}</h4> -->
                     <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}医生：{{item.author}} <span style="padding-left: 20px;">创建时间： {{item.createTime}}</span> </h4>
                 </el-card>
             </el-timeline-item>
