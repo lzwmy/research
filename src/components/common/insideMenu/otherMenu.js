@@ -33,7 +33,7 @@ const otherMenu = [
         ico: 'organizationManagement',
         menuName: '组织管理',
         menuCode: "012907",
-        menuOrder: 10,
+        menuOrder: 11,
         menuPath: '/organizationManagementDis',
         roles:[1,2],
         children: [

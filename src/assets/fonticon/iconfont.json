@@ -1702,7 +1702,11 @@
     {
       "icon_id": "12594998",
       "name": "知识图谱",
+<<<<<<< HEAD
       "font_class": "zhishitupu",
+=======
+      "font_class": "knowledgeChart",
+>>>>>>> master
       "unicode": "e712",
       "unicode_decimal": 59154
     },
