@@ -658,9 +658,14 @@ export default {
       if(flag) {
         this.$message.info('有必填项未填写');
         return ;
+      };
+      let copyData = JSON.parse(JSON.stringify(that.$store.state.annotateData.answerList));
+      let resultData = [];
+      if(copyData.length) {
+        resultData= copyData.filter(item => item.old == 0 )
       }
       let formData = {
-        'replyList':that.$store.state.annotateData.answerList || [],
+        'replyList':resultData || [],
         'reportBakDto':{
           ...that.report
         }

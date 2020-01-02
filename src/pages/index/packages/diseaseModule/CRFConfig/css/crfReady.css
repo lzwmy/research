@@ -859,6 +859,7 @@ body.theme-blue .crf-left-btn.onclick {
   cursor:pointer;
 }
 /***表格**/
+
 .read_container-mode .view_container_tlr .info_fixed{
   opacity: 0;
 }
@@ -882,6 +883,10 @@ body.theme-blue .crf-left-btn.onclick {
   font-size: 14px;
   color: #A2A2A2;
 }
+.read_container-mode .table_knowType .addColor {
+  color: #00BAE6;
+  padding-right: 25px;
+}
 .read_container-mode .table_knowType .iconfont{
   font-size: 16px;
   color: #A2A2A2;
@@ -899,6 +904,7 @@ body.theme-blue .crf-left-btn.onclick {
 .read_container-mode .view_container_tlr .arrangement_lr .table_label .info_fixed {
   display: none !important;
 }
+
 /***** 表格下 控件类型隐藏 ***/
 /**
 * 输入框
@@ -929,6 +935,10 @@ body.theme-blue .crf-left-btn.onclick {
 }
 .read_container-mode .gather_knowType .remove_annotate {
   display: inline-block;
+}
+.read_container-mode .gather_knowType .addColor {
+  color: #00BAE6;
+  padding-right: 25px;
 }
 
 /**备注弹框样式**/
