@@ -1,9 +1,11 @@
 <template>
     <div class="cloud-component treeCustom">
         <div class="component_head flex-between-center">
-            <p>{{$route.meta.txt}}</p>
+            <p>
+                <span class="back" @click="$router.push({path:'/knowledgeChart',query: {id:$route.query.id}})"><i class="icon iconfont iconfanhui"></i>返回</span>
+                {{$route.meta.txt}}
+                </p>
             <div class="head_content cur_pointer">
-                <el-button @click="$router.push({path:'/knowledgeChart',query: {id:$route.query.id}})">返回</el-button>
             </div>
         </div>
         <!-- 搜索区域 -->

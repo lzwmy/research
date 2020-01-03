@@ -107,6 +107,8 @@ export default {
                             linkFormat: '',   
                             format: '{point.name}',
                         },
+                        draggable: true, ///拖拽
+                        enableMouseTracking: true,  //跟踪鼠标
                         data:[]
                     }
                 ],
