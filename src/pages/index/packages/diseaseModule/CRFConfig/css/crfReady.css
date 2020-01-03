@@ -586,15 +586,17 @@ body.theme-blue .crf-left-btn.onclick {
 }
 .read_container-mode .info_fixed .info_tip_box .tip_content {
   width: 421px;
-  min-height: 60px;
+  /*min-height: 60px;*/
+  max-height: 130px;
   padding: 10px 10px;
-  display: flex;
+  /*display: flex;*/
   flex-direction: column;
   justify-content: center;
   border:1px solid rgba(229,235,236,1);
   box-shadow:2px 2px 10px rgba(235,235,235,0.89);
   color: #333333;
   transition: all linear 1s;
+  overflow: auto;
 }
 .read_container-mode .info_fixed .info_tip_box .tip_content p span.ml_7{
   display: inline-block;
