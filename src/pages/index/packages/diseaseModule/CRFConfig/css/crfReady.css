@@ -586,8 +586,8 @@ body.theme-blue .crf-left-btn.onclick {
 }
 .read_container-mode .info_fixed .info_tip_box .tip_content {
   width: 421px;
-  /*min-height: 60px;*/
-  max-height: 130px;
+  min-height: 60px;
+  max-height: 135px;
   padding: 10px 10px;
   /*display: flex;*/
   flex-direction: column;
