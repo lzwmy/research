@@ -62,11 +62,12 @@
       '$store.state.annotateData.annotateList':function (data) {
           if(data.length!==0) {
             let copyData = JSON.parse(JSON.stringify(data));
-            console.log(copyData);
             let sum = copyData.length;
             if(copyData.length) {
-              let resultData  = copyData.filter(item => item.old == 0);
-              sum = resultData.length;
+                if((this.tipStatus == 3||2 ) && this.isExamine == true) {
+                  let resultData  = copyData.filter(item => item.old == 0);
+                  sum = resultData.length;
+                }
             }
             this.$store.dispatch('annotateNumberFun',sum)
           }else  if(data.length == 0) {
@@ -102,10 +103,11 @@
             .then(()=> this.getReportBakListDataChange())
             .then(()=> this.getAnswerList());
         }else if(tipStatus == 3 && isExamine == false) {
-          console.log('报告列表 -- 不通过','显示最近一次 批注、修改信息、回复');
-          this.getReportLastNotation()
+          console.log('报告列表 -- 不通过','显示最近一次 批注');
+          /*this.getReportLastNotation()
             .then(() => this.getReportLastDataChange())
-            .then(() => this.getReportLastReply())
+            .then(() => this.getReportLastReply())*/
+          this.getReportLastNotation()
         }else if(tipStatus == 4 && isExamine == false) {
           console.log('报告列表 -- 通过','完整的阅读报告模式 ,显示全部修改记录');
           this.getReportBakListDataChange()
@@ -136,6 +138,10 @@
       },
       //添加评分
       addComment() {
+        if(this.annotate == "") {
+          this.$message.info('内容不能为空，请重新输入');
+          return false;
+        }
         let timestamp=this.getMyDate(new Date().getTime());
         this.currentComment.createTime = timestamp;
         this.currentComment.content = this.annotate;

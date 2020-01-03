@@ -208,7 +208,7 @@
         let resultData = [];
         if(array.length) {
           resultData = array.filter(item =>{
-            return item.old == 0
+            return item.old == 0 && item.content != ""
           });
         }
         let formData = {

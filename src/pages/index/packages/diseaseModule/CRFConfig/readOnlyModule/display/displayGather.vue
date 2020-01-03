@@ -1,7 +1,7 @@
 <template>
   <!--集合-->
   <div class="view_box" >
-      <div class="view_title" style="min-width:190px;display:inline-block;">
+      <div class="view_title" style="min-width:185px;display:inline-block;">
         <!--加号-->
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" ></i>
         <!--减号-->

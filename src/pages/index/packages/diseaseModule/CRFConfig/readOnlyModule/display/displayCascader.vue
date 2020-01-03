@@ -354,10 +354,10 @@
         }*/
         if(this.report.value) {
           if(this.report.value.indexOf('|') != '-1') {
-            let array = this.report.value.split('|').join("/");
+            let array = this.report.value.split('|').join(" ");
             this.displayValue = array;
           }else if(this.report.value.indexOf('[') != '-1'){
-            let array = JSON.parse(this.report.value).join("/");
+            let array = JSON.parse(this.report.value).join(" ");
             this.displayValue = array;
           }else {
             let array = this.report.value;

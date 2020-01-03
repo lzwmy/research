@@ -320,7 +320,6 @@ export default {
     }
   },
   created() {
-    console.log(this.report.value,this.report.value2)
     // this.termValue=this.item.termSet.termDefaultValue;
     /*this.checkList = this.item.termSet.termDefaultValue;
     if (this.report.value) {
