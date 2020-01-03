@@ -10,6 +10,8 @@
 import header from 'components/common/header/header';
 import navbar from 'components/common/navbar/navbar'
 import view from 'components/common/view/view';
+import utils from 'components/utils';
+
 export default {
   name: 'app',
   components: {
@@ -22,10 +24,13 @@ export default {
     return {
       //是否为内页主页
       insideView: true,
+      timer: null,
     };
   },
   watch: {
-    $route () {
+    $route (newVal) {
+      //检测是否存在新版本
+      utils.testingVersion();
       if (this.$route.meta.openMode === 2) {
         this.insideView = true;
       }else {
@@ -33,11 +38,15 @@ export default {
       }
     },
   },
-  created() {
-      
+  beforeDestroy() {
+    clearInterval(this.timer)
+  },
+  mounted() {
+    this.timer = setInterval(() => {
+      utils.testingVersion();
+    }, 300000);
   },
   methods: {
-    
   }
 };
 </script>

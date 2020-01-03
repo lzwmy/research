@@ -921,6 +921,40 @@ const deleteObject = function (arr,attribute) {
   return json_arr;
 };
 
+const testingVersion = async()=> {
+  if(process.env.NODE_ENV == 'production') {
+      // 在 js 中请求首页地址不会更新页面
+      const response = await axios.get(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
+      // 返回的是字符串，需要转换为 html 
+      let el = document.createElement('html')
+      el.innerHTML = response.data;
+      
+      // 拿到 当前hash 
+      let new_scriptArr = el.getElementsByTagName('body')[0].getElementsByTagName('script');
+      let new_indexSrc = el.getElementsByTagName('body')[0].getElementsByTagName('script')[new_scriptArr.length - 1].src.split('/');
+      let new_hash = new_indexSrc[new_indexSrc.length - 1].split('.')[1];
+      console.log(new_hash)
+      let cur_scriptArr = document.getElementsByTagName('body')[0].getElementsByTagName('script');
+      let cur_indexSrc = document.getElementsByTagName('body')[0].getElementsByTagName('script')[cur_scriptArr.length - 1].src.split('/');
+      let cur_hash = cur_indexSrc[cur_indexSrc.length - 1].split('.')[1];
+      console.log(cur_hash)
+      if(cur_hash != new_hash) {
+        MessageBox.alert('系统版本已更新,请点击确定按钮刷新页面!', '系统通知', {
+          confirmButtonText: '确定',
+          type: 'warning',
+          showClose: false,
+          center: true,
+          closeOnClickModal: false,
+          callback: action => {
+            window.location.reload();
+          }
+        });
+      }
+  }
+}
+
+
+
 
 export default {
   getQuery,
@@ -970,5 +1004,5 @@ export default {
   ToDBC,   //半角转全角
   arrRermoveEmpty,  //数组去除空值
   deleteObject, // 去除 重复对象
-
+  testingVersion,   //检测版本更新
 };

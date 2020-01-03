@@ -97,11 +97,15 @@ export default {
       //检查记录类型
       recordType3:[],
       //检验记录类型
-      recordType4:[]
+      recordType4:[],
+      timer: null,
     };
   },
   watch: {
-    
+    $route (newVal) {
+      //检测是否存在新版本
+      utils.testingVersion();
+    },
   },
   computed: {},
   created () {
@@ -126,9 +130,12 @@ export default {
     })
   },
   beforeDestroy() {
-    // localStorage.removeItem('VIEW360_QUERY');
+    clearInterval(this.timer)
   },
   mounted () {
+    this.timer = setInterval(() => {
+      utils.testingVersion();
+    }, 300000);
   },
   components: {
     previewVisit,

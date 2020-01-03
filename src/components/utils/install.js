@@ -14,6 +14,7 @@ axios.defaults.timeout = 0;
 
 // http请求拦截器
 axios.interceptors.request.use(config => {
+ 
   //请求头带上token 凭证
   if (store.state.user.token) {
     config.headers.common['token'] = utils.decrypt(store.state.user.token);
