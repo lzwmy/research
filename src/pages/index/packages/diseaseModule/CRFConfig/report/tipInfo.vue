@@ -172,7 +172,7 @@
           return;
         }
         //如果为非审核情况下，显示保存、提交按钮 进入填写模式
-        this.$confirm('是否执行 ('+curInfo.btnText+') 操作?', '提示', {
+        this.$confirm('是否'+curInfo.btnText+'操作?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -263,7 +263,7 @@
       },
       //提交
       submitReportData() {
-        this.$confirm('是否执行 (提交) 操作?', '提示', {
+        this.$confirm('是否提交?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

@@ -84,7 +84,7 @@
                         </el-option>
                       </el-select>
                       &nbsp;
-                      <el-button class="save_btn" type="primary" @click="openSaveConditionDialog" icon="icon iconfont iconzujian44">保存筛选</el-button>
+                      <el-button class="save_btn" type="primary" @click="openSaveConditionDialog" icon="icon iconfont iconzujian44">保存</el-button>
                     </el-form-item>
                   </div>
                   <div>
