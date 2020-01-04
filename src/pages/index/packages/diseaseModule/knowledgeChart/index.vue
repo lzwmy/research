@@ -95,7 +95,14 @@ export default {
                         keys: ['from', 'to'],
                         color: '#1bbae1',
                         layoutAlgorithm: {
-                            enableSimulation: true
+                            enableSimulation: true,
+                            linkLength: 13,
+                            attractiveForce: function (d, k) {
+                                return (d * d * 0.1  + 8) / k;
+                            },
+                            repulsiveForce: function (d, k) {
+                                return (k * k * 1) / d;
+                            }
                         },
                         
                     }
