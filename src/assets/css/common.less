@@ -435,6 +435,30 @@ body {
         display: flex;
         align-items: center;
     }
+    .back {
+        cursor: pointer;
+        font-weight: normal;
+        font-size: 14px;
+        color: #394263;
+        font-weight: 400;
+        padding-right: 40px;
+        position: relative;
+        &::after {
+            content: '';
+            width: 1px;
+            height: 16px;
+            background-color: #979BAA;
+            display: inline-block;
+            position: absolute;
+            right: 20px;
+            top: 2px;
+        }
+        .icon {
+            font-size: 13px;
+            color: #979BAA;
+            padding-right: 5px;
+        }
+    }
 }
 
 body {

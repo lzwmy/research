@@ -21,7 +21,6 @@ export default {
         };
     },
     mounted() {
-        console.log('mounted')
         this.$nextTick(() => {
             this.initHighcharts();
             this.addEvent();

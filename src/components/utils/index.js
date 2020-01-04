@@ -924,7 +924,7 @@ const deleteObject = function (arr,attribute) {
 const testingVersion = async()=> {
   if(process.env.NODE_ENV == 'production') {
       // 在 js 中请求首页地址不会更新页面
-      const response = await axios.get(`${window.location.protocol}//${window.location.host}${window.location.pathname}`);
+      const response = await axios.get(`${window.location.protocol}//${window.location.host}${window.location.pathname}?t=${new Date().getTime()}`);
       // 返回的是字符串，需要转换为 html 
       let el = document.createElement('html')
       el.innerHTML = response.data;
