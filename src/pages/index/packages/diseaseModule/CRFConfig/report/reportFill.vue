@@ -273,7 +273,8 @@ export default {
         }).catch(() => {});
     },
     handleScroll() {
-      this.getContentTop(document.documentElement.scrollTop);
+      // this.getContentTop(document.documentElement.scrollTop);
+      this.getContentTop($('.cloud-component').scrollTop());
     },
     resize() {
       /*$(".crffill").height($(window).height() - 160);
@@ -414,7 +415,7 @@ export default {
       this.dialogVisibles = false;
     },
     submitReportConfirm() {
-      this.$confirm('是否执行当前操作', '提示', {
+      this.$confirm('是否提交?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -424,7 +425,7 @@ export default {
       });
     },
     saveReportConfirm() {
-      this.$confirm('是否执行当前操作', '提示', {
+      this.$confirm('是否保存?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -744,7 +745,8 @@ export default {
       }else {
         this.$refs.reportRead.toTop();
       }*/
-      document.documentElement.scrollTop = 0;
+      // document.documentElement.scrollTop = 0;
+      $('.cloud-component').scrollTop(0);
     },
     getContentTop(top) {
       this.scrollTop = top;
