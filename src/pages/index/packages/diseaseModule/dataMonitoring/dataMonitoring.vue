@@ -154,6 +154,11 @@ export default {
                 this.getDataList()
             })
         },
+        diseaseId: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
+        },
         orgCode: function(newVal) {
             this.getReportStatusList().then(()=>{
                 this.getDataList()
@@ -166,6 +171,9 @@ export default {
         }
     },
     computed: {
+        diseaseId: function() {
+            return this.$store.state.user.diseaseInfo.diseaseId;
+        },
         orgCode: function() {
             return this.$store.state.user.diseaseInfo.orgCode;
         },
@@ -233,7 +241,7 @@ export default {
                 limit: pageSize,
                 args: {
                     "crfId": this.crfId,
-                    "diseaseId": this.$route.query.id,
+                    "diseaseId": this.$store.state.user.diseaseInfo.diseaseId,
                     "userId": this.$store.state.user.diseaseInfo.doctor,
                     "orgCode": this.$store.state.user.diseaseInfo.orgCode,
                     "status": this.form.status == -1? [2,3,4]: [this.form.status]

@@ -24,6 +24,7 @@
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
+                    @row-click="handleClick" @expand-change="expandChange"
                     :data="dataList.content" v-loading="loading" ref="refTable" fit lazy row-key="treeId" :tree-props="{children: 'children'}">
                     <el-table-column prop='index' label='序号' width="80"></el-table-column>
                     <el-table-column 
@@ -119,7 +120,7 @@ export default {
                 offset: pageNo,
                 limit: pageSize,
                 orgId: this.$store.state.user.diseaseInfo.orgCode,
-                diseaseId: this.$route.query.id || '',
+                diseaseId: this.$store.state.user.diseaseInfo.diseaseId || '',
                 start: startTime,
                 end: endTime
             };
@@ -144,6 +145,44 @@ export default {
             } catch (err) {
                 that.loading = false;
                 console.log(err)
+            }
+        },
+        async getSingleStatisticsData(row) {
+            console.log(row)
+            console.log(this.dataList)
+            // let index = this.dataList.content.findIndex(li=>{
+            //     return row.id == li.id;
+            // })
+            let startTime, endTime;
+            if(!this.form.time || this.form.time && this.form.time.length == 0) {
+                startTime = null
+                endTime = null
+            }else {
+                startTime = this.form.time[0];
+                endTime = this.form.time[1];
+            }
+            let formData = {
+                orgId: this.$store.state.user.diseaseInfo.orgCode,
+                diseaseId: this.$store.state.user.diseaseInfo.diseaseId || '',
+                start: startTime,
+                end: endTime
+            };
+            try {
+                let res = await this.$http.ORGDisGetSingleStatisticsData(formData);
+                if (res.code == 0) {
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        //表格内容点击
+        handleClick(row, column, cell) {
+            this.$refs.refTable.toggleRowExpansion(row)
+        },
+        //表格内容展开
+        expandChange(row,expanded ) {
+            if(expanded) {
+                this.getSingleStatisticsData(row);
             }
         },
         //添加treeid

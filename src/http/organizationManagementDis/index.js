@@ -32,6 +32,8 @@ const url = {
 
     // 获取录入统计数据
     getStatisticsData: '/disease/org/input/statistics',
+    // 获取录入统计数据(展开行)
+    getSingleStatisticsData: '/disease/org/single/statistics'
 };
 
 const http = {
@@ -76,6 +78,9 @@ const http = {
     },
     ORGDisGetStatisticsData (params) {
         return vm.$post(url.getStatisticsData, params, true);
+    },
+    ORGDisGetSingleStatisticsData (params) {
+        return vm.$post(url.getSingleStatisticsData, params, true);
     }
 };
 

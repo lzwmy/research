@@ -157,6 +157,11 @@ export default {
                 this.getDataList()
             })
         },
+        diseaseId: function(newVal) {
+            this.getReportStatusList().then(()=>{
+                this.getDataList()
+            })
+        },
         orgCode: function(newVal) {
             this.getReportStatusList().then(()=>{
                 this.getDataList()
@@ -169,6 +174,9 @@ export default {
         }
     },
     computed: {
+        diseaseId: function() {
+            return this.$store.state.user.diseaseInfo.diseaseId;
+        },
         orgCode: function() {
             return this.$store.state.user.diseaseInfo.orgCode;
         },

@@ -500,7 +500,7 @@
         .card_body {
           height: 154px;
           background-image: url('./images/researchTask_bg.png');
-          background-size: 100% 100%;
+          background-size: cover;
           .box {
             transition: all 300ms;
             width: 58px;
