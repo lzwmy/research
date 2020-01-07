@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <!--class="view_container" style="display: block"-->
-    <!--{{item.baseProperty.layout}}-->
+    {{item.baseProperty.layout}}
       <el-row v-if="item.baseProperty.layout.wrap == '1'"  align="top">
         <el-col  :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
           <display-input v-if="item.controlType=='SINGLE_INPUT'" :item="item" :report="report"/>

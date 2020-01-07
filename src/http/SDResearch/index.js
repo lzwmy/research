@@ -101,27 +101,27 @@ const url = {
    *  报告2.0
    * */
   //获取报告列表
-  getReportList:"/form/crf/bak/simple/list.do",
+  getReportList:"/form/crf/simple/list.do",
   //患者页 添加报告 保存接口
-  patientReportAddSave:"/report/bak/add.do",
+  patientReportAddSave:"/report/add.do",
   //根据过滤条件 获取报告列表
-  queryFilterReportList:"/report/bak/reportList.do",
+  queryFilterReportList:"/report/reportList.do",
   //获取患者报告记录
   queryReportListnew:"/report/patient",
   // 获取报告 回显信息
-  queryReportDisplayInfo:"/report/bak/findReport",
+  queryReportDisplayInfo:"/report/findReport",
   // 获取报告 回显信息(科研项目)
   querySubjectReportDisplayInfo:"/subject/report/preview.do",
   // 获取表单模版 回显信息(科研项目)
   querySubjectCrfDisplayInfo:"/subject/crf/preview.do",
   // 报告 保存 数据
-  reportDataSave:"/report/bak/save.do",
+  reportDataSave:"/report/save.do",
   //保存报告（从随访进来）
   saveFollowUpReportData: '/report/remind/save/report',
   // 报告 保存 数据(科研项目)
   reportDataSaveSubject:"/subject/report/save.do",
   //报告删除
-  reportDelete: '/report/bak/delete',
+  reportDelete: '/report/delete',
 
   /**
    * 提醒
@@ -141,7 +141,7 @@ const url = {
   //删除提醒
   deleteRemind: '/report/remind/delete.do',
   //预览CRF表单数据
-  previewCrfReportHttp:"/form/crf/bak/preview.do",
+  previewCrfReportHttp:"/form/crf/preview.do",
   //随访提醒终止或失访
   remindChangeStatus:"/report/remind/changeStatus",
   /**
@@ -159,13 +159,13 @@ const url = {
   patientListImportReportData: '/disease/excel/import/patientReports',
 
   //获取医生列表
-  getDoctorList: '/report/bak/duty/doctor/list',
+  getDoctorList: '/report/duty/doctor/list',
   //获取该机构下所有医生列表
   getDoctorListALL: '/disease/own/org/user/list',
   //添加医生
-  addDoctor: '/report/bak/duty/doctor/add',
+  addDoctor: '/report/duty/doctor/add',
   //删除医生
-  deleteDoctor: '/report/bak/duty/doctor/delete'
+  deleteDoctor: '/report/duty/doctor/delete'
 };
 
 const http = {

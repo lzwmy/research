@@ -400,6 +400,11 @@
 <style lang="less" scoped>
 .read_container-mode {
   position: relative;
+  .crf-step-header {
+    .header_left {
+      padding-left: 14px;
+    }
+  }
   .content-body{
     // margin-top: 50px;
     background-color: #FCFCFC;

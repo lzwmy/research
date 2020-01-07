@@ -4,15 +4,15 @@
 const vm = new Vue();
 const url = {
   //查询列表
-  queryReportList:"/report/bak/reportList.do",
+  queryReportList:"/report/reportList.do",
   //查询报告列表 new 
-  queryReportListNew:"/report/bak/get/list",
+  queryReportListNew:"/report/get/list",
   //获取报告操作记录
-  getReportRecord:"/report/bak/logList.do",
+  getReportRecord:"/report/logList.do",
   //查询Crf表单
-  getListCrf:"/form/crf/bak/enable/list.do",
+  getListCrf:"/form/crf/enable/list.do",
   //获取报告状态列表
-  getReportStatusList:"/report/bak/status/list/count",
+  getReportStatusList:"/report/status/list/count",
   //删除报告
   queryReportListDelete:""
 };
