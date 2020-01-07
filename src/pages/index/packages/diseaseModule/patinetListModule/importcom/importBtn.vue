@@ -31,35 +31,6 @@ export default {
         },
         //导入数据
         async importData(file) {
-            // this.loading = true;
-            // try{
-            //     let param = new FormData();
-            //     param.append('file',file.raw);
-            //     param.append('diseaseId',this.$route.query.id);
-            //     param.append('crfId',this.currentCrfId);
-            //     let url = this.baseURL + "disease/excel/import/patientReports"
-            //     axios.defaults.withCredentials = true;
-            //     axios.post(url,param,{
-            //         headers: {"content-type": "multipart/form-data"},
-            //         withCredentials: true
-            //     }).then((res)=>{
-            //         if(res.data.code==0) {
-            //             this.$mes('success','导入成功');
-            //             this.$emit('updata');
-            //         }else if(res.data.data) {
-            //             this.$emit('checkData',res.data.data);
-            //         }else {
-            //             this.$mes('error', res.data.msg ||'导入失败')
-            //         }
-            //         this.loading = false;
-            //     })
-            // }catch (error) {
-            //     console.log(error)
-            //     this.loading = false;
-            //     this.$mes('error','导入失败')
-            // }
-            
-
             this.loading = true;
             try {
                 let params = new FormData();

@@ -13,11 +13,11 @@
     <ul v-loading="loading">
       <el-row :gutter="20">
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" v-for="(item,index) in dataList" :key="index">
-          <li @click="linkTask(item)">
-            <div class="card_body flex-center-center">
-                            <span class="box flex-center-center">
-                                <i class="icon iconfont iconzujian7"></i>
-                            </span>
+          <li @click="linkTask(item)" :class="item.imgBase64?'isExistBG':''">
+            <div class="card_body flex-center-center" :style="item.imgBase64?'background-image:url(data:image/png;base64,'+item.imgBase64+')':''">
+              <span class="box flex-center-center">
+                  <i class="icon iconfont iconzujian7"></i>
+              </span>
             </div>
             <div class="card_foot">
               <div class="t flex-between-center">
@@ -35,7 +35,7 @@
               trigger="hover">
               <i slot="reference" class="icon el-icon-more"></i>
               <ul class="stepThree_ul">
-                <li @click="showEdit(item)">编辑</li>
+                <li @click="showEdit(item,index)">编辑</li>
                 <li @click="deleteGroup(item)">删除</li>
               </ul>
             </el-popover>
@@ -57,38 +57,57 @@
       :append-to-body="true"
       @close="closeDialog"
       class="researchTaskDialog"
-      width="800px">
-      <el-form :model="dialogFrom" ref="refDialogFrom" :rules="formRules" label-width="110px" @submit.native.prevent>
-        <el-form-item label="项目名称:" prop="name">
-          <el-input v-model.trim="dialogFrom.name" placeholder="请输入项目名称" :maxlength="20" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="研究目的/方案:">
-          <el-input type="textarea" :rows="6" v-model.trim="dialogFrom.scheme" placeholder="请输入研究目的"
-                    :maxlength="300"></el-input>
-          <p class="number">{{dialogFrom.scheme.length}}/300</p>
-        </el-form-item>
-        <el-form-item label="拟收集患者数:">
-          <el-input v-model.trim="dialogFrom.patients" placeholder="请输入拟收集患者数" :maxlength="20" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="项目说明:">
-          <el-input type="textarea" :rows="6" v-model.trim="dialogFrom.explain" placeholder="请输入项目说明"
-                    :maxlength="300"></el-input>
-          <p class="number">{{dialogFrom.explain.length}}/300</p>
-        </el-form-item>
-        <el-form-item label="项目附件:">
-          <el-upload
-            class="upload"
-            :action="actionUrl"
-            :multiple="false"
-            :limit="1"
-            :file-list="dialogFrom.files"
-            :on-success="uploadSuccess"
-            :on-remove="onRemove">
-            <el-button :disabled="dialogFrom.files.length == 1">上传附件</el-button>
-            <span slot="tip" class="el-upload__tip left_6">请上传伦理审批材料</span>
-          </el-upload>
-        </el-form-item>
-      </el-form>
+      width="1000px">
+      <div class="flex-between-start">
+        <el-form :model="dialogFrom" ref="refDialogFrom" :rules="formRules" label-width="110px" @submit.native.prevent>
+          <el-form-item label="项目名称:" prop="name">
+            <el-input v-model.trim="dialogFrom.name" placeholder="请输入项目名称" :maxlength="20" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="研究目的/方案:">
+            <el-input type="textarea" :rows="6" v-model.trim="dialogFrom.scheme" placeholder="请输入研究目的"
+                      :maxlength="300"></el-input>
+            <p class="number">{{dialogFrom.scheme.length}}/300</p>
+          </el-form-item>
+          <el-form-item label="拟收集患者数:">
+            <el-input v-model.trim="dialogFrom.patients" placeholder="请输入拟收集患者数" :maxlength="20" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="项目说明:">
+            <el-input type="textarea" :rows="6" v-model.trim="dialogFrom.explain" placeholder="请输入项目说明"
+                      :maxlength="300"></el-input>
+            <p class="number">{{dialogFrom.explain.length}}/300</p>
+          </el-form-item>
+          <el-form-item label="项目附件:">
+            <el-upload
+              class="upload"
+              :action="actionUrl"
+              :multiple="false"
+              :limit="1"
+              :file-list="dialogFrom.files"
+              :on-success="uploadSuccess"
+              :on-remove="onRemove">
+              <el-button :disabled="dialogFrom.files.length == 1">上传附件</el-button>
+              <span slot="tip" class="el-upload__tip left_6">请上传伦理审批材料</span>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+        <el-upload
+            v-loading="dialogFrom.imgLoading"
+            class="bgImg-uploader"
+            drag
+            action=""
+            :on-change="uploadImgFile"
+            :auto-upload="false"
+            :show-file-list="false"
+            accept=".jpeg, .png"
+            :before-upload="beforeUploadImg">
+            <div slot="tip" class="el-upload__tip text-center">上传封面图片<br/>(255x154)</div>
+            <div v-if="!dialogFrom.imageBase64">
+              <img v-if="dialogFrom.imageUrl" :src="dialogFrom.imageUrl" class="bgImg"/>
+              <i v-else class="iconfont iconshangchuantupian"></i>
+            </div>
+            <div v-else :style="'background-image:url(data:image/png;base64,'+dialogFrom.imageBase64+')'" class="bgImg"></div>
+        </el-upload>
+      </div>
       <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="saveEdit" size="mini" :disabled="dialogFrom.loading">保 存</el-button>
                 <el-button @click="closeDialog" size="mini">关 闭</el-button>
@@ -116,7 +135,11 @@
           scheme: '',
           patients: '',
           explain: '',
-          files: []
+          files: [],
+          imageUrl: '',
+          imageBase64: '',
+          uploadImgFileId: '',
+          imgLoading: false,
         },
         formRules: {
           name: [{required: true, message: '请输入项目名称', trigger: 'change'}]
@@ -213,6 +236,7 @@
                     subjectName: this.projectInfo.subjectName,
                     targetPatientNum: this.projectInfo.targetPatientNum || 0,
                     fileId: this.projectInfo.fileId || '',
+                    imgFileId: item.imgFileId|| '',
                     fileName: this.projectInfo.fileName || '',
                   }
                 }
@@ -233,6 +257,9 @@
           let res = await this.$http.RTASKgetDataList(params);
           if (res.code == '0') {
             this.dataList = res.data;
+            this.dataList.forEach((li,index)=>{
+              li.imgFileId && this.getUploadImgFile(li,index)
+            })
             if(this.dataList.length==0) {
               this.emptyData = true;
             }else {
@@ -244,6 +271,21 @@
           this.loading = false;
           console.log(err)
         }
+      },
+      async getUploadImgFile(item,index) {
+        this.dialogFrom.imgLoading = true;
+        let params = {
+          imgFileId: item.imgFileId
+        }
+        try {
+          let res = await this.$http.RTASKGetUploadImgFile(params);
+          let base64 = btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+          this.dialogFrom.imageBase64 = base64
+          this.$set(this.dataList, index, Object.assign(item,{imgBase64: base64}))
+        } catch (err) {
+          console.log(err)
+        }
+        this.dialogFrom.imgLoading = false;
       },
       deleteGroup(item) {
         this.$confirm('确认删除该项目？', '提示', {
@@ -266,7 +308,7 @@
         }).catch((error) => {
         });
       },
-      async showEdit(item) {
+      async showEdit(item, index) {
         this.getProjectInfo(item.id)
           .then(() => {
             let data = [];
@@ -285,8 +327,12 @@
               scheme: this.projectInfo.purpose || '',
               patients: this.projectInfo.targetPatientNum || '',
               explain: this.projectInfo.description || '',
-              files: data
+              files: data,
+              imageUrl: '',
+              uploadImgFileId: '',
+              imgLoading: false,
             }
+            this.getUploadImgFile(item, index)
           })
       },
       async saveEdit() {
@@ -307,6 +353,7 @@
               targetPatientNum: parseInt(this.dialogFrom.patients) || 0,
               description: this.dialogFrom.explain,
               fileId: fileId,
+              imgFileId: this.dialogFrom.uploadImgFileId
             }
             try {
               let res = await this.$http.RTASKedit(params);
@@ -331,9 +378,11 @@
           scheme: '',
           patients: '',
           explain: '',
-          files: []
-        },
-          console.log(this.dialogFrom)
+          files: [],
+          imageUrl: '',
+          uploadImgFileId: '',
+          imgLoading: false,
+        }
       },
       uploadSuccess(response) {
         if (response.data.fileId) {
@@ -371,11 +420,35 @@
         } catch (err) {
           console.log(err)
         }
+      },
+
+      beforeUploadImg(file) {
+          if (!['image/jpeg','image/png'].includes(file.type)) {
+              this.$message.info('上传封面图片只支持 JPG/PNG 格式!');
+              return false;
+          }
+          return true;
+      },
+      async uploadImgFile (file) {
+          this.dialogFrom.imgLoading = true;
+          try {
+              let params = new FormData();
+              params.append('file',file.raw);
+              let res = await this.$http.RTASKuploadImgFile(params);
+              if(res.code==0) {
+                  this.dialogFrom.imageBase64 = '';
+                  this.dialogFrom.imageUrl = URL.createObjectURL(file.raw);
+                  this.dialogFrom.uploadImgFileId = res.data;
+              }
+          } catch (err) {
+              console.log(err)
+          }
+          this.dialogFrom.imgLoading = false;
       }
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
   .researchTask {
     .special_btn_a {
       margin-right: 10px;
@@ -400,7 +473,14 @@
         transition: all 300ms;
         cursor: pointer;
         position: relative;
-
+        &.isExistBG {
+          .box{
+            display: none;
+          }
+          .el-popover__reference {
+            color: #000;
+          }
+        }
         &:hover {
           background-color: rgba(0, 0, 0, .05);
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
@@ -421,7 +501,6 @@
           height: 154px;
           background-image: url('./images/researchTask_bg.png');
           background-size: 100% 100%;
-
           .box {
             transition: all 300ms;
             width: 58px;
@@ -501,5 +580,48 @@
         color: #4db3fe;
       }
     }
+  }
+  .researchTaskDialog {
+    .el-form {
+      flex: 1;
+    }
+    .bgImg-uploader {
+      .el-upload {
+          width: 255px;
+          height: 154px;
+          margin-left: 20px;
+          border: 1px dashed #d9d9d9;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          &:hover {
+              border-color: #409EFF;
+          }
+          .el-upload-dragger {
+              width: 100%;
+              height: 100%;
+              border: none;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+          }
+          .bgImg {
+              height: 100%;
+              display: block;
+          }
+          .iconfont {
+              font-size: 36px;
+              color: #BDC3C7;
+              text-align: center;
+          }
+      }
+      .bgImg {
+        width: 100%;
+        background-size: cover;
+      }
+      .el-upload__tip {
+          margin-left: 20px;
+      }
+    } 
   }
 </style>

@@ -155,12 +155,13 @@ export default {
             dataList: {},
             orgList: [],
             roleList: [],
+            allRoles: [],
             orgType: null,
             orgLoading: false,
             orgCode: '',
             tableLoading: false,
             paging: {
-                pageNo: 1,
+                pageNo: 0,
                 pageSize: 20,
                 currentPageNo: '',
                 currentPageSize: '',
@@ -203,6 +204,7 @@ export default {
                 let res = await this.$http.ORGgetRoleListAll();
                 if (res.code == '0') {
                     //为管理员
+                    this.allRoles = res.data
                     if(this.$store.state.user.researchInfo.roles.indexOf('1') != -1) {
                         this.roleList = res.data.filter(li=>{
                             return li.id != 1;
@@ -253,7 +255,7 @@ export default {
                     obj.content.forEach(item=>{
                         item.roleName = [];
                         item.roles.forEach(li=>{
-                            that.roleList.forEach(n=>{
+                            that.allRoles.forEach(n=>{
                                 if(li == n.id) {
                                     item.roleName.push(n);
                                 }

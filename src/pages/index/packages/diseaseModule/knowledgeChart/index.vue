@@ -94,14 +94,12 @@ export default {
                     networkgraph: {
                         keys: ['from', 'to'],
                         color: '#1bbae1',
+                        marker: {
+                            radius: 8
+                        },
                         layoutAlgorithm: {
                             enableSimulation: true,
-                            attractiveForce: function (d, k) {
-                                return (d *d* 0.1) / (k);
-                            },
-                            repulsiveForce: function (d, k) {
-                                return (k * k * 0.7) / (d);
-                            }
+                            linkLength: 18,
                         },
                         
                     }
@@ -189,11 +187,8 @@ export default {
                     this.chartOption.series[0].data = res.data.data;
                     this.$nextTick(()=>{
                         this.showHighchart = true;
-                        // this.$refs.chartsRef.updated();
                     })
-                    
                     this.displayTabsList = this.arrRemoveRepeat(this.displayTabsList);
-
                     this.allTabsList = utils.deepCopy(res.data.data)
                     this.computeTabs();
                 }

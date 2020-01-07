@@ -5,11 +5,10 @@
         <combination2 class="dataDictionaryTree" @partNodeClick="handleNodeClick" @endRender="ListenRender"
                       ref="dataDictionaryTree"></combination2>
       </echarts-contain>
-      <echarts-contain containType="right" :parentHeight="routerViewHeight" :heightRatio="1" :widthRatio="0.8"
-                      :loading="rightLoading">
+      <echarts-contain containType="right" :parentHeight="routerViewHeight" :heightRatio="1" :widthRatio="0.8" :loading="rightLoading">
         <div v-if="treeTableList.length == 0" class="noData zwarning">请选择左侧数据字典的分类</div>
         <div class="contain">
-          <div v-for="categories in treeTableList">
+          <div v-for="(categories, index) in treeTableList" :key="index">
             <div class="lable categories" v-if="categories.name">
               <span class="ico_open" v-if="categories.modules"></span>
               <span class="ico_close" v-else></span>
@@ -102,20 +101,6 @@ export default {
   watch: {
     isEndRender () {
       this.drawLeftInit();
-    }
-  },
-  computed: {
-    // 分别代表两种风格:green,blue
-    ccstyle () {
-      let ccstyle = this.$store.state.user.ccstyle || localStorage.getItem('research_ccstyle') || 'theme-blue';
-      if (ccstyle == 'theme-green') {
-        ccstyle = '#1bd0a1';
-      } else if (ccstyle == 'theme-blue') {
-        ccstyle = '#2d8cf0';
-      } else {
-        ccstyle = '#2d8cf0';
-      }
-      return ccstyle;
     }
   },
   methods: {
@@ -249,7 +234,6 @@ export default {
       }
     },
     scrollToPosition (id, level, parentId) {
-      // debugger;
       let moduleDiv;
       if (level == 2) {
         moduleDiv = document.getElementById(parentId);
@@ -259,15 +243,17 @@ export default {
       Array.prototype.forEach.call(document.getElementsByClassName('lable modules'), (item) => {
         item.className = 'lable modules';
       });
+      if(!moduleDiv) {
+        return;
+      }
       moduleDiv.getElementsByClassName('lable')[0].className = 'lable modules active';
-      // console.log(moduleDiv);
       let topLength = moduleDiv.offsetTop - document.documentElement.scrollTop;// div离屏幕上边距离（长度）
       // console.log(topLength);
       document.getElementsByClassName('rightContain')[0].scrollTop = topLength;
     },
     handleRowStyle ({row, column, rowIndex, columnIndex}) {
       if (row.id === this.currentId) {
-        return {'background': this.ccstyle, color: '#fff'};
+        return {'background': '#1bbae1', color: '#fff'};
       }
     }
   },
@@ -369,33 +355,19 @@ export default {
     padding: 5px 5px 0 5px;
   }
 
-  body.theme-green {
+
+  body {
     .dataDictionary .contain .lable.active {
       color: #fff;
-      background-color: #1ab497;
+      background-color: #1bbae1;
     }
     .dataDictionary .contain .lable.modules:hover {
       color: #fff;
-      background-color: #1ab497;
+      background-color: #1bbae1;
     }
 
     .dataDictionary .leftContain {
-      border-top: 2px solid #00d1a0 !important;
-    }
-  }
-
-  body.theme-blue {
-    .dataDictionary .contain .lable.active {
-      color: #fff;
-      background-color: #2d8cf0;
-    }
-    .dataDictionary .contain .lable.modules:hover {
-      color: #fff;
-      background-color: #2d8cf0;
-    }
-
-    .dataDictionary .leftContain {
-      border-top: 2px solid #2d8cf0 !important;
+      border-top: 2px solid #1bbae1 !important;
     }
   }
 </style>

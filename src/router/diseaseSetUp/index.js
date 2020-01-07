@@ -1,20 +1,20 @@
 
 // 病种设置 
-const diseaseSet = r => require.ensure([], () => r(require('packages/systemManageMoudule/diseaseSet/diseaseSet')), 'diseaseSet');
+const diseaseSetUp = r => require.ensure([], () => r(require('packages/systemManageMoudule/diseaseSetUp/diseaseSetUp')), 'diseaseSetUp');
 
 const routes = [
     {
-        path: '/diseaseSet',
-        name: 'diseaseSet',
+        path: '/diseaseSetUp',
+        name: 'diseaseSetUp',
         meta: {
             requireAuth: true,
             isKeepAlive: false,
             txt: '病种设置',
-            flag: 'diseaseSet',
+            flag: 'diseaseSetUp',
             belongToGroup: 'systemManage',
             openMode: 2
         },
-        component: diseaseSet
+        component: diseaseSetUp
     }
 ];
 

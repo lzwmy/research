@@ -1,54 +1,53 @@
-// 数据字典  dataDictionaryManage
-// import Vue from 'vue';
+//  数据字典  dataDictionaryManage
+//  import Vue from 'vue';
 
 const vm = new Vue();
 const url = {
-  // 按模块查找元素
-  crfFindElements: './crf/findElements.do',
+  //  按模块查找元素
+  crfFindElements: '/crf/findElements.do',
 
-  //医学代码集列表查询
+  // 医学代码集列表查询
   dataDictionaryFindList: '/term/group/list.do',
-  //医代码集生成新的oid
+  // 医代码集生成新的oid
   dataDictionaryCreateOid: '/term/group/create/oid.do',
-  //删除医学代码集
+  // 删除医学代码集
   dataDictionaryDelete: '/term/group/delete.do',
-  //根据id查找医学代码集
+  // 根据id查找医学代码集
   dataDictionaryIDFindList: '/term/group/id/list.do',
-  //保存编辑医学代码集
+  // 保存编辑医学代码集
   dataDictionaryEdit: '/term/group/edit.do',
-  //新增医学代码集
+  // 新增医学代码集
   dataDictionaryAdd: '/term/group/add.do',
-  //根据医学代码名或者oid查询
+  // 根据医学代码名或者oid查询
   dataDictionaryfind: '/term/item/find.do',
-  //手动添加代码集名
-  dataDictionaryHandAdd:'/term/group/add/termItem.do',
+  // 手动添加代码集名
+  dataDictionaryHandAdd: '/term/group/add/termItem.do',
 
-
-  //获取医学显示名列表
+  // 获取医学显示名列表
   dataDictionaryMedicalCodeList: '/term/item/list.do',
-  //生成新医学代码
+  // 生成新医学代码
   dataDictionaryCreateCode: '/term/item/create/code.do',
-  //删除医学显示名
+  // 删除医学显示名
   dataDictionaryMedicalCodeDelete: '/term/item/delete.do',
-  //编辑医学显示名
+  // 编辑医学显示名
   dataDictionaryMedicalCodeEdit: '/term/item/edit.do',
-  //添加医学显示名
+  // 添加医学显示名
   dataDictionaryMedicalCodeAdd: '/term/item/add.do',
-  //删除医学代码项
+  // 删除医学代码项
   dataDictionaryMedicalCodeDeleteOne: '/term/item/deleteOne.do',
-  //获取医学代码分类
+  // 获取医学代码分类
   dataDictionaryMedicalCodeCategory: '/term/category/categoryName/list.do',
-  //获取医学代码描述
+  // 获取医学代码描述
   dataDictionaryMedicalCodeCategoryObject: '/term/item/{termItemCode}/termItem.do',
 
 
-  //获取医学代码分类
+  // 获取医学代码分类
   medicalCodeClassifyList: '/term/category/list.do',
-  //添加医学代码分类名
+  // 添加医学代码分类名
   medicalCodeClassifyAdd: '/term/category/add.do',
-  //删除医学代码分类项
+  // 删除医学代码分类项
   medicalCodeClassifyDelete: '/term/category/delete.do',
-  //编辑医学代码分类项
+  // 编辑医学代码分类项
   medicalCodeClassifyEdit: '/term/category/edit.do',
 };
 
@@ -56,25 +55,25 @@ const http = {
   crfFindElements (params) {
     return vm.$post(url.crfFindElements, params, false);
   },
-  dataDictionaryFindList(params) {
+  dataDictionaryFindList (params) {
     return vm.$get(url.dataDictionaryFindList, params, true);
   },
-  dataDictionaryCreateOid() {
+  dataDictionaryCreateOid () {
     return vm.$get(url.dataDictionaryCreateOid);
   },
-  dataDictionaryCreateCode() {
+  dataDictionaryCreateCode () {
     return vm.$get(url.dataDictionaryCreateCode);
   },
-  dataDictionaryDelete(params) {
+  dataDictionaryDelete (params) {
     return vm.$post(url.dataDictionaryDelete, params, true);
   },
-  dataDictionaryIDFindList(params) {
+  dataDictionaryIDFindList (params) {
     return vm.$get(url.dataDictionaryIDFindList, params, false);
   },
-  dataDictionaryAdd(params) {
+  dataDictionaryAdd (params) {
     return vm.$post(url.dataDictionaryAdd, params, false);
   },
-  dataDictionaryEdit(params) {
+  dataDictionaryEdit (params) {
     return vm.$post(url.dataDictionaryEdit, params, false);
   },
   dataDictionaryfind(params) {

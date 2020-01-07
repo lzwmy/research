@@ -3,7 +3,7 @@
         <div class="cloud-search flex-between-center">
             <p class="title">创建项目</p>
             <div>
-                <el-button type="primary" @click="create">下一步</el-button>
+                <el-button type="primary" :disabled="!centerPattern" @click="create">下一步</el-button>
             </div>
         </div>
         <div class="main">
@@ -30,9 +30,15 @@
 
 <script> 
 export default {
+    props: ['formData'],
     data () {
         return {
             centerPattern: null
+        }
+    },
+    created() {
+        if(this.formData.proType == 'edit') {
+            this.centerPattern = this.formData.centerPattern
         }
     },
     methods: {
@@ -40,6 +46,11 @@ export default {
             this.centerPattern = val;
         },
         async create() {
+            if(this.formData.proType == 'edit') {
+                this.centerPattern = this.formData.centerPattern
+                this.$emit('changeStep',1, this.formData);
+                return;
+            }
             let data = {
                 centerPattern:  this.centerPattern,
             }

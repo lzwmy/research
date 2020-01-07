@@ -4,9 +4,13 @@
       <input autocomplete="off" placeholder="请输入内容" size="mini" type="text" rows="2" class="el-input__inner">
       <span class="el-input__prefix"><i class="el-input__icon el-icon-search"></i></span>
     </div> -->
-    <el-input v-model.trim="searchName" placeholder="请输入名称" @keyup.enter.native="treeSearch"
-              prefix-icon="el-icon-search"
-              type="text" clearable class="input-search"></el-input>
+    <div class="flex-between-center">
+      <el-input v-model.trim="searchName" placeholder="请输入名称" @keyup.enter.native="treeSearch"
+        prefix-icon="el-icon-search"
+        type="text" clearable class="input-search">
+      </el-input>
+      <i class="cur_pointer icon iconfont icontianjia" style="padding: 0 8px 0 3px;"></i>
+    </div>
     <ul :id="'treeDemo' + random" class="ztree" v-loading="loading" ref="treeDemo"></ul>
   </div>
 </template>
@@ -121,135 +125,135 @@ export default {
       });
     },
     onDraggable (event, treeId, treeNode) {
-      let that = this;
-      let treeDemo = $.fn.zTree.getZTreeObj('treeDemo' + that.random);
-      // 高亮搜索的关键字
-      // let nameKey = this.searchName.toLowerCase();
-      let nameKey = this.searchName;
-      if (nameKey) {
-        $('#treeDemo' + that.random).find('.node_name').each(function () {
-          // var nodeName = $(this).html().toLowerCase().replace('<i>', '').replace('</i>', '');
-          let nodeName = $(this).html().replace('<i>', '').replace('</i>', '');
-          $(this).html(nodeName.replace(new RegExp(nameKey, 'g'), '<i>' + nameKey + '</i>'));
-        });
-      }
-
-      $('#treeDemo' + that.random).find('.node_name').draggable({
-        revert: 'true', // cursor参数可以指定鼠标指针的形状，cursorAt指定鼠标指针在source的相对位置，revert可以指定当drop失败时source“飘”回原来的位置
-        helper: 'clone', // 指定为“original”, "clone"，其中"original"是默认值，即拖动自身，而clone表示创建自身的一个克隆用于拖拽
-        opacity: 0.7,
-        start: function () { // 当鼠标开始拖拽时，触发此事件。
-          // 类目级别的，已经表单被使用的，不能拖拽；
-          if ($(this).parent().hasClass('level0') || (that.$parent.crfForm && that.$parent.crfForm.used)) {
-            return false;
-          }
-        },
-        drag: function () { // 当鼠标拖拽移动时，触发此事件。
-          $('.crf-step').each(function () {
-            let item = $(this);
-            // offset() 方法返回或设置匹配元素相对于文档的偏移（位置）
-            let top = item.offset().top;
-            // 由于有一个左侧表单收缩展开的按钮，左侧表单狂赌为310
-            let left = 310;
-            if (that.$parent.crfLeftBtnStatus) {
-              left = 0;
-            } else {
-              left = 310;
-            }
-            // 计算可拖拽范围，并显示黄色边框样式；
-            // 此处获取到的top1和left1是拖拽元素相对于文档的偏移（位置），
-            // 因为.css('top')获取的是拖拽元素相对于最近的定位的.cloud-component的相对定位的位置，
-            // 所以top1的位置需要加115改成相对于文档的位置，left1就不需要；
-            let top1 = parseFloat($('.ui-draggable-dragging').css('top').replace('px', '')) + 115;
-            let left1 = parseFloat($('.ui-draggable-dragging').css('left').replace('px', ''));
-            if (top1 >= top && top1 < top + item.height() && left1 >= left && left1 < left + item.width()) {
-              item.addClass('draggable-dragging');
-            } else {
-              item.removeClass('draggable-dragging');
-            }
+        let that = this;
+        let treeDemo = $.fn.zTree.getZTreeObj('treeDemo' + that.random);
+        // 高亮搜索的关键字
+        // let nameKey = this.searchName.toLowerCase();
+        let nameKey = this.searchName;
+        if (nameKey) {
+          $('#treeDemo' + that.random).find('.node_name').each(function () {
+            // var nodeName = $(this).html().toLowerCase().replace('<i>', '').replace('</i>', '');
+            let nodeName = $(this).html().replace('<i>', '').replace('</i>', '');
+            $(this).html(nodeName.replace(new RegExp(nameKey, 'g'), '<i>' + nameKey + '</i>'));
           });
-        },
-        stop: function () { // 当鼠标松开时，触发此事件。
-          let dragTarget = $(this);
-          $('.crf-step').each(function () {
-            let item = $(this);
-            let top = item.offset().top;
-            let left = 310;
-            if (that.$parent.crfLeftBtnStatus) {
-              left = 0;
-            } else {
-              left = 310;
-            }
-
-            let top1 = parseFloat($('.ui-draggable-dragging').css('top').replace('px', '')) + 115;
-            let left1 = parseFloat($('.ui-draggable-dragging').css('left').replace('px', ''));
-            if (top1 >= top && top1 < top + item.height() && left1 >= left && left1 < left + item.width()) {
-              let secondItem = {};
-              if (dragTarget.parent().attr('class').indexOf('level1') > -1) {
-                // 拖动2级
-                secondItem = treeDemo.getNodeByTId(dragTarget.attr('id').replace('_span', ''));
-                secondItem.formElements = [];
-                dragTarget.parent().siblings('ul').find('.checkbox_true_full').each(function () {
-                  secondItem.formElements.push(treeDemo.getNodeByTId($(this).attr('id').replace('_check', '')));
-                });
-              } else {
-                // 拖动3级
-                secondItem = treeDemo.getNodeByTId(dragTarget.closest('ul').attr('id').replace('_ul', ''));
-                secondItem.formElements = [];
-                secondItem.formElements.push(treeDemo.getNodeByTId(dragTarget.attr('id').replace('_span', '')));
-              }
-              let module = {
-                'descriptionCN': secondItem.descriptionCN,
-                'descriptionEN': secondItem.descriptionEN,
-                'displayNameCN': secondItem.displayNameCN,
-                'displayNameEN': secondItem.displayNameEN,
-                'elNameCN': secondItem.elNameCN,
-                'elNameEN': secondItem.elNameEN,
-                'formElements': [],
-                'id': secondItem.id,
-                'priority': secondItem.priority,
-                'refOpenEhrId': secondItem.refOpenEhrId,
-                'stageId': ''
-              };
-              if (secondItem.formElements && secondItem.formElements.length > 0) {
-                secondItem.formElements.forEach(function (element) {
-                  module.formElements.push({
-                    'alignType': element.alignType,
-                    'colWidth': element.colWidth,
-                    'ctrlType': element.ctrlType,
-                    'dataLength': element.dataLength,
-                    'dataType': element.dataType,
-                    'dataValue': element.dataValue,
-                    'defaultValue': element.defaultValue,
-                    'descriptionCN': element.descriptionCN,
-                    'descriptionEN': element.descriptionEN,
-                    'displayNameCN': element.displayNameCN,
-                    'displayNameEN': element.displayNameEN,
-                    'elNameCN': element.elNameCN,
-                    'elNameEN': element.elNameEN,
-                    'id': element.id,
-                    'moduleId': element.moduleId,
-                    'parentList': element.parentList,
-                    'parentOpenEhrId': element.parentOpenEhrId,
-                    'priority': element.priority,
-                    'refOpenEhrId': element.refOpenEhrId,
-                    'rowHeight': element.rowHeight,
-                    'stageId': '',
-                    'validRegex': element.validRegex,
-                    'validType': element.validType,
-                    'valueRange': element.valueRange,
-                    'crfEditInput': '', // 前端新增
-                    'setbox': [] // 前端新增
-                  });
-                });
-              }
-              // console.log(module);
-              that.$emit('dragStop', Object.assign({}, module), item.attr('index'));
-            }
-          });
-          $('.crf-step').removeClass('draggable-dragging');
         }
-      });
+        return;
+        $('#treeDemo' + that.random).find('.node_name').draggable({
+          revert: 'true', // cursor参数可以指定鼠标指针的形状，cursorAt指定鼠标指针在source的相对位置，revert可以指定当drop失败时source“飘”回原来的位置
+          helper: 'clone', // 指定为“original”, "clone"，其中"original"是默认值，即拖动自身，而clone表示创建自身的一个克隆用于拖拽
+          opacity: 0.7,
+          start: function () { // 当鼠标开始拖拽时，触发此事件。
+            // 类目级别的，已经表单被使用的，不能拖拽；
+            if ($(this).parent().hasClass('level0') || (that.$parent.crfForm && that.$parent.crfForm.used)) {
+              return false;
+            }
+          },
+          drag: function () { // 当鼠标拖拽移动时，触发此事件。
+            $('.crf-step').each(function () {
+              let item = $(this);
+              // offset() 方法返回或设置匹配元素相对于文档的偏移（位置）
+              let top = item.offset().top;
+              // 由于有一个左侧表单收缩展开的按钮，左侧表单狂赌为310
+              let left = 310;
+              if (that.$parent.crfLeftBtnStatus) {
+                left = 0;
+              } else {
+                left = 310;
+              }
+              // 计算可拖拽范围，并显示黄色边框样式；
+              // 此处获取到的top1和left1是拖拽元素相对于文档的偏移（位置），
+              // 因为.css('top')获取的是拖拽元素相对于最近的定位的.cloud-component的相对定位的位置，
+              // 所以top1的位置需要加115改成相对于文档的位置，left1就不需要；
+              let top1 = parseFloat($('.ui-draggable-dragging').css('top').replace('px', '')) + 115;
+              let left1 = parseFloat($('.ui-draggable-dragging').css('left').replace('px', ''));
+              if (top1 >= top && top1 < top + item.height() && left1 >= left && left1 < left + item.width()) {
+                item.addClass('draggable-dragging');
+              } else {
+                item.removeClass('draggable-dragging');
+              }
+            });
+          },
+          stop: function () { // 当鼠标松开时，触发此事件。
+            let dragTarget = $(this);
+            $('.crf-step').each(function () {
+              let item = $(this);
+              let top = item.offset().top;
+              let left = 310;
+              if (that.$parent.crfLeftBtnStatus) {
+                left = 0;
+              } else {
+                left = 310;
+              }
+  
+              let top1 = parseFloat($('.ui-draggable-dragging').css('top').replace('px', '')) + 115;
+              let left1 = parseFloat($('.ui-draggable-dragging').css('left').replace('px', ''));
+              if (top1 >= top && top1 < top + item.height() && left1 >= left && left1 < left + item.width()) {
+                let secondItem = {};
+                if (dragTarget.parent().attr('class').indexOf('level1') > -1) {
+                  // 拖动2级
+                  secondItem = treeDemo.getNodeByTId(dragTarget.attr('id').replace('_span', ''));
+                  secondItem.formElements = [];
+                  dragTarget.parent().siblings('ul').find('.checkbox_true_full').each(function () {
+                    secondItem.formElements.push(treeDemo.getNodeByTId($(this).attr('id').replace('_check', '')));
+                  });
+                } else {
+                  // 拖动3级
+                  secondItem = treeDemo.getNodeByTId(dragTarget.closest('ul').attr('id').replace('_ul', ''));
+                  secondItem.formElements = [];
+                  secondItem.formElements.push(treeDemo.getNodeByTId(dragTarget.attr('id').replace('_span', '')));
+                }
+                let module = {
+                  'descriptionCN': secondItem.descriptionCN,
+                  'descriptionEN': secondItem.descriptionEN,
+                  'displayNameCN': secondItem.displayNameCN,
+                  'displayNameEN': secondItem.displayNameEN,
+                  'elNameCN': secondItem.elNameCN,
+                  'elNameEN': secondItem.elNameEN,
+                  'formElements': [],
+                  'id': secondItem.id,
+                  'priority': secondItem.priority,
+                  'refOpenEhrId': secondItem.refOpenEhrId,
+                  'stageId': ''
+                };
+                if (secondItem.formElements && secondItem.formElements.length > 0) {
+                  secondItem.formElements.forEach(function (element) {
+                    module.formElements.push({
+                      'alignType': element.alignType,
+                      'colWidth': element.colWidth,
+                      'ctrlType': element.ctrlType,
+                      'dataLength': element.dataLength,
+                      'dataType': element.dataType,
+                      'dataValue': element.dataValue,
+                      'defaultValue': element.defaultValue,
+                      'descriptionCN': element.descriptionCN,
+                      'descriptionEN': element.descriptionEN,
+                      'displayNameCN': element.displayNameCN,
+                      'displayNameEN': element.displayNameEN,
+                      'elNameCN': element.elNameCN,
+                      'elNameEN': element.elNameEN,
+                      'id': element.id,
+                      'moduleId': element.moduleId,
+                      'parentList': element.parentList,
+                      'parentOpenEhrId': element.parentOpenEhrId,
+                      'priority': element.priority,
+                      'refOpenEhrId': element.refOpenEhrId,
+                      'rowHeight': element.rowHeight,
+                      'stageId': '',
+                      'validRegex': element.validRegex,
+                      'validType': element.validType,
+                      'valueRange': element.valueRange,
+                      'crfEditInput': '', // 前端新增
+                      'setbox': [] // 前端新增
+                    });
+                  });
+                }
+                // console.log(module);
+                that.$emit('dragStop', Object.assign({}, module), item.attr('index'));
+              }
+            });
+            $('.crf-step').removeClass('draggable-dragging');
+          }
+        });
     },
     async treeSearch () {
       this.loading = true;
@@ -281,7 +285,13 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="less">
+  .ztree-box {
+    .el-input__prefix{
+      top: 4px;
+    }
+  }
+
   .draggable-dragging {
     outline: 3px solid #f7b444
   }

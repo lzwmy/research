@@ -121,6 +121,22 @@ export default {
         }
       );
     };
+    Vue.prototype.$postNoCheck = function (url, params = {}, IsFormData = true, config = {}) {
+      return axios(Object.assign({
+        method: 'post',
+        url: url + (url.indexOf('?') === -1 ? '?' : '&') + 't=' + (+new Date()),
+        data: IsFormData !== true ? params : qs.stringify(params)
+      }, config)).then(
+        (response) => {
+          return response;
+        }
+      ).then(
+        (res) => {
+          return res;
+        }
+      );
+    };
+    // 经过checkStatus、checkCode处理
     Vue.prototype.$fileUpload = function (url, params) {
       return axios.post(url,params,
         {

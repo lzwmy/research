@@ -24,8 +24,8 @@
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
-                    :data="dataList.content" v-loading="loading" ref="refTable" fit>
-                    <el-table-column type="index" label='序号' width="80"></el-table-column>
+                    :data="dataList.content" v-loading="loading" ref="refTable" fit lazy row-key="treeId" :tree-props="{children: 'children'}">
+                    <el-table-column prop='index' label='序号' width="80"></el-table-column>
                     <el-table-column 
                         v-for="(column,index) in dataList.header"
                         :key="index"
@@ -65,6 +65,7 @@ export default {
                 content: [],
                 header: []
             },
+            treeId: 0,
             loading: false,
             identify:"",
             paging: {
@@ -117,6 +118,7 @@ export default {
             let formData = {
                 offset: pageNo,
                 limit: pageSize,
+                orgId: this.$store.state.user.diseaseInfo.orgCode,
                 diseaseId: this.$route.query.id || '',
                 start: startTime,
                 end: endTime
@@ -125,20 +127,44 @@ export default {
                 let res = await that.$http.ORGDisGetStatisticsData(formData);
                 if (res.code == '0') {
                     let obj = {};
-                    obj.content = res.data.body;
+                    res.data.body.forEach((ele,index) => {
+                        ele.index = index+1;
+                        ele.children = [{orgName: "卫健智能222"}]
+                    });
+                    obj.content = this.addTreeId(res.data.body);
                     obj.header = res.data.header;
                     obj.pageNo = pageNo;
                     obj.pageSize = pageSize;
                     obj.totalCount = parseInt(res.data.sum);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
+                    console.log(that.dataList)
                 }
                 that.loading = false;
             } catch (err) {
                 that.loading = false;
                 console.log(err)
             }
-        }
+        },
+        //添加treeid
+        addTreeId(obj) {
+            if(obj instanceof Array) {
+                let n = [];
+                for(let i = 0; i < obj.length; i++) {
+                    n[i] = this.addTreeId(obj[i]);
+                }
+                return n;
+            }else if  (obj instanceof Object) {
+                let n = {}; 
+                obj.treeId = ++this.treeId;
+                for (let i in obj) {
+                    n[i] = this.addTreeId(obj[i]); 
+                } 
+                return n; 
+            }else {
+                return obj;
+            }
+        },
     }
 };
 </script>

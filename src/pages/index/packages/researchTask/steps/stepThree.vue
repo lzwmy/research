@@ -121,6 +121,7 @@ export default {
                 targetPatientNum:  this.formData.targetPatientNum, 
                 description: this.formData.description, 
                 fileId: this.formData.fileId,
+                imgFileId: this.formData.imgFileId || '',
                 groupList: groupList
             }
             try {

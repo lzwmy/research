@@ -14,10 +14,14 @@ const url = {
   edit: '/subject/info/modify.do',
   // 单文件上传
   uploadFile: '/subject/info/uploadFile.do',
+  // 图片封面上传
+  uploadImgFile: '/subject/info/upload/img',
+  // 图片封面获取
+  getUploadImgFile: '/subject/info/download/img',
   // 单文件删除
   deleteFile: '/subject/info/deleteFile.do',
-  //课题验证 病种选择
-  subjectTestChart:"/diseasespecies/disease/crf.do",
+  // 课题验证 病种选择
+  subjectTestChart: '/diseasespecies/disease/crf.do'
 };
 
 const http = {
@@ -33,8 +37,14 @@ const http = {
   RTASKpreviewInfo(params) {
     return vm.$post(url.previewInfo, params, true);
   },
-  RTASKedit(params) {
+  RTASKedit (params) {
     return vm.$post(url.edit, params, false);
+  },
+  RTASKuploadImgFile (params) {
+    return vm.$fileUpload(url.uploadImgFile, params, true);
+  },
+  RTASKGetUploadImgFile (params) {
+    return vm.$postNoCheck(url.getUploadImgFile, params, true, {responseType: 'arraybuffer'});
   },
   RTASKuploadFile(params) {
     return vm.$post(url.uploadFile, params, false);
