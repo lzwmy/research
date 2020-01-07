@@ -24,7 +24,7 @@ const url = {
   //在代码集添加显示名
   crfADDTermItem: "/term/group/add/termItem.do",
   //获取全部单位
-  crfUnitList: "/form/item/unit.do",
+  crfUnitList: "/form/crf/unit.do",
   //预览条目
   crfPreviewForm: "/form/item/edit/preview.do",
   // 弹框内列表
@@ -102,13 +102,13 @@ const url = {
    * 数据绑定
    */
   //获取绑定类型
-  searchBindingTypeList: '/form/binding/typeList.do',
+  searchBindingTypeList: '/form/crf/binding/typeList.do',
   //获取绑定数据域及字段
-  searchBindingViewList: '/form/binding/viewList.do',
+  searchBindingViewList: '/form/crf/binding/viewList.do',
   //获取绑定数据
-  searchBindingDataList: '/form/binding/dataList.do',
+  searchBindingDataList: '/form/crf/binding/dataList.do',
   //自动获取绑定数据
-  searchBindingAutoData: '/form/binding/auto/dataList.do'
+  searchBindingAutoData: '/form/crf/binding/auto/dataList.do'
 
 
 };

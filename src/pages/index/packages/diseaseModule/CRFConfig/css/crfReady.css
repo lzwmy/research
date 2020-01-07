@@ -17,6 +17,7 @@
   position: absolute;
   /*left: 298px;*/
   /*right: 305px;*/
+  border-bottom-color: transparent;
 
 }
 .patient_form_container{
@@ -56,8 +57,8 @@
 .crfConfig .crf-main .crf-step-content {
   overflow: auto;
   height: calc(100% - 30px);
-  /*background-color: #f7f8fc;*/
-  background-color: #FCFCFC;
+  /*background-color: #FCFCFC;*/
+  background-color: #ffffff;
 }
 
 .crfConfig .menu-panel .el-collapse-item__arrow {
@@ -252,9 +253,9 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
   /*padding: 0 10px 10px;*/
 }
 
-.crf-main .crf-step-header {
+.crf-main .crf-step-header,.read_container-mode  .crf-step-header{
   border-bottom: 1px solid #e9eaec;
-  padding: 11.5px;
+  padding: 0 10px 0 12px;
 }
 
 .crf-step .crf-section-title {
@@ -342,7 +343,7 @@ body .crf-main .el-form .crf-section .colwidth-2 .el-form-item__content .el-text
   /*width: calc(100% - 20px);*/
   width: 100%;
   /*height: 100%;*/
-  background-color: #f7f8fc;
+  /*background-color: #f7f8fc;*/
   /*top: 10px;*/
   top: -6px;
 }

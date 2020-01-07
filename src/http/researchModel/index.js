@@ -28,25 +28,25 @@ const url = {
   //即时科研建模生成的患者数量和报告数
   modelDisplaySum:"/report/model/display/sum.do",
   //表单查询 new
-  formSearchList:"/report/bak/model/find/crf.do",
+  formSearchList:"/report/model/find/crf.do",
   //树状报告列表 new
-  formTreeReportList:"/report/bak/model/find/crfList.do",
+  formTreeReportList:"/report/model/find/crfList.do",
   //新建模型保存 new
-  createModelSave:"/report/bak/model/add.do",
+  createModelSave:"/report/model/add.do",
   //个人模型和公共模型列表
-  modelListNew:"/report/bak/model/list.do",
+  modelListNew:"/report/model/list.do",
   //模型回显
-  modelBakPreviewNew:"/report/bak/model/preview.do",
+  modelBakPreviewNew:"/report/model/preview.do",
   //生成动态表
-  modelDynamicTableListNew:"/report/bak/model/table.do",
+  modelDynamicTableListNew:"/report/model/table.do",
   //编辑模型保存 new
-  modelModifySaveNew:"/report/bak/model/edit.do",
+  modelModifySaveNew:"/report/bak/edit.do",
   //删除模型
-  modelDeleteRequest:"/report/bak/model/delete.do",
+  modelDeleteRequest:"/report/delete.do",
   //导出动态表Excel
-  modelExportExcelNew:"/report/bak/model/export/table.do",
+  modelExportExcelNew:"/report/model/export/table.do",
   //即时显示科研建模生成的患者人数和报告数
-  modelRealTimeSearchNew:"/report/bak/model/display/sum.do",
+  modelRealTimeSearchNew:"/report/model/display/sum.do",
   // 获取当前项病种信息
   getDiseaseInfo:"/diseasespecies/findDiseaseDetail.do",
 };

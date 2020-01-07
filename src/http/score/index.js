@@ -5,9 +5,9 @@ const vm = new Vue();
 
 const url= {
   //保存报告中的评分
-  scoreReportSave:"/report/bak/save/reportScore.do",
+  scoreReportSave:"/report/save/reportScore.do",
   // 获取 报告的评分表数据
-  getScoreReportPreview:"/report/bak/get/reportScore.do",
+  getScoreReportPreview:"/report/get/reportScore.do",
 };
 
 const http = {

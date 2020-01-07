@@ -8,58 +8,62 @@ const vm  = new Vue();
  * **/
 const url = {
   //查找所有的病种和病种关联的小节列表
-  // CRFBakSearchAll:"/form/portion/bak/search.do",
+  // CRFBakSearchAll:"/form/portion/search.do",
   //预览小节
-  CRFPreviewPortion:'/form/portion/bak/preview.do',
+  CRFPreviewPortion:'/form/portion/preview.do',
   //预览CRF 表单
-  CRFReportPreview:'/form/crf/bak/preview.do',
+  CRFReportPreview:'/form/crf/preview.do',
   // 新增小节
-  CRFPortionBakSave:'/form/portion/bak/add.do',
+  CRFPortionBakSave:'/form/portion/add.do',
   //编辑小节
-  CRFPortionBakModify:'/form/portion/bak/edit.do',
+  CRFPortionBakModify:'/form/portion/edit.do',
   //查找所有的病种和病种关联的小节列表
-  CRFPortionBakSearch:'/form/portion/bak/search.do',
+  CRFPortionBakSearch:'/form/portion/search.do',
   //新增后编辑CRF 表单
-  CRFBakSave:'/form/crf/bak/save.do',
+  CRFBakSave:'/form/crf/save.do',
   //CRF表单首页列表, 根据病种获取所有的crf表单列表
-  CRFAllList:'/form/crf/bak/all/list.do',
+  CRFAllList:'/form/crf/all/list.do',
   //删除小节
-  CRFDeletePortion:"/form/portion/bak/delete.do",
+  CRFDeletePortion:"/form/portion/delete.do",
   //删除CRF 表单
-  CRFDeleteForm:'/form/crf/bak/delete.do',
+  CRFDeleteForm:'/form/crf/delete.do',
   //获取小节ID
-  CRFQueryPortionId:"/form/portion/bak/generate/portionId.do",
+  CRFQueryPortionId:"/form/portion/generate/portionId.do",
   /***
    *  阅读模式
    * */
   // 审核报告 -- 是否添加批注
-  readReportBakAudit:'/report/bak/audit',
+  readReportBakAudit:'/report/audit',
   // 获取报告所有批注
-  getReportBakListNotation:"/report/bak/list/notation",
+  getReportBakListNotation:"/report/list/notation",
   // 保存 备注
-  reportBakNoteSave:"/report/bak/note/save",
+  reportBakNoteSave:"/report/note/save",
   // 获取报告 批注
-  getReportBakNoteList:"/report/bak/note/list",
+  getReportBakNoteList:"/report/note/list",
   //删除备注
-  reportBakNoteDelete:"/report/bak/note/delete",
+  reportBakNoteDelete:"/report/note/delete",
   //提交报告
-  reportBakSubmit:"/report/bak/submit",
+  reportBakSubmit:"/report/submit",
   //获取 报告数据变化值
-  getReportBakListDataChange:"/report/bak/list/dataChange",
+  getReportBakListDataChange:"/report/list/dataChange",
   // 召回报告
-  reportBakCallback:"/report/bak/callback",
+  reportBakCallback:"/report/callback",
   // 获取 回复列表
-  getAnswerList:"/report/bak/list/reply",
+  getAnswerList:"/report/list/reply",
   //导出表单
-  exportCrfForm: '/form/crf/bak/export',
+  exportCrfForm: '/form/crf/export',
   //导入表单数据
-  importCrfForm: '/form/crf/bak/import',
+  importCrfForm: '/form/crf/import',
   //获取报告最近一次 -批注
-  getReportLastNotation:"/report/bak/list/last/notation",
+  getReportLastNotation:"/report/list/last/notation",
   // 获取报告最近一次 - 数据变化
-  getReportLastDataChange:"/report/bak/list/last/dataChange",
+  getReportLastDataChange:"/report/list/last/dataChange",
   // 获取报告最近一次 - 回复
-  getReportLastReply:"/report/bak/list/last/reply",
+  getReportLastReply:"/report/list/last/reply",
+  /***
+   *  crf启用禁用以及公共模板
+   * */
+  formCrfIsAvailable:"/form/crf/isAvailable",
 };
 
 
@@ -141,6 +145,12 @@ const http = {
   },
   getReportLastReply(params) {
     return vm.$get(url.getReportLastReply,params,true);
+  },
+  /***
+   *  crf启用禁用以及公共模板
+   * */
+  formCrfIsAvailable(params) {
+    return vm.$post(url.formCrfIsAvailable,params,true);
   }
 };
 

@@ -34,7 +34,7 @@
           <div class="report-config_nav">
             <div class="config-nav_left">
               <div class="is-enable">
-                <span>是否启用:</span>
+                <span>公共模板:</span>
                 <el-switch
                   v-model="enable"
                   @change="enableChange"
@@ -141,6 +141,7 @@
           htmlImg:"",
           idsUpdateData:0, // 0 未刷新 1 刷新，返回提示保存
           crfId:"",
+          crfIsAvailable:1,
         }
       },
       watch:{
@@ -380,10 +381,11 @@
             "id": that.crfId,
             "crfDisplayName": that.crfName,
             "crfType": that.crfType,
-            "crfIsAvailable": that.enable ? 1 : 0,
+            "crfIsAvailable":  1 ,
             // "crfImage": "",
             "diseaseId":that.$route.query.id,
-            "formPortions": that.dataList
+            "formPortions": that.dataList,
+            "crfIsPublic":that.enable ? 1 : 0,
           };
           var find = false;
           for (var i = 0; i < that.dataList.length; i++) {
@@ -424,10 +426,11 @@
             "id": that.$route.query.crfId,
             "crfDisplayName": that.crfName,
             "crfType": that.crfType,
-            "crfIsAvailable": that.enable ? 1 : 0,
+            "crfIsAvailable": that.crfIsAvailable,
             // "crfImage": "",
             "diseaseId":that.$route.query.id,
-            "formPortions": that.dataList
+            "formPortions": that.dataList,
+            "crfIsPublic":that.enable ? 1 : 0,
           };
           var find = false;
           for (var i = 0; i < that.dataList.length; i++) {
@@ -470,7 +473,8 @@
             let data = await that.$http.CRFReportPreview(formData);
             if(data.code == 0 && data.data) {
               that.crfName = data.data.crfDisplayName;
-              that.enable =  data.data.crfIsAvailable==1 ? true :false;
+              that.crfIsAvailable =  data.data.crfIsAvailable;
+              that.enable =  data.data.crfIsPublic==1 ? true :false;
               that.crfType = data.data.crfType;
               that.dataList = data.data.formPortions;
             }else{
@@ -510,20 +514,22 @@
               // "id": id,
               "crfDisplayName": that.crfName,
               "crfType": that.crfType,
-              "crfIsAvailable": that.enable ? 1 : 0,
+              "crfIsAvailable":that.crfIsAvailable,
               "crfImage": "",
               "diseaseId":that.$route.query.id,
-              "formPortions": that.dataList
+              "formPortions": that.dataList,
+              "crfIsPublic":that.enable ? 1 : 0,
             };
           }else {
             formData = {
               "id": id,
               "crfDisplayName": that.crfName,
               "crfType": that.crfType,
-              "crfIsAvailable": that.enable ? 1 : 0,
+              "crfIsAvailable": that.crfIsAvailable,
               "crfImage": "",
               "diseaseId":that.$route.query.id,
-              "formPortions": that.dataList
+              "formPortions": that.dataList,
+              "crfIsPublic":that.enable ? 1 : 0,
             };
           }
           try {

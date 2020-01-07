@@ -20,14 +20,24 @@
         </div>
       </div>
       <div class="report_config_content" v-loading="downloading" :element-loading-text="downloadingText">
-        <div class="report_config-card" v-for="(item,index) in dataList" :key="index" @click="jumpModifyReport(item)">
-          <div :class="['mask_report',{gray:item.crfIsAvailable===0}]"></div>
-          <div class="card_img">
+        <!--@click="jumpModifyReport(item)"-->
+        <div class="report_config-card" v-for="(item,index) in dataList" :key="index">
+          <!--<div :class="['mask_report',{gray:item.crfIsAvailable===0}]"></div>-->
+          <div class="card_img"  @click.stop="jumpModifyReport(item)">
             <img v-if="item.crfImage!==null && item.crfImage!=='null'" :src="item.crfImage" alt="">
             <img v-else src="./../img/report_image.png" alt="">
           </div>
-          <div class="report_card-title">{{item.crfDisplayName}}</div>
-          <div class="report_card_detail-info">
+          <div class="report_card-title">
+            <div class="report_card-name" @click.stop="jumpModifyReport(item)">{{item.crfDisplayName}}</div>
+            <div class="report_card-switch">
+              <el-switch
+                v-model="item.crfIsAvailable"
+                @change="handleAvailable(item)"
+                active-color="#1BBAE1">
+              </el-switch>
+            </div>
+          </div>
+          <div class="report_card_detail-info" @click.stop="jumpModifyReport(item)">
             <div class="report-state" :class="{'TODO':item.crfType === 1}">{{item.crfType==1?'普通' : '随访'}}</div>
             <div class="report-time">{{item.updateTime}}</div>
           </div>
@@ -51,7 +61,8 @@
         return {
           dataList:[],
           downloading: false,
-          downloadingText: ''
+          downloadingText: '',
+          reportSwitch:false,
         }
       },
       methods:{
@@ -59,6 +70,26 @@
           this.reportList().then(()=>{
             this.$emit('changeLoadding',false);
           })
+        },
+        handleAvailable(data) {
+          this.downloading = true;
+          this.formCrfIsAvailable(data)
+            .then(()=> this.downloading = false);
+        },
+        async formCrfIsAvailable(data) {
+          let that = this;
+          let formData = {
+            crfId:data.crfId,
+            crfIsAvailable:data.crfIsAvailable ? 1 : 0
+          };
+          try {
+            let data = await that.$http.formCrfIsAvailable(formData);
+            if(data.code ===0) {
+              this.$message.success('编辑成功');
+            }
+          }catch (error) {
+            console.log(error);
+          }
         },
         //下载模版
         async downloadExcelTemp(row) {
@@ -176,6 +207,15 @@
           try {
             let data = await that.$http.CRFReportList(formData);
             if(data.code == 0) {
+              if(data.data) {
+                data.data.forEach(item => {
+                  if(item.crfIsAvailable == 1) {
+                    item.crfIsAvailable = true;
+                  }else{
+                    item.crfIsAvailable = false;
+                  }
+                })
+              }
               that.dataList = data.data;
             }
           }catch (error) {
@@ -289,10 +329,18 @@
         }
       }
       .report_card-title{
-        font-size:14px;
-        color: #394263;
-        font-family:MicrosoftYaHei;
+        display: flex;
+        justify-content: space-between;
         margin-top: 15px;
+        .report_card-name {
+          flex: 1;
+          font-size:14px;
+          color: #394263;
+          font-family:MicrosoftYaHei;
+        }
+        .report_card-switch{
+
+        }
       }
       .report_card_detail-info{
         display: flex;

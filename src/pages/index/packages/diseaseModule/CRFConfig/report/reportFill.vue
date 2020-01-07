@@ -364,7 +364,7 @@ export default {
       }
     },
     contentSynchronize(data) {
-      // console.log('富文本 编辑回显',data)
+      console.log('富文本 编辑回显',data)
       this.editorInfo = data;
     },
     addRemark() {
@@ -389,7 +389,8 @@ export default {
     },
     openRemark() {
       this.remarkVisible = true;
-      this.editorContent="";
+      // this.editorContent="";
+      this.editorVisible = true;
     },
     // 修改备注
     modifyRemark(item) {
@@ -902,7 +903,8 @@ export default {
   .header_left{
     width:2px;
     border-left: 4px solid #2d8cf0;
-    padding-left: 10px;
+    /*border-left: 4px solid #1BBAE1;*/
+    padding-left: 16px;
     height: 25px;
     line-height: 30px;
     margin-top: 5px;
@@ -938,7 +940,7 @@ export default {
     top: 0;
     left: 0;
     right: 0;
-    padding: 0 10px !important;
+    /*padding: 0 10px !important;*/
     z-index: 2;
   }
   .break_icon{

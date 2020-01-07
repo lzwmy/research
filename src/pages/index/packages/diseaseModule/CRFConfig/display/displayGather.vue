@@ -561,7 +561,8 @@ export default {
 }
   .GATHER_bg_color{
     /*background-color: rgb(247, 248, 252);*/
-    background-color: #FCFCFC;
+    /*background-color: #FCFCFC;*/
+    background-color: #ffffff;
   }
   .view_box .view_title .iconfont{
     font-size: 16px;

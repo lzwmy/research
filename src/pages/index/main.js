@@ -20,6 +20,7 @@ import install from 'components/utils/install';
 import filters from 'components/filters/index';
 
 import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/display.css';
 import 'assets/css/normalize.less';
 import 'quill/dist/quill.core.css';
 import 'quill/dist/quill.snow.css';
