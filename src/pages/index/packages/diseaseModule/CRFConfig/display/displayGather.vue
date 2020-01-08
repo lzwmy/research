@@ -561,6 +561,7 @@ export default {
                 preData.supplement = 1;
               }else {
                 preData.wrap = 0;
+                preData.supplement = 1;
               }
               //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
             }
