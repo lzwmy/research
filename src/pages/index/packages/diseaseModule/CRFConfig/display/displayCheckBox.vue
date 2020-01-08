@@ -3,13 +3,13 @@
   <div class="view_box">
     <div :class="item.controlType">
       <!--style="width:200px;font-size: 14px;"-->
-      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'},{'single_row':item.baseProperty.layout.wrap == 1}]">
         <!--<i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />-->
         <span>{{item.controlDisplayName}}</span>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
       <!--['view_type_checkBox_btn',{'width_auto_type':item.controlType=='CHECKBOX'}]-->
-      <div :class="item.controlType+'_box'" @click="onFocus">
+      <div :class="[item.controlType+'_box',{'single_row':item.baseProperty.layout.wrap == 1}]" @click="onFocus">
         <el-checkbox-group v-model="checkList">
           <el-checkbox
             v-for="(it,index) in item.termSet.termItemList"
@@ -21,7 +21,7 @@
           </el-checkbox>
         </el-checkbox-group>
       </div>
-      <div :class="item.controlType+'_empty'" @click="resetData">清空</div>
+      <div :class="[item.controlType+'_empty',{'single_row_empty':item.baseProperty.layout.wrap == 1}]" @click="resetData">清空</div>
     </div>
   </div>
 </template>
@@ -178,18 +178,18 @@ export default {
 }
 .CHECKBOX .CHECKBOX_box {
   min-width: 164px;
-  max-width: 800px;
+  /*max-width: 800px;*/
   display: table-cell;
 }
 .CHECKBOX .singleColumn {
   width: auto;
   min-width: 188px;
-  max-width: 500px;
+  /*max-width: 500px;*/
   padding-right: 5px;
 }
 .CHECKBOX .CHECKBOX_box .el-checkbox-group {
   min-width: 164px;
-  max-width: 800px;
+  /*max-width: 800px;*/
 }
 .CHECKBOX .CHECKBOX_box .el-checkbox-group .el-checkbox {
   margin-right: 10px;
