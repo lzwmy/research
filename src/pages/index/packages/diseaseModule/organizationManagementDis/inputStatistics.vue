@@ -79,9 +79,6 @@ export default {
             elementLoadingText: ''  
         };
     },
-    created () {
-        this.getDataList();
-    },
     components: {
         pagination,
         echartsContain,
@@ -130,7 +127,7 @@ export default {
                     let obj = {};
                     res.data.body.forEach((ele,index) => {
                         ele.index = index+1;
-                        ele.children = [{orgName: "卫健智能222"}]
+                        ele.children = [{}]
                     });
                     obj.content = this.addTreeId(res.data.body);
                     obj.header = res.data.header;
@@ -139,7 +136,6 @@ export default {
                     obj.totalCount = parseInt(res.data.sum);
                     obj.totalPage = parseInt((obj.totalCount + obj.pageSize - 1) / obj.pageSize);
                     that.dataList = obj;
-                    console.log(that.dataList)
                 }
                 that.loading = false;
             } catch (err) {
@@ -148,11 +144,6 @@ export default {
             }
         },
         async getSingleStatisticsData(row) {
-            console.log(row)
-            console.log(this.dataList)
-            // let index = this.dataList.content.findIndex(li=>{
-            //     return row.id == li.id;
-            // })
             let startTime, endTime;
             if(!this.form.time || this.form.time && this.form.time.length == 0) {
                 startTime = null
@@ -170,7 +161,10 @@ export default {
             try {
                 let res = await this.$http.ORGDisGetSingleStatisticsData(formData);
                 if (res.code == 0) {
+                    let childrenData = this.addTreeId(res.data.body);
+                    row.children = childrenData.length?childrenData:this.addTreeId([{}]);
                 }
+                console.log(row)
             } catch (err) {
                 console.log(err)
             }

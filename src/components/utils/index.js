@@ -648,7 +648,6 @@ const checkToken = function () {
  *@return {Object} [返回对象]
  */
 const ssoLogout = async() => {
-  return;
   //登录来源
   let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
   let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";

@@ -124,7 +124,6 @@ export default {
               doctor: res.data.data.userId,
               doctorName: res.data.data.name
             });
-            debugger
             window.location.href = './index.html#/diseaseChart?id='+ utils.getQuery('id');
           })
           return
