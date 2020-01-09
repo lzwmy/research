@@ -30,7 +30,7 @@ let initApp = async () => {
     if(store.state.user.token && localStorage.getItem('CURR_LOGIN_TYPE') == 'research') {
       await utils.checkToken();
     }
-    localStorage.setItem('CURR_LOGIN_TYPE', 'research');
+    
     // 初始化根vue
     new Vue({
       el: '#app',

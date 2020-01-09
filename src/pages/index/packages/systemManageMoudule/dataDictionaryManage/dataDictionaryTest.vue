@@ -1,6 +1,6 @@
 <template>
   <div class="cloud-component dataDictionary">
-    <div class="cloud-search-list" :loading="rightLoading">
+    <div class="cloud-search-list" :loading="rightLoading" style="height: 100%;">
       <echarts-contain containType="left" :parentHeight="routerViewHeight" :heightRatio="1" :widthRatio="0.2">
         <combination2 
           class="dataDictionaryTree" 
@@ -120,7 +120,7 @@
             <el-input v-model.trim="dialogFormElement.elementName" placeholder="请输入" :maxlength="30" clearable></el-input>
           </el-form-item>
           <el-form-item label="控件类型：" align="left" prop="controlType">
-            <el-select v-model="dialogFormElement.controlType" placeholder="请选择">
+            <el-select v-model="dialogFormElement.controlType" placeholder="请选择" class="block">
               <el-option v-for="(item, index) in allControlType" :key="index" :label="item.name" :value="item.value"></el-option>
             </el-select>
           </el-form-item>

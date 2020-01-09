@@ -617,16 +617,16 @@ const checkToken = function () {
     try {
       let res = await vm.$http.ckeckTokenAPI();
       if (res.data.code == '0' && res.data.data) {
-        //跳转至主页
-        let  isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == "research";
-        let  isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == "disease";
-        let subjectInfoId =  store.state.user.researchInfo.subjectInfoId;
+        // 跳转至主页
+        let isResearch = localStorage.getItem('CURR_LOGIN_TYPE') == 'research';
+        let isDisease = localStorage.getItem('CURR_LOGIN_TYPE') == 'disease';
+        let subjectInfoId = store.state.user.researchInfo.subjectInfoId;
         let diseaseId = store.state.user.diseaseInfo.diseaseId;
-        if(isDisease) {
-          window.location.href = './#/diseaseChart?id='+diseaseId;
-        }else if(isResearch) {
+        if (isDisease) {
+          window.location.href = './#/diseaseChart?id=' + diseaseId;
+        } else if (isResearch) {
           window.location.href = './#/projectProgress';
-        }else {
+        } else {
           window.location.href = './#/index';
         }
         resolve();

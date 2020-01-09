@@ -104,6 +104,7 @@ export default {
         data: that.$format(params)
       }).then((res)=>{
         if(res.data && res.data.code == 0) {
+          localStorage.setItem('CURR_LOGIN_TYPE', 'disease');
           let userLogin = {
             name: res.data.data.name,
             permissionCodes:  res.data.data.permissionCodes,
