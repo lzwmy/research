@@ -33,7 +33,7 @@
             width="700px">
             <el-form :model="dialogForm" ref="dialogFormRef" :rules="dialogFormRules" label-width="100px" @submit.native.prevent v-loading="dialogForm.loading" label-position="left">
                 <el-form-item label="病种名称：" prop="name">
-                    <el-input v-model.trim="dialogForm.name" placeholder="请输入病种名称" :maxlength="20" :disabled="dialogForm.title=='编辑'"></el-input>
+                    <el-input v-model.trim="dialogForm.name" placeholder="请输入病种名称" :disabled="dialogForm.title=='编辑'"></el-input>
                 </el-form-item>
                 <el-form-item label="备注：">
                     <el-input v-model.trim="dialogForm.note" type="textarea" rows="3" placeholder="请输入备注" clearable></el-input>

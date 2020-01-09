@@ -97,8 +97,6 @@ import utils from 'components/utils/index'
 export default {
     name: 'insideHeader',
     data () {
-        let shareUrl = this.$route.meta.belongToGroup == 'researchTask'?'/loginResearch.html?id='+ this.$store.state.user.researchInfo.subjectInfoId:'/loginDisease.html?id='+ this.$store.state.user.diseaseInfo.diseaseId
-        let path = window.location.pathname.split('/index.html')[0]
         return {
             loginType: '',      //登录类型
             disease: "",
@@ -106,7 +104,7 @@ export default {
             dataList: [],   //专病列表
             //项目分享弹框
             dialgoForm: {
-                url: window.location.origin+path+shareUrl,
+                url: '',
                 visible: false
             },
             orgList: [],
@@ -219,6 +217,9 @@ export default {
             }
         },
         shareLogin() {
+            let shareUrl = this.$route.meta.belongToGroup == 'researchTask'?'/loginResearch.html?id='+ this.$store.state.user.researchInfo.subjectInfoId:'/loginDisease.html?id='+ this.$store.state.user.diseaseInfo.diseaseId
+            let path = window.location.pathname.split('/index.html')[0]
+            this.dialgoForm.url = window.location.origin+path+shareUrl,
             this.dialgoForm.visible = true;
         },
         onCopySuccess(e) {

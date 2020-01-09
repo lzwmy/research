@@ -71,7 +71,7 @@
                 :model="dialogForm" ref="dialogForm" :rules="ruleDialogForm" label-width="80px" class="organizationManagement" 
                 @submit.native.prevent v-loading="dialogForm.loading" label-position="left">
                 <el-form-item label="用户名:" prop="userName">
-                    <el-input v-model.trim="dialogForm.userName" placeholder="请输入用户名" :maxlength="30" clearable></el-input>
+                    <el-input v-model.trim="dialogForm.userName" placeholder="请输入用户名" :maxlength="30" :disabled="orgType==1" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="手机号:" prop="tel">
                     <el-input v-model.trim="dialogForm.tel" placeholder="请输入手机号" :maxlength="30" clearable></el-input>
@@ -100,7 +100,7 @@
         </el-dialog>
 
         <!-- 主平台添加用户 -->
-        <el-dialog 
+        <!-- <el-dialog 
             :title="dialogFormAdd.title" 
             :visible.sync="dialogFormAdd.visible" 
             :append-to-body="true"
@@ -122,10 +122,10 @@
                 </el-form-item>
             </el-form>
             <div slot="footer">
-                <el-button type="primary" @click="onConfirmAdd" :disabled="dialogFormAdd.loading">确 认</el-button>
+                <el-button type="primary" @click="onConfirm" :disabled="dialogFormAdd.loading">确 认</el-button>
                 <el-button @click="closeDialog" >取 消</el-button>
             </div>
-        </el-dialog>
+        </el-dialog> -->
 
         <el-dialog 
             title="编辑机构" 
@@ -356,45 +356,29 @@ export default {
             }
         },
         showDialog(title,row) {
-            //添加用户
-            if(this.orgType == 1) {
-                this.dialogFormAdd.title = title;
-                this.dialogFormAdd.visible = true;
-                if(!row) {
-                    return;
-                }
-                this.dialogFormAdd.userName = row.userName;
-                this.dialogFormAdd.role = row.roles;
-                let user = this.userList.find(li=>{
-                    return li.userName == row.userName;
+            //新建用户
+            let orgInfo = this.orgList.find( li => {
+                return li.orgCode == this.orgCode;
+            })
+            if(row) {
+                let roles = row.roles.map(li=>{
+                    return li.id;
                 })
-                this.dialogFormAdd.userId = user.id;
-                this.dialogFormAdd.id = row.id;
-            }else {
-                //新建用户
-                let orgInfo = this.orgList.find( li => {
-                    return li.orgCode == this.orgCode;
-                })
-                if(row) {
-                    let roles = row.roles.map(li=>{
-                        return li.id;
-                    })
-                    this.dialogForm = {
-                        title: title,
-                        userName: row.userName,
-                        userId: row.id,
-                        tel: row.phoneNumber,
-                        role: roles,
-                        organization: orgInfo.orgName,
-                        department: row.deptName,
-                        position: row.duty,
-                        visible: true,
-                        loading: false,
-                    }
+                this.dialogForm = {
+                    title: title,
+                    userName: row.userName,
+                    userId: row.id,
+                    tel: row.phoneNumber,
+                    role: roles,
+                    organization: orgInfo.orgName,
+                    department: row.deptName,
+                    position: row.duty,
+                    visible: true,
+                    loading: false,
                 }
-                this.dialogForm.title = title;
-                this.dialogForm.visible = true;
             }
+            this.dialogForm.title = title;
+            this.dialogForm.visible = true;
         },
         closeDialog() {
             this.$refs.dialogForm && this.$refs.dialogForm.resetFields();
@@ -441,7 +425,7 @@ export default {
                         return this.orgCode == item.orgCode;
                     })
                     console.log(organization)
-                    if(that.dialogForm.title == "新建用户"){
+                    if(that.dialogForm.title != "编辑用户"){
                         formData = {
                             diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
                             userName: this.dialogForm.userName,

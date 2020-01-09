@@ -20,6 +20,13 @@
       "unicode_decimal": 59058
     },
     {
+      "icon_id": "538491",
+      "name": "减",
+      "font_class": "jian",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    },
+    {
       "icon_id": "645195",
       "name": "更多",
       "font_class": "iconfontgengduo",
@@ -46,6 +53,13 @@
       "font_class": "info",
       "unicode": "e711",
       "unicode_decimal": 59153
+    },
+    {
+      "icon_id": "1761450",
+      "name": "信息",
+      "font_class": "xinxi",
+      "unicode": "e647",
+      "unicode_decimal": 58951
     },
     {
       "icon_id": "6966934",
@@ -1702,11 +1716,7 @@
     {
       "icon_id": "12594998",
       "name": "知识图谱",
-<<<<<<< HEAD
-      "font_class": "zhishitupu",
-=======
       "font_class": "knowledgeChart",
->>>>>>> master
       "unicode": "e712",
       "unicode_decimal": 59154
     },
@@ -1716,6 +1726,13 @@
       "font_class": "shangchuantupian",
       "unicode": "e713",
       "unicode_decimal": 59155
+    },
+    {
+      "icon_id": "12660127",
+      "name": "病种设置",
+      "font_class": "diseaseSetUp",
+      "unicode": "e714",
+      "unicode_decimal": 59156
     }
   ]
 }

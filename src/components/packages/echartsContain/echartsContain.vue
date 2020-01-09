@@ -72,14 +72,12 @@ export default {
     position: relative;
     float: left;
     margin-right: 15px;
-    margin-bottom: 10px;
     overflow: hidden;
   }
 
   .rightContain {
     position: relative;
     float: right;
-    margin-bottom: 10px;
     overflow: hidden;
   }
 

@@ -953,7 +953,17 @@ const testingVersion = async()=> {
   }
 }
 
-
+const initForm = function (form) {
+  for (const key in form) {
+    switch (typeof (form[key])) {
+      case 'string': form[key] = ''; break;
+      case 'number': form[key] = null; break;
+      case 'boolean': form[key] = false; break;
+      default: break;
+    }
+  }
+  return form;
+}
 
 
 export default {
@@ -1005,4 +1015,5 @@ export default {
   arrRermoveEmpty,  //数组去除空值
   deleteObject, // 去除 重复对象
   testingVersion,   //检测版本更新
+  initForm,   // 出初化表单
 };

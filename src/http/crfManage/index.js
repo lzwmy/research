@@ -38,11 +38,63 @@ const url = {
   // 查找病人病例数据
   crfdataFindPatientData: './crfdata/findPatientData.do',
   // 保存CRF数据
-  crfdataSaveOrUpdateCrfData: './crfdata/saveOrUpdateCrfData.do'
+  crfdataSaveOrUpdateCrfData: './crfdata/saveOrUpdateCrfData.do',
+
+  /**
+   * 数据字典
+   */
+
+  // 添加类别
+  addCategory: '/crf/createCategory.do',
+  // 删除类别
+  deleteCategory: '/crf/deleteCategory.do',
+  // 编辑类别
+  editCategory: '/crf/updateCategory.do',
+
+  // 添加模块
+  addModule: '/crf/createModule.do',
+  // 删除模块
+  deleteModule: '/crf/deleteModule.do',
+  // 编辑模块
+  editModule: '/crf/updateModule.do',
+
+  // 添加元素
+  addElement: '/crf/createElement.do',
+  // 删除元素
+  deleteElement: '/crf/deleteElement.do',
+  // 编辑元素
+  editElement: '/crf/updateElement.do'
 
 };
 
 const http = {
+  crfaddCategory (params) {
+    return vm.$post(url.addCategory, params, false);
+  },
+  crfdeleteCategory (params) {
+    return vm.$post(url.deleteCategory, params, true);
+  },
+  crfeditCategory (params) {
+    return vm.$post(url.editCategory, params, false);
+  },
+  crfaddModule (params) {
+    return vm.$post(url.addModule, params, false);
+  },
+  crfdeleteModule (params) {
+    return vm.$post(url.deleteModule, params, true);
+  },
+  crfeditModule (params) {
+    return vm.$post(url.editModule, params, false);
+  },
+  crfaddElement (params) {
+    return vm.$post(url.addElement, params, false);
+  },
+  crfdeleteElement (params) {
+    return vm.$post(url.deleteElement, params, true);
+  },
+  crfeditElement (params) {
+    return vm.$post(url.editElement, params, false);
+  },
   crfFindAllModules () {
     return vm.$post(url.crfFindAllModules);
   },

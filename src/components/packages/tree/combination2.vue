@@ -9,12 +9,32 @@
         prefix-icon="el-icon-search"
         type="text" clearable class="input-search">
       </el-input>
-      <i class="cur_pointer icon iconfont icontianjia" style="padding: 0 8px 0 3px;"></i>
+      <i class="cur_pointer icon iconfont icontianjia" style="padding: 0 8px 0 3px;" @click="showDialog('新增类别')"></i>
     </div>
     <ul :id="'treeDemo' + random" class="ztree" v-loading="loading" ref="treeDemo"></ul>
+
+    <!--新增类别-->
+    <el-dialog 
+      :title="dialogFormCategory.title" 
+      :visible.sync="dialogFormCategory.visible" 
+      :append-to-body="true" 
+      width="600px"
+      @close="closeDialog"
+      class="searchDialog height_auto">
+      <el-form ref="dialogFormCategory" :model="dialogFormCategory" :rules="rules" label-width="100px" label-position="left" class="el-dialog--center" @submit.native.prevent>
+        <el-form-item label="类别名称：" align="left" prop="categoryName">
+          <el-input v-model.trim="dialogFormCategory.categoryName" placeholder="请输入" :maxlength="30" clearable @keyup.enter.native="addCategory"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button type="primary" @click="confirm" size="mini" :loading="dialogFormCategory.loading">确 定</el-button>
+        <el-button @click="closeDialog" size="mini">关 闭</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
+import utils from 'components/utils';
 export default {
   name: 'combination',
   data () {
@@ -24,7 +44,20 @@ export default {
       children: [],
       searchName: '',
       searching: false,
-      loading: false
+      loading: false,
+      dialogFormCategory: {
+        visible: false,
+        loading: false,
+        title: '',
+        id: '',
+        categoryName: '',
+      },
+      event: null,
+      treeId: null,
+      treeNode: {},
+      rules: {
+        categoryName: [{required: true, message: '请输入类别名称', trigger: 'change'}],
+      }
     };
   },
   created () {
@@ -34,6 +67,54 @@ export default {
     this.initPage();
   },
   methods: {
+    confirm () {
+      this.$refs.dialogFormCategory.validate(async (valid) => {
+        let that = this;
+        if (!valid) {
+          return false;
+        }
+        this.dialogFormCategory.loading = true;
+        let formData, res;
+        try {
+          if(this.dialogFormCategory.title == '编辑类别') {
+            formData = {
+              "id": this.dialogFormCategory.id,
+              "name": this.dialogFormCategory.categoryName
+            }
+            res = await this.$http.crfeditCategory(formData);
+          }else {
+            formData = {
+              "name": this.dialogFormCategory.categoryName
+            }
+            res = await this.$http.crfaddCategory(formData);
+          }
+          if (res.code == '0') {
+            this.$message.success(this.dialogFormCategory.title+'成功');
+            this.dialogFormCategory.visible = false
+            this.initPage().then(()=>{
+              this.$emit('confirmSuccess')
+            })
+          }
+        } catch (err) {
+          this.dialogFormCategory.visible = false
+          console.log(err)
+        }
+        this.dialogFormCategory.loading = false
+      });
+    },
+    showDialog (title, row) {
+      this.dialogFormCategory = {
+        visible: true,
+        loading: false,
+        title: title,
+        id: row?row.id:'',
+        categoryName: row? row.name:''
+      }
+    },
+    closeDialog () {
+      this.$refs.dialogFormCategory && this.$refs.dialogFormCategory.resetFields();
+      this.dialogFormCategory = utils.initForm(this.dialogFormCategory);
+    },
     async initPage () {
       let result = await this.$http.crfFindAllModules();
       this.drawTree(result);
@@ -54,19 +135,6 @@ export default {
 
       let setting = {
         async: {
-          enable: true,
-          contentType: 'application/json',
-          url: '/research/crf/findElements.do?t=' + (+new Date()),
-          autoParam: ['id'],
-          dataFilter (treeId, parentNode, responseData) {
-            if (responseData && responseData.code == 0) {
-              let elements = responseData.data.elements;
-              elements.forEach((element, i) => {
-                element.name = element.elNameCN || element.elNameEN;
-              });
-              return elements;
-            }
-          }
         },
         check: {
           enable: true,
@@ -124,8 +192,27 @@ export default {
         // });
       });
     },
+    // 获取tree数据
+    async queryDetailInfo(value,treeNode) {
+      let formData = {
+        id:value
+      };
+      try {
+        let res = await this.$http.crfFindElements(formData);
+        if(res.code == 0) {
+          let elements = res.data.elements;
+          elements.forEach((element, i) => {
+            element.name = element.elNameCN || element.elNameEN;
+          });
+          treeNode.modules = elements;
+        }
+      }catch(error) {
+        console.log(error);
+      }
+    },
     onDraggable (event, treeId, treeNode) {
         let that = this;
+        treeNode && this.queryDetailInfo(treeNode.id,treeNode)
         let treeDemo = $.fn.zTree.getZTreeObj('treeDemo' + that.random);
         // 高亮搜索的关键字
         // let nameKey = this.searchName.toLowerCase();
@@ -267,6 +354,10 @@ export default {
       });
     },
     zTreeOnClick (event, treeId, treeNode) {
+      console.log(123)
+      this.event = event;
+      this.treeId = treeId;
+      this.treeNode = treeNode;
       this.$emit('partNodeClick', treeNode);
     },
     /**

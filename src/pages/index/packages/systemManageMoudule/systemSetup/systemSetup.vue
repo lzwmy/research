@@ -26,13 +26,13 @@
             width="45%">
             <el-form :model="dialogForm" ref="dialogFormRef" :rules="dialogFormRules" label-width="110px" @submit.native.prevent v-loading="dialogForm.loading" label-position="left">
                 <el-form-item label="名称：" prop="name">
-                    <el-input v-model.trim="dialogForm.name" placeholder="请输入名称" :maxlength="20" disabled></el-input>
+                    <el-input v-model.trim="dialogForm.name" placeholder="请输入名称" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="Key：" prop="key">
-                    <el-input v-model.trim="dialogForm.key" placeholder="请输key" :maxlength="20" disabled></el-input>
+                    <el-input v-model.trim="dialogForm.key" placeholder="请输key"  disabled></el-input>
                 </el-form-item>
                 <el-form-item label="值：" prop="value">
-                    <el-input v-model.trim="dialogForm.value" placeholder="请输入值" :maxlength="20" clearable></el-input>
+                    <el-input v-model.trim="dialogForm.value" placeholder="请输入值" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="备注：">
                     <el-input v-model.trim="dialogForm.note" type="textarea" rows="3" placeholder="请输入备注" clearable></el-input>

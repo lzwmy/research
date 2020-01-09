@@ -26,7 +26,7 @@
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
                     @row-click="handleClick" @expand-change="expandChange"
                     :data="dataList.content" v-loading="loading" ref="refTable" fit lazy row-key="treeId" :tree-props="{children: 'children'}">
-                    <el-table-column prop='index' label='序号' width="80"></el-table-column>
+                    <el-table-column prop='index' label='序号' width="100"></el-table-column>
                     <el-table-column 
                         v-for="(column,index) in dataList.header"
                         :key="index"
@@ -153,7 +153,7 @@ export default {
                 endTime = this.form.time[1];
             }
             let formData = {
-                orgId: this.$store.state.user.diseaseInfo.orgCode,
+                orgId: row.orgId,
                 diseaseId: this.$store.state.user.diseaseInfo.diseaseId || '',
                 start: startTime,
                 end: endTime
