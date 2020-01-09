@@ -46,6 +46,7 @@ export default {
       if (arr.length == 0) {
         let newObj = {
           name: element.controlDisplayName,
+          controlType:element.controlType,
           value: "",
           value2:"",
           children: []

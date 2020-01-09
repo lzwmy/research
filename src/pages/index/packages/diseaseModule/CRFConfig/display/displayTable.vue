@@ -121,12 +121,14 @@ export default {
       return arr[0];
     },
     addRow(){
-        let newRow={name:"row",value:"",children:[]};
+        let newRow={name:"row",controlType:"table",value:"",children:[]};
         //初始化报告数据
         this.item.children.forEach(element => {
             let newObj = {
               name: element.controlDisplayName,
+              controlType:element.controlType,
               value: "",
+              value2:"",
               children: []
             };
             newRow.children.push(newObj);

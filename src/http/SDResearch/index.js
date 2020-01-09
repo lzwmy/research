@@ -135,7 +135,7 @@ const url = {
   //随访提醒计划信息
   remindDetail: '/report/remind/detail/info',
   //操作报告记录列表
-  remindLogList: '/report/logList.do',
+  remindLogList: '/report/patient/logList.do',
   //改变状态
   changeRemindState: '/report/remind/change.do',
   //删除提醒
