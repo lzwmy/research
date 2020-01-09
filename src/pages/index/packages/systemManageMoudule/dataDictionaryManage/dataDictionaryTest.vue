@@ -590,10 +590,12 @@ export default {
       console.log(row)
       if(title == '编辑节点') {
         this.dialogFormModule.id = row.id;
+        this.dialogFormModule.categoryId = row.categoryId;
         this.dialogFormModule.moduleName = row.name;
+      }else {
+        this.dialogFormModule.categoryId = row.id;
       }
       this.dialogFormModule.title = title;
-      this.dialogFormModule.categoryId = row.categoryId;
       this.dialogFormModule.visible = true;
     },
     showDeleteDialog(row,type) {

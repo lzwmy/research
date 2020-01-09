@@ -59,7 +59,7 @@
                 </echarts-contain>
             </div>
         </div>
-        <!-- 多中心新建用户 -->
+        <!-- 新建用户 -->
         <el-dialog 
             :title="dialogForm.title" 
             :visible.sync="dialogForm.visible" 
@@ -76,11 +76,6 @@
                 <el-form-item label="手机号:" prop="tel">
                     <el-input v-model.trim="dialogForm.tel" placeholder="请输入手机号" :maxlength="30" clearable></el-input>
                 </el-form-item>
-                <!-- <el-form-item label="机构:" prop="organization">
-                    <el-select v-model="dialogForm.organization" class="block">
-                        <el-option v-for="(item, index) in orgList" :key="index" :label="item.orgName" :value="item.orgName" :disabled="dialogForm.title=='编辑用户'"></el-option>
-                    </el-select>
-                </el-form-item> -->
                 <el-form-item label="角色:" prop="role">
                     <el-select v-model="dialogForm.role" multiple class="block">
                         <el-option v-for="(item,index) in roleList" :key="index" :label="item.name" :value="item.id"></el-option>
@@ -99,8 +94,8 @@
             </div>
         </el-dialog>
 
-        <!-- 主平台添加用户 -->
-        <!-- <el-dialog 
+        <!-- 添加用户 -->
+        <el-dialog 
             :title="dialogFormAdd.title" 
             :visible.sync="dialogFormAdd.visible" 
             :append-to-body="true"
@@ -122,12 +117,12 @@
                 </el-form-item>
             </el-form>
             <div slot="footer">
-                <el-button type="primary" @click="onConfirm" :disabled="dialogFormAdd.loading">确 认</el-button>
+                <el-button type="primary" @click="onConfirmAdd" :disabled="dialogFormAdd.loading">确 认</el-button>
                 <el-button @click="closeDialog" >取 消</el-button>
             </div>
-        </el-dialog> -->
+        </el-dialog>
 
-        <el-dialog 
+        <!-- <el-dialog 
             title="编辑机构" 
             :append-to-body="true"
             class="height_auto"
@@ -150,7 +145,7 @@
                 <el-button type="primary" @click="editOrg" :loading="dialgOrgForm.loading">保 存</el-button>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>
-        </el-dialog>
+        </el-dialog> -->
     </div>
 </template>
 
@@ -360,7 +355,19 @@ export default {
             let orgInfo = this.orgList.find( li => {
                 return li.orgCode == this.orgCode;
             })
-            if(row) {
+            //添加用户
+            if (this.orgType == 1 && title == '添加用户') {
+                this.dialogFormAdd = {
+                    title: title,
+                    userName:'',
+                    userId: '',
+                    id: '',
+                    role:[],
+                    visible: true,
+                    loading: false,
+                }
+            }else if(row && title == '编辑用户') {
+                //编辑用户
                 let roles = row.roles.map(li=>{
                     return li.id;
                 })
@@ -376,9 +383,12 @@ export default {
                     visible: true,
                     loading: false,
                 }
+                this.dialogForm.title = title;
+                this.dialogForm.visible = true;
+            }else {
+                this.dialogForm.title = title;
+                this.dialogForm.visible = true;
             }
-            this.dialogForm.title = title;
-            this.dialogForm.visible = true;
         },
         closeDialog() {
             this.$refs.dialogForm && this.$refs.dialogForm.resetFields();
@@ -425,7 +435,16 @@ export default {
                         return this.orgCode == item.orgCode;
                     })
                     console.log(organization)
-                    if(that.dialogForm.title != "编辑用户"){
+                    if(that.dialogFormAdd.title == "添加用户"){
+                        formData = {
+                            diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
+                            orgName: organization.orgName,
+                            orgCode: organization.orgCode,
+                            userId: this.dialogFormAdd.userId,
+                            roles: this.dialogFormAdd.role,
+                        }
+                        res = await that.$http.ORGDisAddUser(formData);
+                    }else if(that.dialogForm.title != "编辑用户"){
                         formData = {
                             diseaseId: this.$store.state.user.diseaseInfo.diseaseId,
                             userName: this.dialogForm.userName,

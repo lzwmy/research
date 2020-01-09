@@ -135,10 +135,10 @@ export default {
       this.$store.commit('saveInsideData',params)
       this.$router.push('/userManage')
     },
-    async getUserRoles(id) {
+    async getUserRoles(item, list) {
         try {
             let res = await this.$http.ORGDisShareUserRole({
-              diseaseId: id
+              diseaseId: item.id
             });
             if (res.code == '0' && res.data.length) {
                 this.$store.commit('saveDiseaseInfo',{
@@ -190,14 +190,15 @@ export default {
       this.getIsAdmin().then((res)=>{
         //非管理员
         if(!res) {
-          this.getUserRoles(item.id);
+          this.getUserRoles(item, list);
           return;
         }
+        //管理员
         this.$store.commit('saveDiseaseInfo',{
           diseaseId: item.id,
           diseaseName: item.name,
           isAdmin: res,
-          roles: [3],
+          roles: [1],
           orgCode: '',      //组织机构
           doctor: ''      //医生
         });
