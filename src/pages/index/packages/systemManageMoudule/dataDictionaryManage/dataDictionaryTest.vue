@@ -27,11 +27,12 @@
             </div>
             <div class="content" v-for="module in categories.modules" :key="module.id" :id="module.id">
               <div class="lable modules flex-between-center" >
-                <div @dblclick="showModulesDialog(module, '编辑节点')" @click="handleNodeClick(module,true)" style="flex: 1;">
+                <div @dblclick="showModulesDialog(module, '编辑节点')">
                   <span class="ico_open" v-if="module.modules"></span>
                   <span class="ico_close" v-else></span>
                   <span class="title">{{module.name}}</span>
                 </div>
+                <div @click="handleNodeClick(module,true)" style="flex: 1; height: 24px;"></div>
                 <div class="icon_group">
                   <i class="cur_pointer icon iconfont icontianjia" @click="showElementDialog(module, '新增字段')"></i>
                   <i class="cur_pointer icon iconfont iconjian" @click="showDeleteDialog(module,2)"></i>
@@ -49,15 +50,9 @@
                     </el-table-column>
                     <el-table-column prop="ctrlType" label="表单类型" min-width="5%" show-overflow-tooltip>
                       <template slot-scope="scope">
-                        <span v-if="scope.row.ctrlType == 'SINGLE_INPUT'">单行输入框</span>
-                        <span v-if="scope.row.ctrlType == 'MULTI_INPUT'">多行输入框</span>
-                        <span v-if="scope.row.ctrlType == 'SINGLE_COMBOX'">下拉单选</span>
-                        <span v-if="scope.row.ctrlType == 'MULTI_COMBOX'">下拉复选</span>
-                        <span v-if="scope.row.ctrlType == 'RADIO_BUTTON'">单选框</span>
-                        <span v-if="scope.row.ctrlType == 'CHECKBOX'">复选框</span>
-                        <span v-if="scope.row.ctrlType == 'DATE'">日期</span>
-                        <span v-if="scope.row.ctrlType == 'DATE_TIME'">时间</span>
-                        <span v-if="scope.row.ctrlType == 'DATE_TIME'">日期时间</span>
+                        <div v-for="(item, index) in allControlType" :key="index">
+                          <span v-if="scope.row.ctrlType == item.value">{{item.name}}</span>
+                        </div>
                       </template>
                     </el-table-column>
                     <el-table-column prop="dataType" label="字段类型" min-width="5%" show-overflow-tooltip>
@@ -187,69 +182,69 @@ export default {
       treeNode: {},
       allControlType: [
         {
-              name:"单行文本框",
-              value:'SINGLE_INPUT'
-            },
-            {
-              name:"多行文本框",
-              value:"MULTI_INPUT"
-            },
-            {
-              name:"标签",
-              value:"LABEL"
-            },
-            {
-              name:"日期",
-              value:"DATE"
-            },
-            {
-              name:"日期时间",
-              value:"DATE_TIME"
-            },
-            {
-              name:"数值",
-              value:"NUMBER_INPUT"
-            },
-            {
-              name:"单选下拉",
-              value:"SINGLE_COMBOX"
-            },
-            {
-              name:"多选下拉",
-              value:"MULTI_COMBOX"
-            },
-            {
-              name:"单选框",
-              value:"RADIO_BUTTON"
-            },
-            {
-              name:"多选框",
-              value:"CHECKBOX"
-            },
-            {
-              name:"集合",
-              value:"GATHER"
-            },
-            {
-              name:"表格",
-              value:"TABLE"
-            },
-            {
-              name:"文件上传",
-              value:"FILE_UPLOAD"
-            },
-            {
-              name:"评分",
-              value:"SCORE"
-            },
-            {
-              name:"级联控件",
-              value:"CASCADE"
-            },
-            {
-              name:"滑块控件",
-              value:"SLIDER"
-            }
+          name:"单行文本框",
+          value:'SINGLE_INPUT'
+        },
+        {
+          name:"多行文本框",
+          value:"MULTI_INPUT"
+        },
+        {
+          name:"标签",
+          value:"LABEL"
+        },
+        {
+          name:"日期",
+          value:"DATE"
+        },
+        {
+          name:"日期时间",
+          value:"DATE_TIME"
+        },
+        {
+          name:"数值",
+          value:"NUMBER_INPUT"
+        },
+        {
+          name:"单选下拉",
+          value:"SINGLE_COMBOX"
+        },
+        {
+          name:"多选下拉",
+          value:"MULTI_COMBOX"
+        },
+        {
+          name:"单选框",
+          value:"RADIO_BUTTON"
+        },
+        {
+          name:"多选框",
+          value:"CHECKBOX"
+        },
+        {
+          name:"集合",
+          value:"GATHER"
+        },
+        {
+          name:"表格",
+          value:"TABLE"
+        },
+        {
+          name:"文件上传",
+          value:"FILE_UPLOAD"
+        },
+        {
+          name:"评分",
+          value:"SCORE"
+        },
+        {
+          name:"级联控件",
+          value:"CASCADE"
+        },
+        {
+          name:"滑块控件",
+          value:"SLIDER"
+        }
       ],
       rules: {
         moduleName: [{required: true, message: '请输入节点名称', trigger: 'change'}],
@@ -279,7 +274,6 @@ export default {
       this.isEndRender = val;
     },
     async drawLeftInit () {
-      console.log(234)
       this.dialogFormModule.visible = false;
       this.dialogFormElement.visible = false;
       let that = this;
@@ -415,7 +409,6 @@ export default {
       } else {
         moduleDiv = document.getElementById(id);
       }
-      console.log(moduleDiv)
       Array.prototype.forEach.call(document.getElementsByClassName('lable modules'), (item) => {
         item.classList.remove('active')
       });
@@ -479,7 +472,9 @@ export default {
         let res = await this.$http.crfaddElement(formData);
         if (res.code == '0') {
           this.$message.success('添加成功')
-          this.drawLeftInit()
+          this.$refs.dataDictionaryTree.initPage().then(()=>{
+            this.drawLeftInit()
+          })
         }
       } catch (err) {
         console.log(err)
@@ -509,7 +504,7 @@ export default {
           if (res.code == '0') {
             this.$message.success('编辑成功')
             this.handleNodeClick(this.treeNode, true, false)
-            this.drawLeftInit();
+            this.dialogFormElement.visible = false;
           }
         } catch (err) {
           console.log(err)
