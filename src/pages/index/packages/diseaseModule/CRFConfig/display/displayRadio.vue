@@ -3,14 +3,14 @@
   <div class="view_box">
     <div :class="item.controlType">
       <!--style="width:200px;font-size: 14px;"-->
-      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'},{'single_row':item.baseProperty.layout.wrap == 1}]">
         <!--<i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />-->
         <span>{{item.controlDisplayName}}</span>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
       <!--:class="['view_type_radio_btn',{'width_auto_type':item.controlType=='RADIO_BUTTON'}]"-->
       <!--{{item.baseProperty.layout}}-->
-      <div :class="[item.controlType+'_box',{'RADIO_BUTTON_single_line':item.baseProperty.layout.columns==1}]" @click="onFocus">
+      <div :class="[item.controlType+'_box',{'RADIO_BUTTON_single_line':item.baseProperty.layout.columns==1},{'single_row':item.baseProperty.layout.wrap == 1}]" @click="onFocus">
         <el-radio-group v-model="report.value">
           <el-radio
             v-for="(it,index) in item.termSet.termItemList"
@@ -24,7 +24,7 @@
         </el-radio-group>
       </div>
 
-      <div :class="[item.controlType+'_empty',{'empty_single-box':item.baseProperty.layout.columns==1}]" @click="resetData">清空</div>
+      <div :class="[item.controlType+'_empty',{'empty_single-box':item.baseProperty.layout.columns==1},{'single_row_empty':item.baseProperty.layout.wrap == 1}]" @click="resetData">清空</div>
     </div>
     <!--{{item.baseProperty.controlIsExtend}}-->
   </div>
@@ -174,19 +174,19 @@ export default {
 .RADIO_BUTTON .singleColumn {
   width: auto;
   min-width: 188px;
-  max-width: 500px;
+  /*max-width: 500px;*/
   padding-right: 5px;
   vertical-align: top;
 }
 .RADIO_BUTTON .RADIO_BUTTON_box {
   min-width: 164px;
-  max-width: 800px;
+  /*max-width: 800px;*/
   display: table-cell;
 
 }
 .RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group {
   min-width: 164px;
-  max-width: 800px;
+  /*max-width: 800px;*/
 }
 .RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group .el-radio {
   margin-right: 10px;

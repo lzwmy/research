@@ -668,7 +668,7 @@ export default {
       }
       let formData = {
         'replyList':resultData || [],
-        'reportBakDto':{
+        'reportDto':{
           ...that.report
         }
       };

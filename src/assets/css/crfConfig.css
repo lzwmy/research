@@ -205,6 +205,16 @@
   vertical-align: top;
   padding-left: 5px;
 }
+/*多选框 单行情况下*/
+.CHECKBOX .single_row {
+  max-width: unset;
+}
+.CHECKBOX .single_row .el-checkbox-group {
+  max-width: unset;
+}
+.CHECKBOX .single_row_empty {
+  width: 35px;
+}
 /*单选下拉*/
 .SINGLE_COMBOX {
 }
@@ -514,6 +524,8 @@
   vertical-align: middle;
   /*padding-left: 5px;*/
 }
+
+
 /**单选-- 针对于单行的的布局**/
 .RADIO_BUTTON .RADIO_BUTTON_single_line {
   min-width: auto !important;
@@ -524,7 +536,17 @@
 .RADIO_BUTTON .empty_single-box {
   padding-left: 10px;
 }
-/*表格*/
+.RADIO_BUTTON .single_row {
+  max-width: unset;
+}
+.RADIO_BUTTON .single_row .el-radio-group{
+  max-width: unset;
+}
+.RADIO_BUTTON .single_row_empty {
+  width: 35px;
+}
+
+  /*表格*/
 .table_label {
   background-color: #f7f8fc;
   margin-bottom: 2px;

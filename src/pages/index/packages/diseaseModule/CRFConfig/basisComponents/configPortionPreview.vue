@@ -16,6 +16,7 @@
 </template>
 
 <script>
+
   import previewPortion from './../preview/sectionPreview';
     export default {
       name: "configPortionPreview",
@@ -90,7 +91,48 @@
         }
       }
       .el-dialog__body{
-
+        .preview_content-body {
+          .section_preview_container {
+            .displayPortion_container {
+              .displayPortion_title {
+                width: 100%;
+                height: 50px;
+                background-color: #E5EBEC;
+                border: 1px solid #e5ebec;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-direction: row;
+                flex-direction: row;
+                position: relative;
+                box-sizing: border-box;
+                -ms-flex-pack: justify;
+                justify-content: space-between;
+                -ms-flex-align: center;
+                align-items: center;
+                font-size: 14px;
+                font-family: 'MicrosoftYaHei';
+                font-weight: bold;
+                color: #394263;
+                padding-left: 20px;
+                position:relative;
+                .left-line{
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 4px;
+                  height: 49px;
+                  background-color: #1BBAE1;
+                  //background-color: #1bbae1;
+                  //background-color: #2d8cf0;
+                }
+              }
+              .displayPortion_box {
+                padding-left: 21px;
+                border: 1px solid #E5EBEC;
+              }
+            }
+          }
+        }
       }
     }
   }

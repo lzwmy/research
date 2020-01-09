@@ -6,9 +6,9 @@ const vm = new Vue();
 
 const url = {
   //查找病人的治疗结果和治疗评语
-  queryTreatmentInfo:"/report/treatment/get.do",
+  queryTreatmentInfo:"/disease/treatment/get",
   //新增或编辑病人的治疗结果和治疗评语
-  addTreatmentInfo:"/report/treatment/save.do",
+  addTreatmentInfo:"/disease/treatment/save",
   //获取 对比数据报告患者
   queryReportList:"/report/treatment/dynamic/get.do",
 };
