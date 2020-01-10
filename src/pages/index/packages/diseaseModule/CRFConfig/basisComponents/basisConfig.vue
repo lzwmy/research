@@ -512,7 +512,11 @@
         saveBtn() {
           // let temporarySave = JSON.parse(localStorage.getItem('temporarySave'));
           // 验证表单名称是否填写完成
-          if(test.verificationData(this.basisDataList) == false || this.portionName == "") {
+          if(this.portionName == "") {
+            this.$message.info('小节名称不能为空');
+            return ;
+          }
+          if(test.verificationData(this.basisDataList) == false) {
             this.$message.info('表单名称不能为空');
             return ;
           }

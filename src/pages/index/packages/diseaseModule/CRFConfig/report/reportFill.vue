@@ -566,12 +566,16 @@ export default {
         this.report.genderName = this.urlParameter.genderName || '';
         this.report.age = this.urlParameter.age || '';
         
-        this.report.id = this.urlParameter.id;
+        // this.report.id = this.urlParameter.id;
+        this.report.id = this.urlParameter.reportId;
         this.report.reportName = this.urlParameter.reportName;
         this.report.sourceType = 'pc';
         this.report.creatorName = this.$store.state.user.userLogin.name;
         this.report.creatorId = this.$store.state.user.userLogin.userId;
-        let result = await this.$http.saveFollowUpReportData(this.report); 
+        // -- 随访 保存
+        // let result = await this.$http.saveFollowUpReportData(this.report);
+        // -- 报告保存
+        let result = await this.$http.reportDataSave(this.report);
         if (result && result.code == "0") {
           this.$message.success("保存成功");
           this.closePage();
