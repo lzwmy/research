@@ -122,7 +122,7 @@
             </div>
         </el-dialog>
 
-        <!-- <el-dialog 
+        <el-dialog 
             title="编辑机构" 
             :append-to-body="true"
             class="height_auto"
@@ -145,7 +145,7 @@
                 <el-button type="primary" @click="editOrg" :loading="dialgOrgForm.loading">保 存</el-button>
                 <el-button @click="closeDialog">关 闭</el-button>
             </div>
-        </el-dialog> -->
+        </el-dialog>
     </div>
 </template>
 
