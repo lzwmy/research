@@ -31,7 +31,7 @@
       <el-table-column label="操作" width="100">
         <template slot-scope="scope">
           <el-button size="mini" @click.stop="toReportFill(scope.row)"><i class="icon iconfont iconbianji"></i></el-button>
-          <el-button class="danger" size="mini" @click.stop="onDeleteReport(scope.row)"><i class="icon iconfont iconshanchu1"></i></el-button>
+          <el-button v-if="scope.row.status == 0" class="danger" size="mini" @click.stop="onDeleteReport(scope.row)"><i class="icon iconfont iconshanchu1"></i></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -192,7 +192,7 @@
       },
       //表格内容展开
       handleClick(row) {
-        this.$refs.refTable.toggleRowExpansion(row)
+        // this.$refs.refTable.toggleRowExpansion(row)
       },
       //删除报告
       onDeleteReport(row){

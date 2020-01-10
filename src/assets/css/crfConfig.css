@@ -534,7 +534,7 @@
   min-width: auto !important;
 }
 .RADIO_BUTTON .empty_single-box {
-  padding-left: 10px;
+  padding-left: 5px;
 }
 .RADIO_BUTTON .single_row {
   max-width: unset;
