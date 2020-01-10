@@ -1,190 +1,205 @@
 <!-- 病种管理 -->
 <template>
-  <div class="cloud-component diseaseSet SDResearch">
-    <div class="search_content flex-between-center">
-        <span class="block-head-title">病种管理</span>
-        <el-button @click="historyGoBack('/SDResearch')"><i class="el-icon-back">返回</i></el-button>
-    </div>
-    <!--搜索结果-->
-    <div class="cloud-search-list">
-      <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
-        <div class="diseaseSetContent flex-between-start">
-          <div class="profile">
-            <div class="profile-inner">
-              <img v-if="diseaseDetail.logo" :src="'./static/img/disease-logo/' + diseaseDetail.logo + '.svg'"
-                  :alt="'./static/img/disease-logo/' + diseaseDetail.name"
-                  :class="'disease-logo ' + diseaseDetail.logo + '_bgColor'">
+    <div class="cloud-component diseaseSet SDResearch">
+        <div class="search_content flex-between-center">
+            <span class="block-head-title">病种管理</span>
+            <el-button @click="historyGoBack('/SDResearch')"><i class="el-icon-back">返回</i></el-button>
+        </div>
+        <!--搜索结果-->
+        <div class="cloud-search-list">
+        <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
+            <div class="diseaseSetContent flex-between-start">
+            <div class="profile">
+                <div class="profile-inner">
+                <el-upload
+                    v-loading="imgLoading"
+                    class="bgImg-uploader"
+                    drag
+                    action=""
+                    :on-change="uploadImgFile"
+                    :auto-upload="false"
+                    :show-file-list="false"
+                    accept=".jpeg, .png"
+                    :before-upload="beforeUploadImg">
+                    <div v-if='diseaseDetail.fileId' :style="'background-image:url(data:image/png;base64,'+imageBase64+')'" class="bgImg"></div>
+                    <div v-else>
+                    <img v-if="diseaseDetail.logo" :src="'./static/img/disease-logo/' + diseaseDetail.logo + '.svg'"
+                        :alt="'./static/img/disease-logo/' + diseaseDetail.name"
+                        :class="'disease-logo ' + diseaseDetail.logo + '_bgColor'">
+                    </div>
+                </el-upload>
+                <i v-if="diseaseDetail.fileId" @click="deleteDiseaseImage" class="delIcon iconfont iconjianqu cur_pointer"></i>
                 <p class="text">{{diseaseDetail.name}}</p>
-              <div class="foot flex-between-center">
-                <div class="icon iconfont iconzujian24" @click="openDiseaseDetailDialog()"></div>
-                <div class="icon iconfont iconzujian25" @click="openSubjectDetailDialog()"></div>
-              </div>
+                <div class="foot flex-between-center">
+                    <div class="icon iconfont iconzujian24" @click="openDiseaseDetailDialog()"></div>
+                    <div class="icon iconfont iconzujian25" @click="openSubjectDetailDialog()"></div>
+                </div>
+                </div>
             </div>
-          </div>
-          <div class="disease-detail">
-            <div class="table-tbody" :style="{height:routerViewHeight-55+'px'}">
-              <table class="common-table">
-                <thead>
-                  <tr>
-                    <th style="width:40%;">课题</th>
-                    <th style="width:25%;">实验组</th>
-                    <th style="width:25%;">备注</th>
-                    <th style="width:10%;">操作</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="item in diseaseDetail.subjectStudies" :key="item.id">
-                    <td style="width:40%;">
-                      <div class="subjectTitle" :title="item.name">
-                        <span class="readonly-icon" v-if="item.assignMode == 1">随机入组</span>
-                        {{item.name && item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name}}
-                      </div>
-                      <div class="subjectButtonGroup">
-                        <div class="icon iconfont iconzujian25" @click="openLabGroupDetailDialog(item,'add')"></div>
-                        <div class="icon iconfont iconzujian24" @click="openSubjectDetailDialog(item)"></div>
-                        <div class="icon iconfont iconzujian26" @click="subjectDelete(item)"></div>
-                      </div>
-                    </td>
-                    <td colspan="4" style="width:60%;">
-                      <div
-                        class="lab-group-row clearfix"
-                        v-for="innerItem in item.experimentGroups"
-                        :key="innerItem.key">
-                        <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.name">
-                          {{innerItem.name && innerItem.name.length > 10 ? innerItem.name.substring(0, 10) + '...' : innerItem.name}}
+            <div class="disease-detail">
+                <div class="table-tbody" :style="{height:routerViewHeight-55+'px'}">
+                <table class="common-table">
+                    <thead>
+                    <tr>
+                        <th style="width:40%;">课题</th>
+                        <th style="width:25%;">实验组</th>
+                        <th style="width:25%;">备注</th>
+                        <th style="width:10%;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in diseaseDetail.subjectStudies" :key="item.id">
+                        <td style="width:40%;">
+                        <div class="subjectTitle" :title="item.name">
+                            <span class="readonly-icon" v-if="item.assignMode == 1">随机入组</span>
+                            {{item.name && item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name}}
                         </div>
-                        <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.remark">
-                          {{innerItem.remark && innerItem.remark.length > 10 ? innerItem.remark.substring(0, 10) + '...' : innerItem.remark}}
+                        <div class="subjectButtonGroup">
+                            <div class="icon iconfont iconzujian25" @click="openLabGroupDetailDialog(item,'add')"></div>
+                            <div class="icon iconfont iconzujian24" @click="openSubjectDetailDialog(item)"></div>
+                            <div class="icon iconfont iconzujian26" @click="subjectDelete(item)"></div>
                         </div>
-                        <div style="display:inline-block;">
-                          <span class="icon iconfont iconzujian24" @click="openLabGroupDetailDialog(innerItem,'edit')"></span>
-                          <span class="icon iconfont iconzujian26" @click="labGroupDelete(innerItem)"></span>
+                        </td>
+                        <td colspan="4" style="width:60%;">
+                        <div
+                            class="lab-group-row clearfix"
+                            v-for="innerItem in item.experimentGroups"
+                            :key="innerItem.key">
+                            <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.name">
+                            {{innerItem.name && innerItem.name.length > 10 ? innerItem.name.substring(0, 10) + '...' : innerItem.name}}
+                            </div>
+                            <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.remark">
+                            {{innerItem.remark && innerItem.remark.length > 10 ? innerItem.remark.substring(0, 10) + '...' : innerItem.remark}}
+                            </div>
+                            <div style="display:inline-block;">
+                            <span class="icon iconfont iconzujian24" @click="openLabGroupDetailDialog(innerItem,'edit')"></span>
+                            <span class="icon iconfont iconzujian26" @click="labGroupDelete(innerItem)"></span>
+                            </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
             </div>
-          </div>
-        </div>
-      </echarts-contain>
-      <!--疾病弹框-->
-      <el-dialog
-        :title="diseaseDetailDialogTitle"
-        :visible.sync="diseaseDetailDialogVisible"
-        :append-to-body="true"
-        width="500px"
-        @close="closeDiseaseDetailDialog" class="diseaseSetDiseaseDialog">
-        <el-form
-          :inline="true"
-          :model="diseaseDetailRuleForm"
-          ref="diseaseDetailRuleForm"
-          label-width="110px"
-          class="el-dialog--center" :rules="rulesDiseaseDetail"
-          @submit.native.prevent>
-          <el-form-item label="单病种名称：" prop="name">
-            <el-input
-              v-model.trim="diseaseDetailRuleForm.name"
-              placeholder="请输入单病种名称"
-              size="mini"
-              :maxlength="100"
-              :clearable="true"></el-input>
-          </el-form-item>
-          <div class="logo-section">
-            <div
-              v-for="item in logoNameList"
-              :key="item"
-              @click="logoSelect(item)"
-              :class="{'logo-option': true,'select' : item === diseaseDetailRuleForm.selectedLogoName}">
-              <img v-if="item" :src="'./static/img/disease-logo/' + item + '.svg'" :alt="item" :class="item+'_bgColor'">
             </div>
-          </div>
-        </el-form>
-        <div slot="footer" class="el-dialog--center">
-          <el-button type="primary" @click="saveDiseaseDetailDialog('diseaseDetailRuleForm')" size="mini">确定</el-button>
-          <el-button @click="closeDiseaseDetailDialog" size="mini">取消</el-button>
+        </echarts-contain>
+        <!--疾病弹框-->
+        <el-dialog
+            :title="diseaseDetailDialogTitle"
+            :visible.sync="diseaseDetailDialogVisible"
+            :append-to-body="true"
+            width="500px"
+            @close="closeDiseaseDetailDialog" class="diseaseSetDiseaseDialog">
+            <el-form
+            :inline="true"
+            :model="diseaseDetailRuleForm"
+            ref="diseaseDetailRuleForm"
+            label-width="110px"
+            class="el-dialog--center" :rules="rulesDiseaseDetail"
+            @submit.native.prevent>
+            <el-form-item label="单病种名称：" prop="name">
+                <el-input
+                v-model.trim="diseaseDetailRuleForm.name"
+                placeholder="请输入单病种名称"
+                size="mini"
+                :maxlength="100"
+                :clearable="true"></el-input>
+            </el-form-item>
+            <div class="logo-section">
+                <div
+                v-for="item in logoNameList"
+                :key="item"
+                @click="logoSelect(item)"
+                :class="{'logo-option': true,'select' : item === diseaseDetailRuleForm.selectedLogoName}">
+                <img v-if="item" :src="'./static/img/disease-logo/' + item + '.svg'" :alt="item" :class="item+'_bgColor'">
+                </div>
+            </div>
+            </el-form>
+            <div slot="footer" class="el-dialog--center">
+            <el-button type="primary" @click="saveDiseaseDetailDialog('diseaseDetailRuleForm')" size="mini">确定</el-button>
+            <el-button @click="closeDiseaseDetailDialog" size="mini">取消</el-button>
+            </div>
+        </el-dialog>
+        <!--课题弹框-->
+        <el-dialog
+            :title="subjectDetailDialogTitle"
+            :visible.sync="subjectDetailDialogVisible"
+            :append-to-body="true"
+            width="600px"
+            @close="closeSubjectDetailDialog" class="diseaseSetSubjectDialog">
+            <el-form
+            :model="subjectDetailRuleForm"
+            ref="subjectDetailRuleForm"
+            label-width="95px" :rules="rulesSubjectDetail"
+            @submit.native.prevent>
+            <el-form-item label="课题名称：" prop="name">
+                <el-input
+                v-model.trim="subjectDetailRuleForm.name"
+                placeholder="请输入课题名称"
+                size="mini"
+                :maxlength="100"
+                :clearable="true"></el-input>
+            </el-form-item>
+            <el-form-item label="课题备注：">
+                <el-input
+                v-model.trim="subjectDetailRuleForm.remark"
+                placeholder="请输入课题备注"
+                :maxlength="500"
+                size="mini"
+                :clearable="true"
+                type="textarea"
+                resize="none"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <!-- 入组方式 0-手动入组 1-随机入组  -->
+                <el-checkbox v-model.trim="subjectDetailRuleForm.assignMode">随机入组：病例将被随机分配到其下实验组，无法手动入组</el-checkbox>
+            </el-form-item>
+            </el-form>
+            <div slot="footer">
+            <el-button type="primary" @click="saveSubjectDetaiDialog('subjectDetailRuleForm')" size="mini">确定</el-button>
+            <el-button @click="closeSubjectDetailDialog" size="mini">取消</el-button>
+            </div>
+        </el-dialog>
+        <!--实验组弹框-->
+        <el-dialog :title="labGroupDetailDialogTitle" :visible.sync="labGroupDetailDialogVisible" :append-to-body="true"
+                    width="520px" @close="closeLabGroupDetailDialog" class="diseaseSetGroupDialog">
+            <el-form :model="labGroupDetailRuleForm" ref="labGroupDetailRuleForm" label-width="110px"
+                    :rules="rulesLabGroupDetail"
+                    @submit.native.prevent>
+            <el-form-item label="实验组名称：" prop="name">
+                <el-input
+                v-model.trim="labGroupDetailRuleForm.name"
+                placeholder="请输入实验组名称"
+                size="mini"
+                :maxlength="100"
+                :clearable="true"></el-input>
+            </el-form-item>
+            <el-form-item label="实验组表单：" prop="formId">
+                <el-select v-model.trim="labGroupDetailRuleForm.formId" placeholder="请选择" size="mini">
+                <el-option
+                    v-for="item in formDatalist"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="实验组备注：" prop="remark">
+                <el-input type="textarea" :rows="4" resize="none"
+                        v-model.trim="labGroupDetailRuleForm.remark"
+                        size="mini"
+                        placeholder="请输入实验组备注"
+                        :maxlength="500"
+                        :clearable="true"></el-input>
+            </el-form-item>
+            </el-form>
+            <div slot="footer" class="el-dialog--center">
+            <el-button type="primary" @click="saveLabGroupDetailDialog('labGroupDetailRuleForm')" size="mini">确定</el-button>
+            <el-button @click="closeLabGroupDetailDialog" size="mini">取消</el-button>
+            </div>
+        </el-dialog>
         </div>
-      </el-dialog>
-      <!--课题弹框-->
-      <el-dialog
-        :title="subjectDetailDialogTitle"
-        :visible.sync="subjectDetailDialogVisible"
-        :append-to-body="true"
-        width="600px"
-        @close="closeSubjectDetailDialog" class="diseaseSetSubjectDialog">
-        <el-form
-          :model="subjectDetailRuleForm"
-          ref="subjectDetailRuleForm"
-          label-width="95px" :rules="rulesSubjectDetail"
-          @submit.native.prevent>
-          <el-form-item label="课题名称：" prop="name">
-            <el-input
-              v-model.trim="subjectDetailRuleForm.name"
-              placeholder="请输入课题名称"
-              size="mini"
-              :maxlength="100"
-              :clearable="true"></el-input>
-          </el-form-item>
-          <el-form-item label="课题备注：">
-            <el-input
-              v-model.trim="subjectDetailRuleForm.remark"
-              placeholder="请输入课题备注"
-              :maxlength="500"
-              size="mini"
-              :clearable="true"
-              type="textarea"
-              resize="none"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <!-- 入组方式 0-手动入组 1-随机入组  -->
-            <el-checkbox v-model.trim="subjectDetailRuleForm.assignMode">随机入组：病例将被随机分配到其下实验组，无法手动入组</el-checkbox>
-          </el-form-item>
-        </el-form>
-        <div slot="footer">
-          <el-button type="primary" @click="saveSubjectDetaiDialog('subjectDetailRuleForm')" size="mini">确定</el-button>
-          <el-button @click="closeSubjectDetailDialog" size="mini">取消</el-button>
-        </div>
-      </el-dialog>
-      <!--实验组弹框-->
-      <el-dialog :title="labGroupDetailDialogTitle" :visible.sync="labGroupDetailDialogVisible" :append-to-body="true"
-                width="520px" @close="closeLabGroupDetailDialog" class="diseaseSetGroupDialog">
-        <el-form :model="labGroupDetailRuleForm" ref="labGroupDetailRuleForm" label-width="110px"
-                :rules="rulesLabGroupDetail"
-                @submit.native.prevent>
-          <el-form-item label="实验组名称：" prop="name">
-            <el-input
-              v-model.trim="labGroupDetailRuleForm.name"
-              placeholder="请输入实验组名称"
-              size="mini"
-              :maxlength="100"
-              :clearable="true"></el-input>
-          </el-form-item>
-          <el-form-item label="实验组表单：" prop="formId">
-            <el-select v-model.trim="labGroupDetailRuleForm.formId" placeholder="请选择" size="mini">
-              <el-option
-                v-for="item in formDatalist"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="实验组备注：" prop="remark">
-            <el-input type="textarea" :rows="4" resize="none"
-                      v-model.trim="labGroupDetailRuleForm.remark"
-                      size="mini"
-                      placeholder="请输入实验组备注"
-                      :maxlength="500"
-                      :clearable="true"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="el-dialog--center">
-          <el-button type="primary" @click="saveLabGroupDetailDialog('labGroupDetailRuleForm')" size="mini">确定</el-button>
-          <el-button @click="closeLabGroupDetailDialog" size="mini">取消</el-button>
-        </div>
-      </el-dialog>
     </div>
-  </div>
 </template>
 
 <script type="text/javascript">
@@ -203,8 +218,13 @@ export default {
         id: '',
         name: '',
         logo: '',
+        remark: '',
+        fileId: '',
         subjectStudies: []
       },
+      imgLoading: false,
+      imageBase64: '',
+      uploadImgFileId: '',
       logoNameList: [
         'bladder',
         'ear',
@@ -289,6 +309,84 @@ export default {
     this.initPage();
   },
   methods: {
+    beforeUploadImg (file) {
+      if (!['image/jpeg', 'image/png'].includes(file.type)) {
+        this.$message.info('上传封面图片只支持 JPG/PNG 格式!');
+        return false;
+      }
+      return true;
+    },
+    deleteDiseaseImage () {
+      this.$confirm('是否删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        try {
+            let res = await this.$http.diseaseSpeciesDeleteFile(this.diseaseDetail.id);
+            if (res.code == 0) {
+                this.$mes('success', '删除成功!');
+                    this.getDataList();
+            }
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    },
+    async uploadImgFile (file) {
+      let that = this;
+      this.imgLoading = true;
+      try {
+        let params = new FormData();
+        params.append('file', file.raw);
+        let res = await this.$http.RTASKuploadImgFile(params);
+        if (res.code == 0) {
+          that.uploadImgFileId = res.data;
+          that.editDisease().then(() => {
+            this.getDataList();
+            that.imgLoading = false;
+          });
+        } else {
+          that.imgLoading = false;
+        }
+      } catch (err) {
+        this.imgLoading = false;
+        console.log(err);
+      }
+    },
+    async getUploadImgFile (imgFileId) {
+      this.imgLoading = true;
+      let params = {
+        imgFileId: imgFileId
+      };
+      try {
+        let res = await this.$http.RTASKGetUploadImgFile(params);
+        let base64 = btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+        this.imageBase64 = base64;
+      } catch (err) {
+        console.log(err);
+      }
+      this.imgLoading = false;
+    },
+    async editDisease () {
+      let that = this;
+      that.loading = true;
+      try {
+        let res = await this.$http.diseaseSetEdit({
+          'id': this.diseaseDetail.id,
+          'name': this.diseaseDetail.name,
+          'remark': this.diseaseDetail.remark,
+          'fileId': this.uploadImgFileId
+        });
+        if (res.code == '0') {
+          this.$mes('success', '上传成功!');
+        }
+        that.loading = false;
+      } catch (err) {
+        that.loading = false;
+        console.log(err);
+      }
+    },
     initPage () {
       this.$emit('handlePageHeight');
       this.diseaseId = this.$route.query.id;
@@ -308,6 +406,9 @@ export default {
           that.diseaseDetail.id = data.data.diseaseSpecies.id;
           that.diseaseDetail.name = data.data.diseaseSpecies.name;
           that.diseaseDetail.logo = data.data.diseaseSpecies.logo;
+          that.diseaseDetail.remark = data.data.diseaseSpecies.remark;
+          that.diseaseDetail.fileId = data.data.diseaseSpecies.fileId;
+          that.diseaseDetail.fileId && that.getUploadImgFile(that.diseaseDetail.fileId);
           // console.log('that.diseaseDetail.name', that.diseaseDetail.name);
           // console.log('data.data.diseaseSpecies.name', data.data.diseaseSpecies.name);
         }
@@ -748,6 +849,25 @@ export default {
         line-height: 46px;
       }
     } 
+    .bgImg-uploader {
+      .el-upload-dragger {
+        width: 140px;
+        height: 140px;
+        border: none;
+      }
+      .bgImg {
+        width: 140px;
+        height: 140px;
+        background-size: cover;
+        display: block;
+      }
+    }
+    .delIcon {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      color: #d0d0d0;
+    }
   }
   .diseaseSetDiseaseDialog {
     .logo-section .logo-option {

@@ -472,9 +472,9 @@ export default {
         let res = await this.$http.crfaddElement(formData);
         if (res.code == '0') {
           this.$message.success('添加成功')
-          this.$refs.dataDictionaryTree.initPage().then(()=>{
+          // this.$refs.dataDictionaryTree.initPage().then(()=>{
             this.drawLeftInit()
-          })
+          // })
         }
       } catch (err) {
         console.log(err)

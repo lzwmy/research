@@ -22,7 +22,8 @@
               <div class="sd-title-wrapper" @click="toLink(item)">
                 <div class="sd-thumbnail">
                   <div class="sd-thumbnail-content">
-                    <img :class="'sd-thumbnail-img ' + item.logo + '_bgColor'"
+                    <div v-if='item.fileId' v-loading='item.imgLoading' :style="'background-image:url(data:image/png;base64,'+imageBase64+')'" class="bgImg"></div>
+                    <img v-else :class="'sd-thumbnail-img ' + item.logo + '_bgColor'"
                         :src="'./static/img/disease-logo/' + item.logo+ '.svg'">
                   </div>
                   <div class="sd-thumbnail-title">
@@ -59,7 +60,8 @@ export default {
     return {
       dataList: [],
       loading: false,
-      report: ""
+      report: "",
+      imageBase64: '',
     };
   },
   components: {},
@@ -104,6 +106,10 @@ export default {
         that.loading = false;
         if (data.code == '0') {
           that.dataList = data.data.diseaseSpecieses;
+          that.dataList.forEach(li=>{
+            li.imgLoading = false;
+            li.fileId && that.getUploadImgFile(li);
+          })
           // localStorage.setItem('researchList',JSON.stringify(that.dataList));
           that.$store.commit('saveDiseaseList',that.dataList)
         }
@@ -120,6 +126,20 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async getUploadImgFile(li) {
+      li.imgLoading = true;
+      let params = {
+          imgFileId: li.fileId
+      }
+      try {
+          let res = await this.$http.RTASKGetUploadImgFile(params);
+          let base64 = btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+          this.imageBase64 = base64
+      } catch (err) {
+          console.log(err)
+      }
+      li.imgLoading = false;
     },
     //去授权
     toAuthorize() {
@@ -231,6 +251,7 @@ export default {
     .sd-title-wrapper {
       display: inline-block;
       position: relative;
+      width: 100%;
       margin-bottom: 14px;
       cursor: pointer;
       box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, .1);
@@ -239,17 +260,26 @@ export default {
 
   .sd-thumbnail {
     width: 100%;
+    height: 234px;
     padding: 10px;
     background-color: #fff;
     position: relative;
   }
 
   .sd-title-wrapper .sd-thumbnail {
-    padding: 8px;
+    padding: 8px 8px 0;
   }
 
   .sd-thumbnail .sd-thumbnail-content {
+    width: 100%;
+    height: 189px;
     position: relative;
+    .bgImg {
+      width: 100%;
+      height: 189px;
+      background-size: cover;
+      display: block;
+    }
   }
 
   .sd-thumbnail .sd-thumbnail-content .sd-thumbnail-img {
@@ -259,7 +289,7 @@ export default {
   .sd-thumbnail .sd-thumbnail-title {
     font-size: 18px;
     text-align: center;
-    padding: 5px 0;
+    padding: 8px 0;
     overflow: hidden;
     -o-text-overflow: ellipsis;
     -ms-text-overflow: ellipsis;

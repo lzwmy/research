@@ -1,9 +1,0 @@
-.DS_Store
-node_modules/
-dist/
-npm-debug.log
-*.war
-num-debug.*
-.idea/
-docker/
-.cache/

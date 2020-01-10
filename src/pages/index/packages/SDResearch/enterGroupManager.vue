@@ -246,7 +246,7 @@ export default {
     openEnterGroupDialog () {
       this.enterGroupDialogVisible = true;
     },
-    backPage() {
+    backPage () {
       window.history.go(-1);
     },
     closeEnterGroupDialog () {
@@ -387,8 +387,8 @@ export default {
     },
     fillCRF (row) {
       let that = this;
-      console.log(row)
-      /*that.$router.push({
+      console.log(row);
+      /* that.$router.push({
         name: 'reportFill',
         query: {
           cacheData: false,
@@ -401,23 +401,23 @@ export default {
           identify: that.ruleForm.identify || '',
           from: that.$route.name
         }
-      });*/
+      }); */
       let urlParameter = {
-        cacheData:false,
-        formId:row.formId,
+        cacheData: false,
+        formId: row.formId,
         reportId: row.id || '',
-        groupId:row.groupId,
-        subjectId:row.subjectId,
-        diseaseId:row.diseaseId,
-        patientName:that.ruleForm.patientName,
-        patientId:that.ruleForm.patientId,
-        identify:that.ruleForm.identify,
-        from:"caseManage",
-        title:row.formName,
-        isModify:'displayShow'
+        groupId: row.groupId,
+        subjectId: row.subjectId,
+        diseaseId: row.diseaseId,
+        patientName: that.ruleForm.patientName,
+        patientId: that.ruleForm.patientId,
+        identify: that.ruleForm.identify,
+        from: 'caseManage',
+        title: row.formName,
+        isModify: 'displayShow'
       };
-      localStorage.setItem('reportFill',JSON.stringify({urlParameter}));
-      let urlParameters = "cacheData="+false+"&formId="+row.formId+"&groupId="+row.groupId+"&subjectId="+row.subjectId+"&diseaseId="+row.diseaseId+"&patientName="+that.ruleForm.patientName+"&patientId="+that.ruleForm.patientId+"&identify="+that.ruleForm.identify+"&from="+'caseManage'+"&title="+row.formName+"&isModify="+"displayShow";
+      localStorage.setItem('reportFill', JSON.stringify({urlParameter}));
+      let urlParameters = 'cacheData=' + false + '&formId=' + row.formId + '&groupId=' + row.groupId + '&subjectId=' + row.subjectId + '&diseaseId=' + row.diseaseId + '&patientName=' + that.ruleForm.patientName + '&patientId=' + that.ruleForm.patientId + '&identify=' + that.ruleForm.identify + '&from=' + 'caseManage' + '&title=' + row.formName + '&isModify=' + 'displayShow';
       // window.open('./patientForm.html?'+urlParameters);
       window.open('./patientForm.html');
     },
