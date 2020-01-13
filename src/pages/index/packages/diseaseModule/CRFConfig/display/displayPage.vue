@@ -1,5 +1,5 @@
 <template>
-  <div class="displayPage_container">
+  <div class="displayPage_container" style="overflow: auto;">
     <div v-if="item.isDisplayName=='1'" class="display_title">
       {{conversionNumber(index+1)}}、{{item.pageDisplayName}}
     </div>
@@ -12,6 +12,7 @@
           :item="child"
           :key="child.portionDisplayName"
           :report="getData(child)"
+          :class="{'layout_set':judgmentPortionColumns(child)}"
         />
       </div>
     </div>
@@ -78,7 +79,21 @@ export default {
         }
       }
       return s;
-    }
+    },
+    //判断小节下 条目是否存在 多列
+    judgmentPortionColumns(item) {
+      let isPresence = false;
+      let itemList = item.formItemList;
+      if(itemList.length > 0) {
+        for(let i=0;i<itemList.length;i++) {
+          if(itemList[i].baseProperty.layout.columns > 1) {
+            isPresence = true ;
+            break ;
+          }
+        }
+      }
+      return isPresence;
+    },
   }
 };
 </script>
