@@ -353,11 +353,11 @@ export default {
 
 
 <style lang="less"  scoped>
-  .iconfont {
-    font-size: 18px;
-    padding: 0 5px;
-  }
-  .ruleFormDialog .el-input {
-    width: 100% !important;
-  }
+    .iconfont {
+        font-size: 18px;
+        padding: 0 5px;
+    }
+    .ruleFormDialog .el-input {
+        width: 100% !important;
+    }
 </style>
