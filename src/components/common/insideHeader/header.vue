@@ -245,8 +245,22 @@ export default {
                         orgName: '全部机构',
                         orgCode: ''
                     })
+                    //不存在机构则默认为全部机构
                     if(this.orgList.length && !this.$store.state.user.diseaseInfo.orgCode) {
                         this.orgInfo = this.orgList[0];
+                    }
+                    //非管理员从主平台进来
+                    if(localStorage.getItem('CURR_LOGIN_TYPE') != 'disease' && !this.$store.state.user.diseaseInfo.isAdmin) {
+                      this.orgInfo = this.orgList.find(li=>{
+                        return li.orgType == 1;
+                      })
+                      this.$store.commit('saveDiseaseInfo',
+                          Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                              orgCode: this.orgInfo.orgCode,
+                              orgName: this.orgInfo.orgName,
+                          })
+                      );
+                      console.log(this.orgInfo)
                     }
                 }
                 this.orgLoading = false;
