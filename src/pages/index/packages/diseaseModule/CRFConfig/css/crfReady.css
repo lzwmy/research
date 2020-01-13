@@ -1051,5 +1051,8 @@ body.theme-blue .crf-left-btn.onclick {
 
 /** 布局兼容分辨率小的情况下**/
 .patient_form_container .layout_set .displayPortion_box {
+  overflow: auto;
+}
+.patient_form_container .layout_set .displayPortion_box>div{
   min-width: 1600px;
 }
