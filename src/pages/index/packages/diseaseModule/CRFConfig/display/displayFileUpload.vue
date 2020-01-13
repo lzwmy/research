@@ -201,7 +201,7 @@
             let copyFileList  = this.fileList;
             copyFileList.forEach((item,index,array)=>{
               if(item.fileId == file.fileId) {
-                array.splice(index,1)
+                array.splice(index,1);
               }
             });
             this.fileList = copyFileList;

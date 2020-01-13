@@ -565,22 +565,33 @@ export default {
         this.report.phoneNumber = this.urlParameter.phoneNumber || '';
         this.report.genderName = this.urlParameter.genderName || '';
         this.report.age = this.urlParameter.age || '';
-        
-        // this.report.id = this.urlParameter.id;
-        this.report.id = this.urlParameter.reportId;
+        if(this.urlParameter.id != ''){
+          this.report.id = this.urlParameter.id;
+        }else {
+          this.report.id = this.urlParameter.reportId;
+        }
         this.report.reportName = this.urlParameter.reportName;
         this.report.sourceType = 'pc';
         this.report.creatorName = this.$store.state.user.userLogin.name;
         this.report.creatorId = this.$store.state.user.userLogin.userId;
-        // -- 随访 保存
-        // let result = await this.$http.saveFollowUpReportData(this.report);
-        // -- 报告保存
-        let result = await this.$http.reportDataSave(this.report);
-        if (result && result.code == "0") {
-          this.$message.success("保存成功");
-          this.closePage();
+        if(this.urlParameter.id != '') {
+          // -- 随访 保存
+          let result = await this.$http.saveFollowUpReportData(this.report);
+          if (result && result.code == "0") {
+            this.$message.success("保存成功");
+            this.closePage();
+          }
+          this.mainLoading = false;
+        }else {
+          // -- 报告保存
+          let result = await this.$http.reportDataSave(this.report);
+          if (result && result.code == "0") {
+            this.$message.success("保存成功");
+            this.closePage();
+          }
+          this.mainLoading = false;
         }
-        this.mainLoading = false;
+
       } catch (error) {
         this.$message.info("保存表单数据失败");
         console.log(error);

@@ -1,5 +1,5 @@
 <template>
-    <div class="section_preview_container">
+    <div :class="['section_preview_container']">
 <!--      {{portion.portionDisplayName}}-->
       <display-portion v-if="portion.portionName" :item="portion" :report="report" />
     </div>
@@ -39,6 +39,7 @@
         }
       },
       methods:{
+
         async crfSectionPreview(value) {
           let that = this;
           let formData  = {

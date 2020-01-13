@@ -73,10 +73,10 @@
                     </span>
                   </div>
                 </div>
-                <div class="report_body-content" >
+                <div class="report_body-content" :class="{'layout_set':judgmentPortionColumns(item)}">
                   <!--{{item}}-->
                   <!--<div>暂时无法预览</div>-->
-                  <preview-portion v-if="isReset" :item="item" ></preview-portion>
+                  <preview-portion  v-if="isReset" :item="item" ></preview-portion>
                 </div>
               </div>
             </draggable>
@@ -373,6 +373,20 @@
             //   message: '已取消删除'
             // });
           });
+        },
+        //判断小节下 条目是否存在 多列
+        judgmentPortionColumns(item) {
+          let isPresence = false;
+          let itemList = item.formItemList;
+          if(itemList.length > 0) {
+            for(let i=0;i<itemList.length;i++) {
+              if(itemList[i].baseProperty.layout.columns > 1) {
+                isPresence = true ;
+                break ;
+              }
+            }
+          }
+          return isPresence;
         },
         //CRF 报告 保存
         async CRFReportSave() {
@@ -810,6 +824,11 @@
           overflow: auto;
           .displayPortion_title{
             display: none;
+          }
+        }
+        .layout_set {
+          .section_preview_container {
+            min-width: 1600px;
           }
         }
       }

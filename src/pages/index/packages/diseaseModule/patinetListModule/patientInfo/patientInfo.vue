@@ -111,6 +111,7 @@ export default {
                 let that = this;
                 let urlParameter={
                     cacheData: false,
+                    id:"",
                     formId: row.crfId || "",
                     reportId: row.id || '',
                     groupId: row.groupId || "",

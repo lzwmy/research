@@ -632,7 +632,7 @@
                       min-height:auto;
                     }
                   }
-                  img{
+                  &>img{
                     height: 120px;
                     position: absolute;
                     top: 50%;
