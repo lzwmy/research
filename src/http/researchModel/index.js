@@ -40,7 +40,7 @@ const url = {
   //生成动态表
   modelDynamicTableListNew:"/report/model/table.do",
   //编辑模型保存 new
-  modelModifySaveNew:"/report/bak/edit.do",
+  modelModifySaveNew:"/report/edit.do",
   //删除模型
   modelDeleteRequest:"/report/delete.do",
   //导出动态表Excel
