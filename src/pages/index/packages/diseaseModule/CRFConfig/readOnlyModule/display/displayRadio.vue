@@ -235,11 +235,11 @@
           if(this.$store.state.annotateData.tipStatus  == 3 && this.$store.state.annotateData.isExamine == false) {
             return ;
           }else {
-            let path = this.item.controlName;
+            let path = {path:this.item.controlName,controlType:this.item.controlType};
             eventBus.$emit('display-show',path)
           }
         }else {
-          let path = this.item.controlName;
+          let path = {path:this.item.controlName,controlType:this.item.controlType};
           eventBus.$emit('display-show',path)
         }
         /*let path = this.item.controlName;

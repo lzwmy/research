@@ -517,7 +517,7 @@
             return ;
           }
           if(test.verificationData(this.basisDataList) == false) {
-            this.$message.info('表单名称不能为空');
+            this.$message.info('条目名称不能为空');
             return ;
           }
           if(this.basisDataList.length === 0) {
