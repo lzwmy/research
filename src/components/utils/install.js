@@ -35,11 +35,11 @@ function checkStatus (response) {
   if (response && (response.status === 200 || response.status === 304 || response.status === 400)) {
     return response;
   } 
-  if(response && String(response.status).charAt(0) == '5'){
-    //服务端异常
-    utils.ssoLogout();
-    return response;
-  }
+  // if(response && String(response.status).charAt(0) == '5'){
+  //   //服务端异常
+  //   utils.ssoLogout();
+  //   return response;
+  // }
   // 异常状态下，把错误信息返回去
   Message({
     type: 'error',

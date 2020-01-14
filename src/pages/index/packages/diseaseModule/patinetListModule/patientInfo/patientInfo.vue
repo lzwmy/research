@@ -45,27 +45,26 @@ export default {
     methods: {
         //匹配报告状态
         matchingReportStatus(row) {
-            //报告状态
-            if(row.reportType == 1) {
-                switch (row.status) {
-                    case 0: return '未填写';
-                    case 1: return '已填写';
-                    case 2: return '已提交';
-                    case 3: return '不通过';
-                    case 4: return '已通过';
-                    case 5: return '已召回';
-                    default: break;
-                }
-            }else {
-                switch (row.status) {
-                    case 0: return '未填写';
-                    case 1: return '已填写';
-                    case 2: return '失访';
-                    case 3: return '终止';
-                    default: break;
-                }
-            }
-            
+          switch (row.status) {
+              case 0: return '未填写';
+              case 1: return '已填写';
+              case 2: return '已提交';
+              case 3: return '不通过';
+              case 4: return '已通过';
+              case 5: return '已召回';
+              default: break;
+          }
+          // //报告状态
+          // if(row.reportType == 1) {
+          // }else {
+          //     switch (row.status) {
+          //         case 0: return '未填写';
+          //         case 1: return '已填写';
+          //         case 2: return '失访';
+          //         case 3: return '终止';
+          //         default: break;
+          //     }
+          // }
         },
         async getDataList () {
             let that = this;
@@ -114,13 +113,14 @@ export default {
                     id:"",
                     formId: row.crfId || "",
                     reportId: row.id || '',
+                    reportName: row.reportName,
                     groupId: row.groupId || "",
                     subjectId: row.subjectId || "",
                     diseaseId: row.diseaseId || "",
                     patientName: row.patientName || "",
                     patientId: row.patientId || "",
                     identify: this.identify || "",
-                    from: row.reportType==1?"caseManage":'patientFollowUp',
+                    from: '',
                     diseaseName: row.diseaseName || "",
                     subjectName: row.subjectName || "",
                     groupName: row.groupName || "",

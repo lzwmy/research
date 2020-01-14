@@ -83,6 +83,16 @@ export default {
         pagination,
         echartsContain,
     },
+    computed: {
+        orgCode: function() {
+            return this.$store.state.user.diseaseInfo.orgCode;
+        }
+    },
+    watch: {
+      orgCode: function(newVal) {
+          this.getDataList();
+      },
+    },
     methods: {
         handleWidth(label) {
             let width = '';

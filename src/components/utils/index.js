@@ -655,8 +655,7 @@ const ssoLogout = async() => {
   let diseaseId = store.state.user.diseaseInfo.diseaseId
   try {
     store.commit('USER_SIGNOUT');
-    vm.$get('/auth/logout.do?t=' + (+new Date()))
-    then(function (response) {
+    vm.$getValidAuthenticated('/auth/logout.do?t=' + (+new Date())).then(function (response) {
       if(isDisease) {
         window.location.href = './loginDisease.html?id='+diseaseId;
       }else if(isResearch) {
@@ -664,9 +663,7 @@ const ssoLogout = async() => {
       }else {
         window.location.href = './login.html';
       }
-    })
-    .catch(function (error) {
-      console.log(error);
+    }).catch(function (error) {
       if(isDisease) {
         window.location.href = './loginDisease.html?id='+diseaseId;
       }else if(isResearch) {

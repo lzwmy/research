@@ -105,7 +105,7 @@ export default {
         }
       });
     },
-    handleLogin() {
+    async handleLogin() {
       let that = this;
       let rand = (CryptoJS.MD5(Math.random() + '') + '').substring(0, 16);
 
@@ -127,43 +127,47 @@ export default {
         password: encPassword,
         validCode: that.form.validCode
       };
-
-      this.$axios({
-        method: 'post',
-        url: '/auth/login.do',
-        data: that.$format(params)
-      }).then((res)=>{
-        if(res.data && res.data.code == 0) {
-          let userLogin = {
-            name: res.data.data.name,
-            permissionCodes:  res.data.data.permissionCodes,
-            roleCodes:  res.data.data.roleCodes,
-            sessionId:  res.data.data.sessionId,
-            userId:  res.data.data.userId,
-          };
-          that.$store.commit('saveToken',res.data.data.token) 
-          that.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
-          let url = utils.getQuery('url');
-          if (url) {
-            window.location.href = url;
-          } else {
-            window.location.href = './index.html#/index';
+      try {
+        this.$axios({
+          method: 'post',
+          url: '/auth/login.do',
+          data: that.$format(params)
+        }).then((res)=>{
+          if(res.data && res.data.code == 0) {
+            let userLogin = {
+              name: res.data.data.name,
+              permissionCodes:  res.data.data.permissionCodes,
+              roleCodes:  res.data.data.roleCodes,
+              sessionId:  res.data.data.sessionId,
+              userId:  res.data.data.userId,
+            };
+            that.$store.commit('saveToken',res.data.data.token) 
+            that.$store.commit('USER_SIGNIN', JSON.stringify(userLogin));
+            let url = utils.getQuery('url');
+            if (url) {
+              window.location.href = url;
+            } else {
+              window.location.href = './index.html#/index';
+            }
+          }else {
+            //验证码错误
+            if(res.data.code == 40) {
+              document.querySelector('#validCode').focus();
+            }
+            this.$message({
+              message: res.data.msg || '登录失败',
+              type: 'warning'
+            });
+            that.changeValidCode();
           }
-        }else {
-          //验证码错误
-          if(res.data.code == 40) {
-            document.querySelector('#validCode').focus();
-          }
-          this.$message({
-            message: res.data.msg || '登录失败',
-            type: 'warning'
-          });
+        }).catch(function (error) {
           that.changeValidCode();
-        }
-      }).catch(function (error) {
+          console.log(error);
+        });
+      } catch (error) {
         that.changeValidCode();
         console.log(error);
-      });
+      }
     }
   }
 };
