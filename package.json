@@ -10,8 +10,8 @@
     "build": "node build/build.js",
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
     "test": "electron .",
-    "electron_build_win": "electron-packager . 专病科研平台 --win32 --ia32 --icon=./src/assets/ico/favicon.ico --out=./ --app-version=0.0.1 --overwrite --ignore=node_modules --electron-version 7.1.8",
-    "electron_build_mac": "electron-packager . 专病科研平台 --platform=darwin --arch=x64 --out=./ --asar --app-version=0.0.1 --overwrite --ignore=node_modules --electron-version 7.1.8"
+    "electron_build_win": "electron-packager . 专病科研平台(v1.0) --win32 --ia32 --icon=./src/assets/ico/favicon.ico --asar --out=./ --app-version=0.0.1 --overwrite --ignore=node_modules --electron-version 7.1.8",
+    "electron_build_mac": "electron-packager . 专病科研平台(v1.0) --platform=darwin --arch=x64 --out=./ --asar --app-version=0.0.1 --overwrite --ignore=node_modules --electron-version 7.1.8"
   },
   "dependencies": {
     "@ztree/ztree_v3": "^3.5.40",

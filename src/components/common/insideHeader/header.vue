@@ -236,8 +236,7 @@ export default {
             this.orgLoading = true;
             try {
                 let res = await this.$http.ORGDisGetOrgList({
-                    diseaseId: id,
-                    source: localStorage.getItem('CURR_LOGIN_TYPE') == 'disease'?'share':'local'
+                    diseaseId: id
                 });
                 if (res.code == '0') {
                     this.orgList = res.data;
@@ -251,16 +250,16 @@ export default {
                     }
                     //非管理员从主平台进来
                     if(localStorage.getItem('CURR_LOGIN_TYPE') != 'disease' && !this.$store.state.user.diseaseInfo.isAdmin) {
-                      this.orgInfo = this.orgList.find(li=>{
-                        return li.orgType == 1;
-                      })
-                      this.$store.commit('saveDiseaseInfo',
-                          Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
-                              orgCode: this.orgInfo.orgCode,
-                              orgName: this.orgInfo.orgName,
-                          })
-                      );
-                      console.log(this.orgInfo)
+                        this.orgInfo = this.orgList.find(li=>{
+                            return li.orgType == 1;
+                        })
+                        this.$store.commit('saveDiseaseInfo',
+                            Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                                orgCode: this.orgInfo.orgCode,
+                                orgName: this.orgInfo.orgName,
+                            })
+                        );
+                        console.log(this.orgInfo)
                     }
                 }
                 this.orgLoading = false;

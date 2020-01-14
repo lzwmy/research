@@ -13,7 +13,7 @@
                         <p @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}名称：{{item.reportName}}</p>
                         <div>
                             <el-button type="danger" class="delete_btn" icon="icon iconfont iconshanchu1" v-if="item.status == 0" @click="onDeleteReport(item)"></el-button>
-                            <span class="state" :class="'status_'+item.reportType+'_'+item.status">{{matchingReportStatus(item)}}</span>
+                            <span class="state" :class="'status_1_'+item.status">{{matchingReportStatus(item)}}</span>
                         </div>
                     </div>
                     <h4 class="cur_pointer" @click="toReportFill(item)">{{item.reportType==1?'报告':'随访'}}医生：{{item.author}} <span style="padding-left: 20px;">创建时间： {{item.createTime}}</span> </h4>

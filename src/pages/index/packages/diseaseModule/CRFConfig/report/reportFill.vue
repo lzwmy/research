@@ -526,7 +526,7 @@ export default {
         console.log('report data',report)
         if (report.data && report.code == "0") {
           this.report = report.data;
-          this.tipStatus = report.data.status;
+          this.tipStatus = report.data.status || 0;
           console.log("====================================")
           console.log(this.report)
           if(report.data && report.data.portions&&report.data.portions.length==0){

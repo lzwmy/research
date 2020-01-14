@@ -28,16 +28,16 @@
                 <ul v-loading="selectTargetLoading">
                     <!-- :move="draggableRemoveCallBack" -->
                     <draggable 
-                    v-model="targetList" 
-                    :group='{name: "menu", put: false, pull: "clone"}' 
-                    :sort='false'
-                    @end="onEndCallBack" 
-                    :move="draggableRemoveCallBack">
-                            <li class="flex-between-center" v-for="(item, index) in targetList" :key="index">
-                                <p class="color_1">{{item.itemName}}</p>
-                                <span>{{item.controlType  == 'NUMBER_INPUT'?'连续':'分类'}}</span>
-                            </li>
-                            <em v-if='empty' class="block text-center"><br/>(空)</em>
+                        v-model="targetList" 
+                        :group='{name: "menu", put: false, pull: "clone"}' 
+                        :sort='false'
+                        @end="onEndCallBack" 
+                        :move="draggableRemoveCallBack">
+                        <li class="flex-between-center" v-for="(item, index) in targetList" :key="index">
+                            <p class="color_1">{{item.itemName}}</p>
+                            <span>{{item.controlType  == 'NUMBER_INPUT'?'连续':'分类'}}</span>
+                        </li>
+                        <em v-if='empty' class="block text-center"><br/>(空)</em>
                     </draggable>
                 </ul>
             </div>

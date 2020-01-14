@@ -66,7 +66,7 @@
           <el-form-item label="研究目的/方案:">
             <el-input type="textarea" :rows="6" v-model.trim="dialogFrom.scheme" placeholder="请输入研究目的"
                       :maxlength="300"></el-input>
-            <p class="number">{{dialogFrom.scheme.length}}/300</p>
+            <p class="research_number">{{dialogFrom.scheme.length}}/300</p>
           </el-form-item>
           <el-form-item label="拟收集患者数:">
             <el-input v-model.trim="dialogFrom.patients" placeholder="请输入拟收集患者数" :maxlength="20" clearable></el-input>
@@ -74,7 +74,7 @@
           <el-form-item label="项目说明:">
             <el-input type="textarea" :rows="6" v-model.trim="dialogFrom.explain" placeholder="请输入项目说明"
                       :maxlength="300"></el-input>
-            <p class="number">{{dialogFrom.explain.length}}/300</p>
+            <p class="research_number">{{dialogFrom.explain.length}}/300</p>
           </el-form-item>
           <el-form-item label="项目附件:">
             <el-upload
@@ -558,7 +558,7 @@
     }
   }
 
-  .number {
+  .research_number {
     position: absolute;
     bottom: -5px;
     right: 8px;

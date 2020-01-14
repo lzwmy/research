@@ -84,7 +84,7 @@
                 <formItemCom 
                     ref="refFormItemCom"
                     @sendAllCrfForm="handleAllFormItem" 
-                    @getDataList="getDataList(0,20)" 
+                    @getDataList="getDataList(1, paging.pageSize);" 
                     :allCrfForm="allCrfForm" 
                     :confingData="confingData"
                     :form='form'
@@ -305,7 +305,7 @@ export default {
         },
         visibilityChangeHandle() {
             if(!document[this.hidden]) {
-                this.getDataList(0,20);
+                this.getDataList(1, this.paging.pageSize);
             }
         },
          //表格多选项
@@ -313,6 +313,7 @@ export default {
             this.multipleSelection = val;
         },
         async getDataList (pageNo = this.paging.pageNo, pageSize = this.paging.pageSize) {
+          console.log(pageNo)
             if (!this.showGuide) {
                 return;
             }
@@ -440,7 +441,7 @@ export default {
         handleSelectGroup(data) {
             this.currentGrounpId = data;
             //查询两遍，解决table提示框不显示问题
-            this.getDataList(0, 20)
+            this.getDataList(1, this.paging.pageSize);
         },
         //获取全部crf表单列表和列表下的所有指标
         handleAllFormItem(data) {
@@ -500,7 +501,7 @@ export default {
         },
         //表单编辑成功回调
         successAdd() {
-            this.getDataList(0,20);
+            this.getDataList(1, this.paging.pageSize);
         },
         handlePoint(data) {
             if(typeof(data) != 'object') {
