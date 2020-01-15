@@ -269,11 +269,4 @@ export default {
     }
   }
 
-
-  // .insideView ~ .el-popper {
-  //   color: red;
-  //   .el-select-dropdown__item.selected {
-  //     color: #1bbae1;
-  //   }
-  // }
 </style>

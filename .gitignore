@@ -10,3 +10,4 @@ num-debug.*
 .idea/
 docker/
 .cache/
+config/index.js
