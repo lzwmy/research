@@ -1456,17 +1456,19 @@
       async fuzzyQueryGetDataList (pageNo = this.pageNo, pageSize = this.pageSize) {
         let that = this;
         let formData = {
-          diseaseId: that.currentDiseaseId,
-          experimentId: that.selectLabGroupId,
-          subjectId: that.selectLabSubjectId,
-          param: that.fuzzyQuery,
-          // viewName: that.currentSelectViewsNameList,
-          viewName: [that.viewName],
-          page: pageNo - 1,
-          size: pageSize
+            diseaseId: that.currentDiseaseId,
+            experimentId: that.selectLabGroupId,
+            subjectId: that.selectLabSubjectId,
+            param: that.fuzzyQuery,
+            "userId": this.$store.state.user.diseaseInfo.doctor || '',
+            "orgCode": this.$store.state.user.diseaseInfo.orgCode || '',
+            // viewName: that.currentSelectViewsNameList,
+            viewName: [that.viewName],
+            page: pageNo - 1,
+            size: pageSize
         };
         try {
-          let data = await that.$http.casesAsynFindCases(that.$format(formData));
+          let data = await that.$http.casesAsynFindCases(formData);
           that.loading = false;
           if (data && data.code == '0') {
             let result = data.data;

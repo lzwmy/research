@@ -24,8 +24,7 @@
             <echarts-contain containType="big" :parentHeight="routerViewHeight" :heightRatio="1">
                 <el-table
                     :height="(dataList.content && dataList.content.length>0)?(routerViewHeight*1-55):(routerViewHeight*1)"
-                    @row-click="handleClick" @expand-change="expandChange"
-                    :data="dataList.content" v-loading="loading" ref="refTable" fit lazy row-key="treeId" :tree-props="{children: 'children'}">
+                    :data="dataList.content" v-loading="loading" ref="refTable" fit lazy :load='tableLoad' row-key="treeId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
                     <el-table-column prop='index' label='序号' width="100"></el-table-column>
                     <el-table-column 
                         v-for="(column,index) in dataList.header"
@@ -62,6 +61,7 @@ export default {
                 state:"",
                 report: ""
             },
+            childrenData: [],
             dataList: {
                 content: [],
                 header: []
@@ -89,9 +89,9 @@ export default {
         }
     },
     watch: {
-      orgCode: function(newVal) {
-          this.getDataList();
-      },
+        orgCode: function(newVal) {
+            this.getDataList();
+        },
     },
     methods: {
         handleWidth(label) {
@@ -137,6 +137,7 @@ export default {
                     let obj = {};
                     res.data.body.forEach((ele,index) => {
                         ele.index = index+1;
+                        ele.hasChildren = true;
                         ele.children = [{}]
                     });
                     obj.content = this.addTreeId(res.data.body);
@@ -152,6 +153,14 @@ export default {
                 that.loading = false;
                 console.log(err)
             }
+        },
+        tableLoad (tree, treeNode, resolve) {
+            setTimeout(() => {
+                // let data = 
+                this.getSingleStatisticsData(tree).then(()=>{
+                    resolve( this.childrenData.length?this.childrenData:this.addTreeId([{}]) )
+                })
+            }, 500)
         },
         async getSingleStatisticsData(row) {
             let startTime, endTime;
@@ -171,24 +180,17 @@ export default {
             try {
                 let res = await this.$http.ORGDisGetSingleStatisticsData(formData);
                 if (res.code == 0) {
-                    let childrenData = this.addTreeId(res.data.body);
-                    row.children = childrenData.length?childrenData:this.addTreeId([{}]);
+                    this.childrenData = this.addTreeId(res.data.body);
+                    // row.children = childrenData.length?childrenData:this.addTreeId([{}]);
                 }
-                console.log(row)
             } catch (err) {
                 console.log(err)
             }
         },
-        //表格内容点击
-        handleClick(row, column, cell) {
-            this.$refs.refTable.toggleRowExpansion(row)
-        },
-        //表格内容展开
-        expandChange(row,expanded ) {
-            if(expanded) {
-                this.getSingleStatisticsData(row);
-            }
-        },
+        // //表格内容点击
+        // handleClick(row, column, cell) {
+        //     this.$refs.refTable.toggleRowExpansion(row)
+        // },
         //添加treeid
         addTreeId(obj) {
             if(obj instanceof Array) {
