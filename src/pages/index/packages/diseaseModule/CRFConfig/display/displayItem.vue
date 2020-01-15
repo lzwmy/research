@@ -93,19 +93,6 @@ export default {
     displaySlider
   },
   methods:{
-    /*formatSpan(item) {
-      let span = 24;
-      if(item.columns == 1) {
-        span = 24;
-      }else if(item.columns == 2) {
-        span = 12 * (item.selection.length || 1);
-      }else if(item.columns == 3) {
-        span = 8 * (item.selection.length || 1);
-      }else if(item.columns == 4) {
-        span = 6 * (item.selection.length || 1);
-      }
-      return span;
-    }*/
     formatSpan(item) {
       let span = 24;
       if(item.columns == 1) {

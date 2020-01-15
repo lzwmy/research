@@ -9,7 +9,7 @@
                   <div class="layout_title">
                     <div class="layout_name">布局</div>
                     <div class="layout_item-box">
-                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.wrap==0}" @click="changeColumn(0)"><!--{{$store.state.CRFConfig.basisIndex == 0 ? '不换行' : '上一行'}}-->上一行</span>
+                      <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.wrap==0}" @click="changeColumn(0)">上一行</span>
                       <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===1&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(1)">单列</span>
                       <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===2&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(2)">双列</span>
                       <span class="name_item" :class="{'active':basicDataInfo.obj.baseProperty.layout.columns===3&&basicDataInfo.obj.baseProperty.layout.wrap==1}" @click="changeColumn(3)">三列</span>
@@ -40,16 +40,6 @@
                   inactive-color="#DCDFE6">
                 </el-switch>
               </el-form-item>
-              <!--<el-form-item
-                v-if="controlType=='SINGLE_COMBOX'||controlType=='MULTI_COMBOX' || controlType == 'RADIO_BUTTON' || controlType == 'CHECKBOX'"
-                label="可手动录入"
-                class="line_blockCheck"
-              >
-                <el-radio-group v-model="basicDataInfo.obj.baseProperty.controlIsExtend">
-                  <el-radio :label="1">是</el-radio>
-                  <el-radio :label="0">否</el-radio>
-                </el-radio-group>
-              </el-form-item>-->
               <el-form-item label="是否可扩展" v-if="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(controlType)">
                 <el-radio-group v-model="basicDataInfo.obj.baseProperty.controlIsExtend">
                   <el-radio :label="1">是</el-radio>
@@ -71,7 +61,6 @@
                 label="宽度设置"
                 class="line_block"
               >
-<!--                <el-select v-model="basic.widthVal" size="mini">-->
                 <el-select v-model="basicDataInfo.obj.baseProperty.controlWidth" size="mini">
                   <el-option label="全长" :value="4"></el-option>
                   <el-option label="2倍全长" :value="8"></el-option>
@@ -98,22 +87,6 @@
                   <el-option label="文件" value="FILE"></el-option>
                   <el-option label="图片" value="IMAGE"></el-option>
                 </el-select>
-                <!--<el-button type="primary" @click="uploadFileOrImg">上传</el-button>-->
-                <!--<el-button>取消</el-button>-->
-                <!--<el-upload
-                  class="upload-demo"
-                  ref="upload"
-                  drag
-                  :action="uploadActionUrl"
-                  :auto-upload="false"
-                  :on-change="onChange"
-                  :on-remove="onRemove"
-                  :multiple="true">
-                  &lt;!&ndash;:before-upload="onBeforeUpload" :http-request="beforeUploadFile"&ndash;&gt;
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text" v-if="UploadType=='FILE'">将<em>文件</em>拖到此处，或<em>点击上传</em></div>
-                  <div class="el-upload__text" v-if="UploadType=='IMAGE'">将<em>图片</em>拖到此处，或<em>点击上传</em></div>
-                </el-upload>-->
               </el-form-item>
               <el-form-item v-if="controlType=='FILE_UPLOAD'" label="参考图">
                 <div style="display:inline-block">
@@ -156,7 +129,6 @@
               <el-from-item class="number_range" label="数值范围" v-if="controlType=='SLIDER'">
                 <div>
                   <label>数值范围:</label>
-                  <!--<el-input placeholder="最小值"  v-model.number="basicDataInfo.obj.baseProperty.sliderInfo.min" min="0"></el-input> - <el-input v-model.number="basicDataInfo.obj.baseProperty.sliderInfo.max"  placeholder="最大值"></el-input>-->
                   <el-input-number v-model="basicDataInfo.obj.baseProperty.sliderInfo.max" :min="0"></el-input-number>
                 </div>
                 <div class="step-box">
@@ -223,65 +195,9 @@
                       :value="it"
                     />
                   </el-select>
-                  <!--<span>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分组列&nbsp;&nbsp;
-                  <el-select
-                    collapse-tags
-                    class="show_column"
-                    v-model="dataSetting.groupColumns"
-                    size="mini"
-                    placeholder="请选择分组列"
-                    multiple
-                    clearable
-                  >
-                    <el-option
-                      v-for="it in dataSetting.bindingColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it.name"
-                    />
-                  </el-select>
-                </span>
-                  <span>
-                  &nbsp;&nbsp;Key列 &nbsp;&nbsp;
-                  <el-select
-                    collapse-tags
-                    v-model="dataSetting.keyColumn"
-                    size="mini"
-                    placeholder="请选择Key列"
-                    allow-create
-                    filterable
-                    default-first-option
-                    clearable
-                  >
-                    <el-option
-                      v-for="it in dataSetting.bindingColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it.name"
-                    />
-                  </el-select>
-                </span>-->
                 </el-form-item>
                 <el-form-item class="mg_10" style="margin-left: 5px" label="分组列">
-                  <!--<el-select
-                    collapse-tags
-                    v-model="dataSetting.bindingColumns"
-                    size="mini"
-                    placeholder="请选择显示列"
-                    value-key="name"
-                    multiple
-                    clearable
-                  >
-                    <el-option
-                      v-for="it in viewColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it"
-                    />
-                  </el-select>-->
                   <span>
-                  <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分组列&nbsp;&nbsp;-->
                   <el-select
                     collapse-tags
                     class="show_column"
@@ -299,65 +215,9 @@
                     />
                   </el-select>
                 </span>
-                  <!--<span>
-                  &nbsp;&nbsp;Key列 &nbsp;&nbsp;
-                  <el-select
-                    collapse-tags
-                    v-model="dataSetting.keyColumn"
-                    size="mini"
-                    placeholder="请选择Key列"
-                    allow-create
-                    filterable
-                    default-first-option
-                    clearable
-                  >
-                    <el-option
-                      v-for="it in dataSetting.bindingColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it.name"
-                    />
-                  </el-select>
-                </span>-->
                 </el-form-item>
                 <el-form-item class="mg_10" style="margin-left: 5px" label="key列">
-                  <!--<el-select
-                    collapse-tags
-                    v-model="dataSetting.bindingColumns"
-                    size="mini"
-                    placeholder="请选择显示列"
-                    value-key="name"
-                    multiple
-                    clearable
-                  >
-                    <el-option
-                      v-for="it in viewColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it"
-                    />
-                  </el-select>
                   <span>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分组列&nbsp;&nbsp;
-                  <el-select
-                    collapse-tags
-                    class="show_column"
-                    v-model="dataSetting.groupColumns"
-                    size="mini"
-                    placeholder="请选择分组列"
-                    multiple
-                    clearable
-                  >
-                    <el-option
-                      v-for="it in dataSetting.bindingColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it.name"
-                    />
-                  </el-select>
-                </span>-->
-                  <span>
-                  <!--&nbsp;&nbsp;Key列 &nbsp;&nbsp;-->
                   <el-select
                     collapse-tags
                     v-model="dataSetting.keyColumn"
@@ -391,53 +251,9 @@
                       :value="it.name"
                     />
                   </el-select>
-                  <!--<span>
-                  &nbsp;&nbsp;绑定属性&nbsp;&nbsp;
-                  <el-select
-                    v-if="dataSetting.bindingDomain!='INHERIT'"
-                    v-model="dataSetting.bindingAttr"
-                    size="mini"
-                    placeholder="属性名称"
-                    clearable
-                  >
-                    <el-option
-                      v-for="it in dataSetting.bindingColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it.name"
-                    />
-                  </el-select>
-                  <el-select
-                    v-if="dataSetting.bindingDomain=='INHERIT'"
-                    v-model="dataSetting.bindingAttr"
-                    size="mini"
-                    placeholder="父属性名称"
-                  >
-                    <el-option
-                      v-for="it in dataSetting.parentBindingColumns"
-                      :key="it.name"
-                      :label="it.label"
-                      :value="it.name"
-                    />
-                  </el-select>
-                </span>-->
                 </el-form-item>
                 <el-form-item class="binding_type-box mg_10" style="margin-left: 5px" label="绑定属性">
-                  <!--<el-select
-                    v-model="dataSetting.bindingType"
-                    size="mini"
-                    placeholder="请选择绑定类型"
-                    clearable
-                  >
-                    <el-option
-                      v-for="(it,index) in typeList"
-                      :key="index"
-                      :label="it.label"
-                      :value="it.name"
-                    />
-                  </el-select>-->
                   <span>
-                  <!--&nbsp;&nbsp;绑定属性&nbsp;&nbsp;-->
                   <el-select
                     v-if="dataSetting.bindingDomain!='INHERIT'"
                     v-model="dataSetting.bindingAttr"
@@ -559,7 +375,6 @@
           <el-tab-pane label="高级配置" name="highSet" v-if="['CASCADE','SLIDER'].includes(controlType)">
             <el-form class="alignment">
               <el-form-item label="内容配置" >
-                <!--v-model="basicDataInfo.obj.termSet.rangeText"-->
                 <el-input type="textarea" :rows="5"  v-model="rangeText"></el-input>
               </el-form-item>
             </el-form>
@@ -576,12 +391,7 @@
       components:{
         VueCropper
       },
-      props:{
-        /*basicDataInfo: {
-          type: Object,
-          default: null
-        }*/
-      },
+      props:{},
       watch:{
         "basicDataInfo":function (data) {
           this.init();
@@ -609,31 +419,25 @@
           // this.basicDataInfo.obj.baseProperty.layout.displayChecked = value;
         },
         'dataSetting.bindingDomain':function (data) { //绑定域
-          console.log('watch bindingDomain',data);
           this.basicDataInfo.obj.baseProperty.bindingInfo.viewId = data;
         },
         'dataSetting.bindingColumns':function (data) { //显示列
-          console.log('watch bindingColumns' , data);
           if(data) {
             this.basicDataInfo.obj.baseProperty.bindingInfo.viewColumn = data.map(o => o.name).join(',');
           }
         },
         "dataSetting.groupColumns":function (data) { //分组列
-          console.log('watch groupColumns' , data);
           if(data) {
             this.basicDataInfo.obj.baseProperty.bindingInfo.groupColumn = data.join(',');
           }
         },
         "dataSetting.keyColumn":function (data) { //key列
-          console.log('watch keyColumn' , data);
           this.basicDataInfo.obj.baseProperty.bindingInfo.keyColumn = data;
         },
         "dataSetting.bindingType":function(data) { //绑定类型
-          console.log('watch bindingType' , data);
           this.basicDataInfo.obj.baseProperty.bindingInfo.bindingType = data;
         },
         "dataSetting.bindingAttr":function (data) { //绑定属性及 父属性名称
-          console.log('watch bindingAttr' , data);
           this.basicDataInfo.obj.baseProperty.bindingInfo.bindingColumn = data;
         },
         "sliderValue":function(data) { //缩放比例
@@ -810,7 +614,6 @@
         },
         //选择布局
         changeColumn(data) {
-          // console.log(this.basicDataInfo.obj.controlDisplayName);
           if(data ==0) {
             this.basicDataInfo.obj.baseProperty.layout.wrap = data;
             this.selectList = [];
@@ -820,16 +623,12 @@
           this.layoutColumn = data;
           this.basicDataInfo.obj.baseProperty.layout.columns = data;
           this.basicDataInfo.obj.baseProperty.layout.wrap = 1;
-          /*this.basicDataInfo.obj.baseProperty.layout.selection = [];*/
           this.selectList = [];
           if(data == 2) {
-            // this.selectList.push(this.column2[0]);
             this.basicDataInfo.obj.baseProperty.layout.displayChecked = JSON.parse(JSON.stringify(this.column2));
           }else if(data == 3) {
-            // this.selectList.push(this.column3[0]);
             this.basicDataInfo.obj.baseProperty.layout.displayChecked = JSON.parse(JSON.stringify(this.column3));
           }else if(data == 4) {
-            // this.selectList.push(this.column4[0]);
             this.basicDataInfo.obj.baseProperty.layout.displayChecked = JSON.parse(JSON.stringify(this.column4));
           }
         },
@@ -837,38 +636,6 @@
         processTopLine(data) {
           let prevData = this.$store.state.CRFConfig.basisDataList;
           let index = this.$store.state.CRFConfig.basisIndex;
-          /*let prevColumns  = prevData[index-1].baseProperty.layout.columns;
-          let prevSelectionList = prevData[index-1].baseProperty.layout.selection;
-          let columns = this.basicDataInfo.obj.baseProperty.layout.columns;
-          let selectionList = this.basicDataInfo.obj.baseProperty.layout.selection;*/
-          /*if(columns == prevColumns){
-            /!*let flag = prevSelectionList.includes(...selectionList);*!/
-            for(let i=0;i<prevSelectionList.length;i++) {
-              for(let j=0;j<selectionList.length;j++) {
-                if(prevSelectionList[i].position !== selectionList[j].position){
-                  let changeSelection = this.basicDataInfo.obj.baseProperty.layout.displayChecked.map(item=>{
-                    return item.position;
-                  }).indexOf(prevSelectionList[i].position);
-                  console.log(changeSelection,this.basicDataInfo.obj.baseProperty.layout.displayChecked)
-                  if(changeSelection > -1) {
-                    this.basicDataInfo.obj.baseProperty.layout.displayChecked[changeSelection].selection = true
-                  }
-                  // this.basicDataInfo.obj.baseProperty.layout.displayChecked[changeSelection]['selection' ]= true;
-                }else if(prevSelectionList[i].position == selectionList[j].position){
-                  this.$notify.info({
-                    title: '警告',
-                    message: '当前选择列与上一列 存在冲突!',
-                    duration:1000
-                  });
-                  this.basicDataInfo.obj.baseProperty.layout.displayChecked.forEach(item=>{
-                    return item.selection = false;
-                  });
-                  this.basicDataInfo.obj.baseProperty.layout.wrap = 1;
-                  return ;
-                }
-              }
-            }
-          }*/
           if(index == 0) {
             this.$notify.info({
               title: '警告',
@@ -902,7 +669,6 @@
         },
         //布局 位置选择
         selectLayout(item) {
-          // const index = this.selectList.indexOf(item);
           let index;
           if(this.selectList.length!==0) {
             for(let i=0;i<this.selectList.length;i++) {
@@ -998,8 +764,6 @@
             }else{
               this.selectList.push(item)
             }
-            /*item.selection = true;
-            this.selectList.push(item)*/
           }
         },
         //添加过滤条件
@@ -1041,23 +805,6 @@
           })
         },
         onChange(file,fileList) { //注意：就算一次选取多个文件，这里依旧会执行多次
-          /*console.log(file,fileList);
-          let extension = file.name.substring(file.name.lastIndexOf('.')+1);
-          if(this.UploadType=='FILE'){
-            if(extension=='doc'||extension == 'xlsx'||extension=='pdf') {
-              this.fileList = fileList;
-            }else{
-              this.$message.info('上传文件格式不正确！');
-              return false;
-            }
-          }else if(this.UploadType=='IMAGE') {
-            if(extension=='png'|| extension=='gif'||extension=='jpg'|| extension=='jpeg'){
-              this.fileList = fileList;
-            }else{
-              this.$message.info('只能上传图片格式');
-              return false;
-            }
-          }*/
           this.fileList = fileList
         },
         onRemove(file,fileList) {
@@ -1216,7 +963,6 @@
         },
         //初始化参数
         init() {
-          // console.log(this.$store.state.CRFConfig.basisDataInfo)
           let newData = this.basicDataInfo;
           this.controlType = newData.obj.controlType;
           this.isDefaultDate = newData.obj.baseProperty.controlIsDefaultDateTime;
@@ -1233,7 +979,6 @@
             newData.obj.baseProperty.bindingInfo.viewId;
           this.dataSetting.filter = newData.obj.baseProperty.bindingInfo.list;
           //布局 选中框
-          // console.log(newData.obj.baseProperty.layout.selection.includes(newData.obj.baseProperty.layout.displayChecked[0]));
           this.selectList = newData.obj.baseProperty.layout.selection;
           this.layoutColumn = newData.obj.baseProperty.layout.columns;
           //值域赋值
@@ -1289,12 +1034,10 @@
       },
       mounted(){},
       created() {
-        // console.log(this.basicDataInfo.obj.baseProperty.layout);
         //初始化集合
         this.searchBindingTypeList();
         this.searchBindingViewList();
         this.getOperators();
-        console.log(this.baseURL)
       }
     }
 </script>

@@ -10,7 +10,6 @@
                 <el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>
               </el-form-item>
             </el-form>
-              <!--<el-input v-focus placeholder="条目显示名称" v-model="basisDataItem.controlDisplayName" size="mini" @focus="activeConfig(basisDataItem,basisDataIndex,basisData)" ></el-input>-->
               <span class="content_must-fill">*</span>
               <!--控件类型-->
               <el-select v-model="basisDataItem.controlType" size="mini" @change="changeControlType(basisDataItem,basisDataIndex,basisData)">
@@ -38,8 +37,6 @@
               <!--是否必填-->
               <i class="iconfont iconfuhao2 gray" v-if="basisDataItem.displayIsVisible=='0'" @click="isVisible(basisDataItem)"></i>
               <i class="iconfont iconfuhao2" v-else @click="isVisible(basisDataItem)"></i>
-              <!--设置-->
-              <!--<i class="iconfont iconfuhao7" v-show="basisDataItem.controlType!==''" @click="changeParameterConfigChildren(basisDataItem)"></i>-->
               <!--添加-->
               <i class="iconfont iconfuhao1" v-if="basisDataItem.controlType=='GATHER'||basisDataItem.controlType=='TABLE'" @click="addLine(basisDataItem,basisDataIndex)"></i>
               <!--删除-->
@@ -66,15 +63,6 @@
           default:null
         }
       },
-      /*directives: {
-        focus: {
-          // 指令的定义
-          inserted: function (el) {
-            // 聚焦元素
-            el.querySelector('input').focus()
-          }
-        }
-      },*/
       data() {
         return {
           refreshView:true,//刷新子组件视图
@@ -385,7 +373,6 @@
       },
       mounted() {
         this.UnitListOrg()
-        // console.log(parameter.initData);
       }
     }
 </script>

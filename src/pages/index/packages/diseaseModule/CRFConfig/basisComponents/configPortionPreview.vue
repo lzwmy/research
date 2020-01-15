@@ -8,7 +8,6 @@
         class="config_portion-preview-dialog"
         @close="closeAddDialog">
         <div class="preview_content-body" >
-          <!--{{previewData}}-->
           <preview-portion v-if="dialogVisible" :item="previewData"></preview-portion>
         </div>
       </el-dialog>
@@ -40,13 +39,6 @@
             this.init();
           }
         },
-       /* "configDataInfo":{
-          deep:true,
-          handler(value) {
-            console.length('监听',value)
-            /!*this.previewData = value;*!/
-          }
-        }*/
       },
       data() {
         return {
@@ -56,19 +48,7 @@
       },
       methods:{
         //初始化
-        init() {
-          // console.log('初始化');
-          // this.previewData = {};
-          // let array = [];
-          // this.$parent.basisDataList.forEach(item=>{
-          //   array.push(
-          //     Object.assign({},JSON.parse(JSON.stringify(item)))
-          //   )
-          // });
-          // this.previewData.portionName = this.$parent.portionName;
-          // this.previewData.formItemList= array;
-          // console.log('弹框',array);
-        },
+        init() {},
         //关闭弹框
         closeAddDialog() {
           this.dialogVisible = false;

@@ -50,7 +50,7 @@
       methods:{
         //初始化
         init() {
-          console.log('初始化');
+          // console.log('初始化');
           /*this.previewCRFList();*/
           this.preview = this.crfPreview
         },

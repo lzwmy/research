@@ -53,19 +53,18 @@
           this.$nextTick(()=>{
             this.resize();
           })
-          // console.log(this.portionConfigData)
         },
         closeAddDialog() {
           this.dialogVisible = false;
           this.$emit('close-dialog',false)
         },
         portionCallbackData(data) {
-          console.log('数据回调',data);
+          // console.log('数据回调',data);
           this.$emit('update-data',data);
           this.dialogVisible = false;
         },
         portionCallbackAdd(data) {
-          console.log('添加数据回调',data);
+          // console.log('添加数据回调',data);
           this.$emit('portionCallback-add',data);
           this.dialogVisible = false;
         }

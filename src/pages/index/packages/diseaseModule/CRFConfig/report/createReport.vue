@@ -151,15 +151,6 @@
             // this.dataList = value;
           }
         },
-       /* "enable":function (data) {
-          this.idsUpdateData = 1;
-        },
-        "crfType":function (data) {
-          this.idsUpdateData = 1;
-        },
-        "crfName":function (data) {
-          this.idsUpdateData = 1;
-        }*/
       },
       created() {
         //通过导入报告创建表单
@@ -273,7 +264,6 @@
         },
         //新增 添加 小节
         updateAdd(data) {
-          console.log('添加 小节', data)
           this.isReset = true;
           this.idsUpdateData = 1;
           let formData = {
@@ -420,14 +410,7 @@
             if(data.code == 0 && data.data) {
               this.crfId = data.data;
               this.$message.success('保存成功');
-              /*let temporarySave = {
-                dataList:[],
-                crfName:"",
-              };
-              localStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
               that.idsUpdateData = 0;
-              //保存成功返回 报告页
-              // window.history.go(-1);
             }
           }catch (error) {
             console.log(error)
@@ -464,14 +447,7 @@
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
               this.$message.success('保存成功');
-              /*let temporarySave = {
-                dataList:[],
-                crfName:"",
-              };
-              localStorage.setItem('temporarySave',JSON.stringify(temporarySave));*/
               that.idsUpdateData = 0;
-              //保存成功返回 报告页
-              // window.history.go(-1);
             }
           }catch (error) {
             console.log(error)

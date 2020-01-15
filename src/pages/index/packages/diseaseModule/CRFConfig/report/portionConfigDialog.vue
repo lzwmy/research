@@ -10,11 +10,6 @@
         <div class="portion_config_content">
           <div class="search_term-box">
             <div class="search_term-left">
-              <!--<el-select class="search_type-box" v-model="searchType">
-                <el-option label="全部" :value="0"></el-option>
-                <el-option label="普通" :value="1"></el-option>
-                <el-option label="随访" :value="2"></el-option>
-              </el-select>-->
               <el-input class="search_item" v-model="searchName" maxlength="30" @keyup.enter.native="searchItem(searchName)" placeholder="请输入小节名称">
                 <i slot="suffix" class="el-input__icon el-icon-search" @click.stop="searchItem(searchName)"></i>
               </el-input>
@@ -81,7 +76,6 @@
                   <div class="portion_add-box">
                     <div class="portion_add-header">
                       <div class="title_box">{{portionName}}</div>
-                      <!--<div class="header_btn" v-if="multipleSelection.length!==0" @click="selectionAdd">-->
                       <div class="header_btn" v-if="portionId!==''" @click="previewAdd">
                         <i class="iconfont iconquerentianjia"></i>
                         <span>确认添加</span>
@@ -212,9 +206,6 @@
           this.portionList = [];
           this.preview = {};
           this.diseasePreview = {};
-          /*this.$nextTick(()=>{
-            this.$refs.multipleTable.clearSelection();
-          })*/
           this.searchItem();
         },
         //关闭 弹框
@@ -238,17 +229,6 @@
         },
         //直接添加
         addDirect() {
-          // this.$parent.directAddSave();
-          /*let diseaseId = this.$route.query.id;
-          this.$router.push({
-            path:"/basisConfig",
-            query:{
-              id:diseaseId,
-              type:'add',
-              portionName:this.searchName || '0',
-            }
-          })*/
-          // this.CRFQueryPortionId();
           this.portionConfigData = {
             diseaseId:this.$route.query.id,
             formItemList:[],
@@ -345,9 +325,7 @@
           };
           try{
             let data = await that.$http.CRFPreviewPortion(formData);
-            console.log(data)
             if(data.code == 0) {
-              // that.tableList = data.data.formItemList;
               if(that.tabName=='second'){
                 that.tableList = data.data;
               }

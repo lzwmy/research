@@ -15,11 +15,6 @@
       </div>
       <div class="config_model_box">
         <div class="add_research_model_container" v-loading="loading">
-          <!--<div class="research_model_header" @click="crfLeftToggle" :class="{'crf-left-btn': true,'onclick': crfLeftBtnStatus}">
-            &lt;!&ndash;<i class="iconfont iconshousuo" id="modifyKeepAside" title="收缩"></i>
-            <i class="iconfont iconzhankai" id="modifyShowAside" title="展开" style="display: none"></i>&ndash;&gt;
-            {{$route.query.modelName}}
-          </div>-->
           <div class="research_content_box">
             <el-row>
               <el-col :span="8" class="model_name">

@@ -510,7 +510,6 @@
         },
         //保存
         saveBtn() {
-          // let temporarySave = JSON.parse(localStorage.getItem('temporarySave'));
           // 验证表单名称是否填写完成
           if(this.portionName == "") {
             this.$message.info('小节名称不能为空');
@@ -529,16 +528,6 @@
             return ;
           }
           if(this.configData.type == 'add') {
-            console.log('触发')
-            /*this.portionSave()*//*.then(()=>{
-              let formData = {
-                "formCrfId": "",
-                "formPortionId": "",
-                "portionName": this.portionName,
-                "diseaseId":this.$route.query.id,
-                "formItemList": this.basisDataList||[]
-              };
-            });*/
             let formData = {
               "id": this.configData.id,
               "portionName": this.portionName,
@@ -547,20 +536,8 @@
               "index":this.configData.index,
               "type":this.configData.type
             };
-            console.log(formData);
             this.$emit('portion-callback-add',formData);
           }else if(this.configData.type == 'modify') {
-            /*this.portionModifySave().then(()=>{
-              let formData = {
-                "id": this.configData.id,
-                "portionName": this.portionName,
-                "diseaseId": this.$route.query.id,
-                "formItemList": this.basisDataList||[],
-                "index":this.configData.index,
-                "type":this.configData.type
-              };
-              this.$emit('portion-callback-data',formData);
-            })*/
             let formData = {
               "id": this.configData.id,
               "portionName": this.portionName,
@@ -600,12 +577,9 @@
           };
           try {
             let data = await that.$http.CRFPortionBakSave(formData);
-            // console.log(data);
             if(data.code == 0) {
-              // this.$message.success(data.data);
               this.$message.success("保存成功");
               //保存成功跳转到 CRF表单
-              // window.history.go(-1);
               let formData = {
                 "id": that.configData.id,
                 "portionName": that.portionName,
@@ -614,7 +588,6 @@
                 "index":that.configData.index,
                 "type":that.configData.type
               };
-              console.log(formData);
               this.$emit('portion-callback-add',formData);
             }
           }catch (error) {
@@ -633,12 +606,8 @@
           };
           try {
             let data = await that.$http.CRFPortionBakModify(formData);
-            // console.log(data);
             if(data.code == 0) {
-              // this.$message.success(data.data);
               this.$message.success("保存成功");
-              //保存成功跳转到 CRF表单
-              // window.history.go(-1);
             }
           }catch (error) {
             console.log(error)
@@ -681,7 +650,6 @@
         this.$nextTick(()=>{
           this.resize();
         });
-        // console.log('portion page',this.configData);
         if(this.configData.type=='add'){
           this.portionName = this.configData.portionName || "";
           this.basisDataList = [];
@@ -689,22 +657,6 @@
           this.portionName = this.configData.portionName;
           this.basisDataList = this.configData.formItemList;
         }
-
-        /*if(this.$route.query.type =='modify') {
-          if(this.$route.query.portionId!=='0') {
-            this.previewPortionData();
-          }else{
-            let temporarySave = JSON.parse(localStorage.getItem('temporarySave'));
-            let i = this.$route.query.i;
-            let portionObj = temporarySave.dataList[i];
-            console.log(portionObj)
-            this.portionName = portionObj.portionName;
-            this.basisDataList = portionObj.formItemList;
-          }
-        }
-        if(this.$route.query.portionName !== '0') {
-          this.portionName = this.$route.query.portionName;
-        }*/
       },
       destroyed() {
         this.$destroy();

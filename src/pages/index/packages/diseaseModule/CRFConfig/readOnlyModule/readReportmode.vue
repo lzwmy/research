@@ -2,9 +2,8 @@
   <div class="read_container-mode">
     <div class="crf-step-header">
       <i class="header_left"></i>
-      <span style="font-size: 16px; margin-right:20px;">{{report.patientName}} <!--{{tipStatus}} {{isExamine}}--></span>
+      <span style="font-size: 16px; margin-right:20px;">{{report.patientName}} </span>
       <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i>
-      <!--<el-button type="danger" size="mini" style="float:right;margin-left: 5px" @click="closePage">关 闭</el-button>-->
     </div>
     <div class="content-body">
       <display-Report :item="item"  :report="report"></display-Report>
@@ -84,46 +83,34 @@
         this.$store.dispatch('resetAnswerFun',[]);
         this.$store.dispatch('setStatusFun',this.tipStatus);
         this.$store.dispatch('setIsExamineFun',this.isExamine);
-        /*if(this.tipStatus == 3 || this.tipStatus == 4) {
-          this.getReportBakListNotation().then(()=> this.getReportBakListDataChange());
-          if(this.tipStatus == 3 && this.isExamine == false) {
-            this.getAnswerList();
-          }
-          return ;
-        }else if(this.tipStatus == 2){ //已提交
-          this.getReportBakListDataChange()
-        }*/
         this.showIconData();
       },
       showIconData() {
         let tipStatus = this.tipStatus;
         let isExamine = this.isExamine;
         if(tipStatus == 2 && isExamine == false) {
-          console.log('报告列表 -- 已提交','用户可以查看所有的 批注、修改记录、回复');
+          // console.log('报告列表 -- 已提交','用户可以查看所有的 批注、修改记录、回复');
           this.getReportBakListNotation()
             .then(()=> this.getReportBakListDataChange())
             .then(()=> this.getAnswerList());
         }else if(tipStatus == 3 && isExamine == false) {
-          console.log('报告列表 -- 不通过','显示最近一次 批注');
-          /*this.getReportLastNotation()
-            .then(() => this.getReportLastDataChange())
-            .then(() => this.getReportLastReply())*/
+          // console.log('报告列表 -- 不通过','显示最近一次 批注');
           this.getReportLastNotation()
         }else if(tipStatus == 4 && isExamine == false) {
-          console.log('报告列表 -- 通过','完整的阅读报告模式 ,显示全部修改记录');
+          // console.log('报告列表 -- 通过','完整的阅读报告模式 ,显示全部修改记录');
           this.getReportBakListDataChange()
         }else if (tipStatus == 2 && isExamine == true) {
-          console.log('数据监察 -- 待审核','显示最近一次 批注、修改信息、回复');
+          // console.log('数据监察 -- 待审核','显示最近一次 批注、修改信息、回复');
           this.getReportLastNotation()
             .then(() => this.getReportLastDataChange())
             .then(() => this.getReportLastReply())
         }else if(tipStatus == 3 && isExamine == true)  {
-          console.log('数据监察 -- 不通过','显示最近一次 批注、修改信息、回复');
+          // console.log('数据监察 -- 不通过','显示最近一次 批注、修改信息、回复');
           this.getReportLastNotation()
             .then(() => this.getReportLastDataChange())
             .then(() => this.getReportLastReply())
         }else if(tipStatus == 4 && isExamine == true) {
-          console.log('数据监察 -- 通过','完整的阅读报告模式，显示全部修改记录');
+          // console.log('数据监察 -- 通过','完整的阅读报告模式，显示全部修改记录');
           this.getReportBakListDataChange()
         }
       },
@@ -347,7 +334,7 @@
     mounted() {
       this.initPage();
       eventBus.$on('display-show',result => {
-        console.log('批注点击事件',result);
+        // console.log('批注点击事件',result);
         this.annotate = "";
         this.currentComment.path = result.path;
         this.currentComment.controlType = result.controlType;

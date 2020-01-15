@@ -6,12 +6,10 @@
         <div class="crf-main-content" >
           <div class="crf-step-header flex-between-center">
             <div>
-              <!-- <i class="el-icon-close close_icon" title="关闭" @click="closePage"></i> -->
               <i class="header_left"></i>
               <span style="font-size: 16px; margin-right:20px;">{{urlParameter.patientName}}</span>
             </div>
             <div>
-              <!--<el-button type="danger" size="mini" @click="closePage" style="float:right;margin-left: 5px">关 闭</el-button>-->
               <span v-if="urlParameter.from == 'patientFollowUp'">
                 <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('终止')" type="warning" :disabled="mainLoading">终 止</el-button>
                 <el-button v-if="urlParameter.fowwowUpstatus !=3 && urlParameter.fowwowUpstatus !=4" @click="followUpStop('失访')" type="info" :disabled="mainLoading">失 访</el-button>
@@ -27,15 +25,8 @@
           <div  ref="top" class="crf-step-content" id="mainContent" :class="(urlParameter.fowwowUpstatus ==3 || urlParameter.fowwowUpstatus ==4)?'disabled':''">
             <display-report  id="pdfForm" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report"></display-report>
           </div>
-          <!--<div class="saveButton">
-            <el-button @click="backingOut">返回</el-button>
-            <el-button @click="saveReportData" type="primary" :disabled="mainLoading">保存</el-button>
-          </div>-->
         </div>
       </div>
-
-      <!--报告阅读-->
-        <!--<report-read ref="reportRead" v-else :report="report" @hideReportRead="onHideReportRead" @onBackTop="getContentTop"></report-read>-->
       <!--阅读模式-->
       <div v-else>
         <read-report-mode ref="reportRead" v-if="crfForm!=null&&report!=null" :item="crfForm"  :report="report" :tipStatus="tipStatus" :isExamine='isExamine'></read-report-mode>
@@ -74,7 +65,6 @@
                     :key="order"
                     style="display:table-row;border:1px solid black"
                   >
-                    <!--background:#F9F9F9;-->
                     <div style="display:table-cell;width:120px;border:1px solid #DCDFE6;padding:5px">{{getTitle(title)}}</div>
                     <div v-if="typeof it[title]  ==  'object'"  style="display:table-cell;width:270px;border:1px solid #EBEEF5;padding:5px">
                       <span v-for="child in Object.keys(it[title]) "  :title="getTitle(child)"  :key="child">{{it[title][child]}}&nbsp;&nbsp;</span>
@@ -147,7 +137,6 @@
 import "./../css/crfReady.css";
 import utils from 'components/utils/domToPDF';
 import displayReport from "./../display/displayReport";
-import reportRead from "./reportRead";
 import mixins from "components/mixins";
 import { mapGetters } from "vuex";
 import { getDom } from './js/verificationForm';
@@ -160,7 +149,6 @@ export default {
   mixins: [mixins],
   components: {
     displayReport,
-    reportRead,
     readReportMode,
     editor,
     tipInfo,

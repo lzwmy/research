@@ -3,9 +3,6 @@
     <div v-if="item.isDisplayName=='1'" class="display_title">
       {{conversionNumber(index+1)}}、{{item.pageDisplayName}}
     </div>
-     <!--<div class="display_title">
-       {{item.crfDisplayName}}
-     </div>-->
       <div class="displayPage_box">
         <display-portion
           v-for="child in item.formPortions"

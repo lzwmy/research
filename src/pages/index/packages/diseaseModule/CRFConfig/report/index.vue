@@ -13,16 +13,10 @@
           <el-button icon="icon iconfont icondaochu" class="upload">导入表单</el-button>
         </el-upload>
         <el-button type="primary" icon="icon iconfont icontianjia" @click="createCRF">新建CRF</el-button>
-        <!-- <div class="create_model_btn" @click="createCRF">
-          <i class="iconfont icontianjia"></i>
-          <span>新建CRF</span>
-        </div> -->
         </div>
       </div>
       <div class="report_config_content" v-loading="downloading" :element-loading-text="downloadingText">
-        <!--@click="jumpModifyReport(item)"-->
         <div class="report_config-card" v-for="(item,index) in dataList" :key="index">
-          <!--<div :class="['mask_report',{gray:item.crfIsAvailable===0}]"></div>-->
           <div class="card_img"  @click.stop="jumpModifyReport(item)">
             <img v-if="item.crfImage!==null && item.crfImage!=='null'" :src="item.crfImage" alt="">
             <img v-else src="./../img/report_image.png" alt="">

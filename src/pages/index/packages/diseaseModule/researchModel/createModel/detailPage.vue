@@ -11,10 +11,7 @@
         </p>
         <div class=" cur_pointer head_content flex-start-center">
           <div class="create_model_btn" @click="modifyModel">
-            <!--<i class="iconfont iconbianji1"></i>
-            <span>编辑</span>-->
             <img src="./images/disease_set_chart.png" alt="">
-            <!--<i class="iconfont iconbianji1" title="编辑"></i>-->
           </div>
         </div>
       </div>
@@ -23,10 +20,6 @@
         <div class="btn" :class="{'active':tabSwitchId==1}" @click="changeTab(1)">统计分析</div>
       </div>
       <div class="detail_page_body" v-show="tabSwitchId==0" v-loading="loading" element-loading-text="加载中">
-        <!--<div class="relation_form_title">
-          <span>关联表单：</span>
-          <span>{{dynamicTableDataList.crfName}}</span>
-        </div>-->
         <div class="export_nav_box">
           <div class="personal_box">
             <span>
