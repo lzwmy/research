@@ -75,7 +75,7 @@
                     </span>
                   </div>
                 </div>
-                <div class="report_body-content" >
+                <div class="report_body-content" :class="{'layout_set':judgmentPortionColumns(item)}">
                   <!--{{item}}-->
                   <!--<div>暂时无法预览</div>-->
                   <preview-portion :item="item" ></preview-portion>
@@ -361,6 +361,20 @@
             });*/
           });
         },
+        //判断小节下 条目是否存在 多列
+        judgmentPortionColumns(item) {
+          let isPresence = false;
+          let itemList = item.formItemList;
+          if(itemList.length > 0) {
+            for(let i=0;i<itemList.length;i++) {
+              if(itemList[i].baseProperty.layout.columns > 1) {
+                isPresence = true ;
+                break ;
+              }
+            }
+          }
+          return isPresence;
+        },
         //CRF 报告 保存
         async CRFReportSave() {
           let that = this;
@@ -373,6 +387,20 @@
             "diseaseId":that.$route.query.id,
             "formPortions": that.dataList
           };
+          var find = false;
+          for (var i = 0; i < that.dataList.length; i++) {
+            for (var j = i + 1; j < that.dataList.length; j++) {
+              if (that.dataList[i].portionName == that.dataList[j].portionName) {
+                find = true;
+                break;
+              }
+            }
+            if (find) break;
+          }
+          if(find) {
+            that.$message.info('小节名称重复');
+            return ;
+          }
           try {
             let data = await that.$http.CRFBakSave(formData);
             if(data.code == 0) {
@@ -733,6 +761,11 @@
           overflow: auto;
           .displayPortion_title{
             display: none;
+          }
+        }
+        .layout_set {
+          .section_preview_container {
+            min-width: 1600px;
           }
         }
       }

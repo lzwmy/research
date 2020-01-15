@@ -54,7 +54,8 @@
         currentComment:{
           createTime:"",
           content:"",
-          path:""
+          path:"",
+          controlType:"",
         }
       }
     },
@@ -181,6 +182,7 @@
         this.currentComment.createTime="";
         this.currentComment.content="";
         this.currentComment.path="";
+        this.currentComment.controlType="";
         this.annotate = "";
       },
       clearData() {
@@ -347,7 +349,8 @@
       eventBus.$on('display-show',result => {
         console.log('批注点击事件',result);
         this.annotate = "";
-        this.currentComment.path = result;
+        this.currentComment.path = result.path;
+        this.currentComment.controlType = result.controlType;
         if(this.tipStatus == 4 && this.isExamine == true && this.$store.state.annotateData.tipBtnText == '重新审核'){
           return false;
         }

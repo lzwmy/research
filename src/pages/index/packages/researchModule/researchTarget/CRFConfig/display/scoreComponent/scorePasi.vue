@@ -206,7 +206,7 @@
         <div class="content_item">
           <div class="item_name sing-input">PASI (总分) =</div>
           <div class="item_single-input">
-            <el-input v-model="total" readonly></el-input>
+            <el-input v-model="pasiTotal" ></el-input>
           </div>
         </div>
       </div>
@@ -273,7 +273,13 @@
             desquamation:0,//脱屑
             erythema:0,//红斑
             infiltration:0,//浸润
-          }
+          },
+          pasiTotal:'0.00',
+        }
+      },
+      watch:{
+        'total':function (data) {
+          this.pasiTotal = data ;
         }
       },
       methods:{
@@ -286,11 +292,28 @@
         try {
           let data = await that.$http.getScoreReportPreview(formData);
           if(data.code === 0) {
+            console.log(JSON.parse(data.data.jsonData));
             let jsonData = JSON.parse(data.data.jsonData);
-            that.head = jsonData.head;
-            that.torso = jsonData.torso;
-            that.upperLimb = jsonData.upperLimb;
-            that.lowerLimb = jsonData.lowerLimb;
+            // that.head = jsonData.head;
+            that.head.area=parseInt(jsonData.head.area);
+            that.head.desquamation=parseInt(jsonData.head.desquamation);
+            that.head.erythema=parseInt(jsonData.head.erythema);
+            that.head.infiltration=parseInt(jsonData.head.infiltration);
+
+            that.torso.area = parseInt(jsonData.torso.area);
+            that.torso.desquamation = parseInt(jsonData.torso.desquamation);
+            that.torso.erythema = parseInt(jsonData.torso.erythema);
+            that.torso.infiltration = parseInt(jsonData.torso.infiltration);
+
+            that.upperLimb.area = parseInt(jsonData.upperLimb.area);
+            that.upperLimb.desquamation = parseInt(jsonData.upperLimb.desquamation);
+            that.upperLimb.erythema = parseInt(jsonData.upperLimb.erythema);
+            that.upperLimb.infiltration = parseInt(jsonData.upperLimb.infiltration);
+
+            that.lowerLimb.area = parseInt(jsonData.lowerLimb.area);
+            that.lowerLimb.desquamation = parseInt(jsonData.lowerLimb.desquamation);
+            that.lowerLimb.erythema = parseInt(jsonData.lowerLimb.erythema);
+            that.lowerLimb.infiltration = parseInt(jsonData.lowerLimb.infiltration);
           }
         }catch (error) {
           console.log(error)
@@ -298,9 +321,10 @@
       }
       },
       mounted() {
-        console.log(this.report.value2);
         if(this.report.value2 !== "") {
-          this.getScoreReportPreview();
+          this.getScoreReportPreview().then(()=>{
+            this.pasiTotal = this.report.value;
+          });
         }
       }
     }

@@ -133,9 +133,12 @@
           let array = [];
           if(this.report.value.indexOf("|") != '-1') {
             array = this.report.value.split("|");
-          }else {
+          }else if(this.report.value.indexOf('[') != '-1'){
             array = JSON.parse(this.report.value);
+          }else {
+            array.push(this.report.value)
           }
+          this.fillValue = JSON.stringify(array);
           switch (array.length) {
             case 1 :
               this.singleLayerData(array);

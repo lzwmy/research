@@ -52,7 +52,17 @@ export default {
           "fileId": "",
           "fileName": ""
         }
-      ]
+      ],
+      "scoreInfo":{
+        "scoreName":"",
+        "scoreStatus":false,
+      },
+      "sliderInfo":{
+        'min':0,
+        'max':10,
+        'step':0,
+      },
+      "remark":"",
     },
     "termSet": {
       "termDefaultValue": [],

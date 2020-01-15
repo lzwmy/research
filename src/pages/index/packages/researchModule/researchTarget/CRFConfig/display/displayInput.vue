@@ -5,7 +5,7 @@
     <div  v-show="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
       <span v-show="item.baseProperty.isRequired"
             style="color: red;">*</span>
-     <!-- <i v-if="crfCurrentControl.item==item" class="el-icon-edit"  style="color:#3b81f0"/>-->
+      <!--<i v-if="crfCurrentControl.item==item" class="el-icon-edit"  style="color:#3b81f0"/>-->
       <span >{{item.controlDisplayName}}</span>
       <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
     </div>
@@ -21,6 +21,7 @@
         :placeholder="item.baseProperty.controlTip"
       ></el-input>
     </div>
+    <span class="annotate_info" v-if="item.baseProperty.remark">{{item.baseProperty.remark}}</span>
     <!--{{item.baseProperty.layout}}-->
   </div>
 </template>
