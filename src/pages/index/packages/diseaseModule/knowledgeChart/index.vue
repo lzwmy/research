@@ -99,7 +99,7 @@ export default {
                         },
                         layoutAlgorithm: {
                             enableSimulation: true,
-                            linkLength: 18,
+                            linkLength: 20,
                         },
                         
                     }

@@ -89,55 +89,60 @@
         </div>
       </echarts-contain>
 
-      <!--新增/编辑模块-->
-      <el-dialog 
-        :title="dialogFormModule.title" 
-        :visible.sync="dialogFormModule.visible" 
-        :append-to-body="true" 
-        width="600px"
-        @close="closeDialog"
-        class="height_auto">
-        <el-form ref="dialogFormModule" :model="dialogFormModule" :rules="rules" label-width="100px" label-position="left" class="el-dialog--center" @submit.native.prevent>
-          <el-form-item label="节点名称：" align="left" prop="moduleName">
-            <el-input v-model.trim="dialogFormModule.moduleName" placeholder="请输入" :maxlength="30" clearable @keyup.enter.native="confirmModule"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer">
-          <el-button type="primary" @click="confirmModule" size="mini" :disabled="dialogFormModule.loading">确 定</el-button>
-          <el-button @click="closeDialog" size="mini">关 闭</el-button>
-        </div>
-      </el-dialog>
+        <!--新增/编辑模块-->
+        <el-dialog 
+            :title="dialogFormModule.title" 
+            :visible.sync="dialogFormModule.visible" 
+            :append-to-body="true" 
+            width="600px"
+            @close="closeDialog"
+            class="height_auto">
+            <el-form ref="dialogFormModule" :model="dialogFormModule" :rules="rules" label-width="100px" label-position="left" class="el-dialog--center" @submit.native.prevent>
+                <el-form-item label="节点名称：" align="left" prop="moduleName">
+                    <el-input v-model.trim="dialogFormModule.moduleName" placeholder="请输入" :maxlength="30" clearable @keyup.enter.native="confirmModule"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button type="primary" @click="confirmModule" size="mini" :disabled="dialogFormModule.loading">确 定</el-button>
+                <el-button @click="closeDialog" size="mini">关 闭</el-button>
+            </div>
+        </el-dialog>
 
-      <!--新增/编辑字段 -->
-      <el-dialog 
-        :title="dialogFormElement.title" 
-        :visible.sync="dialogFormElement.visible" 
-        :append-to-body="true" 
-        width="600px"
-        @close="closeDialog">
-        <el-form ref="dialogFormElement" :model="dialogFormElement" :rules="rules" label-width="100px" label-position="left" class="el-dialog--center" @submit.native.prevent>
-          <el-form-item label="字段名：" align="left" prop="elementName">
-            <el-input v-model.trim="dialogFormElement.elementName" placeholder="请输入" :maxlength="30" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="控件类型：" align="left" prop="controlType">
-            <el-select v-model="dialogFormElement.controlType" placeholder="请选择" class="block">
-              <el-option v-for="(item, index) in allControlType" :key="index" :label="item.name" :value="item.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="值域：" align="left" 
-          :prop="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(dialogFormElement.controlType)?'range':''">
-            <el-input type="textarea" v-model.trim="dialogFormElement.range" :rows="4" placeholder="请输入"></el-input>
-          </el-form-item>
-          <el-form-item label="描述：" align="left" prop="describe">
-            <el-input type="textarea" v-model.trim="dialogFormElement.describe" :rows="3" placeholder="请输入"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer">
-          <el-button type="primary" @click="editElement" size="mini" :disabled="dialogFormElement.loading">确 定</el-button>
-          <el-button @click="closeDialog" size="mini">关 闭</el-button>
-        </div>
-      </el-dialog>
-
+        <!--新增/编辑字段 -->
+        <el-dialog 
+            :title="dialogFormElement.title" 
+            :visible.sync="dialogFormElement.visible" 
+            :append-to-body="true" 
+            width="600px"
+            @close="closeDialog">
+            <el-form ref="dialogFormElement" :model="dialogFormElement" :rules="rules" label-width="100px" label-position="left" class="el-dialog--center" @submit.native.prevent>
+            <el-form-item label="字段名：" align="left" prop="elementName">
+                <el-input v-model.trim="dialogFormElement.elementName" placeholder="请输入" :maxlength="30" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="控件类型：" align="left" prop="controlType">
+                <el-select v-model="dialogFormElement.controlType" placeholder="请选择" class="block">
+                <el-option v-for="(item, index) in allControlType" :key="index" :label="item.name" :value="item.value"></el-option>
+                </el-select>
+            </el-form-item>
+            <div v-if="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(dialogFormElement.controlType)">
+                <el-form-item label="值域：" align="left"    prop='range'>
+                    <el-input type="textarea" v-model.trim="dialogFormElement.range" :rows="4" placeholder="请输入"></el-input>
+                </el-form-item>
+            </div>
+            <div v-else>
+                <el-form-item label="值域：" align="left">
+                    <el-input type="textarea" v-model.trim="dialogFormElement.range" :rows="4" placeholder="请输入"></el-input>
+                </el-form-item>
+            </div>
+            <el-form-item label="描述：" align="left" prop="describe">
+                <el-input type="textarea" v-model.trim="dialogFormElement.describe" :rows="3" placeholder="请输入"></el-input>
+            </el-form-item>
+            </el-form>
+            <div slot="footer">
+            <el-button type="primary" @click="editElement" size="mini" :disabled="dialogFormElement.loading">确 定</el-button>
+            <el-button @click="closeDialog" size="mini">关 闭</el-button>
+            </div>
+        </el-dialog>
     </div>
   </div>
 </template>
@@ -250,7 +255,7 @@ export default {
         moduleName: [{required: true, message: '请输入节点名称', trigger: 'change'}],
         elementName: [{required: true, message: '请输入字段名称', trigger: 'change'}],
         controlType: [{required: true, message: '请选择控件类型', trigger: 'change'}],
-        range: [{required: true, message: '请输入值域', trigger: 'change'}],
+        range: [{required: true, message: '请输入值域', trigger: ['change']}],
       }
     };
   },
@@ -267,11 +272,11 @@ export default {
   },
   methods: {
     initPage () {
-      this.emptyText = emptyText;
-      this.elementLoadingText = elementLoadingText;
+        this.emptyText = emptyText;
+        this.elementLoadingText = elementLoadingText;
     },
     ListenRender (val) {
-      this.isEndRender = val;
+        this.isEndRender = val;
     },
     async drawLeftInit () {
       this.dialogFormModule.visible = false;
@@ -422,7 +427,7 @@ export default {
     },
     handleRowStyle ({row, column, rowIndex, columnIndex}) {
       if (row.id === this.currentId) {
-        return {'background': '#1bbae1', color: '#fff'};
+        // return {'background': '#1bbae1', color: '#fff'};
       }
     },
     //增加or编辑模块
@@ -472,9 +477,9 @@ export default {
         let res = await this.$http.crfaddElement(formData);
         if (res.code == '0') {
           this.$message.success('添加成功')
-          // this.$refs.dataDictionaryTree.initPage().then(()=>{
+          this.$refs.dataDictionaryTree.initPage().then(()=>{
             this.drawLeftInit()
-          // })
+          })
         }
       } catch (err) {
         console.log(err)
@@ -561,25 +566,26 @@ export default {
         }
     },
     showElementDialog (row, title, module) {
-      this.treeNode = module;
-      console.log(row)
-      if (title == '编辑字段') {
-        this.dialogFormElement = {
-          visible: true,
-          loading: false,
-          title: title,
-          id: row.id,
-          moduleId: row.moduleId,
-          elementName: row.elNameCN,
-          controlType: row.ctrlType,
-          range: row.valueRange,
-          describe: row.descriptionCN
+        this.treeNode = module;
+        console.log(row)
+        if (title == '编辑字段') {
+            this.dialogFormElement = {
+                visible: true,
+                loading: false,
+                title: title,
+                id: row.id,
+                moduleId: row.moduleId,
+                elementName: row.elNameCN,
+                controlType: row.ctrlType,
+                range: row.valueRange,
+                describe: row.descriptionCN
+            }
+            return;
         }
-        return;
-      }
-      this.dialogFormElement.title = title;
-      this.dialogFormElement.moduleId = row.id;
-      this.dialogFormElement.visible = true;
+        console.log(this.dialogFormElement)
+        this.dialogFormElement.title = title;
+        this.dialogFormElement.moduleId = row.id;
+        this.dialogFormElement.visible = true;
     },
     showModulesDialog (row, title) {
       console.log(row)
@@ -613,10 +619,10 @@ export default {
         })
     },
     closeDialog () {
-      this.$refs.dialogFormModule && this.$refs.dialogFormModule.resetFields();
-      this.$refs.dialogFormElement && this.$refs.dialogFormElement.resetFields();
-      this.dialogFormModule = utils.initForm(this.dialogFormModule);
-      this.dialogFormElement = utils.initForm(this.dialogFormElement);
+        this.$refs.dialogFormModule && this.$refs.dialogFormModule.resetFields();
+        this.$refs.dialogFormElement && this.$refs.dialogFormElement.resetFields();
+        this.dialogFormModule = utils.initForm(this.dialogFormModule);
+        this.dialogFormElement = utils.initForm(this.dialogFormElement);
     },
   }
 };
