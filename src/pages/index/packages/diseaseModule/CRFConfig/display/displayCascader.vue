@@ -138,6 +138,7 @@
           }else {
             array.push(this.report.value)
           }
+          this.fillValue = JSON.stringify(array);
           switch (array.length) {
             case 1 :
               this.singleLayerData(array);

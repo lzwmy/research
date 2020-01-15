@@ -101,7 +101,6 @@ export default {
   methods: {
     //是否不详 事件
     changeRadioKnowType(value) {
-      console.log(value)
       this.isFold = value;
     },
     //点击图标切换

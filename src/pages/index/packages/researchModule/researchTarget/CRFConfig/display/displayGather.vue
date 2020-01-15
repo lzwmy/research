@@ -1,7 +1,7 @@
 <template>
   <!--集合-->
-  <div class="view_box" >
-      <div class="view_title" style="width:250px;display:inline-block;">
+  <div :class="['view_box',item.controlType]" >
+      <div class="view_title" style="min-width:184px;display:inline-block;padding: 10px 0">
         <!--加号-->
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" @click="changeExpend(0)"></i>
         <!--减号-->
@@ -9,13 +9,20 @@
         <strong v-show="item.displayIsVisible">{{item.controlDisplayName}}</strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
-      <div class="view_knowType" style="display: inline-block;" v-if="item.gatherKnowType>0">
+      <div :class="['view_knowType',{'gather_knowType':item.gatherKnowType>0 }]" style="display: inline-block;" v-if="item.gatherKnowType>0">
         <el-radio-group v-model="report.value">
           <el-radio v-if="item.gatherKnowType==2" label="是"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="否"  @change="changeRadioKnowType(1)"></el-radio>
           <el-radio v-if="item.gatherKnowType==2" label="不详"  @change="changeRadioKnowType(1)"></el-radio>
           <el-radio v-if="item.gatherKnowType==1" label="有"  @change="changeRadioKnowType(0)"></el-radio>
           <el-radio v-if="item.gatherKnowType==1" label="无" @change="changeRadioKnowType(1)"></el-radio>
+          <el-radio v-if="item.gatherKnowType==3"
+                    v-for="(it,index) in item.termSet.termItemList"
+                    :label="it.termItemName"
+                    :key="index"
+                    @change="changeRadioKnowType(it.id)">
+            {{it.termItemName}}
+          </el-radio>
         </el-radio-group>
         <span class="empty" @click="()=>{report.value=null;isFold=true}">清空</span>
       </div>
@@ -39,6 +46,7 @@
               <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
               <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
               <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
+              <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
             </el-col>
           </el-row>
           <el-col  v-if="it.baseProperty.layout.wrap == '0'" :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
@@ -55,7 +63,10 @@
             <display-table v-else-if="it.controlType=='TABLE'" :item="it" :report="getData(it)"/>
             <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
             <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
+            <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
           </el-col>
+          <el-col v-if="it.baseProperty.layout.wrap == '0' && it.baseProperty.layout.supplement"
+                  :span="formatSupplement(it.baseProperty.layout)" style="min-height: 32px"></el-col>
 <!--          {{it.baseProperty.layout}}-->
         </div>
       </div>
@@ -91,6 +102,7 @@ import displayTable from "./displayTable";
 import displayGather from "./displayGather";
 import displayGatherColumn from "./displayGatherColumn";
 import displayCascader from './displayCascader';
+import displaySlider from './displaySlider';
 export default {
   name: "displayGather",
   components: {
@@ -107,7 +119,8 @@ export default {
     displayTable,
     displayGather,
     displayGatherColumn,
-    displayCascader
+    displayCascader,
+    displaySlider
   },
   data() {
     return {
@@ -144,7 +157,13 @@ export default {
     },
     //是否不详 事件
     changeRadioKnowType(value) {
-      this.isFold = value;
+      if(this.item.gatherKnowType ==1 || this.item.gatherKnowType == 2) {
+        this.isFold = value;
+      } else if(this.item.gatherKnowType == 3 && value > 0) {
+        this.isFold = false;
+      }else if(this.item.gatherKnowType == 3 && value == 0) {
+        this.isFold = true;
+      }
     },
     //点击图标切换
     changeExpend(value) {
@@ -194,7 +213,7 @@ export default {
       }
     },
     // 布局处理
-    layoutInfo(item,index,array) {
+    /*layoutInfo(item,index,array) {
       // 给每个 item  添加默认偏移量为0
       item.baseProperty.layout.offset = 0;
       let currentColumns = item.baseProperty.layout.columns;
@@ -217,9 +236,9 @@ export default {
             if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
 
               let sum = currentItemList[0]-prevItemList[0];
-              /*if(currentSelection.length==1) {
+              /!*if(currentSelection.length==1) {
                 preData.wrap = 0
-              }*/
+              }*!/
               if(sum == 0) { // 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
                 preData.wrap = 1
               }else {
@@ -467,8 +486,309 @@ export default {
         }
       }
       return item;
+    },*/
+    layoutInfo(item,index,array) {
+      // 给每个 item  添加默认偏移量为0
+      item.baseProperty.layout.offset = 0;
+      // 给每个item 默认填充为0
+      item.baseProperty.layout.supplement = 0; // 0 不补充 1 补充
+      let currentColumns = item.baseProperty.layout.columns;
+      let currentSelection = item.baseProperty.layout.selection;
+      if(index !== 0) {
+        let preData = array[index-1].baseProperty.layout;
+        let currentItemList = currentSelection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return a-b;
+        });
+        let prevItemList = preData.selection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return b-a;
+        });
+        switch (currentColumns) {
+          case 1 :
+            if(currentColumns !== preData.columns) {
+              preData.supplement = 1;
+            }
+            break;
+          case 2 : //2列
+            //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+
+              let sum = currentItemList[0]-prevItemList[0];
+              /*if(currentSelection.length==1) {
+                preData.wrap = 0
+              }*/
+              if(sum == 0) { // 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
+                preData.wrap = 1;
+              }else {
+                preData.wrap = 0;
+                if(currentSelection.length == 1 && currentSelection[0].position == 2) {
+                  item.baseProperty.layout.supplement = 1;
+                }
+              }
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentSelection.length == 1 && currentSelection[0].position == 2) {
+                // item.baseProperty.layout.offset = 12;
+                item.baseProperty.layout.offset = 6;
+              }
+              //如果 上一列columns 与 当前行不相等，设置offset
+            }
+            else if(currentColumns !== preData.columns) {
+              preData.supplement = 1;
+              if(currentSelection.length == 1) {
+                if(currentSelection[0].position == 2) {
+                  // item.baseProperty.layout.offset = 12;
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+            }
+            break;
+          case 3 : //3列
+            // 如果 当前行 columns 与 上一列 columns 相等，判断当前行是否引用上一行，如果引用，就把上一行 wrap = 0，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              let sum = currentItemList[0]-prevItemList[0];
+              if(sum ==1) {
+                preData.wrap = 0;
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                preData.wrap = 0;
+                // item.baseProperty.layout.offset = 8;
+                item.baseProperty.layout.offset = 6;
+              }else if(sum == 0) {// 如果sum ==0, 证明上一行于当前行选择的是同一列，则上一行wrap = 1
+                preData.wrap = 1;
+                preData.supplement = 1;
+              }else {
+                preData.wrap = 0;
+                preData.supplement = 1;
+              }
+              //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              preData.supplement = 1;
+              // preData.wrap =1;
+              if(currentItemList[0] == 2) {
+                // item.baseProperty.layout.offset = 8;
+                item.baseProperty.layout.offset = 6;
+              }else if(currentItemList[0] == 3) {
+                // item.baseProperty.layout.offset = 16;
+                item.baseProperty.layout.offset = 12;
+              }
+              //如果 当前行 columns 与 上一列 columns 不相等
+            }
+            else if(currentColumns !== preData.columns) {
+              preData.supplement = 1;
+              if(currentItemList[0] == 2) {
+                // item.baseProperty.layout.offset = 8;
+                item.baseProperty.layout.offset = 6;
+              }else if(currentItemList[0] == 3) {
+                // item.baseProperty.layout.offset = 16;
+                item.baseProperty.layout.offset = 12;
+              }
+            }
+            break;
+          case 4 : //4列
+            //如果 当前行 columns 与 上一行 columns 相等 && 当前行wrap=0, 需把上一行 wrap = 0 ，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              preData.wrap = 0;
+              let sum = Math.abs(currentItemList[0] - prevItemList[0]);
+              if(sum == 1) {
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                item.baseProperty.layout.offset = 6;
+              }else if(sum == 3) {
+                if(currentItemList[0] - prevItemList[0]>0){
+                  item.baseProperty.layout.offset = 12;
+                }
+              }else if(sum == 0) {
+                preData.wrap = 1;
+                preData.supplement = 1;
+              }
+              //如果 当前行 columns 与 上一行 columns 相等 && 当前行 wrap !==1 ,设置当前行 offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              preData.supplement = 1;
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }
+              }else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+              //如果 当前行 columns 与 上一行 columns 不相等，设置当前行 的offset
+            }
+            else if(currentColumns !== preData.columns){
+              preData.supplement = 1;
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+            }
+            break;
+          default:
+            break
+        }
+      }else {
+        let preData = array[index].baseProperty.layout;
+        let currentItemList = currentSelection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return a-b;
+        });
+        let prevItemList = preData.selection.map(item=>{
+          return item.position;
+        }).sort((a,b)=>{
+          return b-a;
+        });
+        switch (currentColumns) {
+          case 2 : //2列
+            //如果 上一列columns 与 当前行相等，判断当前一行是否引用上一行。 如果引用，就把上一行的 wrap=0,
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              let sum = currentItemList[0]-prevItemList[0];
+              if(currentSelection.length==1) {
+                preData.wrap = 0
+              }
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentSelection.length == 1 && currentSelection[0].position == 2) {
+                item.baseProperty.layout.offset = 12
+              }
+              //如果 上一列columns 与 当前行不相等，设置offset
+            }
+            else if(currentColumns !== preData.columns && currentSelection.length == 1) {
+              if(currentSelection[0].position == 2) {
+                item.baseProperty.layout.offset = 12
+              }
+            }
+            break;
+          case 3 : //3列
+            // 如果 当前行 columns 与 上一列 columns 相等，判断当前行是否引用上一行，如果引用，就把上一行 wrap = 0，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              preData.wrap = 0
+              let sum = currentItemList[0]-prevItemList[0];
+              if(sum ==1) {
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                item.baseProperty.layout.offset = 8;
+              }
+              //如果 当前行 columns 与 上一列 columns 相等 && 当前行 wrap ==1 ，设置offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentItemList[0] == 2) {
+                item.baseProperty.layout.offset = 8;
+              }else if(currentItemList[0] == 3) {
+                item.baseProperty.layout.offset = 16;
+              }
+              //如果 当前行 columns 与 上一列 columns 不相等
+            }
+            else if(currentColumns !== preData.columns) {
+              if(currentItemList[0] == 2) {
+                item.baseProperty.layout.offset = 8;
+              }else if(currentItemList[0] == 3) {
+                item.baseProperty.layout.offset = 16;
+              }
+            }
+            break;
+          case 4 : //4列
+            //如果 当前行 columns 与 上一行 columns 相等 && 当前行wrap=0, 需把上一行 wrap = 0 ，设置当前行 offset
+            if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 0) {
+              preData.wrap = 0;
+              let sum = Math.abs(currentItemList[0] - prevItemList[0]);
+              if(sum == 1) {
+                item.baseProperty.layout.offset = 0;
+              }else if(sum == 2) {
+                item.baseProperty.layout.offset = 6;
+              }else if(sum == 3) {
+                item.baseProperty.layout.offset = 12;
+              }
+              //如果 当前行 columns 与 上一行 columns 相等 && 当前行 wrap !==1 ,设置当前行 offset
+            }
+            else if(currentColumns == preData.columns && item.baseProperty.layout.wrap == 1) {
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }
+              else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }
+              }
+              else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+              //如果 当前行 columns 与 上一行 columns 不相等，设置当前行 的offset
+            }
+            else if(currentColumns !== preData.columns){
+              if(currentItemList.length == 1) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 12;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 18;
+                }
+              }else if(currentItemList.length == 2) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 0;
+                }else if(currentItemList[0] == 3) {
+                  item.baseProperty.layout.offset = 6;
+                }else if(currentItemList[0] == 4) {
+                  item.baseProperty.layout.offset = 12;
+                }
+              }else if(currentItemList.length == 3) {
+                if(currentItemList[0] == 2) {
+                  item.baseProperty.layout.offset = 6;
+                }
+              }
+            }
+            break;
+          default:
+            break
+        }
+      }
+      return item;
     },
-    formatSpan(item) {
+    /*formatSpan(item) {
       let span = 24;
       if(item.columns == 1) {
         span = 24;
@@ -480,7 +800,119 @@ export default {
         span = 6 * (item.selection.length || 1);
       }
       return span;
-    }
+    }*/
+    formatSpan(item) {
+      let span = 24;
+      if(item.columns == 1) {
+        span = 24;
+      }else if(item.columns == 2) {
+        // span = 12 * (item.selection.length || 1);
+        span = 6 * (item.selection.length || 1);
+      }else if(item.columns == 3) {
+        // span = 8 * (item.selection.length || 1);
+        span = 6 * (item.selection.length || 1);
+      }else if(item.columns == 4) {
+        span = 6 * (item.selection.length || 1);
+      }
+      return span;
+    },
+    formatSupplement(item) {
+      let span = 24;
+      if(item.columns == 1) {
+        span = 24;
+      }
+      else if(item.columns == 2) {
+        /*span = (item.displayChecked.length - (item.selection.length || 1) )*6 + 6 ;*/
+        if(item.selection.length == 1 && item.offset == 0 ) {
+          if(item.selection[0].position == 2) {
+            span = 12;
+          }else if(item.selection[0].position == 1) {
+            span = 18;
+          }
+        }
+        else if(item.selection.length == 1 && item.offset != 0) {
+          if(item.offset == 6 ) {
+            span = 12;
+          }
+        }
+        else if(item.selection.length == 2) {
+          span = 12;
+        }
+      }
+      else if(item.columns == 3) {
+        span = 6;
+        if(item.selection.length == 1 && item.offset == 0) {
+          if(item.selection[0].position == 2) {
+            span = 12;
+          }else if(item.selection[0].position == 3) {
+            span = 6;
+          }else if(item.selection[0].position == 1) {
+            span = 18;
+          }
+        }
+        else if(item.selection.length == 1 && item.offset != 0) {
+          if(item.offset == 0 ) {
+            span = 18;
+          }else if(item.offset == 6) {
+            span = 12;
+          }else if(item.offset == 12) {
+            span  = 6;
+          }
+        }
+        else if(item.selection.length == 2) {
+          if(item.offset == 0 ) {
+            span = 12;
+          }else if(item.offset == 6) {
+            span = 6;
+          }
+        }
+        else if(item.selection.length == 3) {
+          span = 24;
+        }
+      }
+      else if(item.columns == 4) {
+        if(item.selection.length == 1 && item.offset ==0) {
+          if(item.selection[0].position == 2) {
+            span = 12;
+          }else if(item.selection[0].position == 3) {
+            span = 6;
+          }else if(item.selection[0].position == 1) {
+            span = 18;
+          }else if(item.selection[0].position == 4) {
+            span = 0;
+          }
+        }
+        else if(item.selection.length == 1 && item.offset != 0) {
+          if(item.offset == 0 ) {
+            span = 18;
+          }else if(item.offset == 6) {
+            span = 12;
+          }else if(item.offset == 12) {
+            span  = 6;
+          }
+        }
+        else if(item.selection.length == 2) {
+          if(item.offset == 0 ) {
+            span = 12;
+          }else if(item.offset == 6) {
+            span = 6;
+          }else if(item.offset == 12 ) {
+            span = 0;
+          }
+        }
+        else if(item.selection.length == 3) {
+          if(item.offset == 0 ) {
+            span = 12;
+          }else if(item.offset == 6) {
+            span = 0;
+          }
+        }
+        else if(item.selection.length == 4) {
+          span = 24;
+        }
+      }
+      return span;
+    },
   },
   created() {
     if(this.item.gatherKnowType==null){
@@ -493,7 +925,27 @@ export default {
     else if (this.item.gatherFoldFlag == 1||this.item.gatherKnowType > 0) {
       this.isFold = true;
     }
-    
+
+
+    if(this.item.termSet.rangeText!=="" && this.item.gatherKnowType == 3){
+      let arrayList = this.item.termSet.rangeText.split('\n').filter(item => {
+        return item !== ""
+      }).map(item=>{
+        return {termItemName:item.split('^')[0],id:parseInt(item.split('^')[1])}
+      });
+      this.item.termSet.termItemList = arrayList;
+      //初始化 集合 默认展开
+      if(this.report.value) {
+        arrayList.forEach(item => {
+          if(item.termItemName == this.report.value && item.id == 0) {
+            this.isFold = true;
+          }else if(item.termItemName == this.report.value && item.id != 0){
+            this.isFold = false;
+            return ;
+          }
+        })
+      }
+    }
     //初始化报告数据
     this.item.children.forEach(element => {
       let arr = this.report.children.filter(
@@ -502,6 +954,7 @@ export default {
       if (arr.length == 0) {
         let newObj = {
           name: element.controlDisplayName,
+          controlType:element.controlType,
           value: "",
           value2:"",
           children: []
@@ -525,7 +978,8 @@ export default {
 }
   .GATHER_bg_color{
     /*background-color: rgb(247, 248, 252);*/
-    background-color: #FCFCFC;
+    /*background-color: #FCFCFC;*/
+    background-color: #ffffff;
   }
   .view_box .view_title .iconfont{
     font-size: 16px;

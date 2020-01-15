@@ -99,7 +99,7 @@
         newUrl:this.baseURL,
         // newUrl:'http://192.168.1.155:8080/research/',
         // uploadActionUrl:this.baseURL+"/file/uploadFiles.do", // old httpRequest url
-        uploadActionUrl:this.baseURL+"report/bak/save/singleFile.do",
+        uploadActionUrl:this.baseURL+"report/save/singleFile.do",
         fileList:[],
         dialogImageUrl: '',
         dialogVisible: false,
@@ -201,7 +201,7 @@
           let copyFileList  = this.fileList;
           copyFileList.forEach((item,index,array)=>{
             if(item.fileId == file.fileId) {
-              array.splice(index,1)
+              array.splice(index,1);
             }
           });
           this.fileList = copyFileList;

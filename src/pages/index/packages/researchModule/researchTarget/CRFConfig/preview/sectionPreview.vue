@@ -1,6 +1,6 @@
 <template>
-    <div class="section_preview_container">
-<!--      {{portion.portionName}}-->
+    <div :class="['section_preview_container']">
+<!--      {{portion.portionDisplayName}}-->
       <display-portion v-if="portion.portionName" :item="portion" :report="report" />
     </div>
 </template>
@@ -39,6 +39,7 @@
         }
       },
       methods:{
+
         async crfSectionPreview(value) {
           let that = this;
           let formData  = {
@@ -56,7 +57,7 @@
         }
       },
       mounted() {
-        // console.log(this.$route.query.id);
+        // console.log(this.item);
         this.portion = JSON.parse(JSON.stringify(this.item));
         // console.log(this.item)
         // this.crfSectionPreview(this.$route.query.id)

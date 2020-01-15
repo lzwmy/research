@@ -3,25 +3,30 @@
   <div class="view_box">
     <div :class="item.controlType">
       <!--style="width:200px;font-size: 14px;"-->
-      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'}]">
+      <div v-if="item.displayIsVisible=='1'&&showLabel" :class="[item.controlType+'_title',{'singleColumn':item.baseProperty.layout.columns == '1'},{'single_row':item.baseProperty.layout.wrap == 1}]">
         <!--<i v-if="crfCurrentControl.item==item" class="el-icon-edit" style="color:#3b81f0" />-->
         <span>{{item.controlDisplayName}}</span>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
       <!--:class="['view_type_radio_btn',{'width_auto_type':item.controlType=='RADIO_BUTTON'}]"-->
       <!--{{item.baseProperty.layout}}-->
-      <div :class="item.controlType+'_box'" @click="onFocus">
+      <div :class="[item.controlType+'_box',{'RADIO_BUTTON_single_line':item.baseProperty.layout.columns==1},{'single_row':item.baseProperty.layout.wrap == 1}]" @click="onFocus">
         <el-radio-group v-model="report.value">
           <el-radio
             v-for="(it,index) in item.termSet.termItemList"
             :label="it.termItemName"
             :key="index"
-          >{{it.termItemName}}</el-radio>
+          >
+            <div v-if="it.termItemName == '其他'" style="display: contents">{{it.termItemName}}</div>
+            <el-input  v-if="it.termItemName == '其他'&&item.baseProperty.controlIsExtend && report.value == '其他'"  v-model="report.value2" ></el-input>
+          </el-radio>
+          <!--<el-radio label="其他" v-if="item.baseProperty.controlIsExtend ">其他</el-radio>-->
         </el-radio-group>
       </div>
-      <div :class="item.controlType+'_empty'" @click="()=>report.value=null">清空</div>
+
+      <div :class="[item.controlType+'_empty',{'empty_single-box':item.baseProperty.layout.columns==1},{'single_row_empty':item.baseProperty.layout.wrap == 1}]" @click="resetData">清空</div>
     </div>
-    <!--{{item.baseProperty.layout}}-->
+    <!--{{item.baseProperty.controlIsExtend}}-->
   </div>
 </template>
 
@@ -77,6 +82,10 @@ export default {
       };
       this.$store.commit("CRF_CHANGE_CONTROL", ctrl);
     },
+    resetData() {
+      this.report.value = "";
+      this.report.value2 = "";
+    },
     //递归获取
     recureBindingInfo() {
       if (this.item.binding == 1) {
@@ -89,7 +98,7 @@ export default {
     },
     //处理 ^
     precessData(data) {
-      if(data.indexOf('^')!=='-1') {
+      if(data.indexOf('^')!='-1') {
         return data.split('^')[0]
       }else {
         return data
@@ -165,19 +174,19 @@ export default {
 .RADIO_BUTTON .singleColumn {
   width: auto;
   min-width: 188px;
-  max-width: 500px;
+  /*max-width: 500px;*/
   padding-right: 5px;
   vertical-align: top;
 }
 .RADIO_BUTTON .RADIO_BUTTON_box {
   min-width: 164px;
-  max-width: 800px;
+  /*max-width: 800px;*/
   display: table-cell;
 
 }
 .RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group {
   min-width: 164px;
-  max-width: 800px;
+  /*max-width: 800px;*/
 }
 .RADIO_BUTTON .RADIO_BUTTON_box .el-radio-group .el-radio {
   margin-right: 10px;
