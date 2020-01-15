@@ -282,7 +282,7 @@ export default {
     position: relative;
     #line {
       position: absolute;
-      top: 8px;
+      top: 0;
       left: 15px;
       width: 32px;
       padding: 0;
@@ -300,12 +300,12 @@ export default {
         display: block;
         line-height: 30px;
         text-align: center;
-        margin-bottom: 89px;
+        height: 93px;
         border-radius: 50%;
         position:relative;
         z-index: 1;
         font-size: 26px;
-        padding-right: 10px;
+        padding: 10px 10px 10px 0;
         color:#1EBFBA;
       }
       i.r{

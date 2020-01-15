@@ -278,6 +278,7 @@ export default {
                 let urlParameter={
                     cacheData: false,
                     formId: row.crfId || "",
+                    reportName: row.reportName,
                     reportId: row.id || '',
                     groupId: row.groupId || "",
                     subjectId: row.subjectId || "",

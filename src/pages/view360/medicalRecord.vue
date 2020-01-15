@@ -207,7 +207,7 @@ export default {
       .el-button {
         padding: 2px 20px;
         &.el-button--primary {
-          border: 1px solid #439aff;
+          border: none;
         }
       }
       .btn:last-child {

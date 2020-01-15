@@ -164,7 +164,7 @@
                 sortable 
                 v-for="column in conditionViewList"
                 :key="column.name" 
-                :width="column.name == 'GENDER_NAME'?'80px':'' || column.name == 'AGE'?'80px':'' "
+                :min-width="handleWidth(column.label)"
                 v-if="column.name != 'PATIENT_NAME'"
                 show-overflow-tooltip>
               </el-table-column>
@@ -373,6 +373,16 @@ export default {
     this.initPage();
   },
   methods: {
+    handleWidth(label) {
+        let width = '80';
+        if(label.indexOf('性别') != -1 || label.indexOf('年龄') != -1) {
+            width = '80'
+        }
+        if(label.indexOf('时间') != -1 || label.indexOf('ID') != -1) {
+            width = '140'
+        }
+        return width
+    },
     async initPage () {
       this.$emit('handlePageHeight'); // 初始化的时候首先调用调整窗口
       this.pageNo = pageNo;

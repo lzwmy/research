@@ -42,6 +42,7 @@ export default {
     clearInterval(this.timer)
   },
   mounted() {
+    //五分钟检测一次版本
     this.timer = setInterval(() => {
       utils.testingVersion();
     }, 300000);

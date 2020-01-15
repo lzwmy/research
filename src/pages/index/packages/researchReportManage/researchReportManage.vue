@@ -78,7 +78,7 @@
                     <el-table-column sortable prop="patientName" label="姓名"></el-table-column>
                     <el-table-column sortable prop="genderName" label="性别"></el-table-column>
                     <el-table-column sortable prop="author" label="创建者"></el-table-column>
-                    <el-table-column sortable prop="diseaseName" label="病种" width="300"></el-table-column>
+                    <el-table-column sortable prop="diseaseName" label="病种"></el-table-column>
                     <el-table-column sortable prop="groupName" label="课题组"></el-table-column>
                     <el-table-column sortable label="报告状态" width="110px">
                         <template slot-scope="scope">

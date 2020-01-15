@@ -276,6 +276,7 @@ export default {
                     cacheData: false,
                     formId: row.crfId || "",
                     reportId: row.id || '',
+                    reportName: row.reportName,
                     groupId: row.groupId || "",
                     subjectId: row.subjectId || "",
                     diseaseId: row.diseaseId || "",

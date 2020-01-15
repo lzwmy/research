@@ -310,37 +310,33 @@ export default {
                     font-size: 14px;
                     border-left: 3px solid transparent;
                     cursor: pointer;
-                    &.active {
-                        background-color: rgba(245, 247, 250, .7);
-                        border-left: 3px solid #1bbae1;
-                        color: #1bbae1;
-                    }
+                    &.active,
                     &:hover {
                         background-color: rgba(245, 247, 250, .7);
                         border-left: 3px solid #1bbae1;
                         color: #1bbae1;
+                        span {
+                            font-weight: bold;
+                        }
                     }
-                    &:nth-child(1):hover .icon,
+                    &:nth-child(1) .icon,
                     &:nth-child(1).active .icon {
-                        color: #00B8DF;
+                        color: #666;
                     }
-                    &:nth-child(2):hover .icon,
+                    &:nth-child(2) .icon,
                     &:nth-child(2).active .icon {
                         color: #F79E00;
                     }
-                    &:nth-child(3):hover .icon,
+                    &:nth-child(3) .icon,
                     &:nth-child(3).active .icon {
-                        color: #394263;
-                    }
-                    &:nth-child(4):hover .icon,
-                    &:nth-child(4).active .icon {
                         color: #DB5452;
                     }
-                    &:nth-child(5):hover .icon,
-                    &:nth-child(5).active .icon {
+                    &:nth-child(4) .icon,
+                    &:nth-child(4).active .icon {
                         color: #00BE90;
-                    }&:nth-child(6):hover .icon,
-                    &:nth-child(6).active .icon {
+                    }
+                    &:nth-child(5) .icon,
+                    &:nth-child(5).active .icon {
                         color: #00B8DF;
                     }
                     .icon {

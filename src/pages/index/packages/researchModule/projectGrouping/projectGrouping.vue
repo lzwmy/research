@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="box">
-            <div class="aside">
+            <div class="box_aside">
                 <p class="aside_title">项目分组</p>
                 <ul id="groupUl">
                     <li 
@@ -234,7 +234,7 @@ export default {
             position: relative;
             height: 100%;
             color: #394263;
-            .aside {                
+            .box_aside {                
                 width: 220px;
                 height: 100%;
                 overflow: auto;
