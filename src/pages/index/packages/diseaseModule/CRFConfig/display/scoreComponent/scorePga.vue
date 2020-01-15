@@ -81,7 +81,7 @@
             let data = await that.$http.getScoreReportPreview(formData);
             if(data.code === 0) {
               let jsonData = JSON.parse(data.data.jsonData);
-              that.pgaValue = jsonData
+              that.pgaValue = parseInt(jsonData)
             }
           }catch (error) {
             console.log(error)

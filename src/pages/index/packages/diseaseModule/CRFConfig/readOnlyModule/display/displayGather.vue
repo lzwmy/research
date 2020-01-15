@@ -6,7 +6,7 @@
         <i v-if="isFold" class="iconfont iconzu" :class="{iconGray:iconActive}" ></i>
         <!--减号-->
         <i v-if="!isFold" class="iconfont iconzu2" ></i>
-        <strong v-show="item.displayIsVisible">{{item.controlDisplayName}} </strong>
+        <strong v-show="item.displayIsVisible" style="font-size: 14px;">{{item.controlDisplayName}} </strong>
         <i v-if="item.binding==1" class="el-icon-connection" style="color:#3b81f0"></i>
       </div>
       <div :class="['view_knowType',{'gather_knowType':item.gatherKnowType>0}]" style="display: inline-block;" v-if="item.gatherKnowType>0">
