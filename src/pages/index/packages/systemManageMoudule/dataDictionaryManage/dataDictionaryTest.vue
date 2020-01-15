@@ -124,16 +124,9 @@
                 <el-option v-for="(item, index) in allControlType" :key="index" :label="item.name" :value="item.value"></el-option>
                 </el-select>
             </el-form-item>
-            <div v-if="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(dialogFormElement.controlType)">
-                <el-form-item label="值域：" align="left"    prop='range'>
-                    <el-input type="textarea" v-model.trim="dialogFormElement.range" :rows="4" placeholder="请输入"></el-input>
-                </el-form-item>
-            </div>
-            <div v-else>
-                <el-form-item label="值域：" align="left">
-                    <el-input type="textarea" v-model.trim="dialogFormElement.range" :rows="4" placeholder="请输入"></el-input>
-                </el-form-item>
-            </div>
+            <el-form-item label="值域：" align="left" :prop="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(dialogFormElement.controlType)?'range':''">
+                <el-input type="textarea" v-model.trim="dialogFormElement.range" :rows="4" placeholder="请输入"></el-input>
+            </el-form-item>
             <el-form-item label="描述：" align="left" prop="describe">
                 <el-input type="textarea" v-model.trim="dialogFormElement.describe" :rows="3" placeholder="请输入"></el-input>
             </el-form-item>
