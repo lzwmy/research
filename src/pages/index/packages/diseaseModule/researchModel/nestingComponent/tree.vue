@@ -156,6 +156,9 @@
     .left > .TreeBox{
         margin-left: 0px;
         min-width: 100%;
+        & > .dataBaseTree {
+            margin-left: 0;
+        }
     } 
     .TreeBox {
         height: 100%;
@@ -171,7 +174,7 @@
         color: #5a5e66;
         font-size: 12px;
         margin-left: 25px;
-        max-width: 100%;
+        // max-width: 100%;
         min-width: 150px;
         .tree_lable {
             display: flex;
@@ -195,7 +198,7 @@
                 width: 14px;
                 height: 14px;
                 color: #b4bccc;
-                margin-right: 4px;
+                margin-right: 1px;
                 transition: all 300ms;
             }
             .checkbox {
@@ -204,6 +207,7 @@
                 border: 1px solid #d8dce5;
                 border-radius: 2px;
                 box-sizing: border-box;
+                flex-shrink: 0;
                 width: 14px;
                 height: 14px;
                 background-color: #fff;
@@ -243,6 +247,7 @@
             p {
                 flex: 1;
                 line-height: 26px;
+                white-space: nowrap;
                 user-select: none;
             }
         }

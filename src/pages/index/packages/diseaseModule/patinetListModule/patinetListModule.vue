@@ -49,12 +49,12 @@
                           <table class="dropmenu-table">
                             <tr v-for="subject in subjectDataList" :key="subject.id" v-if="subject.experimentGroups.length !== 0">
                               <td width="100" :title="subject.name">
-                                {{subject.name.length > 9 ? subject.name.substring(0, 9) + '...' : subject.name}}
+                                {{subject.name && subject.name.length > 9 ? subject.name.substring(0, 9) + '...' : subject.name}}
                               </td>
                               <td>
                                 <div v-for="labGroup in subject.experimentGroups" :key="labGroup.id"
                                     class="labGroup-btn" @click="labGroupSelect(labGroup,subject)" :title="labGroup.name">
-                                  {{labGroup.name.length > 12 ? labGroup.name.substring(0, 12) + '...' : labGroup.name}} -- {{labGroup.formName.length > 12 ? labGroup.formName.substring(0, 12) + '...' : labGroup.formName}}
+                                  {{labGroup.name && labGroup.name.length > 12 ? labGroup.name.substring(0, 12) + '...' : labGroup.name}} -- {{labGroup.formName && labGroup.formName.length > 12 ? labGroup.formName.substring(0, 12) + '...' : labGroup.formName}}
                                 </div>
                               </td>
                             </tr>

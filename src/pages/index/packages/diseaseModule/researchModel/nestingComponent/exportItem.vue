@@ -6,7 +6,7 @@
                 :showCheckbox="true"
                 :defaultExpandAll="true"
                 :props="props"
-                :filter="{key:'controlType', val:['LABLE']}"
+                :filter="{key:'controlType', val:['LABEL','FILE_UPLOAD']}"
                 @selectTreeUpdate="receiveTreeData" 
                 @selectCheckBoxItem="receiveTreeDataItem">
             </Tree>

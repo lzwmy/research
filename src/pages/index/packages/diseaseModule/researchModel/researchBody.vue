@@ -17,7 +17,7 @@
               :showCheckbox="false"
               :defaultExpandAll="true"
               :props="defaultProps"
-              :filter="{key:'controlType', val:['LABLE']}"
+              :filter="{key:'controlType', val:['LABEL','FILE_UPLOAD']}"
               @dblclickNode="handleDblclickNode">
           </Tree>
         </div>
