@@ -191,6 +191,14 @@ export default {
                 userName: '所有医生',
                 id: ''
             }
+            this.$store.commit('saveDiseaseInfo',
+                Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
+                    orgCode: '',
+                    orgName: '',
+                    doctor: '',
+                    doctorName: ''
+                })
+            );
             this.disease = item.name;
             this.popoverVisible = false;
             this.$emit('diseaseSelect', item);
@@ -261,12 +269,6 @@ export default {
                     if(this.orgList.length && !this.$store.state.user.diseaseInfo.orgCode) {
                         this.orgInfo = this.orgList[0];
                     }
-                    // if(this.$store.state.user.diseaseInfo.isAdmin) {
-                    //     this.orgInfo = {
-                    //         orgName: '全部机构',
-                    //         orgCode: ''
-                    //     }
-                    // }
                     //非管理员从主平台进来 匹配自已所在机构
                     if(localStorage.getItem('CURR_LOGIN_TYPE') != 'disease' && !this.$store.state.user.diseaseInfo.isAdmin) {
                         this.orgInfo = this.orgList.find(li=>{
