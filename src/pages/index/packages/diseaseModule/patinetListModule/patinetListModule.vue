@@ -1099,7 +1099,8 @@
               cacheData: false,
               patientName: that.selectRow[0].PATIENT_NAME || '',
               patientId: that.selectRow[0].PATIENT_ID || '',
-              identify: that.selectRow[0].IDENTIFY || ''
+              identify: that.selectRow[0].IDENTIFY || '',
+              id: this.$route.query.id
             }
           })
         } else if (that.selectRow.length !== 0 || command == 'caseStorage' || command == 'exportAll') {

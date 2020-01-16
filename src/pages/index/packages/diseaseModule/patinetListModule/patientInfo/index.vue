@@ -837,7 +837,7 @@
           subjectName: row.subjectName || "",
           groupName: row.groupName || "",
           title: row.reportName,
-          id: '',
+          id: row.id,
           reportName: row.reportName,
           phoneNumber: row.phoneNumber,
           genderName: row.genderName,

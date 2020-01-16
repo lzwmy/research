@@ -250,7 +250,6 @@ export default {
               });
               if (result && result.code == "0") {
                 this.$message.success(val+"成功!");
-                this.closePage();
               }
               that.mainLoading = false;
             } catch (error) {
@@ -561,7 +560,6 @@ export default {
         let result = await this.$http.saveFollowUpReportData(this.report);
         if (result && result.code == "0") {
           this.$message.success("保存成功");
-          this.closePage();
         }
         this.mainLoading = false;
 

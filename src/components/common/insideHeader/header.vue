@@ -185,15 +185,15 @@ export default {
             this.$store.commit("changeMenuView", !this.$store.state.common.openMenuView);
         },
         handleSelect(item) {
+            this.disease = item.name;
+            this.popoverVisible = false;
+            this.$emit('diseaseSelect', item);
+            this.getOrgList(item.id);
             //非管理员从主平台进来切换病种
             if(!this.$store.state.user.diseaseInfo.isAdmin &&  localStorage.getItem('CURR_LOGIN_TYPE') != 'disease') {
                 this.getUserRoles(item)
                 return;
             }
-            this.disease = item.name;
-            this.popoverVisible = false;
-            this.$emit('diseaseSelect', item);
-            this.getOrgList(item.id);
         },
         //选择机构
         selectOrg(row) {
