@@ -383,8 +383,8 @@ export default {
   }
   .displayPortion_box{
     .length_set{
-      min-width: 1200px;
-      width: 1200px;
+      /*min-width: 1200px;*/
+      /*width: 1200px;*/
       padding: 5px 0;
     }
     .el-col{
