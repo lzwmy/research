@@ -124,9 +124,11 @@
                 <el-option v-for="(item, index) in allControlType" :key="index" :label="item.name" :value="item.value"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="值域：" align="left" :prop="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(dialogFormElement.controlType)?'range':''">
+            <el-form-item label="值域：" v-if="['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(dialogFormElement.controlType)" align="left" prop="range">
                 <el-input type="textarea" v-model.trim="dialogFormElement.range" :rows="4" placeholder="请输入"></el-input>
             </el-form-item>
+            <div >
+            </div>
             <el-form-item label="描述：" align="left" prop="describe">
                 <el-input type="textarea" v-model.trim="dialogFormElement.describe" :rows="3" placeholder="请输入"></el-input>
             </el-form-item>
@@ -484,6 +486,10 @@ export default {
         let that = this;
         if (!valid) {
           return false;
+        }
+        if( ['SINGLE_COMBOX','MULTI_COMBOX','RADIO_BUTTON','CHECKBOX'].includes(this.dialogFormElement.controlType) && !this.dialogFormElement.range ) {
+            this.$message.info('请输入值域')
+            return;
         }
         if(this.dialogFormElement.title == '新增字段') {
           this.addElement();
