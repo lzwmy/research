@@ -65,13 +65,13 @@
                             class="lab-group-row clearfix"
                             v-for="innerItem in item.experimentGroups"
                             :key="innerItem.key">
-                            <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.name">
+                            <div class="subjectTitle" style="width: 41%; display:inline-block;float: unset" :title="innerItem.name">
                             {{innerItem.name && innerItem.name.length > 10 ? innerItem.name.substring(0, 10) + '...' : innerItem.name}}
                             </div>
-                            <div class="subjectTitle" style="width: 41%; display:inline-block;" :title="innerItem.remark">
+                            <div class="subjectTitle" style="width: 41%; display:inline-block;float: unset" :title="innerItem.remark">
                             {{innerItem.remark && innerItem.remark.length > 10 ? innerItem.remark.substring(0, 10) + '...' : innerItem.remark}}
                             </div>
-                            <div style="display:inline-block;">
+                            <div style="display:inline-block;float: unset">
                             <span class="icon iconfont iconzujian24" @click="openLabGroupDetailDialog(innerItem,'edit')"></span>
                             <span class="icon iconfont iconzujian26" @click="labGroupDelete(innerItem)"></span>
                             </div>
