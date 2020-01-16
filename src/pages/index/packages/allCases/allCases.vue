@@ -39,8 +39,8 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="enterGroupManager" v-if="selectRow.length==0 || selectRow.length ==1">入组管理
-              </el-dropdown-item>
+              <!-- <el-dropdown-item command="enterGroupManager" v-if="selectRow.length==0 || selectRow.length ==1">入组管理
+              </el-dropdown-item> -->
               <el-dropdown-item command="enterGroup">入库入组</el-dropdown-item>
               <!-- <el-dropdown-item>病人360视图</el-dropdown-item> -->
               <el-dropdown-item command="export">导出</el-dropdown-item>

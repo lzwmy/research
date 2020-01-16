@@ -162,12 +162,13 @@ export default {
             });
             if (res.code == '0' && res.data.length) {
                 this.$store.commit('saveDiseaseInfo',{
-                  diseaseId: item.id,
-                  diseaseName: item.name,
-                  isAdmin: false,
-                  roles: res.data || [3],
-                  orgCode: '',      //组织机构
-                  doctor: ''      //医生
+                    diseaseId: item.id,
+                    diseaseName: item.name,
+                    isAdmin: false,
+                    roles: res.data || [3],
+                    orgCode: '',      //组织机构
+                    doctor: this.$store.state.user.userLogin.userId,
+                    doctorName: this.$store.state.user.userLogin.name
                 });
                 this.$router.push({
                   path: list[0].menuPath,

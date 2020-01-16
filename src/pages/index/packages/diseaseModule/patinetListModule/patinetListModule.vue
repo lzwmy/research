@@ -104,8 +104,8 @@
                                             v-if="selectLabGroupId && (selectRow.length==0 || selectRow.length ==1)">填写
                           </el-dropdown-item>-->
                           <el-dropdown-item command="enterGroup">入组</el-dropdown-item>
-                          <el-dropdown-item command="enterGroupManager" v-if="selectRow.length==0 || selectRow.length ==1">入组管理
-                          </el-dropdown-item>
+                          <!-- <el-dropdown-item command="enterGroupManager" v-if="selectRow.length==0 || selectRow.length ==1">入组管理
+                          </el-dropdown-item> -->
                           <el-dropdown-item command="outGroup" v-if="selectLabGroupId">出组</el-dropdown-item>
                           <el-dropdown-item command="moveGroup" v-if="selectLabGroupId">迁组</el-dropdown-item>
                           <!-- <el-dropdown-item>病人360视图</el-dropdown-item> -->

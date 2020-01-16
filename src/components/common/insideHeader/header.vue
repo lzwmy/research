@@ -309,14 +309,12 @@ export default {
                     diseaseId: item.id
                 });
                 if (res.code == '0' && res.data.length) {
-                    this.$store.commit('saveDiseaseInfo',{
+                    this.$store.commit('saveDiseaseInfo',Object.assign(this.$store.state.user.diseaseInfo, {
                         diseaseId: item.id,
                         diseaseName: item.name,
                         isAdmin: false,
                         roles: res.data || [3],
-                        orgCode: '',      //组织机构
-                        doctor: ''      //医生
-                    });
+                    }))
                     window.location.reload();
                 }else {
                     this.$mes('info','暂无权限访问')
