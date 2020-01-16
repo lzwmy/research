@@ -170,7 +170,7 @@
         if(value.length!==0) {
           this.modelTreeList(value)
           this.$refs.researchBox.modelDisplaySum();
-          let copyData = this.$refs.researchBox.searchList;
+          /*let copyData = this.$refs.researchBox.searchList;
           if(copyData) {
             let find = false;
             for(let i=0;i<copyData.length;i++) {
@@ -188,8 +188,11 @@
             this.$nextTick(()=>{
               this.$refs.researchBox.loadingTree = false;
               this.$refs.researchBox.searchTreeList = copyData;
+              if(copyData.length) {
+                this.$store.commit('STATE_GRAY',copyData[0].query);
+              }
             });
-          }
+          }*/
         }else{
           this.$refs.researchBox.searchList = [];
           this.$refs.researchBox.searchTreeList = [];
