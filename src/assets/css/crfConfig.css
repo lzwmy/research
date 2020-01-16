@@ -343,6 +343,10 @@
 .GATHER_bg_color .el-col-12{
   width: 34.55%;
 }
+.GATHER .layout_set {
+  min-width: 1600px;
+}
+
 .view_box .view_title .iconfont{
   font-size: 16px;
   color: #356cbc;
