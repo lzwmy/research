@@ -5,7 +5,6 @@ const vm = new Vue();
 const url = {
   //  按模块查找元素
   crfFindElements: '/crf/findElements.do',
-
   // 医学代码集列表查询
   dataDictionaryFindList: '/term/group/list.do',
   // 医代码集生成新的oid

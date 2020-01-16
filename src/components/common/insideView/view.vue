@@ -64,7 +64,7 @@ export default {
         if( this.$route.meta.belongToGroup == 'insideView') {
             //如果为管理员,拥有所有页面权限 
             if(this.$store.state.user.diseaseInfo.isAdmin) {
-                if(localStorage.getItem('CURR_LOGIN_TYPE') != 'null') {
+                if(localStorage.getItem('CURR_LOGIN_TYPE') == 'disease') {
                     this.menuList = this.menuList.concat(otherMenu)
                 }else {
                     //主平台进入，删除本地配置的crfConfig页

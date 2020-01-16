@@ -170,6 +170,8 @@ export default {
                         this.disease = item.name;
                     }
                 });
+                console.log(this.dataList)
+                console.log(this.disease)
                 this.$store.commit('saveDiseaseInfo',
                     Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
                         diseaseName:this.disease
@@ -235,7 +237,7 @@ export default {
         async getOrgList(id) {
             this.orgLoading = true;
             try {
-                let res = await this.$http.ORGDisGetOrgList({
+                let res = await this.$http.ORGDisGetUserOrgList({
                     diseaseId: id
                 });
                 if (res.code == '0') {
