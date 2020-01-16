@@ -33,11 +33,11 @@
             width="230"
             :visible-arrow="true"
             v-if="$route.meta.belongToGroup == 'insideView'"
-            :disabled='!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
+            :disabled='!$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable)'
             v-model="orgPopoverVisible"
             trigger="click">
 
-            <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable))?'disabled':''">{{orgInfo.orgName}}<span v-if="!orgInfo.orgName">全部机构</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div slot="reference" class="flex-between-center" :class="(!$store.state.user.diseaseInfo.isAdmin && (!selectNoDisable || !selectOrgNoDisable))?'disabled':''">{{orgInfo.orgName}}<span v-if="!orgInfo.orgName">全部机构</span><i class="el-icon-arrow-down el-icon--right"></i></div>
             <div>
                 <el-input placeholder="请搜索机构"  prefix-icon="el-icon-search" v-model="orgInfoInput" clearable></el-input>
                 <div class="content">
@@ -55,10 +55,10 @@
             width="230"
             :visible-arrow="true"
             v-if="$route.meta.belongToGroup == 'insideView'"
-            :disabled='!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'
+            :disabled='!$store.state.user.diseaseInfo.isAdmin && !selectNoDisable'
             v-model="doctorPopoverVisible"
             trigger="click">
-            <div slot="reference" class="flex-between-center" :class="(!this.$store.state.user.diseaseInfo.isAdmin && !selectNoDisable)?'disabled':''">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">所有医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
+            <div slot="reference" class="flex-between-center" :class="(!$store.state.user.diseaseInfo.isAdmin && !selectNoDisable)?'disabled':''">{{doctorInfo.userName}}<span v-if="!doctorInfo.userName">所有医生</span><i class="el-icon-arrow-down el-icon--right"></i></div>
             <div>
                 <el-input placeholder="请搜索医生"  prefix-icon="el-icon-search" v-model="doctorInput" clearable></el-input>
                 <div class="content">
@@ -185,10 +185,15 @@ export default {
             this.$store.commit("changeMenuView", !this.$store.state.common.openMenuView);
         },
         handleSelect(item) {
+            //非管理员从主平台进来切换病种
+            if(!this.$store.state.user.diseaseInfo.isAdmin &&  localStorage.getItem('CURR_LOGIN_TYPE') != 'disease') {
+                this.getUserRoles(item)
+                return;
+            }
             this.disease = item.name;
             this.popoverVisible = false;
+            this.$emit('diseaseSelect', item);
             this.getOrgList(item.id);
-            this.$emit('diseaseSelect', item)
         },
         //选择机构
         selectOrg(row) {
@@ -297,7 +302,31 @@ export default {
                 str += "";
             }
             return str.replace(/[\u0391-\uFFE5]/g,"aa").length>20?false:true;
-        }
+        },
+        async getUserRoles (item) {
+            console.log(item)
+            try {
+                let res = await this.$http.ORGDisShareUserRole({
+                    diseaseId: item.id
+                });
+                if (res.code == '0' && res.data.length) {
+                    this.$store.commit('saveDiseaseInfo',{
+                        diseaseId: item.id,
+                        diseaseName: item.name,
+                        isAdmin: false,
+                        roles: res.data || [3],
+                        orgCode: '',      //组织机构
+                        doctor: ''      //医生
+                    });
+                    window.location.reload();
+                }else {
+                    this.$mes('info','暂无权限访问')
+                    this.$router.push('/SDResearch')
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        },
     }
 };
 </script>
