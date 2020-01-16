@@ -198,20 +198,6 @@
         }
       },
       unique(arr1,arr2) {
-        let c = [];
-        /*for(let i=0;i<arr1.length;i++){
-          let isEquals=false;
-          for(let j=0;j<arr2.length;j++){
-            if(arr1[i]==arr2[j]){
-              isEquals=true;
-              break;
-            }
-          }
-          if(!isEquals)
-          {
-            c.push(arr1[i]);
-          }
-        }*/
         let temp = []; //临时数组1
         let tempArray = []; //临时数组2
         for (let i = 0; i < arr2.length; i++) {
@@ -222,7 +208,6 @@
             tempArray.push(arr1[i]);
           };
         };
-        // return c;
         return tempArray;
       },
       changeRelationForm(value) {
