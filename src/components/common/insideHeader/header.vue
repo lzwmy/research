@@ -170,8 +170,6 @@ export default {
                         this.disease = item.name;
                     }
                 });
-                console.log(this.dataList)
-                console.log(this.disease)
                 this.$store.commit('saveDiseaseInfo',
                     Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
                         diseaseName:this.disease
@@ -185,6 +183,14 @@ export default {
             this.$store.commit("changeMenuView", !this.$store.state.common.openMenuView);
         },
         handleSelect(item) {
+            this.orgInfo = {
+                orgName: '全部机构',
+                orgCode: ''
+            };
+            this.doctorInfo = {
+                userName: '所有医生',
+                id: ''
+            }
             this.disease = item.name;
             this.popoverVisible = false;
             this.$emit('diseaseSelect', item);
@@ -255,18 +261,29 @@ export default {
                     if(this.orgList.length && !this.$store.state.user.diseaseInfo.orgCode) {
                         this.orgInfo = this.orgList[0];
                     }
-                    //非管理员从主平台进来
+                    // if(this.$store.state.user.diseaseInfo.isAdmin) {
+                    //     this.orgInfo = {
+                    //         orgName: '全部机构',
+                    //         orgCode: ''
+                    //     }
+                    // }
+                    //非管理员从主平台进来 匹配自已所在机构
                     if(localStorage.getItem('CURR_LOGIN_TYPE') != 'disease' && !this.$store.state.user.diseaseInfo.isAdmin) {
                         this.orgInfo = this.orgList.find(li=>{
                             return li.orgType == 1;
                         })
+                        this.doctorInfo = {
+                            id: this.$store.state.user.userLogin.userId,
+                            userName: this.$store.state.user.userLogin.name,
+                        }
                         this.$store.commit('saveDiseaseInfo',
                             Object.assign(utils.deepCopy(this.$store.state.user.diseaseInfo),{
                                 orgCode: this.orgInfo.orgCode,
                                 orgName: this.orgInfo.orgName,
+                                doctor: this.doctorInfo.id,
+                                doctorName: this.doctorInfo.userName
                             })
                         );
-                        console.log(this.orgInfo)
                     }
                 }
                 this.orgLoading = false;
