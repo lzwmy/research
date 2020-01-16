@@ -602,6 +602,9 @@
                   .displayPortion_title{
                     display: none;
                   }
+                  .layout_set{
+                    min-width: 1600px;
+                  }
                   .el-table{
                     padding: 0;
                     .el-table__body-wrapper{
@@ -774,6 +777,9 @@
                   overflow: auto;
                   .displayPortion_title{
                     display: none;
+                  }
+                  .layout_set {
+                    min-width: 1600px;
                   }
                 }
               }

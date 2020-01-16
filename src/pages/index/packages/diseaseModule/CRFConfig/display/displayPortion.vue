@@ -4,7 +4,7 @@
       <i class="left-line"></i>
       {{item.portionName}}
     </div>
-    <div class="displayPortion_box">
+    <div :class="['displayPortion_box',{'layout_set':judgmentPortionColumns(item)}]">
       <el-row class="length_set" >
         <display-item
           :class="'set_'+child.baseProperty.layout.columns"
@@ -366,7 +366,21 @@ export default {
         }
       }
       return item;
-    }
+    },
+    //判断小节下 条目是否存在 多列
+    judgmentPortionColumns(item) {
+      let isPresence = false;
+      let itemList = item.formItemList;
+      if(itemList.length > 0) {
+        for(let i=0;i<itemList.length;i++) {
+          if(itemList[i].baseProperty.layout.columns > 1) {
+            isPresence = true ;
+            break ;
+          }
+        }
+      }
+      return isPresence;
+    },
   }
 };
 </script>
