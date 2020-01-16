@@ -168,8 +168,28 @@
       changeFromSearchTerm(value) {
         console.log(value)
         if(value.length!==0) {
-          this.modelTreeList(value);
+          this.modelTreeList(value)
           this.$refs.researchBox.modelDisplaySum();
+          let copyData = this.$refs.researchBox.searchList;
+          if(copyData) {
+            let find = false;
+            for(let i=0;i<copyData.length;i++) {
+              for (let k=0;k<value.length;k++) {
+                if(copyData[i].id != value[i]) {
+                  copyData.splice(i,1);
+                  i--;
+                  find = true;
+                  break ;
+                }
+              }
+              if(find) { break }
+            }
+            this.$refs.researchBox.loadingTree = true;
+            this.$nextTick(()=>{
+              this.$refs.researchBox.loadingTree = false;
+              this.$refs.researchBox.searchTreeList = copyData;
+            });
+          }
         }else{
           this.$refs.researchBox.searchList = [];
           this.$refs.researchBox.searchTreeList = [];
