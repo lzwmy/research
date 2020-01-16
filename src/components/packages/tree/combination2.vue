@@ -193,22 +193,25 @@ export default {
     },
     // 获取tree数据
     async queryDetailInfo(value,treeNode) {
-      console.log(123)
-      let formData = {
-        id:value
-      };
-      try {
-        let res = await this.$http.crfFindElements(formData);
-        if(res.code == 0) {
-          let elements = res.data.elements;
-          elements.forEach((element, i) => {
-            element.name = element.elNameCN || element.elNameEN;
-          });
-          treeNode.modules = elements;
+        console.log(treeNode)
+        if(treeNode.level == 0) {
+            return;
         }
-      }catch(error) {
-        console.log(error);
-      }
+        let formData = {
+            id:value
+        };
+        try {
+            let res = await this.$http.crfFindElements(formData);
+            if(res.code == 0) {
+            let elements = res.data.elements;
+            elements.forEach((element, i) => {
+                element.name = element.elNameCN || element.elNameEN;
+            });
+            treeNode.modules = elements;
+            }
+        }catch(error) {
+            console.log(error);
+        }
     },
     onDraggable (event, treeId, treeNode) {
         let that = this;

@@ -5,6 +5,8 @@ const vm = new Vue();
 const url = {
     // 查询机构列表
     getOrgList: '/disease/org/list',
+    // 查询自已能看的机构列表(头部)
+    getUserOrgList: '/disease/user/org/list',
     //用户是否为管理员
     getUserRoles: '/disease/user/isAdmin',
     // 查询机构下的人员列表
@@ -39,6 +41,9 @@ const url = {
 const http = {
     ORGDisGetOrgList (params) {
         return vm.$get(url.getOrgList, params, true);
+    },
+    ORGDisGetUserOrgList (params) {
+        return vm.$get(url.getUserOrgList, params, true);
     },
     ORGDisGetUserRoles (params) {
         return vm.$post(url.getUserRoles, params, true);
