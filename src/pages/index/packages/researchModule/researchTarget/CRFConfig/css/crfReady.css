@@ -1056,3 +1056,6 @@ body.theme-blue .crf-left-btn.onclick {
 .patient_form_container .layout_set .displayPortion_box>div{
   min-width: 1600px;
 }
+.patient_form_container .GATHER .layout_set{
+   min-width: 1600px;
+ }

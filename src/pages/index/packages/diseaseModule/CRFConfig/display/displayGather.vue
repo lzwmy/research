@@ -28,7 +28,7 @@
       </div>
     <div v-if="!isFold"  :class="['view_content',{'width_container':item.gatherRank=='1'}]">
       <!--集合上下排列-->
-      <div :class="item.controlType+'_bg_color'" style="padding-left:55px;" v-if="item.gatherRank=='0'"  @click="popMehtod">
+      <div :class="[item.controlType+'_bg_color',{'layout_set':judgmentPortionColumns(item)}]" style="padding-left:55px;" v-if="item.gatherRank=='0'"  @click="popMehtod">
         <!--style="margin-top:15px" style="display: block;"-->
         <div   v-for="(it,index) in item.children" :key="index" :layoutData="layoutInfo(it,index,item.children)">
           <el-row v-if="it.baseProperty.layout.wrap == '1'" >
@@ -621,6 +621,20 @@ export default {
         }
       }
       return span;
+    },
+    //判断小节下 条目是否存在 多列
+    judgmentPortionColumns(item) {
+      let isPresence = false;
+      let itemList = item.children;
+      if(itemList.length > 0) {
+        for(let i=0;i<itemList.length;i++) {
+          if(itemList[i].baseProperty.layout.columns > 1) {
+            isPresence = true ;
+            break ;
+          }
+        }
+      }
+      return isPresence;
     },
   },
   created() {

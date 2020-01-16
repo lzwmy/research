@@ -789,6 +789,9 @@
       .GATHER_bg_color{
         background-color: #ffffff;
       }
+      .layout_set {
+        min-width: 1600px;
+      }
     }
   }
 </style>
