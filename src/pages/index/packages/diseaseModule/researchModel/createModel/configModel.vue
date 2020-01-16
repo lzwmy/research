@@ -101,6 +101,7 @@
           }
         ],
         searchTerm:[],//表单查询条件
+        temporaryArray:[], //临时存放查询条件
         searchTermList:[],
         relationFrom:"",//表单关系
         relationFromList:[
@@ -166,24 +167,19 @@
         }
       },
       changeFromSearchTerm(value) {
-        console.log(value)
+        // console.log('old-data',this.temporaryArray);
+        // console.log('new-data',value);
         if(value.length!==0) {
           this.modelTreeList(value)
           this.$refs.researchBox.modelDisplaySum();
-          /*let copyData = this.$refs.researchBox.searchList;
+          let copyData = this.$refs.researchBox.searchList;
           if(copyData) {
-            let find = false;
-            for(let i=0;i<copyData.length;i++) {
-              for (let k=0;k<value.length;k++) {
-                if(copyData[i].id != value[i]) {
-                  copyData.splice(i,1);
-                  i--;
-                  find = true;
-                  break ;
-                }
+            let crfId = this.unique(this.temporaryArray,value);
+            copyData.forEach((item,index,array) => {
+              if(item.crfId == crfId[0]) {
+                array.splice(index,1);
               }
-              if(find) { break }
-            }
+            });
             this.$refs.researchBox.loadingTree = true;
             this.$nextTick(()=>{
               this.$refs.researchBox.loadingTree = false;
@@ -192,13 +188,42 @@
                 this.$store.commit('STATE_GRAY',copyData[0].query);
               }
             });
-          }*/
+          }
+          this.temporaryArray = value;
         }else{
           this.$refs.researchBox.searchList = [];
           this.$refs.researchBox.searchTreeList = [];
           this.$refs.researchBox.exportTreeListAdd = [];
           this.$refs.researchBox.showTreeListAdd = [];
         }
+      },
+      unique(arr1,arr2) {
+        let c = [];
+        /*for(let i=0;i<arr1.length;i++){
+          let isEquals=false;
+          for(let j=0;j<arr2.length;j++){
+            if(arr1[i]==arr2[j]){
+              isEquals=true;
+              break;
+            }
+          }
+          if(!isEquals)
+          {
+            c.push(arr1[i]);
+          }
+        }*/
+        let temp = []; //临时数组1
+        let tempArray = []; //临时数组2
+        for (let i = 0; i < arr2.length; i++) {
+          temp[arr2[i]] = true;
+        };
+        for (let i = 0; i < arr1.length; i++) {
+          if (!temp[arr1[i]]) {
+            tempArray.push(arr1[i]);
+          };
+        };
+        // return c;
+        return tempArray;
       },
       changeRelationForm(value) {
         this.relationFrom = value;
@@ -208,6 +233,7 @@
         if(data!==null && data !== 'null'){
           this.ModifyData = data;
           this.searchTerm = data.crfList;
+          this.temporaryArray = data.crfList;
           this.modelName = data.modelName;
           this.modelDesc = data.modelDesc;
           this.shareType = data.modelType;
