@@ -59,7 +59,7 @@
           <div class="li flex-start-start">
             <p><i class="icon iconfont iconxitongguanlibeifen"></i>下次时间</p>
             <div class="cont">
-              <p class="cur_pointer" @click="toReportFill(remindDetail.remindDataRsp)"
+              <p class="cur_pointer" @click="toFollowUpFill(remindDetail.remindDataRsp)"
                 v-if="remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate">{{
                 remindDetail.remindDataRsp && remindDetail.remindDataRsp.planVisitDate}}</p>
               <em v-else>(空)</em>
@@ -820,7 +820,7 @@
           }
         });
       },
-      toReportFill(row) {
+      toFollowUpFill(row) {
         console.log(row)
         let urlParameter = {
           cacheData: false,
@@ -832,7 +832,7 @@
           patientName: row.patientName || "",
           patientId: row.patientId || "",
           identify: "",
-          from: "",
+          from: "patientFollowUp",
           diseaseName: row.diseaseName || "",
           subjectName: row.subjectName || "",
           groupName: row.groupName || "",

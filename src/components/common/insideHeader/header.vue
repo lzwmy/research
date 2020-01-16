@@ -304,7 +304,6 @@ export default {
             return str.replace(/[\u0391-\uFFE5]/g,"aa").length>20?false:true;
         },
         async getUserRoles (item) {
-            console.log(item)
             try {
                 let res = await this.$http.ORGDisShareUserRole({
                     diseaseId: item.id
