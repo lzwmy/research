@@ -20,6 +20,7 @@
           <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
           <display-cascader v-else-if="item.controlType == 'CASCADE'" :item="item" :report="report"></display-cascader>
           <display-slider v-else-if="item.controlType == 'SLIDER'" :item="item" :report="report"></display-slider>
+          <display-text-distinguish v-else-if="item.controlType == 'TEXT_DISTINGUISH'" :item="item" :report="report"></display-text-distinguish>
         </el-col>
       </el-row>
     <el-col  v-if="item.baseProperty.layout.wrap == '0'" :span="formatSpan(item.baseProperty.layout)" :offset="item.baseProperty.layout.offset">
@@ -39,6 +40,7 @@
       <display-score v-else-if="item.controlType == 'SCORE'" :item="item" :report="report"></display-score>
       <display-cascader v-else-if="item.controlType == 'CASCADE'" :item="item" :report="report"></display-cascader>
       <display-slider v-else-if="item.controlType == 'SLIDER'" :item="item" :report="report"></display-slider>
+      <display-text-distinguish v-else-if="item.controlType == 'TEXT_DISTINGUISH'" :item="item" :report="report"></display-text-distinguish>
     </el-col>
     <el-col v-if="item.baseProperty.layout.wrap == '0' && item.baseProperty.layout.supplement"
             :span="formatSupplement(item.baseProperty.layout)" style="min-height: 32px"></el-col>
@@ -62,6 +64,7 @@ import displayFileUpload from './displayFileUpload';
 import displayScore from './displayScore';
 import displayCascader from './displayCascader';
 import displaySlider from './displaySlider';
+import displayTextDistinguish from './displayTextDistinguish';
 import "assets/css/crf.less";
 export default {
   name: "displayItem",
@@ -91,7 +94,8 @@ export default {
     displayFileUpload,
     displayScore,
     displayCascader,
-    displaySlider
+    displaySlider,
+    displayTextDistinguish
   },
   methods:{
     formatSpan(item) {
