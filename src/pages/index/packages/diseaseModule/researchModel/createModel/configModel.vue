@@ -195,6 +195,7 @@
           this.$refs.researchBox.searchTreeList = [];
           this.$refs.researchBox.exportTreeListAdd = [];
           this.$refs.researchBox.showTreeListAdd = [];
+          this.$refs.researchBox.modelDisplaySum();
         }
       },
       unique(arr1,arr2) {
