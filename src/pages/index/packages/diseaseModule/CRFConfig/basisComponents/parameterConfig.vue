@@ -33,7 +33,7 @@
                   </div>
                 </div>
               </el-form-item>
-              <el-form-item label="是否必填" v-if="controlType!=='GATHER'&&controlType!=='TABLE'&&controlType!=='FILE_UPLOAD'&&controlType!=='FILE_UPLOAD'&&controlType!=='SCORE'&&controlType!=='TABLE'&&controlType!=='RADIO_BUTTON'&&controlType!=='CHECKBOX'&&controlType != 'SLIDER'">
+              <el-form-item label="是否必填" v-if="controlType!=='GATHER'&&controlType!=='TABLE'&&controlType!=='FILE_UPLOAD'&&controlType!=='FILE_UPLOAD'&&controlType!=='SCORE'&&controlType!=='TABLE'&&controlType!=='RADIO_BUTTON'&&controlType!=='CHECKBOX'&&controlType != 'SLIDER'&&controlType != 'TEXT_DISTINGUISH'">
                 <el-switch
                   v-model="basicDataInfo.obj.baseProperty.isRequired"
                   active-color="#13ce66"
@@ -79,7 +79,7 @@
                     <el-option label="PGA" value="PGA"></el-option>
                   </el-select>
               </el-form-item>
-              <el-form-item v-if="controlType!='DATE'&&controlType!='DATE_TIME'&&controlType!=='FILE_UPLOAD'&&controlType!='GATHER'&&controlType!='TABLE'&&controlType!=='LABEL'&& controlType!='SLIDER'" label="输入提示" class="line_block">
+              <el-form-item v-if="controlType!='DATE'&&controlType!='DATE_TIME'&&controlType!=='FILE_UPLOAD'&&controlType!='GATHER'&&controlType!='TABLE'&&controlType!=='LABEL'&& controlType!='SLIDER' && controlType != 'TEXT_DISTINGUISH'" label="输入提示" class="line_block">
                 <el-input v-model="basicDataInfo.obj.baseProperty.controlTip" size="mini" placeholder="请输入重要的提示"></el-input>
               </el-form-item>
               <el-form-item v-if="controlType=='FILE_UPLOAD'" label="上传类型" class="line_block" >

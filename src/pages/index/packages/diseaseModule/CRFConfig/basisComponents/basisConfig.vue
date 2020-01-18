@@ -209,6 +209,10 @@
             {
               name:"滑块控件",
               value:"SLIDER"
+            },
+            {
+              name:"文字识别",
+              value:"TEXT_DISTINGUISH"
             }
             /*{
               name:"超链接",

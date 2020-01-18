@@ -711,3 +711,85 @@
 .GATHER .gather_knowType .el-radio-group .el-radio {
   margin-right: 10px;
 }
+
+/** 文字识别 **/
+.TEXT_DISTINGUISH {
+  display: table;
+}
+
+.TEXT_DISTINGUISH .TEXT_DISTINGUISH_title {
+  width: 188px;
+  display: table-cell;
+  font-size: 14px;
+}
+
+.TEXT_DISTINGUISH .TEXT_DISTINGUISH_box {
+  display: table-cell;
+}
+
+.TEXT_DISTINGUISH .TEXT_DISTINGUISH_box .display_textarea {
+  width: 95.5%;
+  line-height: 1.5rem;
+  margin-top: 10px;
+  padding: 5px 5px 5px 10px;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+}
+
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box{
+  display: flex;
+  flex-direction: column;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box .TEXT_DISTINGUISH_fileLoad{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box .TEXT_DISTINGUISH_fileLoad .upload-demo{
+  margin-left: 15px;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box .TEXT_DISTINGUISH_display_content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box .TEXT_DISTINGUISH_display_content .img_box{
+  height: 201px;
+  width: 200px;
+  position: relative;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box .TEXT_DISTINGUISH_display_content .img_box .iconfont{
+  font-size: 45px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: #DCDFE6;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box .TEXT_DISTINGUISH_display_content .img_box img{
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
+.TEXT_DISTINGUISH_dialog-container .el-dialog__body .TEXT_DISTINGUISH_dialog_box .TEXT_DISTINGUISH_display_content .display_content{
+  margin-left: 20px;
+  flex: 1;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__footer .clear_data {
+  cursor: pointer;
+  color: #666666;
+  margin-left: 10px;
+}
+.TEXT_DISTINGUISH_dialog-container .el-dialog__footer .clear_data:hover{
+  cursor: pointer;
+  text-decoration: underline;
+  color: #1bbae1;
+}
+
+.viewer-container{
+  z-index: 2099 !important;
+}

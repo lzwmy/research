@@ -47,6 +47,7 @@
               <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
               <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
               <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
+              <display-text-distinguish v-else-if="item.controlType == 'TEXT_DISTINGUISH'" :item="it" :report="getData(it)"></display-text-distinguish>
             </el-col>
           </el-row>
           <el-col  v-if="it.baseProperty.layout.wrap == '0'" :span="formatSpan(it.baseProperty.layout)" :offset="it.baseProperty.layout.offset">
@@ -64,6 +65,7 @@
             <display-number-input v-else-if="it.controlType=='NUMBER_INPUT'" :item="it" :report="getData(it)"/>
             <display-cascader v-else-if="it.controlType == 'CASCADE'" :item="it" :report="getData(it)"></display-cascader>
             <display-slider v-else-if="it.controlType == 'SLIDER'" :item="it" :report="getData(it)"></display-slider>
+            <display-text-distinguish v-else-if="item.controlType == 'TEXT_DISTINGUISH'" :item="it" :report="getData(it)"></display-text-distinguish>
           </el-col>
           <el-col v-if="it.baseProperty.layout.wrap == '0' && it.baseProperty.layout.supplement"
                   :span="formatSupplement(it.baseProperty.layout)" style="min-height: 32px"></el-col>
@@ -103,6 +105,7 @@ import displayGather from "./displayGather";
 import displayGatherColumn from "./displayGatherColumn";
 import displayCascader from './displayCascader';
 import displaySlider from './displaySlider';
+import displayTextDistinguish from './displayTextDistinguish';
 export default {
   name: "displayGather",
   components: {
@@ -120,7 +123,8 @@ export default {
     displayGather,
     displayGatherColumn,
     displayCascader,
-    displaySlider
+    displaySlider,
+    displayTextDistinguish
   },
   data() {
     return {
