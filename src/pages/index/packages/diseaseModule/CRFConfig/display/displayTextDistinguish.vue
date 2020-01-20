@@ -29,7 +29,7 @@
                 </div>
                 <div :class="item.controlType+'_display_content'"  v-loading="loading">
                     <div class="img_box">
-                        <img v-if="fileId" :src="newUrl+'/file/downloadFile/'+fileId" alt="" @click="previewImg">
+                        <img v-if="fileId" :src="fileId" alt="" @click="previewImg">
                         <i v-else class="iconfont iconshangchuantupian"></i>
                     </div>
                     <div class="display_content" >
@@ -88,14 +88,14 @@
             },
             Distinguish() {
                 this.dialogVisible = true;
-                if(this.report.value2 && this.report.value) {
-                    this.fileId = this.report.value;
+                if(this.report.value2 ) {
+                    // this.fileId = this.report.value;
                     this.content = this.report.value2;
                 }
             },
             DistinguishCancel() {
                 this.dialogVisible = false;
-                this.report.value = this.fileId;
+                // this.report.value = this.fileId;
                 this.report.value2 = this.content;
                 this.fileId = "";
                 this.content = "";
@@ -124,12 +124,13 @@
                 param.append('reportId',urlparameter.reportId);
                 param.append('desc',that.item.controlDisplayName);
                 param.append('sourceType',1);
+                let imgURL = that.getObjectURL(file.raw);
                 that.loading = true;
                 that.fileUploadHttp(that.uploadActionUrl,param).then(res=>{
                     if(res.code == 0 && res.data) {
                         that.$message.success(res.msg);
-                        this.fileId = res.data.ID;
-                        this.content = res.data.RESULT.join("");
+                        this.fileId = imgURL;
+                        this.content = res.data.RESULT.join("\n");
                         /*that.fileList = [];
                         let params = new FormData();
                         params.append('file',file.raw);*/
@@ -155,6 +156,18 @@
             fileUploadHttp(url,param) {
                 return this.$fileUpload(url,param)
             },
+            //建立一個可存取到该file的url
+            getObjectURL(file) {
+                let url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            }
         },
         mounted() {
 
