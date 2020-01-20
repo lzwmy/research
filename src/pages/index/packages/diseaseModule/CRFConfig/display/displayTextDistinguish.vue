@@ -12,7 +12,7 @@
                 :visible.sync="dialogVisible"
                 :class="item.controlType+'_dialog-container'"
                 :append-to-body="true"
-                width="50%">
+                width="80%">
             <div :class="item.controlType+'_dialog_box'">
                 <div :class="item.controlType+'_fileLoad'">
                     <span>上传图片</span>
@@ -22,17 +22,18 @@
                             :show-file-list="false"
                             :file-list="fileList"
                             :on-change="handleChange"
+                            accept="image/jpeg,image/jpg,image/png"
                             :auto-upload="false">
                         <el-button size="small" type="primary">点击上传</el-button>
                     </el-upload>
                 </div>
-                <div :class="item.controlType+'_display_content'" >
+                <div :class="item.controlType+'_display_content'"  v-loading="loading">
                     <div class="img_box">
-                        <img v-if="fileId" :src="newUrl+'/file/download/thumbnail/'+fileId" alt="" @click="previewImg">
+                        <img v-if="fileId" :src="newUrl+'/file/downloadFile/'+fileId" alt="" @click="previewImg">
                         <i v-else class="iconfont iconshangchuantupian"></i>
                     </div>
                     <div class="display_content" >
-                        <el-input type="textarea" :rows="9" v-model="content"></el-input>
+                        <el-input type="textarea" :rows="20" v-model="content"></el-input>
                     </div>
                 </div>
             </div>
@@ -65,9 +66,11 @@
         data() {
             return {
                 newUrl:this.baseURL,
+                loading:false,
                 dialogVisible: false,
                 dialogVisibleImg:false,
-                uploadActionUrl:this.baseURL+"report/save/singleFile.do",
+                // uploadActionUrl:this.baseURL+"report/save/singleFile.do",
+                uploadActionUrl:this.baseURL+"/file/compress/uploadFile.do",
                 fileList:[],
                 images:[],
                 distinguishUrl:"http://121.36.38.26:8080/ai/ocr/general",
@@ -121,16 +124,16 @@
                 param.append('reportId',urlparameter.reportId);
                 param.append('desc',that.item.controlDisplayName);
                 param.append('sourceType',1);
+                that.loading = true;
                 that.fileUploadHttp(that.uploadActionUrl,param).then(res=>{
-                    if(res.code == 0) {
-                        console.log(res)
+                    if(res.code == 0 && res.data) {
                         that.$message.success(res.msg);
-                        this.fileId = res.data[0].fileId;
-                        that.fileList = [];
-                        console.log(that.fileList);
+                        this.fileId = res.data.ID;
+                        this.content = res.data.RESULT.join("");
+                        /*that.fileList = [];
                         let params = new FormData();
-                        params.append('file',file.raw);
-                        that.fileUploadHttp(that.distinguishUrl,params)
+                        params.append('file',file.raw);*/
+                        /*that.fileUploadHttp(that.distinguishUrl,params)
                             .then( (result) => {
                                 console.log(result);
                                 if(result.code == 0) {
@@ -140,10 +143,12 @@
                                     // that.report.value2 = result.data;
                                 }
                             })
-                            .catch((error) => console.log(error))
+                            .catch((error) => console.log(error))*/
                     }
+                    that.loading = false;
                 }).catch(error => {
                     console.log(error)
+                    that.loading = false;
                 })
             },
             //自定义多文件文件上传接口
